@@ -17,17 +17,18 @@ Definition checked_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [dividend; divisor] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
-    let* α0 : Ty.path "i32" := M.read divisor in
-    let* α1 : Ty.path "bool" :=
-      M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : Ty.path "i32")) in
-    let* α2 : Ty.path "bool" := M.read (use α1) in
-    let* α3 : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
+    let* α0 := M.read divisor in
+    let* α1 :=
+      M.alloc
+        ((M.var "BinOp::Pure::eq") α0 ((Integer.of_Z 0) : Ty.path "i32")) in
+    let* α2 := M.read (use α1) in
+    let* α3 :=
       if α2 then
         M.alloc core.option.Option.None
       else
-        let* α0 : Ty.path "i32" := M.read dividend in
-        let* α1 : Ty.path "i32" := M.read divisor in
-        let* α2 : Ty.path "i32" := BinOp.Panic.div α0 α1 in
+        let* α0 := M.read dividend in
+        let* α1 := M.read divisor in
+        let* α2 := (M.var "BinOp::Panic::div") α0 α1 in
         M.alloc (core.option.Option.Some α2) in
     M.read α3
   | _, _ => M.impossible
@@ -49,13 +50,11 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [dividend; divisor] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
-    let* α0 : Ty.path "i32" := M.read dividend in
-    let* α1 : Ty.path "i32" := M.read divisor in
-    let* α2 : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-      M.call (option.checked_division α0 α1) in
-    let* α3 : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-      M.alloc α2 in
-    let* α4 : Ty.tuple :=
+    let* α0 := M.read dividend in
+    let* α1 := M.read divisor in
+    let* α2 := M.call ((M.var "option::checked_division") α0 α1) in
+    let* α3 := M.alloc α2 in
+    let* α4 :=
       match_operator
         α3
         [
@@ -63,42 +62,31 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.None =>
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str " / ") in
-                let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str " failed!
+              let* _ :=
+                let* α0 := M.read (mk_str "") in
+                let* α1 := M.read (mk_str " / ") in
+                let* α2 := M.read (mk_str " failed!
 ") in
-                let* α3 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1; α2 ] in
-                let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α3 := M.alloc [ α0; α1; α2 ] in
+                let* α4 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow dividend)) in
-                let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α5 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow divisor)) in
-                let* α6 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α4; α5 ] in
-                let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α6 := M.alloc [ α4; α5 ] in
+                let* α7 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α3))
                       (pointer_coercion "Unsize" (borrow α6))) in
-                let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+                let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
                 M.alloc α8 in
               M.alloc tt
             | _ => M.break_match
@@ -108,52 +96,40 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := core.option.Option.Get_Some_0 γ in
+              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
               let* quotient := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str " / ") in
-                let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str " = ") in
-                let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "
+              let* _ :=
+                let* α0 := M.read (mk_str "") in
+                let* α1 := M.read (mk_str " / ") in
+                let* α2 := M.read (mk_str " = ") in
+                let* α3 := M.read (mk_str "
 ") in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1; α2; α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α4 := M.alloc [ α0; α1; α2; α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow dividend)) in
-                let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α6 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow divisor)) in
-                let* α7 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α7 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow quotient)) in
-                let* α8 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α5; α6; α7 ] in
-                let* α9 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α8 := M.alloc [ α5; α6; α7 ] in
+                let* α9 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α4))
                       (pointer_coercion "Unsize" (borrow α8))) in
-                let* α10 : Ty.tuple := M.call (std.io.stdio._print α9) in
+                let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
                 M.alloc α10 in
               M.alloc tt
             | _ => M.break_match
@@ -190,118 +166,90 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (option.try_division
+          ((M.var "option::try_division")
             ((Integer.of_Z 4) : Ty.path "i32")
             ((Integer.of_Z 2) : Ty.path "i32")) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (option.try_division
+          ((M.var "option::try_division")
             ((Integer.of_Z 1) : Ty.path "i32")
             ((Integer.of_Z 0) : Ty.path "i32")) in
       M.alloc α0 in
-    let* none : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-      M.alloc core.option.Option.None in
-    let* _equivalent_none :
-        Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-      M.alloc core.option.Option.None in
-    let* optional_float :
-        Ty.apply (Ty.path "core::option::Option") [Ty.path "f32"] :=
-      let* α0 : Ty.path "f32" := M.read (UnsupportedLiteral : Ty.path "f32") in
+    let* none := M.alloc core.option.Option.None in
+    let* _equivalent_none := M.alloc core.option.Option.None in
+    let* optional_float :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
       M.alloc (core.option.Option.Some α0) in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " unwraps to ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "") in
+        let* α1 := M.read (mk_str " unwraps to ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow optional_float)) in
-        let* α5 : Ty.apply (Ty.path "core::option::Option") [Ty.path "f32"] :=
-          M.read optional_float in
-        let* α6 : Ty.path "f32" :=
+        let* α5 := M.read optional_float in
+        let* α6 :=
           M.call
             ((Ty.apply
                   (Ty.path "core::option::Option")
                   [Ty.path "f32"])::["unwrap"]
               α5) in
-        let* α7 : Ty.path "f32" := M.alloc α6 in
-        let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow α7)) in
-        let* α9 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α4; α8 ] in
-        let* α10 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α9 := M.alloc [ α4; α8 ] in
+        let* α10 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α9))) in
-        let* α11 : Ty.tuple := M.call (std.io.stdio._print α10) in
+        let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
         M.alloc α11 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " unwraps to ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "") in
+        let* α1 := M.read (mk_str " unwraps to ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow none)) in
-        let* α5 : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-          M.read none in
-        let* α6 : Ty.path "i32" :=
+        let* α5 := M.read none in
+        let* α6 :=
           M.call
             ((Ty.apply
                   (Ty.path "core::option::Option")
                   [Ty.path "i32"])::["unwrap"]
               α5) in
-        let* α7 : Ty.path "i32" := M.alloc α6 in
-        let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow α7)) in
-        let* α9 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α4; α8 ] in
-        let* α10 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α9 := M.alloc [ α4; α8 ] in
+        let* α10 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α9))) in
-        let* α11 : Ty.tuple := M.call (std.io.stdio._print α10) in
+        let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
         M.alloc α11 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

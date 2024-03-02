@@ -33,10 +33,8 @@ Section Impl_traits_Sheep.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "traits::Sheep") []] :=
-        M.read self in
-      M.read (traits.Sheep.Get_naked (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "traits::Sheep::Get_naked") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -62,7 +60,7 @@ Section Impl_traits_Animal_for_traits_Sheep.
     match 𝜏, α with
     | [], [name] =>
       let* name := M.alloc name in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.read name in
+      let* α0 := M.read name in
       M.pure {| traits.Sheep.name := α0; traits.Sheep.naked := false; |}
     | _, _ => M.impossible
     end.
@@ -80,10 +78,8 @@ Section Impl_traits_Animal_for_traits_Sheep.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "traits::Sheep") []] :=
-        M.read self in
-      M.read (traits.Sheep.Get_name (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "traits::Sheep::Get_name") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -104,14 +100,12 @@ Section Impl_traits_Animal_for_traits_Sheep.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "traits::Sheep") []] :=
-        M.read self in
-      let* α1 : Ty.path "bool" :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call ((Ty.apply (Ty.path "traits::Sheep") [])::["is_naked"] α0) in
-      let* α2 : Ty.path "bool" := M.alloc α1 in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
-      let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+      let* α2 := M.alloc α1 in
+      let* α3 := M.read (use α2) in
+      let* α4 :=
         if α3 then
           M.pure (mk_str "baaaaah?")
         else
@@ -134,59 +128,39 @@ Section Impl_traits_Animal_for_traits_Sheep.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "") in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str " pauses briefly... ") in
-          let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "") in
+          let* α1 := M.read (mk_str " pauses briefly... ") in
+          let* α2 := M.read (mk_str "
 ") in
-          let* α3 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0; α1; α2 ] in
-          let* α4 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "traits::Sheep") []] :=
-            M.read self in
-          let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α3 := M.alloc [ α0; α1; α2 ] in
+          let* α4 := M.read self in
+          let* α5 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
-                (borrow (traits.Sheep.Get_name (deref α4)))) in
-          let* α6 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "traits::Sheep") []] :=
-            M.read self in
-          let* α7 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.call (noise α6) in
-          let* α8 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.alloc α7 in
-          let* α9 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                (borrow ((M.var "traits::Sheep::Get_name") (deref α4)))) in
+          let* α6 := M.read self in
+          let* α7 := M.call (noise α6) in
+          let* α8 := M.alloc α7 in
+          let* α9 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow α8)) in
-          let* α10 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α5; α9 ] in
-          let* α11 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α10 := M.alloc [ α5; α9 ] in
+          let* α11 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α3))
                 (pointer_coercion "Unsize" (borrow α10))) in
-          let* α12 : Ty.tuple := M.call (std.io.stdio._print α11) in
+          let* α12 := M.call ((M.var "std::io::stdio::_print") α11) in
           M.alloc α12 in
         M.alloc tt in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -222,114 +196,71 @@ Section Impl_traits_Sheep_2.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "traits::Sheep") []] :=
-        M.read self in
-      let* α1 : Ty.path "bool" :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "traits::Sheep") [])::["is_naked"]
             (borrow (deref α0))) in
-      let* α2 : Ty.path "bool" := M.alloc α1 in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
-      let* α4 : Ty.tuple :=
+      let* α2 := M.alloc α1 in
+      let* α3 := M.read (use α2) in
+      let* α4 :=
         if α3 then
-          let* _ : Ty.tuple :=
-            let* _ : Ty.tuple :=
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                M.read (mk_str "") in
-              let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                M.read (mk_str " is already naked...
+          let* _ :=
+            let* _ :=
+              let* α0 := M.read (mk_str "") in
+              let* α1 := M.read (mk_str " is already naked...
 ") in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "array")
-                    [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                M.alloc [ α0; α1 ] in
-              let* α3 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply (Ty.path "traits::Sheep") []]]
-                    (Ty.apply (Ty.path "ref") [Ty.path "str"]) :=
+              let* α2 := M.alloc [ α0; α1 ] in
+              let* α3 :=
                 ltac:(M.get_method (fun ℐ =>
                   traits.Animal.name
                     (Self := Ty.apply (Ty.path "traits::Sheep") [])
                     (Trait := ℐ))) in
-              let* α4 :
-                  Ty.apply
-                    (Ty.path "mut_ref")
-                    [Ty.apply (Ty.path "traits::Sheep") []] :=
-                M.read self in
-              let* α5 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                M.call (α3 (borrow (deref α4))) in
-              let* α6 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                M.alloc α5 in
-              let* α7 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+              let* α4 := M.read self in
+              let* α5 := M.call (α3 (borrow (deref α4))) in
+              let* α6 := M.alloc α5 in
+              let* α7 :=
                 M.call
                   ((Ty.apply
                         (Ty.path "core::fmt::rt::Argument")
                         [])::["new_display"]
                     (borrow α6)) in
-              let* α8 :
-                  Ty.apply
-                    (Ty.path "array")
-                    [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                M.alloc [ α7 ] in
-              let* α9 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+              let* α8 := M.alloc [ α7 ] in
+              let* α9 :=
                 M.call
                   ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                     (pointer_coercion "Unsize" (borrow α2))
                     (pointer_coercion "Unsize" (borrow α8))) in
-              let* α10 : Ty.tuple := M.call (std.io.stdio._print α9) in
+              let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
               M.alloc α10 in
             M.alloc tt in
           M.alloc tt
         else
-          let* _ : Ty.tuple :=
-            let* _ : Ty.tuple :=
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                M.read (mk_str "") in
-              let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                M.read (mk_str " gets a haircut!
+          let* _ :=
+            let* _ :=
+              let* α0 := M.read (mk_str "") in
+              let* α1 := M.read (mk_str " gets a haircut!
 ") in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "array")
-                    [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                M.alloc [ α0; α1 ] in
-              let* α3 :
-                  Ty.apply
-                    (Ty.path "mut_ref")
-                    [Ty.apply (Ty.path "traits::Sheep") []] :=
-                M.read self in
-              let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+              let* α2 := M.alloc [ α0; α1 ] in
+              let* α3 := M.read self in
+              let* α4 :=
                 M.call
                   ((Ty.apply
                         (Ty.path "core::fmt::rt::Argument")
                         [])::["new_display"]
-                    (borrow (traits.Sheep.Get_name (deref α3)))) in
-              let* α5 :
-                  Ty.apply
-                    (Ty.path "array")
-                    [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                M.alloc [ α4 ] in
-              let* α6 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    (borrow ((M.var "traits::Sheep::Get_name") (deref α3)))) in
+              let* α5 := M.alloc [ α4 ] in
+              let* α6 :=
                 M.call
                   ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                     (pointer_coercion "Unsize" (borrow α2))
                     (pointer_coercion "Unsize" (borrow α5))) in
-              let* α7 : Ty.tuple := M.call (std.io.stdio._print α6) in
+              let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in
               M.alloc α7 in
             M.alloc tt in
-          let* _ : Ty.tuple :=
-            let* α0 :
-                Ty.apply
-                  (Ty.path "mut_ref")
-                  [Ty.apply (Ty.path "traits::Sheep") []] :=
-              M.read self in
-            assign (traits.Sheep.Get_naked (deref α0)) true in
+          let* _ :=
+            let* α0 := M.read self in
+            assign ((M.var "traits::Sheep::Get_naked") (deref α0)) true in
           M.alloc tt in
       M.read α4
     | _, _ => M.impossible
@@ -356,48 +287,38 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* dolly : Ty.apply (Ty.path "traits::Sheep") [] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]]
-            (Ty.apply (Ty.path "traits::Sheep") []) :=
+    let* dolly :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           traits.Animal.new
             (Self := Ty.apply (Ty.path "traits::Sheep") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Dolly") in
-      let* α2 : Ty.apply (Ty.path "traits::Sheep") [] := M.call (α0 α1) in
+      let* α1 := M.read (mk_str "Dolly") in
+      let* α2 := M.call (α0 α1) in
       M.alloc α2 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "traits::Sheep") []]]
-            Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           traits.Animal.talk
             (Self := Ty.apply (Ty.path "traits::Sheep") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.tuple := M.call (α0 (borrow dolly)) in
+      let* α1 := M.call (α0 (borrow dolly)) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
           ((Ty.apply (Ty.path "traits::Sheep") [])::["shear"]
             (borrow_mut dolly)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "traits::Sheep") []]]
-            Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           traits.Animal.talk
             (Self := Ty.apply (Ty.path "traits::Sheep") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.tuple := M.call (α0 (borrow dolly)) in
+      let* α1 := M.call (α0 (borrow dolly)) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

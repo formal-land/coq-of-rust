@@ -18,33 +18,18 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Circle of radius ") in
-      let* α2 :
-          Ty.apply
-            (Ty.path "array")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-        M.alloc [ α1 ] in
-      let* α3 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "converting_to_string::Circle") []] :=
-        M.read self in
-      let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Circle of radius ") in
+      let* α2 := M.alloc [ α1 ] in
+      let* α3 := M.read self in
+      let* α4 :=
         M.call
           ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-            (borrow (converting_to_string.Circle.Get_radius (deref α3)))) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "array")
-            [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-        M.alloc [ α4 ] in
-      let* α6 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+            (borrow
+              ((M.var "converting_to_string::Circle::Get_radius")
+                (deref α3)))) in
+      let* α5 := M.alloc [ α4 ] in
+      let* α6 :=
         M.call
           ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
             (pointer_coercion "Unsize" (borrow α2))
@@ -72,27 +57,21 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* circle : Ty.apply (Ty.path "converting_to_string::Circle") [] :=
+    let* circle :=
       M.alloc
         {|
           converting_to_string.Circle.radius :=
             (Integer.of_Z 6) : Ty.path "i32";
         |} in
-    let* _ : Ty.apply (Ty.path "alloc::string::String") [] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "converting_to_string::Circle") []]]
-            (Ty.apply (Ty.path "alloc::string::String") []) :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           alloc.string.ToString.to_string
             (Self := Ty.apply (Ty.path "converting_to_string::Circle") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "alloc::string::String") [] :=
-        M.call (α0 (borrow circle)) in
+      let* α1 := M.call (α0 (borrow circle)) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

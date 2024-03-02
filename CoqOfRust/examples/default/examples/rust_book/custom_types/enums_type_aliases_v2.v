@@ -24,7 +24,7 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
       let* self := M.alloc self in
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 : Ty.path "i32" :=
+      let* α0 :=
         match_operator
           self
           [
@@ -37,9 +37,9 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
               |
                   enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add
                   =>
-                let* α0 : Ty.path "i32" := M.read x in
-                let* α1 : Ty.path "i32" := M.read y in
-                let* α2 : Ty.path "i32" := BinOp.Panic.add α0 α1 in
+                let* α0 := M.read x in
+                let* α1 := M.read y in
+                let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
                 M.alloc α2
               | _ => M.break_match
               end) :
@@ -53,9 +53,9 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
               |
                   enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract
                   =>
-                let* α0 : Ty.path "i32" := M.read x in
-                let* α1 : Ty.path "i32" := M.read y in
-                let* α2 : Ty.path "i32" := BinOp.Panic.sub α0 α1 in
+                let* α0 := M.read x in
+                let* α1 := M.read y in
+                let* α2 := (M.var "BinOp::Panic::sub") α0 α1 in
                 M.alloc α2
               | _ => M.break_match
               end) :

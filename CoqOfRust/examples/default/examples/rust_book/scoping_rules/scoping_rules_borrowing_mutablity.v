@@ -16,8 +16,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "scoping_rules_borrowing_mutablity::Book") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -42,14 +41,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
                             [Ty.path "u32"]))
                       [
                         fun γ =>
-                          (let* α0 :
-                              Ty.apply
-                                (Ty.path "ref")
-                                [Ty.apply
-                                    (Ty.path
-                                      "scoping_rules_borrowing_mutablity::Book")
-                                    []] :=
-                            M.read self in
+                          (let* α0 := M.read self in
                           M.pure (deref α0)) :
                           Ty.apply
                             (Ty.path "scoping_rules_borrowing_mutablity::Book")
@@ -94,60 +86,37 @@ Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [book] =>
     let* book := M.alloc book in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "I immutably borrowed ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " - ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " edition
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "I immutably borrowed ") in
+        let* α1 := M.read (mk_str " - ") in
+        let* α2 := M.read (mk_str " edition
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "scoping_rules_borrowing_mutablity::Book")
-                  []] :=
-          M.read book in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 := M.read book in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow
-                (scoping_rules_borrowing_mutablity.Book.Get_title
+                ((M.var "scoping_rules_borrowing_mutablity::Book::Get_title")
                   (deref α4)))) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "scoping_rules_borrowing_mutablity::Book")
-                  []] :=
-          M.read book in
-        let* α7 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α6 := M.read book in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow
-                (scoping_rules_borrowing_mutablity.Book.Get_year
+                ((M.var "scoping_rules_borrowing_mutablity::Book::Get_year")
                   (deref α6)))) in
-        let* α8 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5; α7 ] in
-        let* α9 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α8 := M.alloc [ α5; α7 ] in
+        let* α9 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 : Ty.tuple := M.call (std.io.stdio._print α9) in
+        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
         M.alloc α10 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -162,69 +131,42 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [book] =>
     let* book := M.alloc book in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "scoping_rules_borrowing_mutablity::Book") []] :=
-        M.read book in
+    let* _ :=
+      let* α0 := M.read book in
       assign
-        (scoping_rules_borrowing_mutablity.Book.Get_year (deref α0))
+        ((M.var "scoping_rules_borrowing_mutablity::Book::Get_year") (deref α0))
         ((Integer.of_Z 2014) : Ty.path "u32") in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "I mutably borrowed ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " - ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " edition
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "I mutably borrowed ") in
+        let* α1 := M.read (mk_str " - ") in
+        let* α2 := M.read (mk_str " edition
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "scoping_rules_borrowing_mutablity::Book")
-                  []] :=
-          M.read book in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 := M.read book in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow
-                (scoping_rules_borrowing_mutablity.Book.Get_title
+                ((M.var "scoping_rules_borrowing_mutablity::Book::Get_title")
                   (deref α4)))) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "scoping_rules_borrowing_mutablity::Book")
-                  []] :=
-          M.read book in
-        let* α7 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α6 := M.read book in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow
-                (scoping_rules_borrowing_mutablity.Book.Get_year
+                ((M.var "scoping_rules_borrowing_mutablity::Book::Get_year")
                   (deref α6)))) in
-        let* α8 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5; α7 ] in
-        let* α9 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α8 := M.alloc [ α5; α7 ] in
+        let* α9 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 : Ty.tuple := M.call (std.io.stdio._print α9) in
+        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
         M.alloc α10 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -260,11 +202,9 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* immutabook :
-        Ty.apply (Ty.path "scoping_rules_borrowing_mutablity::Book") [] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Douglas Hofstadter") in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+    let* immutabook :=
+      let* α0 := M.read (mk_str "Douglas Hofstadter") in
+      let* α1 :=
         M.read (mk_str ("G" ++ String.String "246" "del, Escher, Bach")) in
       M.alloc
         {|
@@ -273,26 +213,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           scoping_rules_borrowing_mutablity.Book.year :=
             (Integer.of_Z 1979) : Ty.path "u32";
         |} in
-    let* mutabook :
-        Ty.apply (Ty.path "scoping_rules_borrowing_mutablity::Book") [] :=
-      M.copy immutabook in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* mutabook := M.copy immutabook in
+    let* _ :=
+      let* α0 :=
         M.call
-          (scoping_rules_borrowing_mutablity.borrow_book (borrow immutabook)) in
+          ((M.var "scoping_rules_borrowing_mutablity::borrow_book")
+            (borrow immutabook)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (scoping_rules_borrowing_mutablity.borrow_book (borrow mutabook)) in
+          ((M.var "scoping_rules_borrowing_mutablity::borrow_book")
+            (borrow mutabook)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (scoping_rules_borrowing_mutablity.new_edition
+          ((M.var "scoping_rules_borrowing_mutablity::new_edition")
             (borrow_mut mutabook)) in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

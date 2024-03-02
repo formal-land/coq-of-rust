@@ -37,15 +37,13 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* a : Ty.apply (Ty.path "if_let_match_enum_values::Foo") [] :=
-      M.alloc if_let_match_enum_values.Foo.Bar in
-    let* b : Ty.apply (Ty.path "if_let_match_enum_values::Foo") [] :=
-      M.alloc if_let_match_enum_values.Foo.Baz in
-    let* c : Ty.apply (Ty.path "if_let_match_enum_values::Foo") [] :=
+    let* a := M.alloc if_let_match_enum_values.Foo.Bar in
+    let* b := M.alloc if_let_match_enum_values.Foo.Baz in
+    let* c :=
       M.alloc
         (if_let_match_enum_values.Foo.Qux
           ((Integer.of_Z 100) : Ty.path "u32")) in
-    let* _ : Ty.tuple :=
+    let* _ :=
       match_operator
         a
         [
@@ -53,23 +51,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | if_let_match_enum_values.Foo.Bar =>
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "a is foobar
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "a is foobar
 ") in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0 ] in
-                  let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α1 := M.alloc [ α0 ] in
+                  let* α2 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                  let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 M.alloc tt in
               M.alloc tt
@@ -78,7 +71,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple;
           fun γ => (M.alloc tt) : Ty.path "unit"
         ] in
-    let* _ : Ty.tuple :=
+    let* _ :=
       match_operator
         b
         [
@@ -86,23 +79,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | if_let_match_enum_values.Foo.Bar =>
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "b is foobar
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "b is foobar
 ") in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0 ] in
-                  let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α1 := M.alloc [ α0 ] in
+                  let* α2 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                  let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 M.alloc tt in
               M.alloc tt
@@ -111,7 +99,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple;
           fun γ => (M.alloc tt) : Ty.path "unit"
         ] in
-    let* _ : Ty.tuple :=
+    let* _ :=
       match_operator
         c
         [
@@ -119,39 +107,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | if_let_match_enum_values.Foo.Qux _ =>
-              let γ0_0 := if_let_match_enum_values.Foo.Get_Qux_0 γ in
+              let γ0_0 :=
+                (M.var "if_let_match_enum_values::Foo::Get_Qux_0") γ in
               let* value := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "c is ") in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "c is ") in
+                  let* α1 := M.read (mk_str "
 ") in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0; α1 ] in
-                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α2 := M.alloc [ α0; α1 ] in
+                  let* α3 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_display"]
                         (borrow value)) in
-                  let* α4 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                    M.alloc [ α3 ] in
-                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α4 := M.alloc [ α3 ] in
+                  let* α5 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
@@ -160,7 +139,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple;
           fun γ => (M.alloc tt) : Ty.path "unit"
         ] in
-    let* α0 : Ty.tuple :=
+    let* α0 :=
       match_operator
         c
         [
@@ -168,28 +147,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | if_let_match_enum_values.Foo.Qux _ =>
-              let γ0_0 := if_let_match_enum_values.Foo.Get_Qux_0 γ in
+              let γ0_0 :=
+                (M.var "if_let_match_enum_values::Foo::Get_Qux_0") γ in
               let* value := M.copy γ0_0 in
               let* α0 := M.read γ0_0 in
               match α0 with
               | u32.Make 100 =>
-                let* _ : Ty.tuple :=
-                  let* _ : Ty.tuple :=
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str "c is one hundred
+                let* _ :=
+                  let* _ :=
+                    let* α0 := M.read (mk_str "c is one hundred
 ") in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                      M.alloc [ α0 ] in
-                    let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    let* α1 := M.alloc [ α0 ] in
+                    let* α2 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::Arguments")
                               [])::["new_const"]
                           (pointer_coercion "Unsize" (borrow α1))) in
-                    let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                    let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                     M.alloc α3 in
                   M.alloc tt in
                 M.alloc tt

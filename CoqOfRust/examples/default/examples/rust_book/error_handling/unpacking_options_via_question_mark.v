@@ -15,10 +15,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-            [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -35,14 +32,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
                       [Ty.path "u32"]))
                 [
                   fun γ =>
-                    (let* α0 :
-                        Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply
-                              (Ty.path
-                                "unpacking_options_via_question_mark::PhoneNumber")
-                              []] :=
-                      M.read self in
+                    (let* α0 := M.read self in
                     M.pure (deref α0)) :
                     Ty.apply
                       (Ty.path
@@ -88,8 +78,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "unpacking_options_via_question_mark::Job") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -103,13 +92,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
                         []]]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "unpacking_options_via_question_mark::Job")
-                        []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "unpacking_options_via_question_mark::Job") []
           ] in
@@ -157,17 +140,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
         M.return_
           (R := Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"]) in
       M.catch_return
-        (let* α0 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "core::option::Option")
-                  [Ty.apply
-                      (Ty.path
-                        "unpacking_options_via_question_mark::PhoneNumber")
-                      []]]
-              (Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [_; _]) :=
+        (let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self :=
@@ -178,16 +151,7 @@ Section Impl_unpacking_options_via_question_mark_Person.
                         "unpacking_options_via_question_mark::PhoneNumber")
                       []])
               (Trait := ℐ))) in
-        let* α1 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "core::option::Option")
-                  [Ty.apply
-                      (Ty.path "unpacking_options_via_question_mark::Job")
-                      []]]
-              (Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [_; _]) :=
+        let* α1 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self :=
@@ -197,43 +161,14 @@ Section Impl_unpacking_options_via_question_mark_Person.
                       (Ty.path "unpacking_options_via_question_mark::Job")
                       []])
               (Trait := ℐ))) in
-        let* α2 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "unpacking_options_via_question_mark::Person")
-                  []] :=
-          M.read self in
-        let* α3 :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.apply
-                  (Ty.path "unpacking_options_via_question_mark::Job")
-                  []] :=
+        let* α2 := M.read self in
+        let* α3 :=
           M.read
-            (unpacking_options_via_question_mark.Person.Get_job (deref α2)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::option::Option")
-                  [Ty.apply (Ty.path "core::convert::Infallible") []];
-                Ty.apply
-                  (Ty.path "unpacking_options_via_question_mark::Job")
-                  []] :=
-          M.call (α1 α3) in
-        let* α5 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::option::Option")
-                  [Ty.apply (Ty.path "core::convert::Infallible") []];
-                Ty.apply
-                  (Ty.path "unpacking_options_via_question_mark::Job")
-                  []] :=
-          M.alloc α4 in
-        let* α6 :
-            Ty.apply (Ty.path "unpacking_options_via_question_mark::Job") [] :=
+            ((M.var "unpacking_options_via_question_mark::Person::Get_job")
+              (deref α2)) in
+        let* α4 := M.call (α1 α3) in
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           match_operator
             α5
             [
@@ -241,16 +176,11 @@ Section Impl_unpacking_options_via_question_mark_Person.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.apply (Ty.path "core::convert::Infallible") []]]
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "u8"]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -262,23 +192,11 @@ Section Impl_unpacking_options_via_question_mark_Person.
                             (Ty.path "core::option::Option")
                             [Ty.apply (Ty.path "core::convert::Infallible") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "core::convert::Infallible") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "u8"] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 :
-                      Ty.apply
-                        (Ty.path "unpacking_options_via_question_mark::Job")
-                        [] :=
-                    never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -290,45 +208,23 @@ Section Impl_unpacking_options_via_question_mark_Person.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.apply (Ty.path "unpacking_options_via_question_mark::Job") []
             ] in
-        let* α7 :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.apply
-                  (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-                  []] :=
+        let* α7 :=
           M.read
-            (unpacking_options_via_question_mark.Job.Get_phone_number α6) in
-        let* α8 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::option::Option")
-                  [Ty.apply (Ty.path "core::convert::Infallible") []];
-                Ty.apply
-                  (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-                  []] :=
-          M.call (α0 α7) in
-        let* α9 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::option::Option")
-                  [Ty.apply (Ty.path "core::convert::Infallible") []];
-                Ty.apply
-                  (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-                  []] :=
-          M.alloc α8 in
-        let* α10 :
-            Ty.apply
-              (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-              [] :=
+            ((M.var
+                "unpacking_options_via_question_mark::Job::Get_phone_number")
+              α6) in
+        let* α8 := M.call (α0 α7) in
+        let* α9 := M.alloc α8 in
+        let* α10 :=
           match_operator
             α9
             [
@@ -336,16 +232,11 @@ Section Impl_unpacking_options_via_question_mark_Person.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.apply (Ty.path "core::convert::Infallible") []]]
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "u8"]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -357,24 +248,11 @@ Section Impl_unpacking_options_via_question_mark_Person.
                             (Ty.path "core::option::Option")
                             [Ty.apply (Ty.path "core::convert::Infallible") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "core::convert::Infallible") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "u8"] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 :
-                      Ty.apply
-                        (Ty.path
-                          "unpacking_options_via_question_mark::PhoneNumber")
-                        [] :=
-                    never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -386,7 +264,9 @@ Section Impl_unpacking_options_via_question_mark_Person.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
@@ -396,7 +276,9 @@ Section Impl_unpacking_options_via_question_mark_Person.
                   []
             ] in
         M.read
-          (unpacking_options_via_question_mark.PhoneNumber.Get_area_code α10))
+          ((M.var
+              "unpacking_options_via_question_mark::PhoneNumber::Get_area_code")
+            α10))
     | _, _ => M.impossible
     end.
   
@@ -424,8 +306,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* p :
-        Ty.apply (Ty.path "unpacking_options_via_question_mark::Person") [] :=
+    let* p :=
       M.alloc
         {|
           unpacking_options_via_question_mark.Person.job :=
@@ -442,26 +323,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     |};
               |};
         |} in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"] :=
+    let* _ :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "unpacking_options_via_question_mark::Person")
                 [])::["work_phone_area_code"]
             (borrow p)) in
-      let* α1 : Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"] :=
-        M.alloc α0 in
-      let* α2 : Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"] :=
+      let* α1 := M.alloc α0 in
+      let* α2 :=
         M.alloc (core.option.Option.Some ((Integer.of_Z 61) : Ty.path "u8")) in
-      let* α3 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"]]) :=
-        M.alloc (borrow α1, borrow α2) in
+      let* α3 := M.alloc (borrow α1, borrow α2) in
       match_operator
         α3
         [
@@ -473,19 +345,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.path "u8"]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.path "u8"]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -493,60 +353,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Rhs :=
                       Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "u8"]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "u8"]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "u8"]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "u8"]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

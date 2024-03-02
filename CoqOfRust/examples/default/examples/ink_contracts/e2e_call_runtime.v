@@ -13,12 +13,12 @@ Section Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (e2e_call_runtime.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "e2e_call_runtime::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -51,11 +51,7 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "e2e_call_runtime::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "e2e_call_runtime::AccountId") []
           ] in
@@ -96,9 +92,8 @@ Section Impl_e2e_call_runtime_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -144,9 +139,8 @@ Section Impl_e2e_call_runtime_Contract.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -196,15 +190,11 @@ Section Impl_e2e_call_runtime_Contract.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "e2e_call_runtime::Contract") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "e2e_call_runtime::Env") [] :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "e2e_call_runtime::Contract") [])::["env"] α0) in
-      let* α2 : Ty.apply (Ty.path "e2e_call_runtime::Env") [] := M.alloc α1 in
+      let* α2 := M.alloc α1 in
       M.call
         ((Ty.apply (Ty.path "e2e_call_runtime::Env") [])::["balance"]
           (borrow α2))

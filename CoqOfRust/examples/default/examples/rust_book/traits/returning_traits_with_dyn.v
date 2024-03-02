@@ -82,21 +82,13 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [random_number] =>
     let* random_number := M.alloc random_number in
-    let* α0 : Ty.path "f64" := M.read random_number in
-    let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-    let* α2 : Ty.path "bool" := M.alloc (BinOp.Pure.lt α0 α1) in
-    let* α3 : Ty.path "bool" := M.read (use α2) in
-    let* α4 :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [dyn [returning_traits_with_dyn.Animal.Trait];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* α0 := M.read random_number in
+    let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α2 := M.alloc ((M.var "BinOp::Pure::lt") α0 α1) in
+    let* α3 := M.read (use α2) in
+    let* α4 :=
       if α3 then
-        let* α0 :
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [Ty.apply (Ty.path "returning_traits_with_dyn::Sheep") [];
-                Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        let* α0 :=
           M.call
             ((Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -105,11 +97,7 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
               returning_traits_with_dyn.Sheep.Build) in
         M.alloc (pointer_coercion "Unsize" (pointer_coercion "Unsize" α0))
       else
-        let* α0 :
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [Ty.apply (Ty.path "returning_traits_with_dyn::Cow") [];
-                Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        let* α0 :=
           M.call
             ((Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -117,12 +105,7 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
               returning_traits_with_dyn.Cow.Build) in
         M.alloc (pointer_coercion "Unsize" α0) in
-    let* α5 :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [dyn [returning_traits_with_dyn.Animal.Trait];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      M.read α4 in
+    let* α5 := M.read α4 in
     M.pure (pointer_coercion "Unsize" (pointer_coercion "Unsize" α5))
   | _, _ => M.impossible
   end.
@@ -141,70 +124,41 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* random_number : Ty.path "f64" :=
-      M.copy (UnsupportedLiteral : Ty.path "f64") in
-    let* animal :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [dyn [returning_traits_with_dyn.Animal.Trait];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.path "f64" := M.read random_number in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [dyn [returning_traits_with_dyn.Animal.Trait];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call (returning_traits_with_dyn.random_animal α0) in
+    let* random_number := M.copy (UnsupportedLiteral : Ty.path "f64") in
+    let* animal :=
+      let* α0 := M.read random_number in
+      let* α1 :=
+        M.call ((M.var "returning_traits_with_dyn::random_animal") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
           M.read (mk_str "You've randomly chosen an animal, and it says ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [dyn [returning_traits_with_dyn.Animal.Trait]]]
-              (Ty.apply (Ty.path "ref") [Ty.path "str"]) :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             returning_traits_with_dyn.Animal.noise
               (Self := dyn [returning_traits_with_dyn.Animal.Trait])
               (Trait := ℐ))) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [dyn [returning_traits_with_dyn.Animal.Trait];
-                Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-          M.read animal in
-        let* α5 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.call (α3 (borrow (deref α4))) in
-        let* α6 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.alloc α5 in
-        let* α7 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.read animal in
+        let* α5 := M.call (α3 (borrow (deref α4))) in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α6)) in
-        let* α8 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α7 ] in
-        let* α9 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 : Ty.tuple := M.call (std.io.stdio._print α9) in
+        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
         M.alloc α10 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

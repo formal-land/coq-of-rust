@@ -15,29 +15,14 @@ Section Impl_core_fmt_Debug_for_structures_Person.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Person") in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "name") in
-      let* α3 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "structures::Person") []] :=
-        M.read self in
-      let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "age") in
-      let* α5 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "structures::Person") []] :=
-        M.read self in
-      let* α6 : Ty.apply (Ty.path "ref") [Ty.path "u8"] :=
-        M.alloc (borrow (structures.Person.Get_age (deref α5))) in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Person") in
+      let* α2 := M.read (mk_str "name") in
+      let* α3 := M.read self in
+      let* α4 := M.read (mk_str "age") in
+      let* α5 := M.read self in
+      let* α6 :=
+        M.alloc (borrow ((M.var "structures::Person::Get_age") (deref α5))) in
       M.call
         ((Ty.apply
               (Ty.path "core::fmt::Formatter")
@@ -47,7 +32,7 @@ Section Impl_core_fmt_Debug_for_structures_Person.
           α2
           (pointer_coercion
             "Unsize"
-            (borrow (structures.Person.Get_name (deref α3))))
+            (borrow ((M.var "structures::Person::Get_name") (deref α3))))
           α4
           (pointer_coercion "Unsize" (borrow α6)))
     | _, _ => M.impossible
@@ -127,135 +112,98 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* name : Ty.apply (Ty.path "alloc::string::String") [] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]]
-            (Ty.apply (Ty.path "alloc::string::String") []) :=
+    let* name :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
             (Self := Ty.apply (Ty.path "alloc::string::String") [])
             (T := Ty.apply (Ty.path "ref") [Ty.path "str"])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Peter") in
-      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
-        M.call (α0 α1) in
+      let* α1 := M.read (mk_str "Peter") in
+      let* α2 := M.call (α0 α1) in
       M.alloc α2 in
-    let* age : Ty.path "u8" := M.alloc ((Integer.of_Z 27) : Ty.path "u8") in
-    let* peter : Ty.apply (Ty.path "structures::Person") [] :=
-      let* α0 : Ty.apply (Ty.path "alloc::string::String") [] := M.read name in
-      let* α1 : Ty.path "u8" := M.read age in
+    let* age := M.alloc ((Integer.of_Z 27) : Ty.path "u8") in
+    let* peter :=
+      let* α0 := M.read name in
+      let* α1 := M.read age in
       M.alloc
         {| structures.Person.name := α0; structures.Person.age := α1; |} in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow peter)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* point : Ty.apply (Ty.path "structures::Point") [] :=
-      let* α0 : Ty.path "f32" := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α1 : Ty.path "f32" := M.read (UnsupportedLiteral : Ty.path "f32") in
+    let* point :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f32") in
       M.alloc {| structures.Point.x := α0; structures.Point.y := α1; |} in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "point coordinates: (") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ", ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ")
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "point coordinates: (") in
+        let* α1 := M.read (mk_str ", ") in
+        let* α2 := M.read (mk_str ")
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow (structures.Point.Get_x point))) in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+              (borrow ((M.var "structures::Point::Get_x") point))) in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow (structures.Point.Get_y point))) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α4; α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+              (borrow ((M.var "structures::Point::Get_y") point))) in
+        let* α6 := M.alloc [ α4; α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* bottom_right : Ty.apply (Ty.path "structures::Point") [] :=
-      let* α0 : Ty.path "f32" := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α1 : Ty.apply (Ty.path "structures::Point") [] := M.read point in
+    let* bottom_right :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α1 := M.read point in
       M.alloc (α1 <| structures.Point.x := α0 |>) in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "second point: (") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ", ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ")
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "second point: (") in
+        let* α1 := M.read (mk_str ", ") in
+        let* α2 := M.read (mk_str ")
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow (structures.Point.Get_x bottom_right))) in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+              (borrow ((M.var "structures::Point::Get_x") bottom_right))) in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow (structures.Point.Get_y bottom_right))) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α4; α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+              (borrow ((M.var "structures::Point::Get_y") bottom_right))) in
+        let* α6 := M.alloc [ α4; α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" :=
+    let* α0 :=
       match_operator
         point
         [
@@ -263,69 +211,55 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | {| structures.Point.x := _; structures.Point.y := _; |} =>
-              let γ0_0 := structures.Point.Get_x γ in
-              let γ0_1 := structures.Point.Get_y γ in
+              let γ0_0 := (M.var "structures::Point::Get_x") γ in
+              let γ0_1 := (M.var "structures::Point::Get_y") γ in
               let* left_edge := M.copy γ0_0 in
               let* top_edge := M.copy γ0_1 in
-              let* _rectangle : Ty.apply (Ty.path "structures::Rectangle") [] :=
-                let* α0 : Ty.path "f32" := M.read left_edge in
-                let* α1 : Ty.path "f32" := M.read top_edge in
-                let* α2 : Ty.apply (Ty.path "structures::Point") [] :=
-                  M.read bottom_right in
+              let* _rectangle :=
+                let* α0 := M.read left_edge in
+                let* α1 := M.read top_edge in
+                let* α2 := M.read bottom_right in
                 M.alloc
                   {|
                     structures.Rectangle.top_left :=
                       {| structures.Point.x := α0; structures.Point.y := α1; |};
                     structures.Rectangle.bottom_right := α2;
                   |} in
-              let* _unit : Ty.apply (Ty.path "structures::Unit") [] :=
-                M.alloc structures.Unit.Build in
-              let* pair : Ty.apply (Ty.path "structures::Pair") [] :=
-                let* α0 : Ty.path "f32" :=
-                  M.read (UnsupportedLiteral : Ty.path "f32") in
+              let* _unit := M.alloc structures.Unit.Build in
+              let* pair :=
+                let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
                 M.alloc
                   (structures.Pair.Build_t
                     ((Integer.of_Z 1) : Ty.path "i32")
                     α0) in
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "pair contains ") in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str " and ") in
-                  let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "pair contains ") in
+                  let* α1 := M.read (mk_str " and ") in
+                  let* α2 := M.read (mk_str "
 ") in
-                  let* α3 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0; α1; α2 ] in
-                  let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α3 := M.alloc [ α0; α1; α2 ] in
+                  let* α4 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_debug"]
-                        (borrow (structures.Pair.Get_0 pair))) in
-                  let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                        (borrow ((M.var "structures::Pair::Get_0") pair))) in
+                  let* α5 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_debug"]
-                        (borrow (structures.Pair.Get_1 pair))) in
-                  let* α6 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                    M.alloc [ α4; α5 ] in
-                  let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                        (borrow ((M.var "structures::Pair::Get_1") pair))) in
+                  let* α6 := M.alloc [ α4; α5 ] in
+                  let* α7 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α3))
                         (pointer_coercion "Unsize" (borrow α6))) in
-                  let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+                  let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
                   M.alloc α8 in
                 M.alloc tt in
               match_operator
@@ -335,55 +269,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | structures.Pair.Build_t _ _ =>
-                      let γ0_0 := structures.Pair.Get_0 γ in
-                      let γ0_1 := structures.Pair.Get_1 γ in
+                      let γ0_0 := (M.var "structures::Pair::Get_0") γ in
+                      let γ0_1 := (M.var "structures::Pair::Get_1") γ in
                       let* integer := M.copy γ0_0 in
                       let* decimal := M.copy γ0_1 in
-                      let* _ : Ty.tuple :=
-                        let* _ : Ty.tuple :=
-                          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                            M.read (mk_str "pair contains ") in
-                          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                            M.read (mk_str " and ") in
-                          let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                            M.read (mk_str "
+                      let* _ :=
+                        let* _ :=
+                          let* α0 := M.read (mk_str "pair contains ") in
+                          let* α1 := M.read (mk_str " and ") in
+                          let* α2 := M.read (mk_str "
 ") in
-                          let* α3 :
-                              Ty.apply
-                                (Ty.path "array")
-                                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                            M.alloc [ α0; α1; α2 ] in
-                          let* α4 :
-                              Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                          let* α3 := M.alloc [ α0; α1; α2 ] in
+                          let* α4 :=
                             M.call
                               ((Ty.apply
                                     (Ty.path "core::fmt::rt::Argument")
                                     [])::["new_debug"]
                                 (borrow integer)) in
-                          let* α5 :
-                              Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                          let* α5 :=
                             M.call
                               ((Ty.apply
                                     (Ty.path "core::fmt::rt::Argument")
                                     [])::["new_debug"]
                                 (borrow decimal)) in
-                          let* α6 :
-                              Ty.apply
-                                (Ty.path "array")
-                                [Ty.apply
-                                    (Ty.path "core::fmt::rt::Argument")
-                                    []] :=
-                            M.alloc [ α4; α5 ] in
-                          let* α7 :
-                              Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                          let* α6 := M.alloc [ α4; α5 ] in
+                          let* α7 :=
                             M.call
                               ((Ty.apply
                                     (Ty.path "core::fmt::Arguments")
                                     [])::["new_v1"]
                                 (pointer_coercion "Unsize" (borrow α3))
                                 (pointer_coercion "Unsize" (borrow α6))) in
-                          let* α8 : Ty.tuple :=
-                            M.call (std.io.stdio._print α7) in
+                          let* α8 :=
+                            M.call ((M.var "std::io::stdio::_print") α7) in
                           M.alloc α8 in
                         M.alloc tt in
                       M.alloc tt

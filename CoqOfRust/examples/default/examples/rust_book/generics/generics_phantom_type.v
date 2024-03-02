@@ -29,57 +29,36 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [A]; Ty.apply (Ty.path "ref") [A]]
-            (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [A; B]] :=
-        M.read self in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [A; B]] :=
-        M.read other in
-      let* α3 : Ty.path "bool" :=
+      let* α1 := M.read self in
+      let* α2 := M.read other in
+      let* α3 :=
         M.call
           (α0
-            (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α1)))
-            (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α2)))) in
-      let* α4 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "core::marker::PhantomData") [B]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "core::marker::PhantomData") [B]]]
-            (Ty.path "bool") :=
+            (borrow
+              ((M.var "generics_phantom_type::PhantomTuple::Get_0") (deref α1)))
+            (borrow
+              ((M.var "generics_phantom_type::PhantomTuple::Get_0")
+                (deref α2)))) in
+      let* α4 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "core::marker::PhantomData") [B])
             (Rhs := Ty.apply (Ty.path "core::marker::PhantomData") [B])
             (Trait := ℐ))) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [A; B]] :=
-        M.read self in
-      let* α6 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [A; B]] :=
-        M.read other in
-      let* α7 : Ty.path "bool" :=
+      let* α5 := M.read self in
+      let* α6 := M.read other in
+      let* α7 :=
         M.call
           (α4
-            (borrow (generics_phantom_type.PhantomTuple.Get_1 (deref α5)))
-            (borrow (generics_phantom_type.PhantomTuple.Get_1 (deref α6)))) in
-      M.pure (BinOp.Pure.and α3 α7)
+            (borrow
+              ((M.var "generics_phantom_type::PhantomTuple::Get_1") (deref α5)))
+            (borrow
+              ((M.var "generics_phantom_type::PhantomTuple::Get_1")
+                (deref α6)))) in
+      M.pure ((M.var "BinOp::Pure::and") α3 α7)
     | _, _ => M.impossible
     end.
   
@@ -119,68 +98,38 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [A]; Ty.apply (Ty.path "ref") [A]]
-            (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_phantom_type::PhantomStruct")
-                [A; B]] :=
-        M.read self in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_phantom_type::PhantomStruct")
-                [A; B]] :=
-        M.read other in
-      let* α3 : Ty.path "bool" :=
+      let* α1 := M.read self in
+      let* α2 := M.read other in
+      let* α3 :=
         M.call
           (α0
-            (borrow (generics_phantom_type.PhantomStruct.Get_first (deref α1)))
             (borrow
-              (generics_phantom_type.PhantomStruct.Get_first (deref α2)))) in
-      let* α4 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "core::marker::PhantomData") [B]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "core::marker::PhantomData") [B]]]
-            (Ty.path "bool") :=
+              ((M.var "generics_phantom_type::PhantomStruct::Get_first")
+                (deref α1)))
+            (borrow
+              ((M.var "generics_phantom_type::PhantomStruct::Get_first")
+                (deref α2)))) in
+      let* α4 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "core::marker::PhantomData") [B])
             (Rhs := Ty.apply (Ty.path "core::marker::PhantomData") [B])
             (Trait := ℐ))) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_phantom_type::PhantomStruct")
-                [A; B]] :=
-        M.read self in
-      let* α6 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_phantom_type::PhantomStruct")
-                [A; B]] :=
-        M.read other in
-      let* α7 : Ty.path "bool" :=
+      let* α5 := M.read self in
+      let* α6 := M.read other in
+      let* α7 :=
         M.call
           (α4
             (borrow
-              (generics_phantom_type.PhantomStruct.Get_phantom (deref α5)))
+              ((M.var "generics_phantom_type::PhantomStruct::Get_phantom")
+                (deref α5)))
             (borrow
-              (generics_phantom_type.PhantomStruct.Get_phantom (deref α6)))) in
-      M.pure (BinOp.Pure.and α3 α7)
+              ((M.var "generics_phantom_type::PhantomStruct::Get_phantom")
+                (deref α6)))) in
+      M.pure ((M.var "BinOp::Pure::and") α3 α7)
     | _, _ => M.impossible
     end.
   
@@ -224,43 +173,31 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _tuple1 :
-        Ty.apply
-          (Ty.path "generics_phantom_type::PhantomTuple")
-          [Ty.path "char"; Ty.path "f32"] :=
+    let* _tuple1 :=
       M.alloc
         (generics_phantom_type.PhantomTuple.Build_t
           "Q"%char
           core.marker.PhantomData.Build) in
-    let* _tuple2 :
-        Ty.apply
-          (Ty.path "generics_phantom_type::PhantomTuple")
-          [Ty.path "char"; Ty.path "f64"] :=
+    let* _tuple2 :=
       M.alloc
         (generics_phantom_type.PhantomTuple.Build_t
           "Q"%char
           core.marker.PhantomData.Build) in
-    let* _struct1 :
-        Ty.apply
-          (Ty.path "generics_phantom_type::PhantomStruct")
-          [Ty.path "char"; Ty.path "f32"] :=
+    let* _struct1 :=
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := "Q"%char;
           generics_phantom_type.PhantomStruct.phantom :=
             core.marker.PhantomData.Build;
         |} in
-    let* _struct2 :
-        Ty.apply
-          (Ty.path "generics_phantom_type::PhantomStruct")
-          [Ty.path "char"; Ty.path "f64"] :=
+    let* _struct2 :=
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := "Q"%char;
           generics_phantom_type.PhantomStruct.phantom :=
             core.marker.PhantomData.Build;
         |} in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -17,20 +17,17 @@ Section Impl_scoping_rules_lifetimes_methods_Owner.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* β : Ty.path "i32" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply
-                    (Ty.path "scoping_rules_lifetimes_methods::Owner")
-                    []] :=
-            M.read self in
-          M.pure (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α0)) in
+      let* _ :=
+        let* β :=
+          let* α0 := M.read self in
+          M.pure
+            ((M.var "scoping_rules_lifetimes_methods::Owner::Get_0")
+              (deref α0)) in
         let* α0 := M.read β in
-        let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : Ty.path "i32") in
-        assign β α1 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+        let* α1 :=
+          (M.var "BinOp::Panic::add") α0 ((Integer.of_Z 1) : Ty.path "i32") in
+        (M.var "assign") β α1 in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -48,46 +45,31 @@ Section Impl_scoping_rules_lifetimes_methods_Owner.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "`print`: ") in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "`print`: ") in
+          let* α1 := M.read (mk_str "
 ") in
-          let* α2 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0; α1 ] in
-          let* α3 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "scoping_rules_lifetimes_methods::Owner")
-                    []] :=
-            M.read self in
-          let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α2 := M.alloc [ α0; α1 ] in
+          let* α3 := M.read self in
+          let* α4 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow
-                  (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α3)))) in
-          let* α5 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α4 ] in
-          let* α6 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  ((M.var "scoping_rules_lifetimes_methods::Owner::Get_0")
+                    (deref α3)))) in
+          let* α5 := M.alloc [ α4 ] in
+          let* α6 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α5))) in
-          let* α7 : Ty.tuple := M.call (std.io.stdio._print α6) in
+          let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in
           M.alloc α7 in
         M.alloc tt in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -110,28 +92,27 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* owner :
-        Ty.apply (Ty.path "scoping_rules_lifetimes_methods::Owner") [] :=
+    let* owner :=
       M.alloc
         (scoping_rules_lifetimes_methods.Owner.Build_t
           ((Integer.of_Z 18) : Ty.path "i32")) in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "scoping_rules_lifetimes_methods::Owner")
                 [])::["add_one"]
             (borrow_mut owner)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "scoping_rules_lifetimes_methods::Owner")
                 [])::["print"]
             (borrow owner)) in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

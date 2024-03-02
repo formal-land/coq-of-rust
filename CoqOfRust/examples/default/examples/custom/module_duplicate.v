@@ -11,24 +11,19 @@ Module foo.
     Definition f_foo_gre (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
       | [], [] =>
-        let* _ : Ty.tuple :=
-          let* _ : Ty.tuple :=
-            let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-              M.read (mk_str "foo::gre::bar
+        let* _ :=
+          let* _ :=
+            let* α0 := M.read (mk_str "foo::gre::bar
 ") in
-            let* α1 :
-                Ty.apply
-                  (Ty.path "array")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-              M.alloc [ α0 ] in
-            let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+            let* α1 := M.alloc [ α0 ] in
+            let* α2 :=
               M.call
                 ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                   (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
             M.alloc α3 in
           M.alloc tt in
-        let* α0 : Ty.path "unit" := M.alloc tt in
+        let* α0 := M.alloc tt in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -43,27 +38,22 @@ Module foo.
   Definition f_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "foo::bar
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "foo::bar
 ") in
-          let* α1 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0 ] in
-          let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α1 := M.alloc [ α0 ] in
+          let* α2 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
         M.alloc tt in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple := M.call module_duplicate.foo.gre.f_foo_gre in
+      let* _ :=
+        let* α0 := M.call (M.var "module_duplicate::foo::gre::f_foo_gre") in
         M.alloc α0 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -77,10 +67,10 @@ fn f() {
 Definition f (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple := M.call module_duplicate.foo.f_foo in
+    let* _ :=
+      let* α0 := M.call (M.var "module_duplicate::foo::f_foo") in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

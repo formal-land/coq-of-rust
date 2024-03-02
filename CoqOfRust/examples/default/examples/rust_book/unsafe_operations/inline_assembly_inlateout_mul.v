@@ -54,15 +54,17 @@ Definition mul (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* b := M.alloc b in
     let* lo := M.copy (DeclaredButUndefinedVariable (A := Ty.path "u64")) in
     let* hi := M.copy (DeclaredButUndefinedVariable (A := Ty.path "u64")) in
-    let* _ : Ty.tuple :=
-      let _ : Ty.tuple := InlineAssembly in
+    let* _ :=
+      let _ := InlineAssembly in
       M.alloc tt in
-    let* α0 : Ty.path "u64" := M.read hi in
-    let* α1 : Ty.path "u128" :=
-      BinOp.Panic.shl (rust_cast α0) ((Integer.of_Z 64) : Ty.path "i32") in
-    let* α2 : Ty.path "u64" := M.read lo in
-    let* α3 : Ty.path "u128" := BinOp.Panic.add α1 (rust_cast α2) in
-    let* α0 : Ty.path "u128" := M.alloc α3 in
+    let* α0 := M.read hi in
+    let* α1 :=
+      (M.var "BinOp::Panic::shl")
+        (rust_cast α0)
+        ((Integer.of_Z 64) : Ty.path "i32") in
+    let* α2 := M.read lo in
+    let* α3 := (M.var "BinOp::Panic::add") α1 (rust_cast α2) in
+    let* α0 := M.alloc α3 in
     M.read α0
   | _, _ => M.impossible
   end.

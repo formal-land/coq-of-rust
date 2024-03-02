@@ -19,14 +19,10 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x :
-        Ty.apply
-          (Ty.path
-            "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers")
-          [] :=
+    let* x :=
       M.alloc
         enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

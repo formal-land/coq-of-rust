@@ -10,36 +10,26 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [x] =>
     let* x := M.alloc x in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "`print_one`: x is ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "`print_one`: x is ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow x)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -53,14 +43,15 @@ Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [x] =>
     let* x := M.alloc x in
-    let* _ : Ty.tuple :=
-      let* β : Ty.path "i32" :=
-        let* α0 : Ty.apply (Ty.path "mut_ref") [Ty.path "i32"] := M.read x in
+    let* _ :=
+      let* β :=
+        let* α0 := M.read x in
         M.pure (deref α0) in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : Ty.path "i32") in
-      assign β α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α1 :=
+        (M.var "BinOp::Panic::add") α0 ((Integer.of_Z 1) : Ty.path "i32") in
+      (M.var "assign") β α1 in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -75,42 +66,31 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [x; y] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "`print_multi`: x is ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ", y is ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "`print_multi`: x is ") in
+        let* α1 := M.read (mk_str ", y is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow x)) in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow y)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α4; α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α4; α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -149,39 +129,45 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x : Ty.path "i32" := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
-    let* y : Ty.path "i32" := M.alloc ((Integer.of_Z 9) : Ty.path "i32") in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
-        M.call (scoping_rules_lifetimes_functions.print_one (borrow x)) in
-      M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* x := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
+    let* y := M.alloc ((Integer.of_Z 9) : Ty.path "i32") in
+    let* _ :=
+      let* α0 :=
         M.call
-          (scoping_rules_lifetimes_functions.print_multi
+          ((M.var "scoping_rules_lifetimes_functions::print_one") (borrow x)) in
+      M.alloc α0 in
+    let* _ :=
+      let* α0 :=
+        M.call
+          ((M.var "scoping_rules_lifetimes_functions::print_multi")
             (borrow x)
             (borrow y)) in
       M.alloc α0 in
-    let* z : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
+    let* z :=
+      let* α0 :=
         M.call
-          (scoping_rules_lifetimes_functions.pass_x (borrow x) (borrow y)) in
+          ((M.var "scoping_rules_lifetimes_functions::pass_x")
+            (borrow x)
+            (borrow y)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "i32"] := M.read z in
-      let* α1 : Ty.tuple :=
-        M.call (scoping_rules_lifetimes_functions.print_one α0) in
+    let* _ :=
+      let* α0 := M.read z in
+      let* α1 :=
+        M.call ((M.var "scoping_rules_lifetimes_functions::print_one") α0) in
       M.alloc α1 in
-    let* t : Ty.path "i32" := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
-        M.call (scoping_rules_lifetimes_functions.add_one (borrow_mut t)) in
+    let* t := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+    let* _ :=
+      let* α0 :=
+        M.call
+          ((M.var "scoping_rules_lifetimes_functions::add_one")
+            (borrow_mut t)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
-        M.call (scoping_rules_lifetimes_functions.print_one (borrow t)) in
+    let* _ :=
+      let* α0 :=
+        M.call
+          ((M.var "scoping_rules_lifetimes_functions::print_one") (borrow t)) in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

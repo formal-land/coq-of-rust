@@ -14,12 +14,12 @@ Section Impl_core_default_Default_for_conditional_compilation_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (conditional_compilation.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -44,7 +44,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -53,13 +53,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "conditional_compilation::AccountId")
-                        []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "conditional_compilation::AccountId") []
           ] in
@@ -123,12 +117,8 @@ Section Impl_conditional_compilation_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "conditional_compilation::Env") []] :=
-        M.read self in
-      M.read (conditional_compilation.Env.Get_caller (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "conditional_compilation::Env::Get_caller") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -146,9 +136,8 @@ Section Impl_conditional_compilation_Env.
     | [], [self; _event] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -166,9 +155,8 @@ Section Impl_conditional_compilation_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -194,9 +182,8 @@ Section Impl_conditional_compilation_ConditionalCompilation.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -235,12 +222,12 @@ Section Impl_conditional_compilation_ConditionalCompilation.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "bool")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "bool" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure {| conditional_compilation.ConditionalCompilation.value := α1; |}
     | _, _ => M.impossible
     end.
@@ -258,7 +245,7 @@ Section Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [], [value] =>
       let* value := M.alloc value in
-      let* α0 : Ty.path "bool" := M.read value in
+      let* α0 := M.read value in
       M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -276,7 +263,7 @@ Section Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [], [value] =>
       let* value := M.alloc value in
-      let* α0 : Ty.path "bool" := M.read value in
+      let* α0 := M.read value in
       M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -294,7 +281,7 @@ Section Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [], [value] =>
       let* value := M.alloc value in
-      let* α0 : Ty.path "bool" := M.read value in
+      let* α0 := M.read value in
       M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -317,64 +304,45 @@ Section Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α2 : Ty.path "bool" :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read self in
+        let* α2 :=
           M.read
-            (conditional_compilation.ConditionalCompilation.Get_value
+            ((M.var
+                "conditional_compilation::ConditionalCompilation::Get_value")
               (deref α1)) in
         assign
-          (conditional_compilation.ConditionalCompilation.Get_value (deref α0))
-          (UnOp.not α2) in
-      let* caller :
-          Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
-        let* α0 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
+          ((M.var "conditional_compilation::ConditionalCompilation::Get_value")
+            (deref α0))
+          ((M.var "UnOp::not") α2) in
+      let* caller :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "conditional_compilation::ConditionalCompilation")
                 [])::["init_env"] in
-        let* α1 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
-          M.alloc α0 in
-        let* α2 : Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
+        let* α1 := M.alloc α0 in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "conditional_compilation::Env") [])::["caller"]
               (borrow α1)) in
         M.alloc α2 in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
+      let* _ :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "conditional_compilation::ConditionalCompilation")
                 [])::["init_env"] in
-        let* α1 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
-          M.alloc α0 in
-        let* α2 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α3 : Ty.path "bool" :=
+        let* α1 := M.alloc α0 in
+        let* α2 := M.read self in
+        let* α3 :=
           M.read
-            (conditional_compilation.ConditionalCompilation.Get_value
+            ((M.var
+                "conditional_compilation::ConditionalCompilation::Get_value")
               (deref α2)) in
-        let* α4 : Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
-          M.read caller in
-        let* α5 : Ty.tuple :=
+        let* α4 := M.read caller in
+        let* α5 :=
           M.call
             ((Ty.apply
                   (Ty.path "conditional_compilation::Env")
@@ -386,7 +354,7 @@ Section Impl_conditional_compilation_ConditionalCompilation.
                   conditional_compilation.Changes.by_ := α4;
                 |})) in
         M.alloc α5 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -411,80 +379,60 @@ Section Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* caller :
-          Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
-        let* α0 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
+      let* caller :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "conditional_compilation::ConditionalCompilation")
                 [])::["init_env"] in
-        let* α1 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
-          M.alloc α0 in
-        let* α2 : Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
+        let* α1 := M.alloc α0 in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "conditional_compilation::Env") [])::["caller"]
               (borrow α1)) in
         M.alloc α2 in
-      let* block_number : Ty.path "u32" :=
-        let* α0 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
+      let* block_number :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "conditional_compilation::ConditionalCompilation")
                 [])::["init_env"] in
-        let* α1 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
-          M.alloc α0 in
-        let* α2 : Ty.path "u32" :=
+        let* α1 := M.alloc α0 in
+        let* α2 :=
           M.call
             ((Ty.apply
                   (Ty.path "conditional_compilation::Env")
                   [])::["block_number"]
               (borrow α1)) in
         M.alloc α2 in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α2 : Ty.path "bool" :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read self in
+        let* α2 :=
           M.read
-            (conditional_compilation.ConditionalCompilation.Get_value
+            ((M.var
+                "conditional_compilation::ConditionalCompilation::Get_value")
               (deref α1)) in
         assign
-          (conditional_compilation.ConditionalCompilation.Get_value (deref α0))
-          (UnOp.not α2) in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
+          ((M.var "conditional_compilation::ConditionalCompilation::Get_value")
+            (deref α0))
+          ((M.var "UnOp::not") α2) in
+      let* _ :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "conditional_compilation::ConditionalCompilation")
                 [])::["init_env"] in
-        let* α1 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
-          M.alloc α0 in
-        let* α2 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α3 : Ty.path "bool" :=
+        let* α1 := M.alloc α0 in
+        let* α2 := M.read self in
+        let* α3 :=
           M.read
-            (conditional_compilation.ConditionalCompilation.Get_value
+            ((M.var
+                "conditional_compilation::ConditionalCompilation::Get_value")
               (deref α2)) in
-        let* α4 : Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
-          M.read caller in
-        let* α5 : Ty.path "u32" := M.read block_number in
-        let* α6 : Ty.tuple :=
+        let* α4 := M.read caller in
+        let* α5 := M.read block_number in
+        let* α6 :=
           M.call
             ((Ty.apply
                   (Ty.path "conditional_compilation::Env")
@@ -497,7 +445,7 @@ Section Impl_conditional_compilation_ConditionalCompilation.
                   conditional_compilation.ChangesDated.when := α5;
                 |})) in
         M.alloc α6 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -522,29 +470,19 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α2 : Ty.path "bool" :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read self in
+        let* α2 :=
           M.read
-            (conditional_compilation.ConditionalCompilation.Get_value
+            ((M.var
+                "conditional_compilation::ConditionalCompilation::Get_value")
               (deref α1)) in
         assign
-          (conditional_compilation.ConditionalCompilation.Get_value (deref α0))
-          (UnOp.not α2) in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+          ((M.var "conditional_compilation::ConditionalCompilation::Get_value")
+            (deref α0))
+          ((M.var "UnOp::not") α2) in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -562,15 +500,10 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "conditional_compilation::ConditionalCompilation")
-                []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.read
-        (conditional_compilation.ConditionalCompilation.Get_value (deref α0))
+        ((M.var "conditional_compilation::ConditionalCompilation::Get_value")
+          (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -593,32 +526,28 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     | [], [self; value] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
-      let* caller :
-          Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
-        let* α0 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
+      let* caller :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "conditional_compilation::ConditionalCompilation")
                 [])::["init_env"] in
-        let* α1 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
-          M.alloc α0 in
-        let* α2 : Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
+        let* α1 := M.alloc α0 in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "conditional_compilation::Env") [])::["caller"]
               (borrow α1)) in
         M.alloc α2 in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
+      let* _ :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "conditional_compilation::ConditionalCompilation")
                 [])::["init_env"] in
-        let* α1 : Ty.apply (Ty.path "conditional_compilation::Env") [] :=
-          M.alloc α0 in
-        let* α2 : Ty.path "bool" := M.read value in
-        let* α3 : Ty.apply (Ty.path "conditional_compilation::AccountId") [] :=
-          M.read caller in
-        let* α4 : Ty.tuple :=
+        let* α1 := M.alloc α0 in
+        let* α2 := M.read value in
+        let* α3 := M.read caller in
+        let* α4 :=
           M.call
             ((Ty.apply
                   (Ty.path "conditional_compilation::Env")
@@ -630,19 +559,14 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
                   conditional_compilation.Changes.by_ := α3;
                 |})) in
         M.alloc α4 in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "conditional_compilation::ConditionalCompilation")
-                  []] :=
-          M.read self in
-        let* α1 : Ty.path "bool" := M.read value in
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read value in
         assign
-          (conditional_compilation.ConditionalCompilation.Get_value (deref α0))
+          ((M.var "conditional_compilation::ConditionalCompilation::Get_value")
+            (deref α0))
           α1 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.

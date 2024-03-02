@@ -22,11 +22,11 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* temperature : Ty.apply (Ty.path "match_guards::Temperature") [] :=
+    let* temperature :=
       M.alloc
         (match_guards.Temperature.Celsius
           ((Integer.of_Z 35) : Ty.path "i32")) in
-    let* α0 : Ty.tuple :=
+    let* α0 :=
       match_operator
         temperature
         [
@@ -34,36 +34,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_guards.Temperature.Celsius _ =>
-              let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
+              let γ0_0 :=
+                (M.var "match_guards::Temperature::Get_Celsius_0") γ in
               let* t := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "C is above 30 Celsius
+              let* _ :=
+                let* α0 := M.read (mk_str "") in
+                let* α1 := M.read (mk_str "C is above 30 Celsius
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow t)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -73,36 +64,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_guards.Temperature.Celsius _ =>
-              let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
+              let γ0_0 :=
+                (M.var "match_guards::Temperature::Get_Celsius_0") γ in
               let* t := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "C is below 30 Celsius
+              let* _ :=
+                let* α0 := M.read (mk_str "") in
+                let* α1 := M.read (mk_str "C is below 30 Celsius
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow t)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -112,36 +94,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_guards.Temperature.Fahrenheit _ =>
-              let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
+              let γ0_0 :=
+                (M.var "match_guards::Temperature::Get_Fahrenheit_0") γ in
               let* t := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "F is above 86 Fahrenheit
+              let* _ :=
+                let* α0 := M.read (mk_str "") in
+                let* α1 := M.read (mk_str "F is above 86 Fahrenheit
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow t)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -151,36 +124,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_guards.Temperature.Fahrenheit _ =>
-              let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
+              let γ0_0 :=
+                (M.var "match_guards::Temperature::Get_Fahrenheit_0") γ in
               let* t := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "F is below 86 Fahrenheit
+              let* _ :=
+                let* α0 := M.read (mk_str "") in
+                let* α1 := M.read (mk_str "F is below 86 Fahrenheit
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow t)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match

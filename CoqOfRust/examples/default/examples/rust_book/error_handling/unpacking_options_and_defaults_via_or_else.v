@@ -16,12 +16,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+      let* α0 := M.read f in
+      let* α1 :=
         match_operator
           self
           [
@@ -32,8 +28,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
               let* α0 := M.read γ in
               match α0 with
               | unpacking_options_and_defaults_via_or_else.Fruit.Apple =>
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Apple") in
+                let* α0 := M.read (mk_str "Apple") in
                 M.alloc α0
               | _ => M.break_match
               end) :
@@ -45,8 +40,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
               let* α0 := M.read γ in
               match α0 with
               | unpacking_options_and_defaults_via_or_else.Fruit.Orange =>
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Orange") in
+                let* α0 := M.read (mk_str "Orange") in
                 M.alloc α0
               | _ => M.break_match
               end) :
@@ -58,8 +52,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
               let* α0 := M.read γ in
               match α0 with
               | unpacking_options_and_defaults_via_or_else.Fruit.Banana =>
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Banana") in
+                let* α0 := M.read (mk_str "Banana") in
                 M.alloc α0
               | _ => M.break_match
               end) :
@@ -71,8 +64,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
               let* α0 := M.read γ in
               match α0 with
               | unpacking_options_and_defaults_via_or_else.Fruit.Kiwi =>
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Kiwi") in
+                let* α0 := M.read (mk_str "Kiwi") in
                 M.alloc α0
               | _ => M.break_match
               end) :
@@ -84,14 +76,13 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
               let* α0 := M.read γ in
               match α0 with
               | unpacking_options_and_defaults_via_or_else.Fruit.Lemon =>
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Lemon") in
+                let* α0 := M.read (mk_str "Lemon") in
                 M.alloc α0
               | _ => M.break_match
               end) :
               Ty.apply (Ty.path "ref") [Ty.path "str"]
           ] in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.read α1 in
+      let* α2 := M.read α1 in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α2)
     | _, _ => M.impossible
@@ -130,30 +121,12 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* apple :
-        Ty.apply
-          (Ty.path "core::option::Option")
-          [Ty.apply
-              (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-              []] :=
+    let* apple :=
       M.alloc
         (core.option.Option.Some
           unpacking_options_and_defaults_via_or_else.Fruit.Apple) in
-    let* no_fruit :
-        Ty.apply
-          (Ty.path "core::option::Option")
-          [Ty.apply
-              (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-              []] :=
-      M.alloc core.option.Option.None in
-    let* get_kiwi_as_fallback :
-        Ty.function
-          [Ty.tuple]
-          (Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply
-                (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-                []]) :=
+    let* no_fruit := M.alloc core.option.Option.None in
+    let* get_kiwi_as_fallback :=
       M.alloc
         (fun (α0 : Ty.path "unit") =>
           (let* α0 := M.alloc α0 in
@@ -161,32 +134,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α0
             [
               fun γ =>
-                (let* _ : Ty.tuple :=
-                  let* _ : Ty.tuple :=
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str "Providing kiwi as fallback
+                (let* _ :=
+                  let* _ :=
+                    let* α0 := M.read (mk_str "Providing kiwi as fallback
 ") in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                      M.alloc [ α0 ] in
-                    let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    let* α1 := M.alloc [ α0 ] in
+                    let* α2 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::Arguments")
                               [])::["new_const"]
                           (pointer_coercion "Unsize" (borrow α1))) in
-                    let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                    let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                     M.alloc α3 in
                   M.alloc tt in
-                let* α0 :
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [Ty.apply
-                          (Ty.path
-                            "unpacking_options_and_defaults_via_or_else::Fruit")
-                          []] :=
+                let* α0 :=
                   M.alloc
                     (core.option.Option.Some
                       unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
@@ -203,14 +165,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [Ty.apply
                 (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
                 []]) in
-    let* get_lemon_as_fallback :
-        Ty.function
-          [Ty.tuple]
-          (Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply
-                (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-                []]) :=
+    let* get_lemon_as_fallback :=
       M.alloc
         (fun (α0 : Ty.path "unit") =>
           (let* α0 := M.alloc α0 in
@@ -218,32 +173,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α0
             [
               fun γ =>
-                (let* _ : Ty.tuple :=
-                  let* _ : Ty.tuple :=
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str "Providing lemon as fallback
+                (let* _ :=
+                  let* _ :=
+                    let* α0 := M.read (mk_str "Providing lemon as fallback
 ") in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                      M.alloc [ α0 ] in
-                    let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    let* α1 := M.alloc [ α0 ] in
+                    let* α2 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::Arguments")
                               [])::["new_const"]
                           (pointer_coercion "Unsize" (borrow α1))) in
-                    let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                    let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                     M.alloc α3 in
                   M.alloc tt in
-                let* α0 :
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [Ty.apply
-                          (Ty.path
-                            "unpacking_options_and_defaults_via_or_else::Fruit")
-                          []] :=
+                let* α0 :=
                   M.alloc
                     (core.option.Option.Some
                       unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
@@ -260,34 +204,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [Ty.apply
                 (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
                 []]) in
-    let* first_available_fruit :
-        Ty.apply
-          (Ty.path "core::option::Option")
-          [Ty.apply
-              (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-              []] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply
-                (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-                []] :=
-        M.read no_fruit in
-      let* α1 :
-          Ty.function
-            [Ty.tuple]
-            (Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.apply
-                  (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-                  []]) :=
-        M.read get_kiwi_as_fallback in
-      let* α2 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply
-                (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-                []] :=
+    let* first_available_fruit :=
+      let* α0 := M.read no_fruit in
+      let* α1 := M.read get_kiwi_as_fallback in
+      let* α2 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::option::Option")
@@ -297,21 +217,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     []])::["or_else"]
             α0
             α1) in
-      let* α3 :
-          Ty.function
-            [Ty.tuple]
-            (Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.apply
-                  (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-                  []]) :=
-        M.read get_lemon_as_fallback in
-      let* α4 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply
-                (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
-                []] :=
+      let* α3 := M.read get_lemon_as_fallback in
+      let* α4 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::option::Option")
@@ -322,36 +229,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α2
             α3) in
       M.alloc α4 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "first_available_fruit: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "first_available_fruit: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow first_available_fruit)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

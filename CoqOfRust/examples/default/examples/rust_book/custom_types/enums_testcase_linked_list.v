@@ -35,14 +35,9 @@ Section Impl_enums_testcase_linked_list_List.
     | [], [self; elem] =>
       let* self := M.alloc self in
       let* elem := M.alloc elem in
-      let* α0 : Ty.path "u32" := M.read elem in
-      let* α1 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
-        M.read self in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "enums_testcase_linked_list::List") [];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 := M.read elem in
+      let* α1 := M.read self in
+      let* α2 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -79,12 +74,8 @@ Section Impl_enums_testcase_linked_list_List.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "enums_testcase_linked_list::List") []] :=
-        M.read self in
-      let* α1 : Ty.path "u32" :=
+      let* α0 := M.read self in
+      let* α1 :=
         match_operator
           (deref α0)
           [
@@ -92,33 +83,23 @@ Section Impl_enums_testcase_linked_list_List.
               (let* α0 := M.read γ in
               match α0 with
               | enums_testcase_linked_list.List.Cons _ _ =>
-                let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
-                let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
+                let γ0_0 :=
+                  (M.var "enums_testcase_linked_list::List::Get_Cons_0") γ in
+                let γ0_1 :=
+                  (M.var "enums_testcase_linked_list::List::Get_Cons_1") γ in
                 let* tail := M.alloc (borrow γ0_1) in
-                let* α0 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [Ty.apply
-                              (Ty.path "enums_testcase_linked_list::List")
-                              [];
-                            Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-                  M.read tail in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      [Ty.apply (Ty.path "enums_testcase_linked_list::List") [];
-                        Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-                  M.read (deref α0) in
-                let* α2 : Ty.path "u32" :=
+                let* α0 := M.read tail in
+                let* α1 := M.read (deref α0) in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "enums_testcase_linked_list::List")
                           [])::["len"]
                       (borrow (deref α1))) in
-                let* α3 : Ty.path "u32" :=
-                  BinOp.Panic.add ((Integer.of_Z 1) : Ty.path "u32") α2 in
+                let* α3 :=
+                  (M.var "BinOp::Panic::add")
+                    ((Integer.of_Z 1) : Ty.path "u32")
+                    α2 in
                 M.alloc α3
               | _ => M.break_match
               end) :
@@ -158,12 +139,8 @@ Section Impl_enums_testcase_linked_list_List.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "enums_testcase_linked_list::List") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "alloc::string::String") [] :=
+      let* α0 := M.read self in
+      let* α1 :=
         match_operator
           (deref α0)
           [
@@ -171,72 +148,46 @@ Section Impl_enums_testcase_linked_list_List.
               (let* α0 := M.read γ in
               match α0 with
               | enums_testcase_linked_list.List.Cons _ _ =>
-                let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
-                let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
+                let γ0_0 :=
+                  (M.var "enums_testcase_linked_list::List::Get_Cons_0") γ in
+                let γ0_1 :=
+                  (M.var "enums_testcase_linked_list::List::Get_Cons_1") γ in
                 let* head := M.copy γ0_0 in
                 let* tail := M.alloc (borrow γ0_1) in
-                let* res : Ty.apply (Ty.path "alloc::string::String") [] :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "") in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str ", ") in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0; α1 ] in
-                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* res :=
+                  let* α0 := M.read (mk_str "") in
+                  let* α1 := M.read (mk_str ", ") in
+                  let* α2 := M.alloc [ α0; α1 ] in
+                  let* α3 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_display"]
                         (borrow head)) in
-                  let* α4 :
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            [Ty.apply
-                                (Ty.path "enums_testcase_linked_list::List")
-                                [];
-                              Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-                    M.read tail in
-                  let* α5 :
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        [Ty.apply
-                            (Ty.path "enums_testcase_linked_list::List")
-                            [];
-                          Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-                    M.read (deref α4) in
-                  let* α6 : Ty.apply (Ty.path "alloc::string::String") [] :=
+                  let* α4 := M.read tail in
+                  let* α5 := M.read (deref α4) in
+                  let* α6 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "enums_testcase_linked_list::List")
                             [])::["stringify"]
                         (borrow (deref α5))) in
-                  let* α7 : Ty.apply (Ty.path "alloc::string::String") [] :=
-                    M.alloc α6 in
-                  let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α7 := M.alloc α6 in
+                  let* α8 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_display"]
                         (borrow α7)) in
-                  let* α9 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                    M.alloc [ α3; α8 ] in
-                  let* α10 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α9 := M.alloc [ α3; α8 ] in
+                  let* α10 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α9))) in
-                  let* α11 : Ty.apply (Ty.path "alloc::string::String") [] :=
-                    M.call (alloc.fmt.format α10) in
+                  let* α11 := M.call ((M.var "alloc::fmt::format") α10) in
                   M.alloc α11 in
                 M.pure res
               | _ => M.break_match
@@ -246,22 +197,16 @@ Section Impl_enums_testcase_linked_list_List.
               (let* α0 := M.read γ in
               match α0 with
               | enums_testcase_linked_list.List.Nil =>
-                let* res : Ty.apply (Ty.path "alloc::string::String") [] :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "Nil") in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0 ] in
-                  let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* res :=
+                  let* α0 := M.read (mk_str "Nil") in
+                  let* α1 := M.alloc [ α0 ] in
+                  let* α2 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : Ty.apply (Ty.path "alloc::string::String") [] :=
-                    M.call (alloc.fmt.format α2) in
+                  let* α3 := M.call ((M.var "alloc::fmt::format") α2) in
                   M.alloc α3 in
                 M.pure res
               | _ => M.break_match
@@ -297,15 +242,14 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* list : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
-      let* α0 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
+    let* list :=
+      let* α0 :=
         M.call
           (Ty.apply (Ty.path "enums_testcase_linked_list::List") [])::["new"] in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
-        M.read list in
-      let* α1 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
+    let* _ :=
+      let* α0 := M.read list in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "enums_testcase_linked_list::List")
@@ -313,10 +257,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α0
             ((Integer.of_Z 1) : Ty.path "u32")) in
       assign list α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
-        M.read list in
-      let* α1 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
+    let* _ :=
+      let* α0 := M.read list in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "enums_testcase_linked_list::List")
@@ -324,10 +267,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α0
             ((Integer.of_Z 2) : Ty.path "u32")) in
       assign list α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
-        M.read list in
-      let* α1 : Ty.apply (Ty.path "enums_testcase_linked_list::List") [] :=
+    let* _ :=
+      let* α0 := M.read list in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "enums_testcase_linked_list::List")
@@ -335,77 +277,57 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α0
             ((Integer.of_Z 3) : Ty.path "u32")) in
       assign list α1 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "linked list has length: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "linked list has length: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "u32" :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "enums_testcase_linked_list::List") [])::["len"]
               (borrow list)) in
-        let* α4 : Ty.path "u32" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "alloc::string::String") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply
                   (Ty.path "enums_testcase_linked_list::List")
                   [])::["stringify"]
               (borrow list)) in
-        let* α4 : Ty.apply (Ty.path "alloc::string::String") [] := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

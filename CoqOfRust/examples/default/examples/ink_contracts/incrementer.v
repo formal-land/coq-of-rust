@@ -16,7 +16,7 @@ Section Impl_incrementer_Incrementer.
     match 𝜏, α with
     | [], [init_value] =>
       let* init_value := M.alloc init_value in
-      let* α0 : Ty.path "i32" := M.read init_value in
+      let* α0 := M.read init_value in
       M.pure {| incrementer.Incrementer.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -33,10 +33,10 @@ Section Impl_incrementer_Incrementer.
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "i32") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := Ty.path "i32") (Trait := ℐ))) in
-      let* α1 : Ty.path "i32" := M.call α0 in
+      let* α1 := M.call α0 in
       M.call ((Ty.apply (Ty.path "incrementer::Incrementer") [])::["new"] α1)
     | _, _ => M.impossible
     end.
@@ -55,19 +55,15 @@ Section Impl_incrementer_Incrementer.
     | [], [self; by_] =>
       let* self := M.alloc self in
       let* by_ := M.alloc by_ in
-      let* _ : Ty.tuple :=
-        let* β : Ty.path "i32" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "incrementer::Incrementer") []] :=
-            M.read self in
-          M.pure (incrementer.Incrementer.Get_value (deref α0)) in
+      let* _ :=
+        let* β :=
+          let* α0 := M.read self in
+          M.pure ((M.var "incrementer::Incrementer::Get_value") (deref α0)) in
         let* α0 := M.read β in
-        let* α1 : Ty.path "i32" := M.read by_ in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        assign β α2 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+        let* α1 := M.read by_ in
+        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+        (M.var "assign") β α2 in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -85,12 +81,8 @@ Section Impl_incrementer_Incrementer.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "incrementer::Incrementer") []] :=
-        M.read self in
-      M.read (incrementer.Incrementer.Get_value (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "incrementer::Incrementer::Get_value") (deref α0))
     | _, _ => M.impossible
     end.
   

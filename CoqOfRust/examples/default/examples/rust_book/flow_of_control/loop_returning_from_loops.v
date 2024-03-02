@@ -20,35 +20,36 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* counter : Ty.path "i32" :=
-      M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
-    let* result : Ty.path "i32" :=
-      let* α0 : Ty.path "i32" :=
+    let* counter := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
+    let* result :=
+      let* α0 :=
         M.loop
-          (let* _ : Ty.tuple :=
-            let β : Ty.path "i32" := counter in
+          (let* _ :=
+            let β := counter in
             let* α0 := M.read β in
-            let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : Ty.path "i32") in
-            assign β α1 in
-          let* α0 : Ty.path "i32" := M.read counter in
-          let* α1 : Ty.path "bool" :=
-            M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 10) : Ty.path "i32")) in
-          let* α2 : Ty.path "bool" := M.read (use α1) in
+            let* α1 :=
+              (M.var "BinOp::Panic::add")
+                α0
+                ((Integer.of_Z 1) : Ty.path "i32") in
+            (M.var "assign") β α1 in
+          let* α0 := M.read counter in
+          let* α1 :=
+            M.alloc
+              ((M.var "BinOp::Pure::eq")
+                α0
+                ((Integer.of_Z 10) : Ty.path "i32")) in
+          let* α2 := M.read (use α1) in
           if α2 then
-            let* α0 : Ty.path "never" := M.break in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α0 := M.break in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt) in
       M.copy α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.path "i32" := M.alloc ((Integer.of_Z 20) : Ty.path "i32") in
-      let* α1 :
-          Ty.tuple
-            (Ty.apply (Ty.path "ref") [Ty.path "i32"])
-            (Ty.apply (Ty.path "ref") [Ty.path "i32"]) :=
-        M.alloc (borrow result, borrow α0) in
+    let* _ :=
+      let* α0 := M.alloc ((Integer.of_Z 20) : Ty.path "i32") in
+      let* α1 := M.alloc (borrow result, borrow α0) in
       match_operator
         α1
         [
@@ -60,42 +61,36 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                M.read left_val in
-              let* α1 : Ty.path "i32" := M.read (deref α0) in
-              let* α2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                M.read right_val in
-              let* α3 : Ty.path "i32" := M.read (deref α2) in
-              let* α4 : Ty.path "bool" :=
-                M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α0 := M.read left_val in
+              let* α1 := M.read (deref α0) in
+              let* α2 := M.read right_val in
+              let* α3 := M.read (deref α2) in
+              let* α4 :=
+                M.alloc
+                  ((M.var "UnOp::not") ((M.var "BinOp::Pure::eq") α1 α3)) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                  M.read left_val in
-                let* α2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

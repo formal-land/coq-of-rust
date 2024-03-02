@@ -27,20 +27,13 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _s : Ty.apply (Ty.path "generics::Single") [] :=
-      M.alloc (generics.Single.Build_t generics.A.Build) in
-    let* _char : Ty.apply (Ty.path "generics::SingleGen") [Ty.path "char"] :=
-      M.alloc (generics.SingleGen.Build_t "a"%char) in
-    let* _t :
-        Ty.apply
-          (Ty.path "generics::SingleGen")
-          [Ty.apply (Ty.path "generics::A") []] :=
-      M.alloc (generics.SingleGen.Build_t generics.A.Build) in
-    let* _i32 : Ty.apply (Ty.path "generics::SingleGen") [Ty.path "i32"] :=
+    let* _s := M.alloc (generics.Single.Build_t generics.A.Build) in
+    let* _char := M.alloc (generics.SingleGen.Build_t "a"%char) in
+    let* _t := M.alloc (generics.SingleGen.Build_t generics.A.Build) in
+    let* _i32 :=
       M.alloc (generics.SingleGen.Build_t ((Integer.of_Z 6) : Ty.path "i32")) in
-    let* _char : Ty.apply (Ty.path "generics::SingleGen") [Ty.path "char"] :=
-      M.alloc (generics.SingleGen.Build_t "a"%char) in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* _char := M.alloc (generics.SingleGen.Build_t "a"%char) in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -20,13 +20,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "FooBar") in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "FooBar") in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
     | _, _ => M.impossible
@@ -55,13 +50,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "BarFoo") in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "BarFoo") in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
     | _, _ => M.impossible
@@ -97,25 +87,19 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloadin
     | [], [self; _rhs] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "> Foo.add(Bar) was called
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "> Foo.add(Bar) was called
 ") in
-          let* α1 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0 ] in
-          let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α1 := M.alloc [ α0 ] in
+          let* α2 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
         M.alloc tt in
-      let* α0 : Ty.apply (Ty.path "operator_overloading::FooBar") [] :=
-        M.alloc operator_overloading.FooBar.Build in
+      let* α0 := M.alloc operator_overloading.FooBar.Build in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -150,25 +134,19 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloadin
     | [], [self; _rhs] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "> Bar.add(Foo) was called
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "> Bar.add(Foo) was called
 ") in
-          let* α1 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0 ] in
-          let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α1 := M.alloc [ α0 ] in
+          let* α2 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
         M.alloc tt in
-      let* α0 : Ty.apply (Ty.path "operator_overloading::BarFoo") [] :=
-        M.alloc operator_overloading.BarFoo.Build in
+      let* α0 := M.alloc operator_overloading.BarFoo.Build in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -191,99 +169,69 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Foo + Bar = ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Foo + Bar = ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 :
-            Ty.function
-              [Ty.apply (Ty.path "operator_overloading::Foo") [];
-                Ty.apply (Ty.path "operator_overloading::Bar") []]
-              _ :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.arith.Add.add
               (Self := Ty.apply (Ty.path "operator_overloading::Foo") [])
               (Rhs := Ty.apply (Ty.path "operator_overloading::Bar") [])
               (Trait := ℐ))) in
-        let* α4 : Ty.apply (Ty.path "operator_overloading::FooBar") [] :=
+        let* α4 :=
           M.call
             (α3
               operator_overloading.Foo.Build
               operator_overloading.Bar.Build) in
-        let* α5 : Ty.apply (Ty.path "operator_overloading::FooBar") [] :=
-          M.alloc α4 in
-        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow α5)) in
-        let* α7 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α6 ] in
-        let* α8 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 : Ty.tuple := M.call (std.io.stdio._print α8) in
+        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
         M.alloc α9 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Bar + Foo = ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Bar + Foo = ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 :
-            Ty.function
-              [Ty.apply (Ty.path "operator_overloading::Bar") [];
-                Ty.apply (Ty.path "operator_overloading::Foo") []]
-              _ :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.arith.Add.add
               (Self := Ty.apply (Ty.path "operator_overloading::Bar") [])
               (Rhs := Ty.apply (Ty.path "operator_overloading::Foo") [])
               (Trait := ℐ))) in
-        let* α4 : Ty.apply (Ty.path "operator_overloading::BarFoo") [] :=
+        let* α4 :=
           M.call
             (α3
               operator_overloading.Bar.Build
               operator_overloading.Foo.Build) in
-        let* α5 : Ty.apply (Ty.path "operator_overloading::BarFoo") [] :=
-          M.alloc α4 in
-        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow α5)) in
-        let* α7 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α6 ] in
-        let* α8 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 : Ty.tuple := M.call (std.io.stdio._print α8) in
+        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
         M.alloc α9 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

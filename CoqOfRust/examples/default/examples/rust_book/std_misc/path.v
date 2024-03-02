@@ -31,99 +31,66 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* path :
-        Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str ".") in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []] :=
+    let* path :=
+      let* α0 := M.read (mk_str ".") in
+      let* α1 :=
         M.call ((Ty.apply (Ty.path "std::path::Path") [])::["new"] α0) in
       M.alloc α1 in
-    let* _display : Ty.apply (Ty.path "std::path::Display") [] :=
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []] :=
-        M.read path in
-      let* α1 : Ty.apply (Ty.path "std::path::Display") [] :=
+    let* _display :=
+      let* α0 := M.read path in
+      let* α1 :=
         M.call ((Ty.apply (Ty.path "std::path::Path") [])::["display"] α0) in
       M.alloc α1 in
-    let* new_path : Ty.apply (Ty.path "std::path::PathBuf") [] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "std::path::PathBuf") []]]
-            (Ty.apply (Ty.path "ref") [_]) :=
+    let* new_path :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.Deref.deref
             (Self := Ty.apply (Ty.path "std::path::PathBuf") [])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []] :=
-        M.read path in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "a") in
-      let* α3 : Ty.apply (Ty.path "std::path::PathBuf") [] :=
+      let* α1 := M.read path in
+      let* α2 := M.read (mk_str "a") in
+      let* α3 :=
         M.call ((Ty.apply (Ty.path "std::path::Path") [])::["join"] α1 α2) in
-      let* α4 : Ty.apply (Ty.path "std::path::PathBuf") [] := M.alloc α3 in
-      let* α5 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []] :=
-        M.call (α0 (borrow α4)) in
-      let* α6 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "b") in
-      let* α7 : Ty.apply (Ty.path "std::path::PathBuf") [] :=
+      let* α4 := M.alloc α3 in
+      let* α5 := M.call (α0 (borrow α4)) in
+      let* α6 := M.read (mk_str "b") in
+      let* α7 :=
         M.call ((Ty.apply (Ty.path "std::path::Path") [])::["join"] α5 α6) in
       M.alloc α7 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "c") in
-      let* α1 : Ty.tuple :=
+    let* _ :=
+      let* α0 := M.read (mk_str "c") in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "std::path::PathBuf") [])::["push"]
             (borrow_mut new_path)
             α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "myfile.tar.gz") in
-      let* α1 : Ty.tuple :=
+    let* _ :=
+      let* α0 := M.read (mk_str "myfile.tar.gz") in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "std::path::PathBuf") [])::["push"]
             (borrow_mut new_path)
             α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "package.tgz") in
-      let* α1 : Ty.tuple :=
+    let* _ :=
+      let* α0 := M.read (mk_str "package.tgz") in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "std::path::PathBuf") [])::["set_file_name"]
             (borrow_mut new_path)
             α0) in
       M.alloc α1 in
-    let* α0 :
-        Ty.function
-          [Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "std::path::PathBuf") []]]
-          (Ty.apply (Ty.path "ref") [_]) :=
+    let* α0 :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := Ty.apply (Ty.path "std::path::PathBuf") [])
           (Trait := ℐ))) in
-    let* α1 :
-        Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []] :=
-      M.call (α0 (borrow new_path)) in
-    let* α2 :
-        Ty.apply
-          (Ty.path "core::option::Option")
-          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+    let* α1 := M.call (α0 (borrow new_path)) in
+    let* α2 :=
       M.call ((Ty.apply (Ty.path "std::path::Path") [])::["to_str"] α1) in
-    let* α3 :
-        Ty.apply
-          (Ty.path "core::option::Option")
-          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-      M.alloc α2 in
-    let* α0 : Ty.tuple :=
+    let* α3 := M.alloc α2 in
+    let* α0 :=
       match_operator
         α3
         [
@@ -131,11 +98,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.None =>
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+              let* α0 :=
                 M.read (mk_str "new path is not a valid UTF-8 sequence") in
-              let* α1 : Ty.path "never" :=
-                M.call (std.panicking.begin_panic α0) in
-              let* α2 : Ty.tuple := never_to_any α1 in
+              let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+              let* α2 := never_to_any α1 in
               M.alloc α2
             | _ => M.break_match
             end) :
@@ -144,36 +110,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := core.option.Option.Get_Some_0 γ in
+              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
               let* s := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "new path is ") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "
+              let* _ :=
+                let* α0 := M.read (mk_str "new path is ") in
+                let* α1 := M.read (mk_str "
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow s)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match

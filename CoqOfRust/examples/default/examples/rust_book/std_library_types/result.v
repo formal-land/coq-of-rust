@@ -17,12 +17,8 @@ Module checked.
       | [], [self; f] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-          M.read f in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        let* α0 := M.read f in
+        let* α1 :=
           match_operator
             self
             [
@@ -33,8 +29,7 @@ Module checked.
                 let* α0 := M.read γ in
                 match α0 with
                 | result.checked.MathError.DivisionByZero =>
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "DivisionByZero") in
+                  let* α0 := M.read (mk_str "DivisionByZero") in
                   M.alloc α0
                 | _ => M.break_match
                 end) :
@@ -46,8 +41,7 @@ Module checked.
                 let* α0 := M.read γ in
                 match α0 with
                 | result.checked.MathError.NonPositiveLogarithm =>
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "NonPositiveLogarithm") in
+                  let* α0 := M.read (mk_str "NonPositiveLogarithm") in
                   M.alloc α0
                 | _ => M.break_match
                 end) :
@@ -59,14 +53,13 @@ Module checked.
                 let* α0 := M.read γ in
                 match α0 with
                 | result.checked.MathError.NegativeSquareRoot =>
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "NegativeSquareRoot") in
+                  let* α0 := M.read (mk_str "NegativeSquareRoot") in
                   M.alloc α0
                 | _ => M.break_match
                 end) :
                 Ty.apply (Ty.path "ref") [Ty.path "str"]
             ] in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.read α1 in
+        let* α2 := M.read α1 in
         M.call
           ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α2)
       | _, _ => M.impossible
@@ -102,22 +95,18 @@ Module checked.
     | [], [x; y] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 : Ty.path "f64" := M.read y in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.path "bool" := M.alloc (BinOp.Pure.eq α0 α1) in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
-      let* α4 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "f64";
-              Ty.apply (Ty.path "result::checked::MathError") []] :=
+      let* α0 := M.read y in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.alloc ((M.var "BinOp::Pure::eq") α0 α1) in
+      let* α3 := M.read (use α2) in
+      let* α4 :=
         if α3 then
           M.alloc
             (core.result.Result.Err result.checked.MathError.DivisionByZero)
         else
-          let* α0 : Ty.path "f64" := M.read x in
-          let* α1 : Ty.path "f64" := M.read y in
-          let* α2 : Ty.path "f64" := BinOp.Panic.div α0 α1 in
+          let* α0 := M.read x in
+          let* α1 := M.read y in
+          let* α2 := (M.var "BinOp::Panic::div") α0 α1 in
           M.alloc (core.result.Result.Ok α2) in
       M.read α4
     | _, _ => M.impossible
@@ -136,21 +125,17 @@ Module checked.
     match 𝜏, α with
     | [], [x] =>
       let* x := M.alloc x in
-      let* α0 : Ty.path "f64" := M.read x in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.path "bool" := M.alloc (BinOp.Pure.lt α0 α1) in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
-      let* α4 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "f64";
-              Ty.apply (Ty.path "result::checked::MathError") []] :=
+      let* α0 := M.read x in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.alloc ((M.var "BinOp::Pure::lt") α0 α1) in
+      let* α3 := M.read (use α2) in
+      let* α4 :=
         if α3 then
           M.alloc
             (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
         else
-          let* α0 : Ty.path "f64" := M.read x in
-          let* α1 : Ty.path "f64" := M.call ((Ty.path "f64")::["sqrt"] α0) in
+          let* α0 := M.read x in
+          let* α1 := M.call ((Ty.path "f64")::["sqrt"] α0) in
           M.alloc (core.result.Result.Ok α1) in
       M.read α4
     | _, _ => M.impossible
@@ -169,22 +154,18 @@ Module checked.
     match 𝜏, α with
     | [], [x] =>
       let* x := M.alloc x in
-      let* α0 : Ty.path "f64" := M.read x in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.path "bool" := M.alloc (BinOp.Pure.le α0 α1) in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
-      let* α4 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "f64";
-              Ty.apply (Ty.path "result::checked::MathError") []] :=
+      let* α0 := M.read x in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.alloc ((M.var "BinOp::Pure::le") α0 α1) in
+      let* α3 := M.read (use α2) in
+      let* α4 :=
         if α3 then
           M.alloc
             (core.result.Result.Err
               result.checked.MathError.NonPositiveLogarithm)
         else
-          let* α0 : Ty.path "f64" := M.read x in
-          let* α1 : Ty.path "f64" := M.call ((Ty.path "f64")::["ln"] α0) in
+          let* α0 := M.read x in
+          let* α1 := M.call ((Ty.path "f64")::["ln"] α0) in
           M.alloc (core.result.Result.Ok α1) in
       M.read α4
     | _, _ => M.impossible
@@ -211,19 +192,11 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [x; y] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
-    let* α0 : Ty.path "f64" := M.read x in
-    let* α1 : Ty.path "f64" := M.read y in
-    let* α2 :
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.path "f64"; Ty.apply (Ty.path "result::checked::MathError") []] :=
-      M.call (result.checked.div α0 α1) in
-    let* α3 :
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.path "f64"; Ty.apply (Ty.path "result::checked::MathError") []] :=
-      M.alloc α2 in
-    let* α4 : Ty.path "f64" :=
+    let* α0 := M.read x in
+    let* α1 := M.read y in
+    let* α2 := M.call ((M.var "result::checked::div") α0 α1) in
+    let* α3 := M.alloc α2 in
+    let* α4 :=
       match_operator
         α3
         [
@@ -231,34 +204,24 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := core.result.Result.Get_Err_0 γ in
+              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
               let* why := M.copy γ0_0 in
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                M.read (mk_str "") in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "array")
-                    [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                M.alloc [ α0 ] in
-              let* α2 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+              let* α0 := M.read (mk_str "") in
+              let* α1 := M.alloc [ α0 ] in
+              let* α2 :=
                 M.call
                   ((Ty.apply
                         (Ty.path "core::fmt::rt::Argument")
                         [])::["new_debug"]
                     (borrow why)) in
-              let* α3 :
-                  Ty.apply
-                    (Ty.path "array")
-                    [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                M.alloc [ α2 ] in
-              let* α4 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+              let* α3 := M.alloc [ α2 ] in
+              let* α4 :=
                 M.call
                   ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                     (pointer_coercion "Unsize" (borrow α1))
                     (pointer_coercion "Unsize" (borrow α3))) in
-              let* α5 : Ty.path "never" :=
-                M.call (core.panicking.panic_fmt α4) in
-              let* α6 : Ty.path "f64" := never_to_any α5 in
+              let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
+              let* α6 := never_to_any α5 in
               M.alloc α6
             | _ => M.break_match
             end) :
@@ -267,21 +230,11 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := core.result.Result.Get_Ok_0 γ in
+              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
               let* ratio := M.copy γ0_0 in
-              let* α0 : Ty.path "f64" := M.read ratio in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.path "f64";
-                      Ty.apply (Ty.path "result::checked::MathError") []] :=
-                M.call (result.checked.ln α0) in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.path "f64";
-                      Ty.apply (Ty.path "result::checked::MathError") []] :=
-                M.alloc α1 in
+              let* α0 := M.read ratio in
+              let* α1 := M.call ((M.var "result::checked::ln") α0) in
+              let* α2 := M.alloc α1 in
               match_operator
                 α2
                 [
@@ -289,37 +242,27 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.result.Result.Err _ =>
-                      let γ0_0 := core.result.Result.Get_Err_0 γ in
+                      let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
                       let* why := M.copy γ0_0 in
-                      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                        M.read (mk_str "") in
-                      let* α1 :
-                          Ty.apply
-                            (Ty.path "array")
-                            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                        M.alloc [ α0 ] in
-                      let* α2 :
-                          Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                      let* α0 := M.read (mk_str "") in
+                      let* α1 := M.alloc [ α0 ] in
+                      let* α2 :=
                         M.call
                           ((Ty.apply
                                 (Ty.path "core::fmt::rt::Argument")
                                 [])::["new_debug"]
                             (borrow why)) in
-                      let* α3 :
-                          Ty.apply
-                            (Ty.path "array")
-                            [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                        M.alloc [ α2 ] in
-                      let* α4 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                      let* α3 := M.alloc [ α2 ] in
+                      let* α4 :=
                         M.call
                           ((Ty.apply
                                 (Ty.path "core::fmt::Arguments")
                                 [])::["new_v1"]
                             (pointer_coercion "Unsize" (borrow α1))
                             (pointer_coercion "Unsize" (borrow α3))) in
-                      let* α5 : Ty.path "never" :=
-                        M.call (core.panicking.panic_fmt α4) in
-                      let* α6 : Ty.path "f64" := never_to_any α5 in
+                      let* α5 :=
+                        M.call ((M.var "core::panicking::panic_fmt") α4) in
+                      let* α6 := never_to_any α5 in
                       M.alloc α6
                     | _ => M.break_match
                     end) :
@@ -328,25 +271,11 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.result.Result.Ok _ =>
-                      let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                      let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
                       let* ln := M.copy γ0_0 in
-                      let* α0 : Ty.path "f64" := M.read ln in
-                      let* α1 :
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.path "f64";
-                              Ty.apply
-                                (Ty.path "result::checked::MathError")
-                                []] :=
-                        M.call (result.checked.sqrt α0) in
-                      let* α2 :
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.path "f64";
-                              Ty.apply
-                                (Ty.path "result::checked::MathError")
-                                []] :=
-                        M.alloc α1 in
+                      let* α0 := M.read ln in
+                      let* α1 := M.call ((M.var "result::checked::sqrt") α0) in
+                      let* α2 := M.alloc α1 in
                       match_operator
                         α2
                         [
@@ -354,47 +283,29 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (let* α0 := M.read γ in
                             match α0 with
                             | core.result.Result.Err _ =>
-                              let γ0_0 := core.result.Result.Get_Err_0 γ in
+                              let γ0_0 :=
+                                (M.var "core::result::Result::Get_Err_0") γ in
                               let* why := M.copy γ0_0 in
-                              let* α0 :
-                                  Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                                M.read (mk_str "") in
-                              let* α1 :
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [Ty.apply
-                                        (Ty.path "ref")
-                                        [Ty.path "str"]] :=
-                                M.alloc [ α0 ] in
-                              let* α2 :
-                                  Ty.apply
-                                    (Ty.path "core::fmt::rt::Argument")
-                                    [] :=
+                              let* α0 := M.read (mk_str "") in
+                              let* α1 := M.alloc [ α0 ] in
+                              let* α2 :=
                                 M.call
                                   ((Ty.apply
                                         (Ty.path "core::fmt::rt::Argument")
                                         [])::["new_debug"]
                                     (borrow why)) in
-                              let* α3 :
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [Ty.apply
-                                        (Ty.path "core::fmt::rt::Argument")
-                                        []] :=
-                                M.alloc [ α2 ] in
-                              let* α4 :
-                                  Ty.apply
-                                    (Ty.path "core::fmt::Arguments")
-                                    [] :=
+                              let* α3 := M.alloc [ α2 ] in
+                              let* α4 :=
                                 M.call
                                   ((Ty.apply
                                         (Ty.path "core::fmt::Arguments")
                                         [])::["new_v1"]
                                     (pointer_coercion "Unsize" (borrow α1))
                                     (pointer_coercion "Unsize" (borrow α3))) in
-                              let* α5 : Ty.path "never" :=
-                                M.call (core.panicking.panic_fmt α4) in
-                              let* α6 : Ty.path "f64" := never_to_any α5 in
+                              let* α5 :=
+                                M.call
+                                  ((M.var "core::panicking::panic_fmt") α4) in
+                              let* α6 := never_to_any α5 in
                               M.alloc α6
                             | _ => M.break_match
                             end) :
@@ -403,7 +314,8 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (let* α0 := M.read γ in
                             match α0 with
                             | core.result.Result.Ok _ =>
-                              let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                              let γ0_0 :=
+                                (M.var "core::result::Result::Get_Ok_0") γ in
                               let* sqrt := M.copy γ0_0 in
                               M.pure sqrt
                             | _ => M.break_match
@@ -432,42 +344,30 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "f64" :=
-          M.read (UnsupportedLiteral : Ty.path "f64") in
-        let* α4 : Ty.path "f64" :=
-          M.read (UnsupportedLiteral : Ty.path "f64") in
-        let* α5 : Ty.path "f64" := M.call (result.op α3 α4) in
-        let* α6 : Ty.path "f64" := M.alloc α5 in
-        let* α7 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 := M.read (UnsupportedLiteral : Ty.path "f64") in
+        let* α4 := M.read (UnsupportedLiteral : Ty.path "f64") in
+        let* α5 := M.call ((M.var "result::op") α3 α4) in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α6)) in
-        let* α8 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α7 ] in
-        let* α9 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 : Ty.tuple := M.call (std.io.stdio._print α9) in
+        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
         M.alloc α10 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

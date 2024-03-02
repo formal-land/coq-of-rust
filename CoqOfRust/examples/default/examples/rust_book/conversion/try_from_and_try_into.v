@@ -16,20 +16,13 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "EvenNumber") in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") []] :=
-        M.read self in
-      let* α3 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-        M.alloc (borrow (try_from_and_try_into.EvenNumber.Get_0 (deref α2))) in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "EvenNumber") in
+      let* α2 := M.read self in
+      let* α3 :=
+        M.alloc
+          (borrow
+            ((M.var "try_from_and_try_into::EvenNumber::Get_0") (deref α2))) in
       M.call
         ((Ty.apply
               (Ty.path "core::fmt::Formatter")
@@ -70,21 +63,15 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") []] :=
-        M.read self in
-      let* α1 : Ty.path "i32" :=
-        M.read (try_from_and_try_into.EvenNumber.Get_0 (deref α0)) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") []] :=
-        M.read other in
-      let* α3 : Ty.path "i32" :=
-        M.read (try_from_and_try_into.EvenNumber.Get_0 (deref α2)) in
-      M.pure (BinOp.Pure.eq α1 α3)
+      let* α0 := M.read self in
+      let* α1 :=
+        M.read
+          ((M.var "try_from_and_try_into::EvenNumber::Get_0") (deref α0)) in
+      let* α2 := M.read other in
+      let* α3 :=
+        M.read
+          ((M.var "try_from_and_try_into::EvenNumber::Get_0") (deref α2)) in
+      M.pure ((M.var "BinOp::Pure::eq") α1 α3)
     | _, _ => M.impossible
     end.
   
@@ -119,19 +106,16 @@ Section Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
     match 𝜏, α with
     | [], [value] =>
       let* value := M.alloc value in
-      let* α0 : Ty.path "i32" := M.read value in
-      let* α1 : Ty.path "i32" :=
-        BinOp.Panic.rem α0 ((Integer.of_Z 2) : Ty.path "i32") in
-      let* α2 : Ty.path "bool" :=
-        M.alloc (BinOp.Pure.eq α1 ((Integer.of_Z 0) : Ty.path "i32")) in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
-      let* α4 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
+      let* α0 := M.read value in
+      let* α1 :=
+        (M.var "BinOp::Panic::rem") α0 ((Integer.of_Z 2) : Ty.path "i32") in
+      let* α2 :=
+        M.alloc
+          ((M.var "BinOp::Pure::eq") α1 ((Integer.of_Z 0) : Ty.path "i32")) in
+      let* α3 := M.read (use α2) in
+      let* α4 :=
         if α3 then
-          let* α0 : Ty.path "i32" := M.read value in
+          let* α0 := M.read value in
           M.alloc
             (core.result.Result.Ok
               (try_from_and_try_into.EvenNumber.Build_t α0))
@@ -168,54 +152,21 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.path "i32"]
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") []; _]) :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.TryFrom.try_from
             (Self := Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [])
             (T := Ty.path "i32")
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.call (α0 ((Integer.of_Z 8) : Ty.path "i32")) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.alloc α1 in
-      let* α3 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
+      let* α1 := M.call (α0 ((Integer.of_Z 8) : Ty.path "i32")) in
+      let* α2 := M.alloc α1 in
+      let* α3 :=
         M.alloc
           (core.result.Result.Ok
             (try_from_and_try_into.EvenNumber.Build_t
               ((Integer.of_Z 8) : Ty.path "i32"))) in
-      let* α4 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]]) :=
-        M.alloc (borrow α2, borrow α3) in
+      let* α4 := M.alloc (borrow α2, borrow α3) in
       match_operator
         α4
         [
@@ -227,25 +178,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -263,116 +196,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [];
                           Ty.tuple])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.path "i32"]
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") []; _]) :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.TryFrom.try_from
             (Self := Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [])
             (T := Ty.path "i32")
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.call (α0 ((Integer.of_Z 5) : Ty.path "i32")) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.alloc α1 in
-      let* α3 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.alloc (core.result.Result.Err tt) in
-      let* α4 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]]) :=
-        M.alloc (borrow α2, borrow α3) in
+      let* α1 := M.call (α0 ((Integer.of_Z 5) : Ty.path "i32")) in
+      let* α2 := M.alloc α1 in
+      let* α3 := M.alloc (core.result.Result.Err tt) in
+      let* α4 := M.alloc (borrow α2, borrow α3) in
       match_operator
         α4
         [
@@ -384,25 +244,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -420,119 +262,48 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [];
                           Ty.tuple])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* result :
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-            Ty.tuple] :=
-      let* α0 :
-          Ty.function
-            [Ty.path "i32"]
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") []; _]) :=
+    let* result :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.TryInto.try_into
             (Self := Ty.path "i32")
             (T := Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.call (α0 ((Integer.of_Z 8) : Ty.path "i32")) in
+      let* α1 := M.call (α0 ((Integer.of_Z 8) : Ty.path "i32")) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
+    let* _ :=
+      let* α0 :=
         M.alloc
           (core.result.Result.Ok
             (try_from_and_try_into.EvenNumber.Build_t
               ((Integer.of_Z 8) : Ty.path "i32"))) in
-      let* α1 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]]) :=
-        M.alloc (borrow result, borrow α0) in
+      let* α1 := M.alloc (borrow result, borrow α0) in
       match_operator
         α1
         [
@@ -544,25 +315,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -580,116 +333,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [];
                           Ty.tuple])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* result :
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-            Ty.tuple] :=
-      let* α0 :
-          Ty.function
-            [Ty.path "i32"]
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") []; _]) :=
+    let* result :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.TryInto.try_into
             (Self := Ty.path "i32")
             (T := Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.call (α0 ((Integer.of_Z 5) : Ty.path "i32")) in
+      let* α1 := M.call (α0 ((Integer.of_Z 5) : Ty.path "i32")) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-              Ty.tuple] :=
-        M.alloc (core.result.Result.Err tt) in
-      let* α1 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "try_from_and_try_into::EvenNumber") [];
-                    Ty.tuple]]) :=
-        M.alloc (borrow result, borrow α0) in
+    let* _ :=
+      let* α0 := M.alloc (core.result.Result.Err tt) in
+      let* α1 := M.alloc (borrow result, borrow α0) in
       match_operator
         α1
         [
@@ -701,25 +382,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply
-                                (Ty.path "try_from_and_try_into::EvenNumber")
-                                [];
-                              Ty.tuple]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -737,72 +400,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [];
                           Ty.tuple])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "try_from_and_try_into::EvenNumber")
-                            [];
-                          Ty.tuple]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "try_from_and_try_into::EvenNumber")
-                              [];
-                            Ty.tuple]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

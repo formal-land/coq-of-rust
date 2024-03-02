@@ -41,13 +41,11 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* number : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
+    let* number :=
       M.alloc (core.option.Option.Some ((Integer.of_Z 7) : Ty.path "i32")) in
-    let* letter : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-      M.alloc core.option.Option.None in
-    let* emoticon : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-      M.alloc core.option.Option.None in
-    let* _ : Ty.tuple :=
+    let* letter := M.alloc core.option.Option.None in
+    let* emoticon := M.alloc core.option.Option.None in
+    let* _ :=
       match_operator
         number
         [
@@ -55,39 +53,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := core.option.Option.Get_Some_0 γ in
+              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
               let* i := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "Matched ") in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "!
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "Matched ") in
+                  let* α1 := M.read (mk_str "!
 ") in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0; α1 ] in
-                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α2 := M.alloc [ α0; α1 ] in
+                  let* α3 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_debug"]
                         (borrow i)) in
-                  let* α4 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                    M.alloc [ α3 ] in
-                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α4 := M.alloc [ α3 ] in
+                  let* α5 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
@@ -96,7 +84,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple;
           fun γ => (M.alloc tt) : Ty.path "unit"
         ] in
-    let* _ : Ty.tuple :=
+    let* _ :=
       match_operator
         letter
         [
@@ -104,39 +92,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := core.option.Option.Get_Some_0 γ in
+              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
               let* i := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "Matched ") in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "!
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "Matched ") in
+                  let* α1 := M.read (mk_str "!
 ") in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0; α1 ] in
-                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α2 := M.alloc [ α0; α1 ] in
+                  let* α3 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_debug"]
                         (borrow i)) in
-                  let* α4 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                    M.alloc [ α3 ] in
-                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α4 := M.alloc [ α3 ] in
+                  let* α5 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
@@ -144,32 +122,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             end) :
             Ty.tuple;
           fun γ =>
-            (let* _ : Ty.tuple :=
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+            (let* _ :=
+              let* _ :=
+                let* α0 :=
                   M.read
                     (mk_str
                       "Didn't match a number. Let's go with a letter!
 ") in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Arguments")
                           [])::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt in
             M.alloc tt) :
             Ty.tuple
         ] in
-    let* i_like_letters : Ty.path "bool" := M.alloc false in
-    let* α0 : Ty.tuple :=
+    let* i_like_letters := M.alloc false in
+    let* α0 :=
       match_operator
         emoticon
         [
@@ -177,39 +151,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := core.option.Option.Get_Some_0 γ in
+              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
               let* i := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "Matched ") in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "!
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "Matched ") in
+                  let* α1 := M.read (mk_str "!
 ") in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0; α1 ] in
-                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α2 := M.alloc [ α0; α1 ] in
+                  let* α3 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_debug"]
                         (borrow i)) in
-                  let* α4 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                    M.alloc [ α3 ] in
-                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α4 := M.alloc [ α3 ] in
+                  let* α5 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
@@ -217,50 +181,42 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             end) :
             Ty.tuple;
           fun γ =>
-            (let* α0 : Ty.path "bool" := M.read (use i_like_letters) in
+            (let* α0 := M.read (use i_like_letters) in
             if α0 then
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+              let* _ :=
+                let* _ :=
+                  let* α0 :=
                     M.read
                       (mk_str
                         "Didn't match a number. Let's go with a letter!
 ") in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0 ] in
-                  let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α1 := M.alloc [ α0 ] in
+                  let* α2 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                  let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 M.alloc tt in
               M.alloc tt
             else
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+              let* _ :=
+                let* _ :=
+                  let* α0 :=
                     M.read
                       (mk_str
                         "I don't like letters. Let's go with an emoticon :)!
 ") in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0 ] in
-                  let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α1 := M.alloc [ α0 ] in
+                  let* α2 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                  let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 M.alloc tt in
               M.alloc tt) :

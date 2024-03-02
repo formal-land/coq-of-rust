@@ -24,14 +24,12 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _mutable_integer : Ty.path "i32" :=
-      M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
-    let* _ : Ty.tuple :=
-      let* _mutable_integer : Ty.path "i32" := M.copy _mutable_integer in
+    let* _mutable_integer := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
+    let* _ :=
+      let* _mutable_integer := M.copy _mutable_integer in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      assign _mutable_integer ((Integer.of_Z 3) : Ty.path "i32") in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* _ := assign _mutable_integer ((Integer.of_Z 3) : Ty.path "i32") in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

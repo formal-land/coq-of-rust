@@ -16,8 +16,8 @@ Section Impl_associated_functions_and_methods_Point.
   Definition origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
       M.pure
         {|
           associated_functions_and_methods.Point.y := α0;
@@ -40,8 +40,8 @@ Section Impl_associated_functions_and_methods_Point.
     | [], [x; y] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 : Ty.path "f64" := M.read x in
-      let* α1 : Ty.path "f64" := M.read y in
+      let* α0 := M.read x in
+      let* α1 := M.read y in
       M.pure
         {|
           associated_functions_and_methods.Point.x := α0;
@@ -72,14 +72,10 @@ Section Impl_associated_functions_and_methods_Rectangle.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "associated_functions_and_methods::Rectangle")
-                []] :=
-        M.read self in
-      M.read (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
+          (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -102,16 +98,11 @@ Section Impl_associated_functions_and_methods_Rectangle.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "associated_functions_and_methods::Rectangle")
-                []] :=
-        M.read self in
-      let* α1 : Ty.path "f64" :=
+      let* α0 := M.read self in
+      let* α1 :=
         match_operator
-          (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))
+          ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
+            (deref α0))
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -122,20 +113,16 @@ Section Impl_associated_functions_and_methods_Rectangle.
                     associated_functions_and_methods.Point.y := _;
                   |}
                   =>
-                let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
-                let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
+                let γ0_0 :=
+                  (M.var "associated_functions_and_methods::Point::Get_x") γ in
+                let γ0_1 :=
+                  (M.var "associated_functions_and_methods::Point::Get_y") γ in
                 let* x1 := M.copy γ0_0 in
                 let* y1 := M.copy γ0_1 in
-                let* α0 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path
-                            "associated_functions_and_methods::Rectangle")
-                          []] :=
-                  M.read self in
+                let* α0 := M.read self in
                 match_operator
-                  (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))
+                  ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
+                    (deref α0))
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -147,20 +134,23 @@ Section Impl_associated_functions_and_methods_Rectangle.
                           |}
                           =>
                         let γ0_0 :=
-                          associated_functions_and_methods.Point.Get_x γ in
+                          (M.var
+                              "associated_functions_and_methods::Point::Get_x")
+                            γ in
                         let γ0_1 :=
-                          associated_functions_and_methods.Point.Get_y γ in
+                          (M.var
+                              "associated_functions_and_methods::Point::Get_y")
+                            γ in
                         let* x2 := M.copy γ0_0 in
                         let* y2 := M.copy γ0_1 in
-                        let* α0 : Ty.path "f64" := M.read x1 in
-                        let* α1 : Ty.path "f64" := M.read x2 in
-                        let* α2 : Ty.path "f64" := BinOp.Panic.sub α0 α1 in
-                        let* α3 : Ty.path "f64" := M.read y1 in
-                        let* α4 : Ty.path "f64" := M.read y2 in
-                        let* α5 : Ty.path "f64" := BinOp.Panic.sub α3 α4 in
-                        let* α6 : Ty.path "f64" := BinOp.Panic.mul α2 α5 in
-                        let* α7 : Ty.path "f64" :=
-                          M.call ((Ty.path "f64")::["abs"] α6) in
+                        let* α0 := M.read x1 in
+                        let* α1 := M.read x2 in
+                        let* α2 := (M.var "BinOp::Panic::sub") α0 α1 in
+                        let* α3 := M.read y1 in
+                        let* α4 := M.read y2 in
+                        let* α5 := (M.var "BinOp::Panic::sub") α3 α4 in
+                        let* α6 := (M.var "BinOp::Panic::mul") α2 α5 in
+                        let* α7 := M.call ((Ty.path "f64")::["abs"] α6) in
                         M.alloc α7
                       end) :
                       Ty.path "f64"
@@ -188,16 +178,11 @@ Section Impl_associated_functions_and_methods_Rectangle.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "associated_functions_and_methods::Rectangle")
-                []] :=
-        M.read self in
-      let* α1 : Ty.path "f64" :=
+      let* α0 := M.read self in
+      let* α1 :=
         match_operator
-          (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))
+          ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
+            (deref α0))
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -208,20 +193,16 @@ Section Impl_associated_functions_and_methods_Rectangle.
                     associated_functions_and_methods.Point.y := _;
                   |}
                   =>
-                let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
-                let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
+                let γ0_0 :=
+                  (M.var "associated_functions_and_methods::Point::Get_x") γ in
+                let γ0_1 :=
+                  (M.var "associated_functions_and_methods::Point::Get_y") γ in
                 let* x1 := M.copy γ0_0 in
                 let* y1 := M.copy γ0_1 in
-                let* α0 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path
-                            "associated_functions_and_methods::Rectangle")
-                          []] :=
-                  M.read self in
+                let* α0 := M.read self in
                 match_operator
-                  (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))
+                  ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
+                    (deref α0))
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -233,25 +214,27 @@ Section Impl_associated_functions_and_methods_Rectangle.
                           |}
                           =>
                         let γ0_0 :=
-                          associated_functions_and_methods.Point.Get_x γ in
+                          (M.var
+                              "associated_functions_and_methods::Point::Get_x")
+                            γ in
                         let γ0_1 :=
-                          associated_functions_and_methods.Point.Get_y γ in
+                          (M.var
+                              "associated_functions_and_methods::Point::Get_y")
+                            γ in
                         let* x2 := M.copy γ0_0 in
                         let* y2 := M.copy γ0_1 in
-                        let* α0 : Ty.path "f64" :=
+                        let* α0 :=
                           M.read (UnsupportedLiteral : Ty.path "f64") in
-                        let* α1 : Ty.path "f64" := M.read x1 in
-                        let* α2 : Ty.path "f64" := M.read x2 in
-                        let* α3 : Ty.path "f64" := BinOp.Panic.sub α1 α2 in
-                        let* α4 : Ty.path "f64" :=
-                          M.call ((Ty.path "f64")::["abs"] α3) in
-                        let* α5 : Ty.path "f64" := M.read y1 in
-                        let* α6 : Ty.path "f64" := M.read y2 in
-                        let* α7 : Ty.path "f64" := BinOp.Panic.sub α5 α6 in
-                        let* α8 : Ty.path "f64" :=
-                          M.call ((Ty.path "f64")::["abs"] α7) in
-                        let* α9 : Ty.path "f64" := BinOp.Panic.add α4 α8 in
-                        let* α10 : Ty.path "f64" := BinOp.Panic.mul α0 α9 in
+                        let* α1 := M.read x1 in
+                        let* α2 := M.read x2 in
+                        let* α3 := (M.var "BinOp::Panic::sub") α1 α2 in
+                        let* α4 := M.call ((Ty.path "f64")::["abs"] α3) in
+                        let* α5 := M.read y1 in
+                        let* α6 := M.read y2 in
+                        let* α7 := (M.var "BinOp::Panic::sub") α5 α6 in
+                        let* α8 := M.call ((Ty.path "f64")::["abs"] α7) in
+                        let* α9 := (M.var "BinOp::Panic::add") α4 α8 in
+                        let* α10 := (M.var "BinOp::Panic::mul") α0 α9 in
                         M.alloc α10
                       end) :
                       Ty.path "f64"
@@ -282,71 +265,51 @@ Section Impl_associated_functions_and_methods_Rectangle.
       let* self := M.alloc self in
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* _ : Ty.tuple :=
-        let* β : Ty.path "f64" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply
-                    (Ty.path "associated_functions_and_methods::Rectangle")
-                    []] :=
-            M.read self in
+      let* _ :=
+        let* β :=
+          let* α0 := M.read self in
           M.pure
-            (associated_functions_and_methods.Point.Get_x
-              (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))) in
+            ((M.var "associated_functions_and_methods::Point::Get_x")
+              ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
+                (deref α0))) in
         let* α0 := M.read β in
-        let* α1 : Ty.path "f64" := M.read x in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        assign β α2 in
-      let* _ : Ty.tuple :=
-        let* β : Ty.path "f64" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply
-                    (Ty.path "associated_functions_and_methods::Rectangle")
-                    []] :=
-            M.read self in
+        let* α1 := M.read x in
+        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+        (M.var "assign") β α2 in
+      let* _ :=
+        let* β :=
+          let* α0 := M.read self in
           M.pure
-            (associated_functions_and_methods.Point.Get_x
-              (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))) in
+            ((M.var "associated_functions_and_methods::Point::Get_x")
+              ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
+                (deref α0))) in
         let* α0 := M.read β in
-        let* α1 : Ty.path "f64" := M.read x in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        assign β α2 in
-      let* _ : Ty.tuple :=
-        let* β : Ty.path "f64" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply
-                    (Ty.path "associated_functions_and_methods::Rectangle")
-                    []] :=
-            M.read self in
+        let* α1 := M.read x in
+        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+        (M.var "assign") β α2 in
+      let* _ :=
+        let* β :=
+          let* α0 := M.read self in
           M.pure
-            (associated_functions_and_methods.Point.Get_y
-              (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))) in
+            ((M.var "associated_functions_and_methods::Point::Get_y")
+              ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
+                (deref α0))) in
         let* α0 := M.read β in
-        let* α1 : Ty.path "f64" := M.read y in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        assign β α2 in
-      let* _ : Ty.tuple :=
-        let* β : Ty.path "f64" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply
-                    (Ty.path "associated_functions_and_methods::Rectangle")
-                    []] :=
-            M.read self in
+        let* α1 := M.read y in
+        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+        (M.var "assign") β α2 in
+      let* _ :=
+        let* β :=
+          let* α0 := M.read self in
           M.pure
-            (associated_functions_and_methods.Point.Get_y
-              (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))) in
+            ((M.var "associated_functions_and_methods::Point::Get_y")
+              ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
+                (deref α0))) in
         let* α0 := M.read β in
-        let* α1 : Ty.path "f64" := M.read y in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        assign β α2 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+        let* α1 := M.read y in
+        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+        (M.var "assign") β α2 in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -378,7 +341,7 @@ Section Impl_associated_functions_and_methods_Pair.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.tuple :=
+      let* α0 :=
         match_operator
           self
           [
@@ -386,49 +349,40 @@ Section Impl_associated_functions_and_methods_Pair.
               (let* α0 := M.read γ in
               match α0 with
               | associated_functions_and_methods.Pair.Build_t _ _ =>
-                let γ0_0 := associated_functions_and_methods.Pair.Get_0 γ in
-                let γ0_1 := associated_functions_and_methods.Pair.Get_1 γ in
+                let γ0_0 :=
+                  (M.var "associated_functions_and_methods::Pair::Get_0") γ in
+                let γ0_1 :=
+                  (M.var "associated_functions_and_methods::Pair::Get_1") γ in
                 let* first := M.copy γ0_0 in
                 let* second := M.copy γ0_1 in
-                let* _ : Ty.tuple :=
-                  let* _ : Ty.tuple :=
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str "Destroying Pair(") in
-                    let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str ", ") in
-                    let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str ")
+                let* _ :=
+                  let* _ :=
+                    let* α0 := M.read (mk_str "Destroying Pair(") in
+                    let* α1 := M.read (mk_str ", ") in
+                    let* α2 := M.read (mk_str ")
 ") in
-                    let* α3 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                      M.alloc [ α0; α1; α2 ] in
-                    let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    let* α3 := M.alloc [ α0; α1; α2 ] in
+                    let* α4 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::rt::Argument")
                               [])::["new_display"]
                           (borrow first)) in
-                    let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    let* α5 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::rt::Argument")
                               [])::["new_display"]
                           (borrow second)) in
-                    let* α6 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                      M.alloc [ α4; α5 ] in
-                    let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    let* α6 := M.alloc [ α4; α5 ] in
+                    let* α7 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::Arguments")
                               [])::["new_v1"]
                           (pointer_coercion "Unsize" (borrow α3))
                           (pointer_coercion "Unsize" (borrow α6))) in
-                    let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+                    let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
                     M.alloc α8 in
                   M.alloc tt in
                 M.alloc tt
@@ -485,18 +439,15 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* rectangle :
-        Ty.apply (Ty.path "associated_functions_and_methods::Rectangle") [] :=
-      let* α0 :
-          Ty.apply (Ty.path "associated_functions_and_methods::Point") [] :=
+    let* rectangle :=
+      let* α0 :=
         M.call
           (Ty.apply
               (Ty.path "associated_functions_and_methods::Point")
               [])::["origin"] in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 :
-          Ty.apply (Ty.path "associated_functions_and_methods::Point") [] :=
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α3 :=
         M.call
           ((Ty.apply
                 (Ty.path "associated_functions_and_methods::Point")
@@ -508,90 +459,67 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           associated_functions_and_methods.Rectangle.p1 := α0;
           associated_functions_and_methods.Rectangle.p2 := α3;
         |} in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Rectangle perimeter: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Rectangle perimeter: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "f64" :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply
                   (Ty.path "associated_functions_and_methods::Rectangle")
                   [])::["perimeter"]
               (borrow rectangle)) in
-        let* α4 : Ty.path "f64" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Rectangle area: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Rectangle area: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "f64" :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply
                   (Ty.path "associated_functions_and_methods::Rectangle")
                   [])::["area"]
               (borrow rectangle)) in
-        let* α4 : Ty.path "f64" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* square :
-        Ty.apply (Ty.path "associated_functions_and_methods::Rectangle") [] :=
-      let* α0 :
-          Ty.apply (Ty.path "associated_functions_and_methods::Point") [] :=
+    let* square :=
+      let* α0 :=
         M.call
           (Ty.apply
               (Ty.path "associated_functions_and_methods::Point")
               [])::["origin"] in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 :
-          Ty.apply (Ty.path "associated_functions_and_methods::Point") [] :=
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α3 :=
         M.call
           ((Ty.apply
                 (Ty.path "associated_functions_and_methods::Point")
@@ -603,10 +531,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           associated_functions_and_methods.Rectangle.p1 := α0;
           associated_functions_and_methods.Rectangle.p2 := α3;
         |} in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.tuple :=
+    let* _ :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 :=
         M.call
           ((Ty.apply
                 (Ty.path "associated_functions_and_methods::Rectangle")
@@ -615,22 +543,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α0
             α1) in
       M.alloc α2 in
-    let* pair :
-        Ty.apply (Ty.path "associated_functions_and_methods::Pair") [] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* pair :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [Ty.path "i32";
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             ((Integer.of_Z 1) : Ty.path "i32")) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -638,18 +559,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             ((Integer.of_Z 2) : Ty.path "i32")) in
       M.alloc (associated_functions_and_methods.Pair.Build_t α0 α1) in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply (Ty.path "associated_functions_and_methods::Pair") [] :=
-        M.read pair in
-      let* α1 : Ty.tuple :=
+    let* _ :=
+      let* α0 := M.read pair in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "associated_functions_and_methods::Pair")
                 [])::["destroy"]
             α0) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

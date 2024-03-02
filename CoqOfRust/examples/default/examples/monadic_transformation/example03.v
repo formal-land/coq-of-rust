@@ -11,22 +11,14 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ :
-        Ty.tuple
-          (Ty.path "i32")
-          (Ty.path "i32")
-          (Ty.path "i32")
-          (Ty.path "i32") :=
+    let* _ :=
       M.alloc
         ((Integer.of_Z 1) : Ty.path "i32",
           (Integer.of_Z 2) : Ty.path "i32",
           (Integer.of_Z 3) : Ty.path "i32",
           (Integer.of_Z 4) : Ty.path "i32") in
-    let* _ :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "array") [Ty.path "i32"] :=
+    let* _ :=
+      let* α0 :=
         M.alloc
           [
             (Integer.of_Z 5) : Ty.path "i32";
@@ -34,27 +26,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 7) : Ty.path "i32";
             (Integer.of_Z 8) : Ty.path "i32"
           ] in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "i32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α1 :=
         M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "i32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read α1 in
-      let* α3 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α2 := M.read α1 in
+      let* α3 :=
         M.call
           ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
             (pointer_coercion "Unsize" α2)) in
       M.alloc α3 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -18,10 +18,10 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "i32") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := Ty.path "i32") (Trait := ℐ))) in
-      let* α1 : Ty.path "i32" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α1; |}
     | _, _ => M.impossible
     end.
@@ -48,7 +48,7 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest.
     match 𝜏, α with
     | [], [value] =>
       let* value := M.alloc value in
-      let* α0 : Ty.path "i32" := M.read value in
+      let* α0 := M.read value in
       M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α0; |}
     | _, _ => M.impossible
     end.

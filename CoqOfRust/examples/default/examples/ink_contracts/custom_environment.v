@@ -14,12 +14,12 @@ Section Impl_core_default_Default_for_custom_environment_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (custom_environment.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -44,7 +44,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "custom_environment::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -53,11 +53,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "custom_environment::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "custom_environment::AccountId") []
           ] in
@@ -122,36 +118,36 @@ Section Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
-      let* α2 : Ty.function [] (Ty.path "u128") :=
+      let* α1 := M.call α0 in
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α3 : Ty.path "u128" := M.call α2 in
-      let* α4 : Ty.function [] (Ty.path "u128") :=
+      let* α3 := M.call α2 in
+      let* α4 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α5 : Ty.path "u128" := M.call α4 in
-      let* α6 : Ty.function [] (Ty.path "u128") :=
+      let* α5 := M.call α4 in
+      let* α6 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α7 : Ty.path "u128" := M.call α6 in
-      let* α8 : Ty.function [] (Ty.path "u128") :=
+      let* α7 := M.call α6 in
+      let* α8 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α9 : Ty.path "u128" := M.call α8 in
+      let* α9 := M.call α8 in
       M.pure
         {|
           custom_environment.EventWithTopics.first_topic := α1;
@@ -186,12 +182,8 @@ Section Impl_custom_environment_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "custom_environment::Env") []] :=
-        M.read self in
-      M.read (custom_environment.Env.Get_caller (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "custom_environment::Env::Get_caller") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -209,9 +201,8 @@ Section Impl_custom_environment_Env.
     | [], [self; _event] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -234,9 +225,8 @@ Section Impl_custom_environment_Topics.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -270,8 +260,7 @@ Section Impl_custom_environment_Topics.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function [] (Ty.apply (Ty.path "custom_environment::Topics") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "custom_environment::Topics") [])
@@ -294,36 +283,27 @@ Section Impl_custom_environment_Topics.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "custom_environment::Topics") []] :=
-          M.read self in
-        let* α1 : Ty.apply (Ty.path "custom_environment::Env") [] :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "custom_environment::Topics") [])::["env"]
               (borrow (deref α0))) in
-        let* α2 : Ty.apply (Ty.path "custom_environment::Env") [] :=
-          M.alloc α1 in
-        let* α3 :
-            Ty.function
-              []
-              (Ty.apply (Ty.path "custom_environment::EventWithTopics") []) :=
+        let* α2 := M.alloc α1 in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             core.default.Default.default
               (Self :=
                 Ty.apply (Ty.path "custom_environment::EventWithTopics") [])
               (Trait := ℐ))) in
-        let* α4 : Ty.apply (Ty.path "custom_environment::EventWithTopics") [] :=
-          M.call α3 in
-        let* α5 : Ty.tuple :=
+        let* α4 := M.call α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "custom_environment::Env") [])::["emit_event"]
               (borrow α2)
               (custom_environment.Event.EventWithTopics α4)) in
         M.alloc α5 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.

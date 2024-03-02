@@ -11,9 +11,9 @@ Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [a; b] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
-    let* α0 : Ty.path "i32" := M.read a in
-    let* α1 : Ty.path "i32" := M.read b in
-    BinOp.Panic.add α0 α1
+    let* α0 := M.read a in
+    let* α1 := M.read b in
+    (M.var "BinOp::Panic::add") α0 α1
   | _, _ => M.impossible
   end.
 
@@ -31,23 +31,23 @@ Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [a; b] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.path "i32" := M.read b in
-      let* α1 : Ty.path "bool" :=
-        M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : Ty.path "i32")) in
-      let* α2 : Ty.path "bool" := M.read (use α1) in
+    let* _ :=
+      let* α0 := M.read b in
+      let* α1 :=
+        M.alloc
+          ((M.var "BinOp::Pure::eq") α0 ((Integer.of_Z 0) : Ty.path "i32")) in
+      let* α2 := M.read (use α1) in
       if α2 then
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Divide-by-zero error") in
-        let* α1 : Ty.path "never" := M.call (std.panicking.begin_panic α0) in
-        let* α2 : Ty.tuple := never_to_any α1 in
+        let* α0 := M.read (mk_str "Divide-by-zero error") in
+        let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+        let* α2 := never_to_any α1 in
         M.alloc α2
       else
         M.alloc tt in
-    let* α0 : Ty.path "i32" := M.read a in
-    let* α1 : Ty.path "i32" := M.read b in
-    let* α2 : Ty.path "i32" := BinOp.Panic.div α0 α1 in
-    let* α0 : Ty.path "i32" := M.alloc α2 in
+    let* α0 := M.read a in
+    let* α1 := M.read b in
+    let* α2 := (M.var "BinOp::Panic::div") α0 α1 in
+    let* α0 := M.alloc α2 in
     M.read α0
   | _, _ => M.impossible
   end.

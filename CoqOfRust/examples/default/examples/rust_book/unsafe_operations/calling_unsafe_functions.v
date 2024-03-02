@@ -19,11 +19,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* some_vector :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "u32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "array") [Ty.path "u32"] :=
+    let* some_vector :=
+      let* α0 :=
         M.alloc
           [
             (Integer.of_Z 1) : Ty.path "u32";
@@ -31,28 +28,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 3) : Ty.path "u32";
             (Integer.of_Z 4) : Ty.path "u32"
           ] in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "u32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α1 :=
         M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "u32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read α1 in
-      let* α3 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α2 := M.read α1 in
+      let* α3 :=
         M.call
           ((Ty.apply (Ty.path "slice") [Ty.path "u32"])::["into_vec"]
             (pointer_coercion "Unsize" α2)) in
       M.alloc α3 in
-    let* pointer : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
+    let* pointer :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -60,8 +45,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["as_ptr"]
             (borrow some_vector)) in
       M.alloc α0 in
-    let* length : Ty.path "usize" :=
-      let* α0 : Ty.path "usize" :=
+    let* length :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -69,45 +54,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["len"]
             (borrow some_vector)) in
       M.alloc α0 in
-    let* my_slice :
-        Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "slice") [Ty.path "u32"]] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"] := M.read pointer in
-      let* α1 : Ty.path "usize" := M.read length in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "slice") [Ty.path "u32"]] :=
-        M.call (core.slice.raw.from_raw_parts α0 α1) in
+    let* my_slice :=
+      let* α0 := M.read pointer in
+      let* α1 := M.read length in
+      let* α2 := M.call ((M.var "core::slice::raw::from_raw_parts") α0 α1) in
       M.alloc α2 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "slice") [Ty.path "u32"]] :=
+    let* _ :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "u32";
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["as_slice"]
             (borrow some_vector)) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "slice") [Ty.path "u32"]] :=
-        M.alloc α0 in
-      let* α2 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "slice") [Ty.path "u32"]]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "slice") [Ty.path "u32"]]]) :=
-        M.alloc (borrow α1, borrow my_slice) in
+      let* α1 := M.alloc α0 in
+      let* α2 := M.alloc (borrow α1, borrow my_slice) in
       match_operator
         α2
         [
@@ -119,19 +80,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "ref")
-                            [Ty.apply (Ty.path "slice") [Ty.path "u32"]]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "ref")
-                            [Ty.apply (Ty.path "slice") [Ty.path "u32"]]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -143,60 +92,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "ref")
                         [Ty.apply (Ty.path "slice") [Ty.path "u32"]])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply (Ty.path "slice") [Ty.path "u32"]]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply (Ty.path "slice") [Ty.path "u32"]]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "slice") [Ty.path "u32"]]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "slice") [Ty.path "u32"]]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

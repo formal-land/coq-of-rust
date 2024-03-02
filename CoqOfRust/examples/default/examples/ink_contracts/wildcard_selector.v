@@ -9,9 +9,8 @@ fn decode_input<T>() -> Result<T, ()> {
 Definition decode_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [T], [] =>
-    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-      M.read (mk_str "not implemented") in
-    let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+    let* α0 := M.read (mk_str "not implemented") in
+    let* α1 := M.call ((M.var "core::panicking::panic") α0) in
     never_to_any α1
   | _, _ => M.impossible
   end.
@@ -48,18 +47,8 @@ Section Impl_wildcard_selector_WildcardSelector.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.tuple
-                (Ty.apply (Ty.path "array") [Ty.path "u8"])
-                (Ty.apply (Ty.path "alloc::string::String") []);
-              Ty.tuple] :=
-        M.call wildcard_selector.decode_input in
-      let* α1 :
-          Ty.tuple
-            (Ty.apply (Ty.path "array") [Ty.path "u8"])
-            (Ty.apply (Ty.path "alloc::string::String") []) :=
+      let* α0 := M.call (M.var "wildcard_selector::decode_input") in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::result::Result")
@@ -68,12 +57,8 @@ Section Impl_wildcard_selector_WildcardSelector.
                     (Ty.apply (Ty.path "alloc::string::String") []);
                   Ty.tuple])::["unwrap"]
             α0) in
-      let* α2 :
-          Ty.tuple
-            (Ty.apply (Ty.path "array") [Ty.path "u8"])
-            (Ty.apply (Ty.path "alloc::string::String") []) :=
-        M.alloc α1 in
-      let* α3 : Ty.tuple :=
+      let* α2 := M.alloc α1 in
+      let* α3 :=
         match_operator
           α2
           [
@@ -85,45 +70,34 @@ Section Impl_wildcard_selector_WildcardSelector.
                 let γ0_1 := Tuple.Access.right γ in
                 let* _selector := M.copy γ0_0 in
                 let* _message := M.copy γ0_1 in
-                let* _ : Ty.tuple :=
-                  let* _ : Ty.tuple :=
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str "Wildcard selector: ") in
-                    let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str ", message: ") in
-                    let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str "
+                let* _ :=
+                  let* _ :=
+                    let* α0 := M.read (mk_str "Wildcard selector: ") in
+                    let* α1 := M.read (mk_str ", message: ") in
+                    let* α2 := M.read (mk_str "
 ") in
-                    let* α3 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                      M.alloc [ α0; α1; α2 ] in
-                    let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    let* α3 := M.alloc [ α0; α1; α2 ] in
+                    let* α4 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::rt::Argument")
                               [])::["new_debug"]
                           (borrow _selector)) in
-                    let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    let* α5 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::rt::Argument")
                               [])::["new_display"]
                           (borrow _message)) in
-                    let* α6 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                      M.alloc [ α4; α5 ] in
-                    let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    let* α6 := M.alloc [ α4; α5 ] in
+                    let* α7 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::Arguments")
                               [])::["new_v1"]
                           (pointer_coercion "Unsize" (borrow α3))
                           (pointer_coercion "Unsize" (borrow α6))) in
-                    let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+                    let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
                     M.alloc α8 in
                   M.alloc tt in
                 M.alloc tt
@@ -148,38 +122,28 @@ Section Impl_wildcard_selector_WildcardSelector.
     | [], [self; _message] =>
       let* self := M.alloc self in
       let* _message := M.alloc _message in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "Wildcard complement message: ") in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "Wildcard complement message: ") in
+          let* α1 := M.read (mk_str "
 ") in
-          let* α2 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0; α1 ] in
-          let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α2 := M.alloc [ α0; α1 ] in
+          let* α3 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow _message)) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α3 ] in
-          let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α4 := M.alloc [ α3 ] in
+          let* α5 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+          let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
           M.alloc α6 in
         M.alloc tt in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.

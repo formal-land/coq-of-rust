@@ -15,22 +15,18 @@ Section Impl_core_default_Default_for_mother_Mapping_K_V.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function [] (Ty.apply (Ty.path "core::marker::PhantomData") [K]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "core::marker::PhantomData") [K])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "core::marker::PhantomData") [K] :=
-        M.call α0 in
-      let* α2 :
-          Ty.function [] (Ty.apply (Ty.path "core::marker::PhantomData") [V]) :=
+      let* α1 := M.call α0 in
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "core::marker::PhantomData") [V])
             (Trait := ℐ))) in
-      let* α3 : Ty.apply (Ty.path "core::marker::PhantomData") [V] :=
-        M.call α2 in
+      let* α3 := M.call α2 in
       M.pure {| mother.Mapping._key := α1; mother.Mapping._value := α3; |}
     | _, _ => M.impossible
     end.
@@ -59,9 +55,8 @@ Section Impl_mother_Mapping_K_V.
     | [], [self; _key] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -81,9 +76,8 @@ Section Impl_mother_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -106,12 +100,12 @@ Section Impl_core_default_Default_for_mother_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (mother.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -135,7 +129,7 @@ Section Impl_core_clone_Clone_for_mother_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "mother::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -144,11 +138,7 @@ Section Impl_core_clone_Clone_for_mother_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "mother::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "mother::AccountId") []
           ] in
@@ -192,19 +182,11 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "mother::AccountId") []] :=
-        M.read self in
-      let* α1 : Ty.path "u128" := M.read (mother.AccountId.Get_0 (deref α0)) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "mother::AccountId") []] :=
-        M.read other in
-      let* α3 : Ty.path "u128" := M.read (mother.AccountId.Get_0 (deref α2)) in
-      M.pure (BinOp.Pure.eq α1 α3)
+      let* α0 := M.read self in
+      let* α1 := M.read ((M.var "mother::AccountId::Get_0") (deref α0)) in
+      let* α2 := M.read other in
+      let* α3 := M.read ((M.var "mother::AccountId::Get_0") (deref α2)) in
+      M.pure ((M.var "BinOp::Pure::eq") α1 α3)
     | _, _ => M.impossible
     end.
   
@@ -238,7 +220,7 @@ Section Impl_core_cmp_Eq_for_mother_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.tuple :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -277,20 +259,7 @@ Section Impl_core_default_Default_for_mother_Bids.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [Ty.apply
-                      (Ty.path "core::option::Option")
-                      [Ty.tuple
-                          (Ty.apply (Ty.path "mother::AccountId") [])
-                          (Ty.path "u128")];
-                    Ty.apply (Ty.path "alloc::alloc::Global") []];
-                Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -306,19 +275,7 @@ Section Impl_core_default_Default_for_mother_Bids.
                       Ty.apply (Ty.path "alloc::alloc::Global") []];
                   Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.tuple
-                        (Ty.apply (Ty.path "mother::AccountId") [])
-                        (Ty.path "u128")];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (mother.Bids.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -351,35 +308,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.tuple
-                                (Ty.apply (Ty.path "mother::AccountId") [])
-                                (Ty.path "u128")];
-                          Ty.apply (Ty.path "alloc::alloc::Global") []];
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.tuple
-                                (Ty.apply (Ty.path "mother::AccountId") [])
-                                (Ty.path "u128")];
-                          Ty.apply (Ty.path "alloc::alloc::Global") []];
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self :=
@@ -407,16 +336,12 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids.
                       Ty.apply (Ty.path "alloc::alloc::Global") []];
                   Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Bids") []] :=
-        M.read self in
-      let* α2 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Bids") []] :=
-        M.read other in
+      let* α1 := M.read self in
+      let* α2 := M.read other in
       M.call
         (α0
-          (borrow (mother.Bids.Get_0 (deref α1)))
-          (borrow (mother.Bids.Get_0 (deref α2))))
+          (borrow ((M.var "mother::Bids::Get_0") (deref α1)))
+          (borrow ((M.var "mother::Bids::Get_0") (deref α2))))
     | _, _ => M.impossible
     end.
   
@@ -450,7 +375,7 @@ Section Impl_core_cmp_Eq_for_mother_Bids.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.tuple :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -492,32 +417,7 @@ Section Impl_core_clone_Clone_for_mother_Bids.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.tuple
-                                (Ty.apply (Ty.path "mother::AccountId") [])
-                                (Ty.path "u128")];
-                          Ty.apply (Ty.path "alloc::alloc::Global") []];
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [Ty.apply
-                      (Ty.path "core::option::Option")
-                      [Ty.tuple
-                          (Ty.apply (Ty.path "mother::AccountId") [])
-                          (Ty.path "u128")];
-                    Ty.apply (Ty.path "alloc::alloc::Global") []];
-                Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self :=
@@ -533,22 +433,9 @@ Section Impl_core_clone_Clone_for_mother_Bids.
                       Ty.apply (Ty.path "alloc::alloc::Global") []];
                   Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Bids") []] :=
-        M.read self in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.tuple
-                        (Ty.apply (Ty.path "mother::AccountId") [])
-                        (Ty.path "u128")];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call (α0 (borrow (mother.Bids.Get_0 (deref α1)))) in
+      let* α1 := M.read self in
+      let* α2 :=
+        M.call (α0 (borrow ((M.var "mother::Bids::Get_0") (deref α1)))) in
       M.pure (mother.Bids.Build_t α2)
     | _, _ => M.impossible
     end.
@@ -583,27 +470,17 @@ Section Impl_core_cmp_PartialEq_for_mother_Outline.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* __self_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "mother::Outline") []] :=
-          M.read self in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __self_tag :=
+        let* α0 := M.read self in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* __arg1_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "mother::Outline") []] :=
-          M.read other in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __arg1_tag :=
+        let* α0 := M.read other in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* α0 : Ty.path "isize" := M.read __self_tag in
-      let* α1 : Ty.path "isize" := M.read __arg1_tag in
-      let* α0 : Ty.path "bool" := M.alloc (BinOp.Pure.eq α0 α1) in
+      let* α0 := M.read __self_tag in
+      let* α1 := M.read __arg1_tag in
+      let* α0 := M.alloc ((M.var "BinOp::Pure::eq") α0 α1) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -662,7 +539,7 @@ Section Impl_core_clone_Clone_for_mother_Outline.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "mother::Outline") [] :=
+      let* α0 :=
         match_operator
           self
           [
@@ -733,36 +610,20 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* __self_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []] :=
-          M.read self in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __self_tag :=
+        let* α0 := M.read self in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* __arg1_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []] :=
-          M.read other in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __arg1_tag :=
+        let* α0 := M.read other in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* α0 : Ty.path "isize" := M.read __self_tag in
-      let* α1 : Ty.path "isize" := M.read __arg1_tag in
-      let* α2 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []] :=
-        M.read self in
-      let* α3 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []] :=
-        M.read other in
-      let* α4 :
-          Ty.tuple
-            (Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "mother::Status") []]) :=
-        M.alloc (α2, α3) in
-      let* α5 : Ty.path "bool" :=
+      let* α0 := M.read __self_tag in
+      let* α1 := M.read __arg1_tag in
+      let* α2 := M.read self in
+      let* α3 := M.read other in
+      let* α4 := M.alloc (α2, α3) in
+      let* α5 :=
         match_operator
           α4
           [
@@ -778,7 +639,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Status.EndingPeriod _ =>
-                  let γ2_0 := mother.Status.Get_EndingPeriod_0 γ0_0 in
+                  let γ2_0 :=
+                    (M.var "mother::Status::Get_EndingPeriod_0") γ0_0 in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -786,15 +648,14 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Status.EndingPeriod _ =>
-                    let γ2_0 := mother.Status.Get_EndingPeriod_0 γ0_1 in
+                    let γ2_0 :=
+                      (M.var "mother::Status::Get_EndingPeriod_0") γ0_1 in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-                      M.read __self_0 in
-                    let* α1 : Ty.path "u32" := M.read (deref α0) in
-                    let* α2 : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-                      M.read __arg1_0 in
-                    let* α3 : Ty.path "u32" := M.read (deref α2) in
-                    M.alloc (BinOp.Pure.eq α1 α3)
+                    let* α0 := M.read __self_0 in
+                    let* α1 := M.read (deref α0) in
+                    let* α2 := M.read __arg1_0 in
+                    let* α3 := M.read (deref α2) in
+                    M.alloc ((M.var "BinOp::Pure::eq") α1 α3)
                   | _ => M.break_match
                   end
                 | _ => M.break_match
@@ -813,7 +674,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Status.Ended _ =>
-                  let γ2_0 := mother.Status.Get_Ended_0 γ0_0 in
+                  let γ2_0 := (M.var "mother::Status::Get_Ended_0") γ0_0 in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -821,33 +682,17 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Status.Ended _ =>
-                    let γ2_0 := mother.Status.Get_Ended_0 γ0_1 in
+                    let γ2_0 := (M.var "mother::Status::Get_Ended_0") γ0_1 in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 :
-                        Ty.function
-                          [Ty.apply
-                              (Ty.path "ref")
-                              [Ty.apply (Ty.path "mother::Outline") []];
-                            Ty.apply
-                              (Ty.path "ref")
-                              [Ty.apply (Ty.path "mother::Outline") []]]
-                          (Ty.path "bool") :=
+                    let* α0 :=
                       ltac:(M.get_method (fun ℐ =>
                         core.cmp.PartialEq.eq
                           (Self := Ty.apply (Ty.path "mother::Outline") [])
                           (Rhs := Ty.apply (Ty.path "mother::Outline") [])
                           (Trait := ℐ))) in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "mother::Outline") []] :=
-                      M.read __self_0 in
-                    let* α2 :
-                        Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "mother::Outline") []] :=
-                      M.read __arg1_0 in
-                    let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
+                    let* α1 := M.read __self_0 in
+                    let* α2 := M.read __arg1_0 in
+                    let* α3 := M.call (α0 α1 α2) in
                     M.alloc α3
                   | _ => M.break_match
                   end
@@ -867,7 +712,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Status.RfDelay _ =>
-                  let γ2_0 := mother.Status.Get_RfDelay_0 γ0_0 in
+                  let γ2_0 := (M.var "mother::Status::Get_RfDelay_0") γ0_0 in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -875,15 +720,13 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Status.RfDelay _ =>
-                    let γ2_0 := mother.Status.Get_RfDelay_0 γ0_1 in
+                    let γ2_0 := (M.var "mother::Status::Get_RfDelay_0") γ0_1 in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-                      M.read __self_0 in
-                    let* α1 : Ty.path "u32" := M.read (deref α0) in
-                    let* α2 : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-                      M.read __arg1_0 in
-                    let* α3 : Ty.path "u32" := M.read (deref α2) in
-                    M.alloc (BinOp.Pure.eq α1 α3)
+                    let* α0 := M.read __self_0 in
+                    let* α1 := M.read (deref α0) in
+                    let* α2 := M.read __arg1_0 in
+                    let* α3 := M.read (deref α2) in
+                    M.alloc ((M.var "BinOp::Pure::eq") α1 α3)
                   | _ => M.break_match
                   end
                 | _ => M.break_match
@@ -892,9 +735,10 @@ Section Impl_core_cmp_PartialEq_for_mother_Status.
               Ty.path "bool";
             fun γ => (M.alloc true) : Ty.path "bool"
           ] in
-      let* α6 : Ty.path "bool" := M.read α5 in
-      let* α0 : Ty.path "bool" :=
-        M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
+      let* α6 := M.read α5 in
+      let* α0 :=
+        M.alloc
+          ((M.var "BinOp::Pure::and") ((M.var "BinOp::Pure::eq") α0 α1) α6) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -929,7 +773,7 @@ Section Impl_core_cmp_Eq_for_mother_Status.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.tuple :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -969,7 +813,7 @@ Section Impl_core_clone_Clone_for_mother_Status.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "mother::Status") [] :=
+      let* α0 :=
         match_operator
           self
           [
@@ -1001,19 +845,15 @@ Section Impl_core_clone_Clone_for_mother_Status.
               let* α0 := M.read γ in
               match α0 with
               | mother.Status.EndingPeriod _ =>
-                let γ1_0 := mother.Status.Get_EndingPeriod_0 γ in
+                let γ1_0 := (M.var "mother::Status::Get_EndingPeriod_0") γ in
                 let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :
-                    Ty.function
-                      [Ty.apply (Ty.path "ref") [Ty.path "u32"]]
-                      (Ty.path "u32") :=
+                let* α0 :=
                   ltac:(M.get_method (fun ℐ =>
                     core.clone.Clone.clone
                       (Self := Ty.path "u32")
                       (Trait := ℐ))) in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-                  M.read __self_0 in
-                let* α2 : Ty.path "u32" := M.call (α0 α1) in
+                let* α1 := M.read __self_0 in
+                let* α2 := M.call (α0 α1) in
                 M.alloc (mother.Status.EndingPeriod α2)
               | _ => M.break_match
               end) :
@@ -1025,25 +865,15 @@ Section Impl_core_clone_Clone_for_mother_Status.
               let* α0 := M.read γ in
               match α0 with
               | mother.Status.Ended _ =>
-                let γ1_0 := mother.Status.Get_Ended_0 γ in
+                let γ1_0 := (M.var "mother::Status::Get_Ended_0") γ in
                 let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :
-                    Ty.function
-                      [Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "mother::Outline") []]]
-                      (Ty.apply (Ty.path "mother::Outline") []) :=
+                let* α0 :=
                   ltac:(M.get_method (fun ℐ =>
                     core.clone.Clone.clone
                       (Self := Ty.apply (Ty.path "mother::Outline") [])
                       (Trait := ℐ))) in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply (Ty.path "mother::Outline") []] :=
-                  M.read __self_0 in
-                let* α2 : Ty.apply (Ty.path "mother::Outline") [] :=
-                  M.call (α0 α1) in
+                let* α1 := M.read __self_0 in
+                let* α2 := M.call (α0 α1) in
                 M.alloc (mother.Status.Ended α2)
               | _ => M.break_match
               end) :
@@ -1055,19 +885,15 @@ Section Impl_core_clone_Clone_for_mother_Status.
               let* α0 := M.read γ in
               match α0 with
               | mother.Status.RfDelay _ =>
-                let γ1_0 := mother.Status.Get_RfDelay_0 γ in
+                let γ1_0 := (M.var "mother::Status::Get_RfDelay_0") γ in
                 let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :
-                    Ty.function
-                      [Ty.apply (Ty.path "ref") [Ty.path "u32"]]
-                      (Ty.path "u32") :=
+                let* α0 :=
                   ltac:(M.get_method (fun ℐ =>
                     core.clone.Clone.clone
                       (Self := Ty.path "u32")
                       (Trait := ℐ))) in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-                  M.read __self_0 in
-                let* α2 : Ty.path "u32" := M.call (α0 α1) in
+                let* α1 := M.read __self_0 in
+                let* α2 := M.call (α0 α1) in
                 M.alloc (mother.Status.RfDelay α2)
               | _ => M.break_match
               end) :
@@ -1107,148 +933,78 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "alloc::string::String") []];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "alloc::string::String") []]]
-            (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "alloc::string::String") [])
             (Rhs := Ty.apply (Ty.path "alloc::string::String") [])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α2 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read other in
-      let* α3 : Ty.path "bool" :=
+      let* α1 := M.read self in
+      let* α2 := M.read other in
+      let* α3 :=
         M.call
           (α0
-            (borrow (mother.Auction.Get_name (deref α1)))
-            (borrow (mother.Auction.Get_name (deref α2)))) in
-      let* α4 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "array") [Ty.path "u8"]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "array") [Ty.path "u8"]]]
-            (Ty.path "bool") :=
+            (borrow ((M.var "mother::Auction::Get_name") (deref α1)))
+            (borrow ((M.var "mother::Auction::Get_name") (deref α2)))) in
+      let* α4 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
             (Rhs := Ty.apply (Ty.path "array") [Ty.path "u8"])
             (Trait := ℐ))) in
-      let* α5 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α6 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read other in
-      let* α7 : Ty.path "bool" :=
+      let* α5 := M.read self in
+      let* α6 := M.read other in
+      let* α7 :=
         M.call
           (α4
-            (borrow (mother.Auction.Get_subject (deref α5)))
-            (borrow (mother.Auction.Get_subject (deref α6)))) in
-      let* α8 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Bids") []];
-              Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Bids") []]]
-            (Ty.path "bool") :=
+            (borrow ((M.var "mother::Auction::Get_subject") (deref α5)))
+            (borrow ((M.var "mother::Auction::Get_subject") (deref α6)))) in
+      let* α8 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "mother::Bids") [])
             (Rhs := Ty.apply (Ty.path "mother::Bids") [])
             (Trait := ℐ))) in
-      let* α9 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α10 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read other in
-      let* α11 : Ty.path "bool" :=
+      let* α9 := M.read self in
+      let* α10 := M.read other in
+      let* α11 :=
         M.call
           (α8
-            (borrow (mother.Auction.Get_bids (deref α9)))
-            (borrow (mother.Auction.Get_bids (deref α10)))) in
-      let* α12 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "array") [Ty.path "u32"]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "array") [Ty.path "u32"]]]
-            (Ty.path "bool") :=
+            (borrow ((M.var "mother::Auction::Get_bids") (deref α9)))
+            (borrow ((M.var "mother::Auction::Get_bids") (deref α10)))) in
+      let* α12 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "array") [Ty.path "u32"])
             (Rhs := Ty.apply (Ty.path "array") [Ty.path "u32"])
             (Trait := ℐ))) in
-      let* α13 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α14 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read other in
-      let* α15 : Ty.path "bool" :=
+      let* α13 := M.read self in
+      let* α14 := M.read other in
+      let* α15 :=
         M.call
           (α12
-            (borrow (mother.Auction.Get_terms (deref α13)))
-            (borrow (mother.Auction.Get_terms (deref α14)))) in
-      let* α16 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []];
-              Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []]]
-            (Ty.path "bool") :=
+            (borrow ((M.var "mother::Auction::Get_terms") (deref α13)))
+            (borrow ((M.var "mother::Auction::Get_terms") (deref α14)))) in
+      let* α16 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "mother::Status") [])
             (Rhs := Ty.apply (Ty.path "mother::Status") [])
             (Trait := ℐ))) in
-      let* α17 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α18 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read other in
-      let* α19 : Ty.path "bool" :=
+      let* α17 := M.read self in
+      let* α18 := M.read other in
+      let* α19 :=
         M.call
           (α16
-            (borrow (mother.Auction.Get_status (deref α17)))
-            (borrow (mother.Auction.Get_status (deref α18)))) in
-      let* α20 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α21 : Ty.path "bool" :=
-        M.read (mother.Auction.Get_finalized (deref α20)) in
-      let* α22 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read other in
-      let* α23 : Ty.path "bool" :=
-        M.read (mother.Auction.Get_finalized (deref α22)) in
-      let* α24 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.path "u8";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.path "u8";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.path "bool") :=
+            (borrow ((M.var "mother::Auction::Get_status") (deref α17)))
+            (borrow ((M.var "mother::Auction::Get_status") (deref α18)))) in
+      let* α20 := M.read self in
+      let* α21 :=
+        M.read ((M.var "mother::Auction::Get_finalized") (deref α20)) in
+      let* α22 := M.read other in
+      let* α23 :=
+        M.read ((M.var "mother::Auction::Get_finalized") (deref α22)) in
+      let* α24 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self :=
@@ -1260,24 +1016,24 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction.
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α25 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α26 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read other in
-      let* α27 : Ty.path "bool" :=
+      let* α25 := M.read self in
+      let* α26 := M.read other in
+      let* α27 :=
         M.call
           (α24
-            (borrow (mother.Auction.Get_vector (deref α25)))
-            (borrow (mother.Auction.Get_vector (deref α26)))) in
+            (borrow ((M.var "mother::Auction::Get_vector") (deref α25)))
+            (borrow ((M.var "mother::Auction::Get_vector") (deref α26)))) in
       M.pure
-        (BinOp.Pure.and
-          (BinOp.Pure.and
-            (BinOp.Pure.and
-              (BinOp.Pure.and (BinOp.Pure.and (BinOp.Pure.and α3 α7) α11) α15)
+        ((M.var "BinOp::Pure::and")
+          ((M.var "BinOp::Pure::and")
+            ((M.var "BinOp::Pure::and")
+              ((M.var "BinOp::Pure::and")
+                ((M.var "BinOp::Pure::and")
+                  ((M.var "BinOp::Pure::and") α3 α7)
+                  α11)
+                α15)
               α19)
-            (BinOp.Pure.eq α21 α23))
+            ((M.var "BinOp::Pure::eq") α21 α23))
           α27)
     | _, _ => M.impossible
     end.
@@ -1312,7 +1068,7 @@ Section Impl_core_cmp_Eq_for_mother_Auction.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.tuple :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -1418,99 +1174,58 @@ Section Impl_core_clone_Clone_for_mother_Auction.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "alloc::string::String") []]]
-            (Ty.apply (Ty.path "alloc::string::String") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := Ty.apply (Ty.path "alloc::string::String") [])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
-        M.call (α0 (borrow (mother.Auction.Get_name (deref α1)))) in
-      let* α3 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "array") [Ty.path "u8"]]]
-            (Ty.apply (Ty.path "array") [Ty.path "u8"]) :=
+      let* α1 := M.read self in
+      let* α2 :=
+        M.call (α0 (borrow ((M.var "mother::Auction::Get_name") (deref α1)))) in
+      let* α3 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
             (Trait := ℐ))) in
-      let* α4 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α5 : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-        M.call (α3 (borrow (mother.Auction.Get_subject (deref α4)))) in
-      let* α6 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Bids") []]]
-            (Ty.apply (Ty.path "mother::Bids") []) :=
+      let* α4 := M.read self in
+      let* α5 :=
+        M.call
+          (α3 (borrow ((M.var "mother::Auction::Get_subject") (deref α4)))) in
+      let* α6 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := Ty.apply (Ty.path "mother::Bids") [])
             (Trait := ℐ))) in
-      let* α7 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α8 : Ty.apply (Ty.path "mother::Bids") [] :=
-        M.call (α6 (borrow (mother.Auction.Get_bids (deref α7)))) in
-      let* α9 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "array") [Ty.path "u32"]]]
-            (Ty.apply (Ty.path "array") [Ty.path "u32"]) :=
+      let* α7 := M.read self in
+      let* α8 :=
+        M.call (α6 (borrow ((M.var "mother::Auction::Get_bids") (deref α7)))) in
+      let* α9 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := Ty.apply (Ty.path "array") [Ty.path "u32"])
             (Trait := ℐ))) in
-      let* α10 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α11 : Ty.apply (Ty.path "array") [Ty.path "u32"] :=
-        M.call (α9 (borrow (mother.Auction.Get_terms (deref α10)))) in
-      let* α12 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Status") []]]
-            (Ty.apply (Ty.path "mother::Status") []) :=
+      let* α10 := M.read self in
+      let* α11 :=
+        M.call
+          (α9 (borrow ((M.var "mother::Auction::Get_terms") (deref α10)))) in
+      let* α12 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := Ty.apply (Ty.path "mother::Status") [])
             (Trait := ℐ))) in
-      let* α13 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α14 : Ty.apply (Ty.path "mother::Status") [] :=
-        M.call (α12 (borrow (mother.Auction.Get_status (deref α13)))) in
-      let* α15 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "bool"]]
-            (Ty.path "bool") :=
+      let* α13 := M.read self in
+      let* α14 :=
+        M.call
+          (α12 (borrow ((M.var "mother::Auction::Get_status") (deref α13)))) in
+      let* α15 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone (Self := Ty.path "bool") (Trait := ℐ))) in
-      let* α16 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α17 : Ty.path "bool" :=
-        M.call (α15 (borrow (mother.Auction.Get_finalized (deref α16)))) in
-      let* α18 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.path "u8";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+      let* α16 := M.read self in
+      let* α17 :=
+        M.call
+          (α15
+            (borrow ((M.var "mother::Auction::Get_finalized") (deref α16)))) in
+      let* α18 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self :=
@@ -1518,14 +1233,10 @@ Section Impl_core_clone_Clone_for_mother_Auction.
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α19 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Auction") []] :=
-        M.read self in
-      let* α20 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call (α18 (borrow (mother.Auction.Get_vector (deref α19)))) in
+      let* α19 := M.read self in
+      let* α20 :=
+        M.call
+          (α18 (borrow ((M.var "mother::Auction::Get_vector") (deref α19)))) in
       M.pure
         {|
           mother.Auction.name := α2;
@@ -1567,37 +1278,31 @@ Section Impl_core_default_Default_for_mother_Auction.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function [] (Ty.apply (Ty.path "alloc::string::String") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "alloc::string::String") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "alloc::string::String") [] := M.call α0 in
-      let* α2 : Ty.function [] (Ty.apply (Ty.path "array") [Ty.path "u8"]) :=
+      let* α1 := M.call α0 in
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
             (Trait := ℐ))) in
-      let* α3 : Ty.apply (Ty.path "array") [Ty.path "u8"] := M.call α2 in
-      let* α4 : Ty.function [] (Ty.apply (Ty.path "mother::Bids") []) :=
+      let* α3 := M.call α2 in
+      let* α4 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "mother::Bids") [])
             (Trait := ℐ))) in
-      let* α5 : Ty.apply (Ty.path "mother::Bids") [] := M.call α4 in
-      let* α6 : Ty.function [] (Ty.apply (Ty.path "array") [Ty.path "u32"]) :=
+      let* α5 := M.call α4 in
+      let* α6 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "array") [Ty.path "u32"])
             (Trait := ℐ))) in
-      let* α7 : Ty.apply (Ty.path "array") [Ty.path "u32"] := M.call α6 in
-      let* α8 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+      let* α7 := M.call α6 in
+      let* α8 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -1605,11 +1310,7 @@ Section Impl_core_default_Default_for_mother_Auction.
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α9 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call α8 in
+      let* α9 := M.call α8 in
       M.pure
         {|
           mother.Auction.name := α1;
@@ -1653,40 +1354,20 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* __self_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "mother::Failure") []] :=
-          M.read self in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __self_tag :=
+        let* α0 := M.read self in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* __arg1_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "mother::Failure") []] :=
-          M.read other in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __arg1_tag :=
+        let* α0 := M.read other in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* α0 : Ty.path "isize" := M.read __self_tag in
-      let* α1 : Ty.path "isize" := M.read __arg1_tag in
-      let* α2 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Failure") []] :=
-        M.read self in
-      let* α3 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Failure") []] :=
-        M.read other in
-      let* α4 :
-          Ty.tuple
-            (Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Failure") []])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "mother::Failure") []]) :=
-        M.alloc (α2, α3) in
-      let* α5 : Ty.path "bool" :=
+      let* α0 := M.read __self_tag in
+      let* α1 := M.read __arg1_tag in
+      let* α2 := M.read self in
+      let* α3 := M.read other in
+      let* α4 := M.alloc (α2, α3) in
+      let* α5 :=
         match_operator
           α4
           [
@@ -1702,7 +1383,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Failure.Revert _ =>
-                  let γ2_0 := mother.Failure.Get_Revert_0 γ0_0 in
+                  let γ2_0 := (M.var "mother::Failure::Get_Revert_0") γ0_0 in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -1710,34 +1391,18 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Failure.Revert _ =>
-                    let γ2_0 := mother.Failure.Get_Revert_0 γ0_1 in
+                    let γ2_0 := (M.var "mother::Failure::Get_Revert_0") γ0_1 in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 :
-                        Ty.function
-                          [Ty.apply
-                              (Ty.path "ref")
-                              [Ty.apply (Ty.path "alloc::string::String") []];
-                            Ty.apply
-                              (Ty.path "ref")
-                              [Ty.apply (Ty.path "alloc::string::String") []]]
-                          (Ty.path "bool") :=
+                    let* α0 :=
                       ltac:(M.get_method (fun ℐ =>
                         core.cmp.PartialEq.eq
                           (Self :=
                             Ty.apply (Ty.path "alloc::string::String") [])
                           (Rhs := Ty.apply (Ty.path "alloc::string::String") [])
                           (Trait := ℐ))) in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "alloc::string::String") []] :=
-                      M.read __self_0 in
-                    let* α2 :
-                        Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "alloc::string::String") []] :=
-                      M.read __arg1_0 in
-                    let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
+                    let* α1 := M.read __self_0 in
+                    let* α2 := M.read __arg1_0 in
+                    let* α3 := M.call (α0 α1 α2) in
                     M.alloc α3
                   | _ => M.break_match
                   end
@@ -1747,9 +1412,10 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure.
               Ty.path "bool";
             fun γ => (M.alloc true) : Ty.path "bool"
           ] in
-      let* α6 : Ty.path "bool" := M.read α5 in
-      let* α0 : Ty.path "bool" :=
-        M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
+      let* α6 := M.read α5 in
+      let* α0 :=
+        M.alloc
+          ((M.var "BinOp::Pure::and") ((M.var "BinOp::Pure::eq") α0 α1) α6) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1784,7 +1450,7 @@ Section Impl_core_cmp_Eq_for_mother_Failure.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.tuple :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -1822,10 +1488,8 @@ Section Impl_mother_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "mother::Env") []] :=
-        M.read self in
-      M.read (mother.Env.Get_caller (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "mother::Env::Get_caller") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -1843,9 +1507,8 @@ Section Impl_mother_Env.
     | [], [self; _event] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -1868,18 +1531,13 @@ Section Impl_core_default_Default_for_mother_Mother.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.apply (Ty.path "mother::Auction") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "mother::Auction") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "mother::Auction") [] := M.call α0 in
-      let* α2 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "mother::Mapping")
-              [Ty.apply (Ty.path "mother::AccountId") []; Ty.path "u128"]) :=
+      let* α1 := M.call α0 in
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -1887,11 +1545,7 @@ Section Impl_core_default_Default_for_mother_Mother.
                 (Ty.path "mother::Mapping")
                 [Ty.apply (Ty.path "mother::AccountId") []; Ty.path "u128"])
             (Trait := ℐ))) in
-      let* α3 :
-          Ty.apply
-            (Ty.path "mother::Mapping")
-            [Ty.apply (Ty.path "mother::AccountId") []; Ty.path "u128"] :=
-        M.call α2 in
+      let* α3 := M.call α2 in
       M.pure {| mother.Mother.auction := α1; mother.Mother.balances := α3; |}
     | _, _ => M.impossible
     end.
@@ -1916,9 +1570,8 @@ Section Impl_mother_Mother.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -1956,12 +1609,7 @@ Section Impl_mother_Mother.
     match 𝜏, α with
     | [], [auction] =>
       let* auction := M.alloc auction in
-      let* α0 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "mother::Mapping")
-              [Ty.apply (Ty.path "mother::AccountId") []; Ty.path "u128"]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -1969,12 +1617,8 @@ Section Impl_mother_Mother.
                 (Ty.path "mother::Mapping")
                 [Ty.apply (Ty.path "mother::AccountId") []; Ty.path "u128"])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "mother::Mapping")
-            [Ty.apply (Ty.path "mother::AccountId") []; Ty.path "u128"] :=
-        M.call α0 in
-      let* α2 : Ty.apply (Ty.path "mother::Auction") [] := M.read auction in
+      let* α1 := M.call α0 in
+      let* α2 := M.read auction in
       M.pure {| mother.Mother.balances := α1; mother.Mother.auction := α2; |}
     | _, _ => M.impossible
     end.
@@ -1991,7 +1635,7 @@ Section Impl_mother_Mother.
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.apply (Ty.path "mother::Mother") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "mother::Mother") [])
@@ -2017,33 +1661,24 @@ Section Impl_mother_Mother.
     match 𝜏, α with
     | [], [fail] =>
       let* fail := M.alloc fail in
-      let* α0 : Ty.path "bool" := M.read (use fail) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "mother::Mother") [];
-              Ty.apply (Ty.path "mother::Failure") []] :=
+      let* α0 := M.read (use fail) in
+      let* α1 :=
         if α0 then
-          let* α0 :
-              Ty.function
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]]
-                (Ty.apply (Ty.path "alloc::string::String") []) :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               alloc.string.ToString.to_string
                 (Self := Ty.path "str")
                 (Trait := ℐ))) in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "Reverting instantiation") in
-          let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
-            M.call (α0 α1) in
+          let* α1 := M.read (mk_str "Reverting instantiation") in
+          let* α2 := M.call (α0 α1) in
           M.alloc (core.result.Result.Err (mother.Failure.Revert α2))
         else
-          let* α0 : Ty.function [] (Ty.apply (Ty.path "mother::Mother") []) :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.default.Default.default
                 (Self := Ty.apply (Ty.path "mother::Mother") [])
                 (Trait := ℐ))) in
-          let* α1 : Ty.apply (Ty.path "mother::Mother") [] := M.call α0 in
+          let* α1 := M.call α0 in
           M.alloc (core.result.Result.Ok α1) in
       M.read α1
     | _, _ => M.impossible
@@ -2066,30 +1701,20 @@ Section Impl_mother_Mother.
     | [], [self; auction] =>
       let* self := M.alloc self in
       let* auction := M.alloc auction in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "mother::Mother") []] :=
-          M.read self in
-        let* α1 : Ty.apply (Ty.path "mother::Env") [] :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "mother::Mother") [])::["env"]
               (borrow (deref α0))) in
-        let* α2 : Ty.apply (Ty.path "mother::Env") [] := M.alloc α1 in
-        let* α3 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "mother::Auction") []]]
-              (Ty.apply (Ty.path "mother::Auction") []) :=
+        let* α2 := M.alloc α1 in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             core.clone.Clone.clone
               (Self := Ty.apply (Ty.path "mother::Auction") [])
               (Trait := ℐ))) in
-        let* α4 : Ty.apply (Ty.path "mother::Auction") [] :=
-          M.call (α3 (borrow auction)) in
-        let* α5 : Ty.tuple :=
+        let* α4 := M.call (α3 (borrow auction)) in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "mother::Env") [])::["emit_event"]
               (borrow α2)
@@ -2122,10 +1747,7 @@ Section Impl_mother_Mother.
     | [], [self; fail] =>
       let* self := M.alloc self in
       let* fail := M.alloc fail in
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.tuple; Ty.apply (Ty.path "mother::Failure") []] :=
+      let* α0 :=
         match_operator
           fail
           [
@@ -2133,23 +1755,18 @@ Section Impl_mother_Mother.
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.Some _ =>
-                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Failure.Revert _ =>
-                  let γ1_0 := mother.Failure.Get_Revert_0 γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]]
-                        (Ty.apply (Ty.path "alloc::string::String") []) :=
+                  let γ1_0 := (M.var "mother::Failure::Get_Revert_0") γ0_0 in
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       alloc.string.ToString.to_string
                         (Self := Ty.path "str")
                         (Trait := ℐ))) in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "Reverting on user demand!") in
-                  let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
-                    M.call (α0 α1) in
+                  let* α1 := M.read (mk_str "Reverting on user demand!") in
+                  let* α2 := M.call (α0 α1) in
                   M.alloc (core.result.Result.Err (mother.Failure.Revert α2))
                 | _ => M.break_match
                 end
@@ -2162,19 +1779,14 @@ Section Impl_mother_Mother.
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.Some _ =>
-                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Failure.Panic =>
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "Trapping on user demand!") in
-                  let* α1 : Ty.path "never" :=
-                    M.call (std.panicking.begin_panic α0) in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple; Ty.apply (Ty.path "mother::Failure") []] :=
-                    never_to_any α1 in
+                  let* α0 := M.read (mk_str "Trapping on user demand!") in
+                  let* α1 :=
+                    M.call ((M.var "std::panicking::begin_panic") α0) in
+                  let* α2 := never_to_any α1 in
                   M.alloc α2
                 | _ => M.break_match
                 end
@@ -2211,38 +1823,28 @@ Section Impl_mother_Mother.
     | [], [self; _message] =>
       let* self := M.alloc self in
       let* _message := M.alloc _message in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "debug_log: ") in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "debug_log: ") in
+          let* α1 := M.read (mk_str "
 ") in
-          let* α2 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0; α1 ] in
-          let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α2 := M.alloc [ α0; α1 ] in
+          let* α3 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow _message)) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α3 ] in
-          let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α4 := M.alloc [ α3 ] in
+          let* α5 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+          let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
           M.alloc α6 in
         M.alloc tt in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.

@@ -16,8 +16,8 @@ Section Impl_example05_Foo.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.path "u32" := M.read (example05.Foo.Get_0 self) in
-      BinOp.Panic.add α0 ((Integer.of_Z 1) : Ty.path "u32")
+      let* α0 := M.read ((M.var "example05::Foo::Get_0") self) in
+      (M.var "BinOp::Panic::add") α0 ((Integer.of_Z 1) : Ty.path "u32")
     | _, _ => M.impossible
     end.
   
@@ -37,14 +37,14 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* foo : Ty.apply (Ty.path "example05::Foo") [] :=
+    let* foo :=
       M.alloc (example05.Foo.Build_t ((Integer.of_Z 0) : Ty.path "u32")) in
-    let* _ : Ty.path "u32" :=
-      let* α0 : Ty.apply (Ty.path "example05::Foo") [] := M.read foo in
-      let* α1 : Ty.path "u32" :=
+    let* _ :=
+      let* α0 := M.read foo in
+      let* α1 :=
         M.call ((Ty.apply (Ty.path "example05::Foo") [])::["plus1"] α0) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

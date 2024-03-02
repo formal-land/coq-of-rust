@@ -14,12 +14,12 @@ Section Impl_core_default_Default_for_contract_transfer_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (contract_transfer.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -44,7 +44,7 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "contract_transfer::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -53,11 +53,7 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "contract_transfer::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "contract_transfer::AccountId") []
           ] in
@@ -99,12 +95,8 @@ Section Impl_contract_transfer_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "contract_transfer::Env") []] :=
-        M.read self in
-      M.read (contract_transfer.Env.Get_caller (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "contract_transfer::Env::Get_caller") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -121,9 +113,8 @@ Section Impl_contract_transfer_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -143,9 +134,8 @@ Section Impl_contract_transfer_Env.
       let* self := M.alloc self in
       let* _to := M.alloc _to in
       let* _value := M.alloc _value in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -163,9 +153,8 @@ Section Impl_contract_transfer_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -190,9 +179,8 @@ Section Impl_contract_transfer_GiveMe.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -254,162 +242,121 @@ Section Impl_contract_transfer_GiveMe.
     | [], [self; value] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "requested value: ") in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "requested value: ") in
+          let* α1 := M.read (mk_str "
 ") in
-          let* α2 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0; α1 ] in
-          let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α2 := M.alloc [ α0; α1 ] in
+          let* α3 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow value)) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α3 ] in
-          let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α4 := M.alloc [ α3 ] in
+          let* α5 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+          let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
           M.alloc α6 in
         M.alloc tt in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "contract balance: ") in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "contract balance: ") in
+          let* α1 := M.read (mk_str "
 ") in
-          let* α2 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0; α1 ] in
-          let* α3 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "contract_transfer::GiveMe") []] :=
-            M.read self in
-          let* α4 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
+          let* α2 := M.alloc [ α0; α1 ] in
+          let* α3 := M.read self in
+          let* α4 :=
             M.call
               ((Ty.apply (Ty.path "contract_transfer::GiveMe") [])::["env"]
                 (borrow (deref α3))) in
-          let* α5 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
-            M.alloc α4 in
-          let* α6 : Ty.path "u128" :=
+          let* α5 := M.alloc α4 in
+          let* α6 :=
             M.call
               ((Ty.apply (Ty.path "contract_transfer::Env") [])::["balance"]
                 (borrow α5)) in
-          let* α7 : Ty.path "u128" := M.alloc α6 in
-          let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α7 := M.alloc α6 in
+          let* α8 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow α7)) in
-          let* α9 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α8 ] in
-          let* α10 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α9 := M.alloc [ α8 ] in
+          let* α10 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α9))) in
-          let* α11 : Ty.tuple := M.call (std.io.stdio._print α10) in
+          let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
           M.alloc α11 in
         M.alloc tt in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.path "u128" := M.read value in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "contract_transfer::GiveMe") []] :=
-          M.read self in
-        let* α2 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
+      let* _ :=
+        let* α0 := M.read value in
+        let* α1 := M.read self in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "contract_transfer::GiveMe") [])::["env"]
               (borrow (deref α1))) in
-        let* α3 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
-          M.alloc α2 in
-        let* α4 : Ty.path "u128" :=
+        let* α3 := M.alloc α2 in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "contract_transfer::Env") [])::["balance"]
               (borrow α3)) in
-        let* α5 : Ty.path "bool" := M.alloc (UnOp.not (BinOp.Pure.le α0 α4)) in
-        let* α6 : Ty.path "bool" := M.read (use α5) in
+        let* α5 :=
+          M.alloc ((M.var "UnOp::not") ((M.var "BinOp::Pure::le") α0 α4)) in
+        let* α6 := M.read (use α5) in
         if α6 then
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "insufficient funds!") in
-          let* α1 : Ty.path "never" := M.call (std.panicking.begin_panic α0) in
-          let* α2 : Ty.tuple := never_to_any α1 in
+          let* α0 := M.read (mk_str "insufficient funds!") in
+          let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+          let* α2 := never_to_any α1 in
           M.alloc α2
         else
           M.alloc tt in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "contract_transfer::GiveMe") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "contract_transfer::GiveMe") [])::["env"]
             (borrow (deref α0))) in
-      let* α2 : Ty.apply (Ty.path "contract_transfer::Env") [] := M.alloc α1 in
-      let* α3 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "contract_transfer::GiveMe") []] :=
-        M.read self in
-      let* α4 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
+      let* α2 := M.alloc α1 in
+      let* α3 := M.read self in
+      let* α4 :=
         M.call
           ((Ty.apply (Ty.path "contract_transfer::GiveMe") [])::["env"]
             (borrow (deref α3))) in
-      let* α5 : Ty.apply (Ty.path "contract_transfer::Env") [] := M.alloc α4 in
-      let* α6 : Ty.apply (Ty.path "contract_transfer::AccountId") [] :=
+      let* α5 := M.alloc α4 in
+      let* α6 :=
         M.call
           ((Ty.apply (Ty.path "contract_transfer::Env") [])::["caller"]
             (borrow α5)) in
-      let* α7 : Ty.path "u128" := M.read value in
-      let* α8 :
-          Ty.apply (Ty.path "core::result::Result") [Ty.tuple; Ty.tuple] :=
+      let* α7 := M.read value in
+      let* α8 :=
         M.call
           ((Ty.apply (Ty.path "contract_transfer::Env") [])::["transfer"]
             (borrow_mut α2)
             α6
             α7) in
-      let* α9 :
-          Ty.apply (Ty.path "core::result::Result") [Ty.tuple; Ty.tuple] :=
-        M.alloc α8 in
-      let* α10 : Ty.path "bool" :=
+      let* α9 := M.alloc α8 in
+      let* α10 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::result::Result")
                 [Ty.tuple; Ty.tuple])::["is_err"]
             (borrow α9)) in
-      let* α11 : Ty.path "bool" := M.alloc α10 in
-      let* α12 : Ty.path "bool" := M.read (use α11) in
-      let* α0 : Ty.tuple :=
+      let* α11 := M.alloc α10 in
+      let* α12 := M.read (use α11) in
+      let* α0 :=
         if α12 then
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          let* α0 :=
             M.read
               (mk_str
                 "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.") in
-          let* α1 : Ty.path "never" := M.call (std.panicking.begin_panic α0) in
-          let* α2 : Ty.tuple := never_to_any α1 in
+          let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+          let* α2 := never_to_any α1 in
           M.alloc α2
         else
           M.alloc tt in
@@ -431,86 +378,67 @@ Section Impl_contract_transfer_GiveMe.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "received payment: ") in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "received payment: ") in
+          let* α1 := M.read (mk_str "
 ") in
-          let* α2 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0; α1 ] in
-          let* α3 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "contract_transfer::GiveMe") []] :=
-            M.read self in
-          let* α4 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
+          let* α2 := M.alloc [ α0; α1 ] in
+          let* α3 := M.read self in
+          let* α4 :=
             M.call
               ((Ty.apply (Ty.path "contract_transfer::GiveMe") [])::["env"]
                 α3) in
-          let* α5 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
-            M.alloc α4 in
-          let* α6 : Ty.path "u128" :=
+          let* α5 := M.alloc α4 in
+          let* α6 :=
             M.call
               ((Ty.apply
                     (Ty.path "contract_transfer::Env")
                     [])::["transferred_value"]
                 (borrow α5)) in
-          let* α7 : Ty.path "u128" := M.alloc α6 in
-          let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α7 := M.alloc α6 in
+          let* α8 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow α7)) in
-          let* α9 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α8 ] in
-          let* α10 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α9 := M.alloc [ α8 ] in
+          let* α10 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α9))) in
-          let* α11 : Ty.tuple := M.call (std.io.stdio._print α10) in
+          let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
           M.alloc α11 in
         M.alloc tt in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "contract_transfer::GiveMe") []] :=
-          M.read self in
-        let* α1 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "contract_transfer::GiveMe") [])::["env"] α0) in
-        let* α2 : Ty.apply (Ty.path "contract_transfer::Env") [] :=
-          M.alloc α1 in
-        let* α3 : Ty.path "u128" :=
+        let* α2 := M.alloc α1 in
+        let* α3 :=
           M.call
             ((Ty.apply
                   (Ty.path "contract_transfer::Env")
                   [])::["transferred_value"]
               (borrow α2)) in
-        let* α4 : Ty.path "bool" :=
+        let* α4 :=
           M.alloc
-            (UnOp.not
-              (BinOp.Pure.eq α3 ((Integer.of_Z 10) : Ty.path "u128"))) in
-        let* α5 : Ty.path "bool" := M.read (use α4) in
+            ((M.var "UnOp::not")
+              ((M.var "BinOp::Pure::eq")
+                α3
+                ((Integer.of_Z 10) : Ty.path "u128"))) in
+        let* α5 := M.read (use α4) in
         if α5 then
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "payment was not ten") in
-          let* α1 : Ty.path "never" := M.call (std.panicking.begin_panic α0) in
-          let* α2 : Ty.tuple := never_to_any α1 in
+          let* α0 := M.read (mk_str "payment was not ten") in
+          let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+          let* α2 := never_to_any α1 in
           M.alloc α2
         else
           M.alloc tt in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.

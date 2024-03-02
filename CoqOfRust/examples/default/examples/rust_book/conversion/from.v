@@ -16,7 +16,7 @@ Section Impl_core_convert_From_i32_for_from_Number.
     match 𝜏, α with
     | [], [item] =>
       let* item := M.alloc item in
-      let* α0 : Ty.path "i32" := M.read item in
+      let* α0 := M.read item in
       M.pure {| from.Number.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -38,18 +38,16 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.apply (Ty.path "from::Number") [] :=
-      let* α0 :
-          Ty.function [Ty.path "i32"] (Ty.apply (Ty.path "from::Number") []) :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
             (Self := Ty.apply (Ty.path "from::Number") [])
             (T := Ty.path "i32")
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "from::Number") [] :=
-        M.call (α0 ((Integer.of_Z 30) : Ty.path "i32")) in
+      let* α1 := M.call (α0 ((Integer.of_Z 30) : Ty.path "i32")) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

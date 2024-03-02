@@ -27,12 +27,12 @@ Section Impl_trait_flipper_Flipper.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "bool")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "bool" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure {| trait_flipper.Flipper.value := α1; |}
     | _, _ => M.impossible
     end.
@@ -56,21 +56,15 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "trait_flipper::Flipper") []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "trait_flipper::Flipper") []] :=
-          M.read self in
-        let* α2 : Ty.path "bool" :=
-          M.read (trait_flipper.Flipper.Get_value (deref α1)) in
-        assign (trait_flipper.Flipper.Get_value (deref α0)) (UnOp.not α2) in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read self in
+        let* α2 :=
+          M.read ((M.var "trait_flipper::Flipper::Get_value") (deref α1)) in
+        assign
+          ((M.var "trait_flipper::Flipper::Get_value") (deref α0))
+          ((M.var "UnOp::not") α2) in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -88,12 +82,8 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "trait_flipper::Flipper") []] :=
-        M.read self in
-      M.read (trait_flipper.Flipper.Get_value (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "trait_flipper::Flipper::Get_value") (deref α0))
     | _, _ => M.impossible
     end.
   

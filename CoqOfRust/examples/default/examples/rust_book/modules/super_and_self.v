@@ -9,24 +9,19 @@ fn function() {
 Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "called `function()`
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "called `function()`
 ") in
-        let* α1 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0 ] in
-        let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α1 := M.alloc [ α0 ] in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -40,24 +35,19 @@ Module cool.
   Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "called `cool::function()`
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "called `cool::function()`
 ") in
-          let* α1 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0 ] in
-          let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α1 := M.alloc [ α0 ] in
+          let* α2 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
         M.alloc tt in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -72,24 +62,19 @@ Module my.
   Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "called `my::function()`
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "called `my::function()`
 ") in
-          let* α1 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0 ] in
-          let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α1 := M.alloc [ α0 ] in
+          let* α2 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
         M.alloc tt in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -103,24 +88,19 @@ Module my.
     Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
       | [], [] =>
-        let* _ : Ty.tuple :=
-          let* _ : Ty.tuple :=
-            let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-              M.read (mk_str "called `my::cool::function()`
+        let* _ :=
+          let* _ :=
+            let* α0 := M.read (mk_str "called `my::cool::function()`
 ") in
-            let* α1 :
-                Ty.apply
-                  (Ty.path "array")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-              M.alloc [ α0 ] in
-            let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+            let* α1 := M.alloc [ α0 ] in
+            let* α2 :=
               M.call
                 ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                   (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
             M.alloc α3 in
           M.alloc tt in
-        let* α0 : Ty.path "unit" := M.alloc tt in
+        let* α0 := M.alloc tt in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -154,39 +134,34 @@ Module my.
   Definition indirect_call (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* _ : Ty.tuple :=
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "called `my::indirect_call()`, that
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "called `my::indirect_call()`, that
 > ") in
-          let* α1 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α0 ] in
-          let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α1 := M.alloc [ α0 ] in
+          let* α2 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
         M.alloc tt in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple := M.call super_and_self.my.function in
+      let* _ :=
+        let* α0 := M.call (M.var "super_and_self::my::function") in
         M.alloc α0 in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple := M.call super_and_self.my.function in
+      let* _ :=
+        let* α0 := M.call (M.var "super_and_self::my::function") in
         M.alloc α0 in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple := M.call super_and_self.my.cool.function in
+      let* _ :=
+        let* α0 := M.call (M.var "super_and_self::my::cool::function") in
         M.alloc α0 in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple := M.call super_and_self.function in
+      let* _ :=
+        let* α0 := M.call (M.var "super_and_self::function") in
         M.alloc α0 in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple := M.call super_and_self.cool.function in
+      let* _ :=
+        let* α0 := M.call (M.var "super_and_self::cool::function") in
         M.alloc α0 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -201,10 +176,10 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple := M.call super_and_self.my.indirect_call in
+    let* _ :=
+      let* α0 := M.call (M.var "super_and_self::my::indirect_call") in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

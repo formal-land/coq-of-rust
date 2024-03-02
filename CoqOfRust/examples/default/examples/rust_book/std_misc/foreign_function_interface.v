@@ -12,9 +12,8 @@ Definition cos (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [z] =>
     let* z := M.alloc z in
-    let* α0 : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-      M.read z in
-    M.call (foreign_function_interface.ccosf α0)
+    let* α0 := M.read z in
+    M.call ((M.var "foreign_function_interface::ccosf") α0)
   | _, _ => M.impossible
   end.
 
@@ -36,97 +35,70 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* z : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-      let* α0 : Ty.path "f32" := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α1 : Ty.path "f32" := M.read (UnsupportedLiteral : Ty.path "f32") in
+    let* z :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f32") in
       M.alloc
         {|
           foreign_function_interface.Complex.re := α0;
           foreign_function_interface.Complex.im := α1;
         |} in
-    let* z_sqrt : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-      let* α0 : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-        M.read z in
-      let* α1 : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-        M.call (foreign_function_interface.csqrtf α0) in
+    let* z_sqrt :=
+      let* α0 := M.read z in
+      let* α1 := M.call ((M.var "foreign_function_interface::csqrtf") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "the square root of ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " is ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "the square root of ") in
+        let* α1 := M.read (mk_str " is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow z)) in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow z_sqrt)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α4; α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α4; α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "cos(") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ") = ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "cos(") in
+        let* α1 := M.read (mk_str ") = ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow z)) in
-        let* α5 : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-          M.read z in
-        let* α6 : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-          M.call (foreign_function_interface.cos α5) in
-        let* α7 : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
-          M.alloc α6 in
-        let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α5 := M.read z in
+        let* α6 := M.call ((M.var "foreign_function_interface::cos") α5) in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow α7)) in
-        let* α9 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α4; α8 ] in
-        let* α10 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α9 := M.alloc [ α4; α8 ] in
+        let* α10 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α9))) in
-        let* α11 : Ty.tuple := M.call (std.io.stdio._print α10) in
+        let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
         M.alloc α11 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -145,7 +117,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "foreign_function_interface::Complex") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -154,13 +126,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
                 [Ty.path "f32"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "foreign_function_interface::Complex")
-                        []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "foreign_function_interface::Complex") []
           ] in
@@ -204,138 +170,85 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "foreign_function_interface::Complex") []] :=
-        M.read self in
-      let* α1 : Ty.path "f32" :=
-        M.read (foreign_function_interface.Complex.Get_im (deref α0)) in
-      let* α2 : Ty.path "f32" := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α3 : Ty.path "bool" := M.alloc (BinOp.Pure.lt α1 α2) in
-      let* α4 : Ty.path "bool" := M.read (use α3) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []] :=
+      let* α0 := M.read self in
+      let* α1 :=
+        M.read
+          ((M.var "foreign_function_interface::Complex::Get_im") (deref α0)) in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α3 := M.alloc ((M.var "BinOp::Pure::lt") α1 α2) in
+      let* α4 := M.read (use α3) in
+      let* α5 :=
         if α4 then
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-            M.read f in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "") in
-          let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "-") in
-          let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "i") in
-          let* α4 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α1; α2; α3 ] in
-          let* α5 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "foreign_function_interface::Complex") []] :=
-            M.read self in
-          let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α0 := M.read f in
+          let* α1 := M.read (mk_str "") in
+          let* α2 := M.read (mk_str "-") in
+          let* α3 := M.read (mk_str "i") in
+          let* α4 := M.alloc [ α1; α2; α3 ] in
+          let* α5 := M.read self in
+          let* α6 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow
-                  (foreign_function_interface.Complex.Get_re (deref α5)))) in
-          let* α7 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "foreign_function_interface::Complex") []] :=
-            M.read self in
-          let* α8 : Ty.path "f32" :=
-            M.read (foreign_function_interface.Complex.Get_im (deref α7)) in
-          let* α9 : Ty.path "f32" := UnOp.neg α8 in
-          let* α10 : Ty.path "f32" := M.alloc α9 in
-          let* α11 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  ((M.var "foreign_function_interface::Complex::Get_re")
+                    (deref α5)))) in
+          let* α7 := M.read self in
+          let* α8 :=
+            M.read
+              ((M.var "foreign_function_interface::Complex::Get_im")
+                (deref α7)) in
+          let* α9 := (M.var "UnOp::neg") α8 in
+          let* α10 := M.alloc α9 in
+          let* α11 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow α10)) in
-          let* α12 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α6; α11 ] in
-          let* α13 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          let* α12 := M.alloc [ α6; α11 ] in
+          let* α13 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α4))
                 (pointer_coercion "Unsize" (borrow α12))) in
-          let* α14 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []] :=
+          let* α14 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_fmt"]
                 α0
                 α13) in
           M.alloc α14
         else
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-            M.read f in
-          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "") in
-          let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "+") in
-          let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "i") in
-          let* α4 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-            M.alloc [ α1; α2; α3 ] in
-          let* α5 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "foreign_function_interface::Complex") []] :=
-            M.read self in
-          let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          let* α0 := M.read f in
+          let* α1 := M.read (mk_str "") in
+          let* α2 := M.read (mk_str "+") in
+          let* α3 := M.read (mk_str "i") in
+          let* α4 := M.alloc [ α1; α2; α3 ] in
+          let* α5 := M.read self in
+          let* α6 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow
-                  (foreign_function_interface.Complex.Get_re (deref α5)))) in
-          let* α7 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "foreign_function_interface::Complex") []] :=
-            M.read self in
-          let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  ((M.var "foreign_function_interface::Complex::Get_re")
+                    (deref α5)))) in
+          let* α7 := M.read self in
+          let* α8 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::fmt::rt::Argument")
                     [])::["new_display"]
                 (borrow
-                  (foreign_function_interface.Complex.Get_im (deref α7)))) in
-          let* α9 :
-              Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-            M.alloc [ α6; α8 ] in
-          let* α10 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  ((M.var "foreign_function_interface::Complex::Get_im")
+                    (deref α7)))) in
+          let* α9 := M.alloc [ α6; α8 ] in
+          let* α10 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α4))
                 (pointer_coercion "Unsize" (borrow α9))) in
-          let* α11 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []] :=
+          let* α11 :=
             M.call
               ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_fmt"]
                 α0

@@ -87,88 +87,61 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* cardinal :
-        Ty.apply
-          (Ty.path "generics_bounds_test_case_empty_bounds::Cardinal")
-          [] :=
+    let* cardinal :=
       M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build in
-    let* blue_jay :
-        Ty.apply
-          (Ty.path "generics_bounds_test_case_empty_bounds::BlueJay")
-          [] :=
+    let* blue_jay :=
       M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build in
-    let* _turkey :
-        Ty.apply
-          (Ty.path "generics_bounds_test_case_empty_bounds::Turkey")
-          [] :=
+    let* _turkey :=
       M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "A cardinal is ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "A cardinal is ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
-            (generics_bounds_test_case_empty_bounds.red (borrow cardinal)) in
-        let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+            ((M.var "generics_bounds_test_case_empty_bounds::red")
+              (borrow cardinal)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "A blue jay is ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "A blue jay is ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
-            (generics_bounds_test_case_empty_bounds.blue (borrow blue_jay)) in
-        let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+            ((M.var "generics_bounds_test_case_empty_bounds::blue")
+              (borrow blue_jay)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

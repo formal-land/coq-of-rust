@@ -29,11 +29,9 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* status : Ty.apply (Ty.path "enums_use::Status") [] :=
-      M.alloc enums_use.Status.Poor in
-    let* work : Ty.apply (Ty.path "enums_use::Work") [] :=
-      M.alloc enums_use.Work.Civilian in
-    let* _ : Ty.tuple :=
+    let* status := M.alloc enums_use.Status.Poor in
+    let* work := M.alloc enums_use.Work.Civilian in
+    let* _ :=
       match_operator
         status
         [
@@ -41,22 +39,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums_use.Status.Rich =>
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "The rich have lots of money!
+              let* _ :=
+                let* α0 := M.read (mk_str "The rich have lots of money!
 ") in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Arguments")
                           [])::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
@@ -66,29 +59,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums_use.Status.Poor =>
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "The poor have no money...
+              let* _ :=
+                let* α0 := M.read (mk_str "The poor have no money...
 ") in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Arguments")
                           [])::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
             end) :
             Ty.tuple
         ] in
-    let* α0 : Ty.tuple :=
+    let* α0 :=
       match_operator
         work
         [
@@ -96,22 +84,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums_use.Work.Civilian =>
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Civilians work!
+              let* _ :=
+                let* α0 := M.read (mk_str "Civilians work!
 ") in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Arguments")
                           [])::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
@@ -121,22 +104,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums_use.Work.Soldier =>
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Soldiers fight!
+              let* _ :=
+                let* α0 := M.read (mk_str "Soldiers fight!
 ") in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Arguments")
                           [])::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match

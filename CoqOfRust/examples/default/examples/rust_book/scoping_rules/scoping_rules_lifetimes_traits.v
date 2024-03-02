@@ -16,26 +16,15 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Borrowed") in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "x") in
-      let* α3 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
-                []] :=
-        M.read self in
-      let* α4 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "i32"]] :=
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Borrowed") in
+      let* α2 := M.read (mk_str "x") in
+      let* α3 := M.read self in
+      let* α4 :=
         M.alloc
-          (borrow (scoping_rules_lifetimes_traits.Borrowed.Get_x (deref α3))) in
+          (borrow
+            ((M.var "scoping_rules_lifetimes_traits::Borrowed::Get_x")
+              (deref α3))) in
       M.call
         ((Ty.apply
               (Ty.path "core::fmt::Formatter")
@@ -68,7 +57,7 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.path "i32" := M.alloc ((Integer.of_Z 10) : Ty.path "i32") in
+      let* α0 := M.alloc ((Integer.of_Z 10) : Ty.path "i32") in
       M.pure {| scoping_rules_lifetimes_traits.Borrowed.x := borrow α0; |}
     | _, _ => M.impossible
     end.
@@ -91,52 +80,35 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* b : Ty.apply (Ty.path "scoping_rules_lifetimes_traits::Borrowed") [] :=
-      let* α0 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
-              []) :=
+    let* b :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
               Ty.apply (Ty.path "scoping_rules_lifetimes_traits::Borrowed") [])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "scoping_rules_lifetimes_traits::Borrowed") [] :=
-        M.call α0 in
+      let* α1 := M.call α0 in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "b is ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "b is ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow b)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

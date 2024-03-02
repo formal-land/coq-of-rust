@@ -18,16 +18,9 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Inch")
-                []] :=
-        M.read self in
-      let* α1 : Ty.path "never" := match_operator (deref α0) [ ] in
-      let* α2 : Ty.path "never" := M.read α1 in
+      let* α0 := M.read self in
+      let* α1 := match_operator (deref α0) [ ] in
+      let* α2 := M.read α1 in
       never_to_any α2
     | _, _ => M.impossible
     end.
@@ -54,14 +47,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Inch")
-                []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
@@ -102,16 +88,9 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Mm")
-                []] :=
-        M.read self in
-      let* α1 : Ty.path "never" := match_operator (deref α0) [ ] in
-      let* α2 : Ty.path "never" := M.read α1 in
+      let* α0 := M.read self in
+      let* α1 := match_operator (deref α0) [ ] in
+      let* α2 := M.read α1 in
       never_to_any α2
     | _, _ => M.impossible
     end.
@@ -138,14 +117,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Mm")
-                []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
@@ -188,36 +160,15 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Length") in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Unit]] :=
-        M.read self in
-      let* α3 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Unit]] :=
-        M.read self in
-      let* α4 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "core::marker::PhantomData") [Unit]] :=
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Length") in
+      let* α2 := M.read self in
+      let* α3 := M.read self in
+      let* α4 :=
         M.alloc
           (borrow
-            (generics_phantom_type_test_case_unit_clarification.Length.Get_1
+            ((M.var
+                "generics_phantom_type_test_case_unit_clarification::Length::Get_1")
               (deref α3))) in
       M.call
         ((Ty.apply
@@ -228,7 +179,8 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
           (pointer_coercion
             "Unsize"
             (borrow
-              (generics_phantom_type_test_case_unit_clarification.Length.Get_0
+              ((M.var
+                  "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
                 (deref α2))))
           (pointer_coercion "Unsize" (borrow α4)))
     | _, _ => M.impossible
@@ -258,49 +210,29 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "f64"]]
-            (Ty.path "f64") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone (Self := Ty.path "f64") (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Unit]] :=
-        M.read self in
-      let* α2 : Ty.path "f64" :=
+      let* α1 := M.read self in
+      let* α2 :=
         M.call
           (α0
             (borrow
-              (generics_phantom_type_test_case_unit_clarification.Length.Get_0
+              ((M.var
+                  "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
                 (deref α1)))) in
-      let* α3 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "core::marker::PhantomData") [Unit]]]
-            (Ty.apply (Ty.path "core::marker::PhantomData") [Unit]) :=
+      let* α3 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := Ty.apply (Ty.path "core::marker::PhantomData") [Unit])
             (Trait := ℐ))) in
-      let* α4 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Unit]] :=
-        M.read self in
-      let* α5 : Ty.apply (Ty.path "core::marker::PhantomData") [Unit] :=
+      let* α4 := M.read self in
+      let* α5 :=
         M.call
           (α3
             (borrow
-              (generics_phantom_type_test_case_unit_clarification.Length.Get_1
+              ((M.var
+                  "generics_phantom_type_test_case_unit_clarification::Length::Get_1")
                 (deref α4)))) in
       M.pure
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
@@ -358,15 +290,17 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
     | [], [self; rhs] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
-      let* α0 : Ty.path "f64" :=
+      let* α0 :=
         M.read
-          (generics_phantom_type_test_case_unit_clarification.Length.Get_0
+          ((M.var
+              "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
             self) in
-      let* α1 : Ty.path "f64" :=
+      let* α1 :=
         M.read
-          (generics_phantom_type_test_case_unit_clarification.Length.Get_0
+          ((M.var
+              "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
             rhs) in
-      let* α2 : Ty.path "f64" := BinOp.Panic.add α0 α1 in
+      let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
       M.pure
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α2
@@ -409,53 +343,20 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* one_foot :
-        Ty.apply
-          (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-          [Ty.apply
-              (Ty.path
-                "generics_phantom_type_test_case_unit_clarification::Inch")
-              []] :=
-      let* α0 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* one_foot :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α0
           core.marker.PhantomData.Build) in
-    let* one_meter :
-        Ty.apply
-          (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-          [Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
-              []] :=
-      let* α0 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* one_meter :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α0
           core.marker.PhantomData.Build) in
-    let* two_feet :
-        Ty.apply
-          (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-          [Ty.apply
-              (Ty.path
-                "generics_phantom_type_test_case_unit_clarification::Inch")
-              []] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Ty.apply
-                    (Ty.path
-                      "generics_phantom_type_test_case_unit_clarification::Inch")
-                    []];
-              Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Ty.apply
-                    (Ty.path
-                      "generics_phantom_type_test_case_unit_clarification::Inch")
-                    []]]
-            _ :=
+    let* two_feet :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.arith.Add.add
             (Self :=
@@ -475,57 +376,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       "generics_phantom_type_test_case_unit_clarification::Inch")
                     []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path
-              "generics_phantom_type_test_case_unit_clarification::Length")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Inch")
-                []] :=
-        M.read one_foot in
-      let* α2 :
-          Ty.apply
-            (Ty.path
-              "generics_phantom_type_test_case_unit_clarification::Length")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Inch")
-                []] :=
-        M.read one_foot in
-      let* α3 :
-          Ty.apply
-            (Ty.path
-              "generics_phantom_type_test_case_unit_clarification::Length")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Inch")
-                []] :=
-        M.call (α0 α1 α2) in
+      let* α1 := M.read one_foot in
+      let* α2 := M.read one_foot in
+      let* α3 := M.call (α0 α1 α2) in
       M.alloc α3 in
-    let* two_meters :
-        Ty.apply
-          (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-          [Ty.apply
-              (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
-              []] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Ty.apply
-                    (Ty.path
-                      "generics_phantom_type_test_case_unit_clarification::Mm")
-                    []];
-              Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [Ty.apply
-                    (Ty.path
-                      "generics_phantom_type_test_case_unit_clarification::Mm")
-                    []]]
-            _ :=
+    let* two_meters :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.arith.Add.add
             (Self :=
@@ -545,97 +401,55 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       "generics_phantom_type_test_case_unit_clarification::Mm")
                     []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path
-              "generics_phantom_type_test_case_unit_clarification::Length")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Mm")
-                []] :=
-        M.read one_meter in
-      let* α2 :
-          Ty.apply
-            (Ty.path
-              "generics_phantom_type_test_case_unit_clarification::Length")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Mm")
-                []] :=
-        M.read one_meter in
-      let* α3 :
-          Ty.apply
-            (Ty.path
-              "generics_phantom_type_test_case_unit_clarification::Length")
-            [Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Mm")
-                []] :=
-        M.call (α0 α1 α2) in
+      let* α1 := M.read one_meter in
+      let* α2 := M.read one_meter in
+      let* α3 := M.call (α0 α1 α2) in
       M.alloc α3 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "one foot + one_foot = ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "one foot + one_foot = ") in
+        let* α1 := M.read (mk_str " in
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow
-                (generics_phantom_type_test_case_unit_clarification.Length.Get_0
+                ((M.var
+                    "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
                   two_feet))) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "one meter + one_meter = ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " mm
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "one meter + one_meter = ") in
+        let* α1 := M.read (mk_str " mm
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow
-                (generics_phantom_type_test_case_unit_clarification.Length.Get_0
+                ((M.var
+                    "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
                   two_meters))) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

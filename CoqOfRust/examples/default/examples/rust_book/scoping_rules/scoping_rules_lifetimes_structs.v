@@ -16,25 +16,14 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Borrowed") in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "scoping_rules_lifetimes_structs::Borrowed")
-                []] :=
-        M.read self in
-      let* α3 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "i32"]] :=
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Borrowed") in
+      let* α2 := M.read self in
+      let* α3 :=
         M.alloc
           (borrow
-            (scoping_rules_lifetimes_structs.Borrowed.Get_0 (deref α2))) in
+            ((M.var "scoping_rules_lifetimes_structs::Borrowed::Get_0")
+              (deref α2))) in
       M.call
         ((Ty.apply
               (Ty.path "core::fmt::Formatter")
@@ -68,36 +57,17 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "NamedBorrowed") in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "x") in
-      let* α3 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed")
-                []] :=
-        M.read self in
-      let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "y") in
-      let* α5 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed")
-                []] :=
-        M.read self in
-      let* α6 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "i32"]] :=
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "NamedBorrowed") in
+      let* α2 := M.read (mk_str "x") in
+      let* α3 := M.read self in
+      let* α4 := M.read (mk_str "y") in
+      let* α5 := M.read self in
+      let* α6 :=
         M.alloc
           (borrow
-            (scoping_rules_lifetimes_structs.NamedBorrowed.Get_y (deref α5))) in
+            ((M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_y")
+              (deref α5))) in
       M.call
         ((Ty.apply
               (Ty.path "core::fmt::Formatter")
@@ -108,7 +78,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
           (pointer_coercion
             "Unsize"
             (borrow
-              (scoping_rules_lifetimes_structs.NamedBorrowed.Get_x (deref α3))))
+              ((M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_x")
+                (deref α3))))
           α4
           (pointer_coercion "Unsize" (borrow α6)))
     | _, _ => M.impossible
@@ -137,10 +108,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []] :=
+      let* α0 :=
         match_operator
           self
           [
@@ -152,19 +120,12 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
               match α0 with
               | scoping_rules_lifetimes_structs.Either.Num _ =>
                 let γ1_0 :=
-                  scoping_rules_lifetimes_structs.Either.Get_Num_0 γ in
+                  (M.var "scoping_rules_lifetimes_structs::Either::Get_Num_0")
+                    γ in
                 let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :
-                    Ty.apply
-                      (Ty.path "mut_ref")
-                      [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-                  M.read f in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Num") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []] :=
+                let* α0 := M.read f in
+                let* α1 := M.read (mk_str "Num") in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Formatter")
@@ -186,19 +147,12 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
               match α0 with
               | scoping_rules_lifetimes_structs.Either.Ref _ =>
                 let γ1_0 :=
-                  scoping_rules_lifetimes_structs.Either.Get_Ref_0 γ in
+                  (M.var "scoping_rules_lifetimes_structs::Either::Get_Ref_0")
+                    γ in
                 let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :
-                    Ty.apply
-                      (Ty.path "mut_ref")
-                      [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-                  M.read f in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Ref") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []] :=
+                let* α0 := M.read f in
+                let* α1 := M.read (mk_str "Ref") in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Formatter")
@@ -245,144 +199,98 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x : Ty.path "i32" := M.alloc ((Integer.of_Z 18) : Ty.path "i32") in
-    let* y : Ty.path "i32" := M.alloc ((Integer.of_Z 15) : Ty.path "i32") in
-    let* single :
-        Ty.apply (Ty.path "scoping_rules_lifetimes_structs::Borrowed") [] :=
+    let* x := M.alloc ((Integer.of_Z 18) : Ty.path "i32") in
+    let* y := M.alloc ((Integer.of_Z 15) : Ty.path "i32") in
+    let* single :=
       M.alloc (scoping_rules_lifetimes_structs.Borrowed.Build_t (borrow x)) in
-    let* double :
-        Ty.apply
-          (Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed")
-          [] :=
+    let* double :=
       M.alloc
         {|
           scoping_rules_lifetimes_structs.NamedBorrowed.x := borrow x;
           scoping_rules_lifetimes_structs.NamedBorrowed.y := borrow y;
         |} in
-    let* reference :
-        Ty.apply (Ty.path "scoping_rules_lifetimes_structs::Either") [] :=
+    let* reference :=
       M.alloc (scoping_rules_lifetimes_structs.Either.Ref (borrow x)) in
-    let* number :
-        Ty.apply (Ty.path "scoping_rules_lifetimes_structs::Either") [] :=
-      let* α0 : Ty.path "i32" := M.read y in
+    let* number :=
+      let* α0 := M.read y in
       M.alloc (scoping_rules_lifetimes_structs.Either.Num α0) in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "x is borrowed in ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "x is borrowed in ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow single)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "x and y are borrowed in ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "x and y are borrowed in ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow double)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "x is borrowed in ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "x is borrowed in ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow reference)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "y is *not* borrowed in ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "y is *not* borrowed in ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow number)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

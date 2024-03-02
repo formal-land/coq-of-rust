@@ -28,7 +28,7 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      M.read (const_underscore_expression.Bar.Get_test self)
+      M.read ((M.var "const_underscore_expression::Bar::Get_test") self)
     | _, _ => M.impossible
     end.
   

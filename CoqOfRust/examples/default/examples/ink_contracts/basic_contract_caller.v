@@ -14,12 +14,12 @@ Section Impl_core_default_Default_for_basic_contract_caller_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (basic_contract_caller.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -44,7 +44,7 @@ Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "basic_contract_caller::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -53,13 +53,7 @@ Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "basic_contract_caller::AccountId")
-                        []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "basic_contract_caller::AccountId") []
           ] in
@@ -104,7 +98,7 @@ Section Impl_basic_contract_caller_OtherContract.
     match 𝜏, α with
     | [], [init_value] =>
       let* init_value := M.alloc init_value in
-      let* α0 : Ty.path "bool" := M.read init_value in
+      let* α0 := M.read init_value in
       M.pure {| basic_contract_caller.OtherContract.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -122,23 +116,17 @@ Section Impl_basic_contract_caller_OtherContract.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "basic_contract_caller::OtherContract") []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "basic_contract_caller::OtherContract") []] :=
-          M.read self in
-        let* α2 : Ty.path "bool" :=
-          M.read (basic_contract_caller.OtherContract.Get_value (deref α1)) in
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read self in
+        let* α2 :=
+          M.read
+            ((M.var "basic_contract_caller::OtherContract::Get_value")
+              (deref α1)) in
         assign
-          (basic_contract_caller.OtherContract.Get_value (deref α0))
-          (UnOp.not α2) in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+          ((M.var "basic_contract_caller::OtherContract::Get_value") (deref α0))
+          ((M.var "UnOp::not") α2) in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -156,12 +144,9 @@ Section Impl_basic_contract_caller_OtherContract.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "basic_contract_caller::OtherContract") []] :=
-        M.read self in
-      M.read (basic_contract_caller.OtherContract.Get_value (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "basic_contract_caller::OtherContract::Get_value") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -194,19 +179,13 @@ Section Impl_basic_contract_caller_BasicContractCaller.
     match 𝜏, α with
     | [], [other_contract_code_hash] =>
       let* other_contract_code_hash := M.alloc other_contract_code_hash in
-      let* other_contract :
-          Ty.apply (Ty.path "basic_contract_caller::OtherContract") [] :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "not yet implemented") in
-        let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
-        let* α2 :
-            Ty.apply (Ty.path "basic_contract_caller::OtherContract") [] :=
-          never_to_any α1 in
+      let* other_contract :=
+        let* α0 := M.read (mk_str "not yet implemented") in
+        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α2 := never_to_any α1 in
         M.alloc α2 in
-      let* α0 : Ty.apply (Ty.path "basic_contract_caller::OtherContract") [] :=
-        M.read other_contract in
-      let* α0 :
-          Ty.apply (Ty.path "basic_contract_caller::BasicContractCaller") [] :=
+      let* α0 := M.read other_contract in
+      let* α0 :=
         M.alloc
           {| basic_contract_caller.BasicContractCaller.other_contract := α0;
           |} in
@@ -228,39 +207,29 @@ Section Impl_basic_contract_caller_BasicContractCaller.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply
-                  (Ty.path "basic_contract_caller::BasicContractCaller")
-                  []] :=
-          M.read self in
-        let* α1 : Ty.tuple :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply
                   (Ty.path "basic_contract_caller::OtherContract")
                   [])::["flip"]
               (borrow_mut
-                (basic_contract_caller.BasicContractCaller.Get_other_contract
+                ((M.var
+                    "basic_contract_caller::BasicContractCaller::Get_other_contract")
                   (deref α0)))) in
         M.alloc α1 in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply
-                (Ty.path "basic_contract_caller::BasicContractCaller")
-                []] :=
-        M.read self in
-      let* α1 : Ty.path "bool" :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "basic_contract_caller::OtherContract")
                 [])::["get"]
             (borrow
-              (basic_contract_caller.BasicContractCaller.Get_other_contract
+              ((M.var
+                  "basic_contract_caller::BasicContractCaller::Get_other_contract")
                 (deref α0)))) in
-      let* α0 : Ty.path "bool" := M.alloc α1 in
+      let* α0 := M.alloc α1 in
       M.read α0
     | _, _ => M.impossible
     end.

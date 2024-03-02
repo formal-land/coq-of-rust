@@ -16,240 +16,127 @@ Export List.ListNotations.
 Require Export CoqOfRust.M.
 Export M.Notations.
 
-Module Notations.
-  (** A class to represent associated functions (the notation [e1::e2]). The
-      kind might be [Set] functions associated to a type, or [Set -> Set] for
-      functions associated to a trait. *)
-  Class DoubleColon {Kind : Type} (type : Kind) (name : string) {T : Set} :
-    Set := {
-    double_colon : T;
-  }.
-  Arguments double_colon {Kind} type name {T DoubleColon}.
-
-  (* A class to represent types in a trait. *)
-  Class DoubleColonType {Kind : Type} (type : Kind) (name : string) : Type := {
-    double_colon_type : Set;
-  }.
-  Arguments double_colon_type {Kind} type name {DoubleColonType}.
-End Notations.
-
-Notation "e1 ::[ e2 ]" := (Notations.double_colon e1 e2)
+Notation "ty ::[ name ]" := (M.associated_function ty name)
   (at level 0).
 
-Notation "e1 ::type[ e2 ]" := (Notations.double_colon_type e1 e2)
-  (at level 0).
-
-Definition defaultType (T : option Set) (Default : Set) : Set :=
-  match T with
-  | Some T => T
-  | None => Default
-  end.
+(* Notation "e1 ::type[ e2 ]" := (Notations.double_colon_type e1 e2)
+  (at level 0). *)
 
 Parameter axiom : forall {A : Set}, A.
 
-Definition assign {A : Set} (target : M.Val A) (source : A) : M (M.Val unit) :=
+Definition assign (target : Value.t) (source : Value.t) : M :=
   let* _ := M.write target source in
-  M.alloc tt.
-
-Module bool.
-  Definition t : Set := bool.
-End bool.
+  M.alloc (Value.Tuple []).
 
 (** ** Integer types *)
-(** We distinguish all integer types for the type-class inference. *)
 
-Module u8.
-  Inductive t : Set := Make (z : Z) : t.
-End u8.
-
-Module u16.
-  Inductive t : Set := Make (z : Z) : t.
-End u16.
-
-Module u32.
-  Inductive t : Set := Make (z : Z) : t.
-End u32.
-
-Module u64.
-  Inductive t : Set := Make (z : Z) : t.
-End u64.
-
-Module u128.
-  Inductive t : Set := Make (z : Z) : t.
-End u128.
-
-Module usize.
-  Inductive t : Set := Make (z : Z) : t.
-End usize.
-
-Module i8.
-  Inductive t : Set := Make (z : Z) : t.
-End i8.
-
-Module i16.
-  Inductive t : Set := Make (z : Z) : t.
-End i16.
-
-Module i32.
-  Inductive t : Set := Make (z : Z) : t.
-End i32.
-
-Module i64.
-  Inductive t : Set := Make (z : Z) : t.
-End i64.
-
-Module i128.
-  Inductive t : Set := Make (z : Z) : t.
-End i128.
-
-Module isize.
-  Inductive t : Set := Make (z : Z) : t.
-End isize.
-
-(* We approximate floating point numbers with integers *)
-Module f32.
-  Inductive t : Set := Make (z : Z) : t.
-End f32.
-
-Module f64.
-  Inductive t : Set := Make (z : Z) : t.
-End f64.
-
-Module str.
-  Definition t : Set := Coq.Strings.String.string.
-End str.
-
-Module char.
-  Definition t : Set := Coq.Strings.Ascii.ascii.
-End char.
-
-Definition ref (A : Set) : Set := M.Val A.
-Definition mut_ref (A : Set) : Set := M.Val A.
-
-Definition slice (A : Set) : Set := list A.
-Definition array (A : Set) : Set := list A.
-
-Module never.
-  Definition t : Set := Empty_set.
-End never.
-
-Definition never_to_any {A B : Set} (x : A) : M B :=
+Definition never_to_any (x : Value.t) : M :=
   M.impossible.
 
-Definition use {A : Set} (x : A) : A := x.
+Definition use (x : Value.t) : Value.t :=
+  x.
 
-Definition mk_str (s : Coq.Strings.String.string) : M.Val (ref str.t) :=
-  M.Ref.Imm (M.Ref.Imm s).
+(** A value with an address of type `ref str`. *)
+Definition mk_str (s : string) : Value.t :=
+  Value.Pointer (Pointer.Immediate (
+    Value.Pointer (Pointer.Immediate (
+      Value.String s
+    ))
+  )).
+
+Module IntegerDescription.
+  Class C (Self : M.Integer.t) : Set := {
+    (** Apply the modulo operation in case of overflows. *)
+    normalize_wrap : Z -> Z;
+    min : Z;
+    max : Z;
+  }.
+End IntegerDescription.
 
 Module Integer.
-  Class C (Self : Set) : Set := {
-    to_Z : Self -> Z;
-    of_Z : Z -> Self;
+  Class C (Self : M.Integer.t) : Set := {
     (** Apply the modulo operation in case of overflows. *)
     normalize_wrap : Z -> Z;
     min : Z;
     max : Z;
   }.
 
-  Definition normalize_error {Self : Set} `{C Self} (z : Z) : Self + string :=
+  Definition normalize_error {Self : M.Integer.t} `{C Self} (z : Z) :
+      Z + string :=
     if z <? min then
       inr "underflow"
     else if max <? z then
       inr "overflow"
     else
-      inl (of_Z z).
+      inl z.
 
-  Global Instance I_u8 : C u8.t := {
-    to_Z '(u8.Make z) := z;
-    of_Z z := u8.Make z;
+  Global Instance I_u8 : C Integer.U8 := {
     normalize_wrap z := Z.modulo z 2^8;
     min := 0;
     max := 2^8 - 1;
   }.
 
-  Global Instance I_u16 : C u16.t := {
-    to_Z '(u16.Make z) := z;
-    of_Z z := u16.Make z;
+  Global Instance I_u16 : C Integer.U16 := {
     normalize_wrap z := Z.modulo z 2^16;
     min := 0;
     max := 2^16 - 1;
   }.
 
-  Global Instance I_u32 : C u32.t := {
-    to_Z '(u32.Make z) := z;
-    of_Z z := u32.Make z;
+  Global Instance I_u32 : C Integer.U32 := {
     normalize_wrap z := Z.modulo z 2^32;
     min := 0;
     max := 2^32 - 1;
   }.
 
-  Global Instance I_u64 : C u64.t := {
-    to_Z '(u64.Make z) := z;
-    of_Z z := u64.Make z;
+  Global Instance I_u64 : C Integer.U64 := {
     normalize_wrap z := Z.modulo z 2^64;
     min := 0;
     max := 2^64 - 1;
   }.
 
-  Global Instance I_u128 : C u128.t := {
-    to_Z '(u128.Make z) := z;
-    of_Z z := u128.Make z;
+  Global Instance I_u128 : C Integer.U128 := {
     normalize_wrap z := Z.modulo z 2^128;
     min := 0;
     max := 2^128 - 1;
   }.
 
-  Global Instance I_usize : C usize.t := {
-    to_Z '(usize.Make z) := z;
-    of_Z z := usize.Make z;
+  Global Instance I_usize : C Integer.Usize := {
     normalize_wrap z := Z.modulo z 2^64;
     min := 0;
     max := 2^64 - 1;
   }.
 
-  Global Instance I_i8 : C i8.t := {
-    to_Z '(i8.Make z) := z;
-    of_Z z := i8.Make z;
+  Global Instance I_i8 : C Integer.I8 := {
     normalize_wrap z := Z.modulo (z + 2^7) 2^8 - 2^7;
     min := -2^7;
     max := 2^7 - 1;
   }.
 
-  Global Instance I_i16 : C i16.t := {
-    to_Z '(i16.Make z) := z;
-    of_Z z := i16.Make z;
+  Global Instance I_i16 : C Integer.I16 := {
     normalize_wrap z := Z.modulo (z + 2^15) 2^16 - 2^15;
     min := -2^15;
     max := 2^15 - 1;
   }.
 
-  Global Instance I_i32 : C i32.t := {
-    to_Z '(i32.Make z) := z;
-    of_Z z := i32.Make z;
+  Global Instance I_i32 : C Integer.I32 := {
     normalize_wrap z := Z.modulo (z + 2^31) 2^32 - 2^31;
     min := -2^31;
     max := 2^31 - 1;
   }.
 
-  Global Instance I_i64 : C i64.t := {
-    to_Z '(i64.Make z) := z;
-    of_Z z := i64.Make z;
+  Global Instance I_i64 : C Integer.I64 := {
     normalize_wrap z := Z.modulo (z + 2^63) 2^64 - 2^63;
     min := -2^63;
     max := 2^63 - 1;
   }.
 
-  Global Instance I_i128 : C i128.t := {
-    to_Z '(i128.Make z) := z;
-    of_Z z := i128.Make z;
+  Global Instance I_i128 : C Integer.I128 := {
     normalize_wrap z := Z.modulo (z + 2^127) 2^128 - 2^127;
     min := -2^127;
     max := 2^127 - 1;
   }.
 
-  Global Instance I_isize : C isize.t := {
-    to_Z '(isize.Make z) := z;
-    of_Z z := isize.Make z;
+  Global Instance I_isize : C Integer.Isize := {
     normalize_wrap z := Z.modulo (z + 2^63) 2^64 - 2^63;
     min := -2^63;
     max := 2^63 - 1;

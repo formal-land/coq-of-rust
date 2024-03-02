@@ -15,13 +15,8 @@ Section Impl_core_fmt_Debug_for_clone_Unit.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Unit") in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Unit") in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
     | _, _ => M.impossible
@@ -46,9 +41,7 @@ Section Impl_core_clone_Clone_for_clone_Unit.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "clone::Unit") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
@@ -82,17 +75,7 @@ Section Impl_core_clone_Clone_for_clone_Pair.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self :=
@@ -100,25 +83,10 @@ Section Impl_core_clone_Clone_for_clone_Pair.
                 (Ty.path "alloc::boxed::Box")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "clone::Pair") []] :=
-        M.read self in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call (α0 (borrow (clone.Pair.Get_0 (deref α1)))) in
-      let* α3 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+      let* α1 := M.read self in
+      let* α2 :=
+        M.call (α0 (borrow ((M.var "clone::Pair::Get_0") (deref α1)))) in
+      let* α3 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self :=
@@ -126,14 +94,9 @@ Section Impl_core_clone_Clone_for_clone_Pair.
                 (Ty.path "alloc::boxed::Box")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α4 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "clone::Pair") []] :=
-        M.read self in
-      let* α5 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call (α3 (borrow (clone.Pair.Get_1 (deref α4)))) in
+      let* α4 := M.read self in
+      let* α5 :=
+        M.call (α3 (borrow ((M.var "clone::Pair::Get_1") (deref α4)))) in
       M.pure (clone.Pair.Build_t α2 α5)
     | _, _ => M.impossible
     end.
@@ -158,34 +121,20 @@ Section Impl_core_fmt_Debug_for_clone_Pair.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Pair") in
-      let* α2 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "clone::Pair") []] :=
-        M.read self in
-      let* α3 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "clone::Pair") []] :=
-        M.read self in
-      let* α4 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.path "i32";
-                  Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-        M.alloc (borrow (clone.Pair.Get_1 (deref α3))) in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Pair") in
+      let* α2 := M.read self in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow ((M.var "clone::Pair::Get_1") (deref α3))) in
       M.call
         ((Ty.apply
               (Ty.path "core::fmt::Formatter")
               [])::["debug_tuple_field2_finish"]
           α0
           α1
-          (pointer_coercion "Unsize" (borrow (clone.Pair.Get_0 (deref α2))))
+          (pointer_coercion
+            "Unsize"
+            (borrow ((M.var "clone::Pair::Get_0") (deref α2))))
           (pointer_coercion "Unsize" (borrow α4)))
     | _, _ => M.impossible
     end.
@@ -238,82 +187,55 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* unit_ : Ty.apply (Ty.path "clone::Unit") [] :=
-      M.alloc clone.Unit.Build in
-    let* copied_unit : Ty.apply (Ty.path "clone::Unit") [] := M.copy unit_ in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "original: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* unit_ := M.alloc clone.Unit.Build in
+    let* copied_unit := M.copy unit_ in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "original: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow unit_)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "copy: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "copy: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow copied_unit)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* pair : Ty.apply (Ty.path "clone::Pair") [] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* pair :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [Ty.path "i32";
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             ((Integer.of_Z 1) : Ty.path "i32")) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -321,111 +243,77 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             ((Integer.of_Z 2) : Ty.path "i32")) in
       M.alloc (clone.Pair.Build_t α0 α1) in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "original: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "original: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow pair)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* moved_pair : Ty.apply (Ty.path "clone::Pair") [] := M.copy pair in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "moved: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* moved_pair := M.copy pair in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "moved: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow moved_pair)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* cloned_pair : Ty.apply (Ty.path "clone::Pair") [] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "clone::Pair") []]]
-            (Ty.apply (Ty.path "clone::Pair") []) :=
+    let* cloned_pair :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := Ty.apply (Ty.path "clone::Pair") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "clone::Pair") [] :=
-        M.call (α0 (borrow moved_pair)) in
+      let* α1 := M.call (α0 (borrow moved_pair)) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "clone::Pair") [] := M.read moved_pair in
-      let* α1 : Ty.tuple := M.call (core.mem.drop α0) in
+    let* _ :=
+      let* α0 := M.read moved_pair in
+      let* α1 := M.call ((M.var "core::mem::drop") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "clone: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "clone: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow cloned_pair)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

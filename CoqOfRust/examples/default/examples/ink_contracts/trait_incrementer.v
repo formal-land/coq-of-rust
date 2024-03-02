@@ -36,7 +36,7 @@ Section Impl_trait_incrementer_Incrementer.
     match 𝜏, α with
     | [], [init_value] =>
       let* init_value := M.alloc init_value in
-      let* α0 : Ty.path "u64" := M.read init_value in
+      let* α0 := M.read init_value in
       M.pure {| trait_incrementer.Incrementer.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -55,19 +55,16 @@ Section Impl_trait_incrementer_Incrementer.
     | [], [self; delta] =>
       let* self := M.alloc self in
       let* delta := M.alloc delta in
-      let* _ : Ty.tuple :=
-        let* β : Ty.path "u64" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
-            M.read self in
-          M.pure (trait_incrementer.Incrementer.Get_value (deref α0)) in
+      let* _ :=
+        let* β :=
+          let* α0 := M.read self in
+          M.pure
+            ((M.var "trait_incrementer::Incrementer::Get_value") (deref α0)) in
         let* α0 := M.read β in
-        let* α1 : Ty.path "u64" := M.read delta in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        assign β α2 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+        let* α1 := M.read delta in
+        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+        (M.var "assign") β α2 in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -92,11 +89,7 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.call
         ((Ty.apply (Ty.path "trait_incrementer::Incrementer") [])::["inc_by"]
           α0
@@ -117,12 +110,8 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
-        M.read self in
-      M.read (trait_incrementer.Incrementer.Get_value (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "trait_incrementer::Incrementer::Get_value") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -148,16 +137,12 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
-          M.read self in
+      let* _ :=
+        let* α0 := M.read self in
         assign
-          (trait_incrementer.Incrementer.Get_value (deref α0))
+          ((M.var "trait_incrementer::Incrementer::Get_value") (deref α0))
           ((Integer.of_Z 0) : Ty.path "u64") in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.

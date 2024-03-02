@@ -20,11 +20,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* vec :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "array") [Ty.path "i32"] :=
+    let* vec :=
+      let* α0 :=
         M.alloc
           [
             (Integer.of_Z 1) : Ty.path "i32";
@@ -34,37 +31,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 13) : Ty.path "i32";
             (Integer.of_Z 2) : Ty.path "i32"
           ] in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "i32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α1 :=
         M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "i32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read α1 in
-      let* α3 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α2 := M.read α1 in
+      let* α3 :=
         M.call
           ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
             (pointer_coercion "Unsize" α2)) in
       M.alloc α3 in
-    let* index_of_first_even_number :
-        Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]];
-              Ty.function
-                [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "i32"])]
-                (Ty.path "bool")]
-            (Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"]) :=
+    let* index_of_first_even_number :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.position
             (Self :=
@@ -74,15 +50,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "i32"])]
                 (Ty.path "bool"))
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply (Ty.path "ref") [_]) :=
+      let* α1 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.Deref.deref
             (Self :=
@@ -90,16 +58,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "slice") [Ty.path "i32"]] :=
-        M.call (α1 (borrow vec)) in
-      let* α3 : Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"] :=
+      let* α2 := M.call (α1 (borrow vec)) in
+      let* α3 :=
         M.call ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["iter"] α2) in
-      let* α4 : Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"] :=
-        M.alloc α3 in
-      let* α5 : Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"] :=
+      let* α4 := M.alloc α3 in
+      let* α5 :=
         M.call
           (α0
             (borrow_mut α4)
@@ -113,28 +76,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α0 := M.read γ in
                       M.pure (deref α0) in
                     let* x := M.copy γ in
-                    let* α0 : Ty.path "i32" := M.read x in
-                    let* α1 : Ty.path "i32" :=
-                      BinOp.Panic.rem α0 ((Integer.of_Z 2) : Ty.path "i32") in
+                    let* α0 := M.read x in
+                    let* α1 :=
+                      (M.var "BinOp::Panic::rem")
+                        α0
+                        ((Integer.of_Z 2) : Ty.path "i32") in
                     M.pure
-                      (BinOp.Pure.eq α1 ((Integer.of_Z 0) : Ty.path "i32"))) :
+                      ((M.var "BinOp::Pure::eq")
+                        α1
+                        ((Integer.of_Z 0) : Ty.path "i32"))) :
                     Ty.path "bool"
                 ]) :
               Ty.path "bool")) in
       M.alloc α5 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"] :=
+    let* _ :=
+      let* α0 :=
         M.alloc
           (core.option.Option.Some ((Integer.of_Z 5) : Ty.path "usize")) in
-      let* α1 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"]]) :=
-        M.alloc (borrow index_of_first_even_number, borrow α0) in
+      let* α1 := M.alloc (borrow index_of_first_even_number, borrow α0) in
       match_operator
         α1
         [
@@ -146,19 +105,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.path "usize"]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.path "usize"]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -170,71 +117,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::option::Option")
                         [Ty.path "usize"])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "usize"]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "usize"]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "usize"]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "usize"]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* index_of_first_negative_number :
-        Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]];
-              Ty.function [Ty.tuple (Ty.path "i32")] (Ty.path "bool")]
-            (Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"]) :=
+    let* index_of_first_negative_number :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.position
             (Self :=
@@ -243,12 +153,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (P := Ty.function [Ty.tuple (Ty.path "i32")] (Ty.path "bool"))
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []]]
-            _ :=
+      let* α1 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self :=
@@ -256,22 +161,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read vec in
-      let* α3 :
-          Ty.apply
-            (Ty.path "alloc::vec::into_iter::IntoIter")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call (α1 α2) in
-      let* α4 :
-          Ty.apply
-            (Ty.path "alloc::vec::into_iter::IntoIter")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.alloc α3 in
-      let* α5 : Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"] :=
+      let* α2 := M.read vec in
+      let* α3 := M.call (α1 α2) in
+      let* α4 := M.alloc α3 in
+      let* α5 :=
         M.call
           (α0
             (borrow_mut α4)
@@ -282,25 +175,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     (let* x := M.copy γ in
-                    let* α0 : Ty.path "i32" := M.read x in
+                    let* α0 := M.read x in
                     M.pure
-                      (BinOp.Pure.lt α0 ((Integer.of_Z 0) : Ty.path "i32"))) :
+                      ((M.var "BinOp::Pure::lt")
+                        α0
+                        ((Integer.of_Z 0) : Ty.path "i32"))) :
                     Ty.path "bool"
                 ]) :
               Ty.path "bool")) in
       M.alloc α5 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"] :=
-        M.alloc core.option.Option.None in
-      let* α1 :
-          Ty.tuple
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"]])
-            (Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "core::option::Option") [Ty.path "usize"]]) :=
-        M.alloc (borrow index_of_first_negative_number, borrow α0) in
+    let* _ :=
+      let* α0 := M.alloc core.option.Option.None in
+      let* α1 := M.alloc (borrow index_of_first_negative_number, borrow α0) in
       match_operator
         α1
         [
@@ -312,19 +198,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.path "usize"]];
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply
-                            (Ty.path "core::option::Option")
-                            [Ty.path "usize"]]]
-                    (Ty.path "bool") :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.cmp.PartialEq.eq
                     (Self :=
@@ -336,60 +210,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::option::Option")
                         [Ty.path "usize"])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "usize"]] :=
-                M.read left_val in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "usize"]] :=
-                M.read right_val in
-              let* α3 : Ty.path "bool" := M.call (α0 α1 α2) in
-              let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call (α0 α1 α2) in
+              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "usize"]] :=
-                  M.read left_val in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "usize"]] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

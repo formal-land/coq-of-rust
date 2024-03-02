@@ -13,12 +13,12 @@ Section Impl_core_default_Default_for_call_runtime_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (call_runtime.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "call_runtime::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -51,11 +51,7 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "call_runtime::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "call_runtime::AccountId") []
           ] in
@@ -101,9 +97,8 @@ Section Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddr
     match 𝜏, α with
     | [], [_value] =>
       let* _value := M.alloc _value in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -157,13 +152,8 @@ Section Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "CallRuntimeFailed") in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "CallRuntimeFailed") in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
     | _, _ => M.impossible
@@ -262,7 +252,7 @@ Section Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErr
     match 𝜏, α with
     | [], [e] =>
       let* e := M.alloc e in
-      let* α0 : Ty.apply (Ty.path "call_runtime::RuntimeError") [] :=
+      let* α0 :=
         match_operator
           e
           [
@@ -275,12 +265,10 @@ Section Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErr
               end) :
               Ty.apply (Ty.path "call_runtime::RuntimeError") [];
             fun γ =>
-              (let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+              (let* α0 :=
                 M.read (mk_str "Unexpected error from `pallet-contracts`.") in
-              let* α1 : Ty.path "never" :=
-                M.call (std.panicking.begin_panic α0) in
-              let* α2 : Ty.apply (Ty.path "call_runtime::RuntimeError") [] :=
-                never_to_any α1 in
+              let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+              let* α2 := never_to_any α1 in
               M.alloc α2) :
               Ty.apply (Ty.path "call_runtime::RuntimeError") []
           ] in
@@ -310,9 +298,8 @@ Section Impl_call_runtime_Env.
     | [Call], [self; _call] =>
       let* self := M.alloc self in
       let* _call := M.alloc _call in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -335,9 +322,8 @@ Section Impl_call_runtime_RuntimeCaller.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -371,10 +357,7 @@ Section Impl_call_runtime_RuntimeCaller.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function
-            []
-            (Ty.apply (Ty.path "call_runtime::RuntimeCaller") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "call_runtime::RuntimeCaller") [])
@@ -407,22 +390,13 @@ Section Impl_call_runtime_RuntimeCaller.
       let* self := M.alloc self in
       let* receiver := M.alloc receiver in
       let* value := M.alloc value in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "call_runtime::RuntimeCaller") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "call_runtime::Env") [] :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "call_runtime::RuntimeCaller") [])::["env"]
             (borrow (deref α0))) in
-      let* α2 : Ty.apply (Ty.path "call_runtime::Env") [] := M.alloc α1 in
-      let* α3 :
-          Ty.function
-            [Ty.apply (Ty.path "call_runtime::AccountId") []]
-            (Ty.apply
-              (Ty.path "call_runtime::MultiAddress")
-              [Ty.apply (Ty.path "call_runtime::AccountId") []; Ty.tuple]) :=
+      let* α2 := M.alloc α1 in
+      let* α3 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.apply (Ty.path "call_runtime::AccountId") [])
@@ -431,15 +405,10 @@ Section Impl_call_runtime_RuntimeCaller.
                 (Ty.path "call_runtime::MultiAddress")
                 [Ty.apply (Ty.path "call_runtime::AccountId") []; Ty.tuple])
             (Trait := ℐ))) in
-      let* α4 : Ty.apply (Ty.path "call_runtime::AccountId") [] :=
-        M.read receiver in
-      let* α5 :
-          Ty.apply
-            (Ty.path "call_runtime::MultiAddress")
-            [Ty.apply (Ty.path "call_runtime::AccountId") []; Ty.tuple] :=
-        M.call (α3 α4) in
-      let* α6 : Ty.path "u128" := M.read value in
-      let* α7 : Ty.apply (Ty.path "call_runtime::RuntimeCall") [] :=
+      let* α4 := M.read receiver in
+      let* α5 := M.call (α3 α4) in
+      let* α6 := M.read value in
+      let* α7 :=
         M.alloc
           (call_runtime.RuntimeCall.Balances
             (call_runtime.BalancesCall.Transfer
@@ -447,18 +416,12 @@ Section Impl_call_runtime_RuntimeCaller.
               call_runtime.BalancesCall.Transfer.dest := α5;
               call_runtime.BalancesCall.Transfer.value := α6;
             |})) in
-      let* α8 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.tuple; Ty.apply (Ty.path "call_runtime::EnvError") []] :=
+      let* α8 :=
         M.call
           ((Ty.apply (Ty.path "call_runtime::Env") [])::["call_runtime"]
             (borrow α2)
             (borrow α7)) in
-      let* α9 :
-          Ty.function
-            [Ty.apply (Ty.path "call_runtime::EnvError") []]
-            (Ty.apply (Ty.path "call_runtime::RuntimeError") []) :=
+      let* α9 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.apply (Ty.path "call_runtime::EnvError") [])
@@ -490,29 +453,19 @@ Section Impl_call_runtime_RuntimeCaller.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "call_runtime::RuntimeCaller") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "call_runtime::Env") [] :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "call_runtime::RuntimeCaller") [])::["env"]
             (borrow (deref α0))) in
-      let* α2 : Ty.apply (Ty.path "call_runtime::Env") [] := M.alloc α1 in
-      let* α3 : Ty.tuple := M.alloc tt in
-      let* α4 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.tuple; Ty.apply (Ty.path "call_runtime::EnvError") []] :=
+      let* α2 := M.alloc α1 in
+      let* α3 := M.alloc tt in
+      let* α4 :=
         M.call
           ((Ty.apply (Ty.path "call_runtime::Env") [])::["call_runtime"]
             (borrow α2)
             (borrow α3)) in
-      let* α5 :
-          Ty.function
-            [Ty.apply (Ty.path "call_runtime::EnvError") []]
-            (Ty.apply (Ty.path "call_runtime::RuntimeError") []) :=
+      let* α5 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.apply (Ty.path "call_runtime::EnvError") [])

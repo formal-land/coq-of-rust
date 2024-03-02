@@ -18,13 +18,8 @@ Section Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "FlipperError") in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "FlipperError") in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
     | _, _ => M.impossible
@@ -51,7 +46,7 @@ Section Impl_integration_flipper_Flipper.
     match 𝜏, α with
     | [], [init_value] =>
       let* init_value := M.alloc init_value in
-      let* α0 : Ty.path "bool" := M.read init_value in
+      let* α0 := M.read init_value in
       M.pure {| integration_flipper.Flipper.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -68,12 +63,12 @@ Section Impl_integration_flipper_Flipper.
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "bool")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "bool" := M.call α0 in
+      let* α1 := M.call α0 in
       M.call
         ((Ty.apply (Ty.path "integration_flipper::Flipper") [])::["new"] α1)
     | _, _ => M.impossible
@@ -96,14 +91,10 @@ Section Impl_integration_flipper_Flipper.
     match 𝜏, α with
     | [], [succeed] =>
       let* succeed := M.alloc succeed in
-      let* α0 : Ty.path "bool" := M.read (use succeed) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "integration_flipper::Flipper") [];
-              Ty.apply (Ty.path "integration_flipper::FlipperError") []] :=
+      let* α0 := M.read (use succeed) in
+      let* α1 :=
         if α0 then
-          let* α0 : Ty.apply (Ty.path "integration_flipper::Flipper") [] :=
+          let* α0 :=
             M.call
               ((Ty.apply (Ty.path "integration_flipper::Flipper") [])::["new"]
                 true) in
@@ -128,23 +119,16 @@ Section Impl_integration_flipper_Flipper.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "integration_flipper::Flipper") []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "integration_flipper::Flipper") []] :=
-          M.read self in
-        let* α2 : Ty.path "bool" :=
-          M.read (integration_flipper.Flipper.Get_value (deref α1)) in
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read self in
+        let* α2 :=
+          M.read
+            ((M.var "integration_flipper::Flipper::Get_value") (deref α1)) in
         assign
-          (integration_flipper.Flipper.Get_value (deref α0))
-          (UnOp.not α2) in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+          ((M.var "integration_flipper::Flipper::Get_value") (deref α0))
+          ((M.var "UnOp::not") α2) in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -162,12 +146,8 @@ Section Impl_integration_flipper_Flipper.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "integration_flipper::Flipper") []] :=
-        M.read self in
-      M.read (integration_flipper.Flipper.Get_value (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "integration_flipper::Flipper::Get_value") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -185,20 +165,14 @@ Section Impl_integration_flipper_Flipper.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "integration_flipper::Flipper") []] :=
-          M.read self in
-        let* α1 : Ty.tuple :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "integration_flipper::Flipper") [])::["flip"]
               α0) in
         M.alloc α1 in
-      let* α0 :
-          Ty.apply (Ty.path "core::result::Result") [Ty.tuple; Ty.tuple] :=
-        M.alloc (core.result.Result.Err tt) in
+      let* α0 := M.alloc (core.result.Result.Err tt) in
       M.read α0
     | _, _ => M.impossible
     end.

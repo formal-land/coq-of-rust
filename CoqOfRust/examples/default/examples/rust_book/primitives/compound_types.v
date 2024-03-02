@@ -32,24 +32,18 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* logical : Ty.path "bool" := M.alloc true in
-    let* a_float : Ty.path "f64" :=
-      M.copy (UnsupportedLiteral : Ty.path "f64") in
-    let* an_integer : Ty.path "i32" :=
-      M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
-    let* default_float : Ty.path "f64" :=
-      M.copy (UnsupportedLiteral : Ty.path "f64") in
-    let* default_integer : Ty.path "i32" :=
-      M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
-    let* inferred_type : Ty.path "i64" :=
-      M.alloc ((Integer.of_Z 12) : Ty.path "i64") in
-    let* _ : Ty.tuple :=
+    let* logical := M.alloc true in
+    let* a_float := M.copy (UnsupportedLiteral : Ty.path "f64") in
+    let* an_integer := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
+    let* default_float := M.copy (UnsupportedLiteral : Ty.path "f64") in
+    let* default_integer := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
+    let* inferred_type := M.alloc ((Integer.of_Z 12) : Ty.path "i64") in
+    let* _ :=
       assign inferred_type ((Integer.of_Z 4294967296) : Ty.path "i64") in
-    let* mutable : Ty.path "i32" :=
-      M.alloc ((Integer.of_Z 12) : Ty.path "i32") in
-    let* _ : Ty.tuple := assign mutable ((Integer.of_Z 21) : Ty.path "i32") in
-    let* mutable : Ty.path "bool" := M.alloc true in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* mutable := M.alloc ((Integer.of_Z 12) : Ty.path "i32") in
+    let* _ := assign mutable ((Integer.of_Z 21) : Ty.path "i32") in
+    let* mutable := M.alloc true in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

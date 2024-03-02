@@ -15,61 +15,43 @@ Section Impl_core_hash_Hash_for_hash_Person.
     | [__H], [self; state] =>
       let* self := M.alloc self in
       let* state := M.alloc state in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.function
-              [Ty.apply (Ty.path "ref") [Ty.path "u32"];
-                Ty.apply (Ty.path "mut_ref") [__H]]
-              Ty.tuple :=
+      let* _ :=
+        let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             core.hash.Hash.hash
               (Self := Ty.path "u32")
               (H := __H)
               (Trait := ℐ))) in
-        let* α1 :
-            Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "hash::Person") []] :=
-          M.read self in
-        let* α2 : Ty.apply (Ty.path "mut_ref") [__H] := M.read state in
-        let* α3 : Ty.tuple :=
-          M.call (α0 (borrow (hash.Person.Get_id (deref α1))) α2) in
+        let* α1 := M.read self in
+        let* α2 := M.read state in
+        let* α3 :=
+          M.call (α0 (borrow ((M.var "hash::Person::Get_id") (deref α1))) α2) in
         M.alloc α3 in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "alloc::string::String") []];
-                Ty.apply (Ty.path "mut_ref") [__H]]
-              Ty.tuple :=
+      let* _ :=
+        let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             core.hash.Hash.hash
               (Self := Ty.apply (Ty.path "alloc::string::String") [])
               (H := __H)
               (Trait := ℐ))) in
-        let* α1 :
-            Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "hash::Person") []] :=
-          M.read self in
-        let* α2 : Ty.apply (Ty.path "mut_ref") [__H] := M.read state in
-        let* α3 : Ty.tuple :=
-          M.call (α0 (borrow (hash.Person.Get_name (deref α1))) α2) in
+        let* α1 := M.read self in
+        let* α2 := M.read state in
+        let* α3 :=
+          M.call
+            (α0 (borrow ((M.var "hash::Person::Get_name") (deref α1))) α2) in
         M.alloc α3 in
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "u64"];
-              Ty.apply (Ty.path "mut_ref") [__H]]
-            Ty.tuple :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.hash.Hash.hash
             (Self := Ty.path "u64")
             (H := __H)
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "hash::Person") []] :=
-        M.read self in
-      let* α2 : Ty.apply (Ty.path "mut_ref") [__H] := M.read state in
-      let* α3 : Ty.tuple :=
-        M.call (α0 (borrow (hash.Person.Get_phone (deref α1))) α2) in
-      let* α0 : Ty.tuple := M.alloc α3 in
+      let* α1 := M.read self in
+      let* α2 := M.read state in
+      let* α3 :=
+        M.call
+          (α0 (borrow ((M.var "hash::Person::Get_phone") (deref α1))) α2) in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -93,39 +75,28 @@ Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [T], [t] =>
     let* t := M.alloc t in
-    let* s : Ty.apply (Ty.path "std::hash::random::DefaultHasher") [] :=
-      let* α0 : Ty.apply (Ty.path "std::hash::random::DefaultHasher") [] :=
+    let* s :=
+      let* α0 :=
         M.call
           (Ty.apply (Ty.path "std::hash::random::DefaultHasher") [])::["new"] in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [T];
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "std::hash::random::DefaultHasher") []]]
-            Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.hash.Hash.hash
             (Self := T)
             (H := Ty.apply (Ty.path "std::hash::random::DefaultHasher") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "ref") [T] := M.read t in
-      let* α2 : Ty.tuple := M.call (α0 α1 (borrow_mut s)) in
+      let* α1 := M.read t in
+      let* α2 := M.call (α0 α1 (borrow_mut s)) in
       M.alloc α2 in
-    let* α0 :
-        Ty.function
-          [Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "std::hash::random::DefaultHasher") []]]
-          (Ty.path "u64") :=
+    let* α0 :=
       ltac:(M.get_method (fun ℐ =>
         core.hash.Hasher.finish
           (Self := Ty.apply (Ty.path "std::hash::random::DefaultHasher") [])
           (Trait := ℐ))) in
-    let* α1 : Ty.path "u64" := M.call (α0 (borrow s)) in
-    let* α0 : Ty.path "u64" := M.alloc α1 in
+    let* α1 := M.call (α0 (borrow s)) in
+    let* α0 := M.alloc α1 in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -150,62 +121,51 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* person1 : Ty.apply (Ty.path "hash::Person") [] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]]
-            (Ty.apply (Ty.path "alloc::string::String") []) :=
+    let* person1 :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           alloc.string.ToString.to_string
             (Self := Ty.path "str")
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Janet") in
-      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
-        M.call (α0 α1) in
+      let* α1 := M.read (mk_str "Janet") in
+      let* α2 := M.call (α0 α1) in
       M.alloc
         {|
           hash.Person.id := (Integer.of_Z 5) : Ty.path "u32";
           hash.Person.name := α2;
           hash.Person.phone := (Integer.of_Z 5556667777) : Ty.path "u64";
         |} in
-    let* person2 : Ty.apply (Ty.path "hash::Person") [] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]]
-            (Ty.apply (Ty.path "alloc::string::String") []) :=
+    let* person2 :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           alloc.string.ToString.to_string
             (Self := Ty.path "str")
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Bob") in
-      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
-        M.call (α0 α1) in
+      let* α1 := M.read (mk_str "Bob") in
+      let* α2 := M.call (α0 α1) in
       M.alloc
         {|
           hash.Person.id := (Integer.of_Z 5) : Ty.path "u32";
           hash.Person.name := α2;
           hash.Person.phone := (Integer.of_Z 5556667777) : Ty.path "u64";
         |} in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.path "u64" :=
-        M.call (hash.calculate_hash (borrow person1)) in
-      let* α1 : Ty.path "u64" :=
-        M.call (hash.calculate_hash (borrow person2)) in
-      let* α2 : Ty.path "bool" := M.alloc (UnOp.not (BinOp.Pure.ne α0 α1)) in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
+    let* _ :=
+      let* α0 := M.call ((M.var "hash::calculate_hash") (borrow person1)) in
+      let* α1 := M.call ((M.var "hash::calculate_hash") (borrow person2)) in
+      let* α2 :=
+        M.alloc ((M.var "UnOp::not") ((M.var "BinOp::Pure::ne") α0 α1)) in
+      let* α3 := M.read (use α2) in
       if α3 then
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        let* α0 :=
           M.read
             (mk_str
               "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
-        let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
-        let* α2 : Ty.tuple := never_to_any α1 in
+        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α2 := never_to_any α1 in
         M.alloc α2
       else
         M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -10,16 +10,16 @@ Definition call_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [F], [f] =>
     let* f := M.alloc f in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.function [Ty.apply (Ty.path "ref") [F]; Ty.tuple] _ :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
             (Self := F)
             (Args := Ty.tuple)
             (Trait := ℐ))) in
-      let* α1 : Ty.tuple := M.call (α0 (borrow f) tt) in
+      let* α1 := M.call (α0 (borrow f) tt) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -32,24 +32,19 @@ fn function() {
 Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "I'm a function!
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "I'm a function!
 ") in
-        let* α1 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0 ] in
-        let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α1 := M.alloc [ α0 ] in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -67,7 +62,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* closure : Ty.function [Ty.tuple] Ty.tuple :=
+    let* closure :=
       M.alloc
         (fun (α0 : Ty.path "unit") =>
           (let* α0 := M.alloc α0 in
@@ -75,40 +70,35 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α0
             [
               fun γ =>
-                (let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "I'm a closure!
+                (let* _ :=
+                  let* α0 := M.read (mk_str "I'm a closure!
 ") in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0 ] in
-                  let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α1 := M.alloc [ α0 ] in
+                  let* α2 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                  let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
-                let* α0 : Ty.path "unit" := M.alloc tt in
+                let* α0 := M.alloc tt in
                 M.read α0) :
                 Ty.tuple
             ]) :
           Ty.tuple) in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.function [Ty.tuple] Ty.tuple := M.read closure in
-      let* α1 : Ty.tuple :=
-        M.call (functions_closures_input_functions.call_me α0) in
+    let* _ :=
+      let* α0 := M.read closure in
+      let* α1 :=
+        M.call ((M.var "functions_closures_input_functions::call_me") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (functions_closures_input_functions.call_me
-            functions_closures_input_functions.function) in
+          ((M.var "functions_closures_input_functions::call_me")
+            (M.var "functions_closures_input_functions::function")) in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

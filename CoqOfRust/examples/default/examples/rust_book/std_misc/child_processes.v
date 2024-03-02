@@ -23,30 +23,21 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* output : Ty.apply (Ty.path "std::process::Output") [] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "rustc") in
-      let* α1 : Ty.apply (Ty.path "std::process::Command") [] :=
+    let* output :=
+      let* α0 := M.read (mk_str "rustc") in
+      let* α1 :=
         M.call ((Ty.apply (Ty.path "std::process::Command") [])::["new"] α0) in
-      let* α2 : Ty.apply (Ty.path "std::process::Command") [] := M.alloc α1 in
-      let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "--version") in
-      let* α4 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "std::process::Command") []] :=
+      let* α2 := M.alloc α1 in
+      let* α3 := M.read (mk_str "--version") in
+      let* α4 :=
         M.call
           ((Ty.apply (Ty.path "std::process::Command") [])::["arg"]
             (borrow_mut α2)
             α3) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "std::process::Output") [];
-              Ty.apply (Ty.path "std::io::error::Error") []] :=
+      let* α5 :=
         M.call
           ((Ty.apply (Ty.path "std::process::Command") [])::["output"] α4) in
-      let* α6 : Ty.apply (Ty.path "std::process::Output") [] :=
+      let* α6 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::result::Result")
@@ -62,56 +53,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     (let* e := M.copy γ in
-                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                      M.read (mk_str "failed to execute process: ") in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                      M.alloc [ α0 ] in
-                    let* α2 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    let* α0 := M.read (mk_str "failed to execute process: ") in
+                    let* α1 := M.alloc [ α0 ] in
+                    let* α2 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::rt::Argument")
                               [])::["new_display"]
                           (borrow e)) in
-                    let* α3 :
-                        Ty.apply
-                          (Ty.path "array")
-                          [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                      M.alloc [ α2 ] in
-                    let* α4 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    let* α3 := M.alloc [ α2 ] in
+                    let* α4 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::fmt::Arguments")
                               [])::["new_v1"]
                           (pointer_coercion "Unsize" (borrow α1))
                           (pointer_coercion "Unsize" (borrow α3))) in
-                    let* α5 : Ty.path "never" :=
-                      M.call (core.panicking.panic_fmt α4) in
+                    let* α5 :=
+                      M.call ((M.var "core::panicking::panic_fmt") α4) in
                     never_to_any α5) :
                     Ty.apply (Ty.path "std::process::Output") []
                 ]) :
               Ty.apply (Ty.path "std::process::Output") [])) in
       M.alloc α6 in
-    let* α0 : Ty.path "bool" :=
+    let* α0 :=
       M.call
         ((Ty.apply (Ty.path "std::process::ExitStatus") [])::["success"]
-          (borrow (std.process.Output.Get_status output))) in
-    let* α1 : Ty.path "bool" := M.alloc α0 in
-    let* α2 : Ty.path "bool" := M.read (use α1) in
-    let* α0 : Ty.tuple :=
+          (borrow ((M.var "std::process::Output::Get_status") output))) in
+    let* α1 := M.alloc α0 in
+    let* α2 := M.read (use α1) in
+    let* α0 :=
       if α2 then
-        let* s : Ty.apply (Ty.path "alloc::borrow::Cow") [Ty.path "str"] :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [Ty.path "u8";
-                          Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-                (Ty.apply (Ty.path "ref") [_]) :=
+        let* s :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.deref.Deref.deref
                 (Self :=
@@ -120,59 +94,41 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [Ty.path "u8";
                       Ty.apply (Ty.path "alloc::alloc::Global") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "slice") [Ty.path "u8"]] :=
-            M.call (α0 (borrow (std.process.Output.Get_stdout output))) in
-          let* α2 : Ty.apply (Ty.path "alloc::borrow::Cow") [Ty.path "str"] :=
+          let* α1 :=
+            M.call
+              (α0
+                (borrow ((M.var "std::process::Output::Get_stdout") output))) in
+          let* α2 :=
             M.call
               ((Ty.apply
                     (Ty.path "alloc::string::String")
                     [])::["from_utf8_lossy"]
                 α1) in
           M.alloc α2 in
-        let* _ : Ty.tuple :=
-          let* _ : Ty.tuple :=
-            let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-              M.read (mk_str "rustc succeeded and stdout was:
+        let* _ :=
+          let* _ :=
+            let* α0 := M.read (mk_str "rustc succeeded and stdout was:
 ") in
-            let* α1 :
-                Ty.apply
-                  (Ty.path "array")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-              M.alloc [ α0 ] in
-            let* α2 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+            let* α1 := M.alloc [ α0 ] in
+            let* α2 :=
               M.call
                 ((Ty.apply
                       (Ty.path "core::fmt::rt::Argument")
                       [])::["new_display"]
                   (borrow s)) in
-            let* α3 :
-                Ty.apply
-                  (Ty.path "array")
-                  [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-              M.alloc [ α2 ] in
-            let* α4 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 :=
               M.call
                 ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                   (pointer_coercion "Unsize" (borrow α1))
                   (pointer_coercion "Unsize" (borrow α3))) in
-            let* α5 : Ty.tuple := M.call (std.io.stdio._print α4) in
+            let* α5 := M.call ((M.var "std::io::stdio::_print") α4) in
             M.alloc α5 in
           M.alloc tt in
         M.alloc tt
       else
-        let* s : Ty.apply (Ty.path "alloc::borrow::Cow") [Ty.path "str"] :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [Ty.path "u8";
-                          Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-                (Ty.apply (Ty.path "ref") [_]) :=
+        let* s :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.deref.Deref.deref
                 (Self :=
@@ -181,45 +137,35 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [Ty.path "u8";
                       Ty.apply (Ty.path "alloc::alloc::Global") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "slice") [Ty.path "u8"]] :=
-            M.call (α0 (borrow (std.process.Output.Get_stderr output))) in
-          let* α2 : Ty.apply (Ty.path "alloc::borrow::Cow") [Ty.path "str"] :=
+          let* α1 :=
+            M.call
+              (α0
+                (borrow ((M.var "std::process::Output::Get_stderr") output))) in
+          let* α2 :=
             M.call
               ((Ty.apply
                     (Ty.path "alloc::string::String")
                     [])::["from_utf8_lossy"]
                 α1) in
           M.alloc α2 in
-        let* _ : Ty.tuple :=
-          let* _ : Ty.tuple :=
-            let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-              M.read (mk_str "rustc failed and stderr was:
+        let* _ :=
+          let* _ :=
+            let* α0 := M.read (mk_str "rustc failed and stderr was:
 ") in
-            let* α1 :
-                Ty.apply
-                  (Ty.path "array")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-              M.alloc [ α0 ] in
-            let* α2 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+            let* α1 := M.alloc [ α0 ] in
+            let* α2 :=
               M.call
                 ((Ty.apply
                       (Ty.path "core::fmt::rt::Argument")
                       [])::["new_display"]
                   (borrow s)) in
-            let* α3 :
-                Ty.apply
-                  (Ty.path "array")
-                  [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-              M.alloc [ α2 ] in
-            let* α4 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 :=
               M.call
                 ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                   (pointer_coercion "Unsize" (borrow α1))
                   (pointer_coercion "Unsize" (borrow α3))) in
-            let* α5 : Ty.tuple := M.call (std.io.stdio._print α4) in
+            let* α5 := M.call ((M.var "std::io::stdio::_print") α4) in
             M.alloc α5 in
           M.alloc tt in
         M.alloc tt in

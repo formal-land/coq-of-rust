@@ -69,38 +69,38 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (generics_functions.reg_fn
+          ((M.var "generics_functions::reg_fn")
             (generics_functions.S.Build_t generics_functions.A.Build)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (generics_functions.gen_spec_t
+          ((M.var "generics_functions::gen_spec_t")
             (generics_functions.SGen.Build_t generics_functions.A.Build)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (generics_functions.gen_spec_i32
+          ((M.var "generics_functions::gen_spec_i32")
             (generics_functions.SGen.Build_t
               ((Integer.of_Z 6) : Ty.path "i32"))) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (generics_functions.generic
+          ((M.var "generics_functions::generic")
             (generics_functions.SGen.Build_t "a"%char)) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
-          (generics_functions.generic
+          ((M.var "generics_functions::generic")
             (generics_functions.SGen.Build_t "c"%char)) in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

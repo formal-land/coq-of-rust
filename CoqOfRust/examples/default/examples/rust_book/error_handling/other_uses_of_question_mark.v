@@ -26,13 +26,8 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "EmptyVec") in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "EmptyVec") in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
     | _, _ => M.impossible
@@ -61,19 +56,10 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "invalid first item to double") in
-      let* α2 :
-          Ty.apply
-            (Ty.path "array")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-        M.alloc [ α1 ] in
-      let* α3 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "invalid first item to double") in
+      let* α2 := M.alloc [ α1 ] in
+      let* α3 :=
         M.call
           ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
             (pointer_coercion "Unsize" (borrow α2))) in
@@ -125,21 +111,8 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [dyn [core.error.Error.Trait];
                   Ty.apply (Ty.path "alloc::alloc::Global") []]]) in
     M.catch_return
-      (let* first :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-        let* α0 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply
-                      (Ty.path "ref")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]];
-                    Ty.apply
-                      (Ty.path "other_uses_of_question_mark::EmptyVec")
-                      []]]
-              (Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [_; _]) :=
+      (let* first :=
+        let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self :=
@@ -152,15 +125,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Ty.path "other_uses_of_question_mark::EmptyVec")
                       []])
               (Trait := ℐ))) in
-        let* α1 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                        Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-              (Ty.apply (Ty.path "ref") [_]) :=
+        let* α1 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
               (Self :=
@@ -169,33 +134,14 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.apply (Ty.path "ref") [Ty.path "str"];
                     Ty.apply (Ty.path "alloc::alloc::Global") []])
               (Trait := ℐ))) in
-        let* α2 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply
-                  (Ty.path "slice")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]]] :=
-          M.call (α1 (borrow vec)) in
-        let* α3 :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]]] :=
+        let* α2 := M.call (α1 (borrow vec)) in
+        let* α3 :=
           M.call
             ((Ty.apply
                   (Ty.path "slice")
                   [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["first"]
               α2) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]];
-                Ty.apply
-                  (Ty.path "other_uses_of_question_mark::EmptyVec")
-                  []] :=
+        let* α4 :=
           M.call
             ((Ty.apply
                   (Ty.path "core::option::Option")
@@ -204,36 +150,9 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       [Ty.apply (Ty.path "ref") [Ty.path "str"]]])::["ok_or"]
               α3
               other_uses_of_question_mark.EmptyVec.Build) in
-        let* α5 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "core::convert::Infallible") [];
-                    Ty.apply
-                      (Ty.path "other_uses_of_question_mark::EmptyVec")
-                      []];
-                Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]]] :=
-          M.call (α0 α4) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "core::convert::Infallible") [];
-                    Ty.apply
-                      (Ty.path "other_uses_of_question_mark::EmptyVec")
-                      []];
-                Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "ref") [Ty.path "str"]]] :=
-          M.alloc α5 in
-        let* α7 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+        let* α5 := M.call (α0 α4) in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           match_operator
             α6
             [
@@ -241,26 +160,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply
-                                (Ty.path
-                                  "other_uses_of_question_mark::EmptyVec")
-                                []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.path "i32";
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              [dyn [core.error.Error.Trait];
-                                Ty.apply
-                                  (Ty.path "alloc::alloc::Global")
-                                  []]]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -282,30 +186,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   "other_uses_of_question_mark::EmptyVec")
                                 []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply
-                            (Ty.path "other_uses_of_question_mark::EmptyVec")
-                            []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.path "i32";
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            [dyn [core.error.Error.Trait];
-                              Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 :
-                      Ty.apply
-                        (Ty.path "ref")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -317,7 +202,9 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
@@ -327,16 +214,8 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.apply (Ty.path "ref") [Ty.path "str"]]
             ] in
         M.copy α7 in
-      let* parsed : Ty.path "i32" :=
-        let* α0 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.path "i32";
-                    Ty.apply (Ty.path "core::num::error::ParseIntError") []]]
-              (Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [_; _]) :=
+      let* parsed :=
+        let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self :=
@@ -345,38 +224,12 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.path "i32";
                     Ty.apply (Ty.path "core::num::error::ParseIntError") []])
               (Trait := ℐ))) in
-        let* α1 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.read first in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (deref α1) in
-        let* α3 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.path "i32";
-                Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-          M.call ((Ty.path "str")::["parse"] α2) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "core::convert::Infallible") [];
-                    Ty.apply (Ty.path "core::num::error::ParseIntError") []];
-                Ty.path "i32"] :=
-          M.call (α0 α3) in
-        let* α5 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "core::convert::Infallible") [];
-                    Ty.apply (Ty.path "core::num::error::ParseIntError") []];
-                Ty.path "i32"] :=
-          M.alloc α4 in
-        let* α6 : Ty.path "i32" :=
+        let* α1 := M.read first in
+        let* α2 := M.read (deref α1) in
+        let* α3 := M.call ((Ty.path "str")::["parse"] α2) in
+        let* α4 := M.call (α0 α3) in
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           match_operator
             α5
             [
@@ -384,25 +237,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply
-                                (Ty.path "core::num::error::ParseIntError")
-                                []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.path "i32";
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              [dyn [core.error.Error.Trait];
-                                Ty.apply
-                                  (Ty.path "alloc::alloc::Global")
-                                  []]]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -423,26 +262,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 (Ty.path "core::num::error::ParseIntError")
                                 []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply
-                            (Ty.path "core::num::error::ParseIntError")
-                            []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.path "i32";
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            [dyn [core.error.Error.Trait];
-                              Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.path "i32" := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -452,7 +276,9 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
@@ -460,18 +286,10 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "i32"
             ] in
         M.copy α6 in
-      let* α0 : Ty.path "i32" := M.read parsed in
-      let* α1 : Ty.path "i32" :=
-        BinOp.Panic.mul ((Integer.of_Z 2) : Ty.path "i32") α0 in
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [dyn [core.error.Error.Trait];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-        M.alloc (core.result.Result.Ok α1) in
+      let* α0 := M.read parsed in
+      let* α1 :=
+        (M.var "BinOp::Panic::mul") ((Integer.of_Z 2) : Ty.path "i32") α0 in
+      let* α0 := M.alloc (core.result.Result.Ok α1) in
       M.read α0)
   | _, _ => M.impossible
   end.
@@ -488,7 +306,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [result] =>
     let* result := M.alloc result in
-    let* α0 : Ty.tuple :=
+    let* α0 :=
       match_operator
         result
         [
@@ -496,36 +314,26 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := core.result.Result.Get_Ok_0 γ in
+              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
               let* n := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "The first doubled is ") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "
+              let* _ :=
+                let* α0 := M.read (mk_str "The first doubled is ") in
+                let* α1 := M.read (mk_str "
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow n)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -535,36 +343,26 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := core.result.Result.Get_Err_0 γ in
+              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
               let* e := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Error: ") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "
+              let* _ :=
+                let* α0 := M.read (mk_str "Error: ") in
+                let* α1 := M.read (mk_str "
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow e)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -590,163 +388,63 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* numbers :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.apply (Ty.path "ref") [Ty.path "str"];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "42") in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "93") in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "18") in
-      let* α3 :
-          Ty.apply
-            (Ty.path "array")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-        M.alloc [ α0; α1; α2 ] in
-      let* α4 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* numbers :=
+      let* α0 := M.read (mk_str "42") in
+      let* α1 := M.read (mk_str "93") in
+      let* α2 := M.read (mk_str "18") in
+      let* α3 := M.alloc [ α0; α1; α2 ] in
+      let* α4 :=
         M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read α4 in
-      let* α6 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α5 := M.read α4 in
+      let* α6 :=
         M.call
           ((Ty.apply
                 (Ty.path "slice")
                 [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["into_vec"]
             (pointer_coercion "Unsize" α5)) in
       M.alloc α6 in
-    let* empty :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.apply (Ty.path "ref") [Ty.path "str"];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* empty :=
+      let* α0 :=
         M.call
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
               [Ty.apply (Ty.path "ref") [Ty.path "str"];
                 Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"] in
       M.alloc α0 in
-    let* strings :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.apply (Ty.path "ref") [Ty.path "str"];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "tofu") in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "93") in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "18") in
-      let* α3 :
-          Ty.apply
-            (Ty.path "array")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-        M.alloc [ α0; α1; α2 ] in
-      let* α4 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* strings :=
+      let* α0 := M.read (mk_str "tofu") in
+      let* α1 := M.read (mk_str "93") in
+      let* α2 := M.read (mk_str "18") in
+      let* α3 := M.alloc [ α0; α1; α2 ] in
+      let* α4 :=
         M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply
-                (Ty.path "array")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read α4 in
-      let* α6 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α5 := M.read α4 in
+      let* α6 :=
         M.call
           ((Ty.apply
                 (Ty.path "slice")
                 [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["into_vec"]
             (pointer_coercion "Unsize" α5)) in
       M.alloc α6 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read numbers in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [dyn [core.error.Error.Trait];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-        M.call (other_uses_of_question_mark.double_first α0) in
-      let* α2 : Ty.tuple := M.call (other_uses_of_question_mark.print α1) in
+    let* _ :=
+      let* α0 := M.read numbers in
+      let* α1 :=
+        M.call ((M.var "other_uses_of_question_mark::double_first") α0) in
+      let* α2 := M.call ((M.var "other_uses_of_question_mark::print") α1) in
       M.alloc α2 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read empty in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [dyn [core.error.Error.Trait];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-        M.call (other_uses_of_question_mark.double_first α0) in
-      let* α2 : Ty.tuple := M.call (other_uses_of_question_mark.print α1) in
+    let* _ :=
+      let* α0 := M.read empty in
+      let* α1 :=
+        M.call ((M.var "other_uses_of_question_mark::double_first") α0) in
+      let* α2 := M.call ((M.var "other_uses_of_question_mark::print") α1) in
       M.alloc α2 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read strings in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [dyn [core.error.Error.Trait];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []]] :=
-        M.call (other_uses_of_question_mark.double_first α0) in
-      let* α2 : Ty.tuple := M.call (other_uses_of_question_mark.print α1) in
+    let* _ :=
+      let* α0 := M.read strings in
+      let* α1 :=
+        M.call ((M.var "other_uses_of_question_mark::double_first") α0) in
+      let* α2 := M.call ((M.var "other_uses_of_question_mark::print") α1) in
       M.alloc α2 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

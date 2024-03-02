@@ -54,59 +54,33 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       let* self := M.alloc self in
       let* number_1 := M.alloc number_1 in
       let* number_2 := M.alloc number_2 in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "ref") [Ty.path "i32"]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "ref") [Ty.path "i32"]]]
-            (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "ref") [Ty.path "i32"])
             (Rhs := Ty.apply (Ty.path "ref") [Ty.path "i32"])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_associated_types_solution::Container")
-                []] :=
-        M.read self in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
+      let* α1 := M.read self in
+      let* α2 :=
         M.alloc
           (borrow
-            (generics_associated_types_solution.Container.Get_0 (deref α1))) in
-      let* α3 : Ty.path "bool" := M.call (α0 (borrow α2) (borrow number_1)) in
-      let* α4 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "ref") [Ty.path "i32"]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "ref") [Ty.path "i32"]]]
-            (Ty.path "bool") :=
+            ((M.var "generics_associated_types_solution::Container::Get_0")
+              (deref α1))) in
+      let* α3 := M.call (α0 (borrow α2) (borrow number_1)) in
+      let* α4 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "ref") [Ty.path "i32"])
             (Rhs := Ty.apply (Ty.path "ref") [Ty.path "i32"])
             (Trait := ℐ))) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_associated_types_solution::Container")
-                []] :=
-        M.read self in
-      let* α6 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
+      let* α5 := M.read self in
+      let* α6 :=
         M.alloc
           (borrow
-            (generics_associated_types_solution.Container.Get_1 (deref α5))) in
-      let* α7 : Ty.path "bool" := M.call (α4 (borrow α6) (borrow number_2)) in
-      M.pure (BinOp.Pure.and α3 α7)
+            ((M.var "generics_associated_types_solution::Container::Get_1")
+              (deref α5))) in
+      let* α7 := M.call (α4 (borrow α6) (borrow number_2)) in
+      M.pure ((M.var "BinOp::Pure::and") α3 α7)
     | _, _ => M.impossible
     end.
   
@@ -123,14 +97,10 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_associated_types_solution::Container")
-                []] :=
-        M.read self in
-      M.read (generics_associated_types_solution.Container.Get_0 (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "generics_associated_types_solution::Container::Get_0")
+          (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -147,14 +117,10 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_associated_types_solution::Container")
-                []] :=
-        M.read self in
-      M.read (generics_associated_types_solution.Container.Get_1 (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "generics_associated_types_solution::Container::Get_1")
+          (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -171,14 +137,10 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply
-                (Ty.path "generics_associated_types_solution::Container")
-                []] :=
-        M.read self in
-      M.read (generics_associated_types_solution.Container.Get_0 (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "generics_associated_types_solution::Container::Get_0")
+          (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -204,21 +166,21 @@ Definition difference (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [C], [container] =>
     let* container := M.alloc container in
-    let* α0 : Ty.function [Ty.apply (Ty.path "ref") [C]] (Ty.path "i32") :=
+    let* α0 :=
       ltac:(M.get_method (fun ℐ =>
         generics_associated_types_solution.Contains.last
           (Self := C)
           (Trait := ℐ))) in
-    let* α1 : Ty.apply (Ty.path "ref") [C] := M.read container in
-    let* α2 : Ty.path "i32" := M.call (α0 α1) in
-    let* α3 : Ty.function [Ty.apply (Ty.path "ref") [C]] (Ty.path "i32") :=
+    let* α1 := M.read container in
+    let* α2 := M.call (α0 α1) in
+    let* α3 :=
       ltac:(M.get_method (fun ℐ =>
         generics_associated_types_solution.Contains.first
           (Self := C)
           (Trait := ℐ))) in
-    let* α4 : Ty.apply (Ty.path "ref") [C] := M.read container in
-    let* α5 : Ty.path "i32" := M.call (α3 α4) in
-    BinOp.Panic.sub α2 α5
+    let* α4 := M.read container in
+    let* α5 := M.call (α3 α4) in
+    (M.var "BinOp::Panic::sub") α2 α5
   | _, _ => M.impossible
   end.
 
@@ -231,12 +193,12 @@ Definition get_a (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [C], [container] =>
     let* container := M.alloc container in
-    let* α0 : Ty.function [Ty.apply (Ty.path "ref") [C]] _ :=
+    let* α0 :=
       ltac:(M.get_method (fun ℐ =>
         generics_associated_types_solution.Contains.a
           (Self := C)
           (Trait := ℐ))) in
-    let* α1 : Ty.apply (Ty.path "ref") [C] := M.read container in
+    let* α1 := M.read container in
     M.call (α0 α1)
   | _, _ => M.impossible
   end.
@@ -264,53 +226,31 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* number_1 : Ty.path "i32" :=
-      M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
-    let* number_2 : Ty.path "i32" :=
-      M.alloc ((Integer.of_Z 10) : Ty.path "i32") in
-    let* container :
-        Ty.apply (Ty.path "generics_associated_types_solution::Container") [] :=
-      let* α0 : Ty.path "i32" := M.read number_1 in
-      let* α1 : Ty.path "i32" := M.read number_2 in
+    let* number_1 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+    let* number_2 := M.alloc ((Integer.of_Z 10) : Ty.path "i32") in
+    let* container :=
+      let* α0 := M.read number_1 in
+      let* α1 := M.read number_2 in
       M.alloc (generics_associated_types_solution.Container.Build_t α0 α1) in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Does container contain ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " and ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ": ") in
-        let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Does container contain ") in
+        let* α1 := M.read (mk_str " and ") in
+        let* α2 := M.read (mk_str ": ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2; α3 ] in
-        let* α5 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-          M.alloc (borrow number_1) in
-        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc [ α0; α1; α2; α3 ] in
+        let* α5 := M.alloc (borrow number_1) in
+        let* α6 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α5)) in
-        let* α7 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-          M.alloc (borrow number_2) in
-        let* α8 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α7 := M.alloc (borrow number_2) in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α7)) in
-        let* α9 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply
-                      (Ty.path "generics_associated_types_solution::Container")
-                      []];
-                Ty.apply (Ty.path "ref") [_];
-                Ty.apply (Ty.path "ref") [_]]
-              (Ty.path "bool") :=
+        let* α9 :=
           ltac:(M.get_method (fun ℐ =>
             generics_associated_types_solution.Contains.contains
               (Self :=
@@ -318,46 +258,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "generics_associated_types_solution::Container")
                   [])
               (Trait := ℐ))) in
-        let* α10 : Ty.path "bool" :=
+        let* α10 :=
           M.call (α9 (borrow container) (borrow number_1) (borrow number_2)) in
-        let* α11 : Ty.path "bool" := M.alloc α10 in
-        let* α12 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α11 := M.alloc α10 in
+        let* α12 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α11)) in
-        let* α13 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α6; α8; α12 ] in
-        let* α14 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α13 := M.alloc [ α6; α8; α12 ] in
+        let* α14 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α4))
               (pointer_coercion "Unsize" (borrow α13))) in
-        let* α15 : Ty.tuple := M.call (std.io.stdio._print α14) in
+        let* α15 := M.call ((M.var "std::io::stdio::_print") α14) in
         M.alloc α15 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "First number: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "First number: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply
-                      (Ty.path "generics_associated_types_solution::Container")
-                      []]]
-              (Ty.path "i32") :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             generics_associated_types_solution.Contains.first
               (Self :=
@@ -365,45 +288,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "generics_associated_types_solution::Container")
                   [])
               (Trait := ℐ))) in
-        let* α4 : Ty.path "i32" := M.call (α3 (borrow container)) in
-        let* α5 : Ty.path "i32" := M.alloc α4 in
-        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.call (α3 (borrow container)) in
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α5)) in
-        let* α7 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α6 ] in
-        let* α8 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 : Ty.tuple := M.call (std.io.stdio._print α8) in
+        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
         M.alloc α9 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Last number: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Last number: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply
-                      (Ty.path "generics_associated_types_solution::Container")
-                      []]]
-              (Ty.path "i32") :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             generics_associated_types_solution.Contains.last
               (Self :=
@@ -411,60 +317,46 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "generics_associated_types_solution::Container")
                   [])
               (Trait := ℐ))) in
-        let* α4 : Ty.path "i32" := M.call (α3 (borrow container)) in
-        let* α5 : Ty.path "i32" := M.alloc α4 in
-        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.call (α3 (borrow container)) in
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α5)) in
-        let* α7 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α6 ] in
-        let* α8 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 : Ty.tuple := M.call (std.io.stdio._print α8) in
+        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
         M.alloc α9 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "The difference is: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "The difference is: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "i32" :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
-            (generics_associated_types_solution.difference
+            ((M.var "generics_associated_types_solution::difference")
               (borrow container)) in
-        let* α4 : Ty.path "i32" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -23,7 +23,7 @@ Section Impl_provided_method_ProvidedAndRequired_for_i32.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "i32"] := M.read self in
+      let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
@@ -49,8 +49,8 @@ Section Impl_provided_method_ProvidedAndRequired_for_u32.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"] := M.read self in
-      let* α1 : Ty.path "u32" := M.read (deref α0) in
+      let* α0 := M.read self in
+      let* α1 := M.read (deref α0) in
       M.pure (rust_cast α1)
     | _, _ => M.impossible
     end.
@@ -92,24 +92,17 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x : Ty.path "i32" := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "i32"]]
-            (Ty.path "i32") :=
+    let* x := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           provided_method.ProvidedAndRequired.provided
             (Self := Ty.path "i32")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "i32" := M.call (α0 (borrow x)) in
-      let* α2 : Ty.path "i32" := M.alloc α1 in
-      let* α3 : Ty.path "i32" := M.alloc ((Integer.of_Z 47) : Ty.path "i32") in
-      let* α4 :
-          Ty.tuple
-            (Ty.apply (Ty.path "ref") [Ty.path "i32"])
-            (Ty.apply (Ty.path "ref") [Ty.path "i32"]) :=
-        M.alloc (borrow α2, borrow α3) in
+      let* α1 := M.call (α0 (borrow x)) in
+      let* α2 := M.alloc α1 in
+      let* α3 := M.alloc ((Integer.of_Z 47) : Ty.path "i32") in
+      let* α4 := M.alloc (borrow α2, borrow α3) in
       match_operator
         α4
         [
@@ -121,59 +114,46 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                M.read left_val in
-              let* α1 : Ty.path "i32" := M.read (deref α0) in
-              let* α2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                M.read right_val in
-              let* α3 : Ty.path "i32" := M.read (deref α2) in
-              let* α4 : Ty.path "bool" :=
-                M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α0 := M.read left_val in
+              let* α1 := M.read (deref α0) in
+              let* α2 := M.read right_val in
+              let* α3 := M.read (deref α2) in
+              let* α4 :=
+                M.alloc
+                  ((M.var "UnOp::not") ((M.var "BinOp::Pure::eq") α1 α3)) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                  M.read left_val in
-                let* α2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* y : Ty.path "u32" := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "ref") [Ty.path "u32"]]
-            (Ty.path "i32") :=
+    let* y := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           provided_method.ProvidedAndRequired.provided
             (Self := Ty.path "u32")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "i32" := M.call (α0 (borrow y)) in
-      let* α2 : Ty.path "i32" := M.alloc α1 in
-      let* α3 : Ty.path "i32" := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
-      let* α4 :
-          Ty.tuple
-            (Ty.apply (Ty.path "ref") [Ty.path "i32"])
-            (Ty.apply (Ty.path "ref") [Ty.path "i32"]) :=
-        M.alloc (borrow α2, borrow α3) in
+      let* α1 := M.call (α0 (borrow y)) in
+      let* α2 := M.alloc α1 in
+      let* α3 := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
+      let* α4 := M.alloc (borrow α2, borrow α3) in
       match_operator
         α4
         [
@@ -185,42 +165,36 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                M.read left_val in
-              let* α1 : Ty.path "i32" := M.read (deref α0) in
-              let* α2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                M.read right_val in
-              let* α3 : Ty.path "i32" := M.read (deref α2) in
-              let* α4 : Ty.path "bool" :=
-                M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-              let* α5 : Ty.path "bool" := M.read (use α4) in
+              let* α0 := M.read left_val in
+              let* α1 := M.read (deref α0) in
+              let* α2 := M.read right_val in
+              let* α3 := M.read (deref α2) in
+              let* α4 :=
+                M.alloc
+                  ((M.var "UnOp::not") ((M.var "BinOp::Pure::eq") α1 α3)) in
+              let* α5 := M.read (use α4) in
               if α5 then
-                let* kind :
-                    Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
-                  M.read kind in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                  M.read left_val in
-                let* α2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
-                  M.read right_val in
-                let* α3 : Ty.path "never" :=
+                let* kind := M.alloc core.panicking.AssertKind.Eq in
+                let* α0 := M.read kind in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 :=
                   M.call
-                    (core.panicking.assert_failed
+                    ((M.var "core::panicking::assert_failed")
                       α0
                       α1
                       α2
                       core.option.Option.None) in
-                let* α0 : Ty.path "never" := M.alloc α3 in
-                let* α1 : Ty.path "never" := M.read α0 in
-                let* α2 : Ty.tuple := never_to_any α1 in
+                let* α0 := M.alloc α3 in
+                let* α1 := M.read α0 in
+                let* α2 := never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end) :
             Ty.tuple
         ] in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

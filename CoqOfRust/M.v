@@ -256,19 +256,21 @@ Module Primitive.
   | StateAlloc (value : Value.t)
   | StateRead {Address : Set} (address : Address)
   | StateWrite {Address : Set} (address : Address) (value : Value.t)
-  | EnvRead.
+  | EnvRead
+  | AssociatedFunction (ty : Ty.t) (name : string)
+  | Var (path : string).
 End Primitive.
 
 Module LowM.
   Inductive t (A : Set) : Set :=
-  | Pure : A -> t A
-  | CallPrimitive : Primitive.t -> (Value.t -> t A) -> t A
-  | Loop : t A -> (A -> t A) -> t A
-  | Impossible : t A
+  | Pure (value : A)
+  | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
+  | Loop (body : t A) (k : A -> t A)
+  | Impossible
   (** This constructor is not strictly necessary, but is used as a marker for
       functions calls in the generated code, to help the tactics to recognize
       points where we can compose lemma about functions. *)
-  | Call : t A -> (A -> t A) -> t A.
+  | Call (e : t A) (k : A -> t A).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
   Arguments Loop {_}.
@@ -348,10 +350,6 @@ Module Notations.
   Notation "'let*' a := b 'in' c" :=
     (let_ b (fun a => c))
       (at level 200, b at level 100, a name).
-
-  Notation "'let*' a : T := b 'in' c" :=
-    (let_ b (fun (a : T) => c))
-      (at level 200, T constr, b at level 100, a name).
 
   Notation "'let*' ' a ':=' b 'in' c" :=
     (let_ b (fun a => c))
@@ -454,6 +452,12 @@ Definition read_env : M :=
 
 Definition impossible : M :=
   LowM.Impossible.
+
+Definition associated_function (ty : Ty.t) (name : string) : M :=
+  call_primitive (Primitive.AssociatedFunction ty name).
+
+Definition var (path : string) : M :=
+  call_primitive (Primitive.Var path).
 
 Definition catch (body : M) (handler : Exception.t -> M) : M :=
   let- result := body in

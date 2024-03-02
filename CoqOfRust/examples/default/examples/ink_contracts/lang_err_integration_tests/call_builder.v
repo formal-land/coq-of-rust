@@ -13,12 +13,12 @@ Section Impl_core_default_Default_for_call_builder_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (call_builder.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "call_builder::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -51,11 +51,7 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "call_builder::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "call_builder::AccountId") []
           ] in
@@ -100,9 +96,8 @@ Section Impl_call_builder_Selector.
     match 𝜏, α with
     | [], [bytes] =>
       let* bytes := M.alloc bytes in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -150,10 +145,7 @@ Section Impl_call_builder_CallBuilderTest.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function
-            []
-            (Ty.apply (Ty.path "call_builder::CallBuilderTest") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "call_builder::CallBuilderTest") [])
@@ -191,23 +183,12 @@ Section Impl_call_builder_CallBuilderTest.
       let* self := M.alloc self in
       let* address := M.alloc address in
       let* selector := M.alloc selector in
-      let* result :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.tuple; Ty.apply (Ty.path "call_builder::LangError") []] :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "not yet implemented") in
-        let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
-        let* α2 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "call_builder::LangError") []] :=
-          never_to_any α1 in
+      let* result :=
+        let* α0 := M.read (mk_str "not yet implemented") in
+        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α2 := never_to_any α1 in
         M.alloc α2 in
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply (Ty.path "call_builder::LangError") []] :=
+      let* α0 :=
         match_operator
           result
           [
@@ -215,7 +196,7 @@ Section Impl_call_builder_CallBuilderTest.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Ok _ =>
-                let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
                 M.alloc core.option.Option.None
               | _ => M.break_match
               end) :
@@ -226,13 +207,12 @@ Section Impl_call_builder_CallBuilderTest.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Err _ =>
-                let γ0_0 := core.result.Result.Get_Err_0 γ in
+                let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
                 let* e := M.copy γ0_0 in
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | call_builder.LangError.CouldNotReadInput =>
-                  let* α0 : Ty.apply (Ty.path "call_builder::LangError") [] :=
-                    M.read e in
+                  let* α0 := M.read e in
                   M.alloc (core.option.Option.Some α0)
                 | _ => M.break_match
                 end
@@ -245,41 +225,25 @@ Section Impl_call_builder_CallBuilderTest.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Err _ =>
-                let γ0_0 := core.result.Result.Get_Err_0 γ in
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+                let* α0 :=
                   M.read
                     (mk_str
                       "not implemented: No other `LangError` variants exist at the moment.") in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     (Ty.apply
                         (Ty.path "core::fmt::rt::Argument")
                         [])::["none"] in
-                let* α3 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc α2 in
-                let* α4 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α3 := M.alloc α2 in
+                let* α4 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α1))
                       (pointer_coercion "Unsize" (borrow α3))) in
-                let* α5 : Ty.path "never" :=
-                  M.call (core.panicking.panic_fmt α4) in
-                let* α6 :
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [Ty.apply (Ty.path "call_builder::LangError") []] :=
-                  never_to_any α5 in
+                let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
+                let* α6 := never_to_any α5 in
                 M.alloc α6
               | _ => M.break_match
               end) :

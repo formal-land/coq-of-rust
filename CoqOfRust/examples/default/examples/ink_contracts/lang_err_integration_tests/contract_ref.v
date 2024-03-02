@@ -13,12 +13,12 @@ Section Impl_core_default_Default_for_contract_ref_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (contract_ref.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "contract_ref::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -51,11 +51,7 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "contract_ref::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "contract_ref::AccountId") []
           ] in
@@ -101,13 +97,8 @@ Section Impl_core_fmt_Debug_for_contract_ref_FlipperError.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "FlipperError") in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "FlipperError") in
       M.call
         ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
     | _, _ => M.impossible
@@ -133,9 +124,8 @@ Section Impl_contract_ref_FlipperRef.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -170,7 +160,7 @@ Section Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [], [init_value] =>
       let* init_value := M.alloc init_value in
-      let* α0 : Ty.path "bool" := M.read init_value in
+      let* α0 := M.read init_value in
       M.pure {| contract_ref.FlipperRef.value := α0; |}
     | _, _ => M.impossible
     end.
@@ -187,12 +177,12 @@ Section Impl_contract_ref_FlipperRef.
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "bool")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "bool" := M.call α0 in
+      let* α1 := M.call α0 in
       M.call ((Ty.apply (Ty.path "contract_ref::FlipperRef") [])::["new"] α1)
     | _, _ => M.impossible
     end.
@@ -214,14 +204,10 @@ Section Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [], [succeed] =>
       let* succeed := M.alloc succeed in
-      let* α0 : Ty.path "bool" := M.read (use succeed) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply (Ty.path "contract_ref::FlipperRef") [];
-              Ty.apply (Ty.path "contract_ref::FlipperError") []] :=
+      let* α0 := M.read (use succeed) in
+      let* α1 :=
         if α0 then
-          let* α0 : Ty.apply (Ty.path "contract_ref::FlipperRef") [] :=
+          let* α0 :=
             M.call
               ((Ty.apply (Ty.path "contract_ref::FlipperRef") [])::["new"]
                 true) in
@@ -245,21 +231,15 @@ Section Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "contract_ref::FlipperRef") []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "contract_ref::FlipperRef") []] :=
-          M.read self in
-        let* α2 : Ty.path "bool" :=
-          M.read (contract_ref.FlipperRef.Get_value (deref α1)) in
-        assign (contract_ref.FlipperRef.Get_value (deref α0)) (UnOp.not α2) in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read self in
+        let* α2 :=
+          M.read ((M.var "contract_ref::FlipperRef::Get_value") (deref α1)) in
+        assign
+          ((M.var "contract_ref::FlipperRef::Get_value") (deref α0))
+          ((M.var "UnOp::not") α2) in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -277,12 +257,8 @@ Section Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "contract_ref::FlipperRef") []] :=
-        M.read self in
-      M.read (contract_ref.FlipperRef.Get_value (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "contract_ref::FlipperRef::Get_value") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -315,22 +291,19 @@ Section Impl_contract_ref_ContractRef.
     | [], [version; flipper_code_hash] =>
       let* version := M.alloc version in
       let* flipper_code_hash := M.alloc flipper_code_hash in
-      let* salt : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-        let* α0 : Ty.path "u32" := M.read version in
-        let* α1 : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-          M.call ((Ty.path "u32")::["to_le_bytes"] α0) in
+      let* salt :=
+        let* α0 := M.read version in
+        let* α1 := M.call ((Ty.path "u32")::["to_le_bytes"] α0) in
         M.alloc α1 in
-      let* flipper : Ty.apply (Ty.path "contract_ref::FlipperRef") [] :=
-        let* α0 : Ty.apply (Ty.path "contract_ref::FlipperRef") [] :=
+      let* flipper :=
+        let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "contract_ref::FlipperRef")
                 [])::["new_default"] in
         M.alloc α0 in
-      let* α0 : Ty.apply (Ty.path "contract_ref::FlipperRef") [] :=
-        M.read flipper in
-      let* α0 : Ty.apply (Ty.path "contract_ref::ContractRef") [] :=
-        M.alloc {| contract_ref.ContractRef.flipper := α0; |} in
+      let* α0 := M.read flipper in
+      let* α0 := M.alloc {| contract_ref.ContractRef.flipper := α0; |} in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -363,22 +336,17 @@ Section Impl_contract_ref_ContractRef.
       let* version := M.alloc version in
       let* flipper_code_hash := M.alloc flipper_code_hash in
       let* succeed := M.alloc succeed in
-      let* salt : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-        let* α0 : Ty.path "u32" := M.read version in
-        let* α1 : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-          M.call ((Ty.path "u32")::["to_le_bytes"] α0) in
+      let* salt :=
+        let* α0 := M.read version in
+        let* α1 := M.call ((Ty.path "u32")::["to_le_bytes"] α0) in
         M.alloc α1 in
-      let* flipper : Ty.apply (Ty.path "contract_ref::FlipperRef") [] :=
-        let* α0 : Ty.path "bool" := M.read succeed in
-        let* α1 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.apply (Ty.path "contract_ref::FlipperRef") [];
-                Ty.apply (Ty.path "contract_ref::FlipperError") []] :=
+      let* flipper :=
+        let* α0 := M.read succeed in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "contract_ref::FlipperRef") [])::["try_new"]
               α0) in
-        let* α2 : Ty.apply (Ty.path "contract_ref::FlipperRef") [] :=
+        let* α2 :=
           M.call
             ((Ty.apply
                   (Ty.path "core::result::Result")
@@ -388,10 +356,8 @@ Section Impl_contract_ref_ContractRef.
                       []])::["unwrap"]
               α1) in
         M.alloc α2 in
-      let* α0 : Ty.apply (Ty.path "contract_ref::FlipperRef") [] :=
-        M.read flipper in
-      let* α0 : Ty.apply (Ty.path "contract_ref::ContractRef") [] :=
-        M.alloc {| contract_ref.ContractRef.flipper := α0; |} in
+      let* α0 := M.read flipper in
+      let* α0 := M.alloc {| contract_ref.ContractRef.flipper := α0; |} in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -409,18 +375,16 @@ Section Impl_contract_ref_ContractRef.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "contract_ref::ContractRef") []] :=
-          M.read self in
-        let* α1 : Ty.tuple :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "contract_ref::FlipperRef") [])::["flip"]
-              (borrow_mut (contract_ref.ContractRef.Get_flipper (deref α0)))) in
+              (borrow_mut
+                ((M.var "contract_ref::ContractRef::Get_flipper")
+                  (deref α0)))) in
         M.alloc α1 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -438,14 +402,11 @@ Section Impl_contract_ref_ContractRef.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "contract_ref::ContractRef") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.call
         ((Ty.apply (Ty.path "contract_ref::FlipperRef") [])::["get"]
-          (borrow (contract_ref.ContractRef.Get_flipper (deref α0))))
+          (borrow
+            ((M.var "contract_ref::ContractRef::Get_flipper") (deref α0))))
     | _, _ => M.impossible
     end.
   

@@ -16,29 +16,14 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point.
     | [], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
-        M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Point") in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "x") in
-      let* α3 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "box_stack_heap::Point") []] :=
-        M.read self in
-      let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "y") in
-      let* α5 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "box_stack_heap::Point") []] :=
-        M.read self in
-      let* α6 : Ty.apply (Ty.path "ref") [Ty.path "f64"] :=
-        M.alloc (borrow (box_stack_heap.Point.Get_y (deref α5))) in
+      let* α0 := M.read f in
+      let* α1 := M.read (mk_str "Point") in
+      let* α2 := M.read (mk_str "x") in
+      let* α3 := M.read self in
+      let* α4 := M.read (mk_str "y") in
+      let* α5 := M.read self in
+      let* α6 :=
+        M.alloc (borrow ((M.var "box_stack_heap::Point::Get_y") (deref α5))) in
       M.call
         ((Ty.apply
               (Ty.path "core::fmt::Formatter")
@@ -48,7 +33,7 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point.
           α2
           (pointer_coercion
             "Unsize"
-            (borrow (box_stack_heap.Point.Get_x (deref α3))))
+            (borrow ((M.var "box_stack_heap::Point::Get_x") (deref α3))))
           α4
           (pointer_coercion "Unsize" (borrow α6)))
     | _, _ => M.impossible
@@ -74,7 +59,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "box_stack_heap::Point") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -83,11 +68,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point.
                 [Ty.path "f64"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "box_stack_heap::Point") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "box_stack_heap::Point") []
           ] in
@@ -121,8 +102,8 @@ fn origin() -> Point {
 Definition origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-    let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
     M.pure {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |}
   | _, _ => M.impossible
   end.
@@ -136,8 +117,8 @@ fn boxed_origin() -> Box<Point> {
 Definition boxed_origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-    let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
     M.call
       ((Ty.apply
             (Ty.path "alloc::boxed::Box")
@@ -204,35 +185,24 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* point : Ty.apply (Ty.path "box_stack_heap::Point") [] :=
-      let* α0 : Ty.apply (Ty.path "box_stack_heap::Point") [] :=
-        M.call box_stack_heap.origin in
+    let* point :=
+      let* α0 := M.call (M.var "box_stack_heap::origin") in
       M.alloc α0 in
-    let* rectangle : Ty.apply (Ty.path "box_stack_heap::Rectangle") [] :=
-      let* α0 : Ty.apply (Ty.path "box_stack_heap::Point") [] :=
-        M.call box_stack_heap.origin in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* rectangle :=
+      let* α0 := M.call (M.var "box_stack_heap::origin") in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
       M.alloc
         {|
           box_stack_heap.Rectangle.top_left := α0;
           box_stack_heap.Rectangle.bottom_right :=
             {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α2; |};
         |} in
-    let* boxed_rectangle :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [Ty.apply (Ty.path "box_stack_heap::Rectangle") [];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "box_stack_heap::Point") [] :=
-        M.call box_stack_heap.origin in
-      let* α1 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "box_stack_heap::Rectangle") [];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* boxed_rectangle :=
+      let* α0 := M.call (M.var "box_stack_heap::origin") in
+      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α3 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -245,18 +215,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 |};
             |}) in
       M.alloc α3 in
-    let* boxed_point :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [Ty.apply (Ty.path "box_stack_heap::Point") [];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "box_stack_heap::Point") [] :=
-        M.call box_stack_heap.origin in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "box_stack_heap::Point") [];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* boxed_point :=
+      let* α0 := M.call (M.var "box_stack_heap::origin") in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -264,28 +225,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             α0) in
       M.alloc α1 in
-    let* box_in_a_box :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [Ty.apply (Ty.path "box_stack_heap::Point") [];
-                Ty.apply (Ty.path "alloc::alloc::Global") []];
-            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "box_stack_heap::Point") [];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.call box_stack_heap.boxed_origin in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.apply (Ty.path "box_stack_heap::Point") [];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* box_in_a_box :=
+      let* α0 := M.call (M.var "box_stack_heap::boxed_origin") in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -296,207 +238,141 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Point occupies ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " bytes on the stack
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Point occupies ") in
+        let* α1 := M.read (mk_str " bytes on the stack
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "usize" :=
-          M.call (core.mem.size_of_val (borrow point)) in
-        let* α4 : Ty.path "usize" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 := M.call ((M.var "core::mem::size_of_val") (borrow point)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Rectangle occupies ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " bytes on the stack
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Rectangle occupies ") in
+        let* α1 := M.read (mk_str " bytes on the stack
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "usize" :=
-          M.call (core.mem.size_of_val (borrow rectangle)) in
-        let* α4 : Ty.path "usize" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
+          M.call ((M.var "core::mem::size_of_val") (borrow rectangle)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Boxed point occupies ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " bytes on the stack
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Boxed point occupies ") in
+        let* α1 := M.read (mk_str " bytes on the stack
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "usize" :=
-          M.call (core.mem.size_of_val (borrow boxed_point)) in
-        let* α4 : Ty.path "usize" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
+          M.call ((M.var "core::mem::size_of_val") (borrow boxed_point)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Boxed rectangle occupies ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " bytes on the stack
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Boxed rectangle occupies ") in
+        let* α1 := M.read (mk_str " bytes on the stack
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "usize" :=
-          M.call (core.mem.size_of_val (borrow boxed_rectangle)) in
-        let* α4 : Ty.path "usize" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
+          M.call ((M.var "core::mem::size_of_val") (borrow boxed_rectangle)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Boxed box occupies ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " bytes on the stack
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Boxed box occupies ") in
+        let* α1 := M.read (mk_str " bytes on the stack
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "usize" :=
-          M.call (core.mem.size_of_val (borrow box_in_a_box)) in
-        let* α4 : Ty.path "usize" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
+          M.call ((M.var "core::mem::size_of_val") (borrow box_in_a_box)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* unboxed_point : Ty.apply (Ty.path "box_stack_heap::Point") [] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "box_stack_heap::Point") [];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read boxed_point in
+    let* unboxed_point :=
+      let* α0 := M.read boxed_point in
       M.copy (deref α0) in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Unboxed point occupies ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str " bytes on the stack
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Unboxed point occupies ") in
+        let* α1 := M.read (mk_str " bytes on the stack
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "usize" :=
-          M.call (core.mem.size_of_val (borrow unboxed_point)) in
-        let* α4 : Ty.path "usize" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
+          M.call ((M.var "core::mem::size_of_val") (borrow unboxed_point)) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -57,27 +57,20 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* empty : Ty.apply (Ty.path "generics_traits::Empty") [] :=
-      M.alloc generics_traits.Empty.Build in
-    let* null : Ty.apply (Ty.path "generics_traits::Null") [] :=
-      M.alloc generics_traits.Null.Build in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "generics_traits::Empty") [];
-              Ty.apply (Ty.path "generics_traits::Null") []]
-            Ty.tuple :=
+    let* empty := M.alloc generics_traits.Empty.Build in
+    let* null := M.alloc generics_traits.Null.Build in
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           generics_traits.DoubleDrop.double_drop
             (Self := Ty.apply (Ty.path "generics_traits::Empty") [])
             (T := Ty.apply (Ty.path "generics_traits::Null") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "generics_traits::Empty") [] :=
-        M.read empty in
-      let* α2 : Ty.apply (Ty.path "generics_traits::Null") [] := M.read null in
-      let* α3 : Ty.tuple := M.call (α0 α1 α2) in
+      let* α1 := M.read empty in
+      let* α2 := M.read null in
+      let* α3 := M.call (α0 α1 α2) in
       M.alloc α3 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

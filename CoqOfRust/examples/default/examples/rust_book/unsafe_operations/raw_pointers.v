@@ -14,25 +14,27 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* raw_p : Ty.apply (Ty.path "ref") [Ty.path "u32"] :=
-      let* α0 : Ty.path "u32" := M.alloc ((Integer.of_Z 10) : Ty.path "u32") in
+    let* raw_p :=
+      let* α0 := M.alloc ((Integer.of_Z 10) : Ty.path "u32") in
       M.alloc (addr_of α0) in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"] := M.read raw_p in
-      let* α1 : Ty.path "u32" := M.read (deref α0) in
-      let* α2 : Ty.path "bool" :=
+    let* _ :=
+      let* α0 := M.read raw_p in
+      let* α1 := M.read (deref α0) in
+      let* α2 :=
         M.alloc
-          (UnOp.not (BinOp.Pure.eq α1 ((Integer.of_Z 10) : Ty.path "u32"))) in
-      let* α3 : Ty.path "bool" := M.read (use α2) in
+          ((M.var "UnOp::not")
+            ((M.var "BinOp::Pure::eq")
+              α1
+              ((Integer.of_Z 10) : Ty.path "u32"))) in
+      let* α3 := M.read (use α2) in
       if α3 then
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "assertion failed: *raw_p == 10") in
-        let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
-        let* α2 : Ty.tuple := never_to_any α1 in
+        let* α0 := M.read (mk_str "assertion failed: *raw_p == 10") in
+        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α2 := never_to_any α1 in
         M.alloc α2
       else
         M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

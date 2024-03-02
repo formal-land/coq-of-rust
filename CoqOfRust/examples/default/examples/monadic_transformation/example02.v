@@ -27,8 +27,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.path "bool" :=
-      let* α0 : Ty.path "i32" := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+    let* _ :=
+      let* α0 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       match_operator
         α0
         [
@@ -41,31 +41,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.path "bool";
           fun γ => (M.alloc true) : Ty.path "bool"
         ] in
-    let* _ : Ty.path "i32" :=
-      let* α0 : Ty.path "bool" := M.alloc true in
-      let* α1 : Ty.path "bool" := M.read (use α0) in
+    let* _ :=
+      let* α0 := M.alloc true in
+      let* α1 := M.read (use α0) in
       if α1 then
         M.alloc ((Integer.of_Z 0) : Ty.path "i32")
       else
         M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
-    let* _ : Ty.path "i32" :=
-      let* α0 : Ty.path "bool" := M.alloc false in
-      let* α1 : Ty.path "bool" := M.read (use α0) in
+    let* _ :=
+      let* α0 := M.alloc false in
+      let* α1 := M.read (use α0) in
       if α1 then
         M.alloc ((Integer.of_Z 2) : Ty.path "i32")
       else
-        let* α0 : Ty.path "bool" := M.alloc false in
-        let* α1 : Ty.path "bool" := M.read (use α0) in
+        let* α0 := M.alloc false in
+        let* α1 := M.read (use α0) in
         if α1 then
           M.alloc ((Integer.of_Z 3) : Ty.path "i32")
         else
-          let* α0 : Ty.path "bool" := M.alloc false in
-          let* α1 : Ty.path "bool" := M.read (use α0) in
+          let* α0 := M.alloc false in
+          let* α1 := M.read (use α0) in
           if α1 then
             M.alloc ((Integer.of_Z 4) : Ty.path "i32")
           else
             M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

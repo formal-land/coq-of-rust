@@ -14,14 +14,14 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* years :
-        Ty.apply (Ty.path "generics_new_type_idiom_as_base_type::Years") [] :=
+    let* years :=
       M.alloc
         (generics_new_type_idiom_as_base_type.Years.Build_t
           ((Integer.of_Z 42) : Ty.path "i64")) in
-    let* years_as_primitive_1 : Ty.path "i64" :=
-      M.copy (generics_new_type_idiom_as_base_type.Years.Get_0 years) in
-    let* α0 : Ty.path "unit" :=
+    let* years_as_primitive_1 :=
+      M.copy
+        ((M.var "generics_new_type_idiom_as_base_type::Years::Get_0") years) in
+    let* α0 :=
       match_operator
         years
         [
@@ -29,7 +29,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | generics_new_type_idiom_as_base_type.Years.Build_t _ =>
-              let γ0_0 := generics_new_type_idiom_as_base_type.Years.Get_0 γ in
+              let γ0_0 :=
+                (M.var "generics_new_type_idiom_as_base_type::Years::Get_0")
+                  γ in
               let* years_as_primitive_2 := M.copy γ0_0 in
               M.alloc tt
             end) :

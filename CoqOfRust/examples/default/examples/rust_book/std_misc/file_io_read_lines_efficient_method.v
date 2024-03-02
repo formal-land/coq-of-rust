@@ -26,16 +26,8 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [Ty.apply (Ty.path "std::fs::File") []]];
               Ty.apply (Ty.path "std::io::error::Error") []]) in
     M.catch_return
-      (let* file : Ty.apply (Ty.path "std::fs::File") [] :=
-        let* α0 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "std::fs::File") [];
-                    Ty.apply (Ty.path "std::io::error::Error") []]]
-              (Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [_; _]) :=
+      (let* file :=
+        let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self :=
@@ -44,32 +36,12 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.apply (Ty.path "std::fs::File") [];
                     Ty.apply (Ty.path "std::io::error::Error") []])
               (Trait := ℐ))) in
-        let* α1 : P := M.read filename in
-        let* α2 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.apply (Ty.path "std::fs::File") [];
-                Ty.apply (Ty.path "std::io::error::Error") []] :=
+        let* α1 := M.read filename in
+        let* α2 :=
           M.call ((Ty.apply (Ty.path "std::fs::File") [])::["open"] α1) in
-        let* α3 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "core::convert::Infallible") [];
-                    Ty.apply (Ty.path "std::io::error::Error") []];
-                Ty.apply (Ty.path "std::fs::File") []] :=
-          M.call (α0 α2) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "core::ops::control_flow::ControlFlow")
-              [Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "core::convert::Infallible") [];
-                    Ty.apply (Ty.path "std::io::error::Error") []];
-                Ty.apply (Ty.path "std::fs::File") []] :=
-          M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "std::fs::File") [] :=
+        let* α3 := M.call (α0 α2) in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           match_operator
             α4
             [
@@ -77,23 +49,11 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "std::io::error::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.apply
-                              (Ty.path "std::io::Lines")
-                              [Ty.apply
-                                  (Ty.path
-                                    "std::io::buffered::bufreader::BufReader")
-                                  [Ty.apply (Ty.path "std::fs::File") []]];
-                            Ty.apply (Ty.path "std::io::error::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -112,27 +72,11 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "std::io::error::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "std::io::error::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply
-                            (Ty.path "std::io::Lines")
-                            [Ty.apply
-                                (Ty.path
-                                  "std::io::buffered::bufreader::BufReader")
-                                [Ty.apply (Ty.path "std::fs::File") []]];
-                          Ty.apply (Ty.path "std::io::error::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.apply (Ty.path "std::fs::File") [] :=
-                    never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -142,7 +86,9 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
@@ -150,16 +96,7 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "std::fs::File") []
             ] in
         M.copy α5 in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "std::io::buffered::bufreader::BufReader")
-                [Ty.apply (Ty.path "std::fs::File") []]]
-            (Ty.apply
-              (Ty.path "std::io::Lines")
-              [Ty.apply
-                  (Ty.path "std::io::buffered::bufreader::BufReader")
-                  [Ty.apply (Ty.path "std::fs::File") []]]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           std.io.BufRead.lines
             (Self :=
@@ -167,33 +104,15 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "std::io::buffered::bufreader::BufReader")
                 [Ty.apply (Ty.path "std::fs::File") []])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "std::fs::File") [] := M.read file in
-      let* α2 :
-          Ty.apply
-            (Ty.path "std::io::buffered::bufreader::BufReader")
-            [Ty.apply (Ty.path "std::fs::File") []] :=
+      let* α1 := M.read file in
+      let* α2 :=
         M.call
           ((Ty.apply
                 (Ty.path "std::io::buffered::bufreader::BufReader")
                 [Ty.apply (Ty.path "std::fs::File") []])::["new"]
             α1) in
-      let* α3 :
-          Ty.apply
-            (Ty.path "std::io::Lines")
-            [Ty.apply
-                (Ty.path "std::io::buffered::bufreader::BufReader")
-                [Ty.apply (Ty.path "std::fs::File") []]] :=
-        M.call (α0 α2) in
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.apply
-                (Ty.path "std::io::Lines")
-                [Ty.apply
-                    (Ty.path "std::io::buffered::bufreader::BufReader")
-                    [Ty.apply (Ty.path "std::fs::File") []]];
-              Ty.apply (Ty.path "std::io::error::Error") []] :=
-        M.alloc (core.result.Result.Ok α3) in
+      let* α3 := M.call (α0 α2) in
+      let* α0 := M.alloc (core.result.Result.Ok α3) in
       M.read α0)
   | _, _ => M.impossible
   end.
@@ -215,29 +134,11 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-      M.read (mk_str "./hosts") in
-    let* α1 :
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.apply
-              (Ty.path "std::io::Lines")
-              [Ty.apply
-                  (Ty.path "std::io::buffered::bufreader::BufReader")
-                  [Ty.apply (Ty.path "std::fs::File") []]];
-            Ty.apply (Ty.path "std::io::error::Error") []] :=
-      M.call (file_io_read_lines_efficient_method.read_lines α0) in
-    let* α2 :
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.apply
-              (Ty.path "std::io::Lines")
-              [Ty.apply
-                  (Ty.path "std::io::buffered::bufreader::BufReader")
-                  [Ty.apply (Ty.path "std::fs::File") []]];
-            Ty.apply (Ty.path "std::io::error::Error") []] :=
-      M.alloc α1 in
-    let* α3 : Ty.tuple :=
+    let* α0 := M.read (mk_str "./hosts") in
+    let* α1 :=
+      M.call ((M.var "file_io_read_lines_efficient_method::read_lines") α0) in
+    let* α2 := M.alloc α1 in
+    let* α3 :=
       match_operator
         α2
         [
@@ -245,16 +146,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := core.result.Result.Get_Ok_0 γ in
+              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
               let* lines := M.copy γ0_0 in
-              let* α0 :
-                  Ty.function
-                    [Ty.apply
-                        (Ty.path "std::io::Lines")
-                        [Ty.apply
-                            (Ty.path "std::io::buffered::bufreader::BufReader")
-                            [Ty.apply (Ty.path "std::fs::File") []]]]
-                    _ :=
+              let* α0 :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.collect.IntoIterator.into_iter
                     (Self :=
@@ -264,50 +158,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "std::io::buffered::bufreader::BufReader")
                             [Ty.apply (Ty.path "std::fs::File") []]])
                     (Trait := ℐ))) in
-              let* α1 :
-                  Ty.apply
-                    (Ty.path "std::io::Lines")
-                    [Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
-                        [Ty.apply (Ty.path "std::fs::File") []]] :=
-                M.read lines in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "std::io::Lines")
-                    [Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
-                        [Ty.apply (Ty.path "std::fs::File") []]] :=
-                M.call (α0 α1) in
-              let* α3 :
-                  Ty.apply
-                    (Ty.path "std::io::Lines")
-                    [Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
-                        [Ty.apply (Ty.path "std::fs::File") []]] :=
-                M.alloc α2 in
-              let* α4 : Ty.tuple :=
+              let* α1 := M.read lines in
+              let* α2 := M.call (α0 α1) in
+              let* α3 := M.alloc α2 in
+              let* α4 :=
                 match_operator
                   α3
                   [
                     fun γ =>
                       (let* iter := M.copy γ in
                       M.loop
-                        (let* _ : Ty.tuple :=
-                          let* α0 :
-                              Ty.function
-                                [Ty.apply
-                                    (Ty.path "mut_ref")
-                                    [Ty.apply
-                                        (Ty.path "std::io::Lines")
-                                        [Ty.apply
-                                            (Ty.path
-                                              "std::io::buffered::bufreader::BufReader")
-                                            [Ty.apply
-                                                (Ty.path "std::fs::File")
-                                                []]]]]
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  [_]) :=
+                        (let* _ :=
+                          let* α0 :=
                             ltac:(M.get_method (fun ℐ =>
                               core.iter.traits.iterator.Iterator.next
                                 (Self :=
@@ -320,30 +182,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                             (Ty.path "std::fs::File")
                                             []]])
                                 (Trait := ℐ))) in
-                          let* α1 :
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                [Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [Ty.apply
-                                        (Ty.path "alloc::string::String")
-                                        [];
-                                      Ty.apply
-                                        (Ty.path "std::io::error::Error")
-                                        []]] :=
-                            M.call (α0 (borrow_mut iter)) in
-                          let* α2 :
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                [Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [Ty.apply
-                                        (Ty.path "alloc::string::String")
-                                        [];
-                                      Ty.apply
-                                        (Ty.path "std::io::error::Error")
-                                        []]] :=
-                            M.alloc α1 in
+                          let* α1 := M.call (α0 (borrow_mut iter)) in
+                          let* α2 := M.alloc α1 in
                           match_operator
                             α2
                             [
@@ -351,9 +191,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.None =>
-                                  let* α0 : Ty.path "never" := M.break in
-                                  let* α1 : Ty.path "never" := M.read α0 in
-                                  let* α2 : Ty.tuple := never_to_any α1 in
+                                  let* α0 := M.break in
+                                  let* α1 := M.read α0 in
+                                  let* α2 := never_to_any α1 in
                                   M.alloc α2
                                 | _ => M.break_match
                                 end) :
@@ -362,7 +202,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.Some _ =>
-                                  let γ0_0 := core.option.Option.Get_Some_0 γ in
+                                  let γ0_0 :=
+                                    (M.var "core::option::Option::Get_Some_0")
+                                      γ in
                                   let* line := M.copy γ0_0 in
                                   match_operator
                                     line
@@ -372,52 +214,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                         match α0 with
                                         | core.result.Result.Ok _ =>
                                           let γ0_0 :=
-                                            core.result.Result.Get_Ok_0 γ in
+                                            (M.var
+                                                "core::result::Result::Get_Ok_0")
+                                              γ in
                                           let* ip := M.copy γ0_0 in
-                                          let* _ : Ty.tuple :=
-                                            let* _ : Ty.tuple :=
-                                              let* α0 :
-                                                  Ty.apply
-                                                    (Ty.path "ref")
-                                                    [Ty.path "str"] :=
-                                                M.read (mk_str "") in
-                                              let* α1 :
-                                                  Ty.apply
-                                                    (Ty.path "ref")
-                                                    [Ty.path "str"] :=
-                                                M.read (mk_str "
+                                          let* _ :=
+                                            let* _ :=
+                                              let* α0 := M.read (mk_str "") in
+                                              let* α1 := M.read (mk_str "
 ") in
-                                              let* α2 :
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [Ty.apply
-                                                        (Ty.path "ref")
-                                                        [Ty.path "str"]] :=
-                                                M.alloc [ α0; α1 ] in
-                                              let* α3 :
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "core::fmt::rt::Argument")
-                                                    [] :=
+                                              let* α2 := M.alloc [ α0; α1 ] in
+                                              let* α3 :=
                                                 M.call
                                                   ((Ty.apply
                                                         (Ty.path
                                                           "core::fmt::rt::Argument")
                                                         [])::["new_display"]
                                                     (borrow ip)) in
-                                              let* α4 :
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [Ty.apply
-                                                        (Ty.path
-                                                          "core::fmt::rt::Argument")
-                                                        []] :=
-                                                M.alloc [ α3 ] in
-                                              let* α5 :
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "core::fmt::Arguments")
-                                                    [] :=
+                                              let* α4 := M.alloc [ α3 ] in
+                                              let* α5 :=
                                                 M.call
                                                   ((Ty.apply
                                                         (Ty.path
@@ -429,9 +244,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                     (pointer_coercion
                                                       "Unsize"
                                                       (borrow α4))) in
-                                              let* α6 : Ty.tuple :=
+                                              let* α6 :=
                                                 M.call
-                                                  (std.io.stdio._print α5) in
+                                                  ((M.var
+                                                      "std::io::stdio::_print")
+                                                    α5) in
                                               M.alloc α6 in
                                             M.alloc tt in
                                           M.alloc tt

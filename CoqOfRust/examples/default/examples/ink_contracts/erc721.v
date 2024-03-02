@@ -15,22 +15,18 @@ Section Impl_core_default_Default_for_erc721_Mapping_K_V.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function [] (Ty.apply (Ty.path "core::marker::PhantomData") [K]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "core::marker::PhantomData") [K])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "core::marker::PhantomData") [K] :=
-        M.call α0 in
-      let* α2 :
-          Ty.function [] (Ty.apply (Ty.path "core::marker::PhantomData") [V]) :=
+      let* α1 := M.call α0 in
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "core::marker::PhantomData") [V])
             (Trait := ℐ))) in
-      let* α3 : Ty.apply (Ty.path "core::marker::PhantomData") [V] :=
-        M.call α2 in
+      let* α3 := M.call α2 in
       M.pure {| erc721.Mapping._key := α1; erc721.Mapping._value := α3; |}
     | _, _ => M.impossible
     end.
@@ -59,9 +55,8 @@ Section Impl_erc721_Mapping_K_V.
     | [], [self; _key] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -80,9 +75,8 @@ Section Impl_erc721_Mapping_K_V.
     | [], [self; _key] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -102,9 +96,8 @@ Section Impl_erc721_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -123,9 +116,8 @@ Section Impl_erc721_Mapping_K_V.
     | [], [self; _key] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -144,9 +136,8 @@ Section Impl_erc721_Mapping_K_V.
     | [], [self; _key] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -165,9 +156,8 @@ Section Impl_erc721_Mapping_K_V.
     | [], [self; _key] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -190,12 +180,12 @@ Section Impl_core_default_Default_for_erc721_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (erc721.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -219,7 +209,7 @@ Section Impl_core_clone_Clone_for_erc721_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -228,11 +218,7 @@ Section Impl_core_clone_Clone_for_erc721_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "erc721::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "erc721::AccountId") []
           ] in
@@ -276,19 +262,11 @@ Section Impl_core_cmp_PartialEq_for_erc721_AccountId.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.read self in
-      let* α1 : Ty.path "u128" := M.read (erc721.AccountId.Get_0 (deref α0)) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.read other in
-      let* α3 : Ty.path "u128" := M.read (erc721.AccountId.Get_0 (deref α2)) in
-      M.pure (BinOp.Pure.eq α1 α3)
+      let* α0 := M.read self in
+      let* α1 := M.read ((M.var "erc721::AccountId::Get_0") (deref α0)) in
+      let* α2 := M.read other in
+      let* α3 := M.read ((M.var "erc721::AccountId::Get_0") (deref α2)) in
+      M.pure ((M.var "BinOp::Pure::eq") α1 α3)
     | _, _ => M.impossible
     end.
   
@@ -313,9 +291,8 @@ Section Impl_core_convert_From_array_u8_for_erc721_AccountId.
     match 𝜏, α with
     | [], [_value] =>
       let* _value := M.alloc _value in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -346,12 +323,7 @@ Section Impl_core_default_Default_for_erc721_Erc721.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "erc721::Mapping")
-              [Ty.path "u32"; Ty.apply (Ty.path "erc721::AccountId") []]) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -359,17 +331,8 @@ Section Impl_core_default_Default_for_erc721_Erc721.
                 (Ty.path "erc721::Mapping")
                 [Ty.path "u32"; Ty.apply (Ty.path "erc721::AccountId") []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "erc721::Mapping")
-            [Ty.path "u32"; Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.call α0 in
-      let* α2 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "erc721::Mapping")
-              [Ty.path "u32"; Ty.apply (Ty.path "erc721::AccountId") []]) :=
+      let* α1 := M.call α0 in
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -377,17 +340,8 @@ Section Impl_core_default_Default_for_erc721_Erc721.
                 (Ty.path "erc721::Mapping")
                 [Ty.path "u32"; Ty.apply (Ty.path "erc721::AccountId") []])
             (Trait := ℐ))) in
-      let* α3 :
-          Ty.apply
-            (Ty.path "erc721::Mapping")
-            [Ty.path "u32"; Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.call α2 in
-      let* α4 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "erc721::Mapping")
-              [Ty.apply (Ty.path "erc721::AccountId") []; Ty.path "u32"]) :=
+      let* α3 := M.call α2 in
+      let* α4 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -395,20 +349,8 @@ Section Impl_core_default_Default_for_erc721_Erc721.
                 (Ty.path "erc721::Mapping")
                 [Ty.apply (Ty.path "erc721::AccountId") []; Ty.path "u32"])
             (Trait := ℐ))) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "erc721::Mapping")
-            [Ty.apply (Ty.path "erc721::AccountId") []; Ty.path "u32"] :=
-        M.call α4 in
-      let* α6 :
-          Ty.function
-            []
-            (Ty.apply
-              (Ty.path "erc721::Mapping")
-              [Ty.tuple
-                  (Ty.apply (Ty.path "erc721::AccountId") [])
-                  (Ty.apply (Ty.path "erc721::AccountId") []);
-                Ty.tuple]) :=
+      let* α5 := M.call α4 in
+      let* α6 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=
@@ -419,14 +361,7 @@ Section Impl_core_default_Default_for_erc721_Erc721.
                     (Ty.apply (Ty.path "erc721::AccountId") []);
                   Ty.tuple])
             (Trait := ℐ))) in
-      let* α7 :
-          Ty.apply
-            (Ty.path "erc721::Mapping")
-            [Ty.tuple
-                (Ty.apply (Ty.path "erc721::AccountId") [])
-                (Ty.apply (Ty.path "erc721::AccountId") []);
-              Ty.tuple] :=
-        M.call α6 in
+      let* α7 := M.call α6 in
       M.pure
         {|
           erc721.Erc721.token_owner := α1;
@@ -467,23 +402,17 @@ Section Impl_core_cmp_PartialEq_for_erc721_Error.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* __self_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Error") []] :=
-          M.read self in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __self_tag :=
+        let* α0 := M.read self in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* __arg1_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Error") []] :=
-          M.read other in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __arg1_tag :=
+        let* α0 := M.read other in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* α0 : Ty.path "isize" := M.read __self_tag in
-      let* α1 : Ty.path "isize" := M.read __arg1_tag in
-      let* α0 : Ty.path "bool" := M.alloc (BinOp.Pure.eq α0 α1) in
+      let* α0 := M.read __self_tag in
+      let* α1 := M.read __arg1_tag in
+      let* α0 := M.alloc ((M.var "BinOp::Pure::eq") α0 α1) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -542,9 +471,7 @@ Section Impl_core_clone_Clone_for_erc721_Error.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Error") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
@@ -586,10 +513,8 @@ Section Impl_erc721_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Env") []] :=
-        M.read self in
-      M.read (erc721.Env.Get_caller (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "erc721::Env::Get_caller") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -607,9 +532,8 @@ Section Impl_erc721_Env.
     | [], [self; _event] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -632,9 +556,8 @@ Section Impl_erc721_Erc721.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -668,7 +591,7 @@ Section Impl_erc721_Erc721.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.apply (Ty.path "erc721::Erc721") []) :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.apply (Ty.path "erc721::Erc721") [])
@@ -691,24 +614,19 @@ Section Impl_erc721_Erc721.
     | [], [self; of] =>
       let* self := M.alloc self in
       let* of := M.alloc of in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
-      let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.read of in
-      let* α2 : Ty.apply (Ty.path "core::option::Option") [Ty.path "u32"] :=
+      let* α0 := M.read self in
+      let* α1 := M.read of in
+      let* α2 :=
         M.call
           ((Ty.apply
                 (Ty.path "erc721::Mapping")
                 [Ty.apply (Ty.path "erc721::AccountId") [];
                   Ty.path "u32"])::["get"]
-            (borrow (erc721.Erc721.Get_owned_tokens_count (deref α0)))
+            (borrow
+              ((M.var "erc721::Erc721::Get_owned_tokens_count") (deref α0)))
             α1) in
-      let* α3 : Ty.path "u32" := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
-      let* α4 : Ty.path "u32" := M.read (use α3) in
+      let* α3 := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
+      let* α4 := M.read (use α3) in
       M.call
         ((Ty.apply
               (Ty.path "core::option::Option")
@@ -732,23 +650,20 @@ Section Impl_erc721_Erc721.
     | [], [self; id] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "erc721::Erc721") []] :=
-          M.read self in
-        let* α1 : Ty.path "u32" := M.read id in
-        let* α2 : Ty.tuple :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 := M.read id in
+        let* α2 :=
           M.call
             ((Ty.apply
                   (Ty.path "erc721::Mapping")
                   [Ty.path "u32";
                     Ty.apply (Ty.path "erc721::AccountId") []])::["remove"]
-              (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
+              (borrow
+                ((M.var "erc721::Erc721::Get_token_approvals") (deref α0)))
               α1) in
         M.alloc α2 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -768,16 +683,10 @@ Section Impl_erc721_Erc721.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* operator := M.alloc operator in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "erc721::AccountId") [] := M.read owner in
-      let* α2 : Ty.apply (Ty.path "erc721::AccountId") [] := M.read operator in
-      let* α3 :
-          Ty.tuple
-            (Ty.apply (Ty.path "erc721::AccountId") [])
-            (Ty.apply (Ty.path "erc721::AccountId") []) :=
-        M.alloc (α1, α2) in
+      let* α0 := M.read self in
+      let* α1 := M.read owner in
+      let* α2 := M.read operator in
+      let* α3 := M.alloc (α1, α2) in
       M.call
         ((Ty.apply
               (Ty.path "erc721::Mapping")
@@ -785,7 +694,7 @@ Section Impl_erc721_Erc721.
                   (Ty.apply (Ty.path "erc721::AccountId") [])
                   (Ty.apply (Ty.path "erc721::AccountId") []);
                 Ty.tuple])::["contains"]
-          (borrow (erc721.Erc721.Get_operator_approvals (deref α0)))
+          (borrow ((M.var "erc721::Erc721::Get_operator_approvals") (deref α0)))
           (borrow α3))
     | _, _ => M.impossible
     end.
@@ -804,15 +713,13 @@ Section Impl_erc721_Erc721.
     | [], [self; id] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.call
         ((Ty.apply
               (Ty.path "erc721::Mapping")
               [Ty.path "u32";
                 Ty.apply (Ty.path "erc721::AccountId") []])::["get"]
-          (borrow (erc721.Erc721.Get_token_owner (deref α0)))
+          (borrow ((M.var "erc721::Erc721::Get_token_owner") (deref α0)))
           (borrow id))
     | _, _ => M.impossible
     end.
@@ -839,34 +746,14 @@ Section Impl_erc721_Erc721.
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* id := M.alloc id in
-      let* owner :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        let* α0 :
-            Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-          M.read self in
-        let* α1 : Ty.path "u32" := M.read id in
-        let* α2 :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.apply (Ty.path "erc721::AccountId") []] :=
+      let* owner :=
+        let* α0 := M.read self in
+        let* α1 := M.read id in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "erc721::Erc721") [])::["owner_of"] α0 α1) in
         M.alloc α2 in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]]]
-            (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.ne
             (Self :=
@@ -878,36 +765,16 @@ Section Impl_erc721_Erc721.
                 (Ty.path "core::option::Option")
                 [Ty.apply (Ty.path "erc721::AccountId") []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.function
-            [Ty.apply (Ty.path "array") [Ty.path "u8"]]
-            (Ty.apply (Ty.path "erc721::AccountId") []) :=
+      let* α1 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
             (Self := Ty.apply (Ty.path "erc721::AccountId") [])
             (T := Ty.apply (Ty.path "array") [Ty.path "u8"])
             (Trait := ℐ))) in
-      let* α2 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-        M.call (α1 (repeat ((Integer.of_Z 0) : Ty.path "u8") 32)) in
-      let* α3 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.alloc (core.option.Option.Some α2) in
-      let* α4 : Ty.path "bool" := M.call (α0 (borrow from) (borrow α3)) in
-      let* α5 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]]]
-            (Ty.path "bool") :=
+      let* α2 := M.call (α1 (repeat ((Integer.of_Z 0) : Ty.path "u8") 32)) in
+      let* α3 := M.alloc (core.option.Option.Some α2) in
+      let* α4 := M.call (α0 (borrow from) (borrow α3)) in
+      let* α5 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self :=
@@ -919,20 +786,8 @@ Section Impl_erc721_Erc721.
                 (Ty.path "core::option::Option")
                 [Ty.apply (Ty.path "erc721::AccountId") []])
             (Trait := ℐ))) in
-      let* α6 : Ty.path "bool" := M.call (α5 (borrow from) (borrow owner)) in
-      let* α7 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "core::option::Option")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]]]
-            (Ty.path "bool") :=
+      let* α6 := M.call (α5 (borrow from) (borrow owner)) in
+      let* α7 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self :=
@@ -944,66 +799,49 @@ Section Impl_erc721_Erc721.
                 (Ty.path "core::option::Option")
                 [Ty.apply (Ty.path "erc721::AccountId") []])
             (Trait := ℐ))) in
-      let* α8 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
-      let* α9 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
+      let* α8 := M.read self in
+      let* α9 :=
         M.call
           ((Ty.apply
                 (Ty.path "erc721::Mapping")
                 [Ty.path "u32";
                   Ty.apply (Ty.path "erc721::AccountId") []])::["get"]
-            (borrow (erc721.Erc721.Get_token_approvals (deref α8)))
+            (borrow ((M.var "erc721::Erc721::Get_token_approvals") (deref α8)))
             (borrow id)) in
-      let* α10 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.alloc α9 in
-      let* α11 : Ty.path "bool" := M.call (α7 (borrow from) (borrow α10)) in
-      let* α12 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
-      let* α13 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.read owner in
-      let* α14 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Error with AccountId") in
-      let* α15 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+      let* α10 := M.alloc α9 in
+      let* α11 := M.call (α7 (borrow from) (borrow α10)) in
+      let* α12 := M.read self in
+      let* α13 := M.read owner in
+      let* α14 := M.read (mk_str "Error with AccountId") in
+      let* α15 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::option::Option")
                 [Ty.apply (Ty.path "erc721::AccountId") []])::["expect"]
             α13
             α14) in
-      let* α16 :
-          Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply (Ty.path "erc721::AccountId") []] :=
-        M.read from in
-      let* α17 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "Error with AccountId") in
-      let* α18 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+      let* α16 := M.read from in
+      let* α17 := M.read (mk_str "Error with AccountId") in
+      let* α18 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::option::Option")
                 [Ty.apply (Ty.path "erc721::AccountId") []])::["expect"]
             α16
             α17) in
-      let* α19 : Ty.path "bool" :=
+      let* α19 :=
         M.call
           ((Ty.apply (Ty.path "erc721::Erc721") [])::["approved_for_all"]
             α12
             α15
             α18) in
-      let* α0 : Ty.path "bool" :=
+      let* α0 :=
         M.alloc
-          (BinOp.Pure.and α4 (BinOp.Pure.or (BinOp.Pure.or α6 α11) α19)) in
+          ((M.var "BinOp::Pure::and")
+            α4
+            ((M.var "BinOp::Pure::or")
+              ((M.var "BinOp::Pure::or") α6 α11)
+              α19)) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1022,15 +860,13 @@ Section Impl_erc721_Erc721.
     | [], [self; id] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.call
         ((Ty.apply
               (Ty.path "erc721::Mapping")
               [Ty.path "u32";
                 Ty.apply (Ty.path "erc721::AccountId") []])::["contains"]
-          (borrow (erc721.Erc721.Get_token_owner (deref α0)))
+          (borrow ((M.var "erc721::Erc721::Get_token_owner") (deref α0)))
           (borrow id))
     | _, _ => M.impossible
     end.
@@ -1049,9 +885,7 @@ Section Impl_erc721_Erc721.
     | [], [self; owner] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.call
         ((Ty.apply (Ty.path "erc721::Erc721") [])::["balance_of_or_zero"]
           α0
@@ -1073,15 +907,13 @@ Section Impl_erc721_Erc721.
     | [], [self; id] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.call
         ((Ty.apply
               (Ty.path "erc721::Mapping")
               [Ty.path "u32";
                 Ty.apply (Ty.path "erc721::AccountId") []])::["get"]
-          (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
+          (borrow ((M.var "erc721::Erc721::Get_token_approvals") (deref α0)))
           (borrow id))
     | _, _ => M.impossible
     end.
@@ -1101,11 +933,9 @@ Section Impl_erc721_Erc721.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* operator := M.alloc operator in
-      let* α0 :
-          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "erc721::Erc721") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "erc721::AccountId") [] := M.read owner in
-      let* α2 : Ty.apply (Ty.path "erc721::AccountId") [] := M.read operator in
+      let* α0 := M.read self in
+      let* α1 := M.read owner in
+      let* α2 := M.read operator in
       M.call
         ((Ty.apply (Ty.path "erc721::Erc721") [])::["approved_for_all"]
           α0
@@ -1152,63 +982,46 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* caller : Ty.apply (Ty.path "erc721::AccountId") [] :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "erc721::Env") [] :=
+        (let* caller :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "erc721::Env") [] := M.alloc α1 in
-          let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+          let* α2 := M.alloc α1 in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Env") [])::["caller"] (borrow α2)) in
           M.alloc α3 in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "erc721::AccountId") []];
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]]
-                (Ty.path "bool") :=
+        let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.cmp.PartialEq.eq
                 (Self := Ty.apply (Ty.path "erc721::AccountId") [])
                 (Rhs := Ty.apply (Ty.path "erc721::AccountId") [])
                 (Trait := ℐ))) in
-          let* α1 : Ty.path "bool" := M.call (α0 (borrow to) (borrow caller)) in
-          let* α2 : Ty.path "bool" := M.alloc α1 in
-          let* α3 : Ty.path "bool" := M.read (use α2) in
+          let* α1 := M.call (α0 (borrow to) (borrow caller)) in
+          let* α2 := M.alloc α1 in
+          let* α3 := M.read (use α2) in
           if α3 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_ (core.result.Result.Err erc721.Error.NotAllowed) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "erc721::Env") [] :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "erc721::Env") [] := M.alloc α1 in
-          let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-            M.read caller in
-          let* α4 : Ty.apply (Ty.path "erc721::AccountId") [] := M.read to in
-          let* α5 : Ty.path "bool" := M.read approved in
-          let* α6 : Ty.tuple :=
+          let* α2 := M.alloc α1 in
+          let* α3 := M.read caller in
+          let* α4 := M.read to in
+          let* α5 := M.read approved in
+          let* α6 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Env") [])::["emit_event"]
                 (borrow α2)
@@ -1219,22 +1032,14 @@ Section Impl_erc721_Erc721.
                     erc721.ApprovalForAll.approved := α5;
                   |})) in
           M.alloc α6 in
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.path "bool" := M.read (use approved) in
+        let* _ :=
+          let* α0 := M.read (use approved) in
           if α0 then
-            let* _ :
-                Ty.apply (Ty.path "core::option::Option") [Ty.path "u32"] :=
-              let* α0 :
-                  Ty.apply
-                    (Ty.path "mut_ref")
-                    [Ty.apply (Ty.path "erc721::Erc721") []] :=
-                M.read self in
-              let* α1 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-                M.read caller in
-              let* α2 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-                M.read to in
-              let* α3 :
-                  Ty.apply (Ty.path "core::option::Option") [Ty.path "u32"] :=
+            let* _ :=
+              let* α0 := M.read self in
+              let* α1 := M.read caller in
+              let* α2 := M.read to in
+              let* α3 :=
                 M.call
                   ((Ty.apply
                         (Ty.path "erc721::Mapping")
@@ -1243,23 +1048,18 @@ Section Impl_erc721_Erc721.
                             (Ty.apply (Ty.path "erc721::AccountId") []);
                           Ty.tuple])::["insert"]
                     (borrow_mut
-                      (erc721.Erc721.Get_operator_approvals (deref α0)))
+                      ((M.var "erc721::Erc721::Get_operator_approvals")
+                        (deref α0)))
                     (α1, α2)
                     tt) in
               M.alloc α3 in
             M.alloc tt
           else
-            let* _ : Ty.tuple :=
-              let* α0 :
-                  Ty.apply
-                    (Ty.path "mut_ref")
-                    [Ty.apply (Ty.path "erc721::Erc721") []] :=
-                M.read self in
-              let* α1 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-                M.read caller in
-              let* α2 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-                M.read to in
-              let* α3 : Ty.tuple :=
+            let* _ :=
+              let* α0 := M.read self in
+              let* α1 := M.read caller in
+              let* α2 := M.read to in
+              let* α3 :=
                 M.call
                   ((Ty.apply
                         (Ty.path "erc721::Mapping")
@@ -1267,15 +1067,13 @@ Section Impl_erc721_Erc721.
                             (Ty.apply (Ty.path "erc721::AccountId") [])
                             (Ty.apply (Ty.path "erc721::AccountId") []);
                           Ty.tuple])::["remove"]
-                    (borrow (erc721.Erc721.Get_operator_approvals (deref α0)))
+                    (borrow
+                      ((M.var "erc721::Erc721::Get_operator_approvals")
+                        (deref α0)))
                     (α1, α2)) in
               M.alloc α3 in
             M.alloc tt in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1303,15 +1101,8 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+        (let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -1319,40 +1110,17 @@ Section Impl_erc721_Erc721.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α2 : Ty.apply (Ty.path "erc721::AccountId") [] := M.read to in
-          let* α3 : Ty.path "bool" := M.read approved in
-          let* α4 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
+          let* α1 := M.read self in
+          let* α2 := M.read to in
+          let* α3 := M.read approved in
+          let* α4 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["approve_for_all"]
                 α1
                 α2
                 α3) in
-          let* α5 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α4) in
-          let* α6 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.alloc α5 in
+          let* α5 := M.call (α0 α4) in
+          let* α6 := M.alloc α5 in
           match_operator
             α6
             [
@@ -1360,17 +1128,11 @@ Section Impl_erc721_Erc721.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "erc721::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -1383,20 +1145,11 @@ Section Impl_erc721_Erc721.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "erc721::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -1406,18 +1159,16 @@ Section Impl_erc721_Erc721.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1468,54 +1219,28 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* caller : Ty.apply (Ty.path "erc721::AccountId") [] :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "erc721::Env") [] :=
+        (let* caller :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "erc721::Env") [] := M.alloc α1 in
-          let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+          let* α2 := M.alloc α1 in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Env") [])::["caller"] (borrow α2)) in
           M.alloc α3 in
-        let* owner :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.apply (Ty.path "erc721::AccountId") []] :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.path "u32" := M.read id in
-          let* α2 :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [Ty.apply (Ty.path "erc721::AccountId") []] :=
+        let* owner :=
+          let* α0 := M.read self in
+          let* α1 := M.read id in
+          let* α2 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["owner_of"]
                 (borrow (deref α0))
                 α1) in
           M.alloc α2 in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "erc721::AccountId") []]];
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "erc721::AccountId") []]]]
-                (Ty.path "bool") :=
+        let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.cmp.PartialEq.eq
                 (Self :=
@@ -1527,135 +1252,91 @@ Section Impl_erc721_Erc721.
                     (Ty.path "core::option::Option")
                     [Ty.apply (Ty.path "erc721::AccountId") []])
                 (Trait := ℐ))) in
-          let* α1 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-            M.read caller in
-          let* α2 :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [Ty.apply (Ty.path "erc721::AccountId") []] :=
-            M.alloc (core.option.Option.Some α1) in
-          let* α3 : Ty.path "bool" := M.call (α0 (borrow owner) (borrow α2)) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α5 :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [Ty.apply (Ty.path "erc721::AccountId") []] :=
-            M.read owner in
-          let* α6 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-            M.read (mk_str "Error with AccountId") in
-          let* α7 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+          let* α1 := M.read caller in
+          let* α2 := M.alloc (core.option.Option.Some α1) in
+          let* α3 := M.call (α0 (borrow owner) (borrow α2)) in
+          let* α4 := M.read self in
+          let* α5 := M.read owner in
+          let* α6 := M.read (mk_str "Error with AccountId") in
+          let* α7 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::option::Option")
                     [Ty.apply (Ty.path "erc721::AccountId") []])::["expect"]
                 α5
                 α6) in
-          let* α8 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-            M.read caller in
-          let* α9 : Ty.path "bool" :=
+          let* α8 := M.read caller in
+          let* α9 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["approved_for_all"]
                 (borrow (deref α4))
                 α7
                 α8) in
-          let* α10 : Ty.path "bool" :=
-            M.alloc (UnOp.not (BinOp.Pure.or α3 α9)) in
-          let* α11 : Ty.path "bool" := M.read (use α10) in
+          let* α10 :=
+            M.alloc ((M.var "UnOp::not") ((M.var "BinOp::Pure::or") α3 α9)) in
+          let* α11 := M.read (use α10) in
           if α11 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_ (core.result.Result.Err erc721.Error.NotAllowed) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "erc721::AccountId") []];
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "erc721::AccountId") []]]
-                (Ty.path "bool") :=
+        let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.cmp.PartialEq.eq
                 (Self := Ty.apply (Ty.path "erc721::AccountId") [])
                 (Rhs := Ty.apply (Ty.path "erc721::AccountId") [])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "erc721::AccountId") []] :=
-            M.read to in
-          let* α2 :
-              Ty.function
-                [Ty.apply (Ty.path "array") [Ty.path "u8"]]
-                (Ty.apply (Ty.path "erc721::AccountId") []) :=
+          let* α1 := M.read to in
+          let* α2 :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.From.from
                 (Self := Ty.apply (Ty.path "erc721::AccountId") [])
                 (T := Ty.apply (Ty.path "array") [Ty.path "u8"])
                 (Trait := ℐ))) in
-          let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+          let* α3 :=
             M.call (α2 (repeat ((Integer.of_Z 0) : Ty.path "u8") 32)) in
-          let* α4 : Ty.apply (Ty.path "erc721::AccountId") [] := M.alloc α3 in
-          let* α5 : Ty.path "bool" := M.call (α0 α1 (borrow α4)) in
-          let* α6 : Ty.path "bool" := M.alloc α5 in
-          let* α7 : Ty.path "bool" := M.read (use α6) in
+          let* α4 := M.alloc α3 in
+          let* α5 := M.call (α0 α1 (borrow α4)) in
+          let* α6 := M.alloc α5 in
+          let* α7 := M.read (use α6) in
           if α7 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_ (core.result.Result.Err erc721.Error.NotAllowed) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.path "bool" :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply
                     (Ty.path "erc721::Mapping")
                     [Ty.path "u32";
                       Ty.apply (Ty.path "erc721::AccountId") []])::["contains"]
-                (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
+                (borrow
+                  ((M.var "erc721::Erc721::Get_token_approvals") (deref α0)))
                 (borrow id)) in
-          let* α2 : Ty.path "bool" := M.alloc α1 in
-          let* α3 : Ty.path "bool" := M.read (use α2) in
+          let* α2 := M.alloc α1 in
+          let* α3 := M.read (use α2) in
           if α3 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_ (core.result.Result.Err erc721.Error.CannotInsert) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
-            let* _ :
-                Ty.apply (Ty.path "core::option::Option") [Ty.path "u32"] :=
-              let* α0 :
-                  Ty.apply
-                    (Ty.path "mut_ref")
-                    [Ty.apply (Ty.path "erc721::Erc721") []] :=
-                M.read self in
-              let* α1 : Ty.path "u32" := M.read id in
-              let* α2 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "erc721::AccountId") []] :=
-                M.read to in
-              let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-                M.read (deref α2) in
-              let* α4 :
-                  Ty.apply (Ty.path "core::option::Option") [Ty.path "u32"] :=
+            let* _ :=
+              let* α0 := M.read self in
+              let* α1 := M.read id in
+              let* α2 := M.read to in
+              let* α3 := M.read (deref α2) in
+              let* α4 :=
                 M.call
                   ((Ty.apply
                         (Ty.path "erc721::Mapping")
@@ -1663,33 +1344,25 @@ Section Impl_erc721_Erc721.
                           Ty.apply
                             (Ty.path "erc721::AccountId")
                             []])::["insert"]
-                    (borrow_mut (erc721.Erc721.Get_token_approvals (deref α0)))
+                    (borrow_mut
+                      ((M.var "erc721::Erc721::Get_token_approvals")
+                        (deref α0)))
                     α1
                     α3) in
               M.alloc α4 in
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "erc721::Env") [] :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "erc721::Env") [] := M.alloc α1 in
-          let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-            M.read caller in
-          let* α4 :
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "erc721::AccountId") []] :=
-            M.read to in
-          let* α5 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-            M.read (deref α4) in
-          let* α6 : Ty.path "u32" := M.read id in
-          let* α7 : Ty.tuple :=
+          let* α2 := M.alloc α1 in
+          let* α3 := M.read caller in
+          let* α4 := M.read to in
+          let* α5 := M.read (deref α4) in
+          let* α6 := M.read id in
+          let* α7 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Env") [])::["emit_event"]
                 (borrow α2)
@@ -1700,11 +1373,7 @@ Section Impl_erc721_Erc721.
                     erc721.Approval.id := α6;
                   |})) in
           M.alloc α7 in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1732,15 +1401,8 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+        (let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -1748,39 +1410,16 @@ Section Impl_erc721_Erc721.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α2 : Ty.path "u32" := M.read id in
-          let* α3 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
+          let* α1 := M.read self in
+          let* α2 := M.read id in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["approve_for"]
                 α1
                 (borrow to)
                 α2) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α3) in
-          let* α5 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.alloc α4 in
+          let* α4 := M.call (α0 α3) in
+          let* α5 := M.alloc α4 in
           match_operator
             α5
             [
@@ -1788,17 +1427,11 @@ Section Impl_erc721_Erc721.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "erc721::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -1811,20 +1444,11 @@ Section Impl_erc721_Erc721.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "erc721::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -1834,18 +1458,16 @@ Section Impl_erc721_Erc721.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1889,10 +1511,7 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
+        (let* α0 :=
           match_operator
             self
             [
@@ -1908,20 +1527,14 @@ Section Impl_erc721_Erc721.
                       erc721.Erc721.owned_tokens_count := _;
                     |}
                     =>
-                  let γ1_0 := erc721.Erc721.Get_token_owner γ in
-                  let γ1_1 := erc721.Erc721.Get_owned_tokens_count γ in
+                  let γ1_0 := (M.var "erc721::Erc721::Get_token_owner") γ in
+                  let γ1_1 :=
+                    (M.var "erc721::Erc721::Get_owned_tokens_count") γ in
                   let* token_owner := M.alloc (borrow_mut γ1_0) in
                   let* owned_tokens_count := M.alloc (borrow_mut γ1_1) in
-                  let* _ : Ty.tuple :=
-                    let* α0 :
-                        Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "erc721::Mapping")
-                              [Ty.path "u32";
-                                Ty.apply (Ty.path "erc721::AccountId") []]] :=
-                      M.read token_owner in
-                    let* α1 : Ty.path "bool" :=
+                  let* _ :=
+                    let* α0 := M.read token_owner in
+                    let* α1 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "erc721::Mapping")
@@ -1931,27 +1544,19 @@ Section Impl_erc721_Erc721.
                                   []])::["contains"]
                           (borrow (deref α0))
                           (borrow id)) in
-                    let* α2 : Ty.path "bool" := M.alloc (UnOp.not α1) in
-                    let* α3 : Ty.path "bool" := M.read (use α2) in
+                    let* α2 := M.alloc ((M.var "UnOp::not") α1) in
+                    let* α3 := M.read (use α2) in
                     if α3 then
-                      let* α0 : Ty.path "never" :=
+                      let* α0 :=
                         return_
                           (core.result.Result.Err erc721.Error.TokenNotFound) in
-                      let* α1 : Ty.path "never" := M.read α0 in
-                      let* α2 : Ty.tuple := never_to_any α1 in
+                      let* α1 := M.read α0 in
+                      let* α2 := never_to_any α1 in
                       M.alloc α2
                     else
                       M.alloc tt in
-                  let* count : Ty.path "u32" :=
-                    let* α0 :
-                        Ty.function
-                          [Ty.apply
-                              (Ty.path "core::result::Result")
-                              [Ty.path "u32";
-                                Ty.apply (Ty.path "erc721::Error") []]]
-                          (Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            [_; _]) :=
+                  let* count :=
+                    let* α0 :=
                       ltac:(M.get_method (fun ℐ =>
                         core.ops.try_trait.Try.branch
                           (Self :=
@@ -1960,23 +1565,9 @@ Section Impl_erc721_Erc721.
                               [Ty.path "u32";
                                 Ty.apply (Ty.path "erc721::Error") []])
                           (Trait := ℐ))) in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "erc721::Mapping")
-                              [Ty.apply (Ty.path "erc721::AccountId") [];
-                                Ty.path "u32"]] :=
-                      M.read owned_tokens_count in
-                    let* α2 :
-                        Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "erc721::AccountId") []] :=
-                      M.read from in
-                    let* α3 :
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "u32"] :=
+                    let* α1 := M.read owned_tokens_count in
+                    let* α2 := M.read from in
+                    let* α3 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "erc721::Mapping")
@@ -1984,10 +1575,7 @@ Section Impl_erc721_Erc721.
                                 Ty.path "u32"])::["get"]
                           (borrow (deref α1))
                           α2) in
-                    let* α4 :
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "u32"] :=
+                    let* α4 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::option::Option")
@@ -2000,49 +1588,25 @@ Section Impl_erc721_Erc721.
                               [
                                 fun γ =>
                                   (let* c := M.copy γ in
-                                  let* α0 : Ty.path "u32" := M.read c in
-                                  let* α1 : Ty.path "u32" :=
+                                  let* α0 := M.read c in
+                                  let* α1 :=
                                     M.alloc
                                       ((Integer.of_Z 1) : Ty.path "u32") in
-                                  let* α2 : Ty.path "u32" := M.read (use α1) in
-                                  BinOp.Panic.sub α0 α2) :
+                                  let* α2 := M.read (use α1) in
+                                  (M.var "BinOp::Panic::sub") α0 α2) :
                                   Ty.path "u32"
                               ]) :
                             Ty.path "u32")) in
-                    let* α5 :
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.path "u32";
-                            Ty.apply (Ty.path "erc721::Error") []] :=
+                    let* α5 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "core::option::Option")
                               [Ty.path "u32"])::["ok_or"]
                           α4
                           erc721.Error.CannotFetchValue) in
-                    let* α6 :
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          [Ty.apply
-                              (Ty.path "core::result::Result")
-                              [Ty.apply
-                                  (Ty.path "core::convert::Infallible")
-                                  [];
-                                Ty.apply (Ty.path "erc721::Error") []];
-                            Ty.path "u32"] :=
-                      M.call (α0 α5) in
-                    let* α7 :
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          [Ty.apply
-                              (Ty.path "core::result::Result")
-                              [Ty.apply
-                                  (Ty.path "core::convert::Infallible")
-                                  [];
-                                Ty.apply (Ty.path "erc721::Error") []];
-                            Ty.path "u32"] :=
-                      M.alloc α6 in
-                    let* α8 : Ty.path "u32" :=
+                    let* α6 := M.call (α0 α5) in
+                    let* α7 := M.alloc α6 in
+                    let* α8 :=
                       match_operator
                         α7
                         [
@@ -2051,26 +1615,11 @@ Section Impl_erc721_Erc721.
                             match α0 with
                             | core.ops.control_flow.ControlFlow.Break _ =>
                               let γ0_0 :=
-                                core.ops.control_flow.ControlFlow.Get_Break_0
+                                (M.var
+                                    "core::ops::control_flow::ControlFlow::Get_Break_0")
                                   γ in
                               let* residual := M.copy γ0_0 in
-                              let* α0 :
-                                  Ty.function
-                                    [Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        [Ty.apply
-                                            (Ty.path
-                                              "core::convert::Infallible")
-                                            [];
-                                          Ty.apply
-                                            (Ty.path "erc721::Error")
-                                            []]]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      [Ty.tuple;
-                                        Ty.apply
-                                          (Ty.path "erc721::Error")
-                                          []]) :=
+                              let* α0 :=
                                 ltac:(M.get_method (fun ℐ =>
                                   core.ops.try_trait.FromResidual.from_residual
                                     (Self :=
@@ -2091,23 +1640,11 @@ Section Impl_erc721_Erc721.
                                             (Ty.path "erc721::Error")
                                             []])
                                     (Trait := ℐ))) in
-                              let* α1 :
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [Ty.apply
-                                        (Ty.path "core::convert::Infallible")
-                                        [];
-                                      Ty.apply (Ty.path "erc721::Error") []] :=
-                                M.read residual in
-                              let* α2 :
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [Ty.tuple;
-                                      Ty.apply (Ty.path "erc721::Error") []] :=
-                                M.call (α0 α1) in
-                              let* α3 : Ty.path "never" := return_ α2 in
-                              let* α4 : Ty.path "never" := M.read α3 in
-                              let* α5 : Ty.path "u32" := never_to_any α4 in
+                              let* α1 := M.read residual in
+                              let* α2 := M.call (α0 α1) in
+                              let* α3 := return_ α2 in
+                              let* α4 := M.read α3 in
+                              let* α5 := never_to_any α4 in
                               M.alloc α5
                             | _ => M.break_match
                             end) :
@@ -2117,7 +1654,8 @@ Section Impl_erc721_Erc721.
                             match α0 with
                             | core.ops.control_flow.ControlFlow.Continue _ =>
                               let γ0_0 :=
-                                core.ops.control_flow.ControlFlow.Get_Continue_0
+                                (M.var
+                                    "core::ops::control_flow::ControlFlow::Get_Continue_0")
                                   γ in
                               let* val := M.copy γ0_0 in
                               M.pure val
@@ -2126,30 +1664,12 @@ Section Impl_erc721_Erc721.
                             Ty.path "u32"
                         ] in
                     M.copy α8 in
-                  let* _ :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.path "u32"] :=
-                    let* α0 :
-                        Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "erc721::Mapping")
-                              [Ty.apply (Ty.path "erc721::AccountId") [];
-                                Ty.path "u32"]] :=
-                      M.read owned_tokens_count in
-                    let* α1 :
-                        Ty.apply
-                          (Ty.path "ref")
-                          [Ty.apply (Ty.path "erc721::AccountId") []] :=
-                      M.read from in
-                    let* α2 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-                      M.read (deref α1) in
-                    let* α3 : Ty.path "u32" := M.read count in
-                    let* α4 :
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [Ty.path "u32"] :=
+                  let* _ :=
+                    let* α0 := M.read owned_tokens_count in
+                    let* α1 := M.read from in
+                    let* α2 := M.read (deref α1) in
+                    let* α3 := M.read count in
+                    let* α4 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "erc721::Mapping")
@@ -2159,17 +1679,10 @@ Section Impl_erc721_Erc721.
                           α2
                           α3) in
                     M.alloc α4 in
-                  let* _ : Ty.tuple :=
-                    let* α0 :
-                        Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "erc721::Mapping")
-                              [Ty.path "u32";
-                                Ty.apply (Ty.path "erc721::AccountId") []]] :=
-                      M.read token_owner in
-                    let* α1 : Ty.path "u32" := M.read id in
-                    let* α2 : Ty.tuple :=
+                  let* _ :=
+                    let* α0 := M.read token_owner in
+                    let* α1 := M.read id in
+                    let* α2 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "erc721::Mapping")
@@ -2294,30 +1807,19 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* caller : Ty.apply (Ty.path "erc721::AccountId") [] :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "erc721::Env") [] :=
+        (let* caller :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "erc721::Env") [] := M.alloc α1 in
-          let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+          let* α2 := M.alloc α1 in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Env") [])::["caller"] (borrow α2)) in
           M.alloc α3 in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+        let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -2325,40 +1827,17 @@ Section Impl_erc721_Erc721.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α2 : Ty.path "u32" := M.read id in
-          let* α3 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
+          let* α1 := M.read self in
+          let* α2 := M.read id in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["transfer_token_from"]
                 α1
                 (borrow caller)
                 (borrow destination)
                 α2) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α3) in
-          let* α5 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.alloc α4 in
+          let* α4 := M.call (α0 α3) in
+          let* α5 := M.alloc α4 in
           match_operator
             α5
             [
@@ -2366,17 +1845,11 @@ Section Impl_erc721_Erc721.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "erc721::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -2389,20 +1862,11 @@ Section Impl_erc721_Erc721.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "erc721::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -2412,18 +1876,16 @@ Section Impl_erc721_Erc721.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -2457,15 +1919,8 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+        (let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -2473,40 +1928,17 @@ Section Impl_erc721_Erc721.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α2 : Ty.path "u32" := M.read id in
-          let* α3 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
+          let* α1 := M.read self in
+          let* α2 := M.read id in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["transfer_token_from"]
                 α1
                 (borrow from)
                 (borrow to)
                 α2) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α3) in
-          let* α5 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.alloc α4 in
+          let* α4 := M.call (α0 α3) in
+          let* α5 := M.alloc α4 in
           match_operator
             α5
             [
@@ -2514,17 +1946,11 @@ Section Impl_erc721_Erc721.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "erc721::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -2537,20 +1963,11 @@ Section Impl_erc721_Erc721.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "erc721::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -2560,18 +1977,16 @@ Section Impl_erc721_Erc721.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -2604,30 +2019,19 @@ Section Impl_erc721_Erc721.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) in
       M.catch_return
-        (let* caller : Ty.apply (Ty.path "erc721::AccountId") [] :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "erc721::Env") [] :=
+        (let* caller :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "erc721::Env") [] := M.alloc α1 in
-          let* α3 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+          let* α2 := M.alloc α1 in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Env") [])::["caller"] (borrow α2)) in
           M.alloc α3 in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+        let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -2635,39 +2039,16 @@ Section Impl_erc721_Erc721.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α2 : Ty.path "u32" := M.read id in
-          let* α3 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
+          let* α1 := M.read self in
+          let* α2 := M.read id in
+          let* α3 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["add_token_to"]
                 α1
                 (borrow caller)
                 α2) in
-          let* α4 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α3) in
-          let* α5 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "erc721::Error") []];
-                  Ty.tuple] :=
-            M.alloc α4 in
+          let* α4 := M.call (α0 α3) in
+          let* α5 := M.alloc α4 in
           match_operator
             α5
             [
@@ -2675,17 +2056,11 @@ Section Impl_erc721_Erc721.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "erc721::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -2698,20 +2073,11 @@ Section Impl_erc721_Erc721.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "erc721::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -2721,39 +2087,33 @@ Section Impl_erc721_Erc721.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "erc721::Erc721") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "erc721::Env") [] :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Erc721") [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "erc721::Env") [] := M.alloc α1 in
-          let* α3 :
-              Ty.function
-                [Ty.apply (Ty.path "array") [Ty.path "u8"]]
-                (Ty.apply (Ty.path "erc721::AccountId") []) :=
+          let* α2 := M.alloc α1 in
+          let* α3 :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.From.from
                 (Self := Ty.apply (Ty.path "erc721::AccountId") [])
                 (T := Ty.apply (Ty.path "array") [Ty.path "u8"])
                 (Trait := ℐ))) in
-          let* α4 : Ty.apply (Ty.path "erc721::AccountId") [] :=
+          let* α4 :=
             M.call (α3 (repeat ((Integer.of_Z 0) : Ty.path "u8") 32)) in
-          let* α5 : Ty.apply (Ty.path "erc721::AccountId") [] :=
-            M.read caller in
-          let* α6 : Ty.path "u32" := M.read id in
-          let* α7 : Ty.tuple :=
+          let* α5 := M.read caller in
+          let* α6 := M.read id in
+          let* α7 :=
             M.call
               ((Ty.apply (Ty.path "erc721::Env") [])::["emit_event"]
                 (borrow α2)
@@ -2764,11 +2124,7 @@ Section Impl_erc721_Erc721.
                     erc721.Transfer.id := α6;
                   |})) in
           M.alloc α7 in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "erc721::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.

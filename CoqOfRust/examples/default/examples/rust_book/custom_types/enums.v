@@ -22,7 +22,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [event] =>
     let* event := M.alloc event in
-    let* α0 : Ty.tuple :=
+    let* α0 :=
       match_operator
         event
         [
@@ -30,8 +30,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums.WebEvent.PageLoad =>
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+              let* _ :=
+                let* α0 :=
                   M.read
                     (mk_str
                       ("page loaded, r" ++
@@ -39,18 +39,14 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           "233"
                           ("f" ++ String.String "233" "
 "))) in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Arguments")
                           [])::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
@@ -60,22 +56,17 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums.WebEvent.PageUnload =>
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "page unloaded
+              let* _ :=
+                let* α0 := M.read (mk_str "page unloaded
 ") in
-                let* α1 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0 ] in
-                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α1 := M.alloc [ α0 ] in
+                let* α2 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::Arguments")
                           [])::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
@@ -85,36 +76,26 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums.WebEvent.KeyPress _ =>
-              let γ0_0 := enums.WebEvent.Get_KeyPress_0 γ in
+              let γ0_0 := (M.var "enums::WebEvent::Get_KeyPress_0") γ in
               let* c := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "pressed '") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "'.
+              let* _ :=
+                let* α0 := M.read (mk_str "pressed '") in
+                let* α1 := M.read (mk_str "'.
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow c)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -124,36 +105,26 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums.WebEvent.Paste _ =>
-              let γ0_0 := enums.WebEvent.Get_Paste_0 γ in
+              let γ0_0 := (M.var "enums::WebEvent::Get_Paste_0") γ in
               let* s := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "pasted """) in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str """.
+              let* _ :=
+                let* α0 := M.read (mk_str "pasted """) in
+                let* α1 := M.read (mk_str """.
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow s)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -167,49 +138,38 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 {| enums.WebEvent.Click.x := _; enums.WebEvent.Click.y := _;
                 |}
                 =>
-              let γ0_0 := enums.WebEvent.Get_Click_x γ in
-              let γ0_1 := enums.WebEvent.Get_Click_y γ in
+              let γ0_0 := (M.var "enums::WebEvent::Get_Click_x") γ in
+              let γ0_1 := (M.var "enums::WebEvent::Get_Click_y") γ in
               let* x := M.copy γ0_0 in
               let* y := M.copy γ0_1 in
-              let* _ : Ty.tuple :=
-                let* _ : Ty.tuple :=
-                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str "clicked at x=") in
-                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str ", y=") in
-                  let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                    M.read (mk_str ".
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.read (mk_str "clicked at x=") in
+                  let* α1 := M.read (mk_str ", y=") in
+                  let* α2 := M.read (mk_str ".
 ") in
-                  let* α3 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                    M.alloc [ α0; α1; α2 ] in
-                  let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α3 := M.alloc [ α0; α1; α2 ] in
+                  let* α4 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_display"]
                         (borrow x)) in
-                  let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                  let* α5 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::rt::Argument")
                             [])::["new_display"]
                         (borrow y)) in
-                  let* α6 :
-                      Ty.apply
-                        (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                    M.alloc [ α4; α5 ] in
-                  let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  let* α6 := M.alloc [ α4; α5 ] in
+                  let* α7 :=
                     M.call
                       ((Ty.apply
                             (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α3))
                         (pointer_coercion "Unsize" (borrow α6))) in
-                  let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+                  let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
                   M.alloc α8 in
                 M.alloc tt in
               M.alloc tt
@@ -241,51 +201,46 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* pressed : Ty.apply (Ty.path "enums::WebEvent") [] :=
-      M.alloc (enums.WebEvent.KeyPress "x"%char) in
-    let* pasted : Ty.apply (Ty.path "enums::WebEvent") [] :=
-      let* α0 : Ty.function [Ty.apply (Ty.path "ref") [Ty.path "str"]] _ :=
+    let* pressed := M.alloc (enums.WebEvent.KeyPress "x"%char) in
+    let* pasted :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           alloc.borrow.ToOwned.to_owned
             (Self := Ty.path "str")
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "my text") in
-      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
-        M.call (α0 α1) in
+      let* α1 := M.read (mk_str "my text") in
+      let* α2 := M.call (α0 α1) in
       M.alloc (enums.WebEvent.Paste α2) in
-    let* click : Ty.apply (Ty.path "enums::WebEvent") [] :=
+    let* click :=
       M.alloc
         (enums.WebEvent.Click
           {|
           enums.WebEvent.Click.x := (Integer.of_Z 20) : Ty.path "i64";
           enums.WebEvent.Click.y := (Integer.of_Z 80) : Ty.path "i64";
         |}) in
-    let* load : Ty.apply (Ty.path "enums::WebEvent") [] :=
-      M.alloc enums.WebEvent.PageLoad in
-    let* unload : Ty.apply (Ty.path "enums::WebEvent") [] :=
-      M.alloc enums.WebEvent.PageUnload in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums::WebEvent") [] := M.read pressed in
-      let* α1 : Ty.tuple := M.call (enums.inspect α0) in
+    let* load := M.alloc enums.WebEvent.PageLoad in
+    let* unload := M.alloc enums.WebEvent.PageUnload in
+    let* _ :=
+      let* α0 := M.read pressed in
+      let* α1 := M.call ((M.var "enums::inspect") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums::WebEvent") [] := M.read pasted in
-      let* α1 : Ty.tuple := M.call (enums.inspect α0) in
+    let* _ :=
+      let* α0 := M.read pasted in
+      let* α1 := M.call ((M.var "enums::inspect") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums::WebEvent") [] := M.read click in
-      let* α1 : Ty.tuple := M.call (enums.inspect α0) in
+    let* _ :=
+      let* α0 := M.read click in
+      let* α1 := M.call ((M.var "enums::inspect") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums::WebEvent") [] := M.read load in
-      let* α1 : Ty.tuple := M.call (enums.inspect α0) in
+    let* _ :=
+      let* α0 := M.read load in
+      let* α1 := M.call ((M.var "enums::inspect") α0) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "enums::WebEvent") [] := M.read unload in
-      let* α1 : Ty.tuple := M.call (enums.inspect α0) in
+    let* _ :=
+      let* α0 := M.read unload in
+      let* α1 := M.call ((M.var "enums::inspect") α0) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

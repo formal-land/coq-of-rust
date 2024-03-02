@@ -29,22 +29,11 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [Ty.path "i32";
               Ty.apply (Ty.path "core::num::error::ParseIntError") []]) in
     M.catch_return
-      (let* first_number : Ty.path "i32" :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read first_number_str in
-        let* α1 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.path "i32";
-                Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-          M.call ((Ty.path "str")::["parse"] α0) in
-        let* α2 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.path "i32";
-                Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-          M.alloc α1 in
-        let* α3 : Ty.path "i32" :=
+      (let* first_number :=
+        let* α0 := M.read first_number_str in
+        let* α1 := M.call ((Ty.path "str")::["parse"] α0) in
+        let* α2 := M.alloc α1 in
+        let* α3 :=
           match_operator
             α2
             [
@@ -52,7 +41,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.result.Result.Ok _ =>
-                  let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                  let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
                   let* first_number := M.copy γ0_0 in
                   M.pure first_number
                 | _ => M.break_match
@@ -62,37 +51,23 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.result.Result.Err _ =>
-                  let γ0_0 := core.result.Result.Get_Err_0 γ in
+                  let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
                   let* e := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.apply (Ty.path "core::num::error::ParseIntError") [] :=
-                    M.read e in
-                  let* α1 : Ty.path "never" :=
-                    return_ (core.result.Result.Err α0) in
-                  let* α2 : Ty.path "never" := M.read α1 in
-                  let* α3 : Ty.path "i32" := never_to_any α2 in
+                  let* α0 := M.read e in
+                  let* α1 := return_ (core.result.Result.Err α0) in
+                  let* α2 := M.read α1 in
+                  let* α3 := never_to_any α2 in
                   M.alloc α3
                 | _ => M.break_match
                 end) :
                 Ty.path "i32"
             ] in
         M.copy α3 in
-      let* second_number : Ty.path "i32" :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read second_number_str in
-        let* α1 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.path "i32";
-                Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-          M.call ((Ty.path "str")::["parse"] α0) in
-        let* α2 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.path "i32";
-                Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-          M.alloc α1 in
-        let* α3 : Ty.path "i32" :=
+      let* second_number :=
+        let* α0 := M.read second_number_str in
+        let* α1 := M.call ((Ty.path "str")::["parse"] α0) in
+        let* α2 := M.alloc α1 in
+        let* α3 :=
           match_operator
             α2
             [
@@ -100,7 +75,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.result.Result.Ok _ =>
-                  let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                  let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
                   let* second_number := M.copy γ0_0 in
                   M.pure second_number
                 | _ => M.break_match
@@ -110,30 +85,22 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.result.Result.Err _ =>
-                  let γ0_0 := core.result.Result.Get_Err_0 γ in
+                  let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
                   let* e := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.apply (Ty.path "core::num::error::ParseIntError") [] :=
-                    M.read e in
-                  let* α1 : Ty.path "never" :=
-                    return_ (core.result.Result.Err α0) in
-                  let* α2 : Ty.path "never" := M.read α1 in
-                  let* α3 : Ty.path "i32" := never_to_any α2 in
+                  let* α0 := M.read e in
+                  let* α1 := return_ (core.result.Result.Err α0) in
+                  let* α2 := M.read α1 in
+                  let* α3 := never_to_any α2 in
                   M.alloc α3
                 | _ => M.break_match
                 end) :
                 Ty.path "i32"
             ] in
         M.copy α3 in
-      let* α0 : Ty.path "i32" := M.read first_number in
-      let* α1 : Ty.path "i32" := M.read second_number in
-      let* α2 : Ty.path "i32" := BinOp.Panic.mul α0 α1 in
-      let* α0 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-        M.alloc (core.result.Result.Ok α2) in
+      let* α0 := M.read first_number in
+      let* α1 := M.read second_number in
+      let* α2 := (M.var "BinOp::Panic::mul") α0 α1 in
+      let* α0 := M.alloc (core.result.Result.Ok α2) in
       M.read α0)
   | _, _ => M.impossible
   end.
@@ -150,7 +117,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [result] =>
     let* result := M.alloc result in
-    let* α0 : Ty.tuple :=
+    let* α0 :=
       match_operator
         result
         [
@@ -158,36 +125,26 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := core.result.Result.Get_Ok_0 γ in
+              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
               let* n := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "n is ") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "
+              let* _ :=
+                let* α0 := M.read (mk_str "n is ") in
+                let* α1 := M.read (mk_str "
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow n)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -197,36 +154,26 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := core.result.Result.Get_Err_0 γ in
+              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
               let* e := M.copy γ0_0 in
-              let* _ : Ty.tuple :=
-                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "Error: ") in
-                let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                  M.read (mk_str "
+              let* _ :=
+                let* α0 := M.read (mk_str "Error: ") in
+                let* α1 := M.read (mk_str "
 ") in
-                let* α2 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-                  M.alloc [ α0; α1 ] in
-                let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                let* α2 := M.alloc [ α0; α1 ] in
+                let* α3 :=
                   M.call
                     ((Ty.apply
                           (Ty.path "core::fmt::rt::Argument")
                           [])::["new_display"]
                       (borrow e)) in
-                let* α4 :
-                    Ty.apply
-                      (Ty.path "array")
-                      [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-                  M.alloc [ α3 ] in
-                let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
@@ -247,33 +194,19 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "10") in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "2") in
-      let* α2 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-        M.call (early_returns.multiply α0 α1) in
-      let* α3 : Ty.tuple := M.call (early_returns.print α2) in
+    let* _ :=
+      let* α0 := M.read (mk_str "10") in
+      let* α1 := M.read (mk_str "2") in
+      let* α2 := M.call ((M.var "early_returns::multiply") α0 α1) in
+      let* α3 := M.call ((M.var "early_returns::print") α2) in
       M.alloc α3 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "t") in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "2") in
-      let* α2 :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
-        M.call (early_returns.multiply α0 α1) in
-      let* α3 : Ty.tuple := M.call (early_returns.print α2) in
+    let* _ :=
+      let* α0 := M.read (mk_str "t") in
+      let* α1 := M.read (mk_str "2") in
+      let* α2 := M.call ((M.var "early_returns::multiply") α0 α1) in
+      let* α3 := M.call ((M.var "early_returns::print") α2) in
       M.alloc α3 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

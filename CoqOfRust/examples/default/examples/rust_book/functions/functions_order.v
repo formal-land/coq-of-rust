@@ -33,15 +33,14 @@ Section Impl_functions_order_SomeType.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "functions_order::SomeType") [] :=
-          M.read self in
-        let* α1 : Ty.tuple :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "functions_order::SomeType") [])::["meth2"]
               α0) in
         M.alloc α1 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -92,11 +91,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "functions_order::SomeType") []] :=
-        M.read self in
+      let* α0 := M.read self in
       M.call (some_trait_bar α0)
     | _, _ => M.impossible
     end.
@@ -160,39 +155,27 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [u; b] =>
     let* u := M.alloc u in
     let* b := M.alloc b in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "functions_order::OtherType") []]]
-            Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           functions_order.SomeTrait.some_trait_foo
             (Self := Ty.apply (Ty.path "functions_order::OtherType") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.path "bool" := M.read b in
-      let* α2 : Ty.apply (Ty.path "functions_order::OtherType") [] :=
-        M.alloc (functions_order.OtherType.Build_t α1) in
-      let* α3 : Ty.tuple := M.call (α0 (borrow α2)) in
+      let* α1 := M.read b in
+      let* α2 := M.alloc (functions_order.OtherType.Build_t α1) in
+      let* α3 := M.call (α0 (borrow α2)) in
       M.alloc α3 in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "functions_order::SomeType") []]]
-            Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           functions_order.SomeTrait.some_trait_foo
             (Self := Ty.apply (Ty.path "functions_order::SomeType") [])
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u32" := M.read u in
-      let* α2 : Ty.apply (Ty.path "functions_order::SomeType") [] :=
-        M.alloc (functions_order.SomeType.Build_t α1) in
-      let* α3 : Ty.tuple := M.call (α0 (borrow α2)) in
+      let* α1 := M.read u in
+      let* α2 := M.alloc (functions_order.SomeType.Build_t α1) in
+      let* α3 := M.call (α0 (borrow α2)) in
       M.alloc α3 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -213,10 +196,10 @@ Module inner_mod.
   Definition bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple := M.call functions_order.inner_mod.tar in
+      let* _ :=
+        let* α0 := M.call (M.var "functions_order::inner_mod::tar") in
         M.alloc α0 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -236,11 +219,11 @@ Module inner_mod.
     Definition tick (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
       | [], [] =>
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.tuple :=
-            M.call functions_order.inner_mod.nested_mod.tack in
+        let* _ :=
+          let* α0 :=
+            M.call (M.var "functions_order::inner_mod::nested_mod::tack") in
           M.alloc α0 in
-        let* α0 : Ty.path "unit" := M.alloc tt in
+        let* α0 := M.alloc tt in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -265,20 +248,20 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple := M.call functions_order.foo in
+    let* _ :=
+      let* α0 := M.call (M.var "functions_order::foo") in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple := M.call functions_order.inner_mod.bar in
+    let* _ :=
+      let* α0 := M.call (M.var "functions_order::inner_mod::bar") in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
           ((Ty.apply (Ty.path "functions_order::SomeType") [])::["meth1"]
             (functions_order.SomeType.Build_t
               ((Integer.of_Z 0) : Ty.path "u32"))) in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

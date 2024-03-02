@@ -22,7 +22,7 @@ Module my.
       match 𝜏, α with
       | [], [contents] =>
         let* contents := M.alloc contents in
-        let* α0 : T := M.read contents in
+        let* α0 := M.read contents in
         M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}
       | _, _ => M.impossible
       end.
@@ -63,59 +63,40 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* open_box :
-        Ty.apply
-          (Ty.path "struct_visibility::my::OpenBox")
-          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "public information") in
+    let* open_box :=
+      let* α0 := M.read (mk_str "public information") in
       M.alloc {| struct_visibility.my.OpenBox.contents := α0; |} in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "The open box contains: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "The open box contains: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow (struct_visibility.my.OpenBox.Get_contents open_box))) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+              (borrow
+                ((M.var "struct_visibility::my::OpenBox::Get_contents")
+                  open_box))) in
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _closed_box :
-        Ty.apply
-          (Ty.path "struct_visibility::my::ClosedBox")
-          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "classified information") in
-      let* α1 :
-          Ty.apply
-            (Ty.path "struct_visibility::my::ClosedBox")
-            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+    let* _closed_box :=
+      let* α0 := M.read (mk_str "classified information") in
+      let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "struct_visibility::my::ClosedBox")
                 [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["new"]
             α0) in
       M.alloc α1 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

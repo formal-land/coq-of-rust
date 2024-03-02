@@ -15,9 +15,9 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* cmd : Ty.path "i32" := M.alloc ((Integer.of_Z 209) : Ty.path "i32") in
-    let _ : Ty.tuple := InlineAssembly in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* cmd := M.alloc ((Integer.of_Z 209) : Ty.path "i32") in
+    let _ := InlineAssembly in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -57,16 +57,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* collected_iterator :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"]]
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+    let* collected_iterator :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.collect
             (Self :=
@@ -76,10 +68,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α1 :=
         M.call
           (α0
             {|
@@ -87,114 +76,74 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.ops.range.Range.end_ := (Integer.of_Z 10) : Ty.path "i32";
             |}) in
       M.alloc α1 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Collected (0..10) into: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Collected (0..10) into: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow collected_iterator)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* xs :
-        Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 : Ty.apply (Ty.path "array") [Ty.path "i32"] :=
+    let* xs :=
+      let* α0 :=
         M.alloc
           [
             (Integer.of_Z 1) : Ty.path "i32";
             (Integer.of_Z 2) : Ty.path "i32";
             (Integer.of_Z 3) : Ty.path "i32"
           ] in
-      let* α1 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "i32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α1 :=
         M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.apply (Ty.path "array") [Ty.path "i32"];
-              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        M.read α1 in
-      let* α3 :
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α2 := M.read α1 in
+      let* α3 :=
         M.call
           ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
             (pointer_coercion "Unsize" α2)) in
       M.alloc α3 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Initial vector: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Initial vector: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow xs)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Push 4 into the vector
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Push 4 into the vector
 ") in
-        let* α1 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0 ] in
-        let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α1 := M.alloc [ α0 ] in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* α0 : Ty.tuple :=
+    let* _ :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -203,94 +152,59 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (borrow_mut xs)
             ((Integer.of_Z 4) : Ty.path "i32")) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Vector: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Vector: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow xs)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Vector length: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Vector length: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.path "usize" :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [Ty.path "i32";
                     Ty.apply (Ty.path "alloc::alloc::Global") []])::["len"]
               (borrow xs)) in
-        let* α4 : Ty.path "usize" := M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Second element: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Second element: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      [Ty.path "i32";
-                        Ty.apply (Ty.path "alloc::alloc::Global") []]];
-                Ty.path "usize"]
-              (Ty.apply (Ty.path "ref") [_]) :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.index.Index.index
               (Self :=
@@ -299,99 +213,68 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
               (Idx := Ty.path "usize")
               (Trait := ℐ))) in
-        let* α4 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
+        let* α4 :=
           M.call (α3 (borrow xs) ((Integer.of_Z 1) : Ty.path "usize")) in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               α4) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Pop last element: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Pop last element: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [Ty.path "i32";
                     Ty.apply (Ty.path "alloc::alloc::Global") []])::["pop"]
               (borrow_mut xs)) in
-        let* α4 : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
-          M.alloc α3 in
-        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow α4)) in
-        let* α6 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α5 ] in
-        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
         M.alloc α8 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Contents of xs:
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Contents of xs:
 ") in
-        let* α1 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0 ] in
-        let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α1 := M.alloc [ α0 ] in
+        let* α2 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
       M.alloc tt in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]]
-            _ :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self :=
               Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply (Ty.path "ref") [_]) :=
+      let* α1 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.Deref.deref
             (Self :=
@@ -399,33 +282,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "slice") [Ty.path "i32"]] :=
-        M.call (α1 (borrow xs)) in
-      let* α3 : Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"] :=
+      let* α2 := M.call (α1 (borrow xs)) in
+      let* α3 :=
         M.call ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["iter"] α2) in
-      let* α4 : Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"] :=
-        M.call (α0 α3) in
-      let* α5 : Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"] :=
-        M.alloc α4 in
-      let* α6 : Ty.tuple :=
+      let* α4 := M.call (α0 α3) in
+      let* α5 := M.alloc α4 in
+      let* α6 :=
         match_operator
           α5
           [
             fun γ =>
               (let* iter := M.copy γ in
               M.loop
-                (let* _ : Ty.tuple :=
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "mut_ref")
-                            [Ty.apply
-                                (Ty.path "core::slice::iter::Iter")
-                                [Ty.path "i32"]]]
-                        (Ty.apply (Ty.path "core::option::Option") [_]) :=
+                (let* _ :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.iter.traits.iterator.Iterator.next
                         (Self :=
@@ -433,16 +303,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::slice::iter::Iter")
                             [Ty.path "i32"])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "ref") [Ty.path "i32"]] :=
-                    M.call (α0 (borrow_mut iter)) in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "ref") [Ty.path "i32"]] :=
-                    M.alloc α1 in
+                  let* α1 := M.call (α0 (borrow_mut iter)) in
+                  let* α2 := M.alloc α1 in
                   match_operator
                     α2
                     [
@@ -450,9 +312,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.None =>
-                          let* α0 : Ty.path "never" := M.break in
-                          let* α1 : Ty.path "never" := M.read α0 in
-                          let* α2 : Ty.tuple := never_to_any α1 in
+                          let* α0 := M.break in
+                          let* α1 := M.read α0 in
+                          let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match
                         end) :
@@ -461,52 +323,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let γ0_0 :=
+                            (M.var "core::option::Option::Get_Some_0") γ in
                           let* x := M.copy γ0_0 in
-                          let* _ : Ty.tuple :=
-                            let* _ : Ty.tuple :=
-                              let* α0 :
-                                  Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                                M.read (mk_str "> ") in
-                              let* α1 :
-                                  Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                                M.read (mk_str "
+                          let* _ :=
+                            let* _ :=
+                              let* α0 := M.read (mk_str "> ") in
+                              let* α1 := M.read (mk_str "
 ") in
-                              let* α2 :
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [Ty.apply
-                                        (Ty.path "ref")
-                                        [Ty.path "str"]] :=
-                                M.alloc [ α0; α1 ] in
-                              let* α3 :
-                                  Ty.apply
-                                    (Ty.path "core::fmt::rt::Argument")
-                                    [] :=
+                              let* α2 := M.alloc [ α0; α1 ] in
+                              let* α3 :=
                                 M.call
                                   ((Ty.apply
                                         (Ty.path "core::fmt::rt::Argument")
                                         [])::["new_display"]
                                     (borrow x)) in
-                              let* α4 :
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [Ty.apply
-                                        (Ty.path "core::fmt::rt::Argument")
-                                        []] :=
-                                M.alloc [ α3 ] in
-                              let* α5 :
-                                  Ty.apply
-                                    (Ty.path "core::fmt::Arguments")
-                                    [] :=
+                              let* α4 := M.alloc [ α3 ] in
+                              let* α5 :=
                                 M.call
                                   ((Ty.apply
                                         (Ty.path "core::fmt::Arguments")
                                         [])::["new_v1"]
                                     (pointer_coercion "Unsize" (borrow α2))
                                     (pointer_coercion "Unsize" (borrow α4))) in
-                              let* α6 : Ty.tuple :=
-                                M.call (std.io.stdio._print α5) in
+                              let* α6 :=
+                                M.call ((M.var "std::io::stdio::_print") α5) in
                               M.alloc α6 in
                             M.alloc tt in
                           M.alloc tt
@@ -518,13 +359,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.tuple
           ] in
       M.pure (use α6) in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]]]
-            _ :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self :=
@@ -532,26 +368,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::iter::adapters::enumerate::Enumerate")
                 [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.function
-            [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]]
-            (Ty.apply
-              (Ty.path "core::iter::adapters::enumerate::Enumerate")
-              [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]]) :=
+      let* α1 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.enumerate
             (Self :=
               Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"])
             (Trait := ℐ))) in
-      let* α2 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply (Ty.path "ref") [_]) :=
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.Deref.deref
             (Self :=
@@ -559,47 +382,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α3 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "slice") [Ty.path "i32"]] :=
-        M.call (α2 (borrow xs)) in
-      let* α4 : Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"] :=
+      let* α3 := M.call (α2 (borrow xs)) in
+      let* α4 :=
         M.call ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["iter"] α3) in
-      let* α5 :
-          Ty.apply
-            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-            [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]] :=
-        M.call (α1 α4) in
-      let* α6 :
-          Ty.apply
-            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-            [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]] :=
-        M.call (α0 α5) in
-      let* α7 :
-          Ty.apply
-            (Ty.path "core::iter::adapters::enumerate::Enumerate")
-            [Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"]] :=
-        M.alloc α6 in
-      let* α8 : Ty.tuple :=
+      let* α5 := M.call (α1 α4) in
+      let* α6 := M.call (α0 α5) in
+      let* α7 := M.alloc α6 in
+      let* α8 :=
         match_operator
           α7
           [
             fun γ =>
               (let* iter := M.copy γ in
               M.loop
-                (let* _ : Ty.tuple :=
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "mut_ref")
-                            [Ty.apply
-                                (Ty.path
-                                  "core::iter::adapters::enumerate::Enumerate")
-                                [Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    [Ty.path "i32"]]]]
-                        (Ty.apply (Ty.path "core::option::Option") [_]) :=
+                (let* _ :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.iter.traits.iterator.Iterator.next
                         (Self :=
@@ -610,20 +407,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 (Ty.path "core::slice::iter::Iter")
                                 [Ty.path "i32"]])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.tuple
-                            (Ty.path "usize")
-                            (Ty.apply (Ty.path "ref") [Ty.path "i32"])] :=
-                    M.call (α0 (borrow_mut iter)) in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.tuple
-                            (Ty.path "usize")
-                            (Ty.apply (Ty.path "ref") [Ty.path "i32"])] :=
-                    M.alloc α1 in
+                  let* α1 := M.call (α0 (borrow_mut iter)) in
+                  let* α2 := M.alloc α1 in
                   match_operator
                     α2
                     [
@@ -631,9 +416,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.None =>
-                          let* α0 : Ty.path "never" := M.break in
-                          let* α1 : Ty.path "never" := M.read α0 in
-                          let* α2 : Ty.tuple := never_to_any α1 in
+                          let* α0 := M.break in
+                          let* α1 := M.read α0 in
+                          let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match
                         end) :
@@ -642,7 +427,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let γ0_0 :=
+                            (M.var "core::option::Option::Get_Some_0") γ in
                           let* α0 := M.read γ0_0 in
                           match α0 with
                           | (_, _) =>
@@ -650,54 +436,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let γ1_1 := Tuple.Access.right γ0_0 in
                             let* i := M.copy γ1_0 in
                             let* x := M.copy γ1_1 in
-                            let* _ : Ty.tuple :=
-                              let* _ : Ty.tuple :=
-                                let* α0 :
-                                    Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                                  M.read (mk_str "In position ") in
-                                let* α1 :
-                                    Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                                  M.read (mk_str " we have value ") in
-                                let* α2 :
-                                    Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                                  M.read (mk_str "
+                            let* _ :=
+                              let* _ :=
+                                let* α0 := M.read (mk_str "In position ") in
+                                let* α1 := M.read (mk_str " we have value ") in
+                                let* α2 := M.read (mk_str "
 ") in
-                                let* α3 :
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [Ty.apply
-                                          (Ty.path "ref")
-                                          [Ty.path "str"]] :=
-                                  M.alloc [ α0; α1; α2 ] in
-                                let* α4 :
-                                    Ty.apply
-                                      (Ty.path "core::fmt::rt::Argument")
-                                      [] :=
+                                let* α3 := M.alloc [ α0; α1; α2 ] in
+                                let* α4 :=
                                   M.call
                                     ((Ty.apply
                                           (Ty.path "core::fmt::rt::Argument")
                                           [])::["new_display"]
                                       (borrow i)) in
-                                let* α5 :
-                                    Ty.apply
-                                      (Ty.path "core::fmt::rt::Argument")
-                                      [] :=
+                                let* α5 :=
                                   M.call
                                     ((Ty.apply
                                           (Ty.path "core::fmt::rt::Argument")
                                           [])::["new_display"]
                                       (borrow x)) in
-                                let* α6 :
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [Ty.apply
-                                          (Ty.path "core::fmt::rt::Argument")
-                                          []] :=
-                                  M.alloc [ α4; α5 ] in
-                                let* α7 :
-                                    Ty.apply
-                                      (Ty.path "core::fmt::Arguments")
-                                      [] :=
+                                let* α6 := M.alloc [ α4; α5 ] in
+                                let* α7 :=
                                   M.call
                                     ((Ty.apply
                                           (Ty.path "core::fmt::Arguments")
@@ -706,8 +465,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       (pointer_coercion
                                         "Unsize"
                                         (borrow α6))) in
-                                let* α8 : Ty.tuple :=
-                                  M.call (std.io.stdio._print α7) in
+                                let* α8 :=
+                                  M.call
+                                    ((M.var "std::io::stdio::_print") α7) in
                                 M.alloc α8 in
                               M.alloc tt in
                             M.alloc tt
@@ -720,25 +480,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.tuple
           ] in
       M.pure (use α8) in
-    let* _ : Ty.tuple :=
-      let* α0 :
-          Ty.function
-            [Ty.apply (Ty.path "core::slice::iter::IterMut") [Ty.path "i32"]]
-            _ :=
+    let* _ :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self :=
               Ty.apply (Ty.path "core::slice::iter::IterMut") [Ty.path "i32"])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
-            (Ty.apply (Ty.path "mut_ref") [_]) :=
+      let* α1 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.DerefMut.deref_mut
             (Self :=
@@ -746,37 +495,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
             (Trait := ℐ))) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "slice") [Ty.path "i32"]] :=
-        M.call (α1 (borrow_mut xs)) in
-      let* α3 :
-          Ty.apply (Ty.path "core::slice::iter::IterMut") [Ty.path "i32"] :=
+      let* α2 := M.call (α1 (borrow_mut xs)) in
+      let* α3 :=
         M.call
           ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["iter_mut"] α2) in
-      let* α4 :
-          Ty.apply (Ty.path "core::slice::iter::IterMut") [Ty.path "i32"] :=
-        M.call (α0 α3) in
-      let* α5 :
-          Ty.apply (Ty.path "core::slice::iter::IterMut") [Ty.path "i32"] :=
-        M.alloc α4 in
-      let* α6 : Ty.tuple :=
+      let* α4 := M.call (α0 α3) in
+      let* α5 := M.alloc α4 in
+      let* α6 :=
         match_operator
           α5
           [
             fun γ =>
               (let* iter := M.copy γ in
               M.loop
-                (let* _ : Ty.tuple :=
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "mut_ref")
-                            [Ty.apply
-                                (Ty.path "core::slice::iter::IterMut")
-                                [Ty.path "i32"]]]
-                        (Ty.apply (Ty.path "core::option::Option") [_]) :=
+                (let* _ :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.iter.traits.iterator.Iterator.next
                         (Self :=
@@ -784,16 +517,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::slice::iter::IterMut")
                             [Ty.path "i32"])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "mut_ref") [Ty.path "i32"]] :=
-                    M.call (α0 (borrow_mut iter)) in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [Ty.apply (Ty.path "mut_ref") [Ty.path "i32"]] :=
-                    M.alloc α1 in
+                  let* α1 := M.call (α0 (borrow_mut iter)) in
+                  let* α2 := M.alloc α1 in
                   match_operator
                     α2
                     [
@@ -801,9 +526,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.None =>
-                          let* α0 : Ty.path "never" := M.break in
-                          let* α1 : Ty.path "never" := M.read α0 in
-                          let* α2 : Ty.tuple := never_to_any α1 in
+                          let* α0 := M.break in
+                          let* α1 := M.read α0 in
+                          let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match
                         end) :
@@ -812,22 +537,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let γ0_0 :=
+                            (M.var "core::option::Option::Get_Some_0") γ in
                           let* x := M.copy γ0_0 in
-                          let* _ : Ty.tuple :=
-                            let* β : Ty.path "i32" :=
-                              let* α0 :
-                                  Ty.apply
-                                    (Ty.path "mut_ref")
-                                    [Ty.path "i32"] :=
-                                M.read x in
+                          let* _ :=
+                            let* β :=
+                              let* α0 := M.read x in
                               M.pure (deref α0) in
                             let* α0 := M.read β in
                             let* α1 :=
-                              BinOp.Panic.mul
+                              (M.var "BinOp::Panic::mul")
                                 α0
                                 ((Integer.of_Z 3) : Ty.path "i32") in
-                            assign β α1 in
+                            (M.var "assign") β α1 in
                           M.alloc tt
                         | _ => M.break_match
                         end) :
@@ -837,36 +559,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.tuple
           ] in
       M.pure (use α6) in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "Updated vector: ") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "Updated vector: ") in
+        let* α1 := M.read (mk_str "
 ") in
-        let* α2 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1 ] in
-        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α2 := M.alloc [ α0; α1 ] in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
               (borrow xs)) in
-        let* α4 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α3 ] in
-        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α4 := M.alloc [ α3 ] in
+        let* α5 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
         M.alloc α6 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -18,12 +18,9 @@ Section Impl_generics_implementation_Val.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "generics_implementation::Val") []] :=
-        M.read self in
-      M.pure (borrow (generics_implementation.Val.Get_val (deref α0)))
+      let* α0 := M.read self in
+      M.pure
+        (borrow ((M.var "generics_implementation::Val::Get_val") (deref α0)))
     | _, _ => M.impossible
     end.
   
@@ -49,12 +46,10 @@ Section Impl_generics_implementation_GenVal_T.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "generics_implementation::GenVal") [T]] :=
-        M.read self in
-      M.pure (borrow (generics_implementation.GenVal.Get_gen_val (deref α0)))
+      let* α0 := M.read self in
+      M.pure
+        (borrow
+          ((M.var "generics_implementation::GenVal::Get_gen_val") (deref α0)))
     | _, _ => M.impossible
     end.
   
@@ -76,64 +71,52 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x : Ty.apply (Ty.path "generics_implementation::Val") [] :=
-      let* α0 : Ty.path "f64" := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* x :=
+      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
       M.alloc {| generics_implementation.Val.val := α0; |} in
-    let* y :
-        Ty.apply (Ty.path "generics_implementation::GenVal") [Ty.path "i32"] :=
+    let* y :=
       M.alloc
         {|
           generics_implementation.GenVal.gen_val :=
             (Integer.of_Z 3) : Ty.path "i32";
         |} in
-    let* _ : Ty.tuple :=
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "") in
-        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str ", ") in
-        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-          M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.read (mk_str "") in
+        let* α1 := M.read (mk_str ", ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α3 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
-          M.alloc [ α0; α1; α2 ] in
-        let* α4 : Ty.apply (Ty.path "ref") [Ty.path "f64"] :=
+        let* α3 := M.alloc [ α0; α1; α2 ] in
+        let* α4 :=
           M.call
             ((Ty.apply (Ty.path "generics_implementation::Val") [])::["value"]
               (borrow x)) in
-        let* α5 : Ty.apply (Ty.path "ref") [Ty.path "f64"] := M.alloc α4 in
-        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α5)) in
-        let* α7 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
+        let* α7 :=
           M.call
             ((Ty.apply
                   (Ty.path "generics_implementation::GenVal")
                   [Ty.path "i32"])::["value"]
               (borrow y)) in
-        let* α8 : Ty.apply (Ty.path "ref") [Ty.path "i32"] := M.alloc α7 in
-        let* α9 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+        let* α8 := M.alloc α7 in
+        let* α9 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
               (borrow α8)) in
-        let* α10 :
-            Ty.apply
-              (Ty.path "array")
-              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
-          M.alloc [ α6; α9 ] in
-        let* α11 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        let* α10 := M.alloc [ α6; α9 ] in
+        let* α11 :=
           M.call
             ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α10))) in
-        let* α12 : Ty.tuple := M.call (std.io.stdio._print α11) in
+        let* α12 := M.call ((M.var "std::io::stdio::_print") α11) in
         M.alloc α12 in
       M.alloc tt in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.

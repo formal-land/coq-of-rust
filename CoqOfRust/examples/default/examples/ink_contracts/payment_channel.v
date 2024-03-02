@@ -13,12 +13,12 @@ Section Impl_core_default_Default_for_payment_channel_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (payment_channel.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -51,11 +51,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "payment_channel::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "payment_channel::AccountId") []
           ] in
@@ -99,21 +95,13 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::AccountId") []] :=
-        M.read self in
-      let* α1 : Ty.path "u128" :=
-        M.read (payment_channel.AccountId.Get_0 (deref α0)) in
-      let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::AccountId") []] :=
-        M.read other in
-      let* α3 : Ty.path "u128" :=
-        M.read (payment_channel.AccountId.Get_0 (deref α2)) in
-      M.pure (BinOp.Pure.eq α1 α3)
+      let* α0 := M.read self in
+      let* α1 :=
+        M.read ((M.var "payment_channel::AccountId::Get_0") (deref α0)) in
+      let* α2 := M.read other in
+      let* α3 :=
+        M.read ((M.var "payment_channel::AccountId::Get_0") (deref α2)) in
+      M.pure ((M.var "BinOp::Pure::eq") α1 α3)
     | _, _ => M.impossible
     end.
   
@@ -147,7 +135,7 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.tuple :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -179,9 +167,8 @@ Section Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
     match 𝜏, α with
     | [], [value] =>
       let* value := M.alloc value in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -224,27 +211,17 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_Error.
     | [], [self; other] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* __self_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "payment_channel::Error") []] :=
-          M.read self in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __self_tag :=
+        let* α0 := M.read self in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* __arg1_tag : Ty.path "isize" :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "payment_channel::Error") []] :=
-          M.read other in
-        let* α1 : Ty.path "isize" :=
-          M.call (core.intrinsics.discriminant_value α0) in
+      let* __arg1_tag :=
+        let* α0 := M.read other in
+        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
         M.alloc α1 in
-      let* α0 : Ty.path "isize" := M.read __self_tag in
-      let* α1 : Ty.path "isize" := M.read __arg1_tag in
-      let* α0 : Ty.path "bool" := M.alloc (BinOp.Pure.eq α0 α1) in
+      let* α0 := M.read __self_tag in
+      let* α1 := M.read __arg1_tag in
+      let* α0 := M.alloc ((M.var "BinOp::Pure::eq") α0 α1) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -315,12 +292,8 @@ Section Impl_payment_channel_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::Env") []] :=
-        M.read self in
-      M.read (payment_channel.Env.Get_caller (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "payment_channel::Env::Get_caller") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -338,9 +311,8 @@ Section Impl_payment_channel_Env.
     | [], [self; _event] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -359,9 +331,8 @@ Section Impl_payment_channel_Env.
     | [], [self; sender] =>
       let* self := M.alloc self in
       let* sender := M.alloc sender in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -381,9 +352,8 @@ Section Impl_payment_channel_Env.
       let* self := M.alloc self in
       let* recipient := M.alloc recipient in
       let* amount := M.alloc amount in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -401,9 +371,8 @@ Section Impl_payment_channel_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -421,9 +390,8 @@ Section Impl_payment_channel_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -441,9 +409,8 @@ Section Impl_payment_channel_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -493,9 +460,8 @@ Definition hash_encoded (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [H; T], [input; output] =>
     let* input := M.alloc input in
     let* output := M.alloc output in
-    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-      M.read (mk_str "not implemented") in
-    let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+    let* α0 := M.read (mk_str "not implemented") in
+    let* α1 := M.call ((M.var "core::panicking::panic") α0) in
     never_to_any α1
   | _, _ => M.impossible
   end.
@@ -515,9 +481,8 @@ Definition ecdsa_recover (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* signature := M.alloc signature in
     let* message_hash := M.alloc message_hash in
     let* output := M.alloc output in
-    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-      M.read (mk_str "not implemented") in
-    let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+    let* α0 := M.read (mk_str "not implemented") in
+    let* α1 := M.call ((M.var "core::panicking::panic") α0) in
     never_to_any α1
   | _, _ => M.impossible
   end.
@@ -596,9 +561,8 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
     | [], [input; output] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -625,9 +589,8 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
     | [], [input; output] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -654,9 +617,8 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
     | [], [input; output] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -683,9 +645,8 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
     | [], [input; output] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -711,9 +672,8 @@ Section Impl_payment_channel_PaymentChannel.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -761,54 +721,43 @@ Section Impl_payment_channel_PaymentChannel.
       let* self := M.alloc self in
       let* amount := M.alloc amount in
       let* signature := M.alloc signature in
-      let* encodable :
-          Ty.tuple
-            (Ty.apply (Ty.path "payment_channel::AccountId") [])
-            (Ty.path "u128") :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "ref")
-              [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-          M.read self in
-        let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+      let* encodable :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply (Ty.path "payment_channel::PaymentChannel") [])::["env"]
               α0) in
-        let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] := M.alloc α1 in
-        let* α3 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
+        let* α2 := M.alloc α1 in
+        let* α3 :=
           M.call
             ((Ty.apply (Ty.path "payment_channel::Env") [])::["account_id"]
               (borrow α2)) in
-        let* α4 : Ty.path "u128" := M.read amount in
+        let* α4 := M.read amount in
         M.alloc (α3, α4) in
-      let* message : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-        let* α0 : Ty.function [] (Ty.apply (Ty.path "array") [Ty.path "u8"]) :=
+      let* message :=
+        let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             core.default.Default.default
               (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
               (Trait := ℐ))) in
-        let* α1 : Ty.apply (Ty.path "array") [Ty.path "u8"] := M.call α0 in
+        let* α1 := M.call α0 in
         M.alloc α1 in
-      let* _ : Ty.tuple :=
-        let* α0 : Ty.tuple :=
+      let* _ :=
+        let* α0 :=
           M.call
-            (payment_channel.hash_encoded
+            ((M.var "payment_channel::hash_encoded")
               (borrow encodable)
               (borrow_mut message)) in
         M.alloc α0 in
-      let* pub_key : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-        M.alloc (repeat ((Integer.of_Z 0) : Ty.path "u8") 33) in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
+      let* pub_key := M.alloc (repeat ((Integer.of_Z 0) : Ty.path "u8") 33) in
+      let* _ :=
+        let* α0 :=
           M.call
-            (payment_channel.ecdsa_recover
+            ((M.var "payment_channel::ecdsa_recover")
               (borrow signature)
               (borrow message)
               (borrow_mut pub_key)) in
-        let* α1 : Ty.tuple :=
+        let* α1 :=
           M.call
             ((Ty.apply
                   (Ty.path "core::result::Result")
@@ -824,75 +773,52 @@ Section Impl_payment_channel_PaymentChannel.
                   [
                     fun γ =>
                       (let* err := M.copy γ in
-                      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-                        M.read (mk_str "recover failed: {err:?}") in
-                      let* α1 : Ty.path "never" :=
-                        M.call (std.panicking.begin_panic α0) in
+                      let* α0 := M.read (mk_str "recover failed: {err:?}") in
+                      let* α1 :=
+                        M.call ((M.var "std::panicking::begin_panic") α0) in
                       never_to_any α1) :
                       Ty.tuple
                   ]) :
                 Ty.tuple)) in
         M.alloc α1 in
-      let* signature_account_id : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
+      let* signature_account_id :=
         M.alloc (repeat ((Integer.of_Z 0) : Ty.path "u8") 32) in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.function
-              [Ty.apply
-                  (Ty.path "ref")
-                  [Ty.apply (Ty.path "slice") [Ty.path "u8"]];
-                Ty.apply (Ty.path "mut_ref") [_]]
-              Ty.tuple :=
+      let* _ :=
+        let* α0 :=
           ltac:(M.get_method (fun ℐ =>
             payment_channel.CryptoHash.hash
               (Self := Ty.apply (Ty.path "payment_channel::Blake2x256") [])
               (Trait := ℐ))) in
-        let* α1 : Ty.tuple :=
+        let* α1 :=
           M.call
             (α0
               (pointer_coercion "Unsize" (borrow pub_key))
               (borrow_mut signature_account_id)) in
         M.alloc α1 in
-      let* α0 :
-          Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "payment_channel::AccountId") []];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "payment_channel::AccountId") []]]
-            (Ty.path "bool") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.PartialEq.eq
             (Self := Ty.apply (Ty.path "payment_channel::AccountId") [])
             (Rhs := Ty.apply (Ty.path "payment_channel::AccountId") [])
             (Trait := ℐ))) in
-      let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-        M.read self in
-      let* α2 :
-          Ty.function
-            [Ty.apply (Ty.path "array") [Ty.path "u8"]]
-            (Ty.apply (Ty.path "payment_channel::AccountId") []) :=
+      let* α1 := M.read self in
+      let* α2 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
             (T := Ty.apply (Ty.path "payment_channel::AccountId") [])
             (Trait := ℐ))) in
-      let* α3 : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-        M.read signature_account_id in
-      let* α4 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-        M.call (α2 α3) in
-      let* α5 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-        M.alloc α4 in
-      let* α6 : Ty.path "bool" :=
+      let* α3 := M.read signature_account_id in
+      let* α4 := M.call (α2 α3) in
+      let* α5 := M.alloc α4 in
+      let* α6 :=
         M.call
           (α0
-            (borrow (payment_channel.PaymentChannel.Get_recipient (deref α1)))
+            (borrow
+              ((M.var "payment_channel::PaymentChannel::Get_recipient")
+                (deref α1)))
             (borrow α5)) in
-      let* α0 : Ty.path "bool" := M.alloc α6 in
+      let* α0 := M.alloc α6 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -917,19 +843,18 @@ Section Impl_payment_channel_PaymentChannel.
     | [], [recipient; close_duration] =>
       let* recipient := M.alloc recipient in
       let* close_duration := M.alloc close_duration in
-      let* α0 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+      let* α0 :=
         M.call
           (Ty.apply
               (Ty.path "payment_channel::PaymentChannel")
               [])::["init_env"] in
-      let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] := M.alloc α0 in
-      let* α2 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
+      let* α1 := M.alloc α0 in
+      let* α2 :=
         M.call
           ((Ty.apply (Ty.path "payment_channel::Env") [])::["caller"]
             (borrow α1)) in
-      let* α3 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-        M.read recipient in
-      let* α4 : Ty.path "u64" := M.read close_duration in
+      let* α3 := M.read recipient in
+      let* α4 := M.read close_duration in
       M.pure
         {|
           payment_channel.PaymentChannel.sender := α2;
@@ -981,94 +906,70 @@ Section Impl_payment_channel_PaymentChannel.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]) in
       M.catch_return
-        (let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "payment_channel::AccountId") []];
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "payment_channel::AccountId") []]]
-                (Ty.path "bool") :=
+        (let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.cmp.PartialEq.ne
                 (Self := Ty.apply (Ty.path "payment_channel::AccountId") [])
                 (Rhs := Ty.apply (Ty.path "payment_channel::AccountId") [])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+          let* α1 := M.read self in
+          let* α2 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α1))) in
-          let* α3 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α2 in
-          let* α4 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
+          let* α3 := M.alloc α2 in
+          let* α4 :=
             M.call
               ((Ty.apply (Ty.path "payment_channel::Env") [])::["caller"]
                 (borrow α3)) in
-          let* α5 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-            M.alloc α4 in
-          let* α6 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α7 : Ty.path "bool" :=
+          let* α5 := M.alloc α4 in
+          let* α6 := M.read self in
+          let* α7 :=
             M.call
               (α0
                 (borrow α5)
                 (borrow
-                  (payment_channel.PaymentChannel.Get_recipient (deref α6)))) in
-          let* α8 : Ty.path "bool" := M.alloc α7 in
-          let* α9 : Ty.path "bool" := M.read (use α8) in
+                  ((M.var "payment_channel::PaymentChannel::Get_recipient")
+                    (deref α6)))) in
+          let* α8 := M.alloc α7 in
+          let* α9 := M.read (use α8) in
           if α9 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_
                 (core.result.Result.Err
                   payment_channel.Error.CallerIsNotRecipient) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.path "u128" := M.read amount in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.path "u128" :=
-            M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α1)) in
-          let* α3 : Ty.path "bool" := M.alloc (BinOp.Pure.lt α0 α2) in
-          let* α4 : Ty.path "bool" := M.read (use α3) in
+        let* _ :=
+          let* α0 := M.read amount in
+          let* α1 := M.read self in
+          let* α2 :=
+            M.read
+              ((M.var "payment_channel::PaymentChannel::Get_withdrawn")
+                (deref α1)) in
+          let* α3 := M.alloc ((M.var "BinOp::Pure::lt") α0 α2) in
+          let* α4 := M.read (use α3) in
           if α4 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_
                 (core.result.Result.Err
                   payment_channel.Error.AmountIsLessThanWithdrawn) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α1 : Ty.path "u128" := M.read amount in
-          let* α2 : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-            M.read signature in
-          let* α3 : Ty.path "bool" :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 := M.read amount in
+          let* α2 := M.read signature in
+          let* α3 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
@@ -1076,27 +977,20 @@ Section Impl_payment_channel_PaymentChannel.
                 (borrow (deref α0))
                 α1
                 α2) in
-          let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-          let* α5 : Ty.path "bool" := M.read (use α4) in
+          let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+          let* α5 := M.read (use α4) in
           if α5 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_
                 (core.result.Result.Err
                   payment_channel.Error.InvalidSignature) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+        let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -1104,48 +998,33 @@ Section Impl_payment_channel_PaymentChannel.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+          let* α1 := M.read self in
+          let* α2 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α1))) in
-          let* α3 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α2 in
-          let* α4 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α5 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-            M.read (payment_channel.PaymentChannel.Get_recipient (deref α4)) in
-          let* α6 : Ty.path "u128" := M.read amount in
-          let* α7 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α8 : Ty.path "u128" :=
-            M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α7)) in
-          let* α9 : Ty.path "u128" := BinOp.Panic.sub α6 α8 in
-          let* α10 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
+          let* α3 := M.alloc α2 in
+          let* α4 := M.read self in
+          let* α5 :=
+            M.read
+              ((M.var "payment_channel::PaymentChannel::Get_recipient")
+                (deref α4)) in
+          let* α6 := M.read amount in
+          let* α7 := M.read self in
+          let* α8 :=
+            M.read
+              ((M.var "payment_channel::PaymentChannel::Get_withdrawn")
+                (deref α7)) in
+          let* α9 := (M.var "BinOp::Panic::sub") α6 α8 in
+          let* α10 :=
             M.call
               ((Ty.apply (Ty.path "payment_channel::Env") [])::["transfer"]
                 (borrow α3)
                 α5
                 α9) in
-          let* α11 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
+          let* α11 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::result::Result")
@@ -1164,24 +1043,8 @@ Section Impl_payment_channel_PaymentChannel.
                         Ty.apply (Ty.path "payment_channel::Error") []
                     ]) :
                   Ty.apply (Ty.path "payment_channel::Error") [])) in
-          let* α12 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "payment_channel::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α11) in
-          let* α13 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "payment_channel::Error") []];
-                  Ty.tuple] :=
-            M.alloc α12 in
+          let* α12 := M.call (α0 α11) in
+          let* α13 := M.alloc α12 in
           match_operator
             α13
             [
@@ -1189,18 +1052,11 @@ Section Impl_payment_channel_PaymentChannel.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "payment_channel::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple;
-                            Ty.apply (Ty.path "payment_channel::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -1214,21 +1070,11 @@ Section Impl_payment_channel_PaymentChannel.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "payment_channel::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "payment_channel::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple;
-                          Ty.apply (Ty.path "payment_channel::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -1238,18 +1084,16 @@ Section Impl_payment_channel_PaymentChannel.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1279,15 +1123,8 @@ Section Impl_payment_channel_PaymentChannel.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]) in
       M.catch_return
-        (let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+        (let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -1295,18 +1132,10 @@ Section Impl_payment_channel_PaymentChannel.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.path "u128" := M.read amount in
-          let* α3 : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-            M.read signature in
-          let* α4 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
+          let* α1 := M.read self in
+          let* α2 := M.read amount in
+          let* α3 := M.read signature in
+          let* α4 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
@@ -1314,24 +1143,8 @@ Section Impl_payment_channel_PaymentChannel.
                 α1
                 α2
                 α3) in
-          let* α5 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "payment_channel::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α4) in
-          let* α6 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "payment_channel::Error") []];
-                  Ty.tuple] :=
-            M.alloc α5 in
+          let* α5 := M.call (α0 α4) in
+          let* α6 := M.alloc α5 in
           match_operator
             α6
             [
@@ -1339,18 +1152,11 @@ Section Impl_payment_channel_PaymentChannel.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "payment_channel::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple;
-                            Ty.apply (Ty.path "payment_channel::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -1364,21 +1170,11 @@ Section Impl_payment_channel_PaymentChannel.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "payment_channel::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "payment_channel::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple;
-                          Ty.apply (Ty.path "payment_channel::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -1388,35 +1184,30 @@ Section Impl_payment_channel_PaymentChannel.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α1 in
-          let* α3 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α4 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-            M.read (payment_channel.PaymentChannel.Get_sender (deref α3)) in
-          let* α5 : Ty.tuple :=
+          let* α2 := M.alloc α1 in
+          let* α3 := M.read self in
+          let* α4 :=
+            M.read
+              ((M.var "payment_channel::PaymentChannel::Get_sender")
+                (deref α3)) in
+          let* α5 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::Env")
@@ -1424,11 +1215,7 @@ Section Impl_payment_channel_PaymentChannel.
                 (borrow α2)
                 α4) in
           M.alloc α5 in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1468,120 +1255,87 @@ Section Impl_payment_channel_PaymentChannel.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]) in
       M.catch_return
-        (let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "payment_channel::AccountId") []];
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "payment_channel::AccountId") []]]
-                (Ty.path "bool") :=
+        (let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.cmp.PartialEq.ne
                 (Self := Ty.apply (Ty.path "payment_channel::AccountId") [])
                 (Rhs := Ty.apply (Ty.path "payment_channel::AccountId") [])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+          let* α1 := M.read self in
+          let* α2 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α1))) in
-          let* α3 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α2 in
-          let* α4 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
+          let* α3 := M.alloc α2 in
+          let* α4 :=
             M.call
               ((Ty.apply (Ty.path "payment_channel::Env") [])::["caller"]
                 (borrow α3)) in
-          let* α5 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-            M.alloc α4 in
-          let* α6 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α7 : Ty.path "bool" :=
+          let* α5 := M.alloc α4 in
+          let* α6 := M.read self in
+          let* α7 :=
             M.call
               (α0
                 (borrow α5)
                 (borrow
-                  (payment_channel.PaymentChannel.Get_sender (deref α6)))) in
-          let* α8 : Ty.path "bool" := M.alloc α7 in
-          let* α9 : Ty.path "bool" := M.read (use α8) in
+                  ((M.var "payment_channel::PaymentChannel::Get_sender")
+                    (deref α6)))) in
+          let* α8 := M.alloc α7 in
+          let* α9 := M.read (use α8) in
           if α9 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_
                 (core.result.Result.Err
                   payment_channel.Error.CallerIsNotSender) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* now : Ty.path "u64" :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+        let* now :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α1 in
-          let* α3 : Ty.path "u64" :=
+          let* α2 := M.alloc α1 in
+          let* α3 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::Env")
                     [])::["block_timestamp"]
                 (borrow α2)) in
           M.alloc α3 in
-        let* expiration : Ty.path "u64" :=
-          let* α0 : Ty.path "u64" := M.read now in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.path "u64" :=
+        let* expiration :=
+          let* α0 := M.read now in
+          let* α1 := M.read self in
+          let* α2 :=
             M.read
-              (payment_channel.PaymentChannel.Get_close_duration (deref α1)) in
-          let* α3 : Ty.path "u64" := BinOp.Panic.add α0 α2 in
+              ((M.var "payment_channel::PaymentChannel::Get_close_duration")
+                (deref α1)) in
+          let* α3 := (M.var "BinOp::Panic::add") α0 α2 in
           M.alloc α3 in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α0))) in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α1 in
-          let* α3 : Ty.path "u64" := M.read expiration in
-          let* α4 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α5 : Ty.path "u64" :=
+          let* α2 := M.alloc α1 in
+          let* α3 := M.read expiration in
+          let* α4 := M.read self in
+          let* α5 :=
             M.read
-              (payment_channel.PaymentChannel.Get_close_duration (deref α4)) in
-          let* α6 : Ty.tuple :=
+              ((M.var "payment_channel::PaymentChannel::Get_close_duration")
+                (deref α4)) in
+          let* α6 :=
             M.call
               ((Ty.apply (Ty.path "payment_channel::Env") [])::["emit_event"]
                 (borrow α2)
@@ -1591,21 +1345,14 @@ Section Impl_payment_channel_PaymentChannel.
                     payment_channel.SenderCloseStarted.close_duration := α5;
                   |})) in
           M.alloc α6 in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α1 : Ty.path "u64" := M.read expiration in
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 := M.read expiration in
           assign
-            (payment_channel.PaymentChannel.Get_expiration (deref α0))
+            ((M.var "payment_channel::PaymentChannel::Get_expiration")
+              (deref α0))
             (core.option.Option.Some α1) in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1645,91 +1392,64 @@ Section Impl_payment_channel_PaymentChannel.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]) in
       M.catch_return
-        (let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-          M.read self in
-        let* α1 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
+        (let* α0 := M.read self in
+        let* α1 :=
           match_operator
-            (payment_channel.PaymentChannel.Get_expiration (deref α0))
+            ((M.var "payment_channel::PaymentChannel::Get_expiration")
+              (deref α0))
             [
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.option.Option.Some _ =>
-                  let γ0_0 := core.option.Option.Get_Some_0 γ in
+                  let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
                   let* expiration := M.copy γ0_0 in
-                  let* now : Ty.path "u64" :=
-                    let* α0 :
-                        Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "payment_channel::PaymentChannel")
-                              []] :=
-                      M.read self in
-                    let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+                  let* now :=
+                    let* α0 := M.read self in
+                    let* α1 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "payment_channel::PaymentChannel")
                               [])::["env"]
                           (borrow (deref α0))) in
-                    let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-                      M.alloc α1 in
-                    let* α3 : Ty.path "u64" :=
+                    let* α2 := M.alloc α1 in
+                    let* α3 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "payment_channel::Env")
                               [])::["block_timestamp"]
                           (borrow α2)) in
                     M.alloc α3 in
-                  let* _ : Ty.tuple :=
-                    let* α0 : Ty.path "u64" := M.read now in
-                    let* α1 : Ty.path "u64" := M.read expiration in
-                    let* α2 : Ty.path "bool" := M.alloc (BinOp.Pure.lt α0 α1) in
-                    let* α3 : Ty.path "bool" := M.read (use α2) in
+                  let* _ :=
+                    let* α0 := M.read now in
+                    let* α1 := M.read expiration in
+                    let* α2 := M.alloc ((M.var "BinOp::Pure::lt") α0 α1) in
+                    let* α3 := M.read (use α2) in
                     if α3 then
-                      let* α0 : Ty.path "never" :=
+                      let* α0 :=
                         return_
                           (core.result.Result.Err
                             payment_channel.Error.NotYetExpired) in
-                      let* α1 : Ty.path "never" := M.read α0 in
-                      let* α2 : Ty.tuple := never_to_any α1 in
+                      let* α1 := M.read α0 in
+                      let* α2 := never_to_any α1 in
                       M.alloc α2
                     else
                       M.alloc tt in
-                  let* _ : Ty.tuple :=
-                    let* α0 :
-                        Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "payment_channel::PaymentChannel")
-                              []] :=
-                      M.read self in
-                    let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+                  let* _ :=
+                    let* α0 := M.read self in
+                    let* α1 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "payment_channel::PaymentChannel")
                               [])::["env"]
                           (borrow (deref α0))) in
-                    let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-                      M.alloc α1 in
-                    let* α3 :
-                        Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "payment_channel::PaymentChannel")
-                              []] :=
-                      M.read self in
-                    let* α4 :
-                        Ty.apply (Ty.path "payment_channel::AccountId") [] :=
+                    let* α2 := M.alloc α1 in
+                    let* α3 := M.read self in
+                    let* α4 :=
                       M.read
-                        (payment_channel.PaymentChannel.Get_sender
+                        ((M.var "payment_channel::PaymentChannel::Get_sender")
                           (deref α3)) in
-                    let* α5 : Ty.tuple :=
+                    let* α5 :=
                       M.call
                         ((Ty.apply
                               (Ty.path "payment_channel::Env")
@@ -1802,73 +1522,51 @@ Section Impl_payment_channel_PaymentChannel.
               (Ty.path "core::result::Result")
               [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]) in
       M.catch_return
-        (let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "payment_channel::AccountId") []];
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "payment_channel::AccountId") []]]
-                (Ty.path "bool") :=
+        (let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.cmp.PartialEq.ne
                 (Self := Ty.apply (Ty.path "payment_channel::AccountId") [])
                 (Rhs := Ty.apply (Ty.path "payment_channel::AccountId") [])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+          let* α1 := M.read self in
+          let* α2 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α1))) in
-          let* α3 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α2 in
-          let* α4 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
+          let* α3 := M.alloc α2 in
+          let* α4 :=
             M.call
               ((Ty.apply (Ty.path "payment_channel::Env") [])::["caller"]
                 (borrow α3)) in
-          let* α5 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-            M.alloc α4 in
-          let* α6 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α7 : Ty.path "bool" :=
+          let* α5 := M.alloc α4 in
+          let* α6 := M.read self in
+          let* α7 :=
             M.call
               (α0
                 (borrow α5)
                 (borrow
-                  (payment_channel.PaymentChannel.Get_recipient (deref α6)))) in
-          let* α8 : Ty.path "bool" := M.alloc α7 in
-          let* α9 : Ty.path "bool" := M.read (use α8) in
+                  ((M.var "payment_channel::PaymentChannel::Get_recipient")
+                    (deref α6)))) in
+          let* α8 := M.alloc α7 in
+          let* α9 := M.read (use α8) in
           if α9 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_
                 (core.result.Result.Err
                   payment_channel.Error.CallerIsNotRecipient) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α1 : Ty.path "u128" := M.read amount in
-          let* α2 : Ty.apply (Ty.path "array") [Ty.path "u8"] :=
-            M.read signature in
-          let* α3 : Ty.path "bool" :=
+        let* _ :=
+          let* α0 := M.read self in
+          let* α1 := M.read amount in
+          let* α2 := M.read signature in
+          let* α3 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
@@ -1876,71 +1574,58 @@ Section Impl_payment_channel_PaymentChannel.
                 (borrow (deref α0))
                 α1
                 α2) in
-          let* α4 : Ty.path "bool" := M.alloc (UnOp.not α3) in
-          let* α5 : Ty.path "bool" := M.read (use α4) in
+          let* α4 := M.alloc ((M.var "UnOp::not") α3) in
+          let* α5 := M.read (use α4) in
           if α5 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_
                 (core.result.Result.Err
                   payment_channel.Error.InvalidSignature) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* _ : Ty.tuple :=
-          let* α0 : Ty.path "u128" := M.read amount in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.path "u128" :=
-            M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α1)) in
-          let* α3 : Ty.path "bool" := M.alloc (BinOp.Pure.lt α0 α2) in
-          let* α4 : Ty.path "bool" := M.read (use α3) in
+        let* _ :=
+          let* α0 := M.read amount in
+          let* α1 := M.read self in
+          let* α2 :=
+            M.read
+              ((M.var "payment_channel::PaymentChannel::Get_withdrawn")
+                (deref α1)) in
+          let* α3 := M.alloc ((M.var "BinOp::Pure::lt") α0 α2) in
+          let* α4 := M.read (use α3) in
           if α4 then
-            let* α0 : Ty.path "never" :=
+            let* α0 :=
               return_
                 (core.result.Result.Err
                   payment_channel.Error.AmountIsLessThanWithdrawn) in
-            let* α1 : Ty.path "never" := M.read α0 in
-            let* α2 : Ty.tuple := never_to_any α1 in
+            let* α1 := M.read α0 in
+            let* α2 := never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
-        let* amount_to_withdraw : Ty.path "u128" :=
-          let* α0 : Ty.path "u128" := M.read amount in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.path "u128" :=
-            M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α1)) in
-          let* α3 : Ty.path "u128" := BinOp.Panic.sub α0 α2 in
+        let* amount_to_withdraw :=
+          let* α0 := M.read amount in
+          let* α1 := M.read self in
+          let* α2 :=
+            M.read
+              ((M.var "payment_channel::PaymentChannel::Get_withdrawn")
+                (deref α1)) in
+          let* α3 := (M.var "BinOp::Panic::sub") α0 α2 in
           M.alloc α3 in
-        let* _ : Ty.tuple :=
-          let* β : Ty.path "u128" :=
-            let* α0 :
-                Ty.apply
-                  (Ty.path "mut_ref")
-                  [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-              M.read self in
-            M.pure (payment_channel.PaymentChannel.Get_withdrawn (deref α0)) in
+        let* _ :=
+          let* β :=
+            let* α0 := M.read self in
+            M.pure
+              ((M.var "payment_channel::PaymentChannel::Get_withdrawn")
+                (deref α0)) in
           let* α0 := M.read β in
-          let* α1 : Ty.path "u128" := M.read amount_to_withdraw in
-          let* α2 := BinOp.Panic.add α0 α1 in
-          assign β α2 in
-        let* _ : Ty.tuple :=
-          let* α0 :
-              Ty.function
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []]]
-                (Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  [_; _]) :=
+          let* α1 := M.read amount_to_withdraw in
+          let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+          (M.var "assign") β α2 in
+        let* _ :=
+          let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.try_trait.Try.branch
                 (Self :=
@@ -1948,40 +1633,27 @@ Section Impl_payment_channel_PaymentChannel.
                     (Ty.path "core::result::Result")
                     [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []])
                 (Trait := ℐ))) in
-          let* α1 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+          let* α1 := M.read self in
+          let* α2 :=
             M.call
               ((Ty.apply
                     (Ty.path "payment_channel::PaymentChannel")
                     [])::["env"]
                 (borrow (deref α1))) in
-          let* α3 : Ty.apply (Ty.path "payment_channel::Env") [] :=
-            M.alloc α2 in
-          let* α4 :
-              Ty.apply
-                (Ty.path "mut_ref")
-                [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-            M.read self in
-          let* α5 : Ty.apply (Ty.path "payment_channel::AccountId") [] :=
-            M.read (payment_channel.PaymentChannel.Get_recipient (deref α4)) in
-          let* α6 : Ty.path "u128" := M.read amount_to_withdraw in
-          let* α7 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
+          let* α3 := M.alloc α2 in
+          let* α4 := M.read self in
+          let* α5 :=
+            M.read
+              ((M.var "payment_channel::PaymentChannel::Get_recipient")
+                (deref α4)) in
+          let* α6 := M.read amount_to_withdraw in
+          let* α7 :=
             M.call
               ((Ty.apply (Ty.path "payment_channel::Env") [])::["transfer"]
                 (borrow α3)
                 α5
                 α6) in
-          let* α8 :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
+          let* α8 :=
             M.call
               ((Ty.apply
                     (Ty.path "core::result::Result")
@@ -2000,24 +1672,8 @@ Section Impl_payment_channel_PaymentChannel.
                         Ty.apply (Ty.path "payment_channel::Error") []
                     ]) :
                   Ty.apply (Ty.path "payment_channel::Error") [])) in
-          let* α9 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "payment_channel::Error") []];
-                  Ty.tuple] :=
-            M.call (α0 α8) in
-          let* α10 :
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                [Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.apply (Ty.path "core::convert::Infallible") [];
-                      Ty.apply (Ty.path "payment_channel::Error") []];
-                  Ty.tuple] :=
-            M.alloc α9 in
+          let* α9 := M.call (α0 α8) in
+          let* α10 := M.alloc α9 in
           match_operator
             α10
             [
@@ -2025,18 +1681,11 @@ Section Impl_payment_channel_PaymentChannel.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                  let γ0_0 :=
+                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
+                      γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      Ty.function
-                        [Ty.apply
-                            (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "payment_channel::Error") []]]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [Ty.tuple;
-                            Ty.apply (Ty.path "payment_channel::Error") []]) :=
+                  let* α0 :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -2050,21 +1699,11 @@ Section Impl_payment_channel_PaymentChannel.
                             [Ty.apply (Ty.path "core::convert::Infallible") [];
                               Ty.apply (Ty.path "payment_channel::Error") []])
                         (Trait := ℐ))) in
-                  let* α1 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.apply (Ty.path "core::convert::Infallible") [];
-                          Ty.apply (Ty.path "payment_channel::Error") []] :=
-                    M.read residual in
-                  let* α2 :
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.tuple;
-                          Ty.apply (Ty.path "payment_channel::Error") []] :=
-                    M.call (α0 α1) in
-                  let* α3 : Ty.path "never" := return_ α2 in
-                  let* α4 : Ty.path "never" := M.read α3 in
-                  let* α5 : Ty.tuple := never_to_any α4 in
+                  let* α1 := M.read residual in
+                  let* α2 := M.call (α0 α1) in
+                  let* α3 := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match
                 end) :
@@ -2074,18 +1713,16 @@ Section Impl_payment_channel_PaymentChannel.
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
                   let γ0_0 :=
-                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                    (M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
+                      γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
                 end) :
                 Ty.tuple
             ] in
-        let* α0 :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [Ty.tuple; Ty.apply (Ty.path "payment_channel::Error") []] :=
-          M.alloc (core.result.Result.Ok tt) in
+        let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -2103,12 +1740,8 @@ Section Impl_payment_channel_PaymentChannel.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-        M.read self in
-      M.read (payment_channel.PaymentChannel.Get_sender (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "payment_channel::PaymentChannel::Get_sender") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -2125,12 +1758,9 @@ Section Impl_payment_channel_PaymentChannel.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-        M.read self in
-      M.read (payment_channel.PaymentChannel.Get_recipient (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "payment_channel::PaymentChannel::Get_recipient") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -2147,12 +1777,9 @@ Section Impl_payment_channel_PaymentChannel.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-        M.read self in
-      M.read (payment_channel.PaymentChannel.Get_expiration (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "payment_channel::PaymentChannel::Get_expiration") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -2169,12 +1796,9 @@ Section Impl_payment_channel_PaymentChannel.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-        M.read self in
-      M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "payment_channel::PaymentChannel::Get_withdrawn") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -2191,12 +1815,10 @@ Section Impl_payment_channel_PaymentChannel.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-        M.read self in
-      M.read (payment_channel.PaymentChannel.Get_close_duration (deref α0))
+      let* α0 := M.read self in
+      M.read
+        ((M.var "payment_channel::PaymentChannel::Get_close_duration")
+          (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -2213,16 +1835,12 @@ Section Impl_payment_channel_PaymentChannel.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "payment_channel::PaymentChannel") []] :=
-        M.read self in
-      let* α1 : Ty.apply (Ty.path "payment_channel::Env") [] :=
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           ((Ty.apply (Ty.path "payment_channel::PaymentChannel") [])::["env"]
             α0) in
-      let* α2 : Ty.apply (Ty.path "payment_channel::Env") [] := M.alloc α1 in
+      let* α2 := M.alloc α1 in
       M.call
         ((Ty.apply (Ty.path "payment_channel::Env") [])::["balance"]
           (borrow α2))

@@ -20,8 +20,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-      M.read (mk_str "This call never returns.") in
-    M.call (std.panicking.begin_panic α0)
+    let* α0 := M.read (mk_str "This call never returns.") in
+    M.call ((M.var "std::panicking::begin_panic") α0)
   | _, _ => M.impossible
   end.

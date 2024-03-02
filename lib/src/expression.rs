@@ -802,7 +802,10 @@ impl ExprKind {
                 nest([text("M.pure"), line(), expr.to_doc(true)]),
             ),
             ExprKind::LocalVar(ref name) => text(name),
-            ExprKind::Var(path) => path.to_doc(),
+            ExprKind::Var(path) => paren(
+                with_paren,
+                nest([text("M.var"), line(), text(format!("\"{path}\""))]),
+            ),
             ExprKind::Constructor(path) => path.to_doc(),
             ExprKind::VarWithTy { path, ty_name, ty } => paren(
                 with_paren,
@@ -972,10 +975,6 @@ impl ExprKind {
                                     None => "_",
                                 }),
                             ]),
-                            match &init.ty {
-                                Some(ty) => concat([text(" :"), line(), ty.to_coq().to_doc(false)]),
-                                None => nil(),
-                            },
                             text(" :="),
                         ]),
                         line(),

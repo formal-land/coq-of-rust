@@ -14,12 +14,12 @@ Section Impl_core_default_Default_for_contract_terminate_AccountId.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.function [] (Ty.path "u128") :=
+      let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := Ty.path "u128")
             (Trait := ℐ))) in
-      let* α1 : Ty.path "u128" := M.call α0 in
+      let* α1 := M.call α0 in
       M.pure (contract_terminate.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
@@ -44,7 +44,7 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "contract_terminate::AccountId") [] :=
+      let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
@@ -53,11 +53,7 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId.
                 [Ty.path "u128"]))
           [
             fun γ =>
-              (let* α0 :
-                  Ty.apply
-                    (Ty.path "ref")
-                    [Ty.apply (Ty.path "contract_terminate::AccountId") []] :=
-                M.read self in
+              (let* α0 := M.read self in
               M.pure (deref α0)) :
               Ty.apply (Ty.path "contract_terminate::AccountId") []
           ] in
@@ -97,12 +93,8 @@ Section Impl_contract_terminate_Env.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "contract_terminate::Env") []] :=
-        M.read self in
-      M.read (contract_terminate.Env.Get_caller (deref α0))
+      let* α0 := M.read self in
+      M.read ((M.var "contract_terminate::Env::Get_caller") (deref α0))
     | _, _ => M.impossible
     end.
   
@@ -120,9 +112,8 @@ Section Impl_contract_terminate_Env.
     | [], [self; _account] =>
       let* self := M.alloc self in
       let* _account := M.alloc _account in
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -148,9 +139,8 @@ Section Impl_contract_terminate_JustTerminate.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
-        M.read (mk_str "not implemented") in
-      let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
+      let* α0 := M.read (mk_str "not implemented") in
+      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -203,38 +193,28 @@ Section Impl_contract_terminate_JustTerminate.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* _ : Ty.tuple :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "contract_terminate::JustTerminate") []] :=
-          M.read self in
-        let* α1 : Ty.apply (Ty.path "contract_terminate::Env") [] :=
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             ((Ty.apply
                   (Ty.path "contract_terminate::JustTerminate")
                   [])::["env"]
               (borrow (deref α0))) in
-        let* α2 : Ty.apply (Ty.path "contract_terminate::Env") [] :=
-          M.alloc α1 in
-        let* α3 :
-            Ty.apply
-              (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "contract_terminate::JustTerminate") []] :=
-          M.read self in
-        let* α4 : Ty.apply (Ty.path "contract_terminate::Env") [] :=
+        let* α2 := M.alloc α1 in
+        let* α3 := M.read self in
+        let* α4 :=
           M.call
             ((Ty.apply
                   (Ty.path "contract_terminate::JustTerminate")
                   [])::["env"]
               (borrow (deref α3))) in
-        let* α5 : Ty.apply (Ty.path "contract_terminate::Env") [] :=
-          M.alloc α4 in
-        let* α6 : Ty.apply (Ty.path "contract_terminate::AccountId") [] :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             ((Ty.apply (Ty.path "contract_terminate::Env") [])::["caller"]
               (borrow α5)) in
-        let* α7 : Ty.tuple :=
+        let* α7 :=
           M.call
             ((Ty.apply
                   (Ty.path "contract_terminate::Env")
@@ -242,7 +222,7 @@ Section Impl_contract_terminate_JustTerminate.
               (borrow α2)
               α6) in
         M.alloc α7 in
-      let* α0 : Ty.path "unit" := M.alloc tt in
+      let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.

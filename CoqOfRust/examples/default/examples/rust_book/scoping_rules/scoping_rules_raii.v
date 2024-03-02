@@ -12,14 +12,8 @@ fn create_box() {
 Definition create_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _box1 :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* _box1 :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -27,7 +21,7 @@ Definition create_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             ((Integer.of_Z 3) : Ty.path "i32")) in
       M.alloc α0 in
-    let* α0 : Ty.path "unit" := M.alloc tt in
+    let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -58,14 +52,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _box2 :
-        Ty.apply
-          (Ty.path "alloc::boxed::Box")
-          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-      let* α0 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* _box2 :=
+      let* α0 :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -73,15 +61,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
             ((Integer.of_Z 5) : Ty.path "i32")) in
       M.alloc α0 in
-    let* _ : Ty.tuple :=
-      let* _box3 :
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
-        let* α0 :
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+    let* _ :=
+      let* _box3 :=
+        let* α0 :=
           M.call
             ((Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -90,39 +72,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ((Integer.of_Z 4) : Ty.path "i32")) in
         M.alloc α0 in
       M.alloc tt in
-    let* α0 :
-        Ty.function
-          [Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"]]
-          _ :=
+    let* α0 :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"])
           (Trait := ℐ))) in
-    let* α1 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"] :=
+    let* α1 :=
       M.call
         (α0
           {|
             core.ops.range.Range.start := (Integer.of_Z 0) : Ty.path "u32";
             core.ops.range.Range.end_ := (Integer.of_Z 1000) : Ty.path "u32";
           |}) in
-    let* α2 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"] :=
-      M.alloc α1 in
-    let* α3 : Ty.tuple :=
+    let* α2 := M.alloc α1 in
+    let* α3 :=
       match_operator
         α2
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
-              (let* _ : Ty.tuple :=
-                let* α0 :
-                    Ty.function
-                      [Ty.apply
-                          (Ty.path "mut_ref")
-                          [Ty.apply
-                              (Ty.path "core::ops::range::Range")
-                              [Ty.path "u32"]]]
-                      (Ty.apply (Ty.path "core::option::Option") [_]) :=
+              (let* _ :=
+                let* α0 :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -130,12 +101,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::ops::range::Range")
                           [Ty.path "u32"])
                       (Trait := ℐ))) in
-                let* α1 :
-                    Ty.apply (Ty.path "core::option::Option") [Ty.path "u32"] :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 :
-                    Ty.apply (Ty.path "core::option::Option") [Ty.path "u32"] :=
-                  M.alloc α1 in
+                let* α1 := M.call (α0 (borrow_mut iter)) in
+                let* α2 := M.alloc α1 in
                 match_operator
                   α2
                   [
@@ -143,9 +110,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.None =>
-                        let* α0 : Ty.path "never" := M.break in
-                        let* α1 : Ty.path "never" := M.read α0 in
-                        let* α2 : Ty.tuple := never_to_any α1 in
+                        let* α0 := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 := never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match
                       end) :
@@ -154,10 +121,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* _ : Ty.tuple :=
-                          let* α0 : Ty.tuple :=
-                            M.call scoping_rules_raii.create_box in
+                        let γ0_0 :=
+                          (M.var "core::option::Option::Get_Some_0") γ in
+                        let* _ :=
+                          let* α0 :=
+                            M.call (M.var "scoping_rules_raii::create_box") in
                           M.alloc α0 in
                         M.alloc tt
                       | _ => M.break_match
