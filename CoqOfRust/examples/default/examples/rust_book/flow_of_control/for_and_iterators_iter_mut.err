@@ -1,4 +1,4 @@
-warning: Constants in patterns are not yet supported.
+warning: This kind of constant in patterns is not yet supported.
  --> examples/rust_book/flow_of_control/for_and_iterators_iter_mut.rs:6:18
   |
 6 |             &mut "Ferris" => "There is a rustacean among us!",

@@ -1,4 +1,4 @@
-warning: Constants in patterns are not yet supported.
+warning: This kind of constant in patterns is not yet supported.
  --> examples/rust_book/flow_of_control/for_and_iterators_into_iter.rs:6:13
   |
 6 |             "Ferris" => println!("There is a rustacean among us!"),

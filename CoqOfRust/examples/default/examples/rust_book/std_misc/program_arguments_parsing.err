@@ -1,38 +1,14 @@
-warning: Constants in patterns are not yet supported.
-  --> examples/rust_book/std_misc/program_arguments_parsing.rs:26:9
-   |
-26 |         1 => {
-   |         ^
-
-warning: Constants in patterns are not yet supported.
-  --> examples/rust_book/std_misc/program_arguments_parsing.rs:30:9
-   |
-30 |         2 => match args[1].parse() {
-   |         ^
-
-warning: Constants in patterns are not yet supported.
-  --> examples/rust_book/std_misc/program_arguments_parsing.rs:31:16
-   |
-31 |             Ok(42) => println!("This is the answer!"),
-   |                ^^
-
-warning: Constants in patterns are not yet supported.
-  --> examples/rust_book/std_misc/program_arguments_parsing.rs:35:9
-   |
-35 |         3 => {
-   |         ^
-
-warning: Constants in patterns are not yet supported.
+warning: This kind of constant in patterns is not yet supported.
   --> examples/rust_book/std_misc/program_arguments_parsing.rs:49:17
    |
 49 |                 "increase" => increase(number),
    |                 ^^^^^^^^^^
 
-warning: Constants in patterns are not yet supported.
+warning: This kind of constant in patterns is not yet supported.
   --> examples/rust_book/std_misc/program_arguments_parsing.rs:50:17
    |
 50 |                 "decrease" => decrease(number),
    |                 ^^^^^^^^^^
 
-warning: 6 warnings emitted
+warning: 2 warnings emitted
 

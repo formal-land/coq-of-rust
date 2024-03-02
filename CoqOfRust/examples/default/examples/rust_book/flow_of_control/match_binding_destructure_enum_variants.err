@@ -1,8 +1,0 @@
-warning: Constants in patterns are not yet supported.
- --> examples/rust_book/flow_of_control/match_binding_destructure_enum_variants.rs:9:18
-  |
-9 |         Some(n @ 42) => println!("The Answer: {}!", n),
-  |                  ^^
-
-warning: 1 warning emitted
-
