@@ -1316,6 +1316,30 @@ fn compile_expr_kind<'a>(
                         ExprKind::Var(compile_def_id(env, *def_id))
                     }
                     DefKind::Variant => ExprKind::Constructor(compile_def_id(env, *def_id)),
+                    DefKind::Struct => {
+                        let mut segments = compile_def_id(env, *def_id).segments;
+                        segments.push("Build_t".to_string());
+
+                        ExprKind::Lambda {
+                            args: vec![("α".to_string(), None)],
+                            body: Rc::new(Expr {
+                                kind: Rc::new(ExprKind::Call {
+                                    func: Rc::new(Expr {
+                                        kind: Rc::new(ExprKind::Constructor(Path { segments })),
+                                        ty: None,
+                                    }),
+                                    args: vec![Rc::new(Expr {
+                                        kind: Rc::new(ExprKind::LocalVar("α".to_string())),
+                                        ty: None,
+                                    })],
+                                    purity: Purity::Pure,
+                                    from_user: false,
+                                }),
+                                ty: None,
+                            }),
+                            is_for_match: false,
+                        }
+                    }
                     _ => {
                         eprintln!("unimplemented parent_kind: {:#?}", parent_kind);
                         eprintln!("expression: {:#?}", expr);
