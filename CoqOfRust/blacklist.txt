@@ -1,3 +1,6 @@
+alloc/
+core/
+std/
 examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/ink_contracts/payment_channel.v
 examples/axiomatized/examples/rust_book/conversion/try_from_and_try_into.v

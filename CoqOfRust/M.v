@@ -126,7 +126,10 @@ Module Value.
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
-  | Closure : {'(t, M) : Set * Set @ t -> M} -> t.
+  | Closure : {'(t, M) : Set * Set @ t -> M} -> t
+  (** A special value that does not appear in the translation, but that we use
+      to implement primitive functions over values that are not total. *)
+  | Error (message : string).
 
   (** Read the part of the value that is at a given pointer path, starting from
       the main value. It might return [None] if the path does not have a shape
