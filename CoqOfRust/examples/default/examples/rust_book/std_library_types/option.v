@@ -70,20 +70,16 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 := M.alloc [ α0; α1; α2 ] in
                 let* α4 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow dividend)) in
                 let* α5 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow divisor)) in
                 let* α6 := M.alloc [ α4; α5 ] in
                 let* α7 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α3))
                       (pointer_coercion "Unsize" (borrow α6))) in
                 let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
@@ -91,7 +87,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -107,26 +103,20 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.alloc [ α0; α1; α2; α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow dividend)) in
                 let* α6 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow divisor)) in
                 let* α7 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow quotient)) in
                 let* α8 := M.alloc [ α5; α6; α7 ] in
                 let* α9 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α4))
                       (pointer_coercion "Unsize" (borrow α8))) in
                 let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
@@ -134,7 +124,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read α4
   | _, _ => M.impossible
@@ -194,7 +184,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow optional_float)) in
         let* α5 := M.read optional_float in
         let* α6 :=
@@ -206,12 +196,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.alloc α6 in
         let* α8 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
-              (borrow α7)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α7)) in
         let* α9 := M.alloc [ α4; α8 ] in
         let* α10 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α9))) in
         let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
@@ -226,7 +215,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow none)) in
         let* α5 := M.read none in
         let* α6 :=
@@ -238,12 +227,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.alloc α6 in
         let* α8 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
-              (borrow α7)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α7)) in
         let* α9 := M.alloc [ α4; α8 ] in
         let* α10 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α9))) in
         let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in

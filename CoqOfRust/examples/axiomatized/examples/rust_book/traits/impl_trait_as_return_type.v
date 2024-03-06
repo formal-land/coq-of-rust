@@ -2,37 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter combine_vecs_explicit_return_type :
-    (Ty.apply
-        (Ty.path "alloc::vec::Vec")
-        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
-      ->
-      (Ty.apply
-        (Ty.path "alloc::vec::Vec")
-        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
-      ->
-      Ty.apply
-        (Ty.path "core::iter::adapters::cycle::Cycle")
-        [Ty.apply
-            (Ty.path "core::iter::adapters::chain::Chain")
-            [Ty.apply
-                (Ty.path "alloc::vec::into_iter::IntoIter")
-                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []];
-              Ty.apply
-                (Ty.path "alloc::vec::into_iter::IntoIter")
-                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []]]].
+    (list Ty.t) -> (list Value.t) -> M.
 
-Parameter combine_vecs :
-    (Ty.apply
-        (Ty.path "alloc::vec::Vec")
-        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
-      ->
-      (Ty.apply
-        (Ty.path "alloc::vec::Vec")
-        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
-      ->
-      _.
+Parameter combine_vecs : (list Ty.t) -> (list Value.t) -> M.
 
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : Ty.path "unit".
+Parameter main : (list Ty.t) -> (list Value.t) -> M.

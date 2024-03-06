@@ -47,7 +47,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::slice::iter::Iter") [Ty.path "i32"])
             (P :=
               Ty.function
-                [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "i32"])]
+                [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "i32"]]]
                 (Ty.path "bool"))
             (Trait := ℐ))) in
       let* α1 :=
@@ -56,7 +56,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Self :=
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
             (Trait := ℐ))) in
       let* α2 := M.call (α1 (borrow vec)) in
       let* α3 :=
@@ -141,7 +141,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* index_of_first_negative_number :=
       let* α0 :=
@@ -150,8 +150,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Self :=
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
-                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
-            (P := Ty.function [Ty.tuple (Ty.path "i32")] (Ty.path "bool"))
+                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
+            (P := Ty.function [Ty.tuple [Ty.path "i32"]] (Ty.path "bool"))
             (Trait := ℐ))) in
       let* α1 :=
         ltac:(M.get_method (fun ℐ =>
@@ -159,7 +159,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Self :=
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
             (Trait := ℐ))) in
       let* α2 := M.read vec in
       let* α3 := M.call (α1 α2) in
@@ -234,7 +234,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* α0 := M.alloc tt in
     M.read α0

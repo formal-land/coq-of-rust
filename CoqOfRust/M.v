@@ -327,7 +327,7 @@ Module InstanceField.
 End InstanceField.
 
 Module Instance.
-  Definition t : Set := list (string * InstanceField.t).
+  Definition t : Set := list (string * option InstanceField.t).
 End Instance.
 
 Module Option.

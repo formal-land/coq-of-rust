@@ -16,7 +16,7 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+            ((Ty.path "core::fmt::Arguments")::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
         let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
@@ -42,7 +42,7 @@ Module cool.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+              ((Ty.path "core::fmt::Arguments")::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
           let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
@@ -69,7 +69,7 @@ Module my.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+              ((Ty.path "core::fmt::Arguments")::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
           let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in
@@ -95,7 +95,7 @@ Module my.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                ((Ty.path "core::fmt::Arguments")::["new_const"]
                   (pointer_coercion "Unsize" (borrow α1))) in
             let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
             M.alloc α3 in
@@ -141,7 +141,7 @@ Module my.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+              ((Ty.path "core::fmt::Arguments")::["new_const"]
                 (pointer_coercion "Unsize" (borrow α1))) in
           let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
           M.alloc α3 in

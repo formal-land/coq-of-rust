@@ -15,37 +15,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* child :=
       let* α0 := M.read (mk_str "sleep") in
-      let* α1 :=
-        M.call ((Ty.apply (Ty.path "std::process::Command") [])::["new"] α0) in
+      let* α1 := M.call ((Ty.path "std::process::Command")::["new"] α0) in
       let* α2 := M.alloc α1 in
       let* α3 := M.read (mk_str "5") in
       let* α4 :=
         M.call
-          ((Ty.apply (Ty.path "std::process::Command") [])::["arg"]
-            (borrow_mut α2)
-            α3) in
-      let* α5 :=
-        M.call
-          ((Ty.apply (Ty.path "std::process::Command") [])::["spawn"] α4) in
+          ((Ty.path "std::process::Command")::["arg"] (borrow_mut α2) α3) in
+      let* α5 := M.call ((Ty.path "std::process::Command")::["spawn"] α4) in
       let* α6 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::result::Result")
-                [Ty.apply (Ty.path "std::process::Child") [];
-                  Ty.apply (Ty.path "std::io::error::Error") []])::["unwrap"]
+                [Ty.path "std::process::Child";
+                  Ty.path "std::io::error::Error"])::["unwrap"]
             α5) in
       M.alloc α6 in
     let* _result :=
       let* α0 :=
-        M.call
-          ((Ty.apply (Ty.path "std::process::Child") [])::["wait"]
-            (borrow_mut child)) in
+        M.call ((Ty.path "std::process::Child")::["wait"] (borrow_mut child)) in
       let* α1 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::result::Result")
-                [Ty.apply (Ty.path "std::process::ExitStatus") [];
-                  Ty.apply (Ty.path "std::io::error::Error") []])::["unwrap"]
+                [Ty.path "std::process::ExitStatus";
+                  Ty.path "std::io::error::Error"])::["unwrap"]
             α0) in
       M.alloc α1 in
     let* _ :=
@@ -55,7 +48,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+            ((Ty.path "core::fmt::Arguments")::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
         let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in

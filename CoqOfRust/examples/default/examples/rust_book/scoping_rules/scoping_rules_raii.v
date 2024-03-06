@@ -17,8 +17,7 @@ Definition create_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [Ty.path "i32";
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])::["new"]
             ((Integer.of_Z 3) : Ty.path "i32")) in
       M.alloc α0 in
     let* α0 := M.alloc tt in
@@ -57,8 +56,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [Ty.path "i32";
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])::["new"]
             ((Integer.of_Z 5) : Ty.path "i32")) in
       M.alloc α0 in
     let* _ :=
@@ -67,8 +65,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.call
             ((Ty.apply
                   (Ty.path "alloc::boxed::Box")
-                  [Ty.path "i32";
-                    Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+                  [Ty.path "i32"; Ty.path "alloc::alloc::Global"])::["new"]
               ((Integer.of_Z 4) : Ty.path "i32")) in
         M.alloc α0 in
       M.alloc tt in
@@ -116,7 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.alloc α2
                       | _ => M.break_match
                       end) :
-                      Ty.tuple;
+                      Ty.tuple [];
                     fun γ =>
                       (let* α0 := M.read γ in
                       match α0 with
@@ -130,10 +127,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.alloc tt
                       | _ => M.break_match
                       end) :
-                      Ty.tuple
+                      Ty.tuple []
                   ] in
               M.alloc tt)) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read (use α3)
   | _, _ => M.impossible

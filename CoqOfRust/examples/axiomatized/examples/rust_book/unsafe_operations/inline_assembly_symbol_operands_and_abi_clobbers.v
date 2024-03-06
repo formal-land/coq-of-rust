@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : Ty.path "unit".
+Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-Parameter foo : (Ty.path "i32") -> Ty.path "i32".
+Parameter foo : (list Ty.t) -> (list Value.t) -> M.
 
-Parameter call_foo : (Ty.path "i32") -> Ty.path "i32".
+Parameter call_foo : (list Ty.t) -> (list Value.t) -> M.

@@ -136,6 +136,7 @@ enum TopLevelItem {
     },
     TypeAlias {
         name: String,
+        path: Path,
         ty_params: Vec<String>,
         ty: Rc<CoqType>,
     },
@@ -436,11 +437,16 @@ fn compile_top_level_item_without_local_items<'a>(
             vec![Rc::new(TopLevelItem::Error("ForeignMod".to_string()))]
         }
         ItemKind::GlobalAsm(_) => vec![Rc::new(TopLevelItem::Error("GlobalAsm".to_string()))],
-        ItemKind::TyAlias(ty, generics) => vec![Rc::new(TopLevelItem::TypeAlias {
-            name,
-            ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
-            ty_params: get_ty_params_names(tcx, env, generics),
-        })],
+        ItemKind::TyAlias(ty, generics) => {
+            let path = compile_def_id(env, item.owner_id.to_def_id());
+
+            vec![Rc::new(TopLevelItem::TypeAlias {
+                name,
+                path,
+                ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
+                ty_params: get_ty_params_names(tcx, env, generics),
+            })]
+        }
         ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error("OpaqueTy".to_string()))],
         ItemKind::Enum(enum_def, generics) => {
             let ty_params = get_ty_params(tcx, env, &item.owner_id.def_id, generics);
@@ -1377,107 +1383,20 @@ impl FunDefinition {
                     ))],
                 ),
                 match &self.signature_and_body.body {
-                    None => {
-                        let ret_ty_name = [name, "_", "ret_ty"].concat();
-                        // let ret_opaque_ty = CoqType::Application {
-                        //     func: CoqType::var("projT1".to_string()),
-                        //     args: vec![CoqType::var(ret_ty_name.clone())],
-                        //     is_alias: false,
-                        // };
-                        let opaque_return_tys_bounds =
-                            self.signature_and_body.ret_ty.opaque_types_bounds();
-                        let bounds_to_definition = |bounds: &Vec<Path>| {
-                            coq::TopLevelItem::Definition(coq::Definition::new(
-                                &ret_ty_name,
-                                &coq::DefinitionKind::Assumption {
-                                    ty: coq::Expression::SigmaType {
-                                        args: [
-                                            vec![coq::ArgDecl::new(
-                                                &coq::ArgDeclVar::Simple {
-                                                    idents: vec!["Ty".to_string()],
-                                                    ty: Some(coq::Expression::Set),
-                                                },
-                                                coq::ArgSpecKind::Explicit,
-                                            )],
-                                            bounds
-                                                .iter()
-                                                .map(|bound| {
-                                                    coq::ArgDecl::new(
-                                                        &coq::ArgDeclVar::Generalized {
-                                                            idents: vec![],
-                                                            ty: coq::Expression::Variable {
-                                                                ident: Path::concat(&[
-                                                                    bound.to_owned(),
-                                                                    Path::new(&["Trait"]),
-                                                                ]),
-                                                                no_implicit: false,
-                                                            }
-                                                            .apply(&coq::Expression::just_name(
-                                                                "Ty",
-                                                            )),
-                                                        },
-                                                        coq::ArgSpecKind::Explicit,
-                                                    )
-                                                })
-                                                .collect::<Vec<_>>(),
-                                        ]
-                                        .concat(),
-                                        image: Rc::new(coq::Expression::Unit),
-                                    },
-                                },
-                            ))
-                        };
-                        // if the return type is opaque define a corresponding opaque type
-                        let (ret_ty_defs_vec, ret_ty) =
-                            if self.signature_and_body.ret_ty.has_opaque_types() {
-                                let ret_ty_defs_vec = opaque_return_tys_bounds
-                                    .iter()
-                                    .map(bounds_to_definition)
-                                    .collect();
-
-                                let ret_ty = &mut self.signature_and_body.ret_ty.clone();
-                                // ret_ty.subst_opaque_types(&ret_opaque_ty);
-
-                                (ret_ty_defs_vec, ret_ty.to_coq())
-                            } else {
-                                (vec![], self.signature_and_body.ret_ty.to_coq())
-                            };
-                        [
-                            ret_ty_defs_vec,
-                            vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                                name,
-                                &coq::DefinitionKind::Assumption {
-                                    ty: coq::Expression::PiType {
-                                        args: [
-                                            // Type parameters a, b, c... compiles to forall {a b c ... : Set},
-                                            optional_insert_vec(
-                                                self.ty_params.is_empty(),
-                                                vec![coq::ArgDecl::of_ty_params(
-                                                    &self.ty_params,
-                                                    coq::ArgSpecKind::Implicit,
-                                                )],
-                                            ),
-                                        ]
-                                        .concat(),
-                                        image: Rc::new(
-                                            // return type
-                                            ret_ty
-                                                // argument types
-                                                .arrows_from(
-                                                    &self
-                                                        .signature_and_body
-                                                        .args
-                                                        .iter()
-                                                        .map(|(_, ty)| ty.to_coq())
-                                                        .collect::<Vec<_>>(),
-                                                ),
-                                        ),
-                                    },
-                                },
-                            ))],
-                        ]
-                        .concat()
-                    }
+                    None => vec![coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Assumption {
+                            ty: coq::Expression::FunctionType {
+                                domains: vec![
+                                    coq::Expression::just_name("list")
+                                        .apply(&coq::Expression::just_name("Ty.t")),
+                                    coq::Expression::just_name("list")
+                                        .apply(&coq::Expression::just_name("Value.t")),
+                                ],
+                                image: Rc::new(coq::Expression::just_name("M")),
+                            },
+                        },
+                    ))],
                     Some(body) => vec![coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
                         &coq::DefinitionKind::Alias {
@@ -1639,17 +1558,9 @@ impl ImplItemKind {
                     "Notations.double_colon",
                 ),
             ])]),
-            ImplItemKind::Definition { definition, .. } => coq::TopLevel::new(&[
-                coq::TopLevelItem::Code(definition.to_doc(name, &None)),
-                coq::TopLevelItem::Line,
-                Self::class_instance_to_coq(
-                    "AssociatedFunction",
-                    name,
-                    Some(&definition.ty_params),
-                    "Notations.DoubleColon Self",
-                    "Notations.double_colon",
-                ),
-            ]),
+            ImplItemKind::Definition { definition, .. } => {
+                coq::TopLevel::new(&[coq::TopLevelItem::Code(definition.to_doc(name, &None))])
+            }
             ImplItemKind::Type { ty } => {
                 coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
                     name,
@@ -1783,7 +1694,6 @@ impl TopLevelItem {
                 VariantItem::Struct { fields } => {
                     Some(coq::TopLevelItem::Module(coq::Module::new(
                         name,
-                        false,
                         coq::TopLevel::new(&[coq::TopLevelItem::Record(coq::Record::new(
                             "t",
                             &coq::Expression::Set,
@@ -1899,7 +1809,6 @@ impl TopLevelItem {
 
         coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
             name,
-            false,
             module_items,
         ))])
     }
@@ -1909,7 +1818,9 @@ impl TopLevelItem {
             TopLevelItem::Const { name, ty, value } => match value {
                 None => coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
                     name,
-                    &coq::DefinitionKind::Assumption { ty: ty.to_coq() },
+                    &coq::DefinitionKind::Assumption {
+                        ty: coq::Expression::just_name("Value.t"),
+                    },
                 ))])
                 .to_doc(),
                 Some(value) => {
@@ -1953,7 +1864,6 @@ impl TopLevelItem {
                         ),
                         vec![coq::TopLevelItem::Module(coq::Module::new_with_repeat(
                             name,
-                            false,
                             nb_previous_occurrences_of_module_name,
                             coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
                         ))],
@@ -1964,10 +1874,12 @@ impl TopLevelItem {
             }
             TopLevelItem::TypeAlias {
                 name,
+                path,
                 ty,
                 ty_params,
             } => coq::TopLevel::new(&coq::TopLevelItem::ty_alias_definition(
                 name,
+                path.to_string(),
                 ty_params.clone(),
                 &ty.to_coq(),
             ))
@@ -1976,14 +1888,16 @@ impl TopLevelItem {
                 name,
                 ty_params,
                 variants,
-            } => nil(),
-            TopLevelItem::TypeStructStruct(tss) => nil(),
+            } => text(format!("(* Enum {name} *)")),
+            TopLevelItem::TypeStructStruct(tss) => text(format!("(* Enum {} *)", tss.name)),
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
                 fields,
-            } => nil(),
-            TopLevelItem::TypeStructUnit { name, ty_params } => nil(),
+            } => text(format!("(* Struct {name} *)")),
+            TopLevelItem::TypeStructUnit { name, ty_params } => {
+                text(format!("(* Struct {name} *)"))
+            }
             TopLevelItem::Impl {
                 generic_tys,
                 self_ty,
@@ -1998,7 +1912,6 @@ impl TopLevelItem {
                 };
                 coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
                     &module_name,
-                    true,
                     coq::TopLevel::add_context_in_section(
                         generic_tys,
                         false,
@@ -2008,7 +1921,7 @@ impl TopLevelItem {
                                     "Self",
                                     &coq::DefinitionKind::Alias {
                                         args: vec![],
-                                        ty: Some(coq::Expression::Set),
+                                        ty: Some(coq::Expression::just_name("Ty.t")),
                                         body: self_ty.to_coq(),
                                     },
                                 ),
@@ -2021,7 +1934,7 @@ impl TopLevelItem {
                                             name,
                                             snippet,
                                             kind,
-                                        } = &**item;
+                                        } = item.as_ref();
                                         [
                                             vec![coq::TopLevelItem::Line],
                                             match snippet {
@@ -2098,7 +2011,7 @@ impl TopLevelItem {
                 .concat(),
                 &body
                     .iter()
-                    .filter_map(|(name, item)| match &**item {
+                    .filter_map(|(name, item)| match item.as_ref() {
                         TraitItem::Definition { .. } => None,
                         TraitItem::Type { .. } => Some(coq::Instance::new(
                             &format!("Method_{name}"),
@@ -2157,7 +2070,6 @@ impl TopLevelItem {
 
                 coq::Module::new(
                     &module_name,
-                    true,
                     coq::TopLevel::concat(&[coq::TopLevel::add_context_in_section(
                         generic_tys,
                         false,
@@ -2175,7 +2087,7 @@ impl TopLevelItem {
                                 items
                                     .iter()
                                     .filter_map(|item| {
-                                        Into::<Option<&ImplItemKind>>::into(&*item.kind).map(
+                                        Into::<Option<&ImplItemKind>>::into(item.kind.as_ref()).map(
                                             |kind: &ImplItemKind| {
                                                 [
                                                     match &item.snippet {
@@ -2212,7 +2124,7 @@ impl TopLevelItem {
                                     .apply_many_args(
                                         &trait_ty_params
                                             .iter()
-                                            .map(|(name, ty_param)| match &**ty_param {
+                                            .map(|(name, ty_param)| match ty_param.as_ref() {
                                                 FieldWithDefault::RequiredValue(ty)
                                                 | FieldWithDefault::OptionalValue(ty) => {
                                                     (Some(name.clone()), ty.to_coq())
@@ -2232,66 +2144,36 @@ impl TopLevelItem {
                                     &coq::Expression::List {
                                         exprs: items
                                             .iter()
-                                            .map(|item| {
-                                                coq::Expression::Tuple(vec![
-                                                    coq::Expression::String(item.name.to_string()),
-                                                    coq::Expression::just_name(item.name.as_str()),
-                                                ])
+                                            .filter_map(|item| {
+                                                Into::<Option<&ImplItemKind>>::into(
+                                                    item.kind.as_ref(),
+                                                )
+                                                .map(|kind| {
+                                                    coq::Expression::Tuple(vec![
+                                                        coq::Expression::String(
+                                                            item.name.to_string(),
+                                                        ),
+                                                        match kind {
+                                                            ImplItemKind::Const { .. } => {
+                                                                coq::Expression::just_name("TODO")
+                                                            }
+                                                            ImplItemKind::Definition { .. } => {
+                                                                coq::Expression::just_name(
+                                                                    "InstanceField.Method",
+                                                                )
+                                                                .apply(&coq::Expression::just_name(
+                                                                    item.name.as_str(),
+                                                                ))
+                                                            }
+                                                            ImplItemKind::Type { .. } => {
+                                                                coq::Expression::just_name("TODO")
+                                                            }
+                                                        },
+                                                    ])
+                                                })
                                             })
                                             .collect(),
                                     },
-                                    // &coq::Expression::Record {
-                                    //     fields: items
-                                    //         .iter()
-                                    //         .map(|item| {
-                                    //             let TraitImplItem{name, kind, ..} = &**item;
-                                    //             let optional_item =
-                                    //                 Into::<Option<&ImplItemKind>>::into(&**kind);
-
-                                    //             coq::Field::new(
-                                    //                 &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
-                                    //                 &match optional_item {
-                                    //                     Some(ImplItemKind::Definition { definition, ..}) => {
-                                    //                         let FunDefinition {ty_params, ..} = &**definition;
-                                    //                         [optional_insert_vec(
-                                    //                             ty_params.is_empty(),
-                                    //                             vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
-                                    //                           )].concat()
-                                    //                     }
-                                    //                     _ => vec![],
-                                    //                 },
-                                    //                 {
-                                    //                     let body = coq::Expression::just_name(name);
-                                    //                     let body =
-                                    //                         match optional_item {
-                                    //                             Some(ImplItemKind::Definition { definition, ..}) => {
-                                    //                                 let FunDefinition {ty_params, ..} = &**definition;
-                                    //                                 body.apply_many_args(&ty_params
-                                    //                                     .iter()
-                                    //                                     .map(|ty_param| {
-                                    //                                         (
-                                    //                                             Some(ty_param.to_owned()),
-                                    //                                             coq::Expression::just_name(ty_param),
-                                    //                                         )
-                                    //                                     })
-                                    //                                     .collect::<Vec<_>>()
-                                    //                                 )
-                                    //                             }
-                                    //                             _ => body,
-                                    //                         };
-                                    //                     &match &**kind {
-                                    //                         FieldWithDefault::RequiredValue(_) => body,
-                                    //                         FieldWithDefault::OptionalValue(_) =>
-                                    //                             coq::Expression::just_name("Datatypes.Some")
-                                    //                             .apply(&body),
-                                    //                         FieldWithDefault::Default =>
-                                    //                             coq::Expression::just_name("Datatypes.None"),
-                                    //                     }
-                                    //                 }
-                                    //             )
-                                    //         })
-                                    //         .collect::<Vec<_>>(),
-                                    // },
                                     vec![],
                                 ))],
                             ]
@@ -2523,7 +2405,6 @@ impl TypeStructStruct {
                 ),
                 vec![coq::TopLevelItem::Module(coq::Module::new(
                     name,
-                    true,
                     coq::TopLevel::concat(&[
                         coq::TopLevel::add_context_in_section(
                             &ty_params
@@ -2532,119 +2413,6 @@ impl TypeStructStruct {
                                 .collect::<Vec<_>>(),
                             true,
                             &coq::TopLevel::concat(&[
-                                //   coq::TopLevel::new(&if trait_objects_traits.is_empty() {
-                                //       vec![]
-                                //   } else {
-                                //       trait_objects_traits
-                                //           .iter()
-                                //           .flat_map(|single_trait_object_traits| {
-                                //               let trait_object_name =
-                                //                   &CoqType::trait_object_to_name(
-                                //                       single_trait_object_traits,
-                                //                   );
-                                //               [
-                                //                   coq::TopLevelItem::Module(coq::Module::new(
-                                //                       trait_object_name,
-                                //                       false,
-                                //                       coq::TopLevel::new(&[
-                                //                           vec![coq::TopLevelItem::Definition(
-                                //                               coq::Definition::new(
-                                //                                   "t",
-                                //                                   &coq::DefinitionKind::Assumption {
-                                //                                       ty: coq::Expression::Set
-                                //                                   },
-                                //                               ),
-                                //                           )],
-                                //                           single_trait_object_traits
-                                //                               .iter()
-                                //                               .map(|single_trait_object_trait| {
-                                //                                   coq::TopLevelItem::Instance(
-                                //                                       coq::Instance::new(
-                                //                                           &[
-                                //                                               "I_",
-                                //                                               &single_trait_object_trait.to_name(),
-                                //                                           ]
-                                //                                           .concat(),
-                                //                                           &[],
-                                //                                           coq::Expression::Variable {
-                                //                                               ident: Path::concat(&[
-                                //                                                   single_trait_object_trait.to_owned(),
-                                //                                                   Path::new(&["Trait"]),
-                                //                                               ]),
-                                //                                               no_implicit: false,
-                                //                                           }
-                                //                                           .apply(&coq::Expression::just_name("t")),
-                                //                                           &coq::Expression::just_name("axiom"),
-                                //                                           vec![],
-                                //                                       ),
-                                //                                   )
-                                //                               })
-                                //                               .collect(),
-                                //                           vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                                //                               "conv_Dyn",
-                                //                               &coq::DefinitionKind::Assumption {
-                                //                                   ty: coq::Expression::PiType {
-                                //                                       args: [
-                                //                                           vec![coq::ArgDecl::new(
-                                //                                               &coq::ArgDeclVar::Simple {
-                                //                                                   idents: vec!["A".to_string()],
-                                //                                                   ty: Some(coq::Expression::Set),
-                                //                                               },
-                                //                                               coq::ArgSpecKind::Implicit,
-                                //                                           )],
-                                //                                           single_trait_object_traits
-                                //                                               .iter()
-                                //                                               .map(|single_trait_object_trait| {
-                                //                                                   coq::ArgDecl::new(
-                                //                                                       &coq::ArgDeclVar::Generalized {
-                                //                                                           idents: vec![],
-                                //                                                           ty: coq::Expression::Variable {
-                                //                                                               ident: Path::concat(&[
-                                //                                                                   single_trait_object_trait.to_owned(),
-                                //                                                                   Path::new(&["Trait"]),
-                                //                                                               ]),
-                                //                                                               no_implicit: false,
-                                //                                                           }
-                                //                                                           .apply(&coq::Expression::just_name("t")),
-                                //                                                       },
-                                //                                                       coq::ArgSpecKind::Implicit,
-                                //                                                   )
-                                //                                               })
-                                //                                               .collect()
-                                //                                       ]
-                                //                                       .concat(),
-                                //                                       image: Box::new(
-                                //                                           coq::Expression::just_name("t")
-                                //                                               .arrows_from(&[
-                                //                                                   coq::Expression::just_name("A"),
-                                //                                               ]),
-                                //                                       ),
-                                //                                   }
-                                //                               },
-                                //                           ))],
-                                //                       ].concat()),
-                                //                   )),
-                                //                   coq::TopLevelItem::Definition(
-                                //                       coq::Definition::new(
-                                //                           trait_object_name,
-                                //                           &coq::DefinitionKind::Alias {
-                                //                               args: vec![],
-                                //                               ty: Some(coq::Expression::Set),
-                                //                               body: coq::Expression::Variable {
-                                //                                   ident: Path::new(&[
-                                //                                       trait_object_name.as_ref(),
-                                //                                       "t",
-                                //                                   ]),
-                                //                                   no_implicit: false,
-                                //                               },
-                                //                           },
-                                //                       ),
-                                //                   ),
-                                //                   coq::TopLevelItem::Line,
-                                //               ]
-                                //           })
-                                //           .collect()
-                                //   }),
                                 coq::TopLevel::new(&[coq::TopLevelItem::Record(coq::Record::new(
                                     "t",
                                     &coq::Expression::Set,
@@ -2683,7 +2451,6 @@ impl TypeStructStruct {
                             params_with_default.is_empty(),
                             vec![coq::TopLevelItem::Module(coq::Module::new(
                                 "Default",
-                                false,
                                 coq::TopLevel::new(&params_with_default),
                             ))],
                         )),

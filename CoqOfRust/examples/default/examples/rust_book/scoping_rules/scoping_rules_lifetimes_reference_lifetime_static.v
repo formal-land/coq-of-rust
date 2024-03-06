@@ -57,14 +57,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow static_string)) in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              ((Ty.path "core::fmt::Arguments")::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α4))) in
           let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -88,14 +86,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow coerced_static)) in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              ((Ty.path "core::fmt::Arguments")::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α4))) in
           let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -112,13 +108,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.read
             (M.var "scoping_rules_lifetimes_reference_lifetime_static::NUM") in
         let* α4 :=
-          M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              α3) in
+          M.call ((Ty.path "core::fmt::rt::Argument")::["new_display"] α3) in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α5))) in
         let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in

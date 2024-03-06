@@ -47,24 +47,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* process :=
       let* α0 := M.read (mk_str "wc") in
-      let* α1 :=
-        M.call ((Ty.apply (Ty.path "std::process::Command") [])::["new"] α0) in
+      let* α1 := M.call ((Ty.path "std::process::Command")::["new"] α0) in
       let* α2 := M.alloc α1 in
-      let* α3 :=
-        M.call (Ty.apply (Ty.path "std::process::Stdio") [])::["piped"] in
+      let* α3 := M.call (Ty.path "std::process::Stdio")::["piped"] in
       let* α4 :=
         M.call
-          ((Ty.apply (Ty.path "std::process::Command") [])::["stdin"]
-            (borrow_mut α2)
-            α3) in
-      let* α5 :=
-        M.call (Ty.apply (Ty.path "std::process::Stdio") [])::["piped"] in
-      let* α6 :=
-        M.call
-          ((Ty.apply (Ty.path "std::process::Command") [])::["stdout"] α4 α5) in
-      let* α7 :=
-        M.call
-          ((Ty.apply (Ty.path "std::process::Command") [])::["spawn"] α6) in
+          ((Ty.path "std::process::Command")::["stdin"] (borrow_mut α2) α3) in
+      let* α5 := M.call (Ty.path "std::process::Stdio")::["piped"] in
+      let* α6 := M.call ((Ty.path "std::process::Command")::["stdout"] α4 α5) in
+      let* α7 := M.call ((Ty.path "std::process::Command")::["spawn"] α6) in
       let* α8 := M.alloc α7 in
       let* α9 :=
         match_operator
@@ -80,14 +71,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow why)) in
                 let* α3 := M.alloc [ α2 ] in
                 let* α4 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α1))
                       (pointer_coercion "Unsize" (borrow α3))) in
                 let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
@@ -95,7 +84,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α6
               | _ => M.break_match
               end) :
-              Ty.apply (Ty.path "std::process::Child") [];
+              Ty.path "std::process::Child";
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -105,21 +94,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure process
               | _ => M.break_match
               end) :
-              Ty.apply (Ty.path "std::process::Child") []
+              Ty.path "std::process::Child"
           ] in
       M.copy α9 in
     let* _ :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           std.io.Write.write_all
-            (Self := Ty.apply (Ty.path "std::process::ChildStdin") [])
+            (Self := Ty.path "std::process::ChildStdin")
             (Trait := ℐ))) in
       let* α1 := M.read ((M.var "std::process::Child::Get_stdin") process) in
       let* α2 :=
         M.call
           ((Ty.apply
                 (Ty.path "core::option::Option")
-                [Ty.apply (Ty.path "std::process::ChildStdin") []])::["unwrap"]
+                [Ty.path "std::process::ChildStdin"])::["unwrap"]
             α1) in
       let* α3 := M.alloc α2 in
       let* α4 := M.read (M.var "child_processes_pipes::PANGRAM") in
@@ -140,14 +129,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.apply
-                        (Ty.path "core::fmt::rt::Argument")
-                        [])::["new_display"]
+                  ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                     (borrow why)) in
               let* α3 := M.alloc [ α2 ] in
               let* α4 :=
                 M.call
-                  ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                  ((Ty.path "core::fmt::Arguments")::["new_v1"]
                     (pointer_coercion "Unsize" (borrow α1))
                     (pointer_coercion "Unsize" (borrow α3))) in
               let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
@@ -155,7 +142,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α6
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -167,32 +154,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::Arguments")
-                          [])::["new_const"]
+                    ((Ty.path "core::fmt::Arguments")::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
                 let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* s :=
-      let* α0 :=
-        M.call (Ty.apply (Ty.path "alloc::string::String") [])::["new"] in
+      let* α0 := M.call (Ty.path "alloc::string::String")::["new"] in
       M.alloc α0 in
     let* α0 :=
       ltac:(M.get_method (fun ℐ =>
         std.io.Read.read_to_string
-          (Self := Ty.apply (Ty.path "std::process::ChildStdout") [])
+          (Self := Ty.path "std::process::ChildStdout")
           (Trait := ℐ))) in
     let* α1 := M.read ((M.var "std::process::Child::Get_stdout") process) in
     let* α2 :=
       M.call
         ((Ty.apply
               (Ty.path "core::option::Option")
-              [Ty.apply (Ty.path "std::process::ChildStdout") []])::["unwrap"]
+              [Ty.path "std::process::ChildStdout"])::["unwrap"]
           α1) in
     let* α3 := M.alloc α2 in
     let* α4 := M.call (α0 (borrow_mut α3) (borrow_mut s)) in
@@ -211,14 +195,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.apply
-                        (Ty.path "core::fmt::rt::Argument")
-                        [])::["new_display"]
+                  ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                     (borrow why)) in
               let* α3 := M.alloc [ α2 ] in
               let* α4 :=
                 M.call
-                  ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                  ((Ty.path "core::fmt::Arguments")::["new_v1"]
                     (pointer_coercion "Unsize" (borrow α1))
                     (pointer_coercion "Unsize" (borrow α3))) in
               let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
@@ -226,7 +208,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α6
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -238,14 +220,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow s)) in
                 let* α3 := M.alloc [ α2 ] in
                 let* α4 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α1))
                       (pointer_coercion "Unsize" (borrow α3))) in
                 let* α5 := M.call ((M.var "std::io::stdio::_print") α4) in
@@ -253,7 +233,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read α0
   | _, _ => M.impossible

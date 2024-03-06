@@ -31,8 +31,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.apply (Ty.path "std::thread::JoinHandle") [Ty.tuple];
-                Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"] in
+              [Ty.apply (Ty.path "std::thread::JoinHandle") [Ty.tuple []];
+                Ty.path "alloc::alloc::Global"])::["new"] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
@@ -81,7 +81,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple;
+                        Ty.tuple [];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -110,18 +110,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                               let* α2 := M.alloc [ α0; α1 ] in
                                               let* α3 :=
                                                 M.call
-                                                  ((Ty.apply
-                                                        (Ty.path
-                                                          "core::fmt::rt::Argument")
-                                                        [])::["new_display"]
+                                                  ((Ty.path
+                                                        "core::fmt::rt::Argument")::["new_display"]
                                                     (borrow i)) in
                                               let* α4 := M.alloc [ α3 ] in
                                               let* α5 :=
                                                 M.call
-                                                  ((Ty.apply
-                                                        (Ty.path
-                                                          "core::fmt::Arguments")
-                                                        [])::["new_v1"]
+                                                  ((Ty.path
+                                                        "core::fmt::Arguments")::["new_v1"]
                                                     (pointer_coercion
                                                       "Unsize"
                                                       (borrow α2))
@@ -137,29 +133,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc tt in
                                           let* α0 := M.alloc tt in
                                           M.read α0) :
-                                          Ty.tuple
+                                          Ty.tuple []
                                       ]) :
-                                    Ty.tuple)) in
+                                    Ty.tuple [])) in
                             let* α1 :=
                               M.call
                                 ((Ty.apply
                                       (Ty.path "alloc::vec::Vec")
                                       [Ty.apply
                                           (Ty.path "std::thread::JoinHandle")
-                                          [Ty.tuple];
-                                        Ty.apply
-                                          (Ty.path "alloc::alloc::Global")
-                                          []])::["push"]
+                                          [Ty.tuple []];
+                                        Ty.path
+                                          "alloc::alloc::Global"])::["push"]
                                   (borrow_mut children)
                                   α0) in
                             M.alloc α1 in
                           M.alloc tt
                         | _ => M.break_match
                         end) :
-                        Ty.tuple
+                        Ty.tuple []
                     ] in
                 M.alloc tt)) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.pure (use α4) in
     let* α0 :=
@@ -168,8 +163,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Self :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.apply (Ty.path "std::thread::JoinHandle") [Ty.tuple];
-                Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.apply (Ty.path "std::thread::JoinHandle") [Ty.tuple []];
+                Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α1 := M.read children in
     let* α2 := M.call (α0 α1) in
@@ -190,8 +185,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "alloc::vec::into_iter::IntoIter")
                           [Ty.apply
                               (Ty.path "std::thread::JoinHandle")
-                              [Ty.tuple];
-                            Ty.apply (Ty.path "alloc::alloc::Global") []])
+                              [Ty.tuple []];
+                            Ty.path "alloc::alloc::Global"])
                       (Trait := ℐ))) in
                 let* α1 := M.call (α0 (borrow_mut iter)) in
                 let* α2 := M.alloc α1 in
@@ -208,7 +203,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.alloc α2
                       | _ => M.break_match
                       end) :
-                      Ty.tuple;
+                      Ty.tuple [];
                     fun γ =>
                       (let* α0 := M.read γ in
                       match α0 with
@@ -221,7 +216,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.call
                             ((Ty.apply
                                   (Ty.path "std::thread::JoinHandle")
-                                  [Ty.tuple])::["join"]
+                                  [Ty.tuple []])::["join"]
                               α0) in
                         let* α2 := M.alloc α1 in
                         match_operator
@@ -229,10 +224,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           [ fun γ => (M.alloc tt) : Ty.path "unit" ]
                       | _ => M.break_match
                       end) :
-                      Ty.tuple
+                      Ty.tuple []
                   ] in
               M.alloc tt)) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read (use α4)
   | _, _ => M.impossible

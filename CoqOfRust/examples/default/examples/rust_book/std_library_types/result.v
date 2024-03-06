@@ -2,12 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
+  (* Enum MathError *)
   
-  
-  Module  Impl_core_fmt_Debug_for_result_checked_MathError.
-  Section Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self : Ty.t :=
-      Ty.apply (Ty.path "result::checked::MathError") [].
+  Module Impl_core_fmt_Debug_for_result_checked_MathError.
+    Definition Self : Ty.t := Ty.path "result::checked::MathError".
     
     (*
         Debug
@@ -60,23 +58,18 @@ Module checked.
                 Ty.apply (Ty.path "ref") [Ty.path "str"]
             ] in
         let* α2 := M.read α1 in
-        M.call
-          ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α2)
+        M.call ((Ty.path "core::fmt::Formatter")::["write_str"] α0 α2)
       | _, _ => M.impossible
       end.
     
-    Definition AssociatedFunction_fmt : Instance.t := {
-      Notations.double_colon := fmt;
-    }.
-    
-    Definition ℐ : Instance.t := [("fmt", fmt)].
-  End Impl_core_fmt_Debug_for_result_checked_MathError.
+    Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
-      Ty.apply
-        (Ty.path "core::result::Result")
-        [Ty.path "f64"; Ty.apply (Ty.path "result::checked::MathError") []].
+      (Ty.path "result::checked::MathResult") =
+        (Ty.apply
+          (Ty.path "core::result::Result")
+          [Ty.path "f64"; Ty.path "result::checked::MathError"]).
   
   (*
       pub fn div(x: f64, y: f64) -> MathResult {
@@ -210,14 +203,12 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.apply
-                        (Ty.path "core::fmt::rt::Argument")
-                        [])::["new_debug"]
+                  ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                     (borrow why)) in
               let* α3 := M.alloc [ α2 ] in
               let* α4 :=
                 M.call
-                  ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                  ((Ty.path "core::fmt::Arguments")::["new_v1"]
                     (pointer_coercion "Unsize" (borrow α1))
                     (pointer_coercion "Unsize" (borrow α3))) in
               let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
@@ -248,16 +239,12 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 := M.alloc [ α0 ] in
                       let* α2 :=
                         M.call
-                          ((Ty.apply
-                                (Ty.path "core::fmt::rt::Argument")
-                                [])::["new_debug"]
+                          ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                             (borrow why)) in
                       let* α3 := M.alloc [ α2 ] in
                       let* α4 :=
                         M.call
-                          ((Ty.apply
-                                (Ty.path "core::fmt::Arguments")
-                                [])::["new_v1"]
+                          ((Ty.path "core::fmt::Arguments")::["new_v1"]
                             (pointer_coercion "Unsize" (borrow α1))
                             (pointer_coercion "Unsize" (borrow α3))) in
                       let* α5 :=
@@ -290,16 +277,13 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* α1 := M.alloc [ α0 ] in
                               let* α2 :=
                                 M.call
-                                  ((Ty.apply
-                                        (Ty.path "core::fmt::rt::Argument")
-                                        [])::["new_debug"]
+                                  ((Ty.path
+                                        "core::fmt::rt::Argument")::["new_debug"]
                                     (borrow why)) in
                               let* α3 := M.alloc [ α2 ] in
                               let* α4 :=
                                 M.call
-                                  ((Ty.apply
-                                        (Ty.path "core::fmt::Arguments")
-                                        [])::["new_v1"]
+                                  ((Ty.path "core::fmt::Arguments")::["new_v1"]
                                     (pointer_coercion "Unsize" (borrow α1))
                                     (pointer_coercion "Unsize" (borrow α3))) in
                               let* α5 :=
@@ -356,12 +340,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow α6)) in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α8))) in
         let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in

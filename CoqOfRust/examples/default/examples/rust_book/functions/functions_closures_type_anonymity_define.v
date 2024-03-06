@@ -33,7 +33,7 @@ Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.FnOnce.call_once
             (Self := F)
-            (Args := Ty.tuple)
+            (Args := Ty.tuple [])
             (Trait := ℐ))) in
       let* α1 := M.read f in
       let* α2 := M.call (α0 α1 tt) in

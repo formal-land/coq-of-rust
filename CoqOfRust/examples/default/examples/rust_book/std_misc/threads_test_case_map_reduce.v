@@ -109,7 +109,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
               [Ty.apply (Ty.path "std::thread::JoinHandle") [Ty.path "u32"];
-                Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"] in
+                Ty.path "alloc::alloc::Global"])::["new"] in
       M.alloc α0 in
     let* chunked_data :=
       let* α0 := M.read data in
@@ -122,12 +122,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Self :=
               Ty.apply
                 (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                [Ty.apply (Ty.path "core::str::iter::SplitWhitespace") []])
+                [Ty.path "core::str::iter::SplitWhitespace"])
             (Trait := ℐ))) in
       let* α1 :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.enumerate
-            (Self := Ty.apply (Ty.path "core::str::iter::SplitWhitespace") [])
+            (Self := Ty.path "core::str::iter::SplitWhitespace")
             (Trait := ℐ))) in
       let* α2 := M.read chunked_data in
       let* α3 := M.call (α1 α2) in
@@ -148,9 +148,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           Ty.apply
                             (Ty.path
                               "core::iter::adapters::enumerate::Enumerate")
-                            [Ty.apply
-                                (Ty.path "core::str::iter::SplitWhitespace")
-                                []])
+                            [Ty.path "core::str::iter::SplitWhitespace"])
                         (Trait := ℐ))) in
                   let* α1 := M.call (α0 (borrow_mut iter)) in
                   let* α2 := M.alloc α1 in
@@ -167,7 +165,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple;
+                        Ty.tuple [];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -190,22 +188,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 let* α3 := M.alloc [ α0; α1; α2 ] in
                                 let* α4 :=
                                   M.call
-                                    ((Ty.apply
-                                          (Ty.path "core::fmt::rt::Argument")
-                                          [])::["new_display"]
+                                    ((Ty.path
+                                          "core::fmt::rt::Argument")::["new_display"]
                                       (borrow i)) in
                                 let* α5 :=
                                   M.call
-                                    ((Ty.apply
-                                          (Ty.path "core::fmt::rt::Argument")
-                                          [])::["new_display"]
+                                    ((Ty.path
+                                          "core::fmt::rt::Argument")::["new_display"]
                                       (borrow data_segment)) in
                                 let* α6 := M.alloc [ α4; α5 ] in
                                 let* α7 :=
                                   M.call
-                                    ((Ty.apply
-                                          (Ty.path "core::fmt::Arguments")
-                                          [])::["new_v1"]
+                                    ((Ty.path
+                                          "core::fmt::Arguments")::["new_v1"]
                                       (pointer_coercion "Unsize" (borrow α3))
                                       (pointer_coercion
                                         "Unsize"
@@ -233,14 +228,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                       Ty.apply
                                                         (Ty.path
                                                           "core::iter::adapters::map::Map")
-                                                        [Ty.apply
-                                                            (Ty.path
-                                                              "core::str::iter::Chars")
-                                                            [];
+                                                        [Ty.path
+                                                            "core::str::iter::Chars";
                                                           Ty.function
                                                             [Ty.tuple
-                                                                (Ty.path
-                                                                  "char")]
+                                                                [Ty.path
+                                                                    "char"]]
                                                             (Ty.path "u32")])
                                                     (S := Ty.path "u32")
                                                     (Trait := ℐ))) in
@@ -248,15 +241,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                 ltac:(M.get_method (fun ℐ =>
                                                   core.iter.traits.iterator.Iterator.map
                                                     (Self :=
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "core::str::iter::Chars")
-                                                        [])
+                                                      Ty.path
+                                                        "core::str::iter::Chars")
                                                     (B := Ty.path "u32")
                                                     (F :=
                                                       Ty.function
                                                         [Ty.tuple
-                                                            (Ty.path "char")]
+                                                            [Ty.path "char"]]
                                                         (Ty.path "u32"))
                                                     (Trait := ℐ))) in
                                               let* α2 := M.read data_segment in
@@ -320,25 +311,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   M.alloc [ α0; α1; α2 ] in
                                                 let* α4 :=
                                                   M.call
-                                                    ((Ty.apply
-                                                          (Ty.path
-                                                            "core::fmt::rt::Argument")
-                                                          [])::["new_display"]
+                                                    ((Ty.path
+                                                          "core::fmt::rt::Argument")::["new_display"]
                                                       (borrow i)) in
                                                 let* α5 :=
                                                   M.call
-                                                    ((Ty.apply
-                                                          (Ty.path
-                                                            "core::fmt::rt::Argument")
-                                                          [])::["new_display"]
+                                                    ((Ty.path
+                                                          "core::fmt::rt::Argument")::["new_display"]
                                                       (borrow result)) in
                                                 let* α6 := M.alloc [ α4; α5 ] in
                                                 let* α7 :=
                                                   M.call
-                                                    ((Ty.apply
-                                                          (Ty.path
-                                                            "core::fmt::Arguments")
-                                                          [])::["new_v1"]
+                                                    ((Ty.path
+                                                          "core::fmt::Arguments")::["new_v1"]
                                                       (pointer_coercion
                                                         "Unsize"
                                                         (borrow α3))
@@ -363,9 +348,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                         [Ty.apply
                                             (Ty.path "std::thread::JoinHandle")
                                             [Ty.path "u32"];
-                                          Ty.apply
-                                            (Ty.path "alloc::alloc::Global")
-                                            []])::["push"]
+                                          Ty.path
+                                            "alloc::alloc::Global"])::["push"]
                                     (borrow_mut children)
                                     α0) in
                               M.alloc α1 in
@@ -373,10 +357,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           end
                         | _ => M.break_match
                         end) :
-                        Ty.tuple
+                        Ty.tuple []
                     ] in
                 M.alloc tt)) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.pure (use α6) in
     let* final_result :=
@@ -391,12 +375,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [Ty.apply
                         (Ty.path "std::thread::JoinHandle")
                         [Ty.path "u32"];
-                      Ty.apply (Ty.path "alloc::alloc::Global") []];
+                      Ty.path "alloc::alloc::Global"];
                   Ty.function
                     [Ty.tuple
-                        (Ty.apply
-                          (Ty.path "std::thread::JoinHandle")
-                          [Ty.path "u32"])]
+                        [Ty.apply
+                            (Ty.path "std::thread::JoinHandle")
+                            [Ty.path "u32"]]]
                     (Ty.path "u32")])
             (S := Ty.path "u32")
             (Trait := ℐ))) in
@@ -407,14 +391,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
                 [Ty.apply (Ty.path "std::thread::JoinHandle") [Ty.path "u32"];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])
+                  Ty.path "alloc::alloc::Global"])
             (B := Ty.path "u32")
             (F :=
               Ty.function
                 [Ty.tuple
-                    (Ty.apply
-                      (Ty.path "std::thread::JoinHandle")
-                      [Ty.path "u32"])]
+                    [Ty.apply
+                        (Ty.path "std::thread::JoinHandle")
+                        [Ty.path "u32"]]]
                 (Ty.path "u32"))
             (Trait := ℐ))) in
       let* α2 :=
@@ -424,7 +408,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
                 [Ty.apply (Ty.path "std::thread::JoinHandle") [Ty.path "u32"];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])
+                  Ty.path "alloc::alloc::Global"])
             (Trait := ℐ))) in
       let* α3 := M.read children in
       let* α4 := M.call (α2 α3) in
@@ -457,9 +441,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
                                 [dyn [core.any.Any.Trait];
-                                  Ty.apply
-                                    (Ty.path "alloc::alloc::Global")
-                                    []]])::["unwrap"]
+                                  Ty.path "alloc::alloc::Global"]])::["unwrap"]
                         α1)) :
                     Ty.path "u32"
                 ]) :
@@ -474,12 +456,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow final_result)) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in

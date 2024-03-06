@@ -18,12 +18,11 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow x)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow x)) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -75,16 +74,14 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow x)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow x)) in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow y)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow y)) in
         let* α6 := M.alloc [ α4; α5 ] in
         let* α7 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α6))) in
         let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in

@@ -2,14 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
+  (* Enum MathError *)
   
-  
-  Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-  Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+  Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Definition Self : Ty.t :=
-      Ty.apply
-        (Ty.path "result_chaining_with_question_mark::checked::MathError")
-        [].
+      Ty.path "result_chaining_with_question_mark::checked::MathError".
     
     (*
         Debug
@@ -68,26 +65,19 @@ Module checked.
                 Ty.apply (Ty.path "ref") [Ty.path "str"]
             ] in
         let* α2 := M.read α1 in
-        M.call
-          ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α2)
+        M.call ((Ty.path "core::fmt::Formatter")::["write_str"] α0 α2)
       | _, _ => M.impossible
       end.
     
-    Definition AssociatedFunction_fmt : Instance.t := {
-      Notations.double_colon := fmt;
-    }.
-    
-    Definition ℐ : Instance.t := [("fmt", fmt)].
-  End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :
-      Ty.apply
-        (Ty.path "core::result::Result")
-        [Ty.path "f64";
-          Ty.apply
-            (Ty.path "result_chaining_with_question_mark::checked::MathError")
-            []].
+      (Ty.path "result_chaining_with_question_mark::checked::MathResult") =
+        (Ty.apply
+          (Ty.path "core::result::Result")
+          [Ty.path "f64";
+            Ty.path "result_chaining_with_question_mark::checked::MathError"]).
   
   (*
       fn div(x: f64, y: f64) -> MathResult {
@@ -203,10 +193,8 @@ Module checked.
             Ty.apply
               (Ty.path "core::result::Result")
               [Ty.path "f64";
-                Ty.apply
-                  (Ty.path
-                    "result_chaining_with_question_mark::checked::MathError")
-                  []]) in
+                Ty.path
+                  "result_chaining_with_question_mark::checked::MathError"]) in
       M.catch_return
         (let* ratio :=
           let* α0 :=
@@ -216,10 +204,8 @@ Module checked.
                   Ty.apply
                     (Ty.path "core::result::Result")
                     [Ty.path "f64";
-                      Ty.apply
-                        (Ty.path
-                          "result_chaining_with_question_mark::checked::MathError")
-                        []])
+                      Ty.path
+                        "result_chaining_with_question_mark::checked::MathError"])
                 (Trait := ℐ))) in
           let* α1 := M.read x in
           let* α2 := M.read y in
@@ -250,20 +236,14 @@ Module checked.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               [Ty.path "f64";
-                                Ty.apply
-                                  (Ty.path
-                                    "result_chaining_with_question_mark::checked::MathError")
-                                  []])
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"])
                           (R :=
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [Ty.apply
-                                  (Ty.path "core::convert::Infallible")
-                                  [];
-                                Ty.apply
-                                  (Ty.path
-                                    "result_chaining_with_question_mark::checked::MathError")
-                                  []])
+                              [Ty.path "core::convert::Infallible";
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"])
                           (Trait := ℐ))) in
                     let* α1 := M.read residual in
                     let* α2 := M.call (α0 α1) in
@@ -297,10 +277,8 @@ Module checked.
                   Ty.apply
                     (Ty.path "core::result::Result")
                     [Ty.path "f64";
-                      Ty.apply
-                        (Ty.path
-                          "result_chaining_with_question_mark::checked::MathError")
-                        []])
+                      Ty.path
+                        "result_chaining_with_question_mark::checked::MathError"])
                 (Trait := ℐ))) in
           let* α1 := M.read ratio in
           let* α2 :=
@@ -328,20 +306,14 @@ Module checked.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               [Ty.path "f64";
-                                Ty.apply
-                                  (Ty.path
-                                    "result_chaining_with_question_mark::checked::MathError")
-                                  []])
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"])
                           (R :=
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [Ty.apply
-                                  (Ty.path "core::convert::Infallible")
-                                  [];
-                                Ty.apply
-                                  (Ty.path
-                                    "result_chaining_with_question_mark::checked::MathError")
-                                  []])
+                              [Ty.path "core::convert::Infallible";
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"])
                           (Trait := ℐ))) in
                     let* α1 := M.read residual in
                     let* α2 := M.call (α0 α1) in
@@ -457,7 +429,7 @@ Module checked.
                 M.alloc α2
               | _ => M.break_match
               end) :
-              Ty.tuple;
+              Ty.tuple [];
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -471,16 +443,12 @@ Module checked.
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument")
-                            [])::["new_display"]
+                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                         (borrow value)) in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_v1"]
+                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
                   let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -488,7 +456,7 @@ Module checked.
                 M.alloc tt
               | _ => M.break_match
               end) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.read α4
     | _, _ => M.impossible

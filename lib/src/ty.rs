@@ -211,12 +211,18 @@ impl CoqType {
                 func,
                 args,
                 is_alias: _,
-            } => coq::Expression::just_name("Ty.apply").apply_many(&[
-                func.to_coq(),
-                coq::Expression::List {
-                    exprs: args.iter().map(|arg| arg.to_coq()).collect(),
-                },
-            ]),
+            } => {
+                if args.is_empty() {
+                    func.to_coq()
+                } else {
+                    coq::Expression::just_name("Ty.apply").apply_many(&[
+                        func.to_coq(),
+                        coq::Expression::List {
+                            exprs: args.iter().map(|arg| arg.to_coq()).collect(),
+                        },
+                    ])
+                }
+            }
             CoqType::Function { args, ret } => coq::Expression::just_name("Ty.function")
                 .apply_many(&[
                     coq::Expression::List {
@@ -224,8 +230,11 @@ impl CoqType {
                     },
                     ret.to_coq(),
                 ]),
-            CoqType::Tuple(tys) => coq::Expression::just_name("Ty.tuple")
-                .apply_many(&tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>()),
+            CoqType::Tuple(tys) => {
+                coq::Expression::just_name("Ty.tuple").apply(&coq::Expression::List {
+                    exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
+                })
+            }
             CoqType::OpaqueType(_) => coq::Expression::Variable {
                 ident: Path::new(&["_ (* OpaqueTy *)"]),
                 no_implicit: false,

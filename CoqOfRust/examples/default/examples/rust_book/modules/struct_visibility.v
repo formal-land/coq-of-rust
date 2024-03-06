@@ -2,15 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
+  (* Enum OpenBox *)
   
+  (* Enum ClosedBox *)
   
-  
-  
-  Module  Impl_struct_visibility_my_ClosedBox_T.
-  Section Impl_struct_visibility_my_ClosedBox_T.
+  Module Impl_struct_visibility_my_ClosedBox_T.
     Context {T : Set}.
     
-    Definition Self : Set :=
+    Definition Self : Ty.t :=
       Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [T].
     
     (*
@@ -26,11 +25,6 @@ Module my.
         M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}
       | _, _ => M.impossible
       end.
-    
-    Definition AssociatedFunction_new : Instance.t := {
-      Notations.double_colon := new;
-    }.
-  End Impl_struct_visibility_my_ClosedBox_T.
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
@@ -74,14 +68,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow
                 ((M.var "struct_visibility::my::OpenBox::Get_contents")
                   open_box))) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in

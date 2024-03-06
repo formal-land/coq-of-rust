@@ -33,62 +33,53 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* path :=
       let* α0 := M.read (mk_str ".") in
-      let* α1 :=
-        M.call ((Ty.apply (Ty.path "std::path::Path") [])::["new"] α0) in
+      let* α1 := M.call ((Ty.path "std::path::Path")::["new"] α0) in
       M.alloc α1 in
     let* _display :=
       let* α0 := M.read path in
-      let* α1 :=
-        M.call ((Ty.apply (Ty.path "std::path::Path") [])::["display"] α0) in
+      let* α1 := M.call ((Ty.path "std::path::Path")::["display"] α0) in
       M.alloc α1 in
     let* new_path :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.Deref.deref
-            (Self := Ty.apply (Ty.path "std::path::PathBuf") [])
+            (Self := Ty.path "std::path::PathBuf")
             (Trait := ℐ))) in
       let* α1 := M.read path in
       let* α2 := M.read (mk_str "a") in
-      let* α3 :=
-        M.call ((Ty.apply (Ty.path "std::path::Path") [])::["join"] α1 α2) in
+      let* α3 := M.call ((Ty.path "std::path::Path")::["join"] α1 α2) in
       let* α4 := M.alloc α3 in
       let* α5 := M.call (α0 (borrow α4)) in
       let* α6 := M.read (mk_str "b") in
-      let* α7 :=
-        M.call ((Ty.apply (Ty.path "std::path::Path") [])::["join"] α5 α6) in
+      let* α7 := M.call ((Ty.path "std::path::Path")::["join"] α5 α6) in
       M.alloc α7 in
     let* _ :=
       let* α0 := M.read (mk_str "c") in
       let* α1 :=
         M.call
-          ((Ty.apply (Ty.path "std::path::PathBuf") [])::["push"]
-            (borrow_mut new_path)
-            α0) in
+          ((Ty.path "std::path::PathBuf")::["push"] (borrow_mut new_path) α0) in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "myfile.tar.gz") in
       let* α1 :=
         M.call
-          ((Ty.apply (Ty.path "std::path::PathBuf") [])::["push"]
-            (borrow_mut new_path)
-            α0) in
+          ((Ty.path "std::path::PathBuf")::["push"] (borrow_mut new_path) α0) in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "package.tgz") in
       let* α1 :=
         M.call
-          ((Ty.apply (Ty.path "std::path::PathBuf") [])::["set_file_name"]
+          ((Ty.path "std::path::PathBuf")::["set_file_name"]
             (borrow_mut new_path)
             α0) in
       M.alloc α1 in
     let* α0 :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
-          (Self := Ty.apply (Ty.path "std::path::PathBuf") [])
+          (Self := Ty.path "std::path::PathBuf")
           (Trait := ℐ))) in
     let* α1 := M.call (α0 (borrow new_path)) in
-    let* α2 :=
-      M.call ((Ty.apply (Ty.path "std::path::Path") [])::["to_str"] α1) in
+    let* α2 := M.call ((Ty.path "std::path::Path")::["to_str"] α1) in
     let* α3 := M.alloc α2 in
     let* α0 :=
       match_operator
@@ -105,7 +96,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α2
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -119,14 +110,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow s)) in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
                 let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -134,7 +123,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read α0
   | _, _ => M.impossible

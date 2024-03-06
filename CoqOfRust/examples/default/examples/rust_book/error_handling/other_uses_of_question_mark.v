@@ -2,21 +2,19 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
-    fun T =>
-      Ty.apply
-        (Ty.path "core::result::Result")
-        [T;
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [dyn [core.error.Error.Trait];
-              Ty.apply (Ty.path "alloc::alloc::Global") []]].
+    (Ty.path "other_uses_of_question_mark::Result") =
+      (fun T =>
+        Ty.apply
+          (Ty.path "core::result::Result")
+          [T;
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [dyn [core.error.Error.Trait]; Ty.path "alloc::alloc::Global"]]).
 
+(* Struct EmptyVec *)
 
-
-Module  Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "other_uses_of_question_mark::EmptyVec") [].
+Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
   (*
   Debug
@@ -28,23 +26,15 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "EmptyVec") in
-      M.call
-        ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_str"] α0 α1)
+      M.call ((Ty.path "core::fmt::Formatter")::["write_str"] α0 α1)
     | _, _ => M.impossible
     end.
   
-  Definition AssociatedFunction_fmt : Instance.t := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Definition ℐ : Instance.t := [("fmt", fmt)].
-End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
+  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
-Module  Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "other_uses_of_question_mark::EmptyVec") [].
+Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -61,32 +51,19 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       let* α2 := M.alloc [ α1 ] in
       let* α3 :=
         M.call
-          ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+          ((Ty.path "core::fmt::Arguments")::["new_const"]
             (pointer_coercion "Unsize" (borrow α2))) in
-      M.call
-        ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_fmt"] α0 α3)
+      M.call ((Ty.path "core::fmt::Formatter")::["write_fmt"] α0 α3)
     | _, _ => M.impossible
     end.
   
-  Definition AssociatedFunction_fmt : Instance.t := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Definition ℐ : Instance.t := [("fmt", fmt)].
-End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
+  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
-Module  Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "other_uses_of_question_mark::EmptyVec") [].
+Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
-  Definition ℐ : Instance.t := [("source", source);
-    ("type_id", type_id);
-    ("description", description);
-    ("cause", cause);
-    ("provide", provide)].
-End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
+  Definition ℐ : Instance.t := [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 (*
@@ -109,7 +86,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [dyn [core.error.Error.Trait];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []]]) in
+                  Ty.path "alloc::alloc::Global"]]) in
     M.catch_return
       (let* first :=
         let* α0 :=
@@ -121,9 +98,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.apply
                       (Ty.path "ref")
                       [Ty.apply (Ty.path "ref") [Ty.path "str"]];
-                    Ty.apply
-                      (Ty.path "other_uses_of_question_mark::EmptyVec")
-                      []])
+                    Ty.path "other_uses_of_question_mark::EmptyVec"])
               (Trait := ℐ))) in
         let* α1 :=
           ltac:(M.get_method (fun ℐ =>
@@ -132,7 +107,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                    Ty.apply (Ty.path "alloc::alloc::Global") []])
+                    Ty.path "alloc::alloc::Global"])
               (Trait := ℐ))) in
         let* α2 := M.call (α1 (borrow vec)) in
         let* α3 :=
@@ -174,17 +149,12 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
                                 [dyn [core.error.Error.Trait];
-                                  Ty.apply
-                                    (Ty.path "alloc::alloc::Global")
-                                    []]])
+                                  Ty.path "alloc::alloc::Global"]])
                         (R :=
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply
-                                (Ty.path
-                                  "other_uses_of_question_mark::EmptyVec")
-                                []])
+                            [Ty.path "core::convert::Infallible";
+                              Ty.path "other_uses_of_question_mark::EmptyVec"])
                         (Trait := ℐ))) in
                   let* α1 := M.read residual in
                   let* α2 := M.call (α0 α1) in
@@ -221,8 +191,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Self :=
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.path "i32";
-                    Ty.apply (Ty.path "core::num::error::ParseIntError") []])
+                  [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"])
               (Trait := ℐ))) in
         let* α1 := M.read first in
         let* α2 := M.read (deref α1) in
@@ -251,16 +220,12 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
                                 [dyn [core.error.Error.Trait];
-                                  Ty.apply
-                                    (Ty.path "alloc::alloc::Global")
-                                    []]])
+                                  Ty.path "alloc::alloc::Global"]])
                         (R :=
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply
-                                (Ty.path "core::num::error::ParseIntError")
-                                []])
+                            [Ty.path "core::convert::Infallible";
+                              Ty.path "core::num::error::ParseIntError"])
                         (Trait := ℐ))) in
                   let* α1 := M.read residual in
                   let* α2 := M.call (α0 α1) in
@@ -323,14 +288,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow n)) in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
                 let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -338,7 +301,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -352,14 +315,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow e)) in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
                 let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -367,7 +328,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -409,7 +370,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
               [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"] in
+                Ty.path "alloc::alloc::Global"])::["new"] in
       M.alloc α0 in
     let* strings :=
       let* α0 := M.read (mk_str "tofu") in

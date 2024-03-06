@@ -21,8 +21,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (R :=
           Ty.apply
             (Ty.path "core::result::Result")
-            [Ty.tuple;
-              Ty.apply (Ty.path "core::num::error::ParseIntError") []]) in
+            [Ty.tuple []; Ty.path "core::num::error::ParseIntError"]) in
     M.catch_return
       (let* number_str := M.copy (mk_str "10") in
       let* number :=
@@ -67,14 +66,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow number)) in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              ((Ty.path "core::fmt::Arguments")::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α4))) in
           let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in

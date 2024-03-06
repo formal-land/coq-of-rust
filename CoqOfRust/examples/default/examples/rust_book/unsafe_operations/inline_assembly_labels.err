@@ -1,57 +1,33 @@
-warning: unused variable: `name`
-    --> lib/src/top_level.rs:1976:17
+warning: unused variable: `ty_params`
+    --> lib/src/top_level.rs:1889:17
      |
-1976 |                 name,
-     |                 ^^^^ help: try ignoring the field: `name: _`
+1889 |                 ty_params,
+     |                 ^^^^^^^^^ help: try ignoring the field: `ty_params: _`
      |
      = note: `#[warn(unused_variables)]` on by default
 
-warning: unused variable: `ty_params`
-    --> lib/src/top_level.rs:1977:17
-     |
-1977 |                 ty_params,
-     |                 ^^^^^^^^^ help: try ignoring the field: `ty_params: _`
-
 warning: unused variable: `variants`
-    --> lib/src/top_level.rs:1978:17
+    --> lib/src/top_level.rs:1890:17
      |
-1978 |                 variants,
+1890 |                 variants,
      |                 ^^^^^^^^ help: try ignoring the field: `variants: _`
 
-warning: unused variable: `tss`
-    --> lib/src/top_level.rs:1980:44
-     |
-1980 |             TopLevelItem::TypeStructStruct(tss) => nil(),
-     |                                            ^^^ help: if this is intentional, prefix it with an underscore: `_tss`
-
-warning: unused variable: `name`
-    --> lib/src/top_level.rs:1982:17
-     |
-1982 |                 name,
-     |                 ^^^^ help: try ignoring the field: `name: _`
-
 warning: unused variable: `ty_params`
-    --> lib/src/top_level.rs:1983:17
+    --> lib/src/top_level.rs:1895:17
      |
-1983 |                 ty_params,
+1895 |                 ty_params,
      |                 ^^^^^^^^^ help: try ignoring the field: `ty_params: _`
 
 warning: unused variable: `fields`
-    --> lib/src/top_level.rs:1984:17
+    --> lib/src/top_level.rs:1896:17
      |
-1984 |                 fields,
+1896 |                 fields,
      |                 ^^^^^^ help: try ignoring the field: `fields: _`
 
-warning: unused variable: `name`
-    --> lib/src/top_level.rs:1986:44
-     |
-1986 |             TopLevelItem::TypeStructUnit { name, ty_params } => nil(),
-     |                                            ^^^^ help: try ignoring the field: `name: _`
-
 warning: unused variable: `ty_params`
-    --> lib/src/top_level.rs:1986:50
+    --> lib/src/top_level.rs:1898:50
      |
-1986 |             TopLevelItem::TypeStructUnit { name, ty_params } => nil(),
+1898 |             TopLevelItem::TypeStructUnit { name, ty_params } => {
      |                                                  ^^^^^^^^^ help: try ignoring the field: `ty_params: _`
 
 warning: variants `Record` and `Inductive` are never constructed
@@ -69,98 +45,110 @@ warning: variants `Record` and `Inductive` are never constructed
    = note: `#[warn(dead_code)]` on by default
 
 warning: field `class` is never read
-  --> lib/src/coq.rs:85:5
+  --> lib/src/coq.rs:84:5
    |
-82 | pub(crate) struct Instance<'a> {
+81 | pub(crate) struct Instance<'a> {
    |                   -------- field in this struct
 ...
-85 |     class: Expression<'a>,
+84 |     class: Expression<'a>,
    |     ^^^^^
    |
    = note: `Instance` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
 
 warning: variant `Ltac` is never constructed
-   --> lib/src/coq.rs:107:5
+   --> lib/src/coq.rs:106:5
     |
-92  | pub(crate) enum DefinitionKind<'a> {
+91  | pub(crate) enum DefinitionKind<'a> {
     |                 -------------- variant in this enum
 ...
-107 |     Ltac {
+106 |     Ltac {
     |     ^^^^
     |
     = note: `DefinitionKind` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
 
-warning: variants `Product`, `RecordField`, `RecordUpdate`, and `ModeWrapper` are never constructed
-   --> lib/src/coq.rs:186:5
+warning: multiple variants are never constructed
+   --> lib/src/coq.rs:178:5
     |
-146 | pub(crate) enum Expression<'a> {
+145 | pub(crate) enum Expression<'a> {
     |                 ---------- variants in this enum
 ...
-186 |     Product {
+178 |     PiType {
+    |     ^^^^^^
+...
+190 |     Product {
     |     ^^^^^^^
 ...
-197 |     RecordField {
+201 |     RecordField {
     |     ^^^^^^^^^^^
 ...
-201 |     RecordUpdate {
+205 |     RecordUpdate {
     |     ^^^^^^^^^^^^
 ...
-210 |     ModeWrapper {
+214 |     ModeWrapper {
     |     ^^^^^^^^^^^
+...
+222 |     SigmaType {
+    |     ^^^^^^^^^
+...
+233 |     Unit,
+    |     ^^^^
     |
     = note: `Expression` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
 
 warning: associated function `new_vec` is never used
-   --> lib/src/coq.rs:312:19
+   --> lib/src/coq.rs:316:19
     |
-304 | impl<'a> TopLevel<'a> {
+308 | impl<'a> TopLevel<'a> {
     | --------------------- associated function in this implementation
 ...
-312 |     pub(crate) fn new_vec(items: Vec<TopLevelItem<'a>>) -> Self {
+316 |     pub(crate) fn new_vec(items: Vec<TopLevelItem<'a>>) -> Self {
     |                   ^^^^^^^
 
 warning: associated function `new` is never used
-   --> lib/src/coq.rs:603:19
+   --> lib/src/coq.rs:590:19
     |
-602 | impl<'a> Record<'a> {
+589 | impl<'a> Record<'a> {
     | ------------------- associated function in this implementation
-603 |     pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[RecordFieldDef<'a>]) -> Self {
+590 |     pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[RecordFieldDef<'a>]) -> Self {
     |                   ^^^
 
 warning: associated function `new` is never used
-   --> lib/src/coq.rs:711:19
+   --> lib/src/coq.rs:698:19
     |
-710 | impl<'a> IndFieldDef<'a> {
+697 | impl<'a> IndFieldDef<'a> {
     | ------------------------ associated function in this implementation
-711 |     pub(crate) fn new(name: &String, item: Rc<VariantItem>) -> Self {
+698 |     pub(crate) fn new(name: &String, item: Rc<VariantItem>) -> Self {
     |                   ^^^
 
 warning: associated function `new` is never used
-   --> lib/src/coq.rs:746:19
+   --> lib/src/coq.rs:733:19
     |
-745 | impl<'a> Inductive<'a> {
+732 | impl<'a> Inductive<'a> {
     | ---------------------- associated function in this implementation
-746 |     pub(crate) fn new(
+733 |     pub(crate) fn new(
     |                   ^^^
 
 warning: associated function `new` is never used
-   --> lib/src/coq.rs:844:19
+   --> lib/src/coq.rs:831:19
     |
-843 | impl<'a> RecordFieldDef<'a> {
+830 | impl<'a> RecordFieldDef<'a> {
     | --------------------------- associated function in this implementation
-844 |     pub(crate) fn new(ident: &Option<String>, ty: &Expression<'a>) -> Self {
+831 |     pub(crate) fn new(ident: &Option<String>, ty: &Expression<'a>) -> Self {
     |                   ^^^
 
-warning: associated functions `multiply` and `multiply_many` are never used
-    --> lib/src/coq.rs:1146:19
+warning: associated items `arrows_from`, `multiply`, and `multiply_many` are never used
+    --> lib/src/coq.rs:1126:19
      |
-898  | impl<'a> Expression<'a> {
-     | ----------------------- associated functions in this implementation
+885  | impl<'a> Expression<'a> {
+     | ----------------------- associated items in this implementation
 ...
-1146 |     pub(crate) fn multiply(lhs: Self, rhs: Self) -> Self {
+1126 |     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
+     |                   ^^^^^^^^^^^
+...
+1137 |     pub(crate) fn multiply(lhs: Self, rhs: Self) -> Self {
      |                   ^^^^^^^^
 ...
-1153 |     pub(crate) fn multiply_many(exprs: &[Self]) -> Self {
+1144 |     pub(crate) fn multiply_many(exprs: &[Self]) -> Self {
      |                   ^^^^^^^^^^^^^
 
 warning: method `prefix_last_by_impl` is never used
@@ -179,40 +167,40 @@ warning: function `compile_qpath` is never used
     |               ^^^^^^^^^^^^^
 
 warning: associated function `to_coq_enum` is never used
-    --> lib/src/top_level.rs:1774:8
+    --> lib/src/top_level.rs:1685:8
      |
-1773 | impl TopLevelItem {
+1684 | impl TopLevelItem {
      | ----------------- associated function in this implementation
-1774 |     fn to_coq_enum<'a>(
+1685 |     fn to_coq_enum<'a>(
      |        ^^^^^^^^^^^
 
 warning: function `struct_field_value` is never used
-    --> lib/src/top_level.rs:2309:4
+    --> lib/src/top_level.rs:2191:4
      |
-2309 | fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
+2191 | fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
      |    ^^^^^^^^^^^^^^^^^^
 
 warning: function `enum_struct_field_value` is never used
-    --> lib/src/top_level.rs:2336:4
+    --> lib/src/top_level.rs:2218:4
      |
-2336 | fn enum_struct_field_value<'a>(
+2218 | fn enum_struct_field_value<'a>(
      |    ^^^^^^^^^^^^^^^^^^^^^^^
 
 warning: function `enum_tuple_field_value` is never used
-    --> lib/src/top_level.rs:2398:4
+    --> lib/src/top_level.rs:2280:4
      |
-2398 | fn enum_tuple_field_value(
+2280 | fn enum_tuple_field_value(
      |    ^^^^^^^^^^^^^^^^^^^^^^
 
 warning: methods `to_coq` and `to_doc` are never used
-    --> lib/src/top_level.rs:2482:8
+    --> lib/src/top_level.rs:2364:8
      |
-2481 | impl TypeStructStruct {
+2363 | impl TypeStructStruct {
      | --------------------- methods in this implementation
-2482 |     fn to_coq(&self) -> coq::TopLevel {
+2364 |     fn to_coq(&self) -> coq::TopLevel {
      |        ^^^^^^
 ...
-2697 |     fn to_doc(&self) -> Doc {
+2464 |     fn to_doc(&self) -> Doc {
      |        ^^^^^^
 
 warning: variants `PathInTrait` and `OpaqueType` are never constructed
@@ -228,6 +216,18 @@ warning: variants `PathInTrait` and `OpaqueType` are never constructed
    |     ^^^^^^^^^^
    |
    = note: `CoqType` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: methods `has_opaque_types` and `opaque_types_bounds` are never used
+   --> lib/src/ty.rs:319:19
+    |
+193 | impl CoqType {
+    | ------------ methods in this implementation
+...
+319 |     pub(crate) fn has_opaque_types(&self) -> bool {
+    |                   ^^^^^^^^^^^^^^^^
+...
+338 |     pub(crate) fn opaque_types_bounds(&self) -> Vec<Vec<Path>> {
+    |                   ^^^^^^^^^^^^^^^^^^^
 
 warning: formatting may not be suitable for sub-register argument
   --> examples/rust_book/unsafe_operations/inline_assembly_labels.rs:8:18

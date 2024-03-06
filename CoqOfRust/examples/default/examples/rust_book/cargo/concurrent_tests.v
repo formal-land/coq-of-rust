@@ -29,16 +29,14 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::Arguments")
-                          [])::["new_const"]
+                    ((Ty.path "core::fmt::Arguments")::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
                 let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -49,16 +47,14 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::Arguments")
-                          [])::["new_const"]
+                    ((Ty.path "core::fmt::Arguments")::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
                 let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -85,23 +81,19 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* file :=
-        let* α0 :=
-          M.call (Ty.apply (Ty.path "std::fs::OpenOptions") [])::["new"] in
+        let* α0 := M.call (Ty.path "std::fs::OpenOptions")::["new"] in
         let* α1 := M.alloc α0 in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["append"]
+            ((Ty.path "std::fs::OpenOptions")::["append"]
               (borrow_mut α1)
               true) in
         let* α3 :=
-          M.call
-            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["create"]
-              α2
-              true) in
+          M.call ((Ty.path "std::fs::OpenOptions")::["create"] α2 true) in
         let* α4 := M.read (mk_str "ferris.txt") in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["open"]
+            ((Ty.path "std::fs::OpenOptions")::["open"]
               (borrow (deref α3))
               α4) in
         let* α6 := M.read (mk_str "Failed to open ferris.txt") in
@@ -109,8 +101,8 @@ Module tests.
           M.call
             ((Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "std::fs::File") [];
-                    Ty.apply (Ty.path "std::io::error::Error") []])::["expect"]
+                  [Ty.path "std::fs::File";
+                    Ty.path "std::io::error::Error"])::["expect"]
               α5
               α6) in
         M.alloc α7 in
@@ -159,7 +151,7 @@ Module tests.
                           M.alloc α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple;
+                        Ty.tuple [];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -170,8 +162,7 @@ Module tests.
                             let* α0 :=
                               ltac:(M.get_method (fun ℐ =>
                                 std.io.Write.write_all
-                                  (Self :=
-                                    Ty.apply (Ty.path "std::fs::File") [])
+                                  (Self := Ty.path "std::fs::File")
                                   (Trait := ℐ))) in
                             let* α1 := M.read (mk_str "Ferris
 ") in
@@ -184,20 +175,19 @@ Module tests.
                               M.call
                                 ((Ty.apply
                                       (Ty.path "core::result::Result")
-                                      [Ty.tuple;
-                                        Ty.apply
-                                          (Ty.path "std::io::error::Error")
-                                          []])::["expect"]
+                                      [Ty.tuple [];
+                                        Ty.path
+                                          "std::io::error::Error"])::["expect"]
                                   α3
                                   α4) in
                             M.alloc α5 in
                           M.alloc tt
                         | _ => M.break_match
                         end) :
-                        Ty.tuple
+                        Ty.tuple []
                     ] in
                 M.alloc tt)) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.read (use α3)
     | _, _ => M.impossible
@@ -223,23 +213,19 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* file :=
-        let* α0 :=
-          M.call (Ty.apply (Ty.path "std::fs::OpenOptions") [])::["new"] in
+        let* α0 := M.call (Ty.path "std::fs::OpenOptions")::["new"] in
         let* α1 := M.alloc α0 in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["append"]
+            ((Ty.path "std::fs::OpenOptions")::["append"]
               (borrow_mut α1)
               true) in
         let* α3 :=
-          M.call
-            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["create"]
-              α2
-              true) in
+          M.call ((Ty.path "std::fs::OpenOptions")::["create"] α2 true) in
         let* α4 := M.read (mk_str "ferris.txt") in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["open"]
+            ((Ty.path "std::fs::OpenOptions")::["open"]
               (borrow (deref α3))
               α4) in
         let* α6 := M.read (mk_str "Failed to open ferris.txt") in
@@ -247,8 +233,8 @@ Module tests.
           M.call
             ((Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "std::fs::File") [];
-                    Ty.apply (Ty.path "std::io::error::Error") []])::["expect"]
+                  [Ty.path "std::fs::File";
+                    Ty.path "std::io::error::Error"])::["expect"]
               α5
               α6) in
         M.alloc α7 in
@@ -297,7 +283,7 @@ Module tests.
                           M.alloc α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple;
+                        Ty.tuple [];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -308,8 +294,7 @@ Module tests.
                             let* α0 :=
                               ltac:(M.get_method (fun ℐ =>
                                 std.io.Write.write_all
-                                  (Self :=
-                                    Ty.apply (Ty.path "std::fs::File") [])
+                                  (Self := Ty.path "std::fs::File")
                                   (Trait := ℐ))) in
                             let* α1 := M.read (mk_str "Corro
 ") in
@@ -322,20 +307,19 @@ Module tests.
                               M.call
                                 ((Ty.apply
                                       (Ty.path "core::result::Result")
-                                      [Ty.tuple;
-                                        Ty.apply
-                                          (Ty.path "std::io::error::Error")
-                                          []])::["expect"]
+                                      [Ty.tuple [];
+                                        Ty.path
+                                          "std::io::error::Error"])::["expect"]
                                   α3
                                   α4) in
                             M.alloc α5 in
                           M.alloc tt
                         | _ => M.break_match
                         end) :
-                        Ty.tuple
+                        Ty.tuple []
                     ] in
                 M.alloc tt)) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.read (use α3)
     | _, _ => M.impossible

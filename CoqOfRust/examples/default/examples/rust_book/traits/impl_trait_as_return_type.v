@@ -25,11 +25,10 @@ Definition combine_vecs_explicit_return_type
               (Ty.path "core::iter::adapters::chain::Chain")
               [Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
-                  [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []];
+                  [Ty.path "i32"; Ty.path "alloc::alloc::Global"];
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
-                  [Ty.path "i32";
-                    Ty.apply (Ty.path "alloc::alloc::Global") []]])
+                  [Ty.path "i32"; Ty.path "alloc::alloc::Global"]])
           (Trait := ℐ))) in
     let* α1 :=
       ltac:(M.get_method (fun ℐ =>
@@ -37,11 +36,11 @@ Definition combine_vecs_explicit_return_type
           (Self :=
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (U :=
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α2 :=
       ltac:(M.get_method (fun ℐ =>
@@ -49,7 +48,7 @@ Definition combine_vecs_explicit_return_type
           (Self :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α3 := M.read v in
     let* α4 := M.call (α2 α3) in
@@ -59,7 +58,7 @@ Definition combine_vecs_explicit_return_type
           (Self :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α6 := M.read u in
     let* α7 := M.call (α5 α6) in
@@ -86,11 +85,10 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::iter::adapters::chain::Chain")
               [Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
-                  [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []];
+                  [Ty.path "i32"; Ty.path "alloc::alloc::Global"];
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
-                  [Ty.path "i32";
-                    Ty.apply (Ty.path "alloc::alloc::Global") []]])
+                  [Ty.path "i32"; Ty.path "alloc::alloc::Global"]])
           (Trait := ℐ))) in
     let* α1 :=
       ltac:(M.get_method (fun ℐ =>
@@ -98,11 +96,11 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Self :=
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (U :=
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α2 :=
       ltac:(M.get_method (fun ℐ =>
@@ -110,7 +108,7 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Self :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α3 := M.read v in
     let* α4 := M.call (α2 α3) in
@@ -120,7 +118,7 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Self :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+              [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α6 := M.read u in
     let* α7 := M.call (α5 α6) in
@@ -235,7 +233,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* _ :=
       let* α0 :=
@@ -289,7 +287,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* _ :=
       let* α0 :=
@@ -343,7 +341,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* _ :=
       let* α0 :=
@@ -397,7 +395,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* _ :=
       let* α0 :=
@@ -451,7 +449,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* _ :=
       let* _ :=
@@ -460,7 +458,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+            ((Ty.path "core::fmt::Arguments")::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
         let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in

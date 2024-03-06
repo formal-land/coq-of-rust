@@ -15,7 +15,7 @@ Definition call_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
             (Self := F)
-            (Args := Ty.tuple)
+            (Args := Ty.tuple [])
             (Trait := ℐ))) in
       let* α1 := M.call (α0 (borrow f) tt) in
       M.alloc α1 in
@@ -39,7 +39,7 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+            ((Ty.path "core::fmt::Arguments")::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
         let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
@@ -76,17 +76,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.alloc [ α0 ] in
                   let* α2 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_const"]
+                      ((Ty.path "core::fmt::Arguments")::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
                   let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 let* α0 := M.alloc tt in
                 M.read α0) :
-                Ty.tuple
+                Ty.tuple []
             ]) :
-          Ty.tuple) in
+          Ty.tuple []) in
     let* _ :=
       let* α0 := M.read closure in
       let* α1 :=

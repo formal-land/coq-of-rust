@@ -50,7 +50,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
                 [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])
+                  Ty.path "alloc::alloc::Global"])
             (Trait := ℐ))) in
       let* α2 := M.call (α1 (borrow_mut names)) in
       let* α3 :=
@@ -92,7 +92,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple;
+                        Ty.tuple [];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -124,10 +124,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           assign (deref α0) α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple
+                        Ty.tuple []
                     ] in
                 M.alloc tt)) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.pure (use α6) in
     let* _ :=
@@ -138,12 +138,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow names)) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in

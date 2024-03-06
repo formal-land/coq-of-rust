@@ -2,10 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom AliasedResult :
-    fun T =>
-      Ty.apply
-        (Ty.path "core::result::Result")
-        [T; Ty.apply (Ty.path "core::num::error::ParseIntError") []].
+    (Ty.path "aliases_for_result::AliasedResult") =
+      (fun T =>
+        Ty.apply
+          (Ty.path "core::result::Result")
+          [T; Ty.path "core::num::error::ParseIntError"]).
 
 (*
 fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
@@ -27,9 +28,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
       ((Ty.apply
             (Ty.path "core::result::Result")
             [Ty.path "i32";
-              Ty.apply
-                (Ty.path "core::num::error::ParseIntError")
-                []])::["and_then"]
+              Ty.path "core::num::error::ParseIntError"])::["and_then"]
         α1
         (fun (α0 : Ty.path "i32") =>
           (let* α0 := M.alloc α0 in
@@ -44,9 +43,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ((Ty.apply
                         (Ty.path "core::result::Result")
                         [Ty.path "i32";
-                          Ty.apply
-                            (Ty.path "core::num::error::ParseIntError")
-                            []])::["map"]
+                          Ty.path "core::num::error::ParseIntError"])::["map"]
                     α1
                     (fun (α0 : Ty.path "i32") =>
                       (let* α0 := M.alloc α0 in
@@ -63,13 +60,11 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "i32"))) :
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.path "i32";
-                    Ty.apply (Ty.path "core::num::error::ParseIntError") []]
+                  [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]
             ]) :
           Ty.apply
             (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.apply (Ty.path "core::num::error::ParseIntError") []]))
+            [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]))
   | _, _ => M.impossible
   end.
 
@@ -102,14 +97,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow n)) in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
                 let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -117,7 +110,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -131,14 +124,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::rt::Argument")
-                          [])::["new_display"]
+                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                       (borrow e)) in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
                       (pointer_coercion "Unsize" (borrow α2))
                       (pointer_coercion "Unsize" (borrow α4))) in
                 let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -146,7 +137,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read α0
   | _, _ => M.impossible

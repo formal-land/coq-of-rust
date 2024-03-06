@@ -56,16 +56,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
-              (borrow z)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow z)) in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow z_sqrt)) in
         let* α6 := M.alloc [ α4; α5 ] in
         let* α7 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α6))) in
         let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
@@ -80,19 +79,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
-              (borrow z)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow z)) in
         let* α5 := M.read z in
         let* α6 := M.call ((M.var "foreign_function_interface::cos") α5) in
         let* α7 := M.alloc α6 in
         let* α8 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
-              (borrow α7)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α7)) in
         let* α9 := M.alloc [ α4; α8 ] in
         let* α10 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α9))) in
         let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
@@ -103,12 +100,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+(* Enum Complex *)
 
-
-Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
   (*
   Clone
@@ -128,33 +123,23 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
             fun γ =>
               (let* α0 := M.read self in
               M.pure (deref α0)) :
-              Ty.apply (Ty.path "foreign_function_interface::Complex") []
+              Ty.path "foreign_function_interface::Complex"
           ] in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition AssociatedFunction_clone : Instance.t := {
-    Notations.double_colon := clone;
-  }.
-  
-  Definition ℐ : Instance.t := [("clone", clone); ("clone_from", clone_from)].
-End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
-Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
   Definition ℐ : Instance.t := [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
-Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -187,9 +172,7 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α5 := M.read self in
           let* α6 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow
                   ((M.var "foreign_function_interface::Complex::Get_re")
                     (deref α5)))) in
@@ -202,21 +185,16 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α10 := M.alloc α9 in
           let* α11 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow α10)) in
           let* α12 := M.alloc [ α6; α11 ] in
           let* α13 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              ((Ty.path "core::fmt::Arguments")::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α4))
                 (pointer_coercion "Unsize" (borrow α12))) in
           let* α14 :=
-            M.call
-              ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_fmt"]
-                α0
-                α13) in
+            M.call ((Ty.path "core::fmt::Formatter")::["write_fmt"] α0 α13) in
           M.alloc α14
         else
           let* α0 := M.read f in
@@ -227,41 +205,29 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α5 := M.read self in
           let* α6 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow
                   ((M.var "foreign_function_interface::Complex::Get_re")
                     (deref α5)))) in
           let* α7 := M.read self in
           let* α8 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow
                   ((M.var "foreign_function_interface::Complex::Get_im")
                     (deref α7)))) in
           let* α9 := M.alloc [ α6; α8 ] in
           let* α10 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              ((Ty.path "core::fmt::Arguments")::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α4))
                 (pointer_coercion "Unsize" (borrow α9))) in
           let* α11 :=
-            M.call
-              ((Ty.apply (Ty.path "core::fmt::Formatter") [])::["write_fmt"]
-                α0
-                α10) in
+            M.call ((Ty.path "core::fmt::Formatter")::["write_fmt"] α0 α10) in
           M.alloc α11 in
       M.read α5
     | _, _ => M.impossible
     end.
   
-  Definition AssociatedFunction_fmt : Instance.t := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Definition ℐ : Instance.t := [("fmt", fmt)].
-End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

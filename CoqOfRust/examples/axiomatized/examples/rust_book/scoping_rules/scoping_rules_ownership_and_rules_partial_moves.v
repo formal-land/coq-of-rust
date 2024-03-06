@@ -2,37 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : Ty.path "unit".
+Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+(* Enum Person *)
 
-
-Module  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
   Definition Self : Ty.t :=
-    Ty.apply
-      (Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person")
-      [].
+    Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person".
   
-  Parameter fmt :
-      (Ty.apply
-          (Ty.path "ref")
-          [Ty.apply
-              (Ty.path
-                "scoping_rules_ownership_and_rules_partial_moves::main::Person")
-              []])
-        ->
-        (Ty.apply
-          (Ty.path "mut_ref")
-          [Ty.apply (Ty.path "core::fmt::Formatter") []])
-        ->
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []].
+  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition AssociatedFunction_fmt : Instance.t := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Definition ℐ : Instance.t := [("fmt", fmt)].
-End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
 End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

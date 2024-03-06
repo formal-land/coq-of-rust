@@ -15,12 +15,10 @@ Definition decode_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+(* Struct WildcardSelector *)
 
-
-Module  Impl_wildcard_selector_WildcardSelector.
-Section Impl_wildcard_selector_WildcardSelector.
-  Definition Self : Set :=
-    Ty.apply (Ty.path "wildcard_selector::WildcardSelector") [].
+Module Impl_wildcard_selector_WildcardSelector.
+  Definition Self : Ty.t := Ty.path "wildcard_selector::WildcardSelector".
   
   (*
       pub fn new() -> Self {
@@ -32,10 +30,6 @@ Section Impl_wildcard_selector_WildcardSelector.
     | [], [] => M.pure wildcard_selector.WildcardSelector.Build
     | _, _ => M.impossible
     end.
-  
-  Definition AssociatedFunction_new : Instance.t := {
-    Notations.double_colon := new;
-  }.
   
   (*
       pub fn wildcard(&mut self) {
@@ -53,9 +47,9 @@ Section Impl_wildcard_selector_WildcardSelector.
           ((Ty.apply
                 (Ty.path "core::result::Result")
                 [Ty.tuple
-                    (Ty.apply (Ty.path "array") [Ty.path "u8"])
-                    (Ty.apply (Ty.path "alloc::string::String") []);
-                  Ty.tuple])::["unwrap"]
+                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
+                      Ty.path "alloc::string::String"];
+                  Ty.tuple []])::["unwrap"]
             α0) in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -79,22 +73,16 @@ Section Impl_wildcard_selector_WildcardSelector.
                     let* α3 := M.alloc [ α0; α1; α2 ] in
                     let* α4 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::rt::Argument")
-                              [])::["new_debug"]
+                        ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                           (borrow _selector)) in
                     let* α5 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::rt::Argument")
-                              [])::["new_display"]
+                        ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                           (borrow _message)) in
                     let* α6 := M.alloc [ α4; α5 ] in
                     let* α7 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::Arguments")
-                              [])::["new_v1"]
+                        ((Ty.path "core::fmt::Arguments")::["new_v1"]
                           (pointer_coercion "Unsize" (borrow α3))
                           (pointer_coercion "Unsize" (borrow α6))) in
                     let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
@@ -107,10 +95,6 @@ Section Impl_wildcard_selector_WildcardSelector.
       M.read α3
     | _, _ => M.impossible
     end.
-  
-  Definition AssociatedFunction_wildcard : Instance.t := {
-    Notations.double_colon := wildcard;
-  }.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
@@ -130,14 +114,12 @@ Section Impl_wildcard_selector_WildcardSelector.
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::fmt::rt::Argument")
-                    [])::["new_display"]
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                 (borrow _message)) in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              ((Ty.path "core::fmt::Arguments")::["new_v1"]
                 (pointer_coercion "Unsize" (borrow α2))
                 (pointer_coercion "Unsize" (borrow α4))) in
           let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -147,9 +129,4 @@ Section Impl_wildcard_selector_WildcardSelector.
       M.read α0
     | _, _ => M.impossible
     end.
-  
-  Definition AssociatedFunction_wildcard_complement : Instance.t := {
-    Notations.double_colon := wildcard_complement;
-  }.
-End Impl_wildcard_selector_WildcardSelector.
 End Impl_wildcard_selector_WildcardSelector.

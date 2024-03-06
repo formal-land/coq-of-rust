@@ -41,8 +41,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "u32";
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["as_ptr"]
+                [Ty.path "u32"; Ty.path "alloc::alloc::Global"])::["as_ptr"]
             (borrow some_vector)) in
       M.alloc α0 in
     let* length :=
@@ -50,8 +49,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "u32";
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["len"]
+                [Ty.path "u32"; Ty.path "alloc::alloc::Global"])::["len"]
             (borrow some_vector)) in
       M.alloc α0 in
     let* my_slice :=
@@ -64,8 +62,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "u32";
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["as_slice"]
+                [Ty.path "u32"; Ty.path "alloc::alloc::Global"])::["as_slice"]
             (borrow some_vector)) in
       let* α1 := M.alloc α0 in
       let* α2 := M.alloc (borrow α1, borrow my_slice) in
@@ -116,7 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               else
                 M.alloc tt
             end) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* α0 := M.alloc tt in
     M.read α0

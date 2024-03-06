@@ -90,7 +90,7 @@ Module tests.
                 else
                   M.alloc tt
               end) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       let* α0 := M.alloc tt in
       M.read α0
@@ -154,7 +154,7 @@ Module tests.
                 else
                   M.alloc tt
               end) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       let* α0 := M.alloc tt in
       M.read α0

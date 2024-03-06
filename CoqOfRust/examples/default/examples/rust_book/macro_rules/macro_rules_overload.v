@@ -21,11 +21,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.alloc [ α0; α1; α2; α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow (mk_str "1i32 + 1 == 2i32"))) in
         let* α6 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow (mk_str "2i32 * 2 == 4i32"))) in
         let* α7 :=
           (M.var "BinOp::Panic::add")
@@ -44,12 +44,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ((Integer.of_Z 4) : Ty.path "i32"))) in
         let* α10 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
-              (borrow α9)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α9)) in
         let* α11 := M.alloc [ α5; α6; α10 ] in
         let* α12 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α4))
               (pointer_coercion "Unsize" (borrow α11))) in
         let* α13 := M.call ((M.var "std::io::stdio::_print") α12) in
@@ -65,21 +64,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.alloc [ α0; α1; α2; α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow (mk_str "true"))) in
         let* α6 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
               (borrow (mk_str "false"))) in
         let* α7 := M.alloc ((M.var "BinOp::Pure::or") true false) in
         let* α8 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
-              (borrow α7)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α7)) in
         let* α9 := M.alloc [ α5; α6; α8 ] in
         let* α10 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α4))
               (pointer_coercion "Unsize" (borrow α9))) in
         let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in

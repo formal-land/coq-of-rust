@@ -3,66 +3,31 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
-Parameter cos :
-    (Ty.apply (Ty.path "foreign_function_interface::Complex") []) ->
-      Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+Parameter cos : (list Ty.t) -> (list Value.t) -> M.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : Ty.path "unit".
+Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+(* Enum Complex *)
 
-
-Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
-  Parameter clone :
-      (Ty.apply
-          (Ty.path "ref")
-          [Ty.apply (Ty.path "foreign_function_interface::Complex") []])
-        ->
-        Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition AssociatedFunction_clone : Instance.t := {
-    Notations.double_colon := clone;
-  }.
-  
-  Definition ℐ : Instance.t := [("clone", clone); ("clone_from", clone_from)].
-End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
-Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
   Definition ℐ : Instance.t := [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
-End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
-Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
+Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
-  Parameter fmt :
-      (Ty.apply
-          (Ty.path "ref")
-          [Ty.apply (Ty.path "foreign_function_interface::Complex") []])
-        ->
-        (Ty.apply
-          (Ty.path "mut_ref")
-          [Ty.apply (Ty.path "core::fmt::Formatter") []])
-        ->
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []].
+  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition AssociatedFunction_fmt : Instance.t := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Definition ℐ : Instance.t := [("fmt", fmt)].
-End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

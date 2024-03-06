@@ -77,7 +77,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
-            (Self := Ty.apply (Ty.path "alloc::string::String") [])
+            (Self := Ty.path "alloc::string::String")
             (T := Ty.apply (Ty.path "ref") [Ty.path "str"])
             (Trait := ℐ))) in
       let* α1 := M.read (mk_str "green") in
@@ -98,31 +98,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument")
-                            [])::["new_display"]
+                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                         (borrow color)) in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_v1"]
+                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
                   let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
                   M.alloc α6 in
                 let* α0 := M.alloc tt in
                 M.read α0) :
-                Ty.tuple
+                Ty.tuple []
             ]) :
-          Ty.tuple) in
+          Ty.tuple []) in
     let* _ :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
-            (Self := Ty.function [Ty.tuple] Ty.tuple)
-            (Args := Ty.tuple)
+            (Self := Ty.function [Ty.tuple []] (Ty.tuple []))
+            (Args := Ty.tuple [])
             (Trait := ℐ))) in
       let* α1 := M.call (α0 (borrow print) tt) in
       M.alloc α1 in
@@ -131,8 +127,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
-            (Self := Ty.function [Ty.tuple] Ty.tuple)
-            (Args := Ty.tuple)
+            (Self := Ty.function [Ty.tuple []] (Ty.tuple []))
+            (Args := Ty.tuple [])
             (Trait := ℐ))) in
       let* α1 := M.call (α0 (borrow print) tt) in
       M.alloc α1 in
@@ -162,16 +158,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.alloc [ α0; α1 ] in
                     let* α3 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::rt::Argument")
-                              [])::["new_display"]
+                        ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                           (borrow count)) in
                     let* α4 := M.alloc [ α3 ] in
                     let* α5 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::Arguments")
-                              [])::["new_v1"]
+                        ((Ty.path "core::fmt::Arguments")::["new_v1"]
                           (pointer_coercion "Unsize" (borrow α2))
                           (pointer_coercion "Unsize" (borrow α4))) in
                     let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -179,15 +171,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc tt in
                 let* α0 := M.alloc tt in
                 M.read α0) :
-                Ty.tuple
+                Ty.tuple []
             ]) :
-          Ty.tuple) in
+          Ty.tuple []) in
     let* _ :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.FnMut.call_mut
-            (Self := Ty.function [Ty.tuple] Ty.tuple)
-            (Args := Ty.tuple)
+            (Self := Ty.function [Ty.tuple []] (Ty.tuple []))
+            (Args := Ty.tuple [])
             (Trait := ℐ))) in
       let* α1 := M.call (α0 (borrow_mut inc) tt) in
       M.alloc α1 in
@@ -195,8 +187,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.FnMut.call_mut
-            (Self := Ty.function [Ty.tuple] Ty.tuple)
-            (Args := Ty.tuple)
+            (Self := Ty.function [Ty.tuple []] (Ty.tuple []))
+            (Args := Ty.tuple [])
             (Trait := ℐ))) in
       let* α1 := M.call (α0 (borrow_mut inc) tt) in
       M.alloc α1 in
@@ -206,8 +198,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           ((Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [Ty.path "i32";
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])::["new"]
             ((Integer.of_Z 3) : Ty.path "i32")) in
       M.alloc α0 in
     let* consume :=
@@ -226,16 +217,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.alloc [ α0; α1 ] in
                     let* α3 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::rt::Argument")
-                              [])::["new_debug"]
+                        ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                           (borrow movable)) in
                     let* α4 := M.alloc [ α3 ] in
                     let* α5 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::Arguments")
-                              [])::["new_v1"]
+                        ((Ty.path "core::fmt::Arguments")::["new_v1"]
                           (pointer_coercion "Unsize" (borrow α2))
                           (pointer_coercion "Unsize" (borrow α4))) in
                     let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -247,15 +234,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc α1 in
                 let* α0 := M.alloc tt in
                 M.read α0) :
-                Ty.tuple
+                Ty.tuple []
             ]) :
-          Ty.tuple) in
+          Ty.tuple []) in
     let* _ :=
       let* α0 :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.FnOnce.call_once
-            (Self := Ty.function [Ty.tuple] Ty.tuple)
-            (Args := Ty.tuple)
+            (Self := Ty.function [Ty.tuple []] (Ty.tuple []))
+            (Args := Ty.tuple [])
             (Trait := ℐ))) in
       let* α1 := M.read consume in
       let* α2 := M.call (α0 α1 tt) in

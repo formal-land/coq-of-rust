@@ -55,12 +55,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow (M.var "hello_world::message"))) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -88,16 +88,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument")
-                            [])::["new_debug"]
+                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                         (borrow i)) in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_v1"]
+                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
                   let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -106,7 +102,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ => (M.alloc tt) : Ty.path "unit"
         ] in
     let* _ :=
@@ -127,16 +123,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument")
-                            [])::["new_debug"]
+                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                         (borrow j)) in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_v1"]
+                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
                   let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -145,7 +137,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* _ :=
               let* _ :=
@@ -157,15 +149,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.apply
-                          (Ty.path "core::fmt::Arguments")
-                          [])::["new_const"]
+                    ((Ty.path "core::fmt::Arguments")::["new_const"]
                       (pointer_coercion "Unsize" (borrow α1))) in
                 let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                 M.alloc α3 in
               M.alloc tt in
             M.alloc tt) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     let* i_like_letters := M.alloc false in
     let* α0 :=
@@ -186,16 +176,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument")
-                            [])::["new_debug"]
+                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                         (borrow i)) in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_v1"]
+                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
                   let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -204,7 +190,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc tt
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ =>
             (let* α0 := M.read (use i_like_letters) in
             if α0 then
@@ -218,9 +204,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.alloc [ α0 ] in
                   let* α2 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_const"]
+                      ((Ty.path "core::fmt::Arguments")::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
                   let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
@@ -237,15 +221,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.alloc [ α0 ] in
                   let* α2 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_const"]
+                      ((Ty.path "core::fmt::Arguments")::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
                   let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 M.alloc tt in
               M.alloc tt) :
-            Ty.tuple
+            Ty.tuple []
         ] in
     M.read α0
   | _, _ => M.impossible

@@ -60,7 +60,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+            ((Ty.path "core::fmt::Arguments")::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
         let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
@@ -77,21 +77,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                ((Ty.path "core::fmt::Arguments")::["new_const"]
                   (pointer_coercion "Unsize" (borrow α1))) in
             let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
             M.alloc α3 in
           M.alloc tt in
         let* guess :=
-          let* α0 :=
-            M.call (Ty.apply (Ty.path "alloc::string::String") [])::["new"] in
+          let* α0 := M.call (Ty.path "alloc::string::String")::["new"] in
           M.alloc α0 in
         let* _ :=
           let* α0 := M.call (M.var "std::io::stdio::stdin") in
           let* α1 := M.alloc α0 in
           let* α2 :=
             M.call
-              ((Ty.apply (Ty.path "std::io::stdio::Stdin") [])::["read_line"]
+              ((Ty.path "std::io::stdio::Stdin")::["read_line"]
                 (borrow α1)
                 (borrow_mut guess)) in
           let* α3 := M.read (mk_str "Failed to read line") in
@@ -100,9 +99,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ((Ty.apply
                     (Ty.path "core::result::Result")
                     [Ty.path "usize";
-                      Ty.apply
-                        (Ty.path "std::io::error::Error")
-                        []])::["expect"]
+                      Ty.path "std::io::error::Error"])::["expect"]
                 α2
                 α3) in
           M.alloc α4 in
@@ -110,7 +107,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α0 :=
             ltac:(M.get_method (fun ℐ =>
               core.ops.deref.Deref.deref
-                (Self := Ty.apply (Ty.path "alloc::string::String") [])
+                (Self := Ty.path "alloc::string::String")
                 (Trait := ℐ))) in
           let* α1 := M.call (α0 (borrow guess)) in
           let* α2 := M.call ((Ty.path "str")::["trim"] α1) in
@@ -152,14 +149,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.alloc [ α0; α1 ] in
             let* α3 :=
               M.call
-                ((Ty.apply
-                      (Ty.path "core::fmt::rt::Argument")
-                      [])::["new_display"]
+                ((Ty.path "core::fmt::rt::Argument")::["new_display"]
                   (borrow guess)) in
             let* α4 := M.alloc [ α3 ] in
             let* α5 :=
               M.call
-                ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                ((Ty.path "core::fmt::Arguments")::["new_v1"]
                   (pointer_coercion "Unsize" (borrow α2))
                   (pointer_coercion "Unsize" (borrow α4))) in
             let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -183,16 +178,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.alloc [ α0 ] in
                   let* α2 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_const"]
+                      ((Ty.path "core::fmt::Arguments")::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
                   let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 M.alloc tt
               | _ => M.break_match
               end) :
-              Ty.tuple;
+              Ty.tuple [];
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -203,16 +196,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.alloc [ α0 ] in
                   let* α2 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_const"]
+                      ((Ty.path "core::fmt::Arguments")::["new_const"]
                         (pointer_coercion "Unsize" (borrow α1))) in
                   let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                   M.alloc α3 in
                 M.alloc tt
               | _ => M.break_match
               end) :
-              Ty.tuple;
+              Ty.tuple [];
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -224,9 +215,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α1 := M.alloc [ α0 ] in
                     let* α2 :=
                       M.call
-                        ((Ty.apply
-                              (Ty.path "core::fmt::Arguments")
-                              [])::["new_const"]
+                        ((Ty.path "core::fmt::Arguments")::["new_const"]
                           (pointer_coercion "Unsize" (borrow α1))) in
                     let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
                     M.alloc α3 in
@@ -237,7 +226,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               | _ => M.break_match
               end) :
-              Ty.tuple
+              Ty.tuple []
           ]) in
     M.read α0
   | _, _ => M.impossible

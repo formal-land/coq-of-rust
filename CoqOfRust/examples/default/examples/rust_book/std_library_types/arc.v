@@ -33,7 +33,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ((Ty.apply
                 (Ty.path "alloc::sync::Arc")
                 [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+                  Ty.path "alloc::alloc::Global"])::["new"]
             α0) in
       M.alloc α1 in
     let* _ :=
@@ -82,7 +82,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple;
+                        Ty.tuple [];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -97,9 +97,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     Ty.apply
                                       (Ty.path "alloc::sync::Arc")
                                       [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                                        Ty.apply
-                                          (Ty.path "alloc::alloc::Global")
-                                          []])
+                                        Ty.path "alloc::alloc::Global"])
                                   (Trait := ℐ))) in
                             let* α1 := M.call (α0 (borrow apple)) in
                             M.alloc α1 in
@@ -121,18 +119,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                               let* α2 := M.alloc [ α0; α1 ] in
                                               let* α3 :=
                                                 M.call
-                                                  ((Ty.apply
-                                                        (Ty.path
-                                                          "core::fmt::rt::Argument")
-                                                        [])::["new_debug"]
+                                                  ((Ty.path
+                                                        "core::fmt::rt::Argument")::["new_debug"]
                                                     (borrow apple)) in
                                               let* α4 := M.alloc [ α3 ] in
                                               let* α5 :=
                                                 M.call
-                                                  ((Ty.apply
-                                                        (Ty.path
-                                                          "core::fmt::Arguments")
-                                                        [])::["new_v1"]
+                                                  ((Ty.path
+                                                        "core::fmt::Arguments")::["new_v1"]
                                                     (pointer_coercion
                                                       "Unsize"
                                                       (borrow α2))
@@ -148,23 +142,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc tt in
                                           let* α0 := M.alloc tt in
                                           M.read α0) :
-                                          Ty.tuple
+                                          Ty.tuple []
                                       ]) :
-                                    Ty.tuple)) in
+                                    Ty.tuple [])) in
                             M.alloc α0 in
                           M.alloc tt
                         | _ => M.break_match
                         end) :
-                        Ty.tuple
+                        Ty.tuple []
                     ] in
                 M.alloc tt)) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.pure (use α3) in
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.apply (Ty.path "core::time::Duration") [])::["from_secs"]
+          ((Ty.path "core::time::Duration")::["from_secs"]
             ((Integer.of_Z 1) : Ty.path "u64")) in
       let* α1 := M.call ((M.var "std::thread::sleep") α0) in
       M.alloc α1 in

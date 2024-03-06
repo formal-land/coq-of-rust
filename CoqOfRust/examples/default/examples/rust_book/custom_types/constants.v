@@ -51,13 +51,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 := M.read (M.var "constants::LANGUAGE") in
         let* α4 :=
-          M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              α3) in
+          M.call ((Ty.path "core::fmt::rt::Argument")::["new_display"] α3) in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α5))) in
         let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in
@@ -71,12 +69,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow (M.var "constants::THRESHOLD"))) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -91,8 +89,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
-              (borrow n)) in
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow n)) in
         let* α5 := M.read n in
         let* α6 := M.call ((M.var "constants::is_big") α5) in
         let* α7 := M.alloc α6 in
@@ -105,12 +102,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc α0 in
         let* α10 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow α9)) in
         let* α11 := M.alloc [ α4; α10 ] in
         let* α12 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α3))
               (pointer_coercion "Unsize" (borrow α11))) in
         let* α13 := M.call ((M.var "std::io::stdio::_print") α12) in

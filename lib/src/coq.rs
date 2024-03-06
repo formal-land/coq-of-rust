@@ -40,7 +40,6 @@ pub(crate) struct Comment {
 /// a coq module
 pub(crate) struct Module<'a> {
     name: String,
-    is_with_section: bool,
     /// To prevent a collision, in case a module with the same name is already
     /// declared. In this case, we do the appropriate `Import` to complete the
     /// previous module.
@@ -181,6 +180,11 @@ pub(crate) enum Expression<'a> {
         args: Vec<ArgDecl<'a>>,
         /// the expression for the resulting type
         image: Rc<Expression<'a>>,
+    },
+    /// The equality of two expressions `lhs = rhs`
+    Equality {
+        lhs: Rc<Expression<'a>>,
+        rhs: Rc<Expression<'a>>,
     },
     /// a product of two variables (they can be types or numbers)
     Product {
@@ -411,7 +415,6 @@ impl<'a> TopLevelItem<'a> {
     ) -> Self {
         TopLevelItem::Module(Module::new(
             name,
-            true,
             TopLevel::concat(&[
                 TopLevel::locally_unset_primitive_projections_if(
                     items.is_empty(),
@@ -461,18 +464,22 @@ impl<'a> TopLevelItem<'a> {
 
     pub(crate) fn ty_alias_definition(
         name: &str,
+        path: String,
         ty_params: Vec<String>,
         ty: &Expression<'a>,
     ) -> Vec<Self> {
         vec![TopLevelItem::Definition(Definition::new(
             name,
             &DefinitionKind::Axiom {
-                ty: Expression::Function {
-                    parameters: ty_params
-                        .iter()
-                        .map(|ty_param| Expression::just_name(ty_param))
-                        .collect(),
-                    body: Rc::new(ty.clone()),
+                ty: Expression::Equality {
+                    lhs: Rc::new(Expression::just_name("Ty.path").apply(&Expression::String(path))),
+                    rhs: Rc::new(Expression::Function {
+                        parameters: ty_params
+                            .iter()
+                            .map(|ty_param| Expression::just_name(ty_param))
+                            .collect(),
+                        body: Rc::new(ty.clone()),
+                    }),
                 },
             },
         ))]
@@ -481,24 +488,17 @@ impl<'a> TopLevelItem<'a> {
 
 impl<'a> Module<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &str, is_with_section: bool, items: TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, items: TopLevel<'a>) -> Self {
         Module {
             name: name.to_string(),
-            is_with_section,
             nb_repeat: 0,
             items,
         }
     }
 
-    pub(crate) fn new_with_repeat(
-        name: &str,
-        is_with_section: bool,
-        nb_repeat: usize,
-        items: TopLevel<'a>,
-    ) -> Self {
+    pub(crate) fn new_with_repeat(name: &str, nb_repeat: usize, items: TopLevel<'a>) -> Self {
         Module {
             name: name.to_string(),
-            is_with_section,
             nb_repeat,
             items,
         }
@@ -506,26 +506,13 @@ impl<'a> Module<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         let items = self.items.to_doc();
-        let items = if self.is_with_section {
-            render::enclose("Section", self.name.to_owned(), true, items)
-        } else {
-            items
-        };
-        let inner_module = render::enclose(
-            if self.is_with_section {
-                // We add one space at the end for alignment with the section's name
-                "Module "
-            } else {
-                "Module"
-            },
-            self.name.to_owned(),
-            !self.is_with_section,
-            items,
-        );
+        let inner_module = render::enclose("Module", self.name.to_owned(), true, items);
+
         if self.nb_repeat == 0 {
             inner_module
         } else {
             let wrap_name = format!("Wrap_{}_{}", self.name, self.nb_repeat);
+
             concat([
                 render::enclose("Module", wrap_name.clone(), false, inner_module),
                 hardline(),
@@ -1001,6 +988,10 @@ impl<'a> Expression<'a> {
                         image.to_doc(false),
                     ]),
                 ),
+            ),
+            Self::Equality { lhs, rhs } => paren(
+                with_paren,
+                nest([lhs.to_doc(true), text(" ="), line(), rhs.to_doc(true)]),
             ),
             Self::Product { lhs, rhs } => paren(
                 with_paren,

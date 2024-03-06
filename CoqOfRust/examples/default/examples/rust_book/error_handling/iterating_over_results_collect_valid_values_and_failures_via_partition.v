@@ -40,23 +40,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
                   [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                    Ty.apply (Ty.path "alloc::alloc::Global") []];
+                    Ty.path "alloc::alloc::Global"];
                 Ty.function
-                  [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                  [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "str"]]]
                   (Ty.apply
                     (Ty.path "core::result::Result")
                     [Ty.path "i32";
-                      Ty.apply
-                        (Ty.path "core::num::error::ParseIntError")
-                        []])])
+                      Ty.path "core::num::error::ParseIntError"])])
           (B :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               [Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.path "i32";
-                    Ty.apply (Ty.path "core::num::error::ParseIntError") []];
-                Ty.apply (Ty.path "alloc::alloc::Global") []])
+                  [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"];
+                Ty.path "alloc::alloc::Global"])
           (F :=
             Ty.function
               [Ty.apply
@@ -64,9 +61,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.apply
                       (Ty.path "core::result::Result")
                       [Ty.path "i32";
-                        Ty.apply
-                          (Ty.path "core::num::error::ParseIntError")
-                          []]]]
+                        Ty.path "core::num::error::ParseIntError"]]]
               (Ty.path "bool"))
           (Trait := ℐ))) in
     let* α1 :=
@@ -76,19 +71,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
               [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.apply (Ty.path "alloc::alloc::Global") []])
+                Ty.path "alloc::alloc::Global"])
           (B :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.path "i32";
-                Ty.apply (Ty.path "core::num::error::ParseIntError") []])
+              [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"])
           (F :=
             Ty.function
-              [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+              [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "str"]]]
               (Ty.apply
                 (Ty.path "core::result::Result")
-                [Ty.path "i32";
-                  Ty.apply (Ty.path "core::num::error::ParseIntError") []]))
+                [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]))
           (Trait := ℐ))) in
     let* α2 :=
       ltac:(M.get_method (fun ℐ =>
@@ -97,7 +90,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.apply (Ty.path "alloc::alloc::Global") []])
+                Ty.path "alloc::alloc::Global"])
           (Trait := ℐ))) in
     let* α3 := M.read strings in
     let* α4 := M.call (α2 α3) in
@@ -116,13 +109,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.call ((Ty.path "str")::["parse"] α0)) :
                   Ty.apply
                     (Ty.path "core::result::Result")
-                    [Ty.path "i32";
-                      Ty.apply (Ty.path "core::num::error::ParseIntError") []]
+                    [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]
               ]) :
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.path "i32";
-                Ty.apply (Ty.path "core::num::error::ParseIntError") []])) in
+              [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"])) in
     let* α6 :=
       M.call
         (α0
@@ -130,9 +121,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "core::result::Result")
               [Ty.path "i32";
-                Ty.apply
-                  (Ty.path "core::num::error::ParseIntError")
-                  []])::["is_ok"]) in
+                Ty.path "core::num::error::ParseIntError"])::["is_ok"]) in
     let* α7 := M.alloc α6 in
     let* α0 :=
       match_operator
@@ -154,16 +143,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument")
-                            [])::["new_debug"]
+                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                         (borrow numbers)) in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_v1"]
+                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
                   let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -177,16 +162,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument")
-                            [])::["new_debug"]
+                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
                         (borrow errors)) in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.apply
-                            (Ty.path "core::fmt::Arguments")
-                            [])::["new_v1"]
+                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
                   let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in

@@ -63,7 +63,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+            ((Ty.path "core::fmt::Arguments")::["new_const"]
               (pointer_coercion "Unsize" (borrow α1))) in
         let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
         M.alloc α3 in
@@ -116,7 +116,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc α2
                         | _ => M.break_match
                         end) :
-                        Ty.tuple;
+                        Ty.tuple [];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -158,10 +158,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.alloc tt
                         | _ => M.break_match
                         end) :
-                        Ty.tuple
+                        Ty.tuple []
                     ] in
                 M.alloc tt)) :
-              Ty.tuple
+              Ty.tuple []
           ] in
       M.pure (use α3) in
     let* _ :=
@@ -172,12 +172,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow acc)) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
@@ -198,13 +198,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::ops::range::RangeFrom")
                             [Ty.path "u32"];
                           Ty.function
-                            [Ty.tuple (Ty.path "u32")]
+                            [Ty.tuple [Ty.path "u32"]]
                             (Ty.path "u32")];
                       Ty.function
-                        [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "u32"])]
+                        [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
                         (Ty.path "bool")];
                   Ty.function
-                    [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "u32"])]
+                    [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
                     (Ty.path "bool")])
             (S := Ty.path "u32")
             (Trait := ℐ))) in
@@ -219,13 +219,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [Ty.apply
                         (Ty.path "core::ops::range::RangeFrom")
                         [Ty.path "u32"];
-                      Ty.function [Ty.tuple (Ty.path "u32")] (Ty.path "u32")];
+                      Ty.function [Ty.tuple [Ty.path "u32"]] (Ty.path "u32")];
                   Ty.function
-                    [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "u32"])]
+                    [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
                     (Ty.path "bool")])
             (P :=
               Ty.function
-                [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "u32"])]
+                [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
                 (Ty.path "bool"))
             (Trait := ℐ))) in
       let* α2 :=
@@ -237,10 +237,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [Ty.apply
                     (Ty.path "core::ops::range::RangeFrom")
                     [Ty.path "u32"];
-                  Ty.function [Ty.tuple (Ty.path "u32")] (Ty.path "u32")])
+                  Ty.function [Ty.tuple [Ty.path "u32"]] (Ty.path "u32")])
             (P :=
               Ty.function
-                [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "u32"])]
+                [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
                 (Ty.path "bool"))
             (Trait := ℐ))) in
       let* α3 :=
@@ -249,7 +249,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Self :=
               Ty.apply (Ty.path "core::ops::range::RangeFrom") [Ty.path "u32"])
             (B := Ty.path "u32")
-            (F := Ty.function [Ty.tuple (Ty.path "u32")] (Ty.path "u32"))
+            (F := Ty.function [Ty.tuple [Ty.path "u32"]] (Ty.path "u32"))
             (Trait := ℐ))) in
       let* α4 :=
         M.call
@@ -320,12 +320,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
               (borrow sum_of_squared_odd_numbers)) in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+            ((Ty.path "core::fmt::Arguments")::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
         let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in

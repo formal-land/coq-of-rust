@@ -23,8 +23,8 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "std::io::Lines")
                 [Ty.apply
                     (Ty.path "std::io::buffered::bufreader::BufReader")
-                    [Ty.apply (Ty.path "std::fs::File") []]];
-              Ty.apply (Ty.path "std::io::error::Error") []]) in
+                    [Ty.path "std::fs::File"]];
+              Ty.path "std::io::error::Error"]) in
     M.catch_return
       (let* file :=
         let* α0 :=
@@ -33,12 +33,10 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Self :=
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.apply (Ty.path "std::fs::File") [];
-                    Ty.apply (Ty.path "std::io::error::Error") []])
+                  [Ty.path "std::fs::File"; Ty.path "std::io::error::Error"])
               (Trait := ℐ))) in
         let* α1 := M.read filename in
-        let* α2 :=
-          M.call ((Ty.apply (Ty.path "std::fs::File") [])::["open"] α1) in
+        let* α2 := M.call ((Ty.path "std::fs::File")::["open"] α1) in
         let* α3 := M.call (α0 α2) in
         let* α4 := M.alloc α3 in
         let* α5 :=
@@ -64,13 +62,13 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 [Ty.apply
                                     (Ty.path
                                       "std::io::buffered::bufreader::BufReader")
-                                    [Ty.apply (Ty.path "std::fs::File") []]];
-                              Ty.apply (Ty.path "std::io::error::Error") []])
+                                    [Ty.path "std::fs::File"]];
+                              Ty.path "std::io::error::Error"])
                         (R :=
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.apply (Ty.path "core::convert::Infallible") [];
-                              Ty.apply (Ty.path "std::io::error::Error") []])
+                            [Ty.path "core::convert::Infallible";
+                              Ty.path "std::io::error::Error"])
                         (Trait := ℐ))) in
                   let* α1 := M.read residual in
                   let* α2 := M.call (α0 α1) in
@@ -80,7 +78,7 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc α5
                 | _ => M.break_match
                 end) :
-                Ty.apply (Ty.path "std::fs::File") [];
+                Ty.path "std::fs::File";
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -93,7 +91,7 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure val
                 | _ => M.break_match
                 end) :
-                Ty.apply (Ty.path "std::fs::File") []
+                Ty.path "std::fs::File"
             ] in
         M.copy α5 in
       let* α0 :=
@@ -102,14 +100,14 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Self :=
               Ty.apply
                 (Ty.path "std::io::buffered::bufreader::BufReader")
-                [Ty.apply (Ty.path "std::fs::File") []])
+                [Ty.path "std::fs::File"])
             (Trait := ℐ))) in
       let* α1 := M.read file in
       let* α2 :=
         M.call
           ((Ty.apply
                 (Ty.path "std::io::buffered::bufreader::BufReader")
-                [Ty.apply (Ty.path "std::fs::File") []])::["new"]
+                [Ty.path "std::fs::File"])::["new"]
             α1) in
       let* α3 := M.call (α0 α2) in
       let* α0 := M.alloc (core.result.Result.Ok α3) in
@@ -156,7 +154,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "std::io::Lines")
                         [Ty.apply
                             (Ty.path "std::io::buffered::bufreader::BufReader")
-                            [Ty.apply (Ty.path "std::fs::File") []]])
+                            [Ty.path "std::fs::File"]])
                     (Trait := ℐ))) in
               let* α1 := M.read lines in
               let* α2 := M.call (α0 α1) in
@@ -178,9 +176,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     [Ty.apply
                                         (Ty.path
                                           "std::io::buffered::bufreader::BufReader")
-                                        [Ty.apply
-                                            (Ty.path "std::fs::File")
-                                            []]])
+                                        [Ty.path "std::fs::File"]])
                                 (Trait := ℐ))) in
                           let* α1 := M.call (α0 (borrow_mut iter)) in
                           let* α2 := M.alloc α1 in
@@ -197,7 +193,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc α2
                                 | _ => M.break_match
                                 end) :
-                                Ty.tuple;
+                                Ty.tuple [];
                               fun γ =>
                                 (let* α0 := M.read γ in
                                 match α0 with
@@ -226,18 +222,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                               let* α2 := M.alloc [ α0; α1 ] in
                                               let* α3 :=
                                                 M.call
-                                                  ((Ty.apply
-                                                        (Ty.path
-                                                          "core::fmt::rt::Argument")
-                                                        [])::["new_display"]
+                                                  ((Ty.path
+                                                        "core::fmt::rt::Argument")::["new_display"]
                                                     (borrow ip)) in
                                               let* α4 := M.alloc [ α3 ] in
                                               let* α5 :=
                                                 M.call
-                                                  ((Ty.apply
-                                                        (Ty.path
-                                                          "core::fmt::Arguments")
-                                                        [])::["new_v1"]
+                                                  ((Ty.path
+                                                        "core::fmt::Arguments")::["new_v1"]
                                                     (pointer_coercion
                                                       "Unsize"
                                                       (borrow α2))
@@ -254,20 +246,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                           M.alloc tt
                                         | _ => M.break_match
                                         end) :
-                                        Ty.tuple;
+                                        Ty.tuple [];
                                       fun γ => (M.alloc tt) : Ty.path "unit"
                                     ]
                                 | _ => M.break_match
                                 end) :
-                                Ty.tuple
+                                Ty.tuple []
                             ] in
                         M.alloc tt)) :
-                      Ty.tuple
+                      Ty.tuple []
                   ] in
               M.pure (use α4)
             | _ => M.break_match
             end) :
-            Ty.tuple;
+            Ty.tuple [];
           fun γ => (M.alloc tt) : Ty.path "unit"
         ] in
     M.read α3
