@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum VeryVerboseEnumOfThingsToDoWithNumbers *)
 
 Axiom Operations :
-    (Ty.path "enums_type_aliases_v1::Operations") =
-      (Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers").
+  (Ty.path "enums_type_aliases_v1::Operations") =
+    (Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers").
 
 (*
 fn main() {

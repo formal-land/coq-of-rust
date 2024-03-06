@@ -2,14 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
-    (Ty.path "boxing_errors::Result") =
-      (fun T =>
+  forall (T : Ty.t),
+  (Ty.path "boxing_errors::Result") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T;
         Ty.apply
-          (Ty.path "core::result::Result")
-          [T;
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [dyn [core.error.Error.Trait]; Ty.path "alloc::alloc::Global"]]).
+          (Ty.path "alloc::boxed::Box")
+          [Ty.dyn [("core::error::Error::Trait", [])];
+            Ty.path "alloc::alloc::Global"]]).
 
 (* Struct EmptyVec *)
 
@@ -135,18 +136,18 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (T :=
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [dyn [core.error.Error.Trait];
+                            [Ty.dyn [("core::error::Error::Trait", [])];
                               Ty.path "alloc::alloc::Global"])
                         (Trait := ℐ))) in
                   M.call (α0 boxing_errors.EmptyVec.Build)) :
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [dyn [core.error.Error.Trait];
+                    [Ty.dyn [("core::error::Error::Trait", [])];
                       Ty.path "alloc::alloc::Global"]
               ]) :
             Ty.apply
               (Ty.path "alloc::boxed::Box")
-              [dyn [core.error.Error.Trait];
+              [Ty.dyn [("core::error::Error::Trait", [])];
                 Ty.path "alloc::alloc::Global"])) in
     M.call
       ((Ty.apply
@@ -156,7 +157,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [Ty.apply (Ty.path "ref") [Ty.path "str"]];
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [dyn [core.error.Error.Trait];
+                [Ty.dyn [("core::error::Error::Trait", [])];
                   Ty.path "alloc::alloc::Global"]])::["and_then"]
         α3
         (fun
@@ -196,19 +197,20 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     (T :=
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
-                                        [dyn [core.error.Error.Trait];
+                                        [Ty.dyn
+                                            [("core::error::Error::Trait", [])];
                                           Ty.path "alloc::alloc::Global"])
                                     (Trait := ℐ))) in
                               let* α1 := M.read e in
                               M.call (α0 α1)) :
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
-                                [dyn [core.error.Error.Trait];
+                                [Ty.dyn [("core::error::Error::Trait", [])];
                                   Ty.path "alloc::alloc::Global"]
                           ]) :
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
-                          [dyn [core.error.Error.Trait];
+                          [Ty.dyn [("core::error::Error::Trait", [])];
                             Ty.path "alloc::alloc::Global"])) in
                 M.call
                   ((Ty.apply
@@ -216,7 +218,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         [Ty.path "i32";
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [dyn [core.error.Error.Trait];
+                            [Ty.dyn [("core::error::Error::Trait", [])];
                               Ty.path "alloc::alloc::Global"]])::["map"]
                     α3
                     (fun (α0 : Ty.path "i32") =>
@@ -238,7 +240,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [Ty.path "i32";
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [dyn [core.error.Error.Trait];
+                      [Ty.dyn [("core::error::Error::Trait", [])];
                         Ty.path "alloc::alloc::Global"]]
             ]) :
           Ty.apply
@@ -246,7 +248,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [Ty.path "i32";
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [dyn [core.error.Error.Trait];
+                [Ty.dyn [("core::error::Error::Trait", [])];
                   Ty.path "alloc::alloc::Global"]]))
   | _, _ => M.impossible
   end.

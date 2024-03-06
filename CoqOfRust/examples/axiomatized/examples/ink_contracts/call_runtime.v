@@ -91,8 +91,9 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
 (* Enum EnvError *)

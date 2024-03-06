@@ -169,8 +169,8 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("Output", TODO);
-    ("bitand", InstanceField.Method bitand)].
+  Definition ℐ : Instance.t :=
+    [("Output", TODO); ("bitand", InstanceField.Method bitand)].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -204,8 +204,8 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("bitand_assign",
-      InstanceField.Method bitand_assign)].
+  Definition ℐ : Instance.t :=
+    [("bitand_assign", InstanceField.Method bitand_assign)].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -238,8 +238,8 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("Output", TODO);
-    ("bitor", InstanceField.Method bitor)].
+  Definition ℐ : Instance.t :=
+    [("Output", TODO); ("bitor", InstanceField.Method bitor)].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -273,8 +273,8 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("bitor_assign",
-      InstanceField.Method bitor_assign)].
+  Definition ℐ : Instance.t :=
+    [("bitor_assign", InstanceField.Method bitor_assign)].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -307,8 +307,8 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("Output", TODO);
-    ("bitxor", InstanceField.Method bitxor)].
+  Definition ℐ : Instance.t :=
+    [("Output", TODO); ("bitxor", InstanceField.Method bitxor)].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -342,8 +342,8 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("bitxor_assign",
-      InstanceField.Method bitxor_assign)].
+  Definition ℐ : Instance.t :=
+    [("bitxor_assign", InstanceField.Method bitxor_assign)].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
@@ -378,8 +378,8 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("Output", TODO);
-    ("not", InstanceField.Method not)].
+  Definition ℐ : Instance.t :=
+    [("Output", TODO); ("not", InstanceField.Method not)].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 (*
@@ -464,20 +464,34 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
   Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
+(* Trait *)
 Module ConstantTimeEq.
-  Class Trait (Self : Set) : Type := {
-    ct_eq :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]; Ty.apply (Ty.path "ref") [Self]]
-        (Ty.path "subtle::Choice");
-  }.
+  Definition ct_ne (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self; other] =>
+      let* self := M.alloc self in
+      let* other := M.alloc other in
+      let* α0 :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.bit.Not.not
+            (Self := Ty.path "subtle::Choice")
+            (Trait := ℐ))) in
+      let* α1 :=
+        ltac:(M.get_method (fun ℐ =>
+          subtle.ConstantTimeEq.ct_eq (Self := Self) (Trait := ℐ))) in
+      let* α2 := M.read self in
+      let* α3 := M.read other in
+      let* α4 := M.call (α1 α2 α3) in
+      M.call (α0 α4)
+    | _, _ => M.impossible
+    end.
   
+  Axiom ProvidedMethod_ct_ne :
+    M.IsProvidedMethod "subtle::ConstantTimeEq" ct_ne.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_slice_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "slice") [T].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [T].
   
   (*
       fn ct_eq(&self, _rhs: &[T]) -> Choice {
@@ -647,7 +661,8 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("ct_eq", InstanceField.Method ct_eq)].
+  Definition ℐ (T : Ty.t) : Instance.t :=
+    [("ct_eq", InstanceField.Method (ct_eq T))].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -1160,16 +1175,70 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
   Definition ℐ : Instance.t := [("ct_eq", InstanceField.Method ct_eq)].
 End Impl_subtle_ConstantTimeEq_for_isize.
 
+(* Trait *)
 Module ConditionallySelectable.
-  Class Trait (Self : Set) : Type := {
-    conditional_select :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self];
-          Ty.apply (Ty.path "ref") [Self];
-          Ty.path "subtle::Choice"]
-        Self;
-  }.
+  Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self; other; choice] =>
+      let* self := M.alloc self in
+      let* other := M.alloc other in
+      let* choice := M.alloc choice in
+      let* _ :=
+        let* α0 := M.read self in
+        let* α1 :=
+          ltac:(M.get_method (fun ℐ =>
+            subtle.ConditionallySelectable.conditional_select
+              (Self := Self)
+              (Trait := ℐ))) in
+        let* α2 := M.read self in
+        let* α3 := M.read other in
+        let* α4 := M.read choice in
+        let* α5 := M.call (α1 (borrow (deref α2)) α3 α4) in
+        assign (deref α0) α5 in
+      let* α0 := M.alloc tt in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
+  Axiom ProvidedMethod_conditional_assign :
+    M.IsProvidedMethod "subtle::ConditionallySelectable" conditional_assign.
+  Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [a; b; choice] =>
+      let* a := M.alloc a in
+      let* b := M.alloc b in
+      let* choice := M.alloc choice in
+      let* t :=
+        let* α0 := M.read a in
+        M.copy (deref α0) in
+      let* _ :=
+        let* α0 :=
+          ltac:(M.get_method (fun ℐ =>
+            subtle.ConditionallySelectable.conditional_assign
+              (Self := Self)
+              (Trait := ℐ))) in
+        let* α1 := M.read a in
+        let* α2 := M.read b in
+        let* α3 := M.read choice in
+        let* α4 := M.call (α0 α1 (borrow (deref α2)) α3) in
+        M.alloc α4 in
+      let* _ :=
+        let* α0 :=
+          ltac:(M.get_method (fun ℐ =>
+            subtle.ConditionallySelectable.conditional_assign
+              (Self := Self)
+              (Trait := ℐ))) in
+        let* α1 := M.read b in
+        let* α2 := M.read choice in
+        let* α3 := M.call (α0 α1 (borrow t) α2) in
+        M.alloc α3 in
+      let* α0 := M.alloc tt in
+      M.read α0
+    | _, _ => M.impossible
+    end.
+  
+  Axiom ProvidedMethod_conditional_swap :
+    M.IsProvidedMethod "subtle::ConditionallySelectable" conditional_swap.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
@@ -1308,10 +1377,10 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
@@ -1453,10 +1522,10 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
@@ -1595,10 +1664,10 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
@@ -1740,10 +1809,10 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
@@ -1882,10 +1951,10 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
@@ -2027,10 +2096,10 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
@@ -2169,10 +2238,10 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
@@ -2314,10 +2383,10 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select);
-    ("conditional_assign", InstanceField.Method conditional_assign);
-    ("conditional_swap", InstanceField.Method conditional_swap)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select);
+      ("conditional_assign", InstanceField.Method conditional_assign);
+      ("conditional_swap", InstanceField.Method conditional_swap)].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
@@ -2352,24 +2421,17 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select)].
+  Definition ℐ : Instance.t :=
+    [("conditional_select", InstanceField.Method conditional_select)].
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
+(* Trait *)
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) : Type := {
-    conditional_negate :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self]; Ty.path "subtle::Choice"]
-        (Ty.path "unit");
-  }.
   
 End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := T.
+  Definition Self (T : Ty.t) : Ty.t := T.
   
   (*
       fn conditional_negate(&mut self, choice: Choice) {
@@ -2409,16 +2471,15 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_negate",
-      InstanceField.Method conditional_negate)].
+  Definition ℐ (T : Ty.t) : Instance.t :=
+    [("conditional_negate", InstanceField.Method (conditional_negate T))].
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 (* Enum CtOption *)
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
   Clone
@@ -2447,21 +2508,20 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ (T : Ty.t) : Instance.t :=
+    [("clone", InstanceField.Method (clone T))].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
-  Context {T : Set}.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [T].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
-  
-  Definition ℐ : Instance.t := [].
+  Definition ℐ (T : Ty.t) : Instance.t := [].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
   Debug
@@ -2492,13 +2552,13 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ (T : Ty.t) : Instance.t :=
+    [("fmt", InstanceField.Method (fmt T))].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [T].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "core::option::Option") [T].
   
   (*
       fn from(source: CtOption<T>) -> Option<T> {
@@ -2534,13 +2594,13 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
+  Definition ℐ (T : Ty.t) : Instance.t :=
+    [("from", InstanceField.Method (from T))].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
       pub fn new(value: T, is_some: Choice) -> CtOption<T> {
@@ -2962,9 +3022,8 @@ Module Impl_subtle_CtOption_T.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -3012,14 +3071,13 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("conditional_select",
-      InstanceField.Method conditional_select)].
+  Definition ℐ (T : Ty.t) : Instance.t :=
+    [("conditional_select", InstanceField.Method (conditional_select T))].
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
       fn ct_eq(&self, rhs: &CtOption<T>) -> Choice {
@@ -3105,16 +3163,12 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("ct_eq", InstanceField.Method ct_eq)].
+  Definition ℐ (T : Ty.t) : Instance.t :=
+    [("ct_eq", InstanceField.Method (ct_eq T))].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
+(* Trait *)
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) : Type := {
-    ct_gt :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]; Ty.apply (Ty.path "ref") [Self]]
-        (Ty.path "subtle::Choice");
-  }.
   
 End ConstantTimeGreater.
 
@@ -3762,11 +3816,49 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
   Definition ℐ : Instance.t := [("ct_gt", InstanceField.Method ct_gt)].
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
+(* Trait *)
 Module ConstantTimeLess.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
+  Definition ct_lt (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self; other] =>
+      let* self := M.alloc self in
+      let* other := M.alloc other in
+      let* α0 :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.bit.BitAnd.bitand
+            (Self := Ty.path "subtle::Choice")
+            (Rhs := Ty.path "subtle::Choice")
+            (Trait := ℐ))) in
+      let* α1 :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.bit.Not.not
+            (Self := Ty.path "subtle::Choice")
+            (Trait := ℐ))) in
+      let* α2 :=
+        ltac:(M.get_method (fun ℐ =>
+          subtle.ConstantTimeGreater.ct_gt (Self := Self) (Trait := ℐ))) in
+      let* α3 := M.read self in
+      let* α4 := M.read other in
+      let* α5 := M.call (α2 α3 α4) in
+      let* α6 := M.call (α1 α5) in
+      let* α7 :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.bit.Not.not
+            (Self := Ty.path "subtle::Choice")
+            (Trait := ℐ))) in
+      let* α8 :=
+        ltac:(M.get_method (fun ℐ =>
+          subtle.ConstantTimeEq.ct_eq (Self := Self) (Trait := ℐ))) in
+      let* α9 := M.read self in
+      let* α10 := M.read other in
+      let* α11 := M.call (α8 α9 α10) in
+      let* α12 := M.call (α7 α11) in
+      M.call (α0 α6 α12)
+    | _, _ => M.impossible
+    end.
+  
+  Axiom ProvidedMethod_ct_lt :
+    M.IsProvidedMethod "subtle::ConstantTimeLess" ct_lt.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.

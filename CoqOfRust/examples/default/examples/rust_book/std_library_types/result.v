@@ -66,10 +66,10 @@ Module checked.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
-      (Ty.path "result::checked::MathResult") =
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.path "f64"; Ty.path "result::checked::MathError"]).
+    (Ty.path "result::checked::MathResult") =
+      (Ty.apply
+        (Ty.path "core::result::Result")
+        [Ty.path "f64"; Ty.path "result::checked::MathError"]).
   
   (*
       pub fn div(x: f64, y: f64) -> MathResult {

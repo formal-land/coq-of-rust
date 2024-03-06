@@ -70,11 +70,11 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
-    (Ty.path "wrapping_errors::Result") =
-      (fun T =>
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [T; Ty.path "wrapping_errors::DoubleError"]).
+  forall (T : Ty.t),
+  (Ty.path "wrapping_errors::Result") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T; Ty.path "wrapping_errors::DoubleError"]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
@@ -183,7 +183,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               end) :
               Ty.apply
                 (Ty.path "core::option::Option")
-                [Ty.apply (Ty.path "ref") [dyn [core.error.Error.Trait]]];
+                [Ty.apply
+                    (Ty.path "ref")
+                    [Ty.dyn [("core::error::Error::Trait", [])]]];
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -197,7 +199,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               end) :
               Ty.apply
                 (Ty.path "core::option::Option")
-                [Ty.apply (Ty.path "ref") [dyn [core.error.Error.Trait]]]
+                [Ty.apply
+                    (Ty.path "ref")
+                    [Ty.dyn [("core::error::Error::Trait", [])]]]
           ] in
       M.read α1
     | _, _ => M.impossible

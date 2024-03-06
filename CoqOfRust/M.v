@@ -29,6 +29,10 @@ Module Ty.
   Parameter function : list t -> t -> t.
 
   Parameter tuple : list t -> t.
+
+  (** As parameter: a list of traits, described by their absolute name and their
+      list of type parameters, excluding `Self`. *)
+  Parameter dyn : list (string * list t) -> t.
 End Ty.
 
 Module List.
@@ -327,7 +331,7 @@ Module InstanceField.
 End InstanceField.
 
 Module Instance.
-  Definition t : Set := list (string * option InstanceField.t).
+  Definition t : Set := list (string * InstanceField.t).
 End Instance.
 
 Module Option.

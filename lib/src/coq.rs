@@ -10,7 +10,7 @@ use std::rc::Rc;
 #[derive(Clone)]
 /// a list of coq top level items
 pub(crate) struct TopLevel<'a> {
-    items: Vec<TopLevelItem<'a>>,
+    pub(crate) items: Vec<TopLevelItem<'a>>,
 }
 
 #[derive(Clone)]
@@ -81,9 +81,7 @@ pub(crate) struct Class<'a> {
 pub(crate) struct Instance<'a> {
     name: String,
     parameters: Vec<ArgDecl<'a>>,
-    class: Expression<'a>,
     build_expr: Expression<'a>,
-    proof_lines: Vec<Doc<'a>>,
 }
 
 #[derive(Clone)]
@@ -461,29 +459,6 @@ impl<'a> TopLevelItem<'a> {
             ]),
         ))
     }
-
-    pub(crate) fn ty_alias_definition(
-        name: &str,
-        path: String,
-        ty_params: Vec<String>,
-        ty: &Expression<'a>,
-    ) -> Vec<Self> {
-        vec![TopLevelItem::Definition(Definition::new(
-            name,
-            &DefinitionKind::Axiom {
-                ty: Expression::Equality {
-                    lhs: Rc::new(Expression::just_name("Ty.path").apply(&Expression::String(path))),
-                    rhs: Rc::new(Expression::Function {
-                        parameters: ty_params
-                            .iter()
-                            .map(|ty_param| Expression::just_name(ty_param))
-                            .collect(),
-                        body: Rc::new(ty.clone()),
-                    }),
-                },
-            },
-        ))]
-    }
 }
 
 impl<'a> Module<'a> {
@@ -537,13 +512,13 @@ impl<'a> Definition<'a> {
                 nest([
                     group([text("Definition"), line(), text(self.name.to_owned())]),
                     group([
-                        optional_insert(
-                            args.is_empty(),
-                            concat([
-                                line(),
-                                intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
-                            ]),
-                        ),
+                        concat(args.iter().filter_map(|arg| {
+                            if arg.is_empty() {
+                                None
+                            } else {
+                                Some(concat([line(), arg.to_doc()]))
+                            }
+                        })),
                         match ty {
                             Some(ty) => {
                                 concat([line(), nest([text(":"), line(), ty.to_doc(false)])])
@@ -568,8 +543,14 @@ impl<'a> Definition<'a> {
                 text("."),
             ]),
             DefinitionKind::Axiom { ty } => nest([
-                nest([text("Axiom"), line(), text(self.name.to_owned()), line()]),
-                nest([text(":"), line(), ty.to_doc(false)]),
+                nest([
+                    text("Axiom"),
+                    line(),
+                    text(self.name.to_owned()),
+                    text(" :"),
+                ]),
+                line(),
+                ty.to_doc(false),
                 text("."),
             ]),
             DefinitionKind::Ltac { args, body } => nest([
@@ -773,24 +754,16 @@ impl<'a> Inductive<'a> {
 
 impl<'a> Instance<'a> {
     /// produces a new coq instance
-    pub(crate) fn new(
-        name: &str,
-        parameters: &[ArgDecl<'a>],
-        class: Expression<'a>,
-        build_expr: &Expression<'a>,
-        proof_lines: Vec<Doc<'a>>,
-    ) -> Self {
+    pub(crate) fn new(name: &str, parameters: &[ArgDecl<'a>], build_expr: &Expression<'a>) -> Self {
         Instance {
             name: name.to_owned(),
             parameters: parameters.to_vec(),
-            class,
             build_expr: build_expr.to_owned(),
-            proof_lines,
         }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        concat([
+        nest([
             nest([
                 nest([
                     text("Definition "),
@@ -810,19 +783,11 @@ impl<'a> Instance<'a> {
                 text(" :"),
                 line(),
                 text("Instance.t"),
-                text(" := "),
+                text(" :="),
             ]),
+            line(),
             self.build_expr.to_doc(false),
             text("."),
-            optional_insert(
-                self.proof_lines.is_empty(),
-                concat([
-                    hardline(),
-                    intersperse(self.proof_lines.to_owned(), [hardline()]),
-                    hardline(),
-                    text("Defined."),
-                ]),
-            ),
         ])
     }
 }
@@ -973,7 +938,7 @@ impl<'a> Expression<'a> {
                 ]),
             ),
             Self::PiType { args, image } => optional_insert_with(
-                args.is_empty(),
+                args.iter().all(|arg| arg.is_empty()),
                 image.to_doc(with_paren),
                 paren(
                     with_paren,
@@ -1239,7 +1204,7 @@ impl<'a> ArgDecl<'a> {
         ArgDecl {
             decl: ArgDeclVar::Simple {
                 idents: ty_params.to_owned(),
-                ty: Some(Expression::Set),
+                ty: Some(Expression::just_name("Ty.t")),
             },
             kind,
         }

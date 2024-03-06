@@ -7,9 +7,7 @@ Module my.
   (* Enum ClosedBox *)
   
   Module Impl_struct_visibility_my_ClosedBox_T.
-    Context {T : Set}.
-    
-    Definition Self : Ty.t :=
+    Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [T].
     
     (*

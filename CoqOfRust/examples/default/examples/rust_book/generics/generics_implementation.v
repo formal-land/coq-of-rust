@@ -25,9 +25,7 @@ Module Impl_generics_implementation_Val.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
-  Context {T : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (T : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_implementation::GenVal") [T].
   
   (*

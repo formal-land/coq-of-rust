@@ -64,19 +64,12 @@ End Impl_core_marker_Copy_for_conditional_compilation_AccountId.
 Axiom Balance : (Ty.path "conditional_compilation::Balance") = (Ty.path "u128").
 
 Axiom BlockNumber :
-    (Ty.path "conditional_compilation::BlockNumber") = (Ty.path "u32").
+  (Ty.path "conditional_compilation::BlockNumber") = (Ty.path "u32").
 
 (* Enum Env *)
 
+(* Trait *)
 Module Flip.
-  Class Trait (Self : Set) : Type := {
-    flip : Ty.function [Ty.apply (Ty.path "mut_ref") [Self]] (Ty.path "unit");
-    get : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "bool");
-    push_foo :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self]; Ty.path "bool"]
-        (Ty.path "unit");
-  }.
   
 End Flip.
 
@@ -480,7 +473,8 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("flip", InstanceField.Method flip);
-    ("get", InstanceField.Method get);
-    ("push_foo", InstanceField.Method push_foo)].
+  Definition ℐ : Instance.t :=
+    [("flip", InstanceField.Method flip);
+      ("get", InstanceField.Method get);
+      ("push_foo", InstanceField.Method push_foo)].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

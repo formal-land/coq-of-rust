@@ -57,8 +57,8 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("partial_cmp",
-      InstanceField.Method partial_cmp)].
+  Definition ℐ : Instance.t :=
+    [("partial_cmp", InstanceField.Method partial_cmp)].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)

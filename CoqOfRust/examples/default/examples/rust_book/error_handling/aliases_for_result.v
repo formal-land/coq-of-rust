@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom AliasedResult :
-    (Ty.path "aliases_for_result::AliasedResult") =
-      (fun T =>
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [T; Ty.path "core::num::error::ParseIntError"]).
+  forall (T : Ty.t),
+  (Ty.path "aliases_for_result::AliasedResult") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T; Ty.path "core::num::error::ParseIntError"]).
 
 (*
 fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {

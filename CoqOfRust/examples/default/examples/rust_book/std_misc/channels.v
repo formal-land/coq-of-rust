@@ -435,7 +435,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::boxed::Box")
-                                                    [dyn [core.any.Any.Trait];
+                                                    [Ty.dyn
+                                                        [("core::any::Any::Trait",
+                                                            [])];
                                                       Ty.path
                                                         "alloc::alloc::Global"]])::["expect"]
                                             α1

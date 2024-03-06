@@ -4,35 +4,32 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
-  Context {K V : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "mapping_integration_tests::Mapping") [K; V].
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ (K V : Ty.t) : Instance.t :=
+    [("default", InstanceField.Method (default K V))].
 End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
-  Context {K V : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "mapping_integration_tests::Mapping") [K; V].
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter size : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter take : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
 End Impl_mapping_integration_tests_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -60,7 +57,7 @@ Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 
 Axiom Balance :
-    (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128").
+  (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128").
 
 (* Enum Env *)
 

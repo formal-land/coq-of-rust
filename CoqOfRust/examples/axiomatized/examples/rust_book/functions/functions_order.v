@@ -13,13 +13,8 @@ Module Impl_functions_order_SomeType.
   Parameter meth1 : (list Ty.t) -> (list Value.t) -> M.
 End Impl_functions_order_SomeType.
 
+(* Trait *)
 Module SomeTrait.
-  Class Trait (Self : Set) : Type := {
-    some_trait_foo :
-      Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "unit");
-    some_trait_bar :
-      Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "unit");
-  }.
   
 End SomeTrait.
 
@@ -30,9 +25,9 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   
   Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("some_trait_bar",
-      InstanceField.Method some_trait_bar);
-    ("some_trait_foo", InstanceField.Method some_trait_foo)].
+  Definition ℐ : Instance.t :=
+    [("some_trait_bar", InstanceField.Method some_trait_bar);
+      ("some_trait_foo", InstanceField.Method some_trait_foo)].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -42,9 +37,9 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   
   Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("some_trait_foo",
-      InstanceField.Method some_trait_foo);
-    ("some_trait_bar", InstanceField.Method some_trait_bar)].
+  Definition ℐ : Instance.t :=
+    [("some_trait_foo", InstanceField.Method some_trait_foo);
+      ("some_trait_bar", InstanceField.Method some_trait_bar)].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.

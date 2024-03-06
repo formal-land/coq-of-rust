@@ -120,8 +120,9 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -213,16 +214,17 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
-    (Ty.path "payment_channel::Result") =
-      (fun T =>
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [T; Ty.path "payment_channel::Error"]).
+  forall (T : Ty.t),
+  (Ty.path "payment_channel::Result") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T; Ty.path "payment_channel::Error"]).
 
 (* Enum SenderCloseStarted *)
 
@@ -340,25 +342,13 @@ Module Impl_payment_channel_Env.
     end.
 End Impl_payment_channel_Env.
 
+(* Trait *)
 Module HashOutput.
-  Class Trait (Self : Set) : Type := {
-    Type_ : Set;
-    ℒ_0 :: core.default.Default.Trait Type_;
-  }.
   
-  Definition Method_Type_ `(Trait) : Instance.t := {
-    Notations.double_colon_type := Type_;
-  }.
 End HashOutput.
 
+(* Trait *)
 Module CryptoHash.
-  Class Trait (Self : Set) : Type := {
-    hash :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "slice") [Ty.path "u8"]];
-          Ty.apply (Ty.path "mut_ref") [_]]
-        (Ty.path "unit");
-  }.
   
 End CryptoHash.
 

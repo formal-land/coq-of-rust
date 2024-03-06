@@ -86,8 +86,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("Output", TODO);
-    ("add", InstanceField.Method add)].
+  Definition ℐ : Instance.t :=
+    [("Output", TODO); ("add", InstanceField.Method add)].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
@@ -127,8 +127,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("Output", TODO);
-    ("add", InstanceField.Method add)].
+  Definition ℐ : Instance.t :=
+    [("Output", TODO); ("add", InstanceField.Method add)].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 (*

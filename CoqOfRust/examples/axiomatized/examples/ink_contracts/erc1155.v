@@ -4,31 +4,30 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "erc1155::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [K; V].
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
-  
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ (K V : Ty.t) : Instance.t :=
+    [("default", InstanceField.Method (default K V))].
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "erc1155::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [K; V].
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter size : (list Ty.t) -> (list Value.t) -> M.
-  
-  Parameter take : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
 End Impl_erc1155_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -116,118 +115,23 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
-    (Ty.path "erc1155::Result") =
-      (fun T =>
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [T; Ty.path "erc1155::Error"]).
+  forall (T : Ty.t),
+  (Ty.path "erc1155::Result") =
+    (Ty.apply (Ty.path "core::result::Result") [T; Ty.path "erc1155::Error"]).
 
+(* Trait *)
 Module Erc1155.
-  Class Trait (Self : Set) : Type := {
-    safe_transfer_from :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "erc1155::AccountId";
-          Ty.path "erc1155::AccountId";
-          Ty.path "u128";
-          Ty.path "u128";
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u8"; Ty.path "alloc::alloc::Global"]]
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple []; Ty.path "erc1155::Error"]);
-    safe_batch_transfer_from :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "erc1155::AccountId";
-          Ty.path "erc1155::AccountId";
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u128"; Ty.path "alloc::alloc::Global"];
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u128"; Ty.path "alloc::alloc::Global"];
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u8"; Ty.path "alloc::alloc::Global"]]
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple []; Ty.path "erc1155::Error"]);
-    balance_of :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self];
-          Ty.path "erc1155::AccountId";
-          Ty.path "u128"]
-        (Ty.path "u128");
-    balance_of_batch :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self];
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "erc1155::AccountId"; Ty.path "alloc::alloc::Global"];
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u128"; Ty.path "alloc::alloc::Global"]]
-        (Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "u128"; Ty.path "alloc::alloc::Global"]);
-    set_approval_for_all :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "erc1155::AccountId";
-          Ty.path "bool"]
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple []; Ty.path "erc1155::Error"]);
-    is_approved_for_all :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self];
-          Ty.path "erc1155::AccountId";
-          Ty.path "erc1155::AccountId"]
-        (Ty.path "bool");
-  }.
   
 End Erc1155.
 
+(* Trait *)
 Module Erc1155TokenReceiver.
-  Class Trait (Self : Set) : Type := {
-    on_received :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "erc1155::AccountId";
-          Ty.path "erc1155::AccountId";
-          Ty.path "u128";
-          Ty.path "u128";
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u8"; Ty.path "alloc::alloc::Global"]]
-        (Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "u8"; Ty.path "alloc::alloc::Global"]);
-    on_batch_received :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "erc1155::AccountId";
-          Ty.path "erc1155::AccountId";
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u128"; Ty.path "alloc::alloc::Global"];
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u128"; Ty.path "alloc::alloc::Global"];
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            [Ty.path "u8"; Ty.path "alloc::alloc::Global"]]
-        (Ty.apply
-          (Ty.path "alloc::vec::Vec")
-          [Ty.path "u8"; Ty.path "alloc::alloc::Global"]);
-  }.
   
 End Erc1155TokenReceiver.
 
@@ -294,13 +198,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   
   Parameter set_approval_for_all : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("is_approved_for_all",
-      InstanceField.Method is_approved_for_all);
-    ("balance_of", InstanceField.Method balance_of);
-    ("safe_transfer_from", InstanceField.Method safe_transfer_from);
-    ("safe_batch_transfer_from", InstanceField.Method safe_batch_transfer_from);
-    ("balance_of_batch", InstanceField.Method balance_of_batch);
-    ("set_approval_for_all", InstanceField.Method set_approval_for_all)].
+  Definition ℐ : Instance.t :=
+    [("is_approved_for_all", InstanceField.Method is_approved_for_all);
+      ("balance_of", InstanceField.Method balance_of);
+      ("safe_transfer_from", InstanceField.Method safe_transfer_from);
+      ("safe_batch_transfer_from",
+        InstanceField.Method safe_batch_transfer_from);
+      ("balance_of_batch", InstanceField.Method balance_of_batch);
+      ("set_approval_for_all", InstanceField.Method set_approval_for_all)].
 End Impl_erc1155_Erc1155_for_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
@@ -310,7 +215,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
   
   Parameter on_batch_received : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("on_received",
-      InstanceField.Method on_received);
-    ("on_batch_received", InstanceField.Method on_batch_received)].
+  Definition ℐ : Instance.t :=
+    [("on_received", InstanceField.Method on_received);
+      ("on_batch_received", InstanceField.Method on_batch_received)].
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.

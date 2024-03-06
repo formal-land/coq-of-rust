@@ -3,19 +3,54 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Sheep *)
 
+(* Trait *)
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    new : Ty.function [Ty.apply (Ty.path "ref") [Ty.path "str"]] Self;
-    name :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]]
-        (Ty.apply (Ty.path "ref") [Ty.path "str"]);
-    noise :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]]
-        (Ty.apply (Ty.path "ref") [Ty.path "str"]);
-  }.
+  Definition talk (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self] =>
+      let* self := M.alloc self in
+      let* _ :=
+        let* _ :=
+          let* α0 := M.read (mk_str "") in
+          let* α1 := M.read (mk_str " says ") in
+          let* α2 := M.read (mk_str "
+") in
+          let* α3 := M.alloc [ α0; α1; α2 ] in
+          let* α4 :=
+            ltac:(M.get_method (fun ℐ =>
+              traits.Animal.name (Self := Self) (Trait := ℐ))) in
+          let* α5 := M.read self in
+          let* α6 := M.call (α4 α5) in
+          let* α7 := M.alloc α6 in
+          let* α8 :=
+            M.call
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
+                (borrow α7)) in
+          let* α9 :=
+            ltac:(M.get_method (fun ℐ =>
+              traits.Animal.noise (Self := Self) (Trait := ℐ))) in
+          let* α10 := M.read self in
+          let* α11 := M.call (α9 α10) in
+          let* α12 := M.alloc α11 in
+          let* α13 :=
+            M.call
+              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
+                (borrow α12)) in
+          let* α14 := M.alloc [ α8; α13 ] in
+          let* α15 :=
+            M.call
+              ((Ty.path "core::fmt::Arguments")::["new_v1"]
+                (pointer_coercion "Unsize" (borrow α3))
+                (pointer_coercion "Unsize" (borrow α14))) in
+          let* α16 := M.call ((M.var "std::io::stdio::_print") α15) in
+          M.alloc α16 in
+        M.alloc tt in
+      let* α0 := M.alloc tt in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
+  Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" talk.
 End Animal.
 
 Module Impl_traits_Sheep.
@@ -139,10 +174,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("new", InstanceField.Method new);
-    ("name", InstanceField.Method name);
-    ("noise", InstanceField.Method noise);
-    ("talk", InstanceField.Method talk)].
+  Definition ℐ : Instance.t :=
+    [("new", InstanceField.Method new);
+      ("name", InstanceField.Method name);
+      ("noise", InstanceField.Method noise);
+      ("talk", InstanceField.Method talk)].
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.

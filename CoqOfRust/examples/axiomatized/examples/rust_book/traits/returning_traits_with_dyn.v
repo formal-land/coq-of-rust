@@ -5,13 +5,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Struct Cow *)
 
+(* Trait *)
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    noise :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]]
-        (Ty.apply (Ty.path "ref") [Ty.path "str"]);
-  }.
   
 End Animal.
 

@@ -3,19 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Sheep *)
 
+(* Trait *)
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    new : Ty.function [Ty.apply (Ty.path "ref") [Ty.path "str"]] Self;
-    name :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]]
-        (Ty.apply (Ty.path "ref") [Ty.path "str"]);
-    noise :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]]
-        (Ty.apply (Ty.path "ref") [Ty.path "str"]);
-  }.
+  Parameter talk : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" talk.
 End Animal.
 
 Module Impl_traits_Sheep.
@@ -35,10 +27,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
   
   Parameter talk : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("new", InstanceField.Method new);
-    ("name", InstanceField.Method name);
-    ("noise", InstanceField.Method noise);
-    ("talk", InstanceField.Method talk)].
+  Definition ℐ : Instance.t :=
+    [("new", InstanceField.Method new);
+      ("name", InstanceField.Method name);
+      ("noise", InstanceField.Method noise);
+      ("talk", InstanceField.Method talk)].
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.

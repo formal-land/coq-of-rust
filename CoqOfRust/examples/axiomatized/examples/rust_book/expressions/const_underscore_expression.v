@@ -5,10 +5,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Bar *)
 
+(* Trait *)
 Module BarTrait.
-  Class Trait (Self : Set) : Type := {
-    show : Ty.function [Self] (Ty.path "alloc::string::String");
-  }.
   
 End BarTrait.
 

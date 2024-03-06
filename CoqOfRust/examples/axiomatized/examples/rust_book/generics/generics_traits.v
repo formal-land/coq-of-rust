@@ -5,22 +5,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Struct Null *)
 
+(* Trait *)
 Module DoubleDrop.
-  Class Trait (Self : Set) {T : Set} : Type := {
-    double_drop : Ty.function [Self; T] (Ty.path "unit");
-  }.
   
 End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_T_for_U.
-  Context {T U : Set}.
+  Definition Self (T U : Ty.t) : Ty.t := U.
   
-  Definition Self : Ty.t := U.
+  Parameter double_drop :
+      forall (T U : Ty.t),
+      (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter double_drop : (list Ty.t) -> (list Value.t) -> M.
-  
-  Definition ℐ : Instance.t := [("double_drop",
-      InstanceField.Method double_drop)].
+  Definition ℐ (T U : Ty.t) : Instance.t :=
+    [("double_drop", InstanceField.Method (double_drop T U))].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

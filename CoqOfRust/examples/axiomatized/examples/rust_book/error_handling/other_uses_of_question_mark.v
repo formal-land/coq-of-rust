@@ -2,14 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
-    (Ty.path "other_uses_of_question_mark::Result") =
-      (fun T =>
+  forall (T : Ty.t),
+  (Ty.path "other_uses_of_question_mark::Result") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T;
         Ty.apply
-          (Ty.path "core::result::Result")
-          [T;
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [dyn [core.error.Error.Trait]; Ty.path "alloc::alloc::Global"]]).
+          (Ty.path "alloc::boxed::Box")
+          [Ty.dyn [("core::error::Error::Trait", [])];
+            Ty.path "alloc::alloc::Global"]]).
 
 (* Struct EmptyVec *)
 

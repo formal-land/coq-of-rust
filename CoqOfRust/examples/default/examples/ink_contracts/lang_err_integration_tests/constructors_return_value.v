@@ -83,18 +83,18 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance :
-    (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
+  (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
 (* Enum ConstructorsReturnValue *)
 
 (* Enum LangError *)
 
 Axiom ConstructorResult :
-    (Ty.path "constructors_return_value::ConstructorResult") =
-      (fun T =>
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [T; Ty.path "constructors_return_value::LangError"]).
+  forall (T : Ty.t),
+  (Ty.path "constructors_return_value::ConstructorResult") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T; Ty.path "constructors_return_value::LangError"]).
 
 (* Struct ConstructorError *)
 

@@ -4,18 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct PhantomTuple *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Context {A B : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [A; B].
   
-  Definition ℐ : Instance.t := [].
+  Definition ℐ (A B : Ty.t) : Instance.t := [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Context {A B : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [A; B].
   
   (*
@@ -59,24 +55,21 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ (A B : Ty.t) : Instance.t :=
+    [("eq", InstanceField.Method (eq A B))].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 (* Enum PhantomStruct *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Context {A B : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [A; B].
   
-  Definition ℐ : Instance.t := [].
+  Definition ℐ (A B : Ty.t) : Instance.t := [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Context {A B : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [A; B].
   
   (*
@@ -122,7 +115,8 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ (A B : Ty.t) : Instance.t :=
+    [("eq", InstanceField.Method (eq A B))].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (*

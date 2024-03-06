@@ -30,6 +30,7 @@ pub(crate) enum CoqType {
     },
     Tuple(Vec<Rc<CoqType>>),
     OpaqueType(Vec<Path>),
+    // TODO: add the type parameters for the traits
     Dyn(Vec<Path>),
     Infer,
     Monad(Rc<CoqType>),
@@ -240,12 +241,14 @@ impl CoqType {
                 no_implicit: false,
             },
             CoqType::Dyn(traits) => {
-                coq::Expression::just_name("dyn").apply(&coq::Expression::List {
+                coq::Expression::just_name("Ty.dyn").apply(&coq::Expression::List {
                     exprs: traits
                         .iter()
-                        .map(|trait_name| coq::Expression::Variable {
-                            ident: trait_name.clone(),
-                            no_implicit: false,
+                        .map(|trait_name| {
+                            coq::Expression::Tuple(vec![
+                                coq::Expression::String(trait_name.to_string()),
+                                coq::Expression::List { exprs: vec![] },
+                            ])
                         })
                         .collect(),
                 })

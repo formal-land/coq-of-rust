@@ -5,13 +5,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Struct Cow *)
 
+(* Trait *)
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    noise :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]]
-        (Ty.apply (Ty.path "ref") [Ty.path "str"]);
-  }.
   
 End Animal.
 
@@ -124,7 +119,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           ltac:(M.get_method (fun ℐ =>
             returning_traits_with_dyn.Animal.noise
-              (Self := dyn [returning_traits_with_dyn.Animal.Trait])
+              (Self :=
+                Ty.dyn [("returning_traits_with_dyn::Animal::Trait", [])])
               (Trait := ℐ))) in
         let* α4 := M.read animal in
         let* α5 := M.call (α3 (borrow (deref α4))) in

@@ -32,8 +32,8 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   
   Parameter try_from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("Error", TODO);
-    ("try_from", InstanceField.Method try_from)].
+  Definition ℐ : Instance.t :=
+    [("Error", TODO); ("try_from", InstanceField.Method try_from)].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

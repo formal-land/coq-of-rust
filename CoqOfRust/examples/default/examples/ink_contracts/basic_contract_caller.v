@@ -62,8 +62,8 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :
-    (Ty.path "basic_contract_caller::Hash") =
-      (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+  (Ty.path "basic_contract_caller::Hash") =
+    (Ty.apply (Ty.path "array") [Ty.path "u8"]).
 
 (* Enum Error *)
 

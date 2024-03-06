@@ -104,9 +104,7 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 (* Struct Length *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context {Unit : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
       [Unit].
@@ -143,13 +141,12 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ (Unit : Ty.t) : Instance.t :=
+    [("fmt", InstanceField.Method (fmt Unit))].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context {Unit : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
       [Unit].
@@ -192,24 +189,21 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ (Unit : Ty.t) : Instance.t :=
+    [("clone", InstanceField.Method (clone Unit))].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context {Unit : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
       [Unit].
   
-  Definition ℐ : Instance.t := [].
+  Definition ℐ (Unit : Ty.t) : Instance.t := [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Context {Unit : Set}.
-  
-  Definition Self : Ty.t :=
+  Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
       [Unit].
@@ -251,8 +245,8 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("Output", TODO);
-    ("add", InstanceField.Method add)].
+  Definition ℐ (Unit : Ty.t) : Instance.t :=
+    [("Output", TODO); ("add", InstanceField.Method (add Unit))].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (*

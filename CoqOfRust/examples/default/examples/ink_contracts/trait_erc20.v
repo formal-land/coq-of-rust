@@ -4,9 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
-  Context {K V : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [K; V].
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "trait_erc20::Mapping") [K; V].
   
   (*
   Default
@@ -31,13 +30,13 @@ Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ (K V : Ty.t) : Instance.t :=
+    [("default", InstanceField.Method (default K V))].
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
-  Context {K V : Set}.
-  
-  Definition Self : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [K; V].
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "trait_erc20::Mapping") [K; V].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -246,57 +245,20 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
-    (Ty.path "trait_erc20::Result") =
-      (fun T =>
-        Ty.apply
-          (Ty.path "core::result::Result")
-          [T; Ty.path "trait_erc20::Error"]).
+  forall (T : Ty.t),
+  (Ty.path "trait_erc20::Result") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T; Ty.path "trait_erc20::Error"]).
 
+(* Trait *)
 Module BaseErc20.
-  Class Trait (Self : Set) : Type := {
-    total_supply :
-      Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "u128");
-    balance_of :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self]; Ty.path "trait_erc20::AccountId"]
-        (Ty.path "u128");
-    allowance :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self];
-          Ty.path "trait_erc20::AccountId";
-          Ty.path "trait_erc20::AccountId"]
-        (Ty.path "u128");
-    transfer :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "trait_erc20::AccountId";
-          Ty.path "u128"]
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple []; Ty.path "trait_erc20::Error"]);
-    approve :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "trait_erc20::AccountId";
-          Ty.path "u128"]
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple []; Ty.path "trait_erc20::Error"]);
-    transfer_from :
-      Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Self];
-          Ty.path "trait_erc20::AccountId";
-          Ty.path "trait_erc20::AccountId";
-          Ty.path "u128"]
-        (Ty.apply
-          (Ty.path "core::result::Result")
-          [Ty.tuple []; Ty.path "trait_erc20::Error"]);
-  }.
   
 End BaseErc20.
 
@@ -1012,11 +974,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("total_supply",
-      InstanceField.Method total_supply);
-    ("balance_of", InstanceField.Method balance_of);
-    ("allowance", InstanceField.Method allowance);
-    ("transfer", InstanceField.Method transfer);
-    ("approve", InstanceField.Method approve);
-    ("transfer_from", InstanceField.Method transfer_from)].
+  Definition ℐ : Instance.t :=
+    [("total_supply", InstanceField.Method total_supply);
+      ("balance_of", InstanceField.Method balance_of);
+      ("allowance", InstanceField.Method allowance);
+      ("transfer", InstanceField.Method transfer);
+      ("approve", InstanceField.Method approve);
+      ("transfer_from", InstanceField.Method transfer_from)].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

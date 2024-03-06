@@ -110,8 +110,9 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
@@ -171,12 +172,12 @@ End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 (* Enum AccountInfo *)
 
 Axiom Accounts :
-    (Ty.path "hash_map_alternate_or_custom_key_types::Accounts") =
-      (Ty.apply
-        (Ty.path "std::collections::hash::map::HashMap")
-        [Ty.path "hash_map_alternate_or_custom_key_types::Account";
-          Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-          Ty.path "std::hash::random::RandomState"]).
+  (Ty.path "hash_map_alternate_or_custom_key_types::Accounts") =
+    (Ty.apply
+      (Ty.path "std::collections::hash::map::HashMap")
+      [Ty.path "hash_map_alternate_or_custom_key_types::Account";
+        Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+        Ty.path "std::hash::random::RandomState"]).
 
 (*
 fn try_logon<'a>(accounts: &Accounts<'a>, username: &'a str, password: &'a str) {

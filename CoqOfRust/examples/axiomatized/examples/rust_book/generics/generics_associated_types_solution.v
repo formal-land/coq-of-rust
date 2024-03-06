@@ -3,27 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Struct Container *)
 
+(* Trait *)
 Module Contains.
-  Class Trait (Self : Set) : Type := {
-    A : Set;
-    B : Set;
-    contains :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self];
-          Ty.apply (Ty.path "ref") [_];
-          Ty.apply (Ty.path "ref") [_]]
-        (Ty.path "bool");
-    first : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "i32");
-    last : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "i32");
-    a : Ty.function [Ty.apply (Ty.path "ref") [Self]] _;
-  }.
   
-  Definition Method_A `(Trait) : Instance.t := {
-    Notations.double_colon_type := A;
-  }.
-  Definition Method_B `(Trait) : Instance.t := {
-    Notations.double_colon_type := B;
-  }.
 End Contains.
 
 Module Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
@@ -42,12 +24,13 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   
   Parameter a : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("A", TODO);
-    ("B", TODO);
-    ("contains", InstanceField.Method contains);
-    ("first", InstanceField.Method first);
-    ("last", InstanceField.Method last);
-    ("a", InstanceField.Method a)].
+  Definition ℐ : Instance.t :=
+    [("A", TODO);
+      ("B", TODO);
+      ("contains", InstanceField.Method contains);
+      ("first", InstanceField.Method first);
+      ("last", InstanceField.Method last);
+      ("a", InstanceField.Method a)].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.

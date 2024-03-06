@@ -4,23 +4,22 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_mother_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "mother::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "mother::Mapping") [K; V].
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
-  
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ (K V : Ty.t) : Instance.t :=
+    [("default", InstanceField.Method (default K V))].
 End Impl_core_default_Default_for_mother_Mapping_K_V.
 
 Module Impl_mother_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "mother::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "mother::Mapping") [K; V].
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
-  
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
 End Impl_mother_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -72,8 +71,9 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_mother_AccountId.
 
 Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
@@ -81,7 +81,7 @@ Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
 Axiom BlockNumber : (Ty.path "mother::BlockNumber") = (Ty.path "u32").
 
 Axiom Hash :
-    (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+  (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
 
 (* Enum Env *)
 
@@ -120,8 +120,9 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_mother_Bids.
 
 Module Impl_core_clone_Clone_for_mother_Bids.
@@ -159,8 +160,9 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_mother_Outline.
 
 Module Impl_core_clone_Clone_for_mother_Outline.
@@ -198,8 +200,9 @@ Module Impl_core_cmp_Eq_for_mother_Status.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_mother_Status.
 
 Module Impl_core_clone_Clone_for_mother_Status.
@@ -237,8 +240,9 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_mother_Auction.
 
 Module Impl_core_clone_Clone_for_mother_Auction.
@@ -284,8 +288,9 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_mother_Failure.
 
 (* Enum AuctionEchoed *)

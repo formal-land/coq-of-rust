@@ -4,33 +4,32 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_dns_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "dns::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "dns::Mapping") [K; V].
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
-  
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ (K V : Ty.t) : Instance.t :=
+    [("default", InstanceField.Method (default K V))].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "dns::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "dns::Mapping") [K; V].
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter size : (list Ty.t) -> (list Value.t) -> M.
-  
-  Parameter take : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
 End Impl_dns_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -82,7 +81,7 @@ End Impl_core_convert_From_array_u8_for_dns_AccountId.
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
 
 Axiom Hash :
-    (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+  (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
 
 (* Enum Env *)
 
@@ -141,14 +140,15 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("assert_receiver_is_total_eq",
-      InstanceField.Method assert_receiver_is_total_eq)].
+  Definition ℐ : Instance.t :=
+    [("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)].
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
-    (Ty.path "dns::Result") =
-      (fun T =>
-        Ty.apply (Ty.path "core::result::Result") [T; Ty.path "dns::Error"]).
+  forall (T : Ty.t),
+  (Ty.path "dns::Result") =
+    (Ty.apply (Ty.path "core::result::Result") [T; Ty.path "dns::Error"]).
 
 Module Impl_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".

@@ -2,14 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
-    (Ty.path "other_uses_of_question_mark::Result") =
-      (fun T =>
+  forall (T : Ty.t),
+  (Ty.path "other_uses_of_question_mark::Result") =
+    (Ty.apply
+      (Ty.path "core::result::Result")
+      [T;
         Ty.apply
-          (Ty.path "core::result::Result")
-          [T;
-            Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [dyn [core.error.Error.Trait]; Ty.path "alloc::alloc::Global"]]).
+          (Ty.path "alloc::boxed::Box")
+          [Ty.dyn [("core::error::Error::Trait", [])];
+            Ty.path "alloc::alloc::Global"]]).
 
 (* Struct EmptyVec *)
 
@@ -85,7 +86,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [Ty.path "i32";
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [dyn [core.error.Error.Trait];
+                [Ty.dyn [("core::error::Error::Trait", [])];
                   Ty.path "alloc::alloc::Global"]]) in
     M.catch_return
       (let* first :=
@@ -148,7 +149,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [Ty.path "i32";
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
-                                [dyn [core.error.Error.Trait];
+                                [Ty.dyn [("core::error::Error::Trait", [])];
                                   Ty.path "alloc::alloc::Global"]])
                         (R :=
                           Ty.apply
@@ -219,7 +220,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [Ty.path "i32";
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
-                                [dyn [core.error.Error.Trait];
+                                [Ty.dyn [("core::error::Error::Trait", [])];
                                   Ty.path "alloc::alloc::Global"]])
                         (R :=
                           Ty.apply

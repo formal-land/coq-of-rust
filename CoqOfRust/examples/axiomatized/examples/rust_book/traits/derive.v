@@ -22,8 +22,8 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   
   Parameter partial_cmp : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("partial_cmp",
-      InstanceField.Method partial_cmp)].
+  Definition ℐ : Instance.t :=
+    [("partial_cmp", InstanceField.Method partial_cmp)].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)

@@ -28,8 +28,7 @@ End Impl_core_marker_Copy_for_contract_ref_AccountId.
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
 
 Axiom Hash :
-    (Ty.path "contract_ref::Hash") =
-      (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+  (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
 
 (* Enum Env *)
 

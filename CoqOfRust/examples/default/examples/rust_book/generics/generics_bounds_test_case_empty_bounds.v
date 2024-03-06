@@ -7,18 +7,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Struct Turkey *)
 
+(* Trait *)
 Module Red.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
+  
 End Red.
 
+(* Trait *)
 Module Blue.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
-  }.
-  Global Set Primitive Projections.
+  
 End Blue.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.

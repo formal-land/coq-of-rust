@@ -3,17 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Struct Container *)
 
+(* Trait *)
 Module Contains.
-  Class Trait (Self : Set) {A B : Set} : Type := {
-    contains :
-      Ty.function
-        [Ty.apply (Ty.path "ref") [Self];
-          Ty.apply (Ty.path "ref") [A];
-          Ty.apply (Ty.path "ref") [B]]
-        (Ty.path "bool");
-    first : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "i32");
-    last : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "i32");
-  }.
   
 End Contains.
 
@@ -27,9 +18,10 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
   
   Parameter last : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("contains", InstanceField.Method contains);
-    ("first", InstanceField.Method first);
-    ("last", InstanceField.Method last)].
+  Definition ℐ : Instance.t :=
+    [("contains", InstanceField.Method contains);
+      ("first", InstanceField.Method first);
+      ("last", InstanceField.Method last)].
 End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.

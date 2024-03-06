@@ -4,23 +4,22 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_erc20_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "erc20::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [K; V].
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
-  
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ (K V : Ty.t) : Instance.t :=
+    [("default", InstanceField.Method (default K V))].
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
-  Context {K V : Set}.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "erc20::Mapping") [K; V].
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [K; V].
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
-  
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
 End Impl_erc20_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -70,9 +69,9 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* Enum Error *)
 
 Axiom Result :
-    (Ty.path "erc20::Result") =
-      (fun T =>
-        Ty.apply (Ty.path "core::result::Result") [T; Ty.path "erc20::Error"]).
+  forall (T : Ty.t),
+  (Ty.path "erc20::Result") =
+    (Ty.apply (Ty.path "core::result::Result") [T; Ty.path "erc20::Error"]).
 
 Module Impl_erc20_Env.
   Definition Self : Ty.t := Ty.path "erc20::Env".
