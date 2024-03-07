@@ -24,30 +24,34 @@ End SomeTrait.
 (* Struct SomeOtherType *)
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance "traits_parms::Foo" Self [] [].
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance "traits_parms::Bar" Self [] [].
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance "traits_parms::Tar" Self [] [].
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
   Definition SomeType : Set := Ty.path "traits_parms::SomeOtherType".
   
   Parameter some_fn : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn) ].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance
+      "traits_parms::SomeTrait"
+      Self
+      []
+      [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn [ Self ])
+      ].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

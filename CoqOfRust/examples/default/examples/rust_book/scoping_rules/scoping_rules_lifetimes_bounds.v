@@ -4,33 +4,34 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Ref *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ self; f ] =>
+    | [ Self; T ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Ref") in
-      let* α2 := M.read self in
-      let* α3 :=
-        M.alloc
-          (borrow
-            ((M.var "scoping_rules_lifetimes_bounds::Ref::Get_0")
-              (deref α2))) in
+      let* α2 := M.var "scoping_rules_lifetimes_bounds::Ref::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow (α2 (deref α3))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("fmt", InstanceField.Method (fmt T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ] in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self; T ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 (*
@@ -47,24 +48,25 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "`print`: t is ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "`print`: t is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow t ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -85,24 +87,25 @@ Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "`print_ref`: t is ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "`print_ref`: t is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow t ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -126,16 +129,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* ref_x :=
       M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t (borrow x)) in
     let* _ :=
-      let* α0 :=
-        M.call
-          (M.var "scoping_rules_lifetimes_bounds::print_ref")
-          [ borrow ref_x ] in
-      M.alloc α0 in
-    let* _ :=
-      let* α0 := M.read ref_x in
-      let* α1 :=
-        M.call (M.var "scoping_rules_lifetimes_bounds::print") [ α0 ] in
+      let* α0 := M.var "scoping_rules_lifetimes_bounds::print_ref" in
+      let* α1 := M.call α0 [ borrow ref_x ] in
       M.alloc α1 in
+    let* _ :=
+      let* α0 := M.var "scoping_rules_lifetimes_bounds::print" in
+      let* α1 := M.read ref_x in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

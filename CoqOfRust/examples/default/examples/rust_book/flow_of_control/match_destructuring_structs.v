@@ -49,8 +49,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   match_destructuring_structs.Foo.y := _;
                 |}
                 =>
-              let γ0_0 := (M.var "match_destructuring_structs::Foo::Get_x") γ in
-              let γ0_1 := (M.var "match_destructuring_structs::Foo::Get_y") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "match_destructuring_structs::Foo::Get_x" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 := M.var "match_destructuring_structs::Foo::Get_y" in
+                M.pure (α0 γ) in
               let* α0 := M.read γ0_0 in
               match α0 with
               | (_, _) =>
@@ -62,29 +66,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* b := M.copy γ1_1 in
                   let* y := M.copy γ0_1 in
                   let* _ :=
-                    let* α0 := M.read (mk_str "First of x is 1, b = ") in
-                    let* α1 := M.read (mk_str ",  y = ") in
-                    let* α2 := M.read (mk_str " 
+                    let* α0 := M.var "std::io::stdio::_print" in
+                    let* α1 := M.read (mk_str "First of x is 1, b = ") in
+                    let* α2 := M.read (mk_str ",  y = ") in
+                    let* α3 := M.read (mk_str " 
 ") in
-                    let* α3 := M.alloc [ α0; α1; α2 ] in
-                    let* α4 :=
-                      M.call
-                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        [ borrow b ] in
+                    let* α4 := M.alloc [ α1; α2; α3 ] in
                     let* α5 :=
                       M.call
                         (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                        [ borrow b ] in
+                    let* α6 :=
+                      M.call
+                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
                         [ borrow y ] in
-                    let* α6 := M.alloc [ α4; α5 ] in
-                    let* α7 :=
+                    let* α7 := M.alloc [ α5; α6 ] in
+                    let* α8 :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" (borrow α3);
-                          pointer_coercion "Unsize" (borrow α6)
+                          pointer_coercion "Unsize" (borrow α4);
+                          pointer_coercion "Unsize" (borrow α7)
                         ] in
-                    let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-                    M.alloc α8 in
+                    let* α9 := M.call α0 [ α8 ] in
+                    M.alloc α9 in
                   M.alloc tt
                 | _ => M.break_match 
                 end
@@ -100,31 +105,36 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   match_destructuring_structs.Foo.x := _;
                 |}
                 =>
-              let γ0_0 := (M.var "match_destructuring_structs::Foo::Get_y") γ in
-              let γ0_1 := (M.var "match_destructuring_structs::Foo::Get_x") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "match_destructuring_structs::Foo::Get_y" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 := M.var "match_destructuring_structs::Foo::Get_x" in
+                M.pure (α0 γ) in
               let* α0 := M.read γ0_0 in
               match α0 with
               | u32.Make 2 =>
                 let* i := M.copy γ0_1 in
                 let* _ :=
-                  let* α0 := M.read (mk_str "y is 2, i = ") in
-                  let* α1 := M.read (mk_str "
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "y is 2, i = ") in
+                  let* α2 := M.read (mk_str "
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                       [ borrow i ] in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α4)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α5)
                       ] in
-                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                  M.alloc α6 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt
               | _ => M.break_match 
               end
@@ -134,27 +144,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | {| match_destructuring_structs.Foo.y := _; |} =>
-              let γ0_0 := (M.var "match_destructuring_structs::Foo::Get_y") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "match_destructuring_structs::Foo::Get_y" in
+                M.pure (α0 γ) in
               let* y := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "y = ") in
-                let* α1 := M.read (mk_str ", we don't care about x
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "y = ") in
+                let* α2 := M.read (mk_str ", we don't care about x
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow y ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             end) :
             Ty.tuple []

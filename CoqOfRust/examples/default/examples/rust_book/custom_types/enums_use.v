@@ -40,15 +40,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | enums_use.Status.Rich =>
               let* _ :=
-                let* α0 := M.read (mk_str "The rich have lots of money!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "The rich have lots of money!
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -58,15 +59,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | enums_use.Status.Poor =>
               let* _ :=
-                let* α0 := M.read (mk_str "The poor have no money...
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "The poor have no money...
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -81,15 +83,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | enums_use.Work.Civilian =>
               let* _ :=
-                let* α0 := M.read (mk_str "Civilians work!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Civilians work!
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -99,15 +102,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | enums_use.Work.Soldier =>
               let* _ :=
-                let* α0 := M.read (mk_str "Soldiers fight!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Soldiers fight!
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :

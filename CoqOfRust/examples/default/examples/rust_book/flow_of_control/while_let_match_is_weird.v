@@ -43,61 +43,58 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.Some _ =>
-                let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+                let* γ0_0 :=
+                  let* α0 := M.var "core::option::Option::Get_Some_0" in
+                  M.pure (α0 γ) in
                 let* i := M.copy γ0_0 in
-                let* α0 := M.read i in
-                let* α1 :=
-                  M.alloc
-                    ((M.var "BinOp::Pure::gt")
-                      α0
-                      ((Integer.of_Z 9) : Ty.path "i32")) in
-                let* α2 := M.read (use α1) in
-                if α2 then
+                let* α0 := M.var "BinOp::Pure::gt" in
+                let* α1 := M.read i in
+                let* α2 := M.alloc (α0 α1 ((Integer.of_Z 9) : Ty.path "i32")) in
+                let* α3 := M.read (use α2) in
+                if α3 then
                   let* _ :=
                     let* _ :=
-                      let* α0 := M.read (mk_str "Greater than 9, quit!
+                      let* α0 := M.var "std::io::stdio::_print" in
+                      let* α1 := M.read (mk_str "Greater than 9, quit!
 ") in
-                      let* α1 := M.alloc [ α0 ] in
-                      let* α2 :=
+                      let* α2 := M.alloc [ α1 ] in
+                      let* α3 :=
                         M.call
                           (Ty.path "core::fmt::Arguments")::["new_const"]
-                          [ pointer_coercion "Unsize" (borrow α1) ] in
-                      let* α3 :=
-                        M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                      M.alloc α3 in
+                          [ pointer_coercion "Unsize" (borrow α2) ] in
+                      let* α4 := M.call α0 [ α3 ] in
+                      M.alloc α4 in
                     M.alloc tt in
                   let* _ := assign optional core.option.Option.None in
                   M.alloc tt
                 else
                   let* _ :=
                     let* _ :=
-                      let* α0 := M.read (mk_str "`i` is `") in
-                      let* α1 := M.read (mk_str "`. Try again.
+                      let* α0 := M.var "std::io::stdio::_print" in
+                      let* α1 := M.read (mk_str "`i` is `") in
+                      let* α2 := M.read (mk_str "`. Try again.
 ") in
-                      let* α2 := M.alloc [ α0; α1 ] in
-                      let* α3 :=
+                      let* α3 := M.alloc [ α1; α2 ] in
+                      let* α4 :=
                         M.call
                           (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                           [ borrow i ] in
-                      let* α4 := M.alloc [ α3 ] in
-                      let* α5 :=
+                      let* α5 := M.alloc [ α4 ] in
+                      let* α6 :=
                         M.call
                           (Ty.path "core::fmt::Arguments")::["new_v1"]
                           [
-                            pointer_coercion "Unsize" (borrow α2);
-                            pointer_coercion "Unsize" (borrow α4)
+                            pointer_coercion "Unsize" (borrow α3);
+                            pointer_coercion "Unsize" (borrow α5)
                           ] in
-                      let* α6 :=
-                        M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                      M.alloc α6 in
+                      let* α7 := M.call α0 [ α6 ] in
+                      M.alloc α7 in
                     M.alloc tt in
                   let* _ :=
-                    let* α0 := M.read i in
-                    let* α1 :=
-                      (M.var "BinOp::Panic::add")
-                        α0
-                        ((Integer.of_Z 1) : Ty.path "i32") in
-                    assign optional (core.option.Option.Some α1) in
+                    let* α0 := M.var "BinOp::Panic::add" in
+                    let* α1 := M.read i in
+                    let* α2 := α0 α1 ((Integer.of_Z 1) : Ty.path "i32") in
+                    assign optional (core.option.Option.Some α2) in
                   M.alloc tt
               | _ => M.break_match 
               end) :

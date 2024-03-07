@@ -4,13 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Ref *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("fmt", InstanceField.Method (fmt T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ] in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self; T ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Parameter print : (list Ty.t) -> (list Value.t) -> M.

@@ -38,15 +38,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ((Integer.of_Z 40) : Ty.path "u32")) in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "What color is it?
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "What color is it?
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* α0 :=
       match_operator
@@ -57,15 +58,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | match_destructuring_enums.Color.Red =>
               let* _ :=
-                let* α0 := M.read (mk_str "The color is Red!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "The color is Red!
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -75,15 +77,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | match_destructuring_enums.Color.Blue =>
               let* _ :=
-                let* α0 := M.read (mk_str "The color is Blue!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "The color is Blue!
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -93,15 +96,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | match_destructuring_enums.Color.Green =>
               let* _ :=
-                let* α0 := M.read (mk_str "The color is Green!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "The color is Green!
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -110,44 +114,51 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_destructuring_enums.Color.RGB _ _ _ =>
-              let γ0_0 :=
-                (M.var "match_destructuring_enums::Color::Get_RGB_0") γ in
-              let γ0_1 :=
-                (M.var "match_destructuring_enums::Color::Get_RGB_1") γ in
-              let γ0_2 :=
-                (M.var "match_destructuring_enums::Color::Get_RGB_2") γ in
+              let* γ0_0 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_RGB_0" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_RGB_1" in
+                M.pure (α0 γ) in
+              let* γ0_2 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_RGB_2" in
+                M.pure (α0 γ) in
               let* r := M.copy γ0_0 in
               let* g := M.copy γ0_1 in
               let* b := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.read (mk_str "Red: ") in
-                let* α1 := M.read (mk_str ", green: ") in
-                let* α2 := M.read (mk_str ", and blue: ") in
-                let* α3 := M.read (mk_str "!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Red: ") in
+                let* α2 := M.read (mk_str ", green: ") in
+                let* α3 := M.read (mk_str ", and blue: ") in
+                let* α4 := M.read (mk_str "!
 ") in
-                let* α4 := M.alloc [ α0; α1; α2; α3 ] in
-                let* α5 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow r ] in
+                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow g ] in
+                    [ borrow r ] in
                 let* α7 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow g ] in
+                let* α8 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow b ] in
-                let* α8 := M.alloc [ α5; α6; α7 ] in
-                let* α9 :=
+                let* α9 := M.alloc [ α6; α7; α8 ] in
+                let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α4);
-                      pointer_coercion "Unsize" (borrow α8)
+                      pointer_coercion "Unsize" (borrow α5);
+                      pointer_coercion "Unsize" (borrow α9)
                     ] in
-                let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-                M.alloc α10 in
+                let* α11 := M.call α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -156,44 +167,51 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_destructuring_enums.Color.HSV _ _ _ =>
-              let γ0_0 :=
-                (M.var "match_destructuring_enums::Color::Get_HSV_0") γ in
-              let γ0_1 :=
-                (M.var "match_destructuring_enums::Color::Get_HSV_1") γ in
-              let γ0_2 :=
-                (M.var "match_destructuring_enums::Color::Get_HSV_2") γ in
+              let* γ0_0 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_HSV_0" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_HSV_1" in
+                M.pure (α0 γ) in
+              let* γ0_2 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_HSV_2" in
+                M.pure (α0 γ) in
               let* h := M.copy γ0_0 in
               let* s := M.copy γ0_1 in
               let* v := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.read (mk_str "Hue: ") in
-                let* α1 := M.read (mk_str ", saturation: ") in
-                let* α2 := M.read (mk_str ", value: ") in
-                let* α3 := M.read (mk_str "!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Hue: ") in
+                let* α2 := M.read (mk_str ", saturation: ") in
+                let* α3 := M.read (mk_str ", value: ") in
+                let* α4 := M.read (mk_str "!
 ") in
-                let* α4 := M.alloc [ α0; α1; α2; α3 ] in
-                let* α5 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow h ] in
+                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow s ] in
+                    [ borrow h ] in
                 let* α7 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow s ] in
+                let* α8 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow v ] in
-                let* α8 := M.alloc [ α5; α6; α7 ] in
-                let* α9 :=
+                let* α9 := M.alloc [ α6; α7; α8 ] in
+                let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α4);
-                      pointer_coercion "Unsize" (borrow α8)
+                      pointer_coercion "Unsize" (borrow α5);
+                      pointer_coercion "Unsize" (borrow α9)
                     ] in
-                let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-                M.alloc α10 in
+                let* α11 := M.call α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -202,44 +220,51 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_destructuring_enums.Color.HSL _ _ _ =>
-              let γ0_0 :=
-                (M.var "match_destructuring_enums::Color::Get_HSL_0") γ in
-              let γ0_1 :=
-                (M.var "match_destructuring_enums::Color::Get_HSL_1") γ in
-              let γ0_2 :=
-                (M.var "match_destructuring_enums::Color::Get_HSL_2") γ in
+              let* γ0_0 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_HSL_0" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_HSL_1" in
+                M.pure (α0 γ) in
+              let* γ0_2 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_HSL_2" in
+                M.pure (α0 γ) in
               let* h := M.copy γ0_0 in
               let* s := M.copy γ0_1 in
               let* l := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.read (mk_str "Hue: ") in
-                let* α1 := M.read (mk_str ", saturation: ") in
-                let* α2 := M.read (mk_str ", lightness: ") in
-                let* α3 := M.read (mk_str "!
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Hue: ") in
+                let* α2 := M.read (mk_str ", saturation: ") in
+                let* α3 := M.read (mk_str ", lightness: ") in
+                let* α4 := M.read (mk_str "!
 ") in
-                let* α4 := M.alloc [ α0; α1; α2; α3 ] in
-                let* α5 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow h ] in
+                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow s ] in
+                    [ borrow h ] in
                 let* α7 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow s ] in
+                let* α8 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow l ] in
-                let* α8 := M.alloc [ α5; α6; α7 ] in
-                let* α9 :=
+                let* α9 := M.alloc [ α6; α7; α8 ] in
+                let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α4);
-                      pointer_coercion "Unsize" (borrow α8)
+                      pointer_coercion "Unsize" (borrow α5);
+                      pointer_coercion "Unsize" (borrow α9)
                     ] in
-                let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-                M.alloc α10 in
+                let* α11 := M.call α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -248,72 +273,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | match_destructuring_enums.Color.CMY _ _ _ =>
-              let γ0_0 :=
-                (M.var "match_destructuring_enums::Color::Get_CMY_0") γ in
-              let γ0_1 :=
-                (M.var "match_destructuring_enums::Color::Get_CMY_1") γ in
-              let γ0_2 :=
-                (M.var "match_destructuring_enums::Color::Get_CMY_2") γ in
+              let* γ0_0 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_CMY_0" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_CMY_1" in
+                M.pure (α0 γ) in
+              let* γ0_2 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_CMY_2" in
+                M.pure (α0 γ) in
               let* c := M.copy γ0_0 in
               let* m := M.copy γ0_1 in
               let* y := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.read (mk_str "Cyan: ") in
-                let* α1 := M.read (mk_str ", magenta: ") in
-                let* α2 := M.read (mk_str ", yellow: ") in
-                let* α3 := M.read (mk_str "!
-") in
-                let* α4 := M.alloc [ α0; α1; α2; α3 ] in
-                let* α5 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow c ] in
-                let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow m ] in
-                let* α7 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow y ] in
-                let* α8 := M.alloc [ α5; α6; α7 ] in
-                let* α9 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α4);
-                      pointer_coercion "Unsize" (borrow α8)
-                    ] in
-                let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-                M.alloc α10 in
-              M.alloc tt
-            | _ => M.break_match 
-            end) :
-            Ty.tuple [];
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | match_destructuring_enums.Color.CMYK _ _ _ _ =>
-              let γ0_0 :=
-                (M.var "match_destructuring_enums::Color::Get_CMYK_0") γ in
-              let γ0_1 :=
-                (M.var "match_destructuring_enums::Color::Get_CMYK_1") γ in
-              let γ0_2 :=
-                (M.var "match_destructuring_enums::Color::Get_CMYK_2") γ in
-              let γ0_3 :=
-                (M.var "match_destructuring_enums::Color::Get_CMYK_3") γ in
-              let* c := M.copy γ0_0 in
-              let* m := M.copy γ0_1 in
-              let* y := M.copy γ0_2 in
-              let* k := M.copy γ0_3 in
-              let* _ :=
-                let* α0 := M.read (mk_str "Cyan: ") in
-                let* α1 := M.read (mk_str ", magenta: ") in
-                let* α2 := M.read (mk_str ", yellow: ") in
-                let* α3 := M.read (mk_str ", key (black): ") in
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Cyan: ") in
+                let* α2 := M.read (mk_str ", magenta: ") in
+                let* α3 := M.read (mk_str ", yellow: ") in
                 let* α4 := M.read (mk_str "!
 ") in
-                let* α5 := M.alloc [ α0; α1; α2; α3; α4 ] in
+                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
@@ -326,20 +308,79 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow y ] in
-                let* α9 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow k ] in
-                let* α10 := M.alloc [ α6; α7; α8; α9 ] in
-                let* α11 :=
+                let* α9 := M.alloc [ α6; α7; α8 ] in
+                let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
                       pointer_coercion "Unsize" (borrow α5);
-                      pointer_coercion "Unsize" (borrow α10)
+                      pointer_coercion "Unsize" (borrow α9)
                     ] in
-                let* α12 := M.call (M.var "std::io::stdio::_print") [ α11 ] in
-                M.alloc α12 in
+                let* α11 := M.call α0 [ α10 ] in
+                M.alloc α11 in
+              M.alloc tt
+            | _ => M.break_match 
+            end) :
+            Ty.tuple [];
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | match_destructuring_enums.Color.CMYK _ _ _ _ =>
+              let* γ0_0 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_CMYK_0" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_CMYK_1" in
+                M.pure (α0 γ) in
+              let* γ0_2 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_CMYK_2" in
+                M.pure (α0 γ) in
+              let* γ0_3 :=
+                let* α0 :=
+                  M.var "match_destructuring_enums::Color::Get_CMYK_3" in
+                M.pure (α0 γ) in
+              let* c := M.copy γ0_0 in
+              let* m := M.copy γ0_1 in
+              let* y := M.copy γ0_2 in
+              let* k := M.copy γ0_3 in
+              let* _ :=
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Cyan: ") in
+                let* α2 := M.read (mk_str ", magenta: ") in
+                let* α3 := M.read (mk_str ", yellow: ") in
+                let* α4 := M.read (mk_str ", key (black): ") in
+                let* α5 := M.read (mk_str "!
+") in
+                let* α6 := M.alloc [ α1; α2; α3; α4; α5 ] in
+                let* α7 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow c ] in
+                let* α8 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow m ] in
+                let* α9 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow y ] in
+                let* α10 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow k ] in
+                let* α11 := M.alloc [ α7; α8; α9; α10 ] in
+                let* α12 :=
+                  M.call
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α6);
+                      pointer_coercion "Unsize" (borrow α11)
+                    ] in
+                let* α13 := M.call α0 [ α12 ] in
+                M.alloc α13 in
               M.alloc tt
             | _ => M.break_match 
             end) :

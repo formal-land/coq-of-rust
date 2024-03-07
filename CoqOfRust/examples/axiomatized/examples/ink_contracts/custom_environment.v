@@ -4,25 +4,33 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_custom_environment_AccountId.
-  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_custom_environment_AccountId.
 
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
-  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
 
 Module Impl_core_marker_Copy_for_custom_environment_AccountId.
-  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
@@ -32,21 +40,29 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 (* Struct Topics *)
 
 Module Impl_core_default_Default_for_custom_environment_Topics.
-  Definition Self : Ty.t := Ty.path "custom_environment::Topics".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::Topics" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_custom_environment_Topics.
 
 (* Enum EventWithTopics *)
 
 Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
-  Definition Self : Ty.t := Ty.path "custom_environment::EventWithTopics".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::EventWithTopics" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)

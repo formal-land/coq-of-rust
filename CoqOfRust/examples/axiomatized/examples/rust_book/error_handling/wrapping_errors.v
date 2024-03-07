@@ -4,11 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum DoubleError *)
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
@@ -19,27 +23,39 @@ Axiom Result :
       [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::fmt::Display"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   Parameter source : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("source", InstanceField.Method source) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::error::Error"
+      Self
+      []
+      [ ("source", InstanceField.Method source [ Self ]) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "core::num::error::ParseIntError" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

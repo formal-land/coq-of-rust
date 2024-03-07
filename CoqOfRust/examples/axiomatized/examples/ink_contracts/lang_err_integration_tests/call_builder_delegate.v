@@ -10,12 +10,15 @@ Axiom Hash :
 (* Enum CallBuilderDelegateTest *)
 
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
-  Definition Self : Ty.t :=
-    Ty.path "call_builder_delegate::CallBuilderDelegateTest".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "call_builder_delegate::CallBuilderDelegateTest" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.

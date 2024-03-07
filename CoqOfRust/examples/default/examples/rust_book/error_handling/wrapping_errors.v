@@ -4,14 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum DoubleError *)
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -44,8 +42,10 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
               let* α0 := M.read γ in
               match α0 with
               | wrapping_errors.DoubleError.Parse _ =>
-                let γ1_0 :=
-                  (M.var "wrapping_errors::DoubleError::Get_Parse_0") γ in
+                let* γ1_0 :=
+                  let* α0 :=
+                    M.var "wrapping_errors::DoubleError::Get_Parse_0" in
+                  M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
                 let* α0 := M.read f in
                 let* α1 := M.read (mk_str "Parse") in
@@ -65,7 +65,13 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
@@ -76,8 +82,6 @@ Axiom Result :
       [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
           match *self {
@@ -90,7 +94,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
@@ -149,12 +153,16 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::fmt::Display"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   (*
       fn source(&self) -> Option<&(dyn error::Error + 'static)> {
           match *self {
@@ -168,7 +176,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   *)
   Definition source (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -193,8 +201,10 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               (let* α0 := M.read γ in
               match α0 with
               | wrapping_errors.DoubleError.Parse _ =>
-                let γ0_0 :=
-                  (M.var "wrapping_errors::DoubleError::Get_Parse_0") γ in
+                let* γ0_0 :=
+                  let* α0 :=
+                    M.var "wrapping_errors::DoubleError::Get_Parse_0" in
+                  M.pure (α0 γ) in
                 let* e := M.alloc (borrow γ0_0) in
                 let* α0 := M.read e in
                 M.alloc (core.option.Option.Some (pointer_coercion "Unsize" α0))
@@ -212,12 +222,16 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("source", InstanceField.Method source) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::error::Error"
+      Self
+      []
+      [ ("source", InstanceField.Method source [ Self ]) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
-  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
-  
   (*
       fn from(err: ParseIntError) -> DoubleError {
           DoubleError::Parse(err)
@@ -225,14 +239,20 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ err ] =>
+    | [ Self ], [ err ] =>
       let* err := M.alloc err in
       let* α0 := M.read err in
       M.pure (wrapping_errors.DoubleError.Parse α0)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "wrapping_errors::DoubleError" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "core::num::error::ParseIntError" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 (*
@@ -312,9 +332,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 :=
-                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
+                    M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
                     M.get_method
@@ -351,10 +373,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 :=
-                    (M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
+                    M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
@@ -388,9 +411,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 :=
-                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
+                    M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
                     M.get_method
@@ -425,10 +450,11 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 :=
-                    (M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
+                    M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
@@ -436,10 +462,10 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "i32"
             ] in
         M.copy α6 in
-      let* α0 := M.read parsed in
-      let* α1 :=
-        (M.var "BinOp::Panic::mul") ((Integer.of_Z 2) : Ty.path "i32") α0 in
-      let* α0 := M.alloc (core.result.Result.Ok α1) in
+      let* α0 := M.var "BinOp::Panic::mul" in
+      let* α1 := M.read parsed in
+      let* α2 := α0 ((Integer.of_Z 2) : Ty.path "i32") α1 in
+      let* α0 := M.alloc (core.result.Result.Ok α2) in
       M.read α0)
   | _, _ => M.impossible
   end.
@@ -469,27 +495,30 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                M.pure (α0 γ) in
               let* n := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "The first doubled is ") in
-                let* α1 := M.read (mk_str "
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "The first doubled is ") in
+                let* α2 := M.read (mk_str "
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow n ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -498,28 +527,31 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Err_0" in
+                M.pure (α0 γ) in
               let* e := M.copy γ0_0 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "Error: ") in
-                  let* α1 := M.read (mk_str "
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "Error: ") in
+                  let* α2 := M.read (mk_str "
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
                       [ borrow e ] in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α4)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α5)
                       ] in
-                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                  M.alloc α6 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt in
               let* α0 :=
                 M.get_method
@@ -535,31 +567,32 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 :=
-                        (M.var "core::option::Option::Get_Some_0") γ in
+                      let* γ0_0 :=
+                        let* α0 := M.var "core::option::Option::Get_Some_0" in
+                        M.pure (α0 γ) in
                       let* source := M.copy γ0_0 in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.read (mk_str "  Caused by: ") in
-                          let* α1 := M.read (mk_str "
+                          let* α0 := M.var "std::io::stdio::_print" in
+                          let* α1 := M.read (mk_str "  Caused by: ") in
+                          let* α2 := M.read (mk_str "
 ") in
-                          let* α2 := M.alloc [ α0; α1 ] in
-                          let* α3 :=
+                          let* α3 := M.alloc [ α1; α2 ] in
+                          let* α4 :=
                             M.call
                               (Ty.path
                                   "core::fmt::rt::Argument")::["new_display"]
                               [ borrow source ] in
-                          let* α4 := M.alloc [ α3 ] in
-                          let* α5 :=
+                          let* α5 := M.alloc [ α4 ] in
+                          let* α6 :=
                             M.call
                               (Ty.path "core::fmt::Arguments")::["new_v1"]
                               [
-                                pointer_coercion "Unsize" (borrow α2);
-                                pointer_coercion "Unsize" (borrow α4)
+                                pointer_coercion "Unsize" (borrow α3);
+                                pointer_coercion "Unsize" (borrow α5)
                               ] in
-                          let* α6 :=
-                            M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                          M.alloc α6 in
+                          let* α7 := M.call α0 [ α6 ] in
+                          M.alloc α7 in
                         M.alloc tt in
                       M.alloc tt
                     | _ => M.break_match 
@@ -636,20 +669,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* _ :=
-      let* α0 := M.read numbers in
-      let* α1 := M.call (M.var "wrapping_errors::double_first") [ α0 ] in
-      let* α2 := M.call (M.var "wrapping_errors::print") [ α1 ] in
-      M.alloc α2 in
+      let* α0 := M.var "wrapping_errors::print" in
+      let* α1 := M.var "wrapping_errors::double_first" in
+      let* α2 := M.read numbers in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.call α0 [ α3 ] in
+      M.alloc α4 in
     let* _ :=
-      let* α0 := M.read empty in
-      let* α1 := M.call (M.var "wrapping_errors::double_first") [ α0 ] in
-      let* α2 := M.call (M.var "wrapping_errors::print") [ α1 ] in
-      M.alloc α2 in
+      let* α0 := M.var "wrapping_errors::print" in
+      let* α1 := M.var "wrapping_errors::double_first" in
+      let* α2 := M.read empty in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.call α0 [ α3 ] in
+      M.alloc α4 in
     let* _ :=
-      let* α0 := M.read strings in
-      let* α1 := M.call (M.var "wrapping_errors::double_first") [ α0 ] in
-      let* α2 := M.call (M.var "wrapping_errors::print") [ α1 ] in
-      M.alloc α2 in
+      let* α0 := M.var "wrapping_errors::print" in
+      let* α1 := M.var "wrapping_errors::double_first" in
+      let* α2 := M.read strings in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.call α0 [ α3 ] in
+      M.alloc α4 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

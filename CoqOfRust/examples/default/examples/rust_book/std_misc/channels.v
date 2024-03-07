@@ -53,11 +53,12 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 := M.call (M.var "std::sync::mpsc::channel") [] in
-    let* α1 := M.alloc α0 in
-    let* α2 :=
+    let* α0 := M.var "std::sync::mpsc::channel" in
+    let* α1 := M.call α0 [] in
+    let* α2 := M.alloc α1 in
+    let* α3 :=
       match_operator
-        α1
+        α2
         [
           fun γ =>
             (let* α0 := M.read γ in
@@ -91,9 +92,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::ops::range::Range")
                           [ Ty.path "i32" ]
                     ] in
-                let* α1 := M.read (M.var "channels::NTHREADS") in
-                let* α2 := M.read (deref α1) in
-                let* α3 :=
+                let* α1 := M.var "channels::NTHREADS" in
+                let* α2 := M.read α1 in
+                let* α3 := M.read (deref α2) in
+                let* α4 :=
                   M.call
                     α0
                     [
@@ -101,13 +103,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::range::Range"
                         [
                           ("start", (Integer.of_Z 0) : Ty.path "i32");
-                          ("end_", α2)
+                          ("end_", α3)
                         ]
                     ] in
-                let* α4 := M.alloc α3 in
-                let* α5 :=
+                let* α5 := M.alloc α4 in
+                let* α6 :=
                   match_operator
-                    α4
+                    α5
                     [
                       fun γ =>
                         (let* iter := M.copy γ in
@@ -143,9 +145,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   (let* α0 := M.read γ in
                                   match α0 with
                                   | core.option.Option.Some _ =>
-                                    let γ0_0 :=
-                                      (M.var "core::option::Option::Get_Some_0")
-                                        γ in
+                                    let* γ0_0 :=
+                                      let* α0 :=
+                                        M.var
+                                          "core::option::Option::Get_Some_0" in
+                                      M.pure (α0 γ) in
                                     let* id := M.copy γ0_0 in
                                     let* thread_tx :=
                                       let* α0 :=
@@ -162,9 +166,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       let* α1 := M.call α0 [ borrow tx ] in
                                       M.alloc α1 in
                                     let* child :=
-                                      let* α0 :=
+                                      let* α0 := M.var "std::thread::spawn" in
+                                      let* α1 :=
                                         M.call
-                                          (M.var "std::thread::spawn")
+                                          α0
                                           [
                                             fun (α0 : Ty.path "unit") =>
                                               (let* α0 := M.alloc α0 in
@@ -203,41 +208,41 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                     let* _ :=
                                                       let* _ :=
                                                         let* α0 :=
+                                                          M.var
+                                                            "std::io::stdio::_print" in
+                                                        let* α1 :=
                                                           M.read
                                                             (mk_str
                                                               "thread ") in
-                                                        let* α1 :=
+                                                        let* α2 :=
                                                           M.read
                                                             (mk_str
                                                               " finished
 ") in
-                                                        let* α2 :=
-                                                          M.alloc [ α0; α1 ] in
                                                         let* α3 :=
+                                                          M.alloc [ α1; α2 ] in
+                                                        let* α4 :=
                                                           M.call
                                                             (Ty.path
                                                                 "core::fmt::rt::Argument")::["new_display"]
                                                             [ borrow id ] in
-                                                        let* α4 :=
-                                                          M.alloc [ α3 ] in
                                                         let* α5 :=
+                                                          M.alloc [ α4 ] in
+                                                        let* α6 :=
                                                           M.call
                                                             (Ty.path
                                                                 "core::fmt::Arguments")::["new_v1"]
                                                             [
                                                               pointer_coercion
                                                                 "Unsize"
-                                                                (borrow α2);
+                                                                (borrow α3);
                                                               pointer_coercion
                                                                 "Unsize"
-                                                                (borrow α4)
+                                                                (borrow α5)
                                                             ] in
-                                                        let* α6 :=
-                                                          M.call
-                                                            (M.var
-                                                              "std::io::stdio::_print")
-                                                            [ α5 ] in
-                                                        M.alloc α6 in
+                                                        let* α7 :=
+                                                          M.call α0 [ α6 ] in
+                                                        M.alloc α7 in
                                                       M.alloc tt in
                                                     let* α0 := M.alloc tt in
                                                     M.read α0) :
@@ -245,7 +250,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                 ]) :
                                               Ty.tuple []
                                           ] in
-                                      M.alloc α0 in
+                                      M.alloc α1 in
                                     let* _ :=
                                       let* α0 := M.read child in
                                       let* α1 :=
@@ -269,11 +274,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc tt)) :
                         Ty.tuple []
                     ] in
-                M.pure (use α5) in
+                M.pure (use α6) in
               let* ids :=
-                let* α0 := M.read (M.var "channels::NTHREADS") in
-                let* α1 := M.read (deref α0) in
-                let* α2 :=
+                let* α0 := M.var "channels::NTHREADS" in
+                let* α1 := M.read α0 in
+                let* α2 := M.read (deref α1) in
+                let* α3 :=
                   M.call
                     (Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -286,8 +292,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             ];
                           Ty.path "alloc::alloc::Global"
                         ])::["with_capacity"]
-                    [ rust_cast α1 ] in
-                M.alloc α2 in
+                    [ rust_cast α2 ] in
+                M.alloc α3 in
               let* _ :=
                 let* α0 :=
                   M.get_method
@@ -299,9 +305,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::ops::range::Range")
                           [ Ty.path "i32" ]
                     ] in
-                let* α1 := M.read (M.var "channels::NTHREADS") in
-                let* α2 := M.read (deref α1) in
-                let* α3 :=
+                let* α1 := M.var "channels::NTHREADS" in
+                let* α2 := M.read α1 in
+                let* α3 := M.read (deref α2) in
+                let* α4 :=
                   M.call
                     α0
                     [
@@ -309,13 +316,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::range::Range"
                         [
                           ("start", (Integer.of_Z 0) : Ty.path "i32");
-                          ("end_", α2)
+                          ("end_", α3)
                         ]
                     ] in
-                let* α4 := M.alloc α3 in
-                let* α5 :=
+                let* α5 := M.alloc α4 in
+                let* α6 :=
                   match_operator
-                    α4
+                    α5
                     [
                       fun γ =>
                         (let* iter := M.copy γ in
@@ -351,9 +358,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   (let* α0 := M.read γ in
                                   match α0 with
                                   | core.option.Option.Some _ =>
-                                    let γ0_0 :=
-                                      (M.var "core::option::Option::Get_Some_0")
-                                        γ in
+                                    let* γ0_0 :=
+                                      let* α0 :=
+                                        M.var
+                                          "core::option::Option::Get_Some_0" in
+                                      M.pure (α0 γ) in
                                     let* _ :=
                                       let* α0 :=
                                         M.call
@@ -387,7 +396,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc tt)) :
                         Ty.tuple []
                     ] in
-                M.pure (use α5) in
+                M.pure (use α6) in
               let* _ :=
                 let* α0 :=
                   M.get_method
@@ -451,9 +460,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   (let* α0 := M.read γ in
                                   match α0 with
                                   | core.option.Option.Some _ =>
-                                    let γ0_0 :=
-                                      (M.var "core::option::Option::Get_Some_0")
-                                        γ in
+                                    let* γ0_0 :=
+                                      let* α0 :=
+                                        M.var
+                                          "core::option::Option::Get_Some_0" in
+                                      M.pure (α0 γ) in
                                     let* child := M.copy γ0_0 in
                                     let* _ :=
                                       let* α0 := M.read child in
@@ -499,29 +510,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (use α4) in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "") in
-                  let* α1 := M.read (mk_str "
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "") in
+                  let* α2 := M.read (mk_str "
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                       [ borrow ids ] in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α4)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α5)
                       ] in
-                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                  M.alloc α6 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
             end) :
             Ty.path "unit"
         ] in
-    M.read α2
+    M.read α3
   | _, _ => M.impossible
   end.

@@ -6,11 +6,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct FlipperError *)
 
 Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
-  Definition Self : Ty.t := Ty.path "integration_flipper::FlipperError".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "integration_flipper::FlipperError" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 
 Module Impl_integration_flipper_Flipper.

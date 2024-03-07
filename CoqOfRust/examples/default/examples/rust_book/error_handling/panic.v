@@ -28,32 +28,34 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc α1 in
       let* α3 := M.read (use α2) in
       if α3 then
-        let* α0 := M.read (mk_str "AAAaaaaa!!!!") in
-        let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
-        let* α2 := never_to_any α1 in
-        M.alloc α2
+        let* α0 := M.var "std::panicking::begin_panic" in
+        let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
+        let* α2 := M.call α0 [ α1 ] in
+        let* α3 := never_to_any α2 in
+        M.alloc α3
       else
         M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Some refreshing ") in
-        let* α1 := M.read (mk_str " is all I need.
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Some refreshing ") in
+        let* α2 := M.read (mk_str " is all I need.
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow beverage ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -71,13 +73,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.read (mk_str "water") in
-      let* α1 := M.call (M.var "panic::drink") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "panic::drink" in
+      let* α1 := M.read (mk_str "water") in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read (mk_str "lemonade") in
-      let* α1 := M.call (M.var "panic::drink") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "panic::drink" in
+      let* α1 := M.read (mk_str "lemonade") in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

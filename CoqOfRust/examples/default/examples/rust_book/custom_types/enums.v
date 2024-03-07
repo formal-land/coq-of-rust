@@ -31,7 +31,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | enums.WebEvent.PageLoad =>
               let* _ :=
-                let* α0 :=
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 :=
                   M.read
                     (mk_str
                       ("page loaded, r" ++
@@ -39,13 +40,13 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           "233"
                           ("f" ++ String.String "233" "
 "))) in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -55,15 +56,16 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | enums.WebEvent.PageUnload =>
               let* _ :=
-                let* α0 := M.read (mk_str "page unloaded
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "page unloaded
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -72,27 +74,30 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums.WebEvent.KeyPress _ =>
-              let γ0_0 := (M.var "enums::WebEvent::Get_KeyPress_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "enums::WebEvent::Get_KeyPress_0" in
+                M.pure (α0 γ) in
               let* c := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "pressed '") in
-                let* α1 := M.read (mk_str "'.
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "pressed '") in
+                let* α2 := M.read (mk_str "'.
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow c ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -101,27 +106,30 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | enums.WebEvent.Paste _ =>
-              let γ0_0 := (M.var "enums::WebEvent::Get_Paste_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "enums::WebEvent::Get_Paste_0" in
+                M.pure (α0 γ) in
               let* s := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "pasted """) in
-                let* α1 := M.read (mk_str """.
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "pasted """) in
+                let* α2 := M.read (mk_str """.
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow s ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -134,35 +142,40 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 {| enums.WebEvent.Click.x := _; enums.WebEvent.Click.y := _;
                 |}
                 =>
-              let γ0_0 := (M.var "enums::WebEvent::Get_Click_x") γ in
-              let γ0_1 := (M.var "enums::WebEvent::Get_Click_y") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "enums::WebEvent::Get_Click_x" in
+                M.pure (α0 γ) in
+              let* γ0_1 :=
+                let* α0 := M.var "enums::WebEvent::Get_Click_y" in
+                M.pure (α0 γ) in
               let* x := M.copy γ0_0 in
               let* y := M.copy γ0_1 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "clicked at x=") in
-                  let* α1 := M.read (mk_str ", y=") in
-                  let* α2 := M.read (mk_str ".
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "clicked at x=") in
+                  let* α2 := M.read (mk_str ", y=") in
+                  let* α3 := M.read (mk_str ".
 ") in
-                  let* α3 := M.alloc [ α0; α1; α2 ] in
-                  let* α4 :=
-                    M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ borrow x ] in
+                  let* α4 := M.alloc [ α1; α2; α3 ] in
                   let* α5 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow x ] in
+                  let* α6 :=
+                    M.call
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
                       [ borrow y ] in
-                  let* α6 := M.alloc [ α4; α5 ] in
-                  let* α7 :=
+                  let* α7 := M.alloc [ α5; α6 ] in
+                  let* α8 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α3);
-                        pointer_coercion "Unsize" (borrow α6)
+                        pointer_coercion "Unsize" (borrow α4);
+                        pointer_coercion "Unsize" (borrow α7)
                       ] in
-                  let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-                  M.alloc α8 in
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -214,25 +227,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* load := M.alloc enums.WebEvent.PageLoad in
     let* unload := M.alloc enums.WebEvent.PageUnload in
     let* _ :=
-      let* α0 := M.read pressed in
-      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "enums::inspect" in
+      let* α1 := M.read pressed in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read pasted in
-      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "enums::inspect" in
+      let* α1 := M.read pasted in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read click in
-      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "enums::inspect" in
+      let* α1 := M.read click in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read load in
-      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "enums::inspect" in
+      let* α1 := M.read load in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read unload in
-      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "enums::inspect" in
+      let* α1 := M.read unload in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

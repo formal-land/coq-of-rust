@@ -48,12 +48,13 @@ Module Impl_flipper_Flipper.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
+        let* α0 := M.var "flipper::Flipper::Get_value" in
         let* α1 := M.read self in
-        let* α2 := M.read ((M.var "flipper::Flipper::Get_value") (deref α1)) in
-        assign
-          ((M.var "flipper::Flipper::Get_value") (deref α0))
-          ((M.var "UnOp::not") α2) in
+        let* α2 := M.var "UnOp::not" in
+        let* α3 := M.var "flipper::Flipper::Get_value" in
+        let* α4 := M.read self in
+        let* α5 := M.read (α3 (deref α4)) in
+        assign (α0 (deref α1)) (α2 α5) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -68,8 +69,9 @@ Module Impl_flipper_Flipper.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "flipper::Flipper::Get_value") (deref α0))
+      let* α0 := M.var "flipper::Flipper::Get_value" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
 End Impl_flipper_Flipper.

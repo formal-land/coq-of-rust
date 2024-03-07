@@ -5,12 +5,16 @@ Module checked.
   (* Enum MathError *)
   
   Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
-    Definition Self : Ty.t :=
-      Ty.path "result_chaining_with_question_mark::checked::MathError".
-    
     Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
     
-    Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+    Axiom Implements :
+      let Self :=
+        Ty.path "result_chaining_with_question_mark::checked::MathError" in
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        []
+        [ ("fmt", InstanceField.Method fmt [ Self ]) ].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :

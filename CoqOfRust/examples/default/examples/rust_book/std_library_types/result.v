@@ -5,14 +5,12 @@ Module checked.
   (* Enum MathError *)
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self : Ty.t := Ty.path "result::checked::MathError".
-    
     (*
         Debug
     *)
     Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
-      | [], [ self; f ] =>
+      | [ Self ], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
         let* α0 := M.read f in
@@ -62,7 +60,13 @@ Module checked.
       | _, _ => M.impossible
       end.
     
-    Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+    Axiom Implements :
+      let Self := Ty.path "result::checked::MathError" in
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        []
+        [ ("fmt", InstanceField.Method fmt [ Self ]) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
@@ -88,20 +92,22 @@ Module checked.
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 := M.read y in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 := M.alloc ((M.var "BinOp::Pure::eq") α0 α1) in
-      let* α3 := M.read (use α2) in
-      let* α4 :=
-        if α3 then
+      let* α0 := M.var "BinOp::Pure::eq" in
+      let* α1 := M.read y in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α3 := M.alloc (α0 α1 α2) in
+      let* α4 := M.read (use α3) in
+      let* α5 :=
+        if α4 then
           M.alloc
             (core.result.Result.Err result.checked.MathError.DivisionByZero)
         else
-          let* α0 := M.read x in
-          let* α1 := M.read y in
-          let* α2 := (M.var "BinOp::Panic::div") α0 α1 in
-          M.alloc (core.result.Result.Ok α2) in
-      M.read α4
+          let* α0 := M.var "BinOp::Panic::div" in
+          let* α1 := M.read x in
+          let* α2 := M.read y in
+          let* α3 := α0 α1 α2 in
+          M.alloc (core.result.Result.Ok α3) in
+      M.read α5
     | _, _ => M.impossible
     end.
   
@@ -118,19 +124,20 @@ Module checked.
     match 𝜏, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.read x in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 := M.alloc ((M.var "BinOp::Pure::lt") α0 α1) in
-      let* α3 := M.read (use α2) in
-      let* α4 :=
-        if α3 then
+      let* α0 := M.var "BinOp::Pure::lt" in
+      let* α1 := M.read x in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α3 := M.alloc (α0 α1 α2) in
+      let* α4 := M.read (use α3) in
+      let* α5 :=
+        if α4 then
           M.alloc
             (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
         else
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["sqrt"] [ α0 ] in
           M.alloc (core.result.Result.Ok α1) in
-      M.read α4
+      M.read α5
     | _, _ => M.impossible
     end.
   
@@ -147,12 +154,13 @@ Module checked.
     match 𝜏, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.read x in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 := M.alloc ((M.var "BinOp::Pure::le") α0 α1) in
-      let* α3 := M.read (use α2) in
-      let* α4 :=
-        if α3 then
+      let* α0 := M.var "BinOp::Pure::le" in
+      let* α1 := M.read x in
+      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α3 := M.alloc (α0 α1 α2) in
+      let* α4 := M.read (use α3) in
+      let* α5 :=
+        if α4 then
           M.alloc
             (core.result.Result.Err
               result.checked.MathError.NonPositiveLogarithm)
@@ -160,7 +168,7 @@ Module checked.
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["ln"] [ α0 ] in
           M.alloc (core.result.Result.Ok α1) in
-      M.read α4
+      M.read α5
     | _, _ => M.impossible
     end.
 End checked.
@@ -185,37 +193,41 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ x; y ] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
-    let* α0 := M.read x in
-    let* α1 := M.read y in
-    let* α2 := M.call (M.var "result::checked::div") [ α0; α1 ] in
-    let* α3 := M.alloc α2 in
-    let* α4 :=
+    let* α0 := M.var "result::checked::div" in
+    let* α1 := M.read x in
+    let* α2 := M.read y in
+    let* α3 := M.call α0 [ α1; α2 ] in
+    let* α4 := M.alloc α3 in
+    let* α5 :=
       match_operator
-        α3
+        α4
         [
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Err_0" in
+                M.pure (α0 γ) in
               let* why := M.copy γ0_0 in
-              let* α0 := M.read (mk_str "") in
-              let* α1 := M.alloc [ α0 ] in
-              let* α2 :=
+              let* α0 := M.var "core::panicking::panic_fmt" in
+              let* α1 := M.read (mk_str "") in
+              let* α2 := M.alloc [ α1 ] in
+              let* α3 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                   [ borrow why ] in
-              let* α3 := M.alloc [ α2 ] in
-              let* α4 :=
+              let* α4 := M.alloc [ α3 ] in
+              let* α5 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                   [
-                    pointer_coercion "Unsize" (borrow α1);
-                    pointer_coercion "Unsize" (borrow α3)
+                    pointer_coercion "Unsize" (borrow α2);
+                    pointer_coercion "Unsize" (borrow α4)
                   ] in
-              let* α5 := M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
-              let* α6 := never_to_any α5 in
-              M.alloc α6
+              let* α6 := M.call α0 [ α5 ] in
+              let* α7 := never_to_any α6 in
+              M.alloc α7
             | _ => M.break_match 
             end) :
             Ty.path "f64";
@@ -223,38 +235,43 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                M.pure (α0 γ) in
               let* ratio := M.copy γ0_0 in
-              let* α0 := M.read ratio in
-              let* α1 := M.call (M.var "result::checked::ln") [ α0 ] in
-              let* α2 := M.alloc α1 in
+              let* α0 := M.var "result::checked::ln" in
+              let* α1 := M.read ratio in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.alloc α2 in
               match_operator
-                α2
+                α3
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.result.Result.Err _ =>
-                      let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+                      let* γ0_0 :=
+                        let* α0 := M.var "core::result::Result::Get_Err_0" in
+                        M.pure (α0 γ) in
                       let* why := M.copy γ0_0 in
-                      let* α0 := M.read (mk_str "") in
-                      let* α1 := M.alloc [ α0 ] in
-                      let* α2 :=
+                      let* α0 := M.var "core::panicking::panic_fmt" in
+                      let* α1 := M.read (mk_str "") in
+                      let* α2 := M.alloc [ α1 ] in
+                      let* α3 :=
                         M.call
                           (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                           [ borrow why ] in
-                      let* α3 := M.alloc [ α2 ] in
-                      let* α4 :=
+                      let* α4 := M.alloc [ α3 ] in
+                      let* α5 :=
                         M.call
                           (Ty.path "core::fmt::Arguments")::["new_v1"]
                           [
-                            pointer_coercion "Unsize" (borrow α1);
-                            pointer_coercion "Unsize" (borrow α3)
+                            pointer_coercion "Unsize" (borrow α2);
+                            pointer_coercion "Unsize" (borrow α4)
                           ] in
-                      let* α5 :=
-                        M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
-                      let* α6 := never_to_any α5 in
-                      M.alloc α6
+                      let* α6 := M.call α0 [ α5 ] in
+                      let* α7 := never_to_any α6 in
+                      M.alloc α7
                     | _ => M.break_match 
                     end) :
                     Ty.path "f64";
@@ -262,43 +279,45 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.result.Result.Ok _ =>
-                      let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+                      let* γ0_0 :=
+                        let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                        M.pure (α0 γ) in
                       let* ln := M.copy γ0_0 in
-                      let* α0 := M.read ln in
-                      let* α1 :=
-                        M.call (M.var "result::checked::sqrt") [ α0 ] in
-                      let* α2 := M.alloc α1 in
+                      let* α0 := M.var "result::checked::sqrt" in
+                      let* α1 := M.read ln in
+                      let* α2 := M.call α0 [ α1 ] in
+                      let* α3 := M.alloc α2 in
                       match_operator
-                        α2
+                        α3
                         [
                           fun γ =>
                             (let* α0 := M.read γ in
                             match α0 with
                             | core.result.Result.Err _ =>
-                              let γ0_0 :=
-                                (M.var "core::result::Result::Get_Err_0") γ in
+                              let* γ0_0 :=
+                                let* α0 :=
+                                  M.var "core::result::Result::Get_Err_0" in
+                                M.pure (α0 γ) in
                               let* why := M.copy γ0_0 in
-                              let* α0 := M.read (mk_str "") in
-                              let* α1 := M.alloc [ α0 ] in
-                              let* α2 :=
+                              let* α0 := M.var "core::panicking::panic_fmt" in
+                              let* α1 := M.read (mk_str "") in
+                              let* α2 := M.alloc [ α1 ] in
+                              let* α3 :=
                                 M.call
                                   (Ty.path
                                       "core::fmt::rt::Argument")::["new_debug"]
                                   [ borrow why ] in
-                              let* α3 := M.alloc [ α2 ] in
-                              let* α4 :=
+                              let* α4 := M.alloc [ α3 ] in
+                              let* α5 :=
                                 M.call
                                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                                   [
-                                    pointer_coercion "Unsize" (borrow α1);
-                                    pointer_coercion "Unsize" (borrow α3)
+                                    pointer_coercion "Unsize" (borrow α2);
+                                    pointer_coercion "Unsize" (borrow α4)
                                   ] in
-                              let* α5 :=
-                                M.call
-                                  (M.var "core::panicking::panic_fmt")
-                                  [ α4 ] in
-                              let* α6 := never_to_any α5 in
-                              M.alloc α6
+                              let* α6 := M.call α0 [ α5 ] in
+                              let* α7 := never_to_any α6 in
+                              M.alloc α7
                             | _ => M.break_match 
                             end) :
                             Ty.path "f64";
@@ -306,8 +325,10 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (let* α0 := M.read γ in
                             match α0 with
                             | core.result.Result.Ok _ =>
-                              let γ0_0 :=
-                                (M.var "core::result::Result::Get_Ok_0") γ in
+                              let* γ0_0 :=
+                                let* α0 :=
+                                  M.var "core::result::Result::Get_Ok_0" in
+                                M.pure (α0 γ) in
                               let* sqrt := M.copy γ0_0 in
                               M.pure sqrt
                             | _ => M.break_match 
@@ -322,7 +343,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
             end) :
             Ty.path "f64"
         ] in
-    M.read α4
+    M.read α5
   | _, _ => M.impossible
   end.
 
@@ -338,28 +359,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.read (UnsupportedLiteral : Ty.path "f64") in
-        let* α4 := M.read (UnsupportedLiteral : Ty.path "f64") in
-        let* α5 := M.call (M.var "result::op") [ α3; α4 ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "result::op" in
+        let* α5 := M.read (UnsupportedLiteral : Ty.path "f64") in
+        let* α6 := M.read (UnsupportedLiteral : Ty.path "f64") in
+        let* α7 := M.call α4 [ α5; α6 ] in
+        let* α8 := M.alloc α7 in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+            [ borrow α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α8)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α10)
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

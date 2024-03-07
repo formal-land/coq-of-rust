@@ -4,14 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_custom_environment_AccountId.
-  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -22,18 +20,22 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_custom_environment_AccountId.
 
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
-  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -52,13 +54,19 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
 
 Module Impl_core_marker_Copy_for_custom_environment_AccountId.
-  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
@@ -68,31 +76,33 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 (* Struct Topics *)
 
 Module Impl_core_default_Default_for_custom_environment_Topics.
-  Definition Self : Ty.t := Ty.path "custom_environment::Topics".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure custom_environment.Topics.Build
+    | [ Self ], [] => M.pure custom_environment.Topics.Build
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::Topics" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_custom_environment_Topics.
 
 (* Enum EventWithTopics *)
 
 Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
-  Definition Self : Ty.t := Ty.path "custom_environment::EventWithTopics".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -136,7 +146,13 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "custom_environment::EventWithTopics" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)
@@ -153,8 +169,9 @@ Module Impl_custom_environment_Env.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "custom_environment::Env::Get_caller") (deref α0))
+      let* α0 := M.var "custom_environment::Env::Get_caller" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
@@ -168,9 +185,10 @@ Module Impl_custom_environment_Env.
     | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_custom_environment_Env.
@@ -186,9 +204,10 @@ Module Impl_custom_environment_Topics.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   

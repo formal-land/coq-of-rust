@@ -50,12 +50,15 @@ Module Impl_incrementer_Incrementer.
       let* by_ := M.alloc by_ in
       let* _ :=
         let* β :=
-          let* α0 := M.read self in
-          M.pure ((M.var "incrementer::Incrementer::Get_value") (deref α0)) in
-        let* α0 := M.read β in
-        let* α1 := M.read by_ in
-        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-        (M.var "assign") β α2 in
+          let* α0 := M.var "incrementer::Incrementer::Get_value" in
+          let* α1 := M.read self in
+          M.pure (α0 (deref α1)) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Panic::add" in
+        let* α2 := M.read β in
+        let* α3 := M.read by_ in
+        let* α4 := α1 α2 α3 in
+        α0 β α4 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -70,8 +73,9 @@ Module Impl_incrementer_Incrementer.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "incrementer::Incrementer::Get_value") (deref α0))
+      let* α0 := M.var "incrementer::Incrementer::Get_value" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
 End Impl_incrementer_Incrementer.

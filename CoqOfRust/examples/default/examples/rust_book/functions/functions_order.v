@@ -45,14 +45,12 @@ Module SomeTrait.
 End SomeTrait.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Definition Self : Ty.t := Ty.path "functions_order::SomeType".
-  
   (*
       fn some_trait_bar(&self) {}
   *)
   Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
@@ -65,7 +63,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   *)
   Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_method
@@ -77,22 +75,25 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("some_trait_bar", InstanceField.Method some_trait_bar);
-      ("some_trait_foo", InstanceField.Method some_trait_foo)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "functions_order::SomeType" in
+    M.IsTraitInstance
+      "functions_order::SomeTrait"
+      Self
+      []
+      [
+        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ]);
+        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ])
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Definition Self : Ty.t := Ty.path "functions_order::OtherType".
-  
   (*
       fn some_trait_foo(&self) {}
   *)
   Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
@@ -103,17 +104,22 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   *)
   Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("some_trait_foo", InstanceField.Method some_trait_foo);
-      ("some_trait_bar", InstanceField.Method some_trait_bar)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "functions_order::OtherType" in
+    M.IsTraitInstance
+      "functions_order::SomeTrait"
+      Self
+      []
+      [
+        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ]);
+        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ])
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 (*
@@ -169,8 +175,9 @@ Module inner_mod.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.call (M.var "functions_order::inner_mod::tar") [] in
-        M.alloc α0 in
+        let* α0 := M.var "functions_order::inner_mod::tar" in
+        let* α1 := M.call α0 [] in
+        M.alloc α1 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -192,9 +199,9 @@ Module inner_mod.
       match 𝜏, α with
       | [], [] =>
         let* _ :=
-          let* α0 :=
-            M.call (M.var "functions_order::inner_mod::nested_mod::tack") [] in
-          M.alloc α0 in
+          let* α0 := M.var "functions_order::inner_mod::nested_mod::tack" in
+          let* α1 := M.call α0 [] in
+          M.alloc α1 in
         let* α0 := M.alloc tt in
         M.read α0
       | _, _ => M.impossible
@@ -221,11 +228,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.call (M.var "functions_order::foo") [] in
-      M.alloc α0 in
+      let* α0 := M.var "functions_order::foo" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* _ :=
-      let* α0 := M.call (M.var "functions_order::inner_mod::bar") [] in
-      M.alloc α0 in
+      let* α0 := M.var "functions_order::inner_mod::bar" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.call

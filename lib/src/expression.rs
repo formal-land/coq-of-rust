@@ -342,16 +342,16 @@ fn monadic_lets(fresh_vars: FreshVars, es: Vec<Rc<Expr>>, f: DynLetFn) -> (Rc<Ex
 /// all functions dealing with monadic translation expect that their
 /// arguments already have been transformed. Not respecting this rule
 /// may lead to infinite loops because of the mutual recursion between
-/// the functions. In practice this means translating every subexpression
+/// the functions. In practice this means translating every sub-expression
 /// before translating the expression itself.
 pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>, FreshVars) {
     let ty = expr.ty.clone().map(mt_ty);
 
     match expr.kind.as_ref() {
         ExprKind::Pure(_) => panic!("Expressions should not be monadic yet."),
-        ExprKind::LocalVar(_) => (pure(expr.clone()), fresh_vars),
-        ExprKind::Var(_) => (pure(expr.clone()), fresh_vars),
-        ExprKind::Constructor(_) => (pure(expr.clone()), fresh_vars),
+        ExprKind::LocalVar(_) => (pure(expr), fresh_vars),
+        ExprKind::Var(_) => (expr, fresh_vars),
+        ExprKind::Constructor(_) => (pure(expr), fresh_vars),
         ExprKind::VarWithTy {
             path,
             ty_name,

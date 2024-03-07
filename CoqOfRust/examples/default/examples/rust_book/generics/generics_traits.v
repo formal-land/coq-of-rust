@@ -11,22 +11,26 @@ Module DoubleDrop.
 End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_T_for_U.
-  Definition Self (T U : Ty.t) : Ty.t := U.
-  
   (*
       fn double_drop(self, _: T) {}
   *)
   Definition double_drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T; U ], [ self; Pattern ] =>
+    | [ Self; T; U ], [ self; Pattern ] =>
       let* self := M.alloc self in
       let* Pattern := M.alloc Pattern in
       M.pure tt
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T U : Ty.t) : Instance.t :=
-    [ ("double_drop", InstanceField.Method (double_drop T U)) ].
+  Axiom Implements :
+    forall (T U : Ty.t),
+    let Self := U in
+    M.IsTraitInstance
+      "generics_traits::DoubleDrop"
+      Self
+      [ (* T *) T ]
+      [ ("double_drop", InstanceField.Method double_drop [ Self; T; U ]) ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (*

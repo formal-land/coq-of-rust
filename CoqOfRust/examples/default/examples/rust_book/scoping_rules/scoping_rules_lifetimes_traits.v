@@ -4,37 +4,36 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Borrowed *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Borrowed") in
       let* α2 := M.read (mk_str "x") in
-      let* α3 := M.read self in
-      let* α4 :=
-        M.alloc
-          (borrow
-            ((M.var "scoping_rules_lifetimes_traits::Borrowed::Get_x")
-              (deref α3))) in
+      let* α3 := M.var "scoping_rules_lifetimes_traits::Borrowed::Get_x" in
+      let* α4 := M.read self in
+      let* α5 := M.alloc (borrow (α3 (deref α4))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field1_finish"]
-        [ α0; α1; α2; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; α2; pointer_coercion "Unsize" (borrow α5) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_lifetimes_traits::Borrowed" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
-  
   (*
       fn default() -> Self {
           Self { x: &10 }
@@ -42,7 +41,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.alloc ((Integer.of_Z 10) : Ty.path "i32") in
       M.pure
         (Value.StructRecord
@@ -51,7 +50,13 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_lifetimes_traits::Borrowed" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (*
@@ -74,24 +79,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "b is ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "b is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow b ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

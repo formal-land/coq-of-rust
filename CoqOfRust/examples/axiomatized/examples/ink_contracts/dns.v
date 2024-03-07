@@ -4,13 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_dns_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "dns::Mapping") [ K; V ].
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self := Ty.apply (Ty.path "dns::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
@@ -35,47 +38,63 @@ End Impl_dns_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_dns_AccountId.
-  Definition Self : Ty.t := Ty.path "dns::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "dns::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_dns_AccountId.
 
 Module Impl_core_clone_Clone_for_dns_AccountId.
-  Definition Self : Ty.t := Ty.path "dns::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "dns::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_dns_AccountId.
 
 Module Impl_core_marker_Copy_for_dns_AccountId.
-  Definition Self : Ty.t := Ty.path "dns::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "dns::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_dns_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
-  Definition Self : Ty.t := Ty.path "dns::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "dns::AccountId" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_dns_AccountId.
-  Definition Self : Ty.t := Ty.path "dns::AccountId".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "dns::AccountId" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_dns_AccountId.
-  Definition Self : Ty.t := Ty.path "dns::AccountId".
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "dns::AccountId" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_array_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
@@ -106,45 +125,56 @@ End Impl_dns_Env.
 Parameter zero_address : (list Ty.t) -> (list Value.t) -> M.
 
 Module Impl_core_default_Default_for_dns_DomainNameService.
-  Definition Self : Ty.t := Ty.path "dns::DomainNameService".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "dns::DomainNameService" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
 (* Enum Error *)
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
-  Definition Self : Ty.t := Ty.path "dns::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "dns::Error" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
 
 Module Impl_core_cmp_PartialEq_for_dns_Error.
-  Definition Self : Ty.t := Ty.path "dns::Error".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "dns::Error" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
 
 Module Impl_core_marker_StructuralEq_for_dns_Error.
-  Definition Self : Ty.t := Ty.path "dns::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "dns::Error" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_dns_Error.
 
 Module Impl_core_cmp_Eq_for_dns_Error.
-  Definition Self : Ty.t := Ty.path "dns::Error".
-  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "dns::Error" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :

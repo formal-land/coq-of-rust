@@ -4,13 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
@@ -25,25 +28,33 @@ End Impl_trait_erc20_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_trait_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_trait_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_trait_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_trait_erc20_AccountId.
 
 Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
@@ -53,43 +64,54 @@ Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
 (* Enum Error *)
 
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
@@ -107,11 +129,15 @@ End BaseErc20.
 (* Enum Erc20 *)
 
 Module Impl_core_default_Default_for_trait_erc20_Erc20.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Erc20" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_trait_erc20_Erc20.
 
 (* Enum Transfer *)
@@ -145,8 +171,6 @@ Module Impl_trait_erc20_Erc20.
 End Impl_trait_erc20_Erc20.
 
 Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
-  
   Parameter total_supply : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
@@ -159,13 +183,18 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   
   Parameter transfer_from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("total_supply", InstanceField.Method total_supply);
-      ("balance_of", InstanceField.Method balance_of);
-      ("allowance", InstanceField.Method allowance);
-      ("transfer", InstanceField.Method transfer);
-      ("approve", InstanceField.Method approve);
-      ("transfer_from", InstanceField.Method transfer_from)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Erc20" in
+    M.IsTraitInstance
+      "trait_erc20::BaseErc20"
+      Self
+      []
+      [
+        ("total_supply", InstanceField.Method total_supply [ Self ]);
+        ("balance_of", InstanceField.Method balance_of [ Self ]);
+        ("allowance", InstanceField.Method allowance [ Self ]);
+        ("transfer", InstanceField.Method transfer [ Self ]);
+        ("approve", InstanceField.Method approve [ Self ]);
+        ("transfer_from", InstanceField.Method transfer_from [ Self ])
+      ].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

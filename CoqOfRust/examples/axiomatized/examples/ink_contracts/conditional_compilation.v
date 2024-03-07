@@ -4,25 +4,33 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_conditional_compilation_AccountId.
-  Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "conditional_compilation::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_conditional_compilation_AccountId.
 
 Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
-  Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "conditional_compilation::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_conditional_compilation_AccountId.
 
 Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
-  Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "conditional_compilation::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_conditional_compilation_AccountId.
 
 Axiom Balance : (Ty.path "conditional_compilation::Balance") = (Ty.path "u128").
@@ -77,19 +85,21 @@ Module Impl_conditional_compilation_ConditionalCompilation.
 End Impl_conditional_compilation_ConditionalCompilation.
 
 Module Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.
-  Definition Self : Ty.t :=
-    Ty.path "conditional_compilation::ConditionalCompilation".
-  
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter push_foo : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("flip", InstanceField.Method flip);
-      ("get", InstanceField.Method get);
-      ("push_foo", InstanceField.Method push_foo)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "conditional_compilation::ConditionalCompilation" in
+    M.IsTraitInstance
+      "conditional_compilation::Flip"
+      Self
+      []
+      [
+        ("flip", InstanceField.Method flip [ Self ]);
+        ("get", InstanceField.Method get [ Self ]);
+        ("push_foo", InstanceField.Method push_foo [ Self ])
+      ].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

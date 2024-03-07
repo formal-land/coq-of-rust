@@ -103,11 +103,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Find 2 in vec1: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Find 2 in vec1: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "find"
@@ -126,9 +127,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ]
                   (Ty.path "bool")
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
-            α3
+            α4
             [
               borrow_mut iter;
               fun
@@ -148,38 +149,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.read x in
-                      M.pure
-                        ((M.var "BinOp::Pure::eq")
-                          α0
-                          ((Integer.of_Z 2) : Ty.path "i32"))) :
+                      let* α0 := M.var "BinOp::Pure::eq" in
+                      let* α1 := M.read x in
+                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32"))) :
                       Ty.path "bool"
                   ]) :
                 Ty.path "bool"
             ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Find 2 in vec2: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Find 2 in vec2: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "find"
@@ -193,9 +193,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ] ]
                   (Ty.path "bool")
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
-            α3
+            α4
             [
               borrow_mut into_iter;
               fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "i32" ]) =>
@@ -208,30 +208,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.read x in
-                      M.pure
-                        ((M.var "BinOp::Pure::eq")
-                          α0
-                          ((Integer.of_Z 2) : Ty.path "i32"))) :
+                      let* α0 := M.var "BinOp::Pure::eq" in
+                      let* α1 := M.read x in
+                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32"))) :
                       Ty.path "bool"
                   ]) :
                 Ty.path "bool"
             ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* array1 :=
       M.alloc
@@ -249,11 +247,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Find 2 in array1: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Find 2 in array1: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "find"
@@ -272,16 +271,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ]
                   (Ty.path "bool")
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
             (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["iter"]
             [ pointer_coercion "Unsize" (borrow array1) ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
-            α3
+            α4
             [
-              borrow_mut α5;
+              borrow_mut α6;
               fun
                   (α0 :
                     Ty.apply
@@ -299,38 +298,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.read x in
-                      M.pure
-                        ((M.var "BinOp::Pure::eq")
-                          α0
-                          ((Integer.of_Z 2) : Ty.path "i32"))) :
+                      let* α0 := M.var "BinOp::Pure::eq" in
+                      let* α1 := M.read x in
+                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32"))) :
                       Ty.path "bool"
                   ]) :
                 Ty.path "bool"
             ] in
-        let* α7 := M.alloc α6 in
-        let* α8 :=
+        let* α8 := M.alloc α7 in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α7 ] in
-        let* α9 := M.alloc [ α8 ] in
-        let* α10 :=
+            [ borrow α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α9)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α10)
             ] in
-        let* α11 := M.call (M.var "std::io::stdio::_print") [ α10 ] in
-        M.alloc α11 in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Find 2 in array2: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Find 2 in array2: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "find"
@@ -349,7 +347,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ]
                   (Ty.path "bool")
             ] in
-        let* α4 :=
+        let* α5 :=
           M.get_method
             "core::iter::traits::collect::IntoIterator"
             "into_iter"
@@ -359,13 +357,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "ref")
                   [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
             ] in
-        let* α5 := M.call α4 [ borrow array2 ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α6 := M.call α5 [ borrow array2 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
-            α3
+            α4
             [
-              borrow_mut α6;
+              borrow_mut α7;
               fun
                   (α0 :
                     Ty.apply
@@ -380,31 +378,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.read x in
-                      let* α1 := M.read (deref α0) in
-                      M.pure
-                        ((M.var "BinOp::Pure::eq")
-                          α1
-                          ((Integer.of_Z 2) : Ty.path "i32"))) :
+                      let* α0 := M.var "BinOp::Pure::eq" in
+                      let* α1 := M.read x in
+                      let* α2 := M.read (deref α1) in
+                      M.pure (α0 α2 ((Integer.of_Z 2) : Ty.path "i32"))) :
                       Ty.path "bool"
                   ]) :
                 Ty.path "bool"
             ] in
-        let* α8 := M.alloc α7 in
-        let* α9 :=
+        let* α9 := M.alloc α8 in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α8 ] in
-        let* α10 := M.alloc [ α9 ] in
-        let* α11 :=
+            [ borrow α9 ] in
+        let* α11 := M.alloc [ α10 ] in
+        let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α10)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α11)
             ] in
-        let* α12 := M.call (M.var "std::io::stdio::_print") [ α11 ] in
-        M.alloc α12 in
+        let* α13 := M.call α0 [ α12 ] in
+        M.alloc α13 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

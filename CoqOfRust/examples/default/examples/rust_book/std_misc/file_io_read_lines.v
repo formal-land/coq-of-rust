@@ -74,15 +74,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* lines :=
-      let* α0 :=
+      let* α0 := M.var "file_io_read_lines::read_lines" in
+      let* α1 :=
         M.get_method
           "alloc::string::ToString"
           "to_string"
           [ (* Self *) Ty.path "str" ] in
-      let* α1 := M.read (mk_str "./hosts") in
-      let* α2 := M.call α0 [ α1 ] in
-      let* α3 := M.call (M.var "file_io_read_lines::read_lines") [ α2 ] in
-      M.alloc α3 in
+      let* α2 := M.read (mk_str "./hosts") in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.call α0 [ α3 ] in
+      M.alloc α4 in
     let* α0 :=
       M.get_method
         "core::iter::traits::collect::IntoIterator"
@@ -143,17 +144,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 :=
-                          (M.var "core::option::Option::Get_Some_0") γ in
+                        let* γ0_0 :=
+                          let* α0 := M.var "core::option::Option::Get_Some_0" in
+                          M.pure (α0 γ) in
                         let* line := M.copy γ0_0 in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.read (mk_str "") in
-                            let* α1 := M.read (mk_str "
+                            let* α0 := M.var "std::io::stdio::_print" in
+                            let* α1 := M.read (mk_str "") in
+                            let* α2 := M.read (mk_str "
 ") in
-                            let* α2 := M.alloc [ α0; α1 ] in
-                            let* α3 := M.read line in
-                            let* α4 :=
+                            let* α3 := M.alloc [ α1; α2 ] in
+                            let* α4 := M.read line in
+                            let* α5 :=
                               M.call
                                 (Ty.apply
                                     (Ty.path "core::result::Result")
@@ -161,24 +164,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       Ty.path "alloc::string::String";
                                       Ty.path "std::io::error::Error"
                                     ])::["unwrap"]
-                                [ α3 ] in
-                            let* α5 := M.alloc α4 in
-                            let* α6 :=
+                                [ α4 ] in
+                            let* α6 := M.alloc α5 in
+                            let* α7 :=
                               M.call
                                 (Ty.path
                                     "core::fmt::rt::Argument")::["new_display"]
-                                [ borrow α5 ] in
-                            let* α7 := M.alloc [ α6 ] in
-                            let* α8 :=
+                                [ borrow α6 ] in
+                            let* α8 := M.alloc [ α7 ] in
+                            let* α9 :=
                               M.call
                                 (Ty.path "core::fmt::Arguments")::["new_v1"]
                                 [
-                                  pointer_coercion "Unsize" (borrow α2);
-                                  pointer_coercion "Unsize" (borrow α7)
+                                  pointer_coercion "Unsize" (borrow α3);
+                                  pointer_coercion "Unsize" (borrow α8)
                                 ] in
-                            let* α9 :=
-                              M.call (M.var "std::io::stdio::_print") [ α8 ] in
-                            M.alloc α9 in
+                            let* α10 := M.call α0 [ α9 ] in
+                            M.alloc α10 in
                           M.alloc tt in
                         M.alloc tt
                       | _ => M.break_match 

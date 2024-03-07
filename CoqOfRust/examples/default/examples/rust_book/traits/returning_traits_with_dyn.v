@@ -11,8 +11,6 @@ Module Animal.
 End Animal.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Sheep".
-  
   (*
       fn noise(&self) -> &'static str {
           "baaaaah!"
@@ -20,18 +18,22 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
   *)
   Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.read (mk_str "baaaaah!")
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("noise", InstanceField.Method noise) ].
+  Axiom Implements :
+    let Self := Ty.path "returning_traits_with_dyn::Sheep" in
+    M.IsTraitInstance
+      "returning_traits_with_dyn::Animal"
+      Self
+      []
+      [ ("noise", InstanceField.Method noise [ Self ]) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Cow".
-  
   (*
       fn noise(&self) -> &'static str {
           "moooooo!"
@@ -39,13 +41,19 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   *)
   Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.read (mk_str "moooooo!")
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("noise", InstanceField.Method noise) ].
+  Axiom Implements :
+    let Self := Ty.path "returning_traits_with_dyn::Cow" in
+    M.IsTraitInstance
+      "returning_traits_with_dyn::Animal"
+      Self
+      []
+      [ ("noise", InstanceField.Method noise [ Self ]) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 (*
@@ -61,12 +69,13 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ random_number ] =>
     let* random_number := M.alloc random_number in
-    let* α0 := M.read random_number in
-    let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-    let* α2 := M.alloc ((M.var "BinOp::Pure::lt") α0 α1) in
-    let* α3 := M.read (use α2) in
-    let* α4 :=
-      if α3 then
+    let* α0 := M.var "BinOp::Pure::lt" in
+    let* α1 := M.read random_number in
+    let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α3 := M.alloc (α0 α1 α2) in
+    let* α4 := M.read (use α3) in
+    let* α5 :=
+      if α4 then
         let* α0 :=
           M.call
             (Ty.apply
@@ -88,8 +97,8 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ])::["new"]
             [ returning_traits_with_dyn.Cow.Build ] in
         M.alloc (pointer_coercion "Unsize" α0) in
-    let* α5 := M.read α4 in
-    M.pure (pointer_coercion "Unsize" (pointer_coercion "Unsize" α5))
+    let* α6 := M.read α5 in
+    M.pure (pointer_coercion "Unsize" (pointer_coercion "Unsize" α6))
   | _, _ => M.impossible
   end.
 
@@ -109,18 +118,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* random_number := M.copy (UnsupportedLiteral : Ty.path "f64") in
     let* animal :=
-      let* α0 := M.read random_number in
-      let* α1 :=
-        M.call (M.var "returning_traits_with_dyn::random_animal") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "returning_traits_with_dyn::random_animal" in
+      let* α1 := M.read random_number in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 :=
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 :=
           M.read (mk_str "You've randomly chosen an animal, and it says ") in
-        let* α1 := M.read (mk_str "
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "returning_traits_with_dyn::Animal"
             "noise"
@@ -128,23 +138,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *)
                 Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ]
             ] in
-        let* α4 := M.read animal in
-        let* α5 := M.call α3 [ borrow (deref α4) ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α5 := M.read animal in
+        let* α6 := M.call α4 [ borrow (deref α5) ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α8)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

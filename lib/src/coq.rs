@@ -1,10 +1,8 @@
 use crate::path::Path;
 use crate::render::{
     self, concat, curly_brackets, group, hardline, intersperse, line, list, nest, nil,
-    optional_insert, optional_insert_vec, optional_insert_with, paren, text, Doc,
+    optional_insert, optional_insert_with, paren, text, Doc,
 };
-use crate::top_level::VariantItem;
-use std::marker::PhantomData;
 use std::rc::Rc;
 
 #[derive(Clone)]
@@ -19,15 +17,10 @@ pub(crate) enum TopLevelItem<'a> {
     /// the Code variant is for those constructions
     /// that are not yet represented by the types in this file
     Code(Doc<'a>),
-    Class(Class<'a>),
     Comment(Comment),
-    Context(Context<'a>),
     Definition(Definition<'a>),
-    Instance(Instance<'a>),
     Line,
     Module(Module<'a>),
-    Record(Record<'a>),
-    Inductive(Inductive<'a>),
 }
 
 #[derive(Clone)]
@@ -55,36 +48,6 @@ pub(crate) struct Definition<'a> {
 }
 
 #[derive(Clone)]
-/// a definition of a coq record
-pub(crate) struct Record<'a> {
-    name: String,
-    ty: Expression<'a>,
-    fields: Vec<RecordFieldDef<'a>>,
-}
-
-#[derive(Clone)]
-/// a coq `Context` item
-pub(crate) struct Context<'a> {
-    args: Vec<ArgDecl<'a>>,
-}
-
-#[derive(Clone)]
-/// a coq typeclass definition
-pub(crate) struct Class<'a> {
-    name: String,
-    args: Vec<ArgDecl<'a>>,
-    items: Vec<ClassFieldDef<'a>>,
-}
-
-#[derive(Clone)]
-/// a global instance of a coq typeclass
-pub(crate) struct Instance<'a> {
-    name: String,
-    parameters: Vec<ArgDecl<'a>>,
-    build_expr: Expression<'a>,
-}
-
-#[derive(Clone)]
 /// the kind of a coq definition
 pub(crate) enum DefinitionKind<'a> {
     /// an alias for an expression
@@ -108,35 +71,6 @@ pub(crate) enum DefinitionKind<'a> {
 }
 
 #[derive(Clone)]
-/// a definition of a field in a record definition
-pub(crate) struct RecordFieldDef<'a> {
-    ident: Option<String>,
-    ty: Expression<'a>,
-}
-
-#[derive(Clone)]
-/// a definition of a field in a typeclass definition
-pub(crate) struct ClassFieldDef<'a> {
-    ident: Option<String>,
-    args: Vec<ArgDecl<'a>>,
-    ty: Expression<'a>,
-}
-
-#[derive(Clone)]
-pub(crate) struct IndFieldDef<'a> {
-    name: String,
-    item: Rc<VariantItem>,
-    _phantom_data: std::marker::PhantomData<&'a ()>,
-}
-
-#[derive(Clone)]
-pub(crate) struct Inductive<'a> {
-    name: String,
-    ty_params: Vec<String>,
-    fields: Vec<IndFieldDef<'a>>,
-}
-
-#[derive(Clone)]
 /// a coq expression
 /// (suitable also for coq type expressions,
 ///     because in coq types are like any other values)
@@ -156,6 +90,12 @@ pub(crate) enum Expression<'a> {
     /// a (curried) function
     Function {
         parameters: Vec<Expression<'a>>,
+        body: Rc<Expression<'a>>,
+    },
+    Let {
+        name: String,
+        ty: Option<Rc<Expression<'a>>>,
+        value: Rc<Expression<'a>>,
         body: Rc<Expression<'a>>,
     },
     Match {
@@ -215,6 +155,8 @@ pub(crate) enum Expression<'a> {
     },
     /// Set constant (the type of our types)
     Set,
+    /// Comment next to an expression
+    Comment(String, Rc<Expression<'a>>),
     /// a dependent sum of types
     /// (like `Sigma (x : A), B(x)`, defined in CoqOfRust.lib.Notations)
     SigmaType {
@@ -353,111 +295,17 @@ impl<'a> TopLevel<'a> {
             }
         }
     }
-
-    /// creates the context in a section with type variables
-    /// with the given variable names
-    pub(crate) fn add_context_in_section(
-        ty_params: &[String],
-        are_ty_params_explicit: bool,
-        items: &TopLevel<'a>,
-    ) -> Self {
-        TopLevel {
-            items: [
-                // [ty_params]
-                optional_insert_vec(
-                    ty_params.is_empty(),
-                    vec![
-                        TopLevelItem::Context(Context::new(&[ArgDecl::new(
-                            &ArgDeclVar::Simple {
-                                idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                                ty: Some(Expression::Set),
-                            },
-                            if are_ty_params_explicit {
-                                ArgSpecKind::Explicit
-                            } else {
-                                ArgSpecKind::Implicit
-                            },
-                        )])),
-                        TopLevelItem::Line,
-                    ],
-                ),
-                items.items.to_owned(),
-            ]
-            .concat(),
-        }
-    }
 }
 
 impl<'a> TopLevelItem<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         match self {
             TopLevelItem::Code(code) => code.to_owned(),
-            TopLevelItem::Class(class) => class.to_doc(),
             TopLevelItem::Comment(comment) => comment.to_doc(),
-            TopLevelItem::Context(context) => context.to_doc(),
             TopLevelItem::Definition(definition) => definition.to_doc(),
-            TopLevelItem::Instance(instance) => instance.to_doc(),
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
-            TopLevelItem::Record(record) => record.to_doc(),
-            TopLevelItem::Inductive(inductive) => inductive.to_doc(),
         }
-    }
-
-    /// creates a module with the translation of the given trait
-    pub(crate) fn trait_module(
-        name: &'a str,
-        ty_params: &[(String, Option<Expression<'a>>)],
-        items: &[ClassFieldDef<'a>],
-        instances: &[Instance<'a>],
-    ) -> Self {
-        TopLevelItem::Module(Module::new(
-            name,
-            TopLevel::concat(&[
-                TopLevel::locally_unset_primitive_projections_if(
-                    items.is_empty(),
-                    &[TopLevelItem::Class(Class::new(
-                        "Trait",
-                        &[
-                            vec![ArgDecl::new(
-                                &ArgDeclVar::Simple {
-                                    idents: vec!["Self".to_string()],
-                                    ty: Some(Expression::Set),
-                                },
-                                ArgSpecKind::Explicit,
-                            )],
-                            optional_insert_vec(
-                                ty_params.is_empty(),
-                                vec![ArgDecl::new(
-                                    &ArgDeclVar::Simple {
-                                        idents: ty_params
-                                            .iter()
-                                            .map(|(ty, default)| {
-                                                match default {
-                                                    // @TODO: implement the translation of type parameters with default
-                                                    Some(_default) => ["(* TODO *) ", ty].concat(),
-                                                    None => ty.to_string(),
-                                                }
-                                            })
-                                            .collect(),
-                                        ty: Some(Expression::Set),
-                                    },
-                                    ArgSpecKind::Implicit,
-                                )],
-                            ),
-                        ]
-                        .concat(),
-                        items.to_vec(),
-                    ))],
-                ),
-                TopLevel {
-                    items: instances
-                        .iter()
-                        .map(|instance| TopLevelItem::Instance(instance.to_owned()))
-                        .collect(),
-                },
-            ]),
-        ))
     }
 }
 
@@ -567,286 +415,6 @@ impl<'a> Definition<'a> {
     }
 }
 
-impl<'a> Record<'a> {
-    pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[RecordFieldDef<'a>]) -> Self {
-        Record {
-            name: name.to_owned(),
-            ty: ty.to_owned(),
-            fields: fields.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        group([
-            nest([
-                text("Record"),
-                line(),
-                text(self.name.to_owned()),
-                text(" :"),
-                line(),
-                self.ty.to_doc(false),
-                text(" :="),
-                line(),
-                text("{"),
-            ]),
-            optional_insert_with(
-                self.fields.is_empty(),
-                text(" "),
-                concat([
-                    nest([
-                        hardline(),
-                        intersperse(self.fields.iter().map(|field| field.to_doc()), [hardline()]),
-                    ]),
-                    hardline(),
-                ]),
-            ),
-            text("}."),
-        ])
-    }
-}
-
-impl<'a> Context<'a> {
-    /// produces a new coq `Context`
-    pub(crate) fn new(args: &[ArgDecl<'a>]) -> Self {
-        Context {
-            args: args.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        nest([
-            text("Context"),
-            line(),
-            intersperse(self.args.iter().map(|arg| arg.to_doc()), [line()]),
-            text("."),
-        ])
-    }
-}
-
-impl<'a> Class<'a> {
-    /// produces a new coq typeclass definition
-    pub(crate) fn new(name: &str, args: &[ArgDecl<'a>], items: Vec<ClassFieldDef<'a>>) -> Self {
-        Class {
-            name: name.to_owned(),
-            args: args.to_owned(),
-            items,
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        group([
-            nest([
-                nest([
-                    text("Class "),
-                    text(self.name.to_owned()),
-                    optional_insert(
-                        self.args.is_empty(),
-                        group([
-                            line(),
-                            intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
-                        ]),
-                    ),
-                    text(" :"),
-                    line(),
-                    Expression::Type.to_doc(false),
-                    text(" := {"),
-                ]),
-                optional_insert(self.items.is_empty(), hardline()),
-                intersperse(
-                    {
-                        let mut anonymous_item_counter = 0;
-                        self.items
-                            .iter()
-                            .map(|item| {
-                                let result = item.to_doc(anonymous_item_counter);
-                                if let ClassFieldDef { ident: None, .. } = item {
-                                    anonymous_item_counter += 1;
-                                }
-                                result
-                            })
-                            .collect::<Vec<_>>()
-                    },
-                    [hardline()],
-                ),
-            ]),
-            hardline(),
-            text("}."),
-        ])
-    }
-}
-
-impl<'a> IndFieldDef<'a> {
-    pub(crate) fn new(name: &String, item: Rc<VariantItem>) -> Self {
-        IndFieldDef {
-            name: name.to_owned(),
-            item,
-            _phantom_data: PhantomData,
-        }
-    }
-
-    pub(crate) fn field_to_doc(&self) -> Doc<'a> {
-        nest([
-            text("|"),
-            line(),
-            text(self.name.to_owned()),
-            match &*self.item {
-                VariantItem::Struct { .. } => concat([
-                    line(),
-                    nest([
-                        text("(_ :"),
-                        line(),
-                        text(format!("{}.t", self.name.to_owned())),
-                        text(")"),
-                    ]),
-                ]),
-                VariantItem::Tuple { tys } => concat(tys.iter().map(|ty| {
-                    concat([
-                        line(),
-                        nest([text("(_ :"), line(), ty.to_coq().to_doc(false), text(")")]),
-                    ])
-                })),
-            },
-        ])
-    }
-}
-
-impl<'a> Inductive<'a> {
-    pub(crate) fn new(
-        name: &String,
-        ty_params: &Vec<String>,
-        fields: Vec<IndFieldDef<'a>>,
-    ) -> Self {
-        Inductive {
-            name: name.to_owned(),
-            ty_params: ty_params.to_owned(),
-            fields: fields.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        concat([
-            nest([
-                text("Inductive"),
-                line(),
-                text(self.name.to_owned()),
-                concat(self.ty_params.iter().map(|ty_param| {
-                    concat([
-                        line(),
-                        nest([
-                            text("("),
-                            text(ty_param.to_owned()),
-                            text(" :"),
-                            line(),
-                            text("Set)"),
-                        ]),
-                    ])
-                })),
-                text(" :"),
-                line(),
-                text("Set :="),
-            ]),
-            hardline(),
-            intersperse(self.fields.iter().map(|item| item.field_to_doc()), [line()]),
-            text("."),
-        ])
-    }
-}
-
-impl<'a> Instance<'a> {
-    /// produces a new coq instance
-    pub(crate) fn new(name: &str, parameters: &[ArgDecl<'a>], build_expr: &Expression<'a>) -> Self {
-        Instance {
-            name: name.to_owned(),
-            parameters: parameters.to_vec(),
-            build_expr: build_expr.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        nest([
-            nest([
-                nest([
-                    text("Definition "),
-                    text(self.name.to_owned()),
-                    optional_insert(self.parameters.is_empty(), {
-                        let non_empty_params: Vec<_> =
-                            self.parameters.iter().filter(|p| !p.is_empty()).collect();
-                        optional_insert(
-                            non_empty_params.is_empty(),
-                            concat([
-                                line(),
-                                intersperse(non_empty_params.iter().map(|p| p.to_doc()), [line()]),
-                            ]),
-                        )
-                    }),
-                ]),
-                text(" :"),
-                line(),
-                text("Instance.t"),
-                text(" :="),
-            ]),
-            line(),
-            self.build_expr.to_doc(false),
-            text("."),
-        ])
-    }
-}
-
-impl<'a> RecordFieldDef<'a> {
-    pub(crate) fn new(ident: &Option<String>, ty: &Expression<'a>) -> Self {
-        RecordFieldDef {
-            ident: ident.to_owned(),
-            ty: ty.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        nest([
-            match self.ident.to_owned() {
-                Some(name) => text(name),
-                None => text("_"),
-            },
-            text(" :"),
-            line(),
-            self.ty.to_doc(false),
-            text(";"),
-        ])
-    }
-}
-
-impl<'a> ClassFieldDef<'a> {
-    pub(crate) fn new(ident: &Option<String>, args: &[ArgDecl<'a>], ty: &Expression<'a>) -> Self {
-        ClassFieldDef {
-            ident: ident.to_owned(),
-            args: args.to_owned(),
-            ty: ty.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self, anonymous_counter: usize) -> Doc<'a> {
-        nest([
-            match self.ident.to_owned() {
-                Some(name) => text(name),
-                None => text(format!("ℒ_{anonymous_counter}")),
-            },
-            optional_insert(
-                self.args.is_empty(),
-                group([
-                    line(),
-                    intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
-                ]),
-            ),
-            match self.ident {
-                Some(_) => text(" :"),
-                None => text(" ::"),
-            },
-            line(),
-            self.ty.to_doc(false),
-            text(";"),
-        ])
-    }
-}
-
 impl<'a> Expression<'a> {
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc<'a> {
         match self {
@@ -891,6 +459,31 @@ impl<'a> Expression<'a> {
                     )
                 }
             }
+            Self::Let {
+                name,
+                ty,
+                value,
+                body,
+            } => paren(
+                with_paren,
+                group([
+                    nest([
+                        nest([
+                            nest([text("let"), line(), text(name.to_owned())]),
+                            match ty {
+                                None => nil(),
+                                Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
+                            },
+                            text(" :="),
+                        ]),
+                        line(),
+                        value.to_doc(false),
+                        text(" in"),
+                    ]),
+                    line(),
+                    body.to_doc(false),
+                ]),
+            ),
             Self::Match { scrutinees, arms } => group([
                 group([
                     nest([
@@ -1016,6 +609,11 @@ impl<'a> Expression<'a> {
                 text(")"),
             ]),
             Self::Set => text("Set"),
+            Self::Comment(comment, expr) => nest([
+                text(format!("(* {comment} *)")),
+                line(),
+                expr.to_doc(with_paren),
+            ]),
             Self::SigmaType { args, image } => paren(
                 with_paren,
                 concat([

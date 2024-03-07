@@ -66,28 +66,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ ("contents", α0) ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "The open box contains: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "The open box contains: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "struct_visibility::my::OpenBox::Get_contents" in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [
-              borrow
-                ((M.var "struct_visibility::my::OpenBox::Get_contents")
-                  open_box)
-            ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+            [ borrow (α4 open_box) ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* _closed_box :=
       let* α0 := M.read (mk_str "classified information") in

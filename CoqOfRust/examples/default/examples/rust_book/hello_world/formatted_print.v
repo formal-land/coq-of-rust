@@ -69,174 +69,183 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "31 days
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "31 days
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
-        let* α3 := M.alloc α2 in
-        let* α4 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α1);
-              pointer_coercion "Unsize" (borrow α3)
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
             ] in
-        let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-        M.alloc α5 in
+        let* α6 := M.call α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Alice, this is Bob. Bob, this is Alice
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Alice, this is Bob. Bob, this is Alice
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
-        let* α3 := M.alloc α2 in
-        let* α4 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α1);
-              pointer_coercion "Unsize" (borrow α3)
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
             ] in
-        let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-        M.alloc α5 in
+        let* α6 := M.call α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 :=
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 :=
           M.read (mk_str "the quick brown fox jumps over the lazy dog
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
-        let* α3 := M.alloc α2 in
-        let* α4 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α1);
-              pointer_coercion "Unsize" (borrow α3)
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
             ] in
-        let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-        M.alloc α5 in
+        let* α6 := M.call α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Base 10:               69420
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Base 10:               69420
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
-        let* α3 := M.alloc α2 in
-        let* α4 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α1);
-              pointer_coercion "Unsize" (borrow α3)
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
             ] in
-        let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-        M.alloc α5 in
+        let* α6 := M.call α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Base 2 (binary):       ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Base 2 (binary):       ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
-        let* α4 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_binary"]
-            [ borrow α3 ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-        M.alloc α7 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Base 8 (octal):        ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Base 8 (octal):        ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
-        let* α4 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_octal"]
-            [ borrow α3 ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-        M.alloc α7 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Base 16 (hexadecimal): ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Base 16 (hexadecimal): ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
-        let* α4 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_lower_hex"]
-            [ borrow α3 ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-        M.alloc α7 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Base 16 (hexadecimal): ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Base 16 (hexadecimal): ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
-        let* α4 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.alloc ((Integer.of_Z 69420) : Ty.path "i32") in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_upper_hex"]
-            [ borrow α3 ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-        M.alloc α7 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α4 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α3 ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Placeholder")::["new"]
             [
@@ -247,33 +256,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Count.Implied;
               core.fmt.rt.Count.Is ((Integer.of_Z 5) : Ty.path "usize")
             ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α9 :=
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5);
-              pointer_coercion "Unsize" (borrow α7);
-              α8
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6);
+              pointer_coercion "Unsize" (borrow α8);
+              α9
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α4 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α3 ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Placeholder")::["new"]
             [
@@ -284,38 +294,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Count.Implied;
               core.fmt.rt.Count.Is ((Integer.of_Z 5) : Ty.path "usize")
             ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α9 :=
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5);
-              pointer_coercion "Unsize" (borrow α7);
-              α8
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6);
+              pointer_coercion "Unsize" (borrow α8);
+              α9
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α4 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α3 ] in
-        let* α5 := M.alloc ((Integer.of_Z 5) : Ty.path "usize") in
-        let* α6 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc ((Integer.of_Z 5) : Ty.path "usize") in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["from_usize"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α4; α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α5; α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::rt::Placeholder")::["new"]
             [
@@ -326,55 +337,57 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Count.Implied;
               core.fmt.rt.Count.Param ((Integer.of_Z 1) : Ty.path "usize")
             ] in
-        let* α9 := M.alloc [ α8 ] in
-        let* α10 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α11 :=
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
+        let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7);
-              pointer_coercion "Unsize" (borrow α9);
-              α10
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8);
+              pointer_coercion "Unsize" (borrow α10);
+              α11
             ] in
-        let* α12 := M.call (M.var "std::io::stdio::_print") [ α11 ] in
-        M.alloc α12 in
+        let* α13 := M.call α0 [ α12 ] in
+        M.alloc α13 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "My name is Bond, James Bond
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "My name is Bond, James Bond
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
-        let* α3 := M.alloc α2 in
-        let* α4 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 := M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α1);
-              pointer_coercion "Unsize" (borrow α3)
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
             ] in
-        let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-        M.alloc α5 in
+        let* α6 := M.call α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc tt in
     let* number := M.copy (UnsupportedLiteral : Ty.path "f64") in
     let* width := M.alloc ((Integer.of_Z 5) : Ty.path "usize") in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow number ] in
-        let* α4 :=
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["from_usize"]
             [ borrow width ] in
-        let* α5 := M.alloc [ α3; α4 ] in
-        let* α6 :=
+        let* α6 := M.alloc [ α4; α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Placeholder")::["new"]
             [
@@ -385,19 +398,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Count.Implied;
               core.fmt.rt.Count.Param ((Integer.of_Z 1) : Ty.path "usize")
             ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α9 :=
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5);
-              pointer_coercion "Unsize" (borrow α7);
-              α8
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6);
+              pointer_coercion "Unsize" (borrow α8);
+              α9
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

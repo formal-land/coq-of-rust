@@ -33,8 +33,6 @@ Module Impl_trait_flipper_Flipper.
 End Impl_trait_flipper_Flipper.
 
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
-  Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".
-  
   (*
       fn flip(&mut self) {
           self.value = !self.value;
@@ -42,16 +40,16 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
+        let* α0 := M.var "trait_flipper::Flipper::Get_value" in
         let* α1 := M.read self in
-        let* α2 :=
-          M.read ((M.var "trait_flipper::Flipper::Get_value") (deref α1)) in
-        assign
-          ((M.var "trait_flipper::Flipper::Get_value") (deref α0))
-          ((M.var "UnOp::not") α2) in
+        let* α2 := M.var "UnOp::not" in
+        let* α3 := M.var "trait_flipper::Flipper::Get_value" in
+        let* α4 := M.read self in
+        let* α5 := M.read (α3 (deref α4)) in
+        assign (α0 (deref α1)) (α2 α5) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -64,13 +62,22 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "trait_flipper::Flipper::Get_value") (deref α0))
+      let* α0 := M.var "trait_flipper::Flipper::Get_value" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_flipper::Flipper" in
+    M.IsTraitInstance
+      "trait_flipper::Flip"
+      Self
+      []
+      [
+        ("flip", InstanceField.Method flip [ Self ]);
+        ("get", InstanceField.Method get [ Self ])
+      ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

@@ -75,22 +75,24 @@ Module Impl_enums_testcase_linked_list_List.
               (let* α0 := M.read γ in
               match α0 with
               | enums_testcase_linked_list.List.Cons _ _ =>
-                let γ0_0 :=
-                  (M.var "enums_testcase_linked_list::List::Get_Cons_0") γ in
-                let γ0_1 :=
-                  (M.var "enums_testcase_linked_list::List::Get_Cons_1") γ in
+                let* γ0_0 :=
+                  let* α0 :=
+                    M.var "enums_testcase_linked_list::List::Get_Cons_0" in
+                  M.pure (α0 γ) in
+                let* γ0_1 :=
+                  let* α0 :=
+                    M.var "enums_testcase_linked_list::List::Get_Cons_1" in
+                  M.pure (α0 γ) in
                 let* tail := M.alloc (borrow γ0_1) in
-                let* α0 := M.read tail in
-                let* α1 := M.read (deref α0) in
-                let* α2 :=
+                let* α0 := M.var "BinOp::Panic::add" in
+                let* α1 := M.read tail in
+                let* α2 := M.read (deref α1) in
+                let* α3 :=
                   M.call
                     (Ty.path "enums_testcase_linked_list::List")::["len"]
-                    [ borrow (deref α1) ] in
-                let* α3 :=
-                  (M.var "BinOp::Panic::add")
-                    ((Integer.of_Z 1) : Ty.path "u32")
-                    α2 in
-                M.alloc α3
+                    [ borrow (deref α2) ] in
+                let* α4 := α0 ((Integer.of_Z 1) : Ty.path "u32") α3 in
+                M.alloc α4
               | _ => M.break_match 
               end) :
               Ty.path "u32";
@@ -134,42 +136,47 @@ Module Impl_enums_testcase_linked_list_List.
               (let* α0 := M.read γ in
               match α0 with
               | enums_testcase_linked_list.List.Cons _ _ =>
-                let γ0_0 :=
-                  (M.var "enums_testcase_linked_list::List::Get_Cons_0") γ in
-                let γ0_1 :=
-                  (M.var "enums_testcase_linked_list::List::Get_Cons_1") γ in
+                let* γ0_0 :=
+                  let* α0 :=
+                    M.var "enums_testcase_linked_list::List::Get_Cons_0" in
+                  M.pure (α0 γ) in
+                let* γ0_1 :=
+                  let* α0 :=
+                    M.var "enums_testcase_linked_list::List::Get_Cons_1" in
+                  M.pure (α0 γ) in
                 let* head := M.copy γ0_0 in
                 let* tail := M.alloc (borrow γ0_1) in
                 let* res :=
-                  let* α0 := M.read (mk_str "") in
-                  let* α1 := M.read (mk_str ", ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α0 := M.var "alloc::fmt::format" in
+                  let* α1 := M.read (mk_str "") in
+                  let* α2 := M.read (mk_str ", ") in
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
                       [ borrow head ] in
-                  let* α4 := M.read tail in
-                  let* α5 := M.read (deref α4) in
-                  let* α6 :=
+                  let* α5 := M.read tail in
+                  let* α6 := M.read (deref α5) in
+                  let* α7 :=
                     M.call
                       (Ty.path
                           "enums_testcase_linked_list::List")::["stringify"]
-                      [ borrow (deref α5) ] in
-                  let* α7 := M.alloc α6 in
-                  let* α8 :=
+                      [ borrow (deref α6) ] in
+                  let* α8 := M.alloc α7 in
+                  let* α9 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ borrow α7 ] in
-                  let* α9 := M.alloc [ α3; α8 ] in
-                  let* α10 :=
+                      [ borrow α8 ] in
+                  let* α10 := M.alloc [ α4; α9 ] in
+                  let* α11 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α9)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α10)
                       ] in
-                  let* α11 := M.call (M.var "alloc::fmt::format") [ α10 ] in
-                  M.alloc α11 in
+                  let* α12 := M.call α0 [ α11 ] in
+                  M.alloc α12 in
                 M.pure res
               | _ => M.break_match 
               end) :
@@ -179,14 +186,15 @@ Module Impl_enums_testcase_linked_list_List.
               match α0 with
               | enums_testcase_linked_list.List.Nil =>
                 let* res :=
-                  let* α0 := M.read (mk_str "Nil") in
-                  let* α1 := M.alloc [ α0 ] in
-                  let* α2 :=
+                  let* α0 := M.var "alloc::fmt::format" in
+                  let* α1 := M.read (mk_str "Nil") in
+                  let* α2 := M.alloc [ α1 ] in
+                  let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α1) ] in
-                  let* α3 := M.call (M.var "alloc::fmt::format") [ α2 ] in
-                  M.alloc α3 in
+                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                  let* α4 := M.call α0 [ α3 ] in
+                  M.alloc α4 in
                 M.pure res
               | _ => M.break_match 
               end) :
@@ -243,55 +251,57 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       assign list α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "linked list has length: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "linked list has length: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "enums_testcase_linked_list::List")::["len"]
             [ borrow list ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α5 ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α7)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "enums_testcase_linked_list::List")::["stringify"]
             [ borrow list ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α5 ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α7)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

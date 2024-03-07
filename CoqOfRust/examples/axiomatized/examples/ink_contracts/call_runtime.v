@@ -4,25 +4,33 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_call_runtime_AccountId.
-  Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_call_runtime_AccountId.
-  Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_call_runtime_AccountId.
-  Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
@@ -32,14 +40,18 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (* Enum MultiAddress *)
 
 Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
-  Definition Self : Ty.t :=
-    Ty.apply
-      (Ty.path "call_runtime::MultiAddress")
-      [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ].
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self :=
+      Ty.apply
+        (Ty.path "call_runtime::MultiAddress")
+        [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ] in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "call_runtime::AccountId" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
 (* Enum BalancesCall *)
@@ -49,63 +61,82 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
 (* Struct RuntimeCaller *)
 
 Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeCaller".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeCaller" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
 (* Enum RuntimeError *)
 
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
 (* Enum EnvError *)
 
 Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "call_runtime::EnvError" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 
 Module Impl_call_runtime_Env.

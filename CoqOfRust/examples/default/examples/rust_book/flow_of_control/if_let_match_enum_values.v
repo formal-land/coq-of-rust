@@ -53,15 +53,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             | if_let_match_enum_values.Foo.Bar =>
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "a is foobar
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "a is foobar
 ") in
-                  let* α1 := M.alloc [ α0 ] in
-                  let* α2 :=
+                  let* α2 := M.alloc [ α1 ] in
+                  let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α1) ] in
-                  let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                  M.alloc α3 in
+                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                  let* α4 := M.call α0 [ α3 ] in
+                  M.alloc α4 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -79,15 +80,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             | if_let_match_enum_values.Foo.Bar =>
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "b is foobar
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "b is foobar
 ") in
-                  let* α1 := M.alloc [ α0 ] in
-                  let* α2 :=
+                  let* α2 := M.alloc [ α1 ] in
+                  let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α1) ] in
-                  let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                  M.alloc α3 in
+                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                  let* α4 := M.call α0 [ α3 ] in
+                  M.alloc α4 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -103,29 +105,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | if_let_match_enum_values.Foo.Qux _ =>
-              let γ0_0 :=
-                (M.var "if_let_match_enum_values::Foo::Get_Qux_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "if_let_match_enum_values::Foo::Get_Qux_0" in
+                M.pure (α0 γ) in
               let* value := M.copy γ0_0 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "c is ") in
-                  let* α1 := M.read (mk_str "
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "c is ") in
+                  let* α2 := M.read (mk_str "
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
                       [ borrow value ] in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α4)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α5)
                       ] in
-                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                  M.alloc α6 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -141,23 +145,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | if_let_match_enum_values.Foo.Qux _ =>
-              let γ0_0 :=
-                (M.var "if_let_match_enum_values::Foo::Get_Qux_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "if_let_match_enum_values::Foo::Get_Qux_0" in
+                M.pure (α0 γ) in
               let* value := M.copy γ0_0 in
               let* α0 := M.read γ0_0 in
               match α0 with
               | u32.Make 100 =>
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.read (mk_str "c is one hundred
+                    let* α0 := M.var "std::io::stdio::_print" in
+                    let* α1 := M.read (mk_str "c is one hundred
 ") in
-                    let* α1 := M.alloc [ α0 ] in
-                    let* α2 :=
+                    let* α2 := M.alloc [ α1 ] in
+                    let* α3 :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_const"]
-                        [ pointer_coercion "Unsize" (borrow α1) ] in
-                    let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                    M.alloc α3 in
+                        [ pointer_coercion "Unsize" (borrow α2) ] in
+                    let* α4 := M.call α0 [ α3 ] in
+                    M.alloc α4 in
                   M.alloc tt in
                 M.alloc tt
               | _ => M.break_match 

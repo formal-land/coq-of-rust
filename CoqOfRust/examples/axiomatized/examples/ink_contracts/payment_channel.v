@@ -4,65 +4,84 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_payment_channel_AccountId.
 
 Module Impl_core_clone_Clone_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
 
 Module Impl_core_marker_Copy_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::AccountId" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
@@ -76,35 +95,42 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 (* Enum Error *)
 
 Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
-  Definition Self : Ty.t := Ty.path "payment_channel::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Error" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
-  Definition Self : Ty.t := Ty.path "payment_channel::Error".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Error" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
-  Definition Self : Ty.t := Ty.path "payment_channel::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Error" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
-  Definition Self : Ty.t := Ty.path "payment_channel::Error".
-  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Error" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
@@ -159,67 +185,83 @@ Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
 (* Enum Blake2x128 *)
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
-  Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
-  
   Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Sha2x256" in
+    M.IsTraitInstance "payment_channel::HashOutput" Self [] [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
-  Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
-  
   Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Keccak256" in
+    M.IsTraitInstance "payment_channel::HashOutput" Self [] [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
-  Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
-  
   Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Blake2x256" in
+    M.IsTraitInstance "payment_channel::HashOutput" Self [] [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
-  Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
-  
   Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Blake2x128" in
+    M.IsTraitInstance "payment_channel::HashOutput" Self [] [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
-  Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
-  
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Sha2x256" in
+    M.IsTraitInstance
+      "payment_channel::CryptoHash"
+      Self
+      []
+      [ ("hash", InstanceField.Method hash [ Self ]) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
-  Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
-  
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Keccak256" in
+    M.IsTraitInstance
+      "payment_channel::CryptoHash"
+      Self
+      []
+      [ ("hash", InstanceField.Method hash [ Self ]) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
-  Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
-  
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Blake2x256" in
+    M.IsTraitInstance
+      "payment_channel::CryptoHash"
+      Self
+      []
+      [ ("hash", InstanceField.Method hash [ Self ]) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
-  Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
-  
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
+  Axiom Implements :
+    let Self := Ty.path "payment_channel::Blake2x128" in
+    M.IsTraitInstance
+      "payment_channel::CryptoHash"
+      Self
+      []
+      [ ("hash", InstanceField.Method hash [ Self ]) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_PaymentChannel.

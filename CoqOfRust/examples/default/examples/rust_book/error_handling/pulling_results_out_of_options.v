@@ -68,10 +68,9 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         [
                           fun γ =>
                             (let* n := M.copy γ in
-                            let* α0 := M.read n in
-                            (M.var "BinOp::Panic::mul")
-                              ((Integer.of_Z 2) : Ty.path "i32")
-                              α0) :
+                            let* α0 := M.var "BinOp::Panic::mul" in
+                            let* α1 := M.read n in
+                            α0 ((Integer.of_Z 2) : Ty.path "i32") α1) :
                             Ty.path "i32"
                         ]) :
                       Ty.path "i32"
@@ -153,84 +152,81 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α6 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "The first doubled is ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "The first doubled is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.read numbers in
-        let* α4 :=
-          M.call
-            (M.var "pulling_results_out_of_options::double_first")
-            [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "pulling_results_out_of_options::double_first" in
+        let* α5 := M.read numbers in
+        let* α6 := M.call α4 [ α5 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "The first doubled is ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "The first doubled is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.read empty in
-        let* α4 :=
-          M.call
-            (M.var "pulling_results_out_of_options::double_first")
-            [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "pulling_results_out_of_options::double_first" in
+        let* α5 := M.read empty in
+        let* α6 := M.call α4 [ α5 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "The first doubled is ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "The first doubled is ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.read strings in
-        let* α4 :=
-          M.call
-            (M.var "pulling_results_out_of_options::double_first")
-            [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "pulling_results_out_of_options::double_first" in
+        let* α5 := M.read strings in
+        let* α6 := M.call α4 [ α5 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

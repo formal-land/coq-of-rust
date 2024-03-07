@@ -48,36 +48,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     (let* e := M.copy γ in
-                    let* α0 := M.read (mk_str "failed to execute process: ") in
-                    let* α1 := M.alloc [ α0 ] in
-                    let* α2 :=
+                    let* α0 := M.var "core::panicking::panic_fmt" in
+                    let* α1 := M.read (mk_str "failed to execute process: ") in
+                    let* α2 := M.alloc [ α1 ] in
+                    let* α3 :=
                       M.call
                         (Ty.path "core::fmt::rt::Argument")::["new_display"]
                         [ borrow e ] in
-                    let* α3 := M.alloc [ α2 ] in
-                    let* α4 :=
+                    let* α4 := M.alloc [ α3 ] in
+                    let* α5 :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" (borrow α1);
-                          pointer_coercion "Unsize" (borrow α3)
+                          pointer_coercion "Unsize" (borrow α2);
+                          pointer_coercion "Unsize" (borrow α4)
                         ] in
-                    let* α5 :=
-                      M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
-                    never_to_any α5) :
+                    let* α6 := M.call α0 [ α5 ] in
+                    never_to_any α6) :
                     Ty.path "std::process::Output"
                 ]) :
               Ty.path "std::process::Output"
           ] in
       M.alloc α6 in
-    let* α0 :=
+    let* α0 := M.var "std::process::Output::Get_status" in
+    let* α1 :=
       M.call
         (Ty.path "std::process::ExitStatus")::["success"]
-        [ borrow ((M.var "std::process::Output::Get_status") output) ] in
-    let* α1 := M.alloc α0 in
-    let* α2 := M.read (use α1) in
+        [ borrow (α0 output) ] in
+    let* α2 := M.alloc α1 in
+    let* α3 := M.read (use α2) in
     let* α0 :=
-      if α2 then
+      if α3 then
         let* s :=
           let* α0 :=
             M.get_method
@@ -89,34 +90,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ] in
-          let* α1 :=
-            M.call
-              α0
-              [ borrow ((M.var "std::process::Output::Get_stdout") output) ] in
-          let* α2 :=
+          let* α1 := M.var "std::process::Output::Get_stdout" in
+          let* α2 := M.call α0 [ borrow (α1 output) ] in
+          let* α3 :=
             M.call
               (Ty.path "alloc::string::String")::["from_utf8_lossy"]
-              [ α1 ] in
-          M.alloc α2 in
+              [ α2 ] in
+          M.alloc α3 in
         let* _ :=
           let* _ :=
-            let* α0 := M.read (mk_str "rustc succeeded and stdout was:
+            let* α0 := M.var "std::io::stdio::_print" in
+            let* α1 := M.read (mk_str "rustc succeeded and stdout was:
 ") in
-            let* α1 := M.alloc [ α0 ] in
-            let* α2 :=
+            let* α2 := M.alloc [ α1 ] in
+            let* α3 :=
               M.call
                 (Ty.path "core::fmt::rt::Argument")::["new_display"]
                 [ borrow s ] in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 :=
+            let* α4 := M.alloc [ α3 ] in
+            let* α5 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_v1"]
                 [
-                  pointer_coercion "Unsize" (borrow α1);
-                  pointer_coercion "Unsize" (borrow α3)
+                  pointer_coercion "Unsize" (borrow α2);
+                  pointer_coercion "Unsize" (borrow α4)
                 ] in
-            let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-            M.alloc α5 in
+            let* α6 := M.call α0 [ α5 ] in
+            M.alloc α6 in
           M.alloc tt in
         M.alloc tt
       else
@@ -131,34 +131,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ] in
-          let* α1 :=
-            M.call
-              α0
-              [ borrow ((M.var "std::process::Output::Get_stderr") output) ] in
-          let* α2 :=
+          let* α1 := M.var "std::process::Output::Get_stderr" in
+          let* α2 := M.call α0 [ borrow (α1 output) ] in
+          let* α3 :=
             M.call
               (Ty.path "alloc::string::String")::["from_utf8_lossy"]
-              [ α1 ] in
-          M.alloc α2 in
+              [ α2 ] in
+          M.alloc α3 in
         let* _ :=
           let* _ :=
-            let* α0 := M.read (mk_str "rustc failed and stderr was:
+            let* α0 := M.var "std::io::stdio::_print" in
+            let* α1 := M.read (mk_str "rustc failed and stderr was:
 ") in
-            let* α1 := M.alloc [ α0 ] in
-            let* α2 :=
+            let* α2 := M.alloc [ α1 ] in
+            let* α3 :=
               M.call
                 (Ty.path "core::fmt::rt::Argument")::["new_display"]
                 [ borrow s ] in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 :=
+            let* α4 := M.alloc [ α3 ] in
+            let* α5 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_v1"]
                 [
-                  pointer_coercion "Unsize" (borrow α1);
-                  pointer_coercion "Unsize" (borrow α3)
+                  pointer_coercion "Unsize" (borrow α2);
+                  pointer_coercion "Unsize" (borrow α4)
                 ] in
-            let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-            M.alloc α5 in
+            let* α6 := M.call α0 [ α5 ] in
+            M.alloc α6 in
           M.alloc tt in
         M.alloc tt in
     M.read α0

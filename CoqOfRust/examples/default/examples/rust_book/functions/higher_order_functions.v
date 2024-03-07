@@ -10,10 +10,11 @@ Definition is_odd (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ n ] =>
     let* n := M.alloc n in
-    let* α0 := M.read n in
-    let* α1 :=
-      (M.var "BinOp::Panic::rem") α0 ((Integer.of_Z 2) : Ty.path "u32") in
-    M.pure ((M.var "BinOp::Pure::eq") α1 ((Integer.of_Z 1) : Ty.path "u32"))
+    let* α0 := M.var "BinOp::Pure::eq" in
+    let* α1 := M.var "BinOp::Panic::rem" in
+    let* α2 := M.read n in
+    let* α3 := α1 α2 ((Integer.of_Z 2) : Ty.path "u32") in
+    M.pure (α0 α3 ((Integer.of_Z 1) : Ty.path "u32"))
   | _, _ => M.impossible
   end.
 
@@ -55,18 +56,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 :=
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 :=
           M.read
             (mk_str
               "Find the sum of all the squared odd numbers under 1000
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* upper := M.alloc ((Integer.of_Z 1000) : Ty.path "u32") in
     let* acc := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
@@ -126,39 +128,42 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 :=
-                            (M.var "core::option::Option::Get_Some_0") γ in
+                          let* γ0_0 :=
+                            let* α0 :=
+                              M.var "core::option::Option::Get_Some_0" in
+                            M.pure (α0 γ) in
                           let* n := M.copy γ0_0 in
                           let* n_squared :=
-                            let* α0 := M.read n in
+                            let* α0 := M.var "BinOp::Panic::mul" in
                             let* α1 := M.read n in
-                            let* α2 := (M.var "BinOp::Panic::mul") α0 α1 in
-                            M.alloc α2 in
-                          let* α0 := M.read n_squared in
-                          let* α1 := M.read upper in
-                          let* α2 :=
-                            M.alloc ((M.var "BinOp::Pure::ge") α0 α1) in
-                          let* α3 := M.read (use α2) in
-                          if α3 then
+                            let* α2 := M.read n in
+                            let* α3 := α0 α1 α2 in
+                            M.alloc α3 in
+                          let* α0 := M.var "BinOp::Pure::ge" in
+                          let* α1 := M.read n_squared in
+                          let* α2 := M.read upper in
+                          let* α3 := M.alloc (α0 α1 α2) in
+                          let* α4 := M.read (use α3) in
+                          if α4 then
                             let* α0 := M.break in
                             let* α1 := M.read α0 in
                             let* α2 := never_to_any α1 in
                             M.alloc α2
                           else
-                            let* α0 := M.read n_squared in
-                            let* α1 :=
-                              M.call
-                                (M.var "higher_order_functions::is_odd")
-                                [ α0 ] in
-                            let* α2 := M.alloc α1 in
-                            let* α3 := M.read (use α2) in
-                            if α3 then
+                            let* α0 := M.var "higher_order_functions::is_odd" in
+                            let* α1 := M.read n_squared in
+                            let* α2 := M.call α0 [ α1 ] in
+                            let* α3 := M.alloc α2 in
+                            let* α4 := M.read (use α3) in
+                            if α4 then
                               let* _ :=
                                 let β := acc in
-                                let* α0 := M.read β in
-                                let* α1 := M.read n_squared in
-                                let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-                                (M.var "assign") β α2 in
+                                let* α0 := M.var "assign" in
+                                let* α1 := M.var "BinOp::Panic::add" in
+                                let* α2 := M.read β in
+                                let* α3 := M.read n_squared in
+                                let* α4 := α1 α2 α3 in
+                                α0 β α4 in
                               M.alloc tt
                             else
                               M.alloc tt
@@ -172,24 +177,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.pure (use α3) in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "imperative style: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "imperative style: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow acc ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* sum_of_squared_odd_numbers :=
       let* α0 :=
@@ -298,9 +304,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     (let* n := M.copy γ in
-                    let* α0 := M.read n in
+                    let* α0 := M.var "BinOp::Panic::mul" in
                     let* α1 := M.read n in
-                    (M.var "BinOp::Panic::mul") α0 α1) :
+                    let* α2 := M.read n in
+                    α0 α1 α2) :
                     Ty.path "u32"
                 ]) :
               Ty.path "u32"
@@ -320,9 +327,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α0 := M.read γ in
                       M.pure (deref α0) in
                     let* n_squared := M.copy γ in
-                    let* α0 := M.read n_squared in
-                    let* α1 := M.read upper in
-                    M.pure ((M.var "BinOp::Pure::lt") α0 α1)) :
+                    let* α0 := M.var "BinOp::Pure::lt" in
+                    let* α1 := M.read n_squared in
+                    let* α2 := M.read upper in
+                    M.pure (α0 α1 α2)) :
                     Ty.path "bool"
                 ]) :
               Ty.path "bool"
@@ -342,8 +350,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α0 := M.read γ in
                       M.pure (deref α0) in
                     let* n_squared := M.copy γ in
-                    let* α0 := M.read n_squared in
-                    M.call (M.var "higher_order_functions::is_odd") [ α0 ]) :
+                    let* α0 := M.var "higher_order_functions::is_odd" in
+                    let* α1 := M.read n_squared in
+                    M.call α0 [ α1 ]) :
                     Ty.path "bool"
                 ]) :
               Ty.path "bool"
@@ -352,24 +361,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α7 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "functional style: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "functional style: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow sum_of_squared_odd_numbers ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

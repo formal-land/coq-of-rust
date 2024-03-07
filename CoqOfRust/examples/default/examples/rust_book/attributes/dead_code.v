@@ -30,8 +30,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.call (M.var "dead_code::used_function") [] in
-      M.alloc α0 in
+      let* α0 := M.var "dead_code::used_function" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

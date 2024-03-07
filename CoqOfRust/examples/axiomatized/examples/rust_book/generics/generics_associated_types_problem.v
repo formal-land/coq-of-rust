@@ -9,21 +9,23 @@ Module Contains.
 End Contains.
 
 Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
-  Definition Self : Ty.t :=
-    Ty.path "generics_associated_types_problem::Container".
-  
   Parameter contains : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter first : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter last : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("contains", InstanceField.Method contains);
-      ("first", InstanceField.Method first);
-      ("last", InstanceField.Method last)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "generics_associated_types_problem::Container" in
+    M.IsTraitInstance
+      "generics_associated_types_problem::Contains"
+      Self
+      [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
+      [
+        ("contains", InstanceField.Method contains [ Self ]);
+        ("first", InstanceField.Method first [ Self ]);
+        ("last", InstanceField.Method last [ Self ])
+      ].
 End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.

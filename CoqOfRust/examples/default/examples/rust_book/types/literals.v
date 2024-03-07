@@ -31,118 +31,128 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* f := M.copy (UnsupportedLiteral : Ty.path "f64") in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "size of `x` in bytes: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "size of `x` in bytes: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.call (M.var "core::mem::size_of_val") [ borrow x ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "core::mem::size_of_val" in
+        let* α5 := M.call α4 [ borrow x ] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "size of `y` in bytes: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "size of `y` in bytes: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.call (M.var "core::mem::size_of_val") [ borrow y ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "core::mem::size_of_val" in
+        let* α5 := M.call α4 [ borrow y ] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "size of `z` in bytes: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "size of `z` in bytes: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.call (M.var "core::mem::size_of_val") [ borrow z ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "core::mem::size_of_val" in
+        let* α5 := M.call α4 [ borrow z ] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "size of `i` in bytes: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "size of `i` in bytes: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.call (M.var "core::mem::size_of_val") [ borrow i ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "core::mem::size_of_val" in
+        let* α5 := M.call α4 [ borrow i ] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "size of `f` in bytes: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "size of `f` in bytes: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.call (M.var "core::mem::size_of_val") [ borrow f ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "core::mem::size_of_val" in
+        let* α5 := M.call α4 [ borrow f ] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

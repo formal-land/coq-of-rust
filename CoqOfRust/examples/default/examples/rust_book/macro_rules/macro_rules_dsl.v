@@ -18,64 +18,70 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* val :=
-        let* α0 :=
-          (M.var "BinOp::Panic::add")
+        let* α0 := M.var "BinOp::Panic::add" in
+        let* α1 :=
+          α0
             ((Integer.of_Z 1) : Ty.path "usize")
             ((Integer.of_Z 2) : Ty.path "usize") in
-        M.alloc α0 in
+        M.alloc α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "1 + 2 = ") in
-          let* α1 := M.read (mk_str "
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "1 + 2 = ") in
+          let* α2 := M.read (mk_str "
 ") in
-          let* α2 := M.alloc [ α0; α1 ] in
-          let* α3 :=
+          let* α3 := M.alloc [ α1; α2 ] in
+          let* α4 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
               [ borrow val ] in
-          let* α4 := M.alloc [ α3 ] in
-          let* α5 :=
+          let* α5 := M.alloc [ α4 ] in
+          let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
               [
-                pointer_coercion "Unsize" (borrow α2);
-                pointer_coercion "Unsize" (borrow α4)
+                pointer_coercion "Unsize" (borrow α3);
+                pointer_coercion "Unsize" (borrow α5)
               ] in
-          let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-          M.alloc α6 in
+          let* α7 := M.call α0 [ α6 ] in
+          M.alloc α7 in
         M.alloc tt in
       M.alloc tt in
     let* val :=
-      let* α0 :=
-        (M.var "BinOp::Panic::add")
+      let* α0 := M.var "BinOp::Panic::mul" in
+      let* α1 := M.var "BinOp::Panic::add" in
+      let* α2 :=
+        α1
           ((Integer.of_Z 1) : Ty.path "usize")
           ((Integer.of_Z 2) : Ty.path "usize") in
-      let* α1 :=
-        (M.var "BinOp::Panic::div")
+      let* α3 := M.var "BinOp::Panic::div" in
+      let* α4 :=
+        α3
           ((Integer.of_Z 3) : Ty.path "usize")
           ((Integer.of_Z 4) : Ty.path "usize") in
-      let* α2 := (M.var "BinOp::Panic::mul") α0 α1 in
-      M.alloc α2 in
+      let* α5 := α0 α2 α4 in
+      M.alloc α5 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "(1 + 2) * (3 / 4) = ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "(1 + 2) * (3 / 4) = ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow val ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

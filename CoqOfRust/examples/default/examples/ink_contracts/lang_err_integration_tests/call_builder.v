@@ -4,14 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_call_builder_AccountId.
-  Definition Self : Ty.t := Ty.path "call_builder::AccountId".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -22,18 +20,22 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "call_builder::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
-  Definition Self : Ty.t := Ty.path "call_builder::AccountId".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -52,13 +54,19 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "call_builder::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
-  Definition Self : Ty.t := Ty.path "call_builder::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "call_builder::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
@@ -83,9 +91,10 @@ Module Impl_call_builder_Selector.
     match 𝜏, α with
     | [], [ bytes ] =>
       let* bytes := M.alloc bytes in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_call_builder_Selector.
@@ -93,18 +102,22 @@ End Impl_call_builder_Selector.
 (* Struct CallBuilderTest *)
 
 Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
-  Definition Self : Ty.t := Ty.path "call_builder::CallBuilderTest".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure call_builder.CallBuilderTest.Build
+    | [ Self ], [] => M.pure call_builder.CallBuilderTest.Build
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "call_builder::CallBuilderTest" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.
@@ -153,10 +166,11 @@ Module Impl_call_builder_CallBuilderTest.
       let* address := M.alloc address in
       let* selector := M.alloc selector in
       let* result :=
-        let* α0 := M.read (mk_str "not yet implemented") in
-        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-        let* α2 := never_to_any α1 in
-        M.alloc α2 in
+        let* α0 := M.var "core::panicking::panic" in
+        let* α1 := M.read (mk_str "not yet implemented") in
+        let* α2 := M.call α0 [ α1 ] in
+        let* α3 := never_to_any α2 in
+        M.alloc α3 in
       let* α0 :=
         match_operator
           result
@@ -165,7 +179,9 @@ Module Impl_call_builder_CallBuilderTest.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Ok _ =>
-                let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+                let* γ0_0 :=
+                  let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                  M.pure (α0 γ) in
                 M.alloc core.option.Option.None
               | _ => M.break_match 
               end) :
@@ -176,7 +192,9 @@ Module Impl_call_builder_CallBuilderTest.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Err _ =>
-                let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+                let* γ0_0 :=
+                  let* α0 := M.var "core::result::Result::Get_Err_0" in
+                  M.pure (α0 γ) in
                 let* e := M.copy γ0_0 in
                 let* α0 := M.read γ0_0 in
                 match α0 with
@@ -194,25 +212,28 @@ Module Impl_call_builder_CallBuilderTest.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Err _ =>
-                let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
-                let* α0 :=
+                let* γ0_0 :=
+                  let* α0 := M.var "core::result::Result::Get_Err_0" in
+                  M.pure (α0 γ) in
+                let* α0 := M.var "core::panicking::panic_fmt" in
+                let* α1 :=
                   M.read
                     (mk_str
                       "not implemented: No other `LangError` variants exist at the moment.") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
-                let* α3 := M.alloc α2 in
-                let* α4 :=
+                let* α4 := M.alloc α3 in
+                let* α5 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α1);
-                      pointer_coercion "Unsize" (borrow α3)
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
                     ] in
-                let* α5 := M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
-                let* α6 := never_to_any α5 in
-                M.alloc α6
+                let* α6 := M.call α0 [ α5 ] in
+                let* α7 := never_to_any α6 in
+                M.alloc α7
               | _ => M.break_match 
               end) :
               Ty.apply

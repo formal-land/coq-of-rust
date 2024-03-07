@@ -4,21 +4,29 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Food *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "combinators_and_then::Food" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "combinators_and_then::Day" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Parameter have_ingredients : (list Ty.t) -> (list Value.t) -> M.

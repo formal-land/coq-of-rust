@@ -4,15 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Point *)
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -31,14 +28,19 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (*
@@ -112,29 +114,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* ref_c2 := M.alloc (borrow c) in
             let* _ :=
               let* _ :=
-                let* α0 := M.read (mk_str "ref_c1 equals ref_c2: ") in
-                let* α1 := M.read (mk_str "
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "ref_c1 equals ref_c2: ") in
+                let* α2 := M.read (mk_str "
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 := M.read ref_c1 in
-                let* α4 := M.read (deref α3) in
-                let* α5 := M.read ref_c2 in
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 := M.var "BinOp::Pure::eq" in
+                let* α5 := M.read ref_c1 in
                 let* α6 := M.read (deref α5) in
-                let* α7 := M.alloc ((M.var "BinOp::Pure::eq") α4 α6) in
-                let* α8 :=
+                let* α7 := M.read ref_c2 in
+                let* α8 := M.read (deref α7) in
+                let* α9 := M.alloc (α4 α6 α8) in
+                let* α10 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow α7 ] in
-                let* α9 := M.alloc [ α8 ] in
-                let* α10 :=
+                    [ borrow α9 ] in
+                let* α11 := M.alloc [ α10 ] in
+                let* α12 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α9)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α11)
                     ] in
-                let* α11 := M.call (M.var "std::io::stdio::_print") [ α10 ] in
-                M.alloc α11 in
+                let* α13 := M.call α0 [ α12 ] in
+                M.alloc α13 in
               M.alloc tt in
             let* point :=
               M.alloc
@@ -162,14 +166,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               _;
                           |}
                           =>
-                        let γ0_0 :=
-                          (M.var
-                              "scoping_rules_borrowing_the_ref_pattern::Point::Get_x")
-                            γ in
-                        let γ0_1 :=
-                          (M.var
-                              "scoping_rules_borrowing_the_ref_pattern::Point::Get_y")
-                            γ in
+                        let* γ0_0 :=
+                          let* α0 :=
+                            M.var
+                              "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
+                          M.pure (α0 γ) in
+                        let* γ0_1 :=
+                          let* α0 :=
+                            M.var
+                              "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
+                          M.pure (α0 γ) in
                         let* ref_to_x := M.alloc (borrow γ0_0) in
                         let* α0 := M.read ref_to_x in
                         M.pure (deref α0)
@@ -191,14 +197,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           scoping_rules_borrowing_the_ref_pattern.Point.y := _;
                         |}
                         =>
-                      let γ0_0 :=
-                        (M.var
-                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_x")
-                          γ in
-                      let γ0_1 :=
-                        (M.var
-                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_y")
-                          γ in
+                      let* γ0_0 :=
+                        let* α0 :=
+                          M.var
+                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
+                        M.pure (α0 γ) in
+                      let* γ0_1 :=
+                        let* α0 :=
+                          M.var
+                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
+                        M.pure (α0 γ) in
                       let* mut_ref_to_y := M.alloc (borrow_mut γ0_1) in
                       let* _ :=
                         let* α0 := M.read mut_ref_to_y in
@@ -209,75 +217,69 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* _ :=
               let* _ :=
-                let* α0 := M.read (mk_str "point is (") in
-                let* α1 := M.read (mk_str ", ") in
-                let* α2 := M.read (mk_str ")
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "point is (") in
+                let* α2 := M.read (mk_str ", ") in
+                let* α3 := M.read (mk_str ")
 ") in
-                let* α3 := M.alloc [ α0; α1; α2 ] in
-                let* α4 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [
-                      borrow
-                        ((M.var
-                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_x")
-                          point)
-                    ] in
+                let* α4 := M.alloc [ α1; α2; α3 ] in
                 let* α5 :=
+                  M.var
+                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [
-                      borrow
-                        ((M.var
-                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_y")
-                          point)
-                    ] in
-                let* α6 := M.alloc [ α4; α5 ] in
+                    [ borrow (α5 point) ] in
                 let* α7 :=
+                  M.var
+                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
+                let* α8 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow (α7 point) ] in
+                let* α9 := M.alloc [ α6; α8 ] in
+                let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α6)
+                      pointer_coercion "Unsize" (borrow α4);
+                      pointer_coercion "Unsize" (borrow α9)
                     ] in
-                let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-                M.alloc α8 in
+                let* α11 := M.call α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc tt in
             let* _ :=
               let* _ :=
-                let* α0 := M.read (mk_str "mutable_point is (") in
-                let* α1 := M.read (mk_str ", ") in
-                let* α2 := M.read (mk_str ")
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "mutable_point is (") in
+                let* α2 := M.read (mk_str ", ") in
+                let* α3 := M.read (mk_str ")
 ") in
-                let* α3 := M.alloc [ α0; α1; α2 ] in
-                let* α4 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [
-                      borrow
-                        ((M.var
-                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_x")
-                          mutable_point)
-                    ] in
+                let* α4 := M.alloc [ α1; α2; α3 ] in
                 let* α5 :=
+                  M.var
+                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [
-                      borrow
-                        ((M.var
-                            "scoping_rules_borrowing_the_ref_pattern::Point::Get_y")
-                          mutable_point)
-                    ] in
-                let* α6 := M.alloc [ α4; α5 ] in
+                    [ borrow (α5 mutable_point) ] in
                 let* α7 :=
+                  M.var
+                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
+                let* α8 :=
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow (α7 mutable_point) ] in
+                let* α9 := M.alloc [ α6; α8 ] in
+                let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α6)
+                      pointer_coercion "Unsize" (borrow α4);
+                      pointer_coercion "Unsize" (borrow α9)
                     ] in
-                let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-                M.alloc α8 in
+                let* α11 := M.call α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc tt in
             let* mutable_tuple :=
               let* α0 :=
@@ -308,24 +310,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* _ :=
               let* _ :=
-                let* α0 := M.read (mk_str "tuple is ") in
-                let* α1 := M.read (mk_str "
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "tuple is ") in
+                let* α2 := M.read (mk_str "
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                     [ borrow mutable_tuple ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt in
             M.alloc tt) :
             Ty.path "unit"

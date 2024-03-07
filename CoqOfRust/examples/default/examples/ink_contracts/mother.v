@@ -4,15 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mother::Mapping") [ K; V ].
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [] =>
+    | [ Self; K; V ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -30,8 +27,14 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self := Ty.apply (Ty.path "mother::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_mother_Mapping_K_V.
 
 Module Impl_mother_Mapping_K_V.
@@ -48,9 +51,10 @@ Module Impl_mother_Mapping_K_V.
     | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -65,9 +69,10 @@ Module Impl_mother_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_mother_Mapping_K_V.
@@ -75,14 +80,12 @@ End Impl_mother_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -93,18 +96,22 @@ Module Impl_core_default_Default_for_mother_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mother_AccountId.
 
 Module Impl_core_clone_Clone_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -123,52 +130,63 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_mother_AccountId.
 
 Module Impl_core_marker_Copy_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_mother_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::AccountId" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.read self in
-      let* α1 := M.read ((M.var "mother::AccountId::Get_0") (deref α0)) in
-      let* α2 := M.read other in
-      let* α3 := M.read ((M.var "mother::AccountId::Get_0") (deref α2)) in
-      M.pure ((M.var "BinOp::Pure::eq") α1 α3)
+      let* α0 := M.var "BinOp::Pure::eq" in
+      let* α1 := M.var "mother::AccountId::Get_0" in
+      let* α2 := M.read self in
+      let* α3 := M.read (α1 (deref α2)) in
+      let* α4 := M.var "mother::AccountId::Get_0" in
+      let* α5 := M.read other in
+      let* α6 := M.read (α4 (deref α5)) in
+      M.pure (α0 α3 α6)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::AccountId" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_mother_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::AccountId" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_mother_AccountId.
 
 Module Impl_core_cmp_Eq_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
   (*
   Eq
   *)
@@ -177,7 +195,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -191,11 +209,16 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "mother::AccountId" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_mother_AccountId.
 
 Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
@@ -210,14 +233,12 @@ Axiom Hash :
 (* Struct Bids *)
 
 Module Impl_core_default_Default_for_mother_Bids.
-  Definition Self : Ty.t := Ty.path "mother::Bids".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -246,24 +267,28 @@ Module Impl_core_default_Default_for_mother_Bids.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Bids" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mother_Bids.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Bids.
-  Definition Self : Ty.t := Ty.path "mother::Bids".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Bids" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Bids.
 
 Module Impl_core_cmp_PartialEq_for_mother_Bids.
-  Definition Self : Ty.t := Ty.path "mother::Bids".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -306,29 +331,30 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
                   Ty.path "alloc::alloc::Global"
                 ]
           ] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      M.call
-        α0
-        [
-          borrow ((M.var "mother::Bids::Get_0") (deref α1));
-          borrow ((M.var "mother::Bids::Get_0") (deref α2))
-        ]
+      let* α1 := M.var "mother::Bids::Get_0" in
+      let* α2 := M.read self in
+      let* α3 := M.var "mother::Bids::Get_0" in
+      let* α4 := M.read other in
+      M.call α0 [ borrow (α1 (deref α2)); borrow (α3 (deref α4)) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Bids" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_mother_Bids.
 
 Module Impl_core_marker_StructuralEq_for_mother_Bids.
-  Definition Self : Ty.t := Ty.path "mother::Bids".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Bids" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_mother_Bids.
 
 Module Impl_core_cmp_Eq_for_mother_Bids.
-  Definition Self : Ty.t := Ty.path "mother::Bids".
-  
   (*
   Eq
   *)
@@ -337,7 +363,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -368,22 +394,25 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Bids" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_mother_Bids.
 
 Module Impl_core_clone_Clone_for_mother_Bids.
-  Definition Self : Ty.t := Ty.path "mother::Bids".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_method
@@ -408,64 +437,73 @@ Module Impl_core_clone_Clone_for_mother_Bids.
                   Ty.path "alloc::alloc::Global"
                 ]
           ] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call α0 [ borrow ((M.var "mother::Bids::Get_0") (deref α1)) ] in
-      M.pure (mother.Bids.Build_t α2)
+      let* α1 := M.var "mother::Bids::Get_0" in
+      let* α2 := M.read self in
+      let* α3 := M.call α0 [ borrow (α1 (deref α2)) ] in
+      M.pure (mother.Bids.Build_t α3)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Bids" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_mother_Bids.
 
 (* Enum Outline *)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
-  Definition Self : Ty.t := Ty.path "mother::Outline".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Outline" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Outline.
 
 Module Impl_core_cmp_PartialEq_for_mother_Outline.
-  Definition Self : Ty.t := Ty.path "mother::Outline".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.read other in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
-      let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in
-      let* α0 := M.alloc ((M.var "BinOp::Pure::eq") α0 α1) in
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read other in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
+      let* α0 := M.var "BinOp::Pure::eq" in
+      let* α1 := M.read __self_tag in
+      let* α2 := M.read __arg1_tag in
+      let* α0 := M.alloc (α0 α1 α2) in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Outline" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_mother_Outline.
 
 Module Impl_core_marker_StructuralEq_for_mother_Outline.
-  Definition Self : Ty.t := Ty.path "mother::Outline".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Outline" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_mother_Outline.
 
 Module Impl_core_cmp_Eq_for_mother_Outline.
-  Definition Self : Ty.t := Ty.path "mother::Outline".
-  
   (*
   Eq
   *)
@@ -474,28 +512,31 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Outline" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_mother_Outline.
 
 Module Impl_core_clone_Clone_for_mother_Outline.
-  Definition Self : Ty.t := Ty.path "mother::Outline".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -538,46 +579,52 @@ Module Impl_core_clone_Clone_for_mother_Outline.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Outline" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_mother_Outline.
 
 (* Enum Status *)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
-  Definition Self : Ty.t := Ty.path "mother::Status".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Status" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Status.
 
 Module Impl_core_cmp_PartialEq_for_mother_Status.
-  Definition Self : Ty.t := Ty.path "mother::Status".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.read other in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
-      let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in
-      let* α2 := M.read self in
-      let* α3 := M.read other in
-      let* α4 := M.alloc (α2, α3) in
-      let* α5 :=
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read other in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
+      let* α0 := M.var "BinOp::Pure::and" in
+      let* α1 := M.var "BinOp::Pure::eq" in
+      let* α2 := M.read __self_tag in
+      let* α3 := M.read __arg1_tag in
+      let* α4 := M.read self in
+      let* α5 := M.read other in
+      let* α6 := M.alloc (α4, α5) in
+      let* α7 :=
         match_operator
-          α4
+          α6
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -591,8 +638,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Status.EndingPeriod _ =>
-                  let γ2_0 :=
-                    (M.var "mother::Status::Get_EndingPeriod_0") γ0_0 in
+                  let* γ2_0 :=
+                    let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
+                    M.pure (α0 γ0_0) in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -600,14 +648,16 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Status.EndingPeriod _ =>
-                    let γ2_0 :=
-                      (M.var "mother::Status::Get_EndingPeriod_0") γ0_1 in
+                    let* γ2_0 :=
+                      let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
+                      M.pure (α0 γ0_1) in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 := M.read __self_0 in
-                    let* α1 := M.read (deref α0) in
-                    let* α2 := M.read __arg1_0 in
-                    let* α3 := M.read (deref α2) in
-                    M.alloc ((M.var "BinOp::Pure::eq") α1 α3)
+                    let* α0 := M.var "BinOp::Pure::eq" in
+                    let* α1 := M.read __self_0 in
+                    let* α2 := M.read (deref α1) in
+                    let* α3 := M.read __arg1_0 in
+                    let* α4 := M.read (deref α3) in
+                    M.alloc (α0 α2 α4)
                   | _ => M.break_match 
                   end
                 | _ => M.break_match 
@@ -626,7 +676,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Status.Ended _ =>
-                  let γ2_0 := (M.var "mother::Status::Get_Ended_0") γ0_0 in
+                  let* γ2_0 :=
+                    let* α0 := M.var "mother::Status::Get_Ended_0" in
+                    M.pure (α0 γ0_0) in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -634,7 +686,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Status.Ended _ =>
-                    let γ2_0 := (M.var "mother::Status::Get_Ended_0") γ0_1 in
+                    let* γ2_0 :=
+                      let* α0 := M.var "mother::Status::Get_Ended_0" in
+                      M.pure (α0 γ0_1) in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
                     let* α0 :=
                       M.get_method
@@ -666,7 +720,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Status.RfDelay _ =>
-                  let γ2_0 := (M.var "mother::Status::Get_RfDelay_0") γ0_0 in
+                  let* γ2_0 :=
+                    let* α0 := M.var "mother::Status::Get_RfDelay_0" in
+                    M.pure (α0 γ0_0) in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -674,13 +730,16 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Status.RfDelay _ =>
-                    let γ2_0 := (M.var "mother::Status::Get_RfDelay_0") γ0_1 in
+                    let* γ2_0 :=
+                      let* α0 := M.var "mother::Status::Get_RfDelay_0" in
+                      M.pure (α0 γ0_1) in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 := M.read __self_0 in
-                    let* α1 := M.read (deref α0) in
-                    let* α2 := M.read __arg1_0 in
-                    let* α3 := M.read (deref α2) in
-                    M.alloc ((M.var "BinOp::Pure::eq") α1 α3)
+                    let* α0 := M.var "BinOp::Pure::eq" in
+                    let* α1 := M.read __self_0 in
+                    let* α2 := M.read (deref α1) in
+                    let* α3 := M.read __arg1_0 in
+                    let* α4 := M.read (deref α3) in
+                    M.alloc (α0 α2 α4)
                   | _ => M.break_match 
                   end
                 | _ => M.break_match 
@@ -689,26 +748,28 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
               Ty.path "bool";
             fun γ => (M.alloc true) : Ty.path "bool"
           ] in
-      let* α6 := M.read α5 in
-      let* α0 :=
-        M.alloc
-          ((M.var "BinOp::Pure::and") ((M.var "BinOp::Pure::eq") α0 α1) α6) in
+      let* α8 := M.read α7 in
+      let* α0 := M.alloc (α0 (α1 α2 α3) α8) in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Status" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_mother_Status.
 
 Module Impl_core_marker_StructuralEq_for_mother_Status.
-  Definition Self : Ty.t := Ty.path "mother::Status".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Status" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_mother_Status.
 
 Module Impl_core_cmp_Eq_for_mother_Status.
-  Definition Self : Ty.t := Ty.path "mother::Status".
-  
   (*
   Eq
   *)
@@ -717,7 +778,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -741,22 +802,25 @@ Module Impl_core_cmp_Eq_for_mother_Status.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Status" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_mother_Status.
 
 Module Impl_core_clone_Clone_for_mother_Status.
-  Definition Self : Ty.t := Ty.path "mother::Status".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -790,7 +854,9 @@ Module Impl_core_clone_Clone_for_mother_Status.
               let* α0 := M.read γ in
               match α0 with
               | mother.Status.EndingPeriod _ =>
-                let γ1_0 := (M.var "mother::Status::Get_EndingPeriod_0") γ in
+                let* γ1_0 :=
+                  let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
+                  M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
                 let* α0 :=
                   M.get_method
@@ -810,7 +876,9 @@ Module Impl_core_clone_Clone_for_mother_Status.
               let* α0 := M.read γ in
               match α0 with
               | mother.Status.Ended _ =>
-                let γ1_0 := (M.var "mother::Status::Get_Ended_0") γ in
+                let* γ1_0 :=
+                  let* α0 := M.var "mother::Status::Get_Ended_0" in
+                  M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
                 let* α0 :=
                   M.get_method
@@ -830,7 +898,9 @@ Module Impl_core_clone_Clone_for_mother_Status.
               let* α0 := M.read γ in
               match α0 with
               | mother.Status.RfDelay _ =>
-                let γ1_0 := (M.var "mother::Status::Get_RfDelay_0") γ in
+                let* γ1_0 :=
+                  let* α0 := M.var "mother::Status::Get_RfDelay_0" in
+                  M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
                 let* α0 :=
                   M.get_method
@@ -848,29 +918,39 @@ Module Impl_core_clone_Clone_for_mother_Status.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Status" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_mother_Status.
 
 (* Enum Auction *)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Auction.
-  Definition Self : Ty.t := Ty.path "mother::Auction".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Auction" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Auction.
 
 Module Impl_core_cmp_PartialEq_for_mother_Auction.
-  Definition Self : Ty.t := Ty.path "mother::Auction".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :=
+      let* α0 := M.var "BinOp::Pure::and" in
+      let* α1 := M.var "BinOp::Pure::and" in
+      let* α2 := M.var "BinOp::Pure::and" in
+      let* α3 := M.var "BinOp::Pure::and" in
+      let* α4 := M.var "BinOp::Pure::and" in
+      let* α5 := M.var "BinOp::Pure::and" in
+      let* α6 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -878,16 +958,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
             (* Self *) Ty.path "alloc::string::String";
             (* Rhs *) Ty.path "alloc::string::String"
           ] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      let* α3 :=
-        M.call
-          α0
-          [
-            borrow ((M.var "mother::Auction::Get_name") (deref α1));
-            borrow ((M.var "mother::Auction::Get_name") (deref α2))
-          ] in
-      let* α4 :=
+      let* α7 := M.var "mother::Auction::Get_name" in
+      let* α8 := M.read self in
+      let* α9 := M.var "mother::Auction::Get_name" in
+      let* α10 := M.read other in
+      let* α11 :=
+        M.call α6 [ borrow (α7 (deref α8)); borrow (α9 (deref α10)) ] in
+      let* α12 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -895,31 +972,25 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
             (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
             (* Rhs *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
           ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
-        M.call
-          α4
-          [
-            borrow ((M.var "mother::Auction::Get_subject") (deref α5));
-            borrow ((M.var "mother::Auction::Get_subject") (deref α6))
-          ] in
-      let* α8 :=
+      let* α13 := M.var "mother::Auction::Get_subject" in
+      let* α14 := M.read self in
+      let* α15 := M.var "mother::Auction::Get_subject" in
+      let* α16 := M.read other in
+      let* α17 :=
+        M.call α12 [ borrow (α13 (deref α14)); borrow (α15 (deref α16)) ] in
+      let* α18 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
           [ (* Self *) Ty.path "mother::Bids"; (* Rhs *) Ty.path "mother::Bids"
           ] in
-      let* α9 := M.read self in
-      let* α10 := M.read other in
-      let* α11 :=
-        M.call
-          α8
-          [
-            borrow ((M.var "mother::Auction::Get_bids") (deref α9));
-            borrow ((M.var "mother::Auction::Get_bids") (deref α10))
-          ] in
-      let* α12 :=
+      let* α19 := M.var "mother::Auction::Get_bids" in
+      let* α20 := M.read self in
+      let* α21 := M.var "mother::Auction::Get_bids" in
+      let* α22 := M.read other in
+      let* α23 :=
+        M.call α18 [ borrow (α19 (deref α20)); borrow (α21 (deref α22)) ] in
+      let* α24 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -927,16 +998,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
             (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u32" ];
             (* Rhs *) Ty.apply (Ty.path "array") [ Ty.path "u32" ]
           ] in
-      let* α13 := M.read self in
-      let* α14 := M.read other in
-      let* α15 :=
-        M.call
-          α12
-          [
-            borrow ((M.var "mother::Auction::Get_terms") (deref α13));
-            borrow ((M.var "mother::Auction::Get_terms") (deref α14))
-          ] in
-      let* α16 :=
+      let* α25 := M.var "mother::Auction::Get_terms" in
+      let* α26 := M.read self in
+      let* α27 := M.var "mother::Auction::Get_terms" in
+      let* α28 := M.read other in
+      let* α29 :=
+        M.call α24 [ borrow (α25 (deref α26)); borrow (α27 (deref α28)) ] in
+      let* α30 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -944,22 +1012,20 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
             (* Self *) Ty.path "mother::Status";
             (* Rhs *) Ty.path "mother::Status"
           ] in
-      let* α17 := M.read self in
-      let* α18 := M.read other in
-      let* α19 :=
-        M.call
-          α16
-          [
-            borrow ((M.var "mother::Auction::Get_status") (deref α17));
-            borrow ((M.var "mother::Auction::Get_status") (deref α18))
-          ] in
-      let* α20 := M.read self in
-      let* α21 :=
-        M.read ((M.var "mother::Auction::Get_finalized") (deref α20)) in
-      let* α22 := M.read other in
-      let* α23 :=
-        M.read ((M.var "mother::Auction::Get_finalized") (deref α22)) in
-      let* α24 :=
+      let* α31 := M.var "mother::Auction::Get_status" in
+      let* α32 := M.read self in
+      let* α33 := M.var "mother::Auction::Get_status" in
+      let* α34 := M.read other in
+      let* α35 :=
+        M.call α30 [ borrow (α31 (deref α32)); borrow (α33 (deref α34)) ] in
+      let* α36 := M.var "BinOp::Pure::eq" in
+      let* α37 := M.var "mother::Auction::Get_finalized" in
+      let* α38 := M.read self in
+      let* α39 := M.read (α37 (deref α38)) in
+      let* α40 := M.var "mother::Auction::Get_finalized" in
+      let* α41 := M.read other in
+      let* α42 := M.read (α40 (deref α41)) in
+      let* α43 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -973,42 +1039,32 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 (Ty.path "alloc::vec::Vec")
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α25 := M.read self in
-      let* α26 := M.read other in
-      let* α27 :=
-        M.call
-          α24
-          [
-            borrow ((M.var "mother::Auction::Get_vector") (deref α25));
-            borrow ((M.var "mother::Auction::Get_vector") (deref α26))
-          ] in
-      M.pure
-        ((M.var "BinOp::Pure::and")
-          ((M.var "BinOp::Pure::and")
-            ((M.var "BinOp::Pure::and")
-              ((M.var "BinOp::Pure::and")
-                ((M.var "BinOp::Pure::and")
-                  ((M.var "BinOp::Pure::and") α3 α7)
-                  α11)
-                α15)
-              α19)
-            ((M.var "BinOp::Pure::eq") α21 α23))
-          α27)
+      let* α44 := M.var "mother::Auction::Get_vector" in
+      let* α45 := M.read self in
+      let* α46 := M.var "mother::Auction::Get_vector" in
+      let* α47 := M.read other in
+      let* α48 :=
+        M.call α43 [ borrow (α44 (deref α45)); borrow (α46 (deref α47)) ] in
+      M.pure (α0 (α1 (α2 (α3 (α4 (α5 α11 α17) α23) α29) α35) (α36 α39 α42)) α48)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Auction" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_mother_Auction.
 
 Module Impl_core_marker_StructuralEq_for_mother_Auction.
-  Definition Self : Ty.t := Ty.path "mother::Auction".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Auction" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_mother_Auction.
 
 Module Impl_core_cmp_Eq_for_mother_Auction.
-  Definition Self : Ty.t := Ty.path "mother::Auction".
-  
   (*
   Eq
   *)
@@ -1017,7 +1073,7 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -1106,80 +1162,75 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Auction" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_mother_Auction.
 
 Module Impl_core_clone_Clone_for_mother_Auction.
-  Definition Self : Ty.t := Ty.path "mother::Auction".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "alloc::string::String" ] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call α0 [ borrow ((M.var "mother::Auction::Get_name") (deref α1)) ] in
-      let* α3 :=
+      let* α1 := M.var "mother::Auction::Get_name" in
+      let* α2 := M.read self in
+      let* α3 := M.call α0 [ borrow (α1 (deref α2)) ] in
+      let* α4 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
-      let* α4 := M.read self in
-      let* α5 :=
-        M.call
-          α3
-          [ borrow ((M.var "mother::Auction::Get_subject") (deref α4)) ] in
-      let* α6 :=
+      let* α5 := M.var "mother::Auction::Get_subject" in
+      let* α6 := M.read self in
+      let* α7 := M.call α4 [ borrow (α5 (deref α6)) ] in
+      let* α8 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "mother::Bids" ] in
-      let* α7 := M.read self in
-      let* α8 :=
-        M.call α6 [ borrow ((M.var "mother::Auction::Get_bids") (deref α7)) ] in
-      let* α9 :=
-        M.get_method
-          "core::clone::Clone"
-          "clone"
-          [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u32" ] ] in
+      let* α9 := M.var "mother::Auction::Get_bids" in
       let* α10 := M.read self in
-      let* α11 :=
-        M.call
-          α9
-          [ borrow ((M.var "mother::Auction::Get_terms") (deref α10)) ] in
+      let* α11 := M.call α8 [ borrow (α9 (deref α10)) ] in
       let* α12 :=
         M.get_method
           "core::clone::Clone"
           "clone"
+          [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u32" ] ] in
+      let* α13 := M.var "mother::Auction::Get_terms" in
+      let* α14 := M.read self in
+      let* α15 := M.call α12 [ borrow (α13 (deref α14)) ] in
+      let* α16 :=
+        M.get_method
+          "core::clone::Clone"
+          "clone"
           [ (* Self *) Ty.path "mother::Status" ] in
-      let* α13 := M.read self in
-      let* α14 :=
-        M.call
-          α12
-          [ borrow ((M.var "mother::Auction::Get_status") (deref α13)) ] in
-      let* α15 :=
+      let* α17 := M.var "mother::Auction::Get_status" in
+      let* α18 := M.read self in
+      let* α19 := M.call α16 [ borrow (α17 (deref α18)) ] in
+      let* α20 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "bool" ] in
-      let* α16 := M.read self in
-      let* α17 :=
-        M.call
-          α15
-          [ borrow ((M.var "mother::Auction::Get_finalized") (deref α16)) ] in
-      let* α18 :=
+      let* α21 := M.var "mother::Auction::Get_finalized" in
+      let* α22 := M.read self in
+      let* α23 := M.call α20 [ borrow (α21 (deref α22)) ] in
+      let* α24 :=
         M.get_method
           "core::clone::Clone"
           "clone"
@@ -1189,32 +1240,34 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                 (Ty.path "alloc::vec::Vec")
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α19 := M.read self in
-      let* α20 :=
-        M.call
-          α18
-          [ borrow ((M.var "mother::Auction::Get_vector") (deref α19)) ] in
+      let* α25 := M.var "mother::Auction::Get_vector" in
+      let* α26 := M.read self in
+      let* α27 := M.call α24 [ borrow (α25 (deref α26)) ] in
       M.pure
         (Value.StructRecord
           "mother::Auction"
           [
-            ("name", α2);
-            ("subject", α5);
-            ("bids", α8);
-            ("terms", α11);
-            ("status", α14);
-            ("finalized", α17);
-            ("vector", α20)
+            ("name", α3);
+            ("subject", α7);
+            ("bids", α11);
+            ("terms", α15);
+            ("status", α19);
+            ("finalized", α23);
+            ("vector", α27)
           ])
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Auction" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_mother_Auction.
 
 Module Impl_core_default_Default_for_mother_Auction.
-  Definition Self : Ty.t := Ty.path "mother::Auction".
-  
   (*
       fn default() -> Auction {
           Auction {
@@ -1230,7 +1283,7 @@ Module Impl_core_default_Default_for_mother_Auction.
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -1281,46 +1334,52 @@ Module Impl_core_default_Default_for_mother_Auction.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Auction" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mother_Auction.
 
 (* Enum Failure *)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
-  Definition Self : Ty.t := Ty.path "mother::Failure".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Failure" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Failure.
 
 Module Impl_core_cmp_PartialEq_for_mother_Failure.
-  Definition Self : Ty.t := Ty.path "mother::Failure".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.read other in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
-      let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in
-      let* α2 := M.read self in
-      let* α3 := M.read other in
-      let* α4 := M.alloc (α2, α3) in
-      let* α5 :=
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read other in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
+      let* α0 := M.var "BinOp::Pure::and" in
+      let* α1 := M.var "BinOp::Pure::eq" in
+      let* α2 := M.read __self_tag in
+      let* α3 := M.read __arg1_tag in
+      let* α4 := M.read self in
+      let* α5 := M.read other in
+      let* α6 := M.alloc (α4, α5) in
+      let* α7 :=
         match_operator
-          α4
+          α6
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1334,7 +1393,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Failure.Revert _ =>
-                  let γ2_0 := (M.var "mother::Failure::Get_Revert_0") γ0_0 in
+                  let* γ2_0 :=
+                    let* α0 := M.var "mother::Failure::Get_Revert_0" in
+                    M.pure (α0 γ0_0) in
                   let* __self_0 := M.alloc (borrow γ2_0) in
                   let* γ0_1 :=
                     let* α0 := M.read γ0_1 in
@@ -1342,7 +1403,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                   let* α0 := M.read γ0_1 in
                   match α0 with
                   | mother.Failure.Revert _ =>
-                    let γ2_0 := (M.var "mother::Failure::Get_Revert_0") γ0_1 in
+                    let* γ2_0 :=
+                      let* α0 := M.var "mother::Failure::Get_Revert_0" in
+                      M.pure (α0 γ0_1) in
                     let* __arg1_0 := M.alloc (borrow γ2_0) in
                     let* α0 :=
                       M.get_method
@@ -1364,26 +1427,28 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
               Ty.path "bool";
             fun γ => (M.alloc true) : Ty.path "bool"
           ] in
-      let* α6 := M.read α5 in
-      let* α0 :=
-        M.alloc
-          ((M.var "BinOp::Pure::and") ((M.var "BinOp::Pure::eq") α0 α1) α6) in
+      let* α8 := M.read α7 in
+      let* α0 := M.alloc (α0 (α1 α2 α3) α8) in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Failure" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_mother_Failure.
 
 Module Impl_core_marker_StructuralEq_for_mother_Failure.
-  Definition Self : Ty.t := Ty.path "mother::Failure".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mother::Failure" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_mother_Failure.
 
 Module Impl_core_cmp_Eq_for_mother_Failure.
-  Definition Self : Ty.t := Ty.path "mother::Failure".
-  
   (*
   Eq
   *)
@@ -1392,7 +1457,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -1406,11 +1471,16 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Failure" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_mother_Failure.
 
 (* Enum AuctionEchoed *)
@@ -1429,8 +1499,9 @@ Module Impl_mother_Env.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "mother::Env::Get_caller") (deref α0))
+      let* α0 := M.var "mother::Env::Get_caller" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
@@ -1444,9 +1515,10 @@ Module Impl_mother_Env.
     | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_mother_Env.
@@ -1454,14 +1526,12 @@ End Impl_mother_Env.
 (* Enum Mother *)
 
 Module Impl_core_default_Default_for_mother_Mother.
-  Definition Self : Ty.t := Ty.path "mother::Mother".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -1486,7 +1556,13 @@ Module Impl_core_default_Default_for_mother_Mother.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mother::Mother" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mother_Mother.
 
 Module Impl_mother_Mother.
@@ -1500,9 +1576,10 @@ Module Impl_mother_Mother.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -1666,11 +1743,15 @@ Module Impl_mother_Mother.
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.Some _ =>
-                let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+                let* γ0_0 :=
+                  let* α0 := M.var "core::option::Option::Get_Some_0" in
+                  M.pure (α0 γ) in
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Failure.Revert _ =>
-                  let γ1_0 := (M.var "mother::Failure::Get_Revert_0") γ0_0 in
+                  let* γ1_0 :=
+                    let* α0 := M.var "mother::Failure::Get_Revert_0" in
+                    M.pure (α0 γ0_0) in
                   let* α0 :=
                     M.get_method
                       "alloc::string::ToString"
@@ -1690,15 +1771,17 @@ Module Impl_mother_Mother.
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.Some _ =>
-                let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+                let* γ0_0 :=
+                  let* α0 := M.var "core::option::Option::Get_Some_0" in
+                  M.pure (α0 γ) in
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Failure.Panic =>
-                  let* α0 := M.read (mk_str "Trapping on user demand!") in
-                  let* α1 :=
-                    M.call (M.var "std::panicking::begin_panic") [ α0 ] in
-                  let* α2 := never_to_any α1 in
-                  M.alloc α2
+                  let* α0 := M.var "std::panicking::begin_panic" in
+                  let* α1 := M.read (mk_str "Trapping on user demand!") in
+                  let* α2 := M.call α0 [ α1 ] in
+                  let* α3 := never_to_any α2 in
+                  M.alloc α3
                 | _ => M.break_match 
                 end
               | _ => M.break_match 
@@ -1732,24 +1815,25 @@ Module Impl_mother_Mother.
       let* _message := M.alloc _message in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "debug_log: ") in
-          let* α1 := M.read (mk_str "
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "debug_log: ") in
+          let* α2 := M.read (mk_str "
 ") in
-          let* α2 := M.alloc [ α0; α1 ] in
-          let* α3 :=
+          let* α3 := M.alloc [ α1; α2 ] in
+          let* α4 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
               [ borrow _message ] in
-          let* α4 := M.alloc [ α3 ] in
-          let* α5 :=
+          let* α5 := M.alloc [ α4 ] in
+          let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
               [
-                pointer_coercion "Unsize" (borrow α2);
-                pointer_coercion "Unsize" (borrow α4)
+                pointer_coercion "Unsize" (borrow α3);
+                pointer_coercion "Unsize" (borrow α5)
               ] in
-          let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-          M.alloc α6 in
+          let* α7 := M.call α0 [ α6 ] in
+          M.alloc α7 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0

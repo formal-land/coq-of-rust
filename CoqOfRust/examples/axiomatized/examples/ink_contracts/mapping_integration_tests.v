@@ -4,13 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
@@ -35,25 +39,33 @@ End Impl_mapping_integration_tests_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 
 Axiom Balance :
@@ -70,11 +82,15 @@ End Impl_mapping_integration_tests_Env.
 (* Enum Mappings *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::Mappings".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::Mappings" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
 
 Module Impl_mapping_integration_tests_Mappings.

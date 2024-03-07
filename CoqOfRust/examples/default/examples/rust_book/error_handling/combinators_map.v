@@ -4,14 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Food *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
-  Definition Self : Ty.t := Ty.path "combinators_map::Food".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -61,91 +59,106 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "combinators_map::Food" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
-  Definition Self : Ty.t := Ty.path "combinators_map::Peeled".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Peeled") in
-      let* α2 := M.read self in
-      let* α3 :=
-        M.alloc
-          (borrow ((M.var "combinators_map::Peeled::Get_0") (deref α2))) in
+      let* α2 := M.var "combinators_map::Peeled::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow (α2 (deref α3))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "combinators_map::Peeled" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
-  Definition Self : Ty.t := Ty.path "combinators_map::Chopped".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Chopped") in
-      let* α2 := M.read self in
-      let* α3 :=
-        M.alloc
-          (borrow ((M.var "combinators_map::Chopped::Get_0") (deref α2))) in
+      let* α2 := M.var "combinators_map::Chopped::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow (α2 (deref α3))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "combinators_map::Chopped" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
-  Definition Self : Ty.t := Ty.path "combinators_map::Cooked".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Cooked") in
-      let* α2 := M.read self in
-      let* α3 :=
-        M.alloc
-          (borrow ((M.var "combinators_map::Cooked::Get_0") (deref α2))) in
+      let* α2 := M.var "combinators_map::Cooked::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow (α2 (deref α3))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "combinators_map::Cooked" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 (*
@@ -168,7 +181,9 @@ Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* food := M.copy γ0_0 in
               let* α0 := M.read food in
               M.alloc
@@ -212,11 +227,15 @@ Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* α0 := M.read γ0_0 in
               match α0 with
               | combinators_map.Peeled.Build_t _ =>
-                let γ1_0 := (M.var "combinators_map::Peeled::Get_0") γ0_0 in
+                let* γ1_0 :=
+                  let* α0 := M.var "combinators_map::Peeled::Get_0" in
+                  M.pure (α0 γ0_0) in
                 let* food := M.copy γ1_0 in
                 let* α0 := M.read food in
                 M.alloc
@@ -266,7 +285,9 @@ Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | combinators_map.Chopped.Build_t _ =>
-                  let γ0_0 := (M.var "combinators_map::Chopped::Get_0") γ in
+                  let* γ0_0 :=
+                    let* α0 := M.var "combinators_map::Chopped::Get_0" in
+                    M.pure (α0 γ) in
                   let* food := M.copy γ0_0 in
                   let* α0 := M.read food in
                   M.pure (combinators_map.Cooked.Build_t α0)
@@ -326,7 +347,9 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | combinators_map.Peeled.Build_t _ =>
-                    let γ0_0 := (M.var "combinators_map::Peeled::Get_0") γ in
+                    let* γ0_0 :=
+                      let* α0 := M.var "combinators_map::Peeled::Get_0" in
+                      M.pure (α0 γ) in
                     let* f := M.copy γ0_0 in
                     let* α0 := M.read f in
                     M.pure (combinators_map.Chopped.Build_t α0)
@@ -350,7 +373,9 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | combinators_map.Chopped.Build_t _ =>
-                  let γ0_0 := (M.var "combinators_map::Chopped::Get_0") γ in
+                  let* γ0_0 :=
+                    let* α0 := M.var "combinators_map::Chopped::Get_0" in
+                    M.pure (α0 γ) in
                   let* f := M.copy γ0_0 in
                   let* α0 := M.read f in
                   M.pure (combinators_map.Cooked.Build_t α0)
@@ -382,27 +407,30 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* food := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "Mmm. I love ") in
-                let* α1 := M.read (mk_str "
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Mmm. I love ") in
+                let* α2 := M.read (mk_str "
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                     [ borrow food ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -412,15 +440,16 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | core.option.Option.None =>
               let* _ :=
-                let* α0 := M.read (mk_str "Oh no! It wasn't edible.
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Oh no! It wasn't edible.
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -456,33 +485,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (core.option.Option.Some combinators_map.Food.Carrot) in
     let* potato := M.alloc core.option.Option.None in
     let* cooked_apple :=
-      let* α0 := M.read apple in
-      let* α1 := M.call (M.var "combinators_map::peel") [ α0 ] in
-      let* α2 := M.call (M.var "combinators_map::chop") [ α1 ] in
-      let* α3 := M.call (M.var "combinators_map::cook") [ α2 ] in
-      M.alloc α3 in
+      let* α0 := M.var "combinators_map::cook" in
+      let* α1 := M.var "combinators_map::chop" in
+      let* α2 := M.var "combinators_map::peel" in
+      let* α3 := M.read apple in
+      let* α4 := M.call α2 [ α3 ] in
+      let* α5 := M.call α1 [ α4 ] in
+      let* α6 := M.call α0 [ α5 ] in
+      M.alloc α6 in
     let* cooked_carrot :=
-      let* α0 := M.read carrot in
-      let* α1 := M.call (M.var "combinators_map::peel") [ α0 ] in
-      let* α2 := M.call (M.var "combinators_map::chop") [ α1 ] in
-      let* α3 := M.call (M.var "combinators_map::cook") [ α2 ] in
-      M.alloc α3 in
+      let* α0 := M.var "combinators_map::cook" in
+      let* α1 := M.var "combinators_map::chop" in
+      let* α2 := M.var "combinators_map::peel" in
+      let* α3 := M.read carrot in
+      let* α4 := M.call α2 [ α3 ] in
+      let* α5 := M.call α1 [ α4 ] in
+      let* α6 := M.call α0 [ α5 ] in
+      M.alloc α6 in
     let* cooked_potato :=
-      let* α0 := M.read potato in
-      let* α1 := M.call (M.var "combinators_map::process") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "combinators_map::process" in
+      let* α1 := M.read potato in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read cooked_apple in
-      let* α1 := M.call (M.var "combinators_map::eat") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "combinators_map::eat" in
+      let* α1 := M.read cooked_apple in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read cooked_carrot in
-      let* α1 := M.call (M.var "combinators_map::eat") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "combinators_map::eat" in
+      let* α1 := M.read cooked_carrot in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read cooked_potato in
-      let* α1 := M.call (M.var "combinators_map::eat") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "combinators_map::eat" in
+      let* α1 := M.read cooked_potato in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

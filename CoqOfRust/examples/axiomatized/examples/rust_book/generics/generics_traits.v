@@ -11,12 +11,16 @@ Module DoubleDrop.
 End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_T_for_U.
-  Definition Self (T U : Ty.t) : Ty.t := U.
-  
   Parameter double_drop : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T U : Ty.t) : Instance.t :=
-    [ ("double_drop", InstanceField.Method (double_drop T U)) ].
+  Axiom Implements :
+    forall (T U : Ty.t),
+    let Self := U in
+    M.IsTraitInstance
+      "generics_traits::DoubleDrop"
+      Self
+      [ (* T *) T ]
+      [ ("double_drop", InstanceField.Method double_drop [ Self; T; U ]) ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

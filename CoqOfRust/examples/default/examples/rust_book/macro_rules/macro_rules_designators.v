@@ -12,24 +12,25 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "You called ") in
-        let* α1 := M.read (mk_str "()
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "You called ") in
+        let* α2 := M.read (mk_str "()
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow (mk_str "foo") ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -47,24 +48,25 @@ Definition bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "You called ") in
-        let* α1 := M.read (mk_str "()
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "You called ") in
+        let* α2 := M.read (mk_str "()
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow (mk_str "bar") ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -91,78 +93,85 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.call (M.var "macro_rules_designators::foo") [] in
-      M.alloc α0 in
+      let* α0 := M.var "macro_rules_designators::foo" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* _ :=
-      let* α0 := M.call (M.var "macro_rules_designators::bar") [] in
-      M.alloc α0 in
+      let* α0 := M.var "macro_rules_designators::bar" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str " = ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str " = ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α0; α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α1; α2; α3 ] in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow (mk_str "1u32 + 1") ] in
-        let* α5 :=
-          (M.var "BinOp::Panic::add")
+        let* α6 := M.var "BinOp::Panic::add" in
+        let* α7 :=
+          α6
             ((Integer.of_Z 1) : Ty.path "u32")
             ((Integer.of_Z 1) : Ty.path "u32") in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α8 := M.alloc α7 in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc [ α4; α7 ] in
-        let* α9 :=
+            [ borrow α8 ] in
+        let* α10 := M.alloc [ α5; α9 ] in
+        let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α10)
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str " = ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str " = ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α0; α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α1; α2; α3 ] in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow (mk_str "{ let x = 1u32; x * x + 2 * x - 1 }") ] in
         let* x := M.alloc ((Integer.of_Z 1) : Ty.path "u32") in
-        let* α0 := M.read x in
-        let* α1 := M.read x in
-        let* α2 := (M.var "BinOp::Panic::mul") α0 α1 in
+        let* α0 := M.var "BinOp::Panic::sub" in
+        let* α1 := M.var "BinOp::Panic::add" in
+        let* α2 := M.var "BinOp::Panic::mul" in
         let* α3 := M.read x in
-        let* α4 :=
-          (M.var "BinOp::Panic::mul") ((Integer.of_Z 2) : Ty.path "u32") α3 in
-        let* α5 := (M.var "BinOp::Panic::add") α2 α4 in
-        let* α6 :=
-          (M.var "BinOp::Panic::sub") α5 ((Integer.of_Z 1) : Ty.path "u32") in
-        let* α5 := M.alloc α6 in
-        let* α6 :=
+        let* α4 := M.read x in
+        let* α5 := α2 α3 α4 in
+        let* α6 := M.var "BinOp::Panic::mul" in
+        let* α7 := M.read x in
+        let* α8 := α6 ((Integer.of_Z 2) : Ty.path "u32") α7 in
+        let* α9 := α1 α5 α8 in
+        let* α10 := α0 α9 ((Integer.of_Z 1) : Ty.path "u32") in
+        let* α6 := M.alloc α10 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α4; α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α5; α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

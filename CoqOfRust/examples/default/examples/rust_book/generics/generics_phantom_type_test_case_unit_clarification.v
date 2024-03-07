@@ -4,15 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Inch *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Definition Self : Ty.t :=
-    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
@@ -22,47 +19,55 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self :=
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Definition Self : Ty.t :=
-    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self :=
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
-  Definition Self : Ty.t :=
-    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self :=
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 (* Enum Mm *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Definition Self : Ty.t :=
-    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
@@ -72,151 +77,152 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self :=
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Definition Self : Ty.t :=
-    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self :=
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
-  Definition Self : Ty.t :=
-    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self :=
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 (* Struct Length *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply
-      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [ Unit ].
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Unit ], [ self; f ] =>
+    | [ Self; Unit ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Length") in
-      let* α2 := M.read self in
+      let* α2 :=
+        M.var
+          "generics_phantom_type_test_case_unit_clarification::Length::Get_0" in
       let* α3 := M.read self in
       let* α4 :=
-        M.alloc
-          (borrow
-            ((M.var
-                "generics_phantom_type_test_case_unit_clarification::Length::Get_1")
-              (deref α3))) in
+        M.var
+          "generics_phantom_type_test_case_unit_clarification::Length::Get_1" in
+      let* α5 := M.read self in
+      let* α6 := M.alloc (borrow (α4 (deref α5))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field2_finish"]
         [
           α0;
           α1;
-          pointer_coercion
-            "Unsize"
-            (borrow
-              ((M.var
-                  "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
-                (deref α2)));
-          pointer_coercion "Unsize" (borrow α4)
+          pointer_coercion "Unsize" (borrow (α2 (deref α3)));
+          pointer_coercion "Unsize" (borrow α6)
         ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (Unit : Ty.t) : Instance.t :=
-    [ ("fmt", InstanceField.Method (fmt Unit)) ].
+  Axiom Implements :
+    forall (Unit : Ty.t),
+    let Self :=
+      Ty.apply
+        (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+        [ Unit ] in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self; Unit ]) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply
-      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [ Unit ].
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Unit ], [ self ] =>
+    | [ Self; Unit ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "f64" ] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call
-          α0
-          [
-            borrow
-              ((M.var
-                  "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
-                (deref α1))
-          ] in
-      let* α3 :=
+      let* α1 :=
+        M.var
+          "generics_phantom_type_test_case_unit_clarification::Length::Get_0" in
+      let* α2 := M.read self in
+      let* α3 := M.call α0 [ borrow (α1 (deref α2)) ] in
+      let* α4 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ]
           ] in
-      let* α4 := M.read self in
       let* α5 :=
-        M.call
-          α3
-          [
-            borrow
-              ((M.var
-                  "generics_phantom_type_test_case_unit_clarification::Length::Get_1")
-                (deref α4))
-          ] in
+        M.var
+          "generics_phantom_type_test_case_unit_clarification::Length::Get_1" in
+      let* α6 := M.read self in
+      let* α7 := M.call α4 [ borrow (α5 (deref α6)) ] in
       M.pure
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α2
-          α5)
+          α3
+          α7)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (Unit : Ty.t) : Instance.t :=
-    [ ("clone", InstanceField.Method (clone Unit)) ].
+  Axiom Implements :
+    forall (Unit : Ty.t),
+    let Self :=
+      Ty.apply
+        (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+        [ Unit ] in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self; Unit ]) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply
-      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [ Unit ].
-  
-  Definition ℐ (Unit : Ty.t) : Instance.t := [].
+  Axiom Implements :
+    forall (Unit : Ty.t),
+    let Self :=
+      Ty.apply
+        (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+        [ Unit ] in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply
-      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [ Unit ].
-  
   (*
       type Output = Length<Unit>;
   *)
@@ -233,29 +239,37 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
   *)
   Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Unit ], [ self; rhs ] =>
+    | [ Self; Unit ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
-      let* α0 :=
-        M.read
-          ((M.var
-              "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
-            self) in
+      let* α0 := M.var "BinOp::Panic::add" in
       let* α1 :=
-        M.read
-          ((M.var
-              "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
-            rhs) in
-      let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
+        M.var
+          "generics_phantom_type_test_case_unit_clarification::Length::Get_0" in
+      let* α2 := M.read (α1 self) in
+      let* α3 :=
+        M.var
+          "generics_phantom_type_test_case_unit_clarification::Length::Get_0" in
+      let* α4 := M.read (α3 rhs) in
+      let* α5 := α0 α2 α4 in
       M.pure
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α2
+          α5
           core.marker.PhantomData.Build)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (Unit : Ty.t) : Instance.t :=
-    [ ("Output", TODO); ("add", InstanceField.Method (add Unit)) ].
+  Axiom Implements :
+    forall (Unit : Ty.t),
+    let Self :=
+      Ty.apply
+        (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+        [ Unit ] in
+    M.IsTraitInstance
+      "core::ops::arith::Add"
+      Self
+      []
+      [ ("Output", TODO); ("add", InstanceField.Method add [ Self; Unit ]) ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (*
@@ -353,55 +367,53 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α3 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "one foot + one_foot = ") in
-        let* α1 := M.read (mk_str " in
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "one foot + one_foot = ") in
+        let* α2 := M.read (mk_str " in
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
+          M.var
+            "generics_phantom_type_test_case_unit_clarification::Length::Get_0" in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [
-              borrow
-                ((M.var
-                    "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
-                  two_feet)
-            ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+            [ borrow (α4 two_feet) ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "one meter + one_meter = ") in
-        let* α1 := M.read (mk_str " mm
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "one meter + one_meter = ") in
+        let* α2 := M.read (mk_str " mm
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
+          M.var
+            "generics_phantom_type_test_case_unit_clarification::Length::Get_0" in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [
-              borrow
-                ((M.var
-                    "generics_phantom_type_test_case_unit_clarification::Length::Get_0")
-                  two_meters)
-            ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+            [ borrow (α4 two_meters) ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

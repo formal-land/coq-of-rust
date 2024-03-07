@@ -28,7 +28,9 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                M.pure (α0 γ) in
               let* first_number := M.copy γ0_0 in
               let* α0 := M.read second_number_str in
               let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
@@ -40,12 +42,15 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.result.Result.Ok _ =>
-                      let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+                      let* γ0_0 :=
+                        let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                        M.pure (α0 γ) in
                       let* second_number := M.copy γ0_0 in
-                      let* α0 := M.read first_number in
-                      let* α1 := M.read second_number in
-                      let* α2 := (M.var "BinOp::Panic::mul") α0 α1 in
-                      M.alloc (core.result.Result.Ok α2)
+                      let* α0 := M.var "BinOp::Panic::mul" in
+                      let* α1 := M.read first_number in
+                      let* α2 := M.read second_number in
+                      let* α3 := α0 α1 α2 in
+                      M.alloc (core.result.Result.Ok α3)
                     | _ => M.break_match 
                     end) :
                     Ty.apply
@@ -56,7 +61,9 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.result.Result.Err _ =>
-                      let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+                      let* γ0_0 :=
+                        let* α0 := M.var "core::result::Result::Get_Err_0" in
+                        M.pure (α0 γ) in
                       let* e := M.copy γ0_0 in
                       let* α0 := M.read e in
                       M.alloc (core.result.Result.Err α0)
@@ -76,7 +83,9 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Err_0" in
+                M.pure (α0 γ) in
               let* e := M.copy γ0_0 in
               let* α0 := M.read e in
               M.alloc (core.result.Result.Err α0)
@@ -110,27 +119,30 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                M.pure (α0 γ) in
               let* n := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "n is ") in
-                let* α1 := M.read (mk_str "
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "n is ") in
+                let* α2 := M.read (mk_str "
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow n ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -139,27 +151,30 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Err_0" in
+                M.pure (α0 γ) in
               let* e := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "Error: ") in
-                let* α1 := M.read (mk_str "
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Error: ") in
+                let* α2 := M.read (mk_str "
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow e ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -185,25 +200,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* twenty :=
-      let* α0 := M.read (mk_str "10") in
-      let* α1 := M.read (mk_str "2") in
-      let* α2 :=
-        M.call (M.var "map_in_result_via_match::multiply") [ α0; α1 ] in
-      M.alloc α2 in
+      let* α0 := M.var "map_in_result_via_match::multiply" in
+      let* α1 := M.read (mk_str "10") in
+      let* α2 := M.read (mk_str "2") in
+      let* α3 := M.call α0 [ α1; α2 ] in
+      M.alloc α3 in
     let* _ :=
-      let* α0 := M.read twenty in
-      let* α1 := M.call (M.var "map_in_result_via_match::print") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "map_in_result_via_match::print" in
+      let* α1 := M.read twenty in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* tt_ :=
-      let* α0 := M.read (mk_str "t") in
-      let* α1 := M.read (mk_str "2") in
-      let* α2 :=
-        M.call (M.var "map_in_result_via_match::multiply") [ α0; α1 ] in
-      M.alloc α2 in
+      let* α0 := M.var "map_in_result_via_match::multiply" in
+      let* α1 := M.read (mk_str "t") in
+      let* α2 := M.read (mk_str "2") in
+      let* α3 := M.call α0 [ α1; α2 ] in
+      M.alloc α3 in
     let* _ :=
-      let* α0 := M.read tt_ in
-      let* α1 := M.call (M.var "map_in_result_via_match::print") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "map_in_result_via_match::print" in
+      let* α1 := M.read tt_ in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

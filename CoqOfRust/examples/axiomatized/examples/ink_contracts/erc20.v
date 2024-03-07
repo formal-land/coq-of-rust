@@ -4,13 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self := Ty.apply (Ty.path "erc20::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
@@ -25,25 +28,33 @@ End Impl_erc20_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "erc20::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "erc20::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "erc20::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "erc20::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "erc20::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "erc20::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_erc20_AccountId.
 
 Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
@@ -53,11 +64,15 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 (* Enum Erc20 *)
 
 Module Impl_core_default_Default_for_erc20_Erc20.
-  Definition Self : Ty.t := Ty.path "erc20::Erc20".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "erc20::Erc20" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_erc20_Erc20.
 
 (* Enum Transfer *)

@@ -67,25 +67,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Err _ =>
-                let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+                let* γ0_0 :=
+                  let* α0 := M.var "core::result::Result::Get_Err_0" in
+                  M.pure (α0 γ) in
                 let* why := M.copy γ0_0 in
-                let* α0 := M.read (mk_str "couldn't spawn wc: ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α0 := M.var "core::panicking::panic_fmt" in
+                let* α1 := M.read (mk_str "couldn't spawn wc: ") in
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow why ] in
-                let* α3 := M.alloc [ α2 ] in
-                let* α4 :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α1);
-                      pointer_coercion "Unsize" (borrow α3)
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
                     ] in
-                let* α5 := M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
-                let* α6 := never_to_any α5 in
-                M.alloc α6
+                let* α6 := M.call α0 [ α5 ] in
+                let* α7 := never_to_any α6 in
+                M.alloc α7
               | _ => M.break_match 
               end) :
               Ty.path "std::process::Child";
@@ -93,7 +96,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Ok _ =>
-                let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+                let* γ0_0 :=
+                  let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                  M.pure (α0 γ) in
                 let* process := M.copy γ0_0 in
                 M.pure process
               | _ => M.break_match 
@@ -107,45 +112,50 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "std::io::Write"
           "write_all"
           [ (* Self *) Ty.path "std::process::ChildStdin" ] in
-      let* α1 := M.read ((M.var "std::process::Child::Get_stdin") process) in
-      let* α2 :=
+      let* α1 := M.var "std::process::Child::Get_stdin" in
+      let* α2 := M.read (α1 process) in
+      let* α3 :=
         M.call
           (Ty.apply
               (Ty.path "core::option::Option")
               [ Ty.path "std::process::ChildStdin" ])::["unwrap"]
-          [ α1 ] in
-      let* α3 := M.alloc α2 in
-      let* α4 := M.read (M.var "child_processes_pipes::PANGRAM") in
-      let* α5 := M.read (deref α4) in
-      let* α6 := M.call (Ty.path "str")::["as_bytes"] [ α5 ] in
-      let* α7 := M.call α0 [ borrow_mut α3; α6 ] in
-      let* α8 := M.alloc α7 in
+          [ α2 ] in
+      let* α4 := M.alloc α3 in
+      let* α5 := M.var "child_processes_pipes::PANGRAM" in
+      let* α6 := M.read α5 in
+      let* α7 := M.read (deref α6) in
+      let* α8 := M.call (Ty.path "str")::["as_bytes"] [ α7 ] in
+      let* α9 := M.call α0 [ borrow_mut α4; α8 ] in
+      let* α10 := M.alloc α9 in
       match_operator
-        α8
+        α10
         [
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Err_0" in
+                M.pure (α0 γ) in
               let* why := M.copy γ0_0 in
-              let* α0 := M.read (mk_str "couldn't write to wc stdin: ") in
-              let* α1 := M.alloc [ α0 ] in
-              let* α2 :=
+              let* α0 := M.var "core::panicking::panic_fmt" in
+              let* α1 := M.read (mk_str "couldn't write to wc stdin: ") in
+              let* α2 := M.alloc [ α1 ] in
+              let* α3 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_display"]
                   [ borrow why ] in
-              let* α3 := M.alloc [ α2 ] in
-              let* α4 :=
+              let* α4 := M.alloc [ α3 ] in
+              let* α5 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                   [
-                    pointer_coercion "Unsize" (borrow α1);
-                    pointer_coercion "Unsize" (borrow α3)
+                    pointer_coercion "Unsize" (borrow α2);
+                    pointer_coercion "Unsize" (borrow α4)
                   ] in
-              let* α5 := M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
-              let* α6 := never_to_any α5 in
-              M.alloc α6
+              let* α6 := M.call α0 [ α5 ] in
+              let* α7 := never_to_any α6 in
+              M.alloc α7
             | _ => M.break_match 
             end) :
             Ty.tuple [];
@@ -153,17 +163,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                M.pure (α0 γ) in
               let* _ :=
-                let* α0 := M.read (mk_str "sent pangram to wc
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "sent pangram to wc
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -177,43 +190,47 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         "std::io::Read"
         "read_to_string"
         [ (* Self *) Ty.path "std::process::ChildStdout" ] in
-    let* α1 := M.read ((M.var "std::process::Child::Get_stdout") process) in
-    let* α2 :=
+    let* α1 := M.var "std::process::Child::Get_stdout" in
+    let* α2 := M.read (α1 process) in
+    let* α3 :=
       M.call
         (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "std::process::ChildStdout" ])::["unwrap"]
-        [ α1 ] in
-    let* α3 := M.alloc α2 in
-    let* α4 := M.call α0 [ borrow_mut α3; borrow_mut s ] in
-    let* α5 := M.alloc α4 in
+        [ α2 ] in
+    let* α4 := M.alloc α3 in
+    let* α5 := M.call α0 [ borrow_mut α4; borrow_mut s ] in
+    let* α6 := M.alloc α5 in
     let* α0 :=
       match_operator
-        α5
+        α6
         [
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Err_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Err_0" in
+                M.pure (α0 γ) in
               let* why := M.copy γ0_0 in
-              let* α0 := M.read (mk_str "couldn't read wc stdout: ") in
-              let* α1 := M.alloc [ α0 ] in
-              let* α2 :=
+              let* α0 := M.var "core::panicking::panic_fmt" in
+              let* α1 := M.read (mk_str "couldn't read wc stdout: ") in
+              let* α2 := M.alloc [ α1 ] in
+              let* α3 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_display"]
                   [ borrow why ] in
-              let* α3 := M.alloc [ α2 ] in
-              let* α4 :=
+              let* α4 := M.alloc [ α3 ] in
+              let* α5 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                   [
-                    pointer_coercion "Unsize" (borrow α1);
-                    pointer_coercion "Unsize" (borrow α3)
+                    pointer_coercion "Unsize" (borrow α2);
+                    pointer_coercion "Unsize" (borrow α4)
                   ] in
-              let* α5 := M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
-              let* α6 := never_to_any α5 in
-              M.alloc α6
+              let* α6 := M.call α0 [ α5 ] in
+              let* α7 := never_to_any α6 in
+              M.alloc α7
             | _ => M.break_match 
             end) :
             Ty.tuple [];
@@ -221,25 +238,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                M.pure (α0 γ) in
               let* _ :=
-                let* α0 := M.read (mk_str "wc responded with:
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "wc responded with:
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow s ] in
-                let* α3 := M.alloc [ α2 ] in
-                let* α4 :=
+                let* α4 := M.alloc [ α3 ] in
+                let* α5 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α1);
-                      pointer_coercion "Unsize" (borrow α3)
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
                     ] in
-                let* α5 := M.call (M.var "std::io::stdio::_print") [ α4 ] in
-                M.alloc α5 in
+                let* α6 := M.call α0 [ α5 ] in
+                M.alloc α6 in
               M.alloc tt
             | _ => M.break_match 
             end) :

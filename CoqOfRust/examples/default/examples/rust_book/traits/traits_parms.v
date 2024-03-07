@@ -24,26 +24,24 @@ End SomeTrait.
 (* Struct SomeOtherType *)
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance "traits_parms::Foo" Self [] [].
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance "traits_parms::Bar" Self [] [].
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance "traits_parms::Tar" Self [] [].
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-  Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
-  
   (*
       type SomeType = SomeOtherType;
   *)
@@ -53,8 +51,14 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
       fn some_fn() {}
   *)
   Definition some_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
+    match 𝜏, α with | [ Self ], [] => M.pure tt | _, _ => M.impossible end.
   
-  Definition ℐ : Instance.t :=
-    [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn) ].
+  Axiom Implements :
+    let Self := Ty.path "traits_parms::SomeOtherType" in
+    M.IsTraitInstance
+      "traits_parms::SomeTrait"
+      Self
+      []
+      [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn [ Self ])
+      ].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

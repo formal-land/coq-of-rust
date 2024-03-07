@@ -49,24 +49,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "hello_world::message" in
+        let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow (M.var "hello_world::message") ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
       M.alloc tt in
     let* number :=
       M.alloc (core.option.Option.Some ((Integer.of_Z 7) : Ty.path "i32")) in
@@ -80,28 +82,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* i := M.copy γ0_0 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "Matched ") in
-                  let* α1 := M.read (mk_str "!
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "Matched ") in
+                  let* α2 := M.read (mk_str "!
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                       [ borrow i ] in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α4)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α5)
                       ] in
-                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                  M.alloc α6 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -117,28 +122,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* j := M.copy γ0_0 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "Matched ") in
-                  let* α1 := M.read (mk_str "!
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "Matched ") in
+                  let* α2 := M.read (mk_str "!
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                       [ borrow j ] in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α4)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α5)
                       ] in
-                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                  M.alloc α6 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -147,18 +155,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             (let* _ :=
               let* _ :=
-                let* α0 :=
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 :=
                   M.read
                     (mk_str
                       "Didn't match a number. Let's go with a letter!
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt in
             M.alloc tt) :
             Ty.tuple []
@@ -172,28 +181,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* i := M.copy γ0_0 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "Matched ") in
-                  let* α1 := M.read (mk_str "!
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "Matched ") in
+                  let* α2 := M.read (mk_str "!
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 :=
+                  let* α3 := M.alloc [ α1; α2 ] in
+                  let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_debug"]
                       [ borrow i ] in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α4)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α5)
                       ] in
-                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                  M.alloc α6 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -204,35 +216,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             if α0 then
               let* _ :=
                 let* _ :=
-                  let* α0 :=
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 :=
                     M.read
                       (mk_str
                         "Didn't match a number. Let's go with a letter!
 ") in
-                  let* α1 := M.alloc [ α0 ] in
-                  let* α2 :=
+                  let* α2 := M.alloc [ α1 ] in
+                  let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α1) ] in
-                  let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                  M.alloc α3 in
+                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                  let* α4 := M.call α0 [ α3 ] in
+                  M.alloc α4 in
                 M.alloc tt in
               M.alloc tt
             else
               let* _ :=
                 let* _ :=
-                  let* α0 :=
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 :=
                     M.read
                       (mk_str
                         "I don't like letters. Let's go with an emoticon :)!
 ") in
-                  let* α1 := M.alloc [ α0 ] in
-                  let* α2 :=
+                  let* α2 := M.alloc [ α1 ] in
+                  let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α1) ] in
-                  let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                  M.alloc α3 in
+                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                  let* α4 := M.call α0 [ α3 ] in
+                  M.alloc α4 in
                 M.alloc tt in
               M.alloc tt) :
             Ty.tuple []

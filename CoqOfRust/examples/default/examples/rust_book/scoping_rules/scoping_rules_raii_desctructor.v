@@ -4,8 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct ToDrop *)
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-  Definition Self : Ty.t := Ty.path "scoping_rules_raii_desctructor::ToDrop".
-  
   (*
       fn drop(&mut self) {
           println!("ToDrop is being dropped");
@@ -13,26 +11,33 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   *)
   Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "ToDrop is being dropped
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "ToDrop is being dropped
 ") in
-          let* α1 := M.alloc [ α0 ] in
-          let* α2 :=
+          let* α2 := M.alloc [ α1 ] in
+          let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α1) ] in
-          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-          M.alloc α3 in
+              [ pointer_coercion "Unsize" (borrow α2) ] in
+          let* α4 := M.call α0 [ α3 ] in
+          M.alloc α4 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("drop", InstanceField.Method drop) ].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_raii_desctructor::ToDrop" in
+    M.IsTraitInstance
+      "core::ops::drop::Drop"
+      Self
+      []
+      [ ("drop", InstanceField.Method drop [ Self ]) ].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (*
@@ -48,15 +53,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc scoping_rules_raii_desctructor.ToDrop.Build in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Made a ToDrop!
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Made a ToDrop!
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

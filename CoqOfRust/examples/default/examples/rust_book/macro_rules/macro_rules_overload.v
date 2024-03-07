@@ -13,81 +13,87 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str " and ") in
-        let* α2 := M.read (mk_str " is ") in
-        let* α3 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str " and ") in
+        let* α3 := M.read (mk_str " is ") in
+        let* α4 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α0; α1; α2; α3 ] in
-        let* α5 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow (mk_str "1i32 + 1 == 2i32") ] in
+        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow (mk_str "2i32 * 2 == 4i32") ] in
+            [ borrow (mk_str "1i32 + 1 == 2i32") ] in
         let* α7 :=
-          (M.var "BinOp::Panic::add")
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow (mk_str "2i32 * 2 == 4i32") ] in
+        let* α8 := M.var "BinOp::Pure::and" in
+        let* α9 := M.var "BinOp::Pure::eq" in
+        let* α10 := M.var "BinOp::Panic::add" in
+        let* α11 :=
+          α10
             ((Integer.of_Z 1) : Ty.path "i32")
             ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α8 :=
-          (M.var "BinOp::Panic::mul")
+        let* α12 := M.var "BinOp::Pure::eq" in
+        let* α13 := M.var "BinOp::Panic::mul" in
+        let* α14 :=
+          α13
             ((Integer.of_Z 2) : Ty.path "i32")
             ((Integer.of_Z 2) : Ty.path "i32") in
-        let* α9 :=
+        let* α15 :=
           M.alloc
-            ((M.var "BinOp::Pure::and")
-              ((M.var "BinOp::Pure::eq") α7 ((Integer.of_Z 2) : Ty.path "i32"))
-              ((M.var "BinOp::Pure::eq")
-                α8
-                ((Integer.of_Z 4) : Ty.path "i32"))) in
+            (α8
+              (α9 α11 ((Integer.of_Z 2) : Ty.path "i32"))
+              (α12 α14 ((Integer.of_Z 4) : Ty.path "i32"))) in
+        let* α16 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α15 ] in
+        let* α17 := M.alloc [ α6; α7; α16 ] in
+        let* α18 :=
+          M.call
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α5);
+              pointer_coercion "Unsize" (borrow α17)
+            ] in
+        let* α19 := M.call α0 [ α18 ] in
+        M.alloc α19 in
+      M.alloc tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str " or ") in
+        let* α3 := M.read (mk_str " is ") in
+        let* α4 := M.read (mk_str "
+") in
+        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
+        let* α6 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow (mk_str "true") ] in
+        let* α7 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow (mk_str "false") ] in
+        let* α8 := M.var "BinOp::Pure::or" in
+        let* α9 := M.alloc (α8 true false) in
         let* α10 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow α9 ] in
-        let* α11 := M.alloc [ α5; α6; α10 ] in
+        let* α11 := M.alloc [ α6; α7; α10 ] in
         let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α5);
               pointer_coercion "Unsize" (borrow α11)
             ] in
-        let* α13 := M.call (M.var "std::io::stdio::_print") [ α12 ] in
+        let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str " or ") in
-        let* α2 := M.read (mk_str " is ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc [ α0; α1; α2; α3 ] in
-        let* α5 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow (mk_str "true") ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow (mk_str "false") ] in
-        let* α7 := M.alloc ((M.var "BinOp::Pure::or") true false) in
-        let* α8 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α7 ] in
-        let* α9 := M.alloc [ α5; α6; α8 ] in
-        let* α10 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α4);
-              pointer_coercion "Unsize" (borrow α9)
-            ] in
-        let* α11 := M.call (M.var "std::io::stdio::_print") [ α10 ] in
-        M.alloc α11 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

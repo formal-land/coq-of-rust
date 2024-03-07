@@ -4,14 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_contract_ref_AccountId.
-  Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -22,18 +20,22 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "contract_ref::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_contract_ref_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_ref_AccountId.
-  Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -52,13 +54,19 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "contract_ref::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_contract_ref_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_ref_AccountId.
-  Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "contract_ref::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_contract_ref_AccountId.
 
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
@@ -74,14 +82,12 @@ Axiom Hash :
 (* Struct FlipperError *)
 
 Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
-  Definition Self : Ty.t := Ty.path "contract_ref::FlipperError".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -90,7 +96,13 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "contract_ref::FlipperError" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError.
 
 Module Impl_contract_ref_FlipperRef.
@@ -104,9 +116,10 @@ Module Impl_contract_ref_FlipperRef.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -190,13 +203,13 @@ Module Impl_contract_ref_FlipperRef.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
+        let* α0 := M.var "contract_ref::FlipperRef::Get_value" in
         let* α1 := M.read self in
-        let* α2 :=
-          M.read ((M.var "contract_ref::FlipperRef::Get_value") (deref α1)) in
-        assign
-          ((M.var "contract_ref::FlipperRef::Get_value") (deref α0))
-          ((M.var "UnOp::not") α2) in
+        let* α2 := M.var "UnOp::not" in
+        let* α3 := M.var "contract_ref::FlipperRef::Get_value" in
+        let* α4 := M.read self in
+        let* α5 := M.read (α3 (deref α4)) in
+        assign (α0 (deref α1)) (α2 α5) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -211,8 +224,9 @@ Module Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "contract_ref::FlipperRef::Get_value") (deref α0))
+      let* α0 := M.var "contract_ref::FlipperRef::Get_value" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
 End Impl_contract_ref_FlipperRef.
@@ -319,15 +333,13 @@ Module Impl_contract_ref_ContractRef.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
+        let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
+        let* α1 := M.read self in
+        let* α2 :=
           M.call
             (Ty.path "contract_ref::FlipperRef")::["flip"]
-            [
-              borrow_mut
-                ((M.var "contract_ref::ContractRef::Get_flipper") (deref α0))
-            ] in
-        M.alloc α1 in
+            [ borrow_mut (α0 (deref α1)) ] in
+        M.alloc α2 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -342,10 +354,11 @@ Module Impl_contract_ref_ContractRef.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
+      let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
+      let* α1 := M.read self in
       M.call
         (Ty.path "contract_ref::FlipperRef")::["get"]
-        [ borrow ((M.var "contract_ref::ContractRef::Get_flipper") (deref α0)) ]
+        [ borrow (α0 (deref α1)) ]
     | _, _ => M.impossible
     end.
 End Impl_contract_ref_ContractRef.

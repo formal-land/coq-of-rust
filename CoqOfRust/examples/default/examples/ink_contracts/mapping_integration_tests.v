@@ -4,15 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [] =>
+    | [ Self; K; V ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -32,8 +29,15 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
@@ -50,9 +54,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -66,9 +71,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -83,9 +89,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -97,9 +104,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ K; V ], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -113,9 +121,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -129,9 +138,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -145,9 +155,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_mapping_integration_tests_Mapping_K_V.
@@ -155,14 +166,12 @@ End Impl_mapping_integration_tests_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -173,18 +182,22 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -203,13 +216,19 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 
 Axiom Balance :
@@ -229,8 +248,9 @@ Module Impl_mapping_integration_tests_Env.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "mapping_integration_tests::Env::Get_caller") (deref α0))
+      let* α0 := M.var "mapping_integration_tests::Env::Get_caller" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
 End Impl_mapping_integration_tests_Env.
@@ -238,14 +258,12 @@ End Impl_mapping_integration_tests_Env.
 (* Enum Mappings *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
-  Definition Self : Ty.t := Ty.path "mapping_integration_tests::Mappings".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -265,7 +283,13 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "mapping_integration_tests::Mappings" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
 
 Module Impl_mapping_integration_tests_Mappings.
@@ -279,9 +303,10 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -293,9 +318,10 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -353,20 +379,16 @@ Module Impl_mapping_integration_tests_Mappings.
             (Ty.path "mapping_integration_tests::Env")::["caller"]
             [ borrow α1 ] in
         M.alloc α2 in
-      let* α0 := M.read self in
-      let* α1 :=
+      let* α0 := M.var "mapping_integration_tests::Mappings::Get_balances" in
+      let* α1 := M.read self in
+      let* α2 :=
         M.call
           (Ty.apply
               (Ty.path "mapping_integration_tests::Mapping")
               [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128"
               ])::["get"]
-          [
-            borrow
-              ((M.var "mapping_integration_tests::Mappings::Get_balances")
-                (deref α0));
-            borrow caller
-          ] in
-      let* α0 := M.alloc α1 in
+          [ borrow (α0 (deref α1)); borrow caller ] in
+      let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -391,23 +413,18 @@ Module Impl_mapping_integration_tests_Mappings.
             (Ty.path "mapping_integration_tests::Env")::["caller"]
             [ borrow α1 ] in
         M.alloc α2 in
-      let* α0 := M.read self in
-      let* α1 := M.read caller in
-      let* α2 := M.read value in
-      let* α3 :=
+      let* α0 := M.var "mapping_integration_tests::Mappings::Get_balances" in
+      let* α1 := M.read self in
+      let* α2 := M.read caller in
+      let* α3 := M.read value in
+      let* α4 :=
         M.call
           (Ty.apply
               (Ty.path "mapping_integration_tests::Mapping")
               [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128"
               ])::["insert"]
-          [
-            borrow_mut
-              ((M.var "mapping_integration_tests::Mappings::Get_balances")
-                (deref α0));
-            α1;
-            α2
-          ] in
-      let* α0 := M.alloc α3 in
+          [ borrow_mut (α0 (deref α1)); α2; α3 ] in
+      let* α0 := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -431,21 +448,17 @@ Module Impl_mapping_integration_tests_Mappings.
             (Ty.path "mapping_integration_tests::Env")::["caller"]
             [ borrow α1 ] in
         M.alloc α2 in
-      let* α0 := M.read self in
-      let* α1 := M.read caller in
-      let* α2 :=
+      let* α0 := M.var "mapping_integration_tests::Mappings::Get_balances" in
+      let* α1 := M.read self in
+      let* α2 := M.read caller in
+      let* α3 :=
         M.call
           (Ty.apply
               (Ty.path "mapping_integration_tests::Mapping")
               [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128"
               ])::["size"]
-          [
-            borrow
-              ((M.var "mapping_integration_tests::Mappings::Get_balances")
-                (deref α0));
-            α1
-          ] in
-      let* α0 := M.alloc α2 in
+          [ borrow (α0 (deref α1)); α2 ] in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -469,20 +482,16 @@ Module Impl_mapping_integration_tests_Mappings.
             (Ty.path "mapping_integration_tests::Env")::["caller"]
             [ borrow α1 ] in
         M.alloc α2 in
-      let* α0 := M.read self in
-      let* α1 :=
+      let* α0 := M.var "mapping_integration_tests::Mappings::Get_balances" in
+      let* α1 := M.read self in
+      let* α2 :=
         M.call
           (Ty.apply
               (Ty.path "mapping_integration_tests::Mapping")
               [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128"
               ])::["contains"]
-          [
-            borrow
-              ((M.var "mapping_integration_tests::Mappings::Get_balances")
-                (deref α0));
-            borrow caller
-          ] in
-      let* α0 := M.alloc α1 in
+          [ borrow (α0 (deref α1)); borrow caller ] in
+      let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -507,21 +516,17 @@ Module Impl_mapping_integration_tests_Mappings.
             [ borrow α1 ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.read self in
-        let* α1 := M.read caller in
-        let* α2 :=
+        let* α0 := M.var "mapping_integration_tests::Mappings::Get_balances" in
+        let* α1 := M.read self in
+        let* α2 := M.read caller in
+        let* α3 :=
           M.call
             (Ty.apply
                 (Ty.path "mapping_integration_tests::Mapping")
                 [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128"
                 ])::["remove"]
-            [
-              borrow
-                ((M.var "mapping_integration_tests::Mappings::Get_balances")
-                  (deref α0));
-              α1
-            ] in
-        M.alloc α2 in
+            [ borrow (α0 (deref α1)); α2 ] in
+        M.alloc α3 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -546,21 +551,17 @@ Module Impl_mapping_integration_tests_Mappings.
             (Ty.path "mapping_integration_tests::Env")::["caller"]
             [ borrow α1 ] in
         M.alloc α2 in
-      let* α0 := M.read self in
-      let* α1 := M.read caller in
-      let* α2 :=
+      let* α0 := M.var "mapping_integration_tests::Mappings::Get_balances" in
+      let* α1 := M.read self in
+      let* α2 := M.read caller in
+      let* α3 :=
         M.call
           (Ty.apply
               (Ty.path "mapping_integration_tests::Mapping")
               [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128"
               ])::["take"]
-          [
-            borrow
-              ((M.var "mapping_integration_tests::Mappings::Get_balances")
-                (deref α0));
-            α1
-          ] in
-      let* α0 := M.alloc α2 in
+          [ borrow (α0 (deref α1)); α2 ] in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.

@@ -15,12 +15,18 @@ Module Impl_trait_flipper_Flipper.
 End Impl_trait_flipper_Flipper.
 
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
-  Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".
-  
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_flipper::Flipper" in
+    M.IsTraitInstance
+      "trait_flipper::Flip"
+      Self
+      []
+      [
+        ("flip", InstanceField.Method flip [ Self ]);
+        ("get", InstanceField.Method get [ Self ])
+      ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

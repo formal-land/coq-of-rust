@@ -12,15 +12,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.read (mk_str "Hello!
+      let* α0 := M.var "std::io::stdio::_print" in
+      let* α1 := M.read (mk_str "Hello!
 ") in
-      let* α1 := M.alloc [ α0 ] in
-      let* α2 :=
+      let* α2 := M.alloc [ α1 ] in
+      let* α3 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_const"]
-          [ pointer_coercion "Unsize" (borrow α1) ] in
-      let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-      M.alloc α3 in
+          [ pointer_coercion "Unsize" (borrow α2) ] in
+      let* α4 := M.call α0 [ α3 ] in
+      M.alloc α4 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

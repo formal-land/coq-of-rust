@@ -19,31 +19,37 @@ Module SomeTrait.
 End SomeTrait.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Definition Self : Ty.t := Ty.path "functions_order::SomeType".
-  
   Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("some_trait_bar", InstanceField.Method some_trait_bar);
-      ("some_trait_foo", InstanceField.Method some_trait_foo)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "functions_order::SomeType" in
+    M.IsTraitInstance
+      "functions_order::SomeTrait"
+      Self
+      []
+      [
+        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ]);
+        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ])
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Definition Self : Ty.t := Ty.path "functions_order::OtherType".
-  
   Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("some_trait_foo", InstanceField.Method some_trait_foo);
-      ("some_trait_bar", InstanceField.Method some_trait_bar)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "functions_order::OtherType" in
+    M.IsTraitInstance
+      "functions_order::SomeTrait"
+      Self
+      []
+      [
+        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ]);
+        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ])
+      ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.

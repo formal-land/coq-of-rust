@@ -4,13 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
@@ -33,47 +36,63 @@ End Impl_erc1155_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_erc1155_AccountId.
-  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_erc1155_AccountId.
 
 Module Impl_core_clone_Clone_for_erc1155_AccountId.
-  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_erc1155_AccountId.
 
 Module Impl_core_marker_Copy_for_erc1155_AccountId.
-  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_erc1155_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
-  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::AccountId" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
-  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::AccountId" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
-  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::AccountId" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
@@ -91,35 +110,42 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 (* Enum Error *)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
-  Definition Self : Ty.t := Ty.path "erc1155::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::Error" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_Error.
-  Definition Self : Ty.t := Ty.path "erc1155::Error".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::Error" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc1155_Error.
-  Definition Self : Ty.t := Ty.path "erc1155::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::Error" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_erc1155_Error.
 
 Module Impl_core_cmp_Eq_for_erc1155_Error.
-  Definition Self : Ty.t := Ty.path "erc1155::Error".
-  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::Error" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
@@ -160,11 +186,15 @@ End Impl_erc1155_Env.
 (* Enum Contract *)
 
 Module Impl_core_default_Default_for_erc1155_Contract.
-  Definition Self : Ty.t := Ty.path "erc1155::Contract".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::Contract" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_erc1155_Contract.
 
 Module Impl_erc1155_Contract.
@@ -186,8 +216,6 @@ Module Impl_erc1155_Contract.
 End Impl_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155_for_erc1155_Contract.
-  Definition Self : Ty.t := Ty.path "erc1155::Contract".
-  
   Parameter is_approved_for_all : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
@@ -200,28 +228,39 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   
   Parameter set_approval_for_all : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("is_approved_for_all", InstanceField.Method is_approved_for_all);
-      ("balance_of", InstanceField.Method balance_of);
-      ("safe_transfer_from", InstanceField.Method safe_transfer_from);
-      ("safe_batch_transfer_from",
-        InstanceField.Method safe_batch_transfer_from);
-      ("balance_of_batch", InstanceField.Method balance_of_batch);
-      ("set_approval_for_all", InstanceField.Method set_approval_for_all)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::Contract" in
+    M.IsTraitInstance
+      "erc1155::Erc1155"
+      Self
+      []
+      [
+        ("is_approved_for_all",
+          InstanceField.Method is_approved_for_all [ Self ]);
+        ("balance_of", InstanceField.Method balance_of [ Self ]);
+        ("safe_transfer_from",
+          InstanceField.Method safe_transfer_from [ Self ]);
+        ("safe_batch_transfer_from",
+          InstanceField.Method safe_batch_transfer_from [ Self ]);
+        ("balance_of_batch", InstanceField.Method balance_of_batch [ Self ]);
+        ("set_approval_for_all",
+          InstanceField.Method set_approval_for_all [ Self ])
+      ].
 End Impl_erc1155_Erc1155_for_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
-  Definition Self : Ty.t := Ty.path "erc1155::Contract".
-  
   Parameter on_received : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter on_batch_received : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("on_received", InstanceField.Method on_received);
-      ("on_batch_received", InstanceField.Method on_batch_received)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "erc1155::Contract" in
+    M.IsTraitInstance
+      "erc1155::Erc1155TokenReceiver"
+      Self
+      []
+      [
+        ("on_received", InstanceField.Method on_received [ Self ]);
+        ("on_batch_received", InstanceField.Method on_batch_received [ Self ])
+      ].
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.

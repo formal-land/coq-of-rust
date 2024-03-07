@@ -4,11 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Droppable *)
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Definition Self : Ty.t := Ty.path "drop::Droppable".
-  
   Parameter drop : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("drop", InstanceField.Method drop) ].
+  Axiom Implements :
+    let Self := Ty.path "drop::Droppable" in
+    M.IsTraitInstance
+      "core::ops::drop::Drop"
+      Self
+      []
+      [ ("drop", InstanceField.Method drop [ Self ]) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

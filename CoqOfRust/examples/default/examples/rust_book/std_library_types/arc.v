@@ -97,8 +97,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 :=
-                            (M.var "core::option::Option::Get_Some_0") γ in
+                          let* γ0_0 :=
+                            let* α0 :=
+                              M.var "core::option::Option::Get_Some_0" in
+                            M.pure (α0 γ) in
                           let* apple :=
                             let* α0 :=
                               M.get_method
@@ -118,9 +120,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α1 := M.call α0 [ borrow apple ] in
                             M.alloc α1 in
                           let* _ :=
-                            let* α0 :=
+                            let* α0 := M.var "std::thread::spawn" in
+                            let* α1 :=
                               M.call
-                                (M.var "std::thread::spawn")
+                                α0
                                 [
                                   fun (α0 : Ty.path "unit") =>
                                     (let* α0 := M.alloc α0 in
@@ -130,34 +133,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                         fun γ =>
                                           (let* _ :=
                                             let* _ :=
-                                              let* α0 := M.read (mk_str "") in
-                                              let* α1 := M.read (mk_str "
+                                              let* α0 :=
+                                                M.var
+                                                  "std::io::stdio::_print" in
+                                              let* α1 := M.read (mk_str "") in
+                                              let* α2 := M.read (mk_str "
 ") in
-                                              let* α2 := M.alloc [ α0; α1 ] in
-                                              let* α3 :=
+                                              let* α3 := M.alloc [ α1; α2 ] in
+                                              let* α4 :=
                                                 M.call
                                                   (Ty.path
                                                       "core::fmt::rt::Argument")::["new_debug"]
                                                   [ borrow apple ] in
-                                              let* α4 := M.alloc [ α3 ] in
-                                              let* α5 :=
+                                              let* α5 := M.alloc [ α4 ] in
+                                              let* α6 :=
                                                 M.call
                                                   (Ty.path
                                                       "core::fmt::Arguments")::["new_v1"]
                                                   [
                                                     pointer_coercion
                                                       "Unsize"
-                                                      (borrow α2);
+                                                      (borrow α3);
                                                     pointer_coercion
                                                       "Unsize"
-                                                      (borrow α4)
+                                                      (borrow α5)
                                                   ] in
-                                              let* α6 :=
-                                                M.call
-                                                  (M.var
-                                                    "std::io::stdio::_print")
-                                                  [ α5 ] in
-                                              M.alloc α6 in
+                                              let* α7 := M.call α0 [ α6 ] in
+                                              M.alloc α7 in
                                             M.alloc tt in
                                           let* α0 := M.alloc tt in
                                           M.read α0) :
@@ -165,7 +167,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       ]) :
                                     Ty.tuple []
                                 ] in
-                            M.alloc α0 in
+                            M.alloc α1 in
                           M.alloc tt
                         | _ => M.break_match 
                         end) :
@@ -176,12 +178,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.pure (use α3) in
     let* _ :=
-      let* α0 :=
+      let* α0 := M.var "std::thread::sleep" in
+      let* α1 :=
         M.call
           (Ty.path "core::time::Duration")::["from_secs"]
           [ (Integer.of_Z 1) : Ty.path "u64" ] in
-      let* α1 := M.call (M.var "std::thread::sleep") [ α0 ] in
-      M.alloc α1 in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

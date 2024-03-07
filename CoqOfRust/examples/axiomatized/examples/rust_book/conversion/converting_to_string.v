@@ -4,11 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Circle *)
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Definition Self : Ty.t := Ty.path "converting_to_string::Circle".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "converting_to_string::Circle" in
+    M.IsTraitInstance
+      "core::fmt::Display"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

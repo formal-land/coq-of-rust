@@ -127,14 +127,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 :=
-                          (M.var "core::option::Option::Get_Some_0") γ in
+                        let* γ0_0 :=
+                          let* α0 := M.var "core::option::Option::Get_Some_0" in
+                          M.pure (α0 γ) in
                         let* _ :=
-                          let* α0 :=
-                            M.call
-                              (M.var "scoping_rules_raii::create_box")
-                              [] in
-                          M.alloc α0 in
+                          let* α0 := M.var "scoping_rules_raii::create_box" in
+                          let* α1 := M.call α0 [] in
+                          M.alloc α1 in
                         M.alloc tt
                       | _ => M.break_match 
                       end) :

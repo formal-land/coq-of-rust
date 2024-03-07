@@ -11,9 +11,13 @@ Module BarTrait.
 End BarTrait.
 
 Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-  Definition Self : Ty.t := Ty.path "const_underscore_expression::Bar".
-  
   Parameter show : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("show", InstanceField.Method show) ].
+  Axiom Implements :
+    let Self := Ty.path "const_underscore_expression::Bar" in
+    M.IsTraitInstance
+      "const_underscore_expression::BarTrait"
+      Self
+      []
+      [ ("show", InstanceField.Method show [ Self ]) ].
 End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

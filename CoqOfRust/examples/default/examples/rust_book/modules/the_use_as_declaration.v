@@ -11,15 +11,16 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "called `function()`
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "called `function()`
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -38,15 +39,16 @@ Module deeply.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.read (mk_str "called `deeply::nested::function()`
+            let* α0 := M.var "std::io::stdio::_print" in
+            let* α1 := M.read (mk_str "called `deeply::nested::function()`
 ") in
-            let* α1 := M.alloc [ α0 ] in
-            let* α2 :=
+            let* α2 := M.alloc [ α1 ] in
+            let* α3 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ pointer_coercion "Unsize" (borrow α1) ] in
-            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-            M.alloc α3 in
+                [ pointer_coercion "Unsize" (borrow α2) ] in
+            let* α4 := M.call α0 [ α3 ] in
+            M.alloc α4 in
           M.alloc tt in
         let* α0 := M.alloc tt in
         M.read α0
@@ -81,44 +83,45 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 :=
-        M.call (M.var "the_use_as_declaration::deeply::nested::function") [] in
-      M.alloc α0 in
+      let* α0 := M.var "the_use_as_declaration::deeply::nested::function" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Entering block
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Entering block
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 :=
-          M.call
-            (M.var "the_use_as_declaration::deeply::nested::function")
-            [] in
-        M.alloc α0 in
+        let* α0 := M.var "the_use_as_declaration::deeply::nested::function" in
+        let* α1 := M.call α0 [] in
+        M.alloc α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "Leaving block
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "Leaving block
 ") in
-          let* α1 := M.alloc [ α0 ] in
-          let* α2 :=
+          let* α2 := M.alloc [ α1 ] in
+          let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α1) ] in
-          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-          M.alloc α3 in
+              [ pointer_coercion "Unsize" (borrow α2) ] in
+          let* α4 := M.call α0 [ α3 ] in
+          M.alloc α4 in
         M.alloc tt in
       M.alloc tt in
     let* _ :=
-      let* α0 := M.call (M.var "the_use_as_declaration::function") [] in
-      M.alloc α0 in
+      let* α0 := M.var "the_use_as_declaration::function" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

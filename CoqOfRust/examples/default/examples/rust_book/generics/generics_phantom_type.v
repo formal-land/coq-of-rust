@@ -4,41 +4,34 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct PhantomTuple *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
-  
-  Definition ℐ (A B : Ty.t) : Instance.t := [].
+  Axiom Implements :
+    forall (A B : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ] in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
-  Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ A; B ], [ self; other ] =>
+    | [ Self; A; B ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :=
+      let* α0 := M.var "BinOp::Pure::and" in
+      let* α1 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
           [ (* Self *) A; (* Rhs *) A ] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      let* α3 :=
-        M.call
-          α0
-          [
-            borrow
-              ((M.var "generics_phantom_type::PhantomTuple::Get_0") (deref α1));
-            borrow
-              ((M.var "generics_phantom_type::PhantomTuple::Get_0") (deref α2))
-          ] in
-      let* α4 :=
+      let* α2 := M.var "generics_phantom_type::PhantomTuple::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.var "generics_phantom_type::PhantomTuple::Get_0" in
+      let* α5 := M.read other in
+      let* α6 := M.call α1 [ borrow (α2 (deref α3)); borrow (α4 (deref α5)) ] in
+      let* α7 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -46,65 +39,58 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
             (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
             (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
           ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
-        M.call
-          α4
-          [
-            borrow
-              ((M.var "generics_phantom_type::PhantomTuple::Get_1") (deref α5));
-            borrow
-              ((M.var "generics_phantom_type::PhantomTuple::Get_1") (deref α6))
-          ] in
-      M.pure ((M.var "BinOp::Pure::and") α3 α7)
+      let* α8 := M.var "generics_phantom_type::PhantomTuple::Get_1" in
+      let* α9 := M.read self in
+      let* α10 := M.var "generics_phantom_type::PhantomTuple::Get_1" in
+      let* α11 := M.read other in
+      let* α12 :=
+        M.call α7 [ borrow (α8 (deref α9)); borrow (α10 (deref α11)) ] in
+      M.pure (α0 α6 α12)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (A B : Ty.t) : Instance.t :=
-    [ ("eq", InstanceField.Method (eq A B)) ].
+  Axiom Implements :
+    forall (A B : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ] in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self; A; B ]) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 (* Enum PhantomStruct *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
-  
-  Definition ℐ (A B : Ty.t) : Instance.t := [].
+  Axiom Implements :
+    forall (A B : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ] in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
-  Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ A; B ], [ self; other ] =>
+    | [ Self; A; B ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :=
+      let* α0 := M.var "BinOp::Pure::and" in
+      let* α1 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
           [ (* Self *) A; (* Rhs *) A ] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      let* α3 :=
-        M.call
-          α0
-          [
-            borrow
-              ((M.var "generics_phantom_type::PhantomStruct::Get_first")
-                (deref α1));
-            borrow
-              ((M.var "generics_phantom_type::PhantomStruct::Get_first")
-                (deref α2))
-          ] in
-      let* α4 :=
+      let* α2 := M.var "generics_phantom_type::PhantomStruct::Get_first" in
+      let* α3 := M.read self in
+      let* α4 := M.var "generics_phantom_type::PhantomStruct::Get_first" in
+      let* α5 := M.read other in
+      let* α6 := M.call α1 [ borrow (α2 (deref α3)); borrow (α4 (deref α5)) ] in
+      let* α7 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -112,25 +98,25 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
             (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
             (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
           ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
-        M.call
-          α4
-          [
-            borrow
-              ((M.var "generics_phantom_type::PhantomStruct::Get_phantom")
-                (deref α5));
-            borrow
-              ((M.var "generics_phantom_type::PhantomStruct::Get_phantom")
-                (deref α6))
-          ] in
-      M.pure ((M.var "BinOp::Pure::and") α3 α7)
+      let* α8 := M.var "generics_phantom_type::PhantomStruct::Get_phantom" in
+      let* α9 := M.read self in
+      let* α10 := M.var "generics_phantom_type::PhantomStruct::Get_phantom" in
+      let* α11 := M.read other in
+      let* α12 :=
+        M.call α7 [ borrow (α8 (deref α9)); borrow (α10 (deref α11)) ] in
+      M.pure (α0 α6 α12)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (A B : Ty.t) : Instance.t :=
-    [ ("eq", InstanceField.Method (eq A B)) ].
+  Axiom Implements :
+    forall (A B : Ty.t),
+    let Self :=
+      Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ] in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self; A; B ]) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (*

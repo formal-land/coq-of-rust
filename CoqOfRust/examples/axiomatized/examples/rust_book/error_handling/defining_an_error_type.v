@@ -4,19 +4,27 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct DoubleError *)
 
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
-  Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "defining_an_error_type::DoubleError" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
-  Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "defining_an_error_type::DoubleError" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
@@ -27,11 +35,15 @@ Axiom Result :
       [ T; Ty.path "defining_an_error_type::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
-  Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "defining_an_error_type::DoubleError" in
+    M.IsTraitInstance
+      "core::fmt::Display"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

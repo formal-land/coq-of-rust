@@ -20,24 +20,23 @@ Definition is_divisible_by (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let return_ := M.return_ (R := Ty.path "bool") in
     M.catch_return
       (let* _ :=
-        let* α0 := M.read rhs in
-        let* α1 :=
-          M.alloc
-            ((M.var "BinOp::Pure::eq") α0 ((Integer.of_Z 0) : Ty.path "u32")) in
-        let* α2 := M.read (use α1) in
-        if α2 then
+        let* α0 := M.var "BinOp::Pure::eq" in
+        let* α1 := M.read rhs in
+        let* α2 := M.alloc (α0 α1 ((Integer.of_Z 0) : Ty.path "u32")) in
+        let* α3 := M.read (use α2) in
+        if α3 then
           let* α0 := return_ false in
           let* α1 := M.read α0 in
           let* α2 := never_to_any α1 in
           M.alloc α2
         else
           M.alloc tt in
-      let* α0 := M.read lhs in
-      let* α1 := M.read rhs in
-      let* α2 := (M.var "BinOp::Panic::rem") α0 α1 in
-      let* α0 :=
-        M.alloc
-          ((M.var "BinOp::Pure::eq") α2 ((Integer.of_Z 0) : Ty.path "u32")) in
+      let* α0 := M.var "BinOp::Pure::eq" in
+      let* α1 := M.var "BinOp::Panic::rem" in
+      let* α2 := M.read lhs in
+      let* α3 := M.read rhs in
+      let* α4 := α1 α2 α3 in
+      let* α0 := M.alloc (α0 α4 ((Integer.of_Z 0) : Ty.path "u32")) in
       M.read α0)
   | _, _ => M.impossible
   end.
@@ -59,96 +58,94 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ n ] =>
     let* n := M.alloc n in
-    let* α0 := M.read n in
-    let* α1 :=
-      M.call
-        (M.var "functions::is_divisible_by")
-        [ α0; (Integer.of_Z 15) : Ty.path "u32" ] in
-    let* α2 := M.alloc α1 in
-    let* α3 := M.read (use α2) in
-    let* α4 :=
-      if α3 then
+    let* α0 := M.var "functions::is_divisible_by" in
+    let* α1 := M.read n in
+    let* α2 := M.call α0 [ α1; (Integer.of_Z 15) : Ty.path "u32" ] in
+    let* α3 := M.alloc α2 in
+    let* α4 := M.read (use α3) in
+    let* α5 :=
+      if α4 then
         let* _ :=
           let* _ :=
-            let* α0 := M.read (mk_str "fizzbuzz
+            let* α0 := M.var "std::io::stdio::_print" in
+            let* α1 := M.read (mk_str "fizzbuzz
 ") in
-            let* α1 := M.alloc [ α0 ] in
-            let* α2 :=
+            let* α2 := M.alloc [ α1 ] in
+            let* α3 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ pointer_coercion "Unsize" (borrow α1) ] in
-            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-            M.alloc α3 in
+                [ pointer_coercion "Unsize" (borrow α2) ] in
+            let* α4 := M.call α0 [ α3 ] in
+            M.alloc α4 in
           M.alloc tt in
         M.alloc tt
       else
-        let* α0 := M.read n in
-        let* α1 :=
-          M.call
-            (M.var "functions::is_divisible_by")
-            [ α0; (Integer.of_Z 3) : Ty.path "u32" ] in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.read (use α2) in
-        if α3 then
+        let* α0 := M.var "functions::is_divisible_by" in
+        let* α1 := M.read n in
+        let* α2 := M.call α0 [ α1; (Integer.of_Z 3) : Ty.path "u32" ] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.read (use α3) in
+        if α4 then
           let* _ :=
             let* _ :=
-              let* α0 := M.read (mk_str "fizz
+              let* α0 := M.var "std::io::stdio::_print" in
+              let* α1 := M.read (mk_str "fizz
 ") in
-              let* α1 := M.alloc [ α0 ] in
-              let* α2 :=
+              let* α2 := M.alloc [ α1 ] in
+              let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α1) ] in
-              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-              M.alloc α3 in
+                  [ pointer_coercion "Unsize" (borrow α2) ] in
+              let* α4 := M.call α0 [ α3 ] in
+              M.alloc α4 in
             M.alloc tt in
           M.alloc tt
         else
-          let* α0 := M.read n in
-          let* α1 :=
-            M.call
-              (M.var "functions::is_divisible_by")
-              [ α0; (Integer.of_Z 5) : Ty.path "u32" ] in
-          let* α2 := M.alloc α1 in
-          let* α3 := M.read (use α2) in
-          if α3 then
+          let* α0 := M.var "functions::is_divisible_by" in
+          let* α1 := M.read n in
+          let* α2 := M.call α0 [ α1; (Integer.of_Z 5) : Ty.path "u32" ] in
+          let* α3 := M.alloc α2 in
+          let* α4 := M.read (use α3) in
+          if α4 then
             let* _ :=
               let* _ :=
-                let* α0 := M.read (mk_str "buzz
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "buzz
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt in
             M.alloc tt
           else
             let* _ :=
               let* _ :=
-                let* α0 := M.read (mk_str "") in
-                let* α1 := M.read (mk_str "
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "") in
+                let* α2 := M.read (mk_str "
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow n ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt in
             M.alloc tt in
-    M.read α4
+    M.read α5
   | _, _ => M.impossible
   end.
 
@@ -220,14 +217,15 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 :=
-                          (M.var "core::option::Option::Get_Some_0") γ in
+                        let* γ0_0 :=
+                          let* α0 := M.var "core::option::Option::Get_Some_0" in
+                          M.pure (α0 γ) in
                         let* n := M.copy γ0_0 in
                         let* _ :=
-                          let* α0 := M.read n in
-                          let* α1 :=
-                            M.call (M.var "functions::fizzbuzz") [ α0 ] in
-                          M.alloc α1 in
+                          let* α0 := M.var "functions::fizzbuzz" in
+                          let* α1 := M.read n in
+                          let* α2 := M.call α0 [ α1 ] in
+                          M.alloc α2 in
                         M.alloc tt
                       | _ => M.break_match 
                       end) :
@@ -251,11 +249,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 :=
-        M.call
-          (M.var "functions::fizzbuzz_to")
-          [ (Integer.of_Z 100) : Ty.path "u32" ] in
-      M.alloc α0 in
+      let* α0 := M.var "functions::fizzbuzz_to" in
+      let* α1 := M.call α0 [ (Integer.of_Z 100) : Ty.path "u32" ] in
+      M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

@@ -18,9 +18,11 @@ Definition is_big (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ n ] =>
     let* n := M.alloc n in
-    let* α0 := M.read n in
-    let* α1 := M.read (M.var "constants::THRESHOLD") in
-    M.pure ((M.var "BinOp::Pure::gt") α0 α1)
+    let* α0 := M.var "BinOp::Pure::gt" in
+    let* α1 := M.read n in
+    let* α2 := M.var "constants::THRESHOLD" in
+    let* α3 := M.read α2 in
+    M.pure (α0 α1 α3)
   | _, _ => M.impossible
   end.
 
@@ -45,80 +47,86 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* n := M.alloc ((Integer.of_Z 16) : Ty.path "i32") in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "This is ") in
-        let* α1 := M.read (mk_str "
-") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.read (M.var "constants::LANGUAGE") in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α3 ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
-        let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.read (mk_str "The threshold is ") in
-        let* α1 := M.read (mk_str "
-") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow (M.var "constants::THRESHOLD") ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
-            ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str " is ") in
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "This is ") in
         let* α2 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α0; α1; α2 ] in
-        let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow n ] in
-        let* α5 := M.read n in
-        let* α6 := M.call (M.var "constants::is_big") [ α5 ] in
-        let* α7 := M.alloc α6 in
-        let* α8 := M.read (use α7) in
-        let* α9 :=
-          if α8 then
-            M.pure (mk_str "big")
-          else
-            let* α0 := M.read (mk_str "small") in
-            M.alloc α0 in
-        let* α10 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α9 ] in
-        let* α11 := M.alloc [ α4; α10 ] in
-        let* α12 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "constants::LANGUAGE" in
+        let* α5 := M.read α4 in
+        let* α6 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
               pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α11)
+              pointer_coercion "Unsize" (borrow α7)
             ] in
-        let* α13 := M.call (M.var "std::io::stdio::_print") [ α12 ] in
-        M.alloc α13 in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "The threshold is ") in
+        let* α2 := M.read (mk_str "
+") in
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 := M.var "constants::THRESHOLD" in
+        let* α5 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
+        let* α6 := M.alloc [ α5 ] in
+        let* α7 :=
+          M.call
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call α0 [ α7 ] in
+        M.alloc α8 in
+      M.alloc tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str " is ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc [ α1; α2; α3 ] in
+        let* α5 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow n ] in
+        let* α6 := M.var "constants::is_big" in
+        let* α7 := M.read n in
+        let* α8 := M.call α6 [ α7 ] in
+        let* α9 := M.alloc α8 in
+        let* α10 := M.read (use α9) in
+        let* α11 :=
+          if α10 then
+            M.pure (mk_str "big")
+          else
+            let* α0 := M.read (mk_str "small") in
+            M.alloc α0 in
+        let* α12 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α11 ] in
+        let* α13 := M.alloc [ α5; α12 ] in
+        let* α14 :=
+          M.call
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α13)
+            ] in
+        let* α15 := M.call α0 [ α14 ] in
+        M.alloc α15 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

@@ -4,20 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Choice *)
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -36,32 +34,42 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Choice") in
-      let* α2 := M.read self in
-      let* α3 :=
-        M.alloc (borrow ((M.var "subtle::Choice::Get_0") (deref α2))) in
+      let* α2 := M.var "subtle::Choice::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow (α2 (deref α3))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice.
@@ -76,15 +84,14 @@ Module Impl_subtle_Choice.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "subtle::Choice::Get_0") (deref α0))
+      let* α0 := M.var "subtle::Choice::Get_0" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
 End Impl_subtle_Choice.
 
 Module Impl_core_convert_From_subtle_Choice_for_bool.
-  Definition Self : Ty.t := Ty.path "bool".
-  
   (*
       fn from(source: Choice) -> bool {
           debug_assert!((source.0 == 0u8) | (source.0 == 1u8));
@@ -93,53 +100,60 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ source ] =>
+    | [ Self ], [ source ] =>
       let* source := M.alloc source in
       let* _ :=
         let* α0 := M.alloc true in
         let* α1 := M.read (use α0) in
         if α1 then
           let* _ :=
-            let* α0 := M.read ((M.var "subtle::Choice::Get_0") source) in
-            let* α1 := M.read ((M.var "subtle::Choice::Get_0") source) in
-            let* α2 :=
+            let* α0 := M.var "UnOp::not" in
+            let* α1 := M.var "BinOp::Pure::bit_or" in
+            let* α2 := M.var "BinOp::Pure::eq" in
+            let* α3 := M.var "subtle::Choice::Get_0" in
+            let* α4 := M.read (α3 source) in
+            let* α5 := M.var "BinOp::Pure::eq" in
+            let* α6 := M.var "subtle::Choice::Get_0" in
+            let* α7 := M.read (α6 source) in
+            let* α8 :=
               M.alloc
-                ((M.var "UnOp::not")
-                  ((M.var "BinOp::Pure::bit_or")
-                    ((M.var "BinOp::Pure::eq")
-                      α0
-                      ((Integer.of_Z 0) : Ty.path "u8"))
-                    ((M.var "BinOp::Pure::eq")
-                      α1
-                      ((Integer.of_Z 1) : Ty.path "u8")))) in
-            let* α3 := M.read (use α2) in
-            if α3 then
-              let* α0 :=
+                (α0
+                  (α1
+                    (α2 α4 ((Integer.of_Z 0) : Ty.path "u8"))
+                    (α5 α7 ((Integer.of_Z 1) : Ty.path "u8")))) in
+            let* α9 := M.read (use α8) in
+            if α9 then
+              let* α0 := M.var "core::panicking::panic" in
+              let* α1 :=
                 M.read
                   (mk_str
                     "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)") in
-              let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-              let* α2 := never_to_any α1 in
-              M.alloc α2
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := never_to_any α2 in
+              M.alloc α3
             else
               M.alloc tt in
           M.alloc tt
         else
           M.alloc tt in
-      let* α0 := M.read ((M.var "subtle::Choice::Get_0") source) in
-      let* α0 :=
-        M.alloc
-          ((M.var "BinOp::Pure::ne") α0 ((Integer.of_Z 0) : Ty.path "u8")) in
+      let* α0 := M.var "BinOp::Pure::ne" in
+      let* α1 := M.var "subtle::Choice::Get_0" in
+      let* α2 := M.read (α1 source) in
+      let* α0 := M.alloc (α0 α2 ((Integer.of_Z 0) : Ty.path "u8")) in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "bool" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "subtle::Choice" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       type Output = Choice;
   *)
@@ -152,7 +166,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   *)
   Definition bitand (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; rhs ] =>
+    | [ Self ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -160,19 +174,25 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read ((M.var "subtle::Choice::Get_0") self) in
-      let* α2 := M.read ((M.var "subtle::Choice::Get_0") rhs) in
-      M.call α0 [ (M.var "BinOp::Pure::bit_and") α1 α2 ]
+      let* α1 := M.var "BinOp::Pure::bit_and" in
+      let* α2 := M.var "subtle::Choice::Get_0" in
+      let* α3 := M.read (α2 self) in
+      let* α4 := M.var "subtle::Choice::Get_0" in
+      let* α5 := M.read (α4 rhs) in
+      M.call α0 [ α1 α3 α5 ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitAnd"
+      Self
+      []
+      [ ("Output", TODO); ("bitand", InstanceField.Method bitand [ Self ]) ].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       fn bitand_assign(&mut self, rhs: Choice) {
           *self = *self & rhs;
@@ -180,7 +200,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   *)
   Definition bitand_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; rhs ] =>
+    | [ Self ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* _ :=
@@ -203,13 +223,16 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("bitand_assign", InstanceField.Method bitand_assign) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitAndAssign"
+      Self
+      []
+      [ ("bitand_assign", InstanceField.Method bitand_assign [ Self ]) ].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       type Output = Choice;
   *)
@@ -222,7 +245,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   *)
   Definition bitor (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; rhs ] =>
+    | [ Self ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -230,19 +253,25 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read ((M.var "subtle::Choice::Get_0") self) in
-      let* α2 := M.read ((M.var "subtle::Choice::Get_0") rhs) in
-      M.call α0 [ (M.var "BinOp::Pure::bit_or") α1 α2 ]
+      let* α1 := M.var "BinOp::Pure::bit_or" in
+      let* α2 := M.var "subtle::Choice::Get_0" in
+      let* α3 := M.read (α2 self) in
+      let* α4 := M.var "subtle::Choice::Get_0" in
+      let* α5 := M.read (α4 rhs) in
+      M.call α0 [ α1 α3 α5 ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitOr"
+      Self
+      []
+      [ ("Output", TODO); ("bitor", InstanceField.Method bitor [ Self ]) ].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       fn bitor_assign(&mut self, rhs: Choice) {
           *self = *self | rhs;
@@ -250,7 +279,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   *)
   Definition bitor_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; rhs ] =>
+    | [ Self ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* _ :=
@@ -273,13 +302,16 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("bitor_assign", InstanceField.Method bitor_assign) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitOrAssign"
+      Self
+      []
+      [ ("bitor_assign", InstanceField.Method bitor_assign [ Self ]) ].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       type Output = Choice;
   *)
@@ -292,7 +324,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   *)
   Definition bitxor (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; rhs ] =>
+    | [ Self ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -300,19 +332,25 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read ((M.var "subtle::Choice::Get_0") self) in
-      let* α2 := M.read ((M.var "subtle::Choice::Get_0") rhs) in
-      M.call α0 [ (M.var "BinOp::Pure::bit_xor") α1 α2 ]
+      let* α1 := M.var "BinOp::Pure::bit_xor" in
+      let* α2 := M.var "subtle::Choice::Get_0" in
+      let* α3 := M.read (α2 self) in
+      let* α4 := M.var "subtle::Choice::Get_0" in
+      let* α5 := M.read (α4 rhs) in
+      M.call α0 [ α1 α3 α5 ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitXor"
+      Self
+      []
+      [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor [ Self ]) ].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       fn bitxor_assign(&mut self, rhs: Choice) {
           *self = *self ^ rhs;
@@ -320,7 +358,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   *)
   Definition bitxor_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; rhs ] =>
+    | [ Self ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* _ :=
@@ -343,13 +381,16 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitXorAssign"
+      Self
+      []
+      [ ("bitxor_assign", InstanceField.Method bitxor_assign [ Self ]) ].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       type Output = Choice;
   *)
@@ -362,26 +403,28 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   *)
   Definition not (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_method
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read ((M.var "subtle::Choice::Get_0") self) in
-      M.call
-        α0
-        [
-          (M.var "BinOp::Pure::bit_and")
-            ((Integer.of_Z 1) : Ty.path "u8")
-            ((M.var "UnOp::not") α1)
-        ]
+      let* α1 := M.var "BinOp::Pure::bit_and" in
+      let* α2 := M.var "UnOp::not" in
+      let* α3 := M.var "subtle::Choice::Get_0" in
+      let* α4 := M.read (α3 self) in
+      M.call α0 [ α1 ((Integer.of_Z 1) : Ty.path "u8") (α2 α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("not", InstanceField.Method not) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::Not"
+      Self
+      []
+      [ ("Output", TODO); ("not", InstanceField.Method not [ Self ]) ].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 (*
@@ -410,42 +453,42 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (use α0) in
       if α1 then
         let* _ :=
-          let* α0 := M.read input in
-          let* α1 := M.read input in
-          let* α2 :=
+          let* α0 := M.var "UnOp::not" in
+          let* α1 := M.var "BinOp::Pure::bit_or" in
+          let* α2 := M.var "BinOp::Pure::eq" in
+          let* α3 := M.read input in
+          let* α4 := M.var "BinOp::Pure::eq" in
+          let* α5 := M.read input in
+          let* α6 :=
             M.alloc
-              ((M.var "UnOp::not")
-                ((M.var "BinOp::Pure::bit_or")
-                  ((M.var "BinOp::Pure::eq")
-                    α0
-                    ((Integer.of_Z 0) : Ty.path "u8"))
-                  ((M.var "BinOp::Pure::eq")
-                    α1
-                    ((Integer.of_Z 1) : Ty.path "u8")))) in
-          let* α3 := M.read (use α2) in
-          if α3 then
-            let* α0 :=
+              (α0
+                (α1
+                  (α2 α3 ((Integer.of_Z 0) : Ty.path "u8"))
+                  (α4 α5 ((Integer.of_Z 1) : Ty.path "u8")))) in
+          let* α7 := M.read (use α6) in
+          if α7 then
+            let* α0 := M.var "core::panicking::panic" in
+            let* α1 :=
               M.read
                 (mk_str "assertion failed: (input == 0u8) | (input == 1u8)") in
-            let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-            let* α2 := never_to_any α1 in
-            M.alloc α2
+            let* α2 := M.call α0 [ α1 ] in
+            let* α3 := never_to_any α2 in
+            M.alloc α3
           else
             M.alloc tt in
         M.alloc tt
       else
         M.alloc tt in
-    let* α0 := M.alloc (addr_of input) in
-    let* α1 := M.read (use α0) in
-    let* α2 := M.call (M.var "core::ptr::read_volatile") [ α1 ] in
-    let* α0 := M.alloc α2 in
+    let* α0 := M.var "core::ptr::read_volatile" in
+    let* α1 := M.alloc (addr_of input) in
+    let* α2 := M.read (use α1) in
+    let* α3 := M.call α0 [ α2 ] in
+    let* α0 := M.alloc α3 in
     M.read α0
   | _, _ => M.impossible
   end.
 
 Module Impl_core_convert_From_u8_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       fn from(input: u8) -> Choice {
           // Our goal is to prevent the compiler from inferring that the value held inside the
@@ -455,15 +498,22 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ input ] =>
+    | [ Self ], [ input ] =>
       let* input := M.alloc input in
-      let* α0 := M.read input in
-      let* α1 := M.call (M.var "subtle::black_box") [ α0 ] in
-      M.pure (subtle.Choice.Build_t α1)
+      let* α0 := M.var "subtle::black_box" in
+      let* α1 := M.read input in
+      let* α2 := M.call α0 [ α1 ] in
+      M.pure (subtle.Choice.Build_t α2)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "u8" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
@@ -492,8 +542,6 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_slice_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
-  
   (*
       fn ct_eq(&self, _rhs: &[T]) -> Choice {
           let len = self.len();
@@ -517,7 +565,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ self; _rhs ] =>
+    | [ Self; T ], [ self; _rhs ] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
       let return_ := M.return_ (R := Ty.path "subtle::Choice") in
@@ -528,13 +576,14 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
             M.call (Ty.apply (Ty.path "slice") [ T ])::["len"] [ α0 ] in
           M.alloc α1 in
         let* _ :=
-          let* α0 := M.read len in
-          let* α1 := M.read _rhs in
-          let* α2 :=
-            M.call (Ty.apply (Ty.path "slice") [ T ])::["len"] [ α1 ] in
-          let* α3 := M.alloc ((M.var "BinOp::Pure::ne") α0 α2) in
-          let* α4 := M.read (use α3) in
-          if α4 then
+          let* α0 := M.var "BinOp::Pure::ne" in
+          let* α1 := M.read len in
+          let* α2 := M.read _rhs in
+          let* α3 :=
+            M.call (Ty.apply (Ty.path "slice") [ T ])::["len"] [ α2 ] in
+          let* α4 := M.alloc (α0 α1 α3) in
+          let* α5 := M.read (use α4) in
+          if α5 then
             let* α0 :=
               M.get_method
                 "core::convert::From"
@@ -624,8 +673,10 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                             (let* α0 := M.read γ in
                             match α0 with
                             | core.option.Option.Some _ =>
-                              let γ0_0 :=
-                                (M.var "core::option::Option::Get_Some_0") γ in
+                              let* γ0_0 :=
+                                let* α0 :=
+                                  M.var "core::option::Option::Get_Some_0" in
+                                M.pure (α0 γ) in
                               let* α0 := M.read γ0_0 in
                               match α0 with
                               | (_, _) =>
@@ -635,23 +686,23 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                 let* bi := M.copy γ1_1 in
                                 let* _ :=
                                   let β := x in
-                                  let* α0 := M.read β in
-                                  let* α1 :=
+                                  let* α0 := M.var "assign" in
+                                  let* α1 := M.var "BinOp::Pure::bit_and" in
+                                  let* α2 := M.read β in
+                                  let* α3 :=
                                     M.get_method
                                       "subtle::ConstantTimeEq"
                                       "ct_eq"
                                       [ (* Self *) T ] in
-                                  let* α2 := M.read ai in
-                                  let* α3 := M.read bi in
-                                  let* α4 := M.call α1 [ α2; α3 ] in
-                                  let* α5 := M.alloc α4 in
-                                  let* α6 :=
+                                  let* α4 := M.read ai in
+                                  let* α5 := M.read bi in
+                                  let* α6 := M.call α3 [ α4; α5 ] in
+                                  let* α7 := M.alloc α6 in
+                                  let* α8 :=
                                     M.call
                                       (Ty.path "subtle::Choice")::["unwrap_u8"]
-                                      [ borrow α5 ] in
-                                  (M.var "assign")
-                                    β
-                                    ((M.var "BinOp::Pure::bit_and") α0 α6) in
+                                      [ borrow α7 ] in
+                                  α0 β (α1 α2 α8) in
                                 M.alloc tt
                               end
                             | _ => M.break_match 
@@ -674,13 +725,17 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "slice") [ T ] in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self; T ]) ].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       fn ct_eq(&self, rhs: &Choice) -> Choice {
           !( *self ^ *rhs)
@@ -688,7 +743,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; rhs ] =>
+    | [ Self ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -713,12 +768,16 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -734,7 +793,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -751,40 +810,45 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
         let* α3 := M.call α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.read x in
-        let* α2 := M.call (Ty.path "u8")::["wrapping_neg"] [ α1 ] in
-        let* α3 :=
-          (M.var "BinOp::Panic::sub")
+        let* α0 := M.var "BinOp::Panic::shr" in
+        let* α1 := M.var "BinOp::Pure::bit_or" in
+        let* α2 := M.read x in
+        let* α3 := M.read x in
+        let* α4 := M.call (Ty.path "u8")::["wrapping_neg"] [ α3 ] in
+        let* α5 := M.var "BinOp::Panic::sub" in
+        let* α6 :=
+          α5
             ((Integer.of_Z 8) : Ty.path "i32")
             ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α4 :=
-          (M.var "BinOp::Panic::shr")
-            ((M.var "BinOp::Pure::bit_or") α0 α2)
-            α3 in
-        M.alloc α4 in
+        let* α7 := α0 (α1 α2 α4) α6 in
+        M.alloc α7 in
       let* α0 :=
         M.get_method
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
-      let* α3 := M.read (use α2) in
-      let* α4 := M.alloc ((M.var "BinOp::Pure::bit_xor") α1 α3) in
-      let* α5 := M.read (use α4) in
-      let* α6 := M.call α0 [ α5 ] in
-      let* α0 := M.alloc α6 in
+      let* α1 := M.var "BinOp::Pure::bit_xor" in
+      let* α2 := M.read y in
+      let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
+      let* α4 := M.read (use α3) in
+      let* α5 := M.alloc (α1 α2 α4) in
+      let* α6 := M.read (use α5) in
+      let* α7 := M.call α0 [ α6 ] in
+      let* α0 := M.alloc α7 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
-  Definition Self : Ty.t := Ty.path "i8".
-  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -793,7 +857,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -811,12 +875,16 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i8" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -832,7 +900,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -849,39 +917,43 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
         let* α3 := M.call α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.read x in
-        let* α2 := M.call (Ty.path "u16")::["wrapping_neg"] [ α1 ] in
-        let* α3 :=
-          (M.var "BinOp::Panic::sub")
+        let* α0 := M.var "BinOp::Panic::shr" in
+        let* α1 := M.var "BinOp::Pure::bit_or" in
+        let* α2 := M.read x in
+        let* α3 := M.read x in
+        let* α4 := M.call (Ty.path "u16")::["wrapping_neg"] [ α3 ] in
+        let* α5 := M.var "BinOp::Panic::sub" in
+        let* α6 :=
+          α5
             ((Integer.of_Z 16) : Ty.path "i32")
             ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α4 :=
-          (M.var "BinOp::Panic::shr")
-            ((M.var "BinOp::Pure::bit_or") α0 α2)
-            α3 in
-        M.alloc α4 in
+        let* α7 := α0 (α1 α2 α4) α6 in
+        M.alloc α7 in
       let* α0 :=
         M.get_method
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc ((Integer.of_Z 1) : Ty.path "u16") in
-      let* α3 := M.read (use α2) in
-      let* α4 :=
-        M.call α0 [ rust_cast ((M.var "BinOp::Pure::bit_xor") α1 α3) ] in
-      let* α0 := M.alloc α4 in
+      let* α1 := M.var "BinOp::Pure::bit_xor" in
+      let* α2 := M.read y in
+      let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u16") in
+      let* α4 := M.read (use α3) in
+      let* α5 := M.call α0 [ rust_cast (α1 α2 α4) ] in
+      let* α0 := M.alloc α5 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
-  Definition Self : Ty.t := Ty.path "i16".
-  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -890,7 +962,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -908,12 +980,16 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i16" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -929,7 +1005,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -946,39 +1022,43 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
         let* α3 := M.call α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.read x in
-        let* α2 := M.call (Ty.path "u32")::["wrapping_neg"] [ α1 ] in
-        let* α3 :=
-          (M.var "BinOp::Panic::sub")
+        let* α0 := M.var "BinOp::Panic::shr" in
+        let* α1 := M.var "BinOp::Pure::bit_or" in
+        let* α2 := M.read x in
+        let* α3 := M.read x in
+        let* α4 := M.call (Ty.path "u32")::["wrapping_neg"] [ α3 ] in
+        let* α5 := M.var "BinOp::Panic::sub" in
+        let* α6 :=
+          α5
             ((Integer.of_Z 32) : Ty.path "i32")
             ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α4 :=
-          (M.var "BinOp::Panic::shr")
-            ((M.var "BinOp::Pure::bit_or") α0 α2)
-            α3 in
-        M.alloc α4 in
+        let* α7 := α0 (α1 α2 α4) α6 in
+        M.alloc α7 in
       let* α0 :=
         M.get_method
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc ((Integer.of_Z 1) : Ty.path "u32") in
-      let* α3 := M.read (use α2) in
-      let* α4 :=
-        M.call α0 [ rust_cast ((M.var "BinOp::Pure::bit_xor") α1 α3) ] in
-      let* α0 := M.alloc α4 in
+      let* α1 := M.var "BinOp::Pure::bit_xor" in
+      let* α2 := M.read y in
+      let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u32") in
+      let* α4 := M.read (use α3) in
+      let* α5 := M.call α0 [ rust_cast (α1 α2 α4) ] in
+      let* α0 := M.alloc α5 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
-  Definition Self : Ty.t := Ty.path "i32".
-  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -987,7 +1067,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -1005,12 +1085,16 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i32" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -1026,7 +1110,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -1043,39 +1127,43 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
         let* α3 := M.call α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.read x in
-        let* α2 := M.call (Ty.path "u64")::["wrapping_neg"] [ α1 ] in
-        let* α3 :=
-          (M.var "BinOp::Panic::sub")
+        let* α0 := M.var "BinOp::Panic::shr" in
+        let* α1 := M.var "BinOp::Pure::bit_or" in
+        let* α2 := M.read x in
+        let* α3 := M.read x in
+        let* α4 := M.call (Ty.path "u64")::["wrapping_neg"] [ α3 ] in
+        let* α5 := M.var "BinOp::Panic::sub" in
+        let* α6 :=
+          α5
             ((Integer.of_Z 64) : Ty.path "i32")
             ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α4 :=
-          (M.var "BinOp::Panic::shr")
-            ((M.var "BinOp::Pure::bit_or") α0 α2)
-            α3 in
-        M.alloc α4 in
+        let* α7 := α0 (α1 α2 α4) α6 in
+        M.alloc α7 in
       let* α0 :=
         M.get_method
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc ((Integer.of_Z 1) : Ty.path "u64") in
-      let* α3 := M.read (use α2) in
-      let* α4 :=
-        M.call α0 [ rust_cast ((M.var "BinOp::Pure::bit_xor") α1 α3) ] in
-      let* α0 := M.alloc α4 in
+      let* α1 := M.var "BinOp::Pure::bit_xor" in
+      let* α2 := M.read y in
+      let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u64") in
+      let* α4 := M.read (use α3) in
+      let* α5 := M.call α0 [ rust_cast (α1 α2 α4) ] in
+      let* α0 := M.alloc α5 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
-  Definition Self : Ty.t := Ty.path "i64".
-  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -1084,7 +1172,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -1102,12 +1190,16 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i64" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
-  Definition Self : Ty.t := Ty.path "usize".
-  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -1123,7 +1215,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -1140,40 +1232,44 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
         let* α3 := M.call α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
-        let* α0 := M.read x in
-        let* α1 := M.read x in
-        let* α2 := M.call (Ty.path "usize")::["wrapping_neg"] [ α1 ] in
-        let* α3 := M.call (M.var "core::mem::size_of") [] in
-        let* α4 :=
-          (M.var "BinOp::Panic::mul") α3 ((Integer.of_Z 8) : Ty.path "usize") in
-        let* α5 :=
-          (M.var "BinOp::Panic::sub") α4 ((Integer.of_Z 1) : Ty.path "usize") in
-        let* α6 :=
-          (M.var "BinOp::Panic::shr")
-            ((M.var "BinOp::Pure::bit_or") α0 α2)
-            α5 in
-        M.alloc α6 in
+        let* α0 := M.var "BinOp::Panic::shr" in
+        let* α1 := M.var "BinOp::Pure::bit_or" in
+        let* α2 := M.read x in
+        let* α3 := M.read x in
+        let* α4 := M.call (Ty.path "usize")::["wrapping_neg"] [ α3 ] in
+        let* α5 := M.var "BinOp::Panic::sub" in
+        let* α6 := M.var "BinOp::Panic::mul" in
+        let* α7 := M.var "core::mem::size_of" in
+        let* α8 := M.call α7 [] in
+        let* α9 := α6 α8 ((Integer.of_Z 8) : Ty.path "usize") in
+        let* α10 := α5 α9 ((Integer.of_Z 1) : Ty.path "usize") in
+        let* α11 := α0 (α1 α2 α4) α10 in
+        M.alloc α11 in
       let* α0 :=
         M.get_method
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read y in
-      let* α2 := M.alloc ((Integer.of_Z 1) : Ty.path "usize") in
-      let* α3 := M.read (use α2) in
-      let* α4 :=
-        M.call α0 [ rust_cast ((M.var "BinOp::Pure::bit_xor") α1 α3) ] in
-      let* α0 := M.alloc α4 in
+      let* α1 := M.var "BinOp::Pure::bit_xor" in
+      let* α2 := M.read y in
+      let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "usize") in
+      let* α4 := M.read (use α3) in
+      let* α5 := M.call α0 [ rust_cast (α1 α2 α4) ] in
+      let* α0 := M.alloc α5 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "usize" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
-  Definition Self : Ty.t := Ty.path "isize".
-  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -1182,7 +1278,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -1200,7 +1296,13 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "isize" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
@@ -1270,8 +1372,6 @@ Module ConditionallySelectable.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1282,15 +1382,16 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -1300,8 +1401,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             (* Rhs *) Ty.path "u8"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -1309,11 +1411,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1328,32 +1430,31 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -1371,55 +1472,64 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
-  Definition Self : Ty.t := Ty.path "i8".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1430,16 +1540,17 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -1449,8 +1560,9 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             (* Rhs *) Ty.path "i8"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -1458,11 +1570,11 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i8" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i8" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1477,33 +1589,32 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -1521,56 +1632,65 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i8" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1581,15 +1701,16 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -1599,8 +1720,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             (* Rhs *) Ty.path "u16"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -1608,11 +1730,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1627,32 +1749,31 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -1670,55 +1791,64 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
-  Definition Self : Ty.t := Ty.path "i16".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1729,16 +1859,17 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -1748,8 +1879,9 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             (* Rhs *) Ty.path "i16"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -1757,11 +1889,11 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i16" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i16" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1776,33 +1908,32 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -1820,56 +1951,65 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i16" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1880,15 +2020,16 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -1898,8 +2039,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             (* Rhs *) Ty.path "u32"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -1907,11 +2049,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1926,32 +2068,31 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -1969,55 +2110,64 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
-  Definition Self : Ty.t := Ty.path "i32".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -2028,16 +2178,17 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -2047,8 +2198,9 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             (* Rhs *) Ty.path "i32"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -2056,11 +2208,11 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -2075,33 +2227,32 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -2119,56 +2270,65 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i32" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -2179,15 +2339,16 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -2197,8 +2358,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             (* Rhs *) Ty.path "u64"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -2206,11 +2368,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -2225,32 +2387,31 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -2268,55 +2429,64 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        M.alloc (rust_cast α1) in
+        let* α2 := α0 (rust_cast α1) in
+        M.alloc (rust_cast α2) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
-  Definition Self : Ty.t := Ty.path "i64".
-  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -2327,16 +2497,17 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* α0 :=
         M.get_method
           "core::ops::bit::BitXor"
@@ -2346,8 +2517,9 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             (* Rhs *) Ty.path "i64"
           ] in
       let* α1 := M.read a in
-      let* α2 := M.read mask in
-      let* α3 :=
+      let* α2 := M.var "BinOp::Pure::bit_and" in
+      let* α3 := M.read mask in
+      let* α4 :=
         M.get_method
           "core::ops::bit::BitXor"
           "bitxor"
@@ -2355,11 +2527,11 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i64" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i64" ]
           ] in
-      let* α4 := M.read a in
-      let* α5 := M.read b in
-      let* α6 := M.call α3 [ α4; α5 ] in
-      let* α7 := M.call α0 [ α1; (M.var "BinOp::Pure::bit_and") α2 α6 ] in
-      let* α0 := M.alloc α7 in
+      let* α5 := M.read a in
+      let* α6 := M.read b in
+      let* α7 := M.call α4 [ α5; α6 ] in
+      let* α8 := M.call α0 [ α1; α2 α3 α7 ] in
+      let* α0 := M.alloc α8 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -2374,33 +2546,32 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other; choice ] =>
+    | [ Self ], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read mask in
-        let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
-        let* α4 := M.read other in
-        let* α5 := M.read (deref α4) in
-        (M.var "assign")
-          β
-          ((M.var "BinOp::Pure::bit_xor")
-            α0
-            ((M.var "BinOp::Pure::bit_and")
-              α1
-              ((M.var "BinOp::Pure::bit_xor") α3 α5))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.var "BinOp::Pure::bit_and" in
+        let* α4 := M.read mask in
+        let* α5 := M.var "BinOp::Pure::bit_xor" in
+        let* α6 := M.read self in
+        let* α7 := M.read (deref α6) in
+        let* α8 := M.read other in
+        let* α9 := M.read (deref α8) in
+        α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -2418,56 +2589,65 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
       let* mask :=
-        let* α0 :=
+        let* α0 := M.var "UnOp::neg" in
+        let* α1 :=
           M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
-        let* α1 := (M.var "UnOp::neg") (rust_cast α0) in
-        let* α2 := M.alloc α1 in
-        M.copy (use α2) in
+        let* α2 := α0 (rust_cast α1) in
+        let* α3 := M.alloc α2 in
+        M.copy (use α3) in
       let* t :=
-        let* α0 := M.read mask in
-        let* α1 := M.read a in
-        let* α2 := M.read (deref α1) in
-        let* α3 := M.read b in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read mask in
+        let* α2 := M.var "BinOp::Pure::bit_xor" in
+        let* α3 := M.read a in
         let* α4 := M.read (deref α3) in
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α0
-            ((M.var "BinOp::Pure::bit_xor") α2 α4)) in
+        let* α5 := M.read b in
+        let* α6 := M.read (deref α5) in
+        M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
         let* β :=
           let* α0 := M.read a in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* _ :=
         let* β :=
           let* α0 := M.read b in
           M.pure (deref α0) in
-        let* α0 := M.read β in
-        let* α1 := M.read t in
-        (M.var "assign") β ((M.var "BinOp::Pure::bit_xor") α0 α1) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Pure::bit_xor" in
+        let* α2 := M.read β in
+        let* α3 := M.read t in
+        α0 β (α1 α2 α3) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i64" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
           Choice(u8::conditional_select(&a.0, &b.0, choice))
@@ -2475,7 +2655,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ a; b; choice ] =>
+    | [ Self ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2484,23 +2664,25 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
           "subtle::ConditionallySelectable"
           "conditional_select"
           [ (* Self *) Ty.path "u8" ] in
-      let* α1 := M.read a in
-      let* α2 := M.read b in
-      let* α3 := M.read choice in
-      let* α4 :=
-        M.call
-          α0
-          [
-            borrow ((M.var "subtle::Choice::Get_0") (deref α1));
-            borrow ((M.var "subtle::Choice::Get_0") (deref α2));
-            α3
-          ] in
-      M.pure (subtle.Choice.Build_t α4)
+      let* α1 := M.var "subtle::Choice::Get_0" in
+      let* α2 := M.read a in
+      let* α3 := M.var "subtle::Choice::Get_0" in
+      let* α4 := M.read b in
+      let* α5 := M.read choice in
+      let* α6 :=
+        M.call α0 [ borrow (α1 (deref α2)); borrow (α3 (deref α4)); α5 ] in
+      M.pure (subtle.Choice.Build_t α6)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("conditional_select", InstanceField.Method conditional_select) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [ ("conditional_select", InstanceField.Method conditional_select [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 (* Trait *)
@@ -2509,8 +2691,6 @@ Module ConditionallyNegatable.
 End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
-  Definition Self (T : Ty.t) : Ty.t := T.
-  
   (*
       fn conditional_negate(&mut self, choice: Choice) {
           // Need to cast to eliminate mutability
@@ -2520,7 +2700,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
   *)
   Definition conditional_negate (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ self; choice ] =>
+    | [ Self; T ], [ self; choice ] =>
       let* self := M.alloc self in
       let* choice := M.alloc choice in
       let* self_neg :=
@@ -2549,100 +2729,107 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("conditional_negate", InstanceField.Method (conditional_negate T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := T in
+    M.IsTraitInstance
+      "subtle::ConditionallyNegatable"
+      Self
+      []
+      [
+        ("conditional_negate",
+          InstanceField.Method conditional_negate [ Self; T ])
+      ].
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 (* Enum CtOption *)
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ self ] =>
+    | [ Self; T ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.get_method "core::clone::Clone" "clone" [ (* Self *) T ] in
-      let* α1 := M.read self in
-      let* α2 :=
-        M.call
-          α0
-          [ borrow ((M.var "subtle::CtOption::Get_value") (deref α1)) ] in
-      let* α3 :=
+      let* α1 := M.var "subtle::CtOption::Get_value" in
+      let* α2 := M.read self in
+      let* α3 := M.call α0 [ borrow (α1 (deref α2)) ] in
+      let* α4 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "subtle::Choice" ] in
-      let* α4 := M.read self in
-      let* α5 :=
-        M.call
-          α3
-          [ borrow ((M.var "subtle::CtOption::Get_is_some") (deref α4)) ] in
+      let* α5 := M.var "subtle::CtOption::Get_is_some" in
+      let* α6 := M.read self in
+      let* α7 := M.call α4 [ borrow (α5 (deref α6)) ] in
       M.pure
         (Value.StructRecord
           "subtle::CtOption"
-          [ ("value", α2); ("is_some", α5) ])
+          [ ("value", α3); ("is_some", α7) ])
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("clone", InstanceField.Method (clone T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self; T ]) ].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
-  Definition ℐ (T : Ty.t) : Instance.t := [].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ self; f ] =>
+    | [ Self; T ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "CtOption") in
       let* α2 := M.read (mk_str "value") in
-      let* α3 := M.read self in
-      let* α4 := M.read (mk_str "is_some") in
-      let* α5 := M.read self in
-      let* α6 :=
-        M.alloc (borrow ((M.var "subtle::CtOption::Get_is_some") (deref α5))) in
+      let* α3 := M.var "subtle::CtOption::Get_value" in
+      let* α4 := M.read self in
+      let* α5 := M.read (mk_str "is_some") in
+      let* α6 := M.var "subtle::CtOption::Get_is_some" in
+      let* α7 := M.read self in
+      let* α8 := M.alloc (borrow (α6 (deref α7))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion
-            "Unsize"
-            (borrow ((M.var "subtle::CtOption::Get_value") (deref α3)));
-          α4;
-          pointer_coercion "Unsize" (borrow α6)
+          pointer_coercion "Unsize" (borrow (α3 (deref α4)));
+          α5;
+          pointer_coercion "Unsize" (borrow α8)
         ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("fmt", InstanceField.Method (fmt T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self; T ]) ].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "core::option::Option") [ T ].
-  
   (*
       fn from(source: CtOption<T>) -> Option<T> {
           if source.is_some().unwrap_u8() == 1u8 {
@@ -2654,31 +2841,37 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ source ] =>
+    | [ Self; T ], [ source ] =>
       let* source := M.alloc source in
-      let* α0 :=
+      let* α0 := M.var "BinOp::Pure::eq" in
+      let* α1 :=
         M.call
           (Ty.apply (Ty.path "subtle::CtOption") [ T ])::["is_some"]
           [ borrow source ] in
-      let* α1 := M.alloc α0 in
-      let* α2 :=
-        M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow α1 ] in
+      let* α2 := M.alloc α1 in
       let* α3 :=
-        M.alloc
-          ((M.var "BinOp::Pure::eq") α2 ((Integer.of_Z 1) : Ty.path "u8")) in
-      let* α4 := M.read (use α3) in
-      let* α5 :=
-        if α4 then
-          let* α0 := M.read ((M.var "subtle::CtOption::Get_value") source) in
-          M.alloc (core.option.Option.Some α0)
+        M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow α2 ] in
+      let* α4 := M.alloc (α0 α3 ((Integer.of_Z 1) : Ty.path "u8")) in
+      let* α5 := M.read (use α4) in
+      let* α6 :=
+        if α5 then
+          let* α0 := M.var "subtle::CtOption::Get_value" in
+          let* α1 := M.read (α0 source) in
+          M.alloc (core.option.Option.Some α1)
         else
           M.alloc core.option.Option.None in
-      M.read α5
+      M.read α6
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("from", InstanceField.Method (from T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "core::option::Option") [ T ] in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
+      [ ("from", InstanceField.Method from [ Self; T ]) ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -2720,15 +2913,16 @@ Module Impl_subtle_CtOption_T.
       let* self := M.alloc self in
       let* msg := M.alloc msg in
       let* _ :=
-        let* α0 :=
+        let* α0 := M.var "subtle::CtOption::Get_is_some" in
+        let* α1 :=
           M.call
             (Ty.path "subtle::Choice")::["unwrap_u8"]
-            [ borrow ((M.var "subtle::CtOption::Get_is_some") self) ] in
-        let* α1 := M.alloc α0 in
-        let* α2 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
-        let* α3 := M.alloc (borrow α1, borrow α2) in
+            [ borrow (α0 self) ] in
+        let* α2 := M.alloc α1 in
+        let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
+        let* α4 := M.alloc (borrow α2, borrow α3) in
         match_operator
-          α3
+          α4
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -2738,38 +2932,37 @@ Module Impl_subtle_CtOption_T.
                 let γ0_1 := Tuple.Access.right γ in
                 let* left_val := M.copy γ0_0 in
                 let* right_val := M.copy γ0_1 in
-                let* α0 := M.read left_val in
-                let* α1 := M.read (deref α0) in
-                let* α2 := M.read right_val in
+                let* α0 := M.var "UnOp::not" in
+                let* α1 := M.var "BinOp::Pure::eq" in
+                let* α2 := M.read left_val in
                 let* α3 := M.read (deref α2) in
-                let* α4 :=
-                  M.alloc
-                    ((M.var "UnOp::not") ((M.var "BinOp::Pure::eq") α1 α3)) in
-                let* α5 := M.read (use α4) in
-                if α5 then
+                let* α4 := M.read right_val in
+                let* α5 := M.read (deref α4) in
+                let* α6 := M.alloc (α0 (α1 α3 α5)) in
+                let* α7 := M.read (use α6) in
+                if α7 then
                   let* kind := M.alloc core.panicking.AssertKind.Eq in
-                  let* α0 := M.read kind in
-                  let* α1 := M.read left_val in
-                  let* α2 := M.read right_val in
-                  let* α3 := M.read (mk_str "") in
-                  let* α4 := M.alloc [ α3 ] in
-                  let* α5 :=
+                  let* α0 := M.var "core::panicking::assert_failed" in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 := M.read (mk_str "") in
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
                       [ borrow msg ] in
-                  let* α6 := M.alloc [ α5 ] in
-                  let* α7 :=
+                  let* α7 := M.alloc [ α6 ] in
+                  let* α8 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α4);
-                        pointer_coercion "Unsize" (borrow α6)
+                        pointer_coercion "Unsize" (borrow α5);
+                        pointer_coercion "Unsize" (borrow α7)
                       ] in
-                  let* α8 :=
-                    M.call
-                      (M.var "core::panicking::assert_failed")
-                      [ α0; α1; α2; core.option.Option.Some α7 ] in
-                  let* α0 := M.alloc α8 in
+                  let* α9 :=
+                    M.call α0 [ α1; α2; α3; core.option.Option.Some α8 ] in
+                  let* α0 := M.alloc α9 in
                   let* α1 := M.read α0 in
                   let* α2 := never_to_any α1 in
                   M.alloc α2
@@ -2778,7 +2971,8 @@ Module Impl_subtle_CtOption_T.
               end) :
               Ty.tuple []
           ] in
-      M.read ((M.var "subtle::CtOption::Get_value") self)
+      let* α0 := M.var "subtle::CtOption::Get_value" in
+      M.read (α0 self)
     | _, _ => M.impossible
     end.
   
@@ -2794,15 +2988,16 @@ Module Impl_subtle_CtOption_T.
     | [ T ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 :=
+        let* α0 := M.var "subtle::CtOption::Get_is_some" in
+        let* α1 :=
           M.call
             (Ty.path "subtle::Choice")::["unwrap_u8"]
-            [ borrow ((M.var "subtle::CtOption::Get_is_some") self) ] in
-        let* α1 := M.alloc α0 in
-        let* α2 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
-        let* α3 := M.alloc (borrow α1, borrow α2) in
+            [ borrow (α0 self) ] in
+        let* α2 := M.alloc α1 in
+        let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
+        let* α4 := M.alloc (borrow α2, borrow α3) in
         match_operator
-          α3
+          α4
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -2812,24 +3007,23 @@ Module Impl_subtle_CtOption_T.
                 let γ0_1 := Tuple.Access.right γ in
                 let* left_val := M.copy γ0_0 in
                 let* right_val := M.copy γ0_1 in
-                let* α0 := M.read left_val in
-                let* α1 := M.read (deref α0) in
-                let* α2 := M.read right_val in
+                let* α0 := M.var "UnOp::not" in
+                let* α1 := M.var "BinOp::Pure::eq" in
+                let* α2 := M.read left_val in
                 let* α3 := M.read (deref α2) in
-                let* α4 :=
-                  M.alloc
-                    ((M.var "UnOp::not") ((M.var "BinOp::Pure::eq") α1 α3)) in
-                let* α5 := M.read (use α4) in
-                if α5 then
+                let* α4 := M.read right_val in
+                let* α5 := M.read (deref α4) in
+                let* α6 := M.alloc (α0 (α1 α3 α5)) in
+                let* α7 := M.read (use α6) in
+                if α7 then
                   let* kind := M.alloc core.panicking.AssertKind.Eq in
-                  let* α0 := M.read kind in
-                  let* α1 := M.read left_val in
-                  let* α2 := M.read right_val in
-                  let* α3 :=
-                    M.call
-                      (M.var "core::panicking::assert_failed")
-                      [ α0; α1; α2; core.option.Option.None ] in
-                  let* α0 := M.alloc α3 in
+                  let* α0 := M.var "core::panicking::assert_failed" in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call α0 [ α1; α2; α3; core.option.Option.None ] in
+                  let* α0 := M.alloc α4 in
                   let* α1 := M.read α0 in
                   let* α2 := never_to_any α1 in
                   M.alloc α2
@@ -2838,7 +3032,8 @@ Module Impl_subtle_CtOption_T.
               end) :
               Ty.tuple []
           ] in
-      M.read ((M.var "subtle::CtOption::Get_value") self)
+      let* α0 := M.var "subtle::CtOption::Get_value" in
+      M.read (α0 self)
     | _, _ => M.impossible
     end.
   
@@ -2860,10 +3055,10 @@ Module Impl_subtle_CtOption_T.
           "subtle::ConditionallySelectable"
           "conditional_select"
           [ (* Self *) T ] in
-      let* α1 := M.read ((M.var "subtle::CtOption::Get_is_some") self) in
-      M.call
-        α0
-        [ borrow def; borrow ((M.var "subtle::CtOption::Get_value") self); α1 ]
+      let* α1 := M.var "subtle::CtOption::Get_value" in
+      let* α2 := M.var "subtle::CtOption::Get_is_some" in
+      let* α3 := M.read (α2 self) in
+      M.call α0 [ borrow def; borrow (α1 self); α3 ]
     | _, _ => M.impossible
     end.
   
@@ -2894,10 +3089,10 @@ Module Impl_subtle_CtOption_T.
       let* α2 := M.read f in
       let* α3 := M.call α1 [ α2; tt ] in
       let* α4 := M.alloc α3 in
-      let* α5 := M.read ((M.var "subtle::CtOption::Get_is_some") self) in
-      M.call
-        α0
-        [ borrow α4; borrow ((M.var "subtle::CtOption::Get_value") self); α5 ]
+      let* α5 := M.var "subtle::CtOption::Get_value" in
+      let* α6 := M.var "subtle::CtOption::Get_is_some" in
+      let* α7 := M.read (α6 self) in
+      M.call α0 [ borrow α4; borrow (α5 self); α7 ]
     | _, _ => M.impossible
     end.
   
@@ -2910,8 +3105,9 @@ Module Impl_subtle_CtOption_T.
     match 𝜏, α with
     | [ T ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "subtle::CtOption::Get_is_some") (deref α0))
+      let* α0 := M.var "subtle::CtOption::Get_is_some" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
@@ -2929,9 +3125,10 @@ Module Impl_subtle_CtOption_T.
           "core::ops::bit::Not"
           "not"
           [ (* Self *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read self in
-      let* α2 := M.read ((M.var "subtle::CtOption::Get_is_some") (deref α1)) in
-      M.call α0 [ α2 ]
+      let* α1 := M.var "subtle::CtOption::Get_is_some" in
+      let* α2 := M.read self in
+      let* α3 := M.read (α1 (deref α2)) in
+      M.call α0 [ α3 ]
     | _, _ => M.impossible
     end.
   
@@ -2971,15 +3168,14 @@ Module Impl_subtle_CtOption_T.
         M.get_method "core::default::Default" "default" [ (* Self *) T ] in
       let* α4 := M.call α3 [] in
       let* α5 := M.alloc α4 in
-      let* α6 := M.read ((M.var "subtle::CtOption::Get_is_some") self) in
-      let* α7 :=
-        M.call
-          α2
-          [ borrow α5; borrow ((M.var "subtle::CtOption::Get_value") self); α6
-          ] in
-      let* α8 := M.call α0 [ α1; (α7) ] in
-      let* α9 := M.read ((M.var "subtle::CtOption::Get_is_some") self) in
-      M.call (Ty.apply (Ty.path "subtle::CtOption") [ U ])::["new"] [ α8; α9 ]
+      let* α6 := M.var "subtle::CtOption::Get_value" in
+      let* α7 := M.var "subtle::CtOption::Get_is_some" in
+      let* α8 := M.read (α7 self) in
+      let* α9 := M.call α2 [ borrow α5; borrow (α6 self); α8 ] in
+      let* α10 := M.call α0 [ α1; (α9) ] in
+      let* α11 := M.var "subtle::CtOption::Get_is_some" in
+      let* α12 := M.read (α11 self) in
+      M.call (Ty.apply (Ty.path "subtle::CtOption") [ U ])::["new"] [ α10; α12 ]
     | _, _ => M.impossible
     end.
   
@@ -3020,14 +3216,12 @@ Module Impl_subtle_CtOption_T.
           M.get_method "core::default::Default" "default" [ (* Self *) T ] in
         let* α4 := M.call α3 [] in
         let* α5 := M.alloc α4 in
-        let* α6 := M.read ((M.var "subtle::CtOption::Get_is_some") self) in
-        let* α7 :=
-          M.call
-            α2
-            [ borrow α5; borrow ((M.var "subtle::CtOption::Get_value") self); α6
-            ] in
-        let* α8 := M.call α0 [ α1; (α7) ] in
-        M.alloc α8 in
+        let* α6 := M.var "subtle::CtOption::Get_value" in
+        let* α7 := M.var "subtle::CtOption::Get_is_some" in
+        let* α8 := M.read (α7 self) in
+        let* α9 := M.call α2 [ borrow α5; borrow (α6 self); α8 ] in
+        let* α10 := M.call α0 [ α1; (α9) ] in
+        M.alloc α10 in
       let* _ :=
         let* α0 :=
           M.get_method
@@ -3037,12 +3231,11 @@ Module Impl_subtle_CtOption_T.
               (* Self *) Ty.path "subtle::Choice";
               (* Rhs *) Ty.path "subtle::Choice"
             ] in
-        let* α1 := M.read ((M.var "subtle::CtOption::Get_is_some") self) in
-        let* α2 :=
-          M.call
-            α0
-            [ borrow_mut ((M.var "subtle::CtOption::Get_is_some") tmp); α1 ] in
-        M.alloc α2 in
+        let* α1 := M.var "subtle::CtOption::Get_is_some" in
+        let* α2 := M.var "subtle::CtOption::Get_is_some" in
+        let* α3 := M.read (α2 self) in
+        let* α4 := M.call α0 [ borrow_mut (α1 tmp); α3 ] in
+        M.alloc α4 in
       M.read tmp
     | _, _ => M.impossible
     end.
@@ -3093,9 +3286,6 @@ Module Impl_subtle_CtOption_T.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
           CtOption::new(
@@ -3106,7 +3296,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ a; b; choice ] =>
+    | [ Self; T ], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -3115,45 +3305,43 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
           "subtle::ConditionallySelectable"
           "conditional_select"
           [ (* Self *) T ] in
-      let* α1 := M.read a in
-      let* α2 := M.read b in
-      let* α3 := M.read choice in
-      let* α4 :=
-        M.call
-          α0
-          [
-            borrow ((M.var "subtle::CtOption::Get_value") (deref α1));
-            borrow ((M.var "subtle::CtOption::Get_value") (deref α2));
-            α3
-          ] in
-      let* α5 :=
+      let* α1 := M.var "subtle::CtOption::Get_value" in
+      let* α2 := M.read a in
+      let* α3 := M.var "subtle::CtOption::Get_value" in
+      let* α4 := M.read b in
+      let* α5 := M.read choice in
+      let* α6 :=
+        M.call α0 [ borrow (α1 (deref α2)); borrow (α3 (deref α4)); α5 ] in
+      let* α7 :=
         M.get_method
           "subtle::ConditionallySelectable"
           "conditional_select"
           [ (* Self *) Ty.path "subtle::Choice" ] in
-      let* α6 := M.read a in
-      let* α7 := M.read b in
-      let* α8 := M.read choice in
-      let* α9 :=
-        M.call
-          α5
-          [
-            borrow ((M.var "subtle::CtOption::Get_is_some") (deref α6));
-            borrow ((M.var "subtle::CtOption::Get_is_some") (deref α7));
-            α8
-          ] in
-      M.call (Ty.apply (Ty.path "subtle::CtOption") [ T ])::["new"] [ α4; α9 ]
+      let* α8 := M.var "subtle::CtOption::Get_is_some" in
+      let* α9 := M.read a in
+      let* α10 := M.var "subtle::CtOption::Get_is_some" in
+      let* α11 := M.read b in
+      let* α12 := M.read choice in
+      let* α13 :=
+        M.call α7 [ borrow (α8 (deref α9)); borrow (α10 (deref α11)); α12 ] in
+      M.call (Ty.apply (Ty.path "subtle::CtOption") [ T ])::["new"] [ α6; α13 ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("conditional_select", InstanceField.Method (conditional_select T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self; T ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   (*
       fn ct_eq(&self, rhs: &CtOption<T>) -> Choice {
           let a = self.is_some();
@@ -3164,7 +3352,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ T ], [ self; rhs ] =>
+    | [ Self; T ], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* a :=
@@ -3210,17 +3398,14 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       let* α5 := M.call α2 [ α3; α4 ] in
       let* α6 :=
         M.get_method "subtle::ConstantTimeEq" "ct_eq" [ (* Self *) T ] in
-      let* α7 := M.read self in
-      let* α8 := M.read rhs in
-      let* α9 :=
-        M.call
-          α6
-          [
-            borrow ((M.var "subtle::CtOption::Get_value") (deref α7));
-            borrow ((M.var "subtle::CtOption::Get_value") (deref α8))
-          ] in
-      let* α10 := M.call α1 [ α5; α9 ] in
+      let* α7 := M.var "subtle::CtOption::Get_value" in
+      let* α8 := M.read self in
+      let* α9 := M.var "subtle::CtOption::Get_value" in
+      let* α10 := M.read rhs in
       let* α11 :=
+        M.call α6 [ borrow (α7 (deref α8)); borrow (α9 (deref α10)) ] in
+      let* α12 := M.call α1 [ α5; α11 ] in
+      let* α13 :=
         M.get_method
           "core::ops::bit::BitAnd"
           "bitand"
@@ -3228,29 +3413,35 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
             (* Self *) Ty.path "subtle::Choice";
             (* Rhs *) Ty.path "subtle::Choice"
           ] in
-      let* α12 :=
+      let* α14 :=
         M.get_method
           "core::ops::bit::Not"
           "not"
           [ (* Self *) Ty.path "subtle::Choice" ] in
-      let* α13 := M.read a in
-      let* α14 := M.call α12 [ α13 ] in
-      let* α15 :=
+      let* α15 := M.read a in
+      let* α16 := M.call α14 [ α15 ] in
+      let* α17 :=
         M.get_method
           "core::ops::bit::Not"
           "not"
           [ (* Self *) Ty.path "subtle::Choice" ] in
-      let* α16 := M.read b in
-      let* α17 := M.call α15 [ α16 ] in
-      let* α18 := M.call α11 [ α14; α17 ] in
-      let* α19 := M.call α0 [ α10; α18 ] in
-      let* α0 := M.alloc α19 in
+      let* α18 := M.read b in
+      let* α19 := M.call α17 [ α18 ] in
+      let* α20 := M.call α13 [ α16; α19 ] in
+      let* α21 := M.call α0 [ α12; α20 ] in
+      let* α0 := M.alloc α21 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self; T ]) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 (* Trait *)
@@ -3259,8 +3450,6 @@ Module ConstantTimeGreater.
 End ConstantTimeGreater.
 
 Module Impl_subtle_ConstantTimeGreater_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3286,7 +3475,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3330,27 +3519,29 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 8) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 8) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := ltb in
-              let* α0 := M.read β in
-              let* α1 := M.read ltb in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read ltb in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3363,33 +3554,37 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             let* α2 := never_to_any α1 in
             M.alloc α2) in
       let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc ((M.var "BinOp::Pure::bit_and") α0 ((M.var "UnOp::not") α1)) in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read gtb in
+        let* α2 := M.var "UnOp::not" in
+        let* α3 := M.read ltb in
+        M.alloc (α0 α1 (α2 α3)) in
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 8) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 8) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := bit in
-              let* α0 := M.read β in
-              let* α1 := M.read bit in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read bit in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3406,25 +3601,26 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           "core::convert::From"
           "from"
           [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
-      let* α1 := M.read bit in
-      let* α2 :=
-        M.alloc
-          ((M.var "BinOp::Pure::bit_and")
-            α1
-            ((Integer.of_Z 1) : Ty.path "u8")) in
-      let* α3 := M.read (use α2) in
-      let* α4 := M.call α0 [ α3 ] in
-      let* α0 := M.alloc α4 in
+      let* α1 := M.var "BinOp::Pure::bit_and" in
+      let* α2 := M.read bit in
+      let* α3 := M.alloc (α1 α2 ((Integer.of_Z 1) : Ty.path "u8")) in
+      let* α4 := M.read (use α3) in
+      let* α5 := M.call α0 [ α4 ] in
+      let* α0 := M.alloc α5 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3450,7 +3646,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3494,27 +3690,29 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 16) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 16) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := ltb in
-              let* α0 := M.read β in
-              let* α1 := M.read ltb in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read ltb in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3527,33 +3725,37 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             let* α2 := never_to_any α1 in
             M.alloc α2) in
       let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc ((M.var "BinOp::Pure::bit_and") α0 ((M.var "UnOp::not") α1)) in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read gtb in
+        let* α2 := M.var "UnOp::not" in
+        let* α3 := M.read ltb in
+        M.alloc (α0 α1 (α2 α3)) in
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 16) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 16) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := bit in
-              let* α0 := M.read β in
-              let* α1 := M.read bit in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read bit in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3570,27 +3772,25 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           "core::convert::From"
           "from"
           [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
-      let* α1 := M.read bit in
-      let* α2 :=
-        M.call
-          α0
-          [
-            rust_cast
-              ((M.var "BinOp::Pure::bit_and")
-                α1
-                ((Integer.of_Z 1) : Ty.path "u16"))
-          ] in
-      let* α0 := M.alloc α2 in
+      let* α1 := M.var "BinOp::Pure::bit_and" in
+      let* α2 := M.read bit in
+      let* α3 :=
+        M.call α0 [ rust_cast (α1 α2 ((Integer.of_Z 1) : Ty.path "u16")) ] in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3616,7 +3816,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3660,27 +3860,29 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 32) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 32) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := ltb in
-              let* α0 := M.read β in
-              let* α1 := M.read ltb in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read ltb in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3693,33 +3895,37 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             let* α2 := never_to_any α1 in
             M.alloc α2) in
       let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc ((M.var "BinOp::Pure::bit_and") α0 ((M.var "UnOp::not") α1)) in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read gtb in
+        let* α2 := M.var "UnOp::not" in
+        let* α3 := M.read ltb in
+        M.alloc (α0 α1 (α2 α3)) in
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 32) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 32) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := bit in
-              let* α0 := M.read β in
-              let* α1 := M.read bit in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read bit in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3736,27 +3942,25 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           "core::convert::From"
           "from"
           [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
-      let* α1 := M.read bit in
-      let* α2 :=
-        M.call
-          α0
-          [
-            rust_cast
-              ((M.var "BinOp::Pure::bit_and")
-                α1
-                ((Integer.of_Z 1) : Ty.path "u32"))
-          ] in
-      let* α0 := M.alloc α2 in
+      let* α1 := M.var "BinOp::Pure::bit_and" in
+      let* α2 := M.read bit in
+      let* α3 :=
+        M.call α0 [ rust_cast (α1 α2 ((Integer.of_Z 1) : Ty.path "u32")) ] in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3782,7 +3986,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3826,27 +4030,29 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 64) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 64) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := ltb in
-              let* α0 := M.read β in
-              let* α1 := M.read ltb in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read ltb in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3859,33 +4065,37 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             let* α2 := never_to_any α1 in
             M.alloc α2) in
       let* bit :=
-        let* α0 := M.read gtb in
-        let* α1 := M.read ltb in
-        M.alloc ((M.var "BinOp::Pure::bit_and") α0 ((M.var "UnOp::not") α1)) in
+        let* α0 := M.var "BinOp::Pure::bit_and" in
+        let* α1 := M.read gtb in
+        let* α2 := M.var "UnOp::not" in
+        let* α3 := M.read ltb in
+        M.alloc (α0 α1 (α2 α3)) in
       let* pow := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
       let* _ :=
         M.loop
-          (let* α0 := M.read pow in
-          let* α1 :=
-            M.alloc
-              ((M.var "BinOp::Pure::lt")
-                α0
-                ((Integer.of_Z 64) : Ty.path "i32")) in
-          let* α2 := M.read (use α1) in
-          if α2 then
+          (let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read pow in
+          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 64) : Ty.path "i32")) in
+          let* α3 := M.read (use α2) in
+          if α3 then
             let* _ :=
               let β := bit in
-              let* α0 := M.read β in
-              let* α1 := M.read bit in
-              let* α2 := M.read pow in
-              let* α3 := (M.var "BinOp::Panic::shr") α1 α2 in
-              (M.var "assign") β ((M.var "BinOp::Pure::bit_or") α0 α3) in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Pure::bit_or" in
+              let* α2 := M.read β in
+              let* α3 := M.var "BinOp::Panic::shr" in
+              let* α4 := M.read bit in
+              let* α5 := M.read pow in
+              let* α6 := α3 α4 α5 in
+              α0 β (α1 α2 α6) in
             let* _ :=
               let β := pow in
-              let* α0 := M.read β in
-              let* α1 := M.read pow in
-              let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-              (M.var "assign") β α2 in
+              let* α0 := M.var "assign" in
+              let* α1 := M.var "BinOp::Panic::add" in
+              let* α2 := M.read β in
+              let* α3 := M.read pow in
+              let* α4 := α1 α2 α3 in
+              α0 β α4 in
             M.alloc tt
           else
             let* _ :=
@@ -3902,22 +4112,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           "core::convert::From"
           "from"
           [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
-      let* α1 := M.read bit in
-      let* α2 :=
-        M.call
-          α0
-          [
-            rust_cast
-              ((M.var "BinOp::Pure::bit_and")
-                α1
-                ((Integer.of_Z 1) : Ty.path "u64"))
-          ] in
-      let* α0 := M.alloc α2 in
+      let* α1 := M.var "BinOp::Pure::bit_and" in
+      let* α2 := M.read bit in
+      let* α3 :=
+        M.call α0 [ rust_cast (α1 α2 ((Integer.of_Z 1) : Ty.path "u64")) ] in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
@@ -3969,25 +4179,25 @@ Module ConstantTimeLess.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u64.

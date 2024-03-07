@@ -70,36 +70,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 :=
-        M.call
-          (M.var "generics_functions::reg_fn")
-          [ generics_functions.S.Build_t generics_functions.A.Build ] in
-      M.alloc α0 in
+      let* α0 := M.var "generics_functions::reg_fn" in
+      let* α1 :=
+        M.call α0 [ generics_functions.S.Build_t generics_functions.A.Build ] in
+      M.alloc α1 in
     let* _ :=
-      let* α0 :=
+      let* α0 := M.var "generics_functions::gen_spec_t" in
+      let* α1 :=
         M.call
-          (M.var "generics_functions::gen_spec_t")
+          α0
           [ generics_functions.SGen.Build_t generics_functions.A.Build ] in
-      M.alloc α0 in
+      M.alloc α1 in
     let* _ :=
-      let* α0 :=
+      let* α0 := M.var "generics_functions::gen_spec_i32" in
+      let* α1 :=
         M.call
-          (M.var "generics_functions::gen_spec_i32")
+          α0
           [ generics_functions.SGen.Build_t ((Integer.of_Z 6) : Ty.path "i32")
           ] in
-      M.alloc α0 in
+      M.alloc α1 in
     let* _ :=
-      let* α0 :=
-        M.call
-          (M.var "generics_functions::generic")
-          [ generics_functions.SGen.Build_t "a"%char ] in
-      M.alloc α0 in
+      let* α0 := M.var "generics_functions::generic" in
+      let* α1 := M.call α0 [ generics_functions.SGen.Build_t "a"%char ] in
+      M.alloc α1 in
     let* _ :=
-      let* α0 :=
-        M.call
-          (M.var "generics_functions::generic")
-          [ generics_functions.SGen.Build_t "c"%char ] in
-      M.alloc α0 in
+      let* α0 := M.var "generics_functions::generic" in
+      let* α1 := M.call α0 [ generics_functions.SGen.Build_t "c"%char ] in
+      M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

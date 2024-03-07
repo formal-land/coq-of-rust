@@ -19,33 +19,45 @@ Axiom Result :
 (* Struct EmptyVec *)
 
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "boxing_errors::EmptyVec" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "boxing_errors::EmptyVec" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "boxing_errors::EmptyVec" in
+    M.IsTraitInstance
+      "core::fmt::Display"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "boxing_errors::EmptyVec" in
+    M.IsTraitInstance "core::error::Error" Self [] [].
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

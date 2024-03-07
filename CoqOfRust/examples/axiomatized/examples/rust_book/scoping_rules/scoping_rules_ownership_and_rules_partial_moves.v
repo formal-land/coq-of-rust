@@ -7,10 +7,14 @@ Parameter main : (list Ty.t) -> (list Value.t) -> M.
 (* Enum Person *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self :=
+      Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

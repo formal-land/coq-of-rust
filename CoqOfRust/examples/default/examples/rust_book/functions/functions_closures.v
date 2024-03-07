@@ -44,9 +44,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 (let* i := M.copy γ in
-                let* α0 := M.read i in
-                let* α1 := M.read outer_var in
-                (M.var "BinOp::Panic::add") α0 α1) :
+                let* α0 := M.var "BinOp::Panic::add" in
+                let* α1 := M.read i in
+                let* α2 := M.read outer_var in
+                α0 α1 α2) :
                 Ty.path "i32"
             ]) :
           Ty.path "i32") in
@@ -59,19 +60,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 (let* i := M.copy γ in
-                let* α0 := M.read i in
-                let* α1 := M.read outer_var in
-                (M.var "BinOp::Panic::add") α0 α1) :
+                let* α0 := M.var "BinOp::Panic::add" in
+                let* α1 := M.read i in
+                let* α2 := M.read outer_var in
+                α0 α1 α2) :
                 Ty.path "i32"
             ]) :
           Ty.path "i32") in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "closure_annotated: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "closure_annotated: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::ops::function::Fn"
             "call"
@@ -80,33 +83,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32");
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
-            α3
+            α4
             [ borrow closure_annotated; ((Integer.of_Z 1) : Ty.path "i32") ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "closure_inferred: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "closure_inferred: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::ops::function::Fn"
             "call"
@@ -115,25 +119,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32");
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
-            α3
+            α4
             [ borrow closure_inferred; ((Integer.of_Z 1) : Ty.path "i32") ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* one :=
       M.alloc
@@ -148,11 +152,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           Ty.path "i32") in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "closure returning one: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "closure returning one: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::ops::function::Fn"
             "call"
@@ -160,22 +165,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *) Ty.function [ Ty.tuple [] ] (Ty.path "i32");
               (* Args *) Ty.tuple []
             ] in
-        let* α4 := M.call α3 [ borrow one; tt ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α5 := M.call α4 [ borrow one; tt ] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

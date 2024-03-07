@@ -43,13 +43,15 @@ Module Impl_trait_incrementer_Incrementer.
       let* delta := M.alloc delta in
       let* _ :=
         let* β :=
-          let* α0 := M.read self in
-          M.pure
-            ((M.var "trait_incrementer::Incrementer::Get_value") (deref α0)) in
-        let* α0 := M.read β in
-        let* α1 := M.read delta in
-        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-        (M.var "assign") β α2 in
+          let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
+          let* α1 := M.read self in
+          M.pure (α0 (deref α1)) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Panic::add" in
+        let* α2 := M.read β in
+        let* α3 := M.read delta in
+        let* α4 := α1 α2 α3 in
+        α0 β α4 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -57,8 +59,6 @@ Module Impl_trait_incrementer_Incrementer.
 End Impl_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
-  Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
-  
   (*
       fn inc(&mut self) {
           self.inc_by(1)
@@ -66,7 +66,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.call
@@ -82,20 +82,27 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "trait_incrementer::Incrementer::Get_value") (deref α0))
+      let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_incrementer::Incrementer" in
+    M.IsTraitInstance
+      "trait_incrementer::Increment"
+      Self
+      []
+      [
+        ("inc", InstanceField.Method inc [ Self ]);
+        ("get", InstanceField.Method get [ Self ])
+      ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
-  Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
-  
   (*
       fn reset(&mut self) {
           self.value = 0;
@@ -103,17 +110,22 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
   *)
   Definition reset (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
-        assign
-          ((M.var "trait_incrementer::Incrementer::Get_value") (deref α0))
-          ((Integer.of_Z 0) : Ty.path "u64") in
+        let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
+        let* α1 := M.read self in
+        assign (α0 (deref α1)) ((Integer.of_Z 0) : Ty.path "u64") in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("reset", InstanceField.Method reset) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_incrementer::Incrementer" in
+    M.IsTraitInstance
+      "trait_incrementer::Reset"
+      Self
+      []
+      [ ("reset", InstanceField.Method reset [ Self ]) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

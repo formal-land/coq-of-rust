@@ -8,14 +8,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct FooBar *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-  Definition Self : Ty.t := Ty.path "operator_overloading::FooBar".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -24,20 +22,24 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::FooBar" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 (* Struct BarFoo *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-  Definition Self : Ty.t := Ty.path "operator_overloading::BarFoo".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -46,12 +48,16 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::BarFoo" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-  Definition Self : Ty.t := Ty.path "operator_overloading::Foo".
-  
   (*
       type Output = FooBar;
   *)
@@ -66,33 +72,37 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
   *)
   Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _rhs ] =>
+    | [ Self ], [ self; _rhs ] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "> Foo.add(Bar) was called
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "> Foo.add(Bar) was called
 ") in
-          let* α1 := M.alloc [ α0 ] in
-          let* α2 :=
+          let* α2 := M.alloc [ α1 ] in
+          let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α1) ] in
-          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-          M.alloc α3 in
+              [ pointer_coercion "Unsize" (borrow α2) ] in
+          let* α4 := M.call α0 [ α3 ] in
+          M.alloc α4 in
         M.alloc tt in
       let* α0 := M.alloc operator_overloading.FooBar.Build in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("add", InstanceField.Method add) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::Foo" in
+    M.IsTraitInstance
+      "core::ops::arith::Add"
+      Self
+      [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
+      [ ("Output", TODO); ("add", InstanceField.Method add [ Self ]) ].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-  Definition Self : Ty.t := Ty.path "operator_overloading::Bar".
-  
   (*
       type Output = BarFoo;
   *)
@@ -107,28 +117,34 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
   *)
   Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _rhs ] =>
+    | [ Self ], [ self; _rhs ] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "> Bar.add(Foo) was called
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "> Bar.add(Foo) was called
 ") in
-          let* α1 := M.alloc [ α0 ] in
-          let* α2 :=
+          let* α2 := M.alloc [ α1 ] in
+          let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α1) ] in
-          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-          M.alloc α3 in
+              [ pointer_coercion "Unsize" (borrow α2) ] in
+          let* α4 := M.call α0 [ α3 ] in
+          M.alloc α4 in
         M.alloc tt in
       let* α0 := M.alloc operator_overloading.BarFoo.Build in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("add", InstanceField.Method add) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::Bar" in
+    M.IsTraitInstance
+      "core::ops::arith::Add"
+      Self
+      [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
+      [ ("Output", TODO); ("add", InstanceField.Method add [ Self ]) ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 (*
@@ -143,11 +159,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Foo + Bar = ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Foo + Bar = ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::ops::arith::Add"
             "add"
@@ -155,34 +172,35 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *) Ty.path "operator_overloading::Foo";
               (* Rhs *) Ty.path "operator_overloading::Bar"
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
-            α3
+            α4
             [ operator_overloading.Foo.Build; operator_overloading.Bar.Build
             ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Bar + Foo = ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Bar + Foo = ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::ops::arith::Add"
             "add"
@@ -190,26 +208,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *) Ty.path "operator_overloading::Bar";
               (* Rhs *) Ty.path "operator_overloading::Foo"
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
-            α3
+            α4
             [ operator_overloading.Bar.Build; operator_overloading.Foo.Build
             ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+            [ borrow α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α7)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α8)
             ] in
-        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
-        M.alloc α9 in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

@@ -32,29 +32,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             "unimplemented parent_kind"
             [ (Integer.of_Z 9) : Ty.path "u32" ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α5 ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α7)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -142,23 +143,23 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 :=
-                            (M.var "core::option::Option::Get_Some_0") γ in
+                          let* γ0_0 :=
+                            let* α0 :=
+                              M.var "core::option::Option::Get_Some_0" in
+                            M.pure (α0 γ) in
                           let* i := M.copy γ0_0 in
                           let* addition :=
-                            let* α0 := M.read i in
-                            let* α1 :=
-                              (M.var "BinOp::Panic::rem")
-                                α0
-                                ((Integer.of_Z 2) : Ty.path "u32") in
-                            let* α2 :=
-                              M.alloc
-                                ((M.var "BinOp::Pure::eq")
-                                  α1
-                                  ((Integer.of_Z 1) : Ty.path "u32")) in
+                            let* α0 := M.var "BinOp::Pure::eq" in
+                            let* α1 := M.var "BinOp::Panic::rem" in
+                            let* α2 := M.read i in
                             let* α3 :=
+                              α1 α2 ((Integer.of_Z 2) : Ty.path "u32") in
+                            let* α4 :=
+                              M.alloc
+                                (α0 α3 ((Integer.of_Z 1) : Ty.path "u32")) in
+                            let* α5 :=
                               match_operator
-                                α2
+                                α4
                                 [
                                   fun γ => (M.pure i) : Ty.path "u32";
                                   fun γ =>
@@ -168,13 +169,15 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     M.alloc α2) :
                                     Ty.path "u32"
                                 ] in
-                            M.copy α3 in
+                            M.copy α5 in
                           let* _ :=
                             let β := acc in
-                            let* α0 := M.read β in
-                            let* α1 := M.read addition in
-                            let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-                            (M.var "assign") β α2 in
+                            let* α0 := M.var "assign" in
+                            let* α1 := M.var "BinOp::Panic::add" in
+                            let* α2 := M.read β in
+                            let* α3 := M.read addition in
+                            let* α4 := α1 α2 α3 in
+                            α0 β α4 in
                           M.alloc tt
                         | _ => M.break_match 
                         end) :

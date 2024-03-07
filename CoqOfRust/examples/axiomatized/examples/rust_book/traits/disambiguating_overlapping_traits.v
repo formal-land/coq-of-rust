@@ -14,19 +14,27 @@ End AgeWidget.
 (* Enum Form *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
-  
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "disambiguating_overlapping_traits::Form" in
+    M.IsTraitInstance
+      "disambiguating_overlapping_traits::UsernameWidget"
+      Self
+      []
+      [ ("get", InstanceField.Method get [ Self ]) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
-  
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "disambiguating_overlapping_traits::Form" in
+    M.IsTraitInstance
+      "disambiguating_overlapping_traits::AgeWidget"
+      Self
+      []
+      [ ("get", InstanceField.Method get [ Self ]) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

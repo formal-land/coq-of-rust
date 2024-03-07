@@ -22,20 +22,30 @@ Module Impl_trait_incrementer_Incrementer.
 End Impl_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
-  Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
-  
   Parameter inc : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_incrementer::Incrementer" in
+    M.IsTraitInstance
+      "trait_incrementer::Increment"
+      Self
+      []
+      [
+        ("inc", InstanceField.Method inc [ Self ]);
+        ("get", InstanceField.Method get [ Self ])
+      ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
-  Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
-  
   Parameter reset : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("reset", InstanceField.Method reset) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_incrementer::Incrementer" in
+    M.IsTraitInstance
+      "trait_incrementer::Reset"
+      Self
+      []
+      [ ("reset", InstanceField.Method reset [ Self ]) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

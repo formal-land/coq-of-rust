@@ -4,14 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Fibonacci *)
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Definition Self : Ty.t := Ty.path "iterators::Fibonacci".
-  
   Definition Item : Set := Ty.path "u32".
   
   Parameter next : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Item", TODO); ("next", InstanceField.Method next) ].
+  Axiom Implements :
+    let Self := Ty.path "iterators::Fibonacci" in
+    M.IsTraitInstance
+      "core::iter::traits::iterator::Iterator"
+      Self
+      []
+      [ ("Item", TODO); ("next", InstanceField.Method next [ Self ]) ].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Parameter fibonacci : (list Ty.t) -> (list Value.t) -> M.

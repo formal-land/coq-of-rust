@@ -23,17 +23,20 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* _ :=
-                let* α0 := M.read (mk_str "Yuck! Too sugary.
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "Yuck! Too sugary.
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -42,27 +45,30 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* inner := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.read (mk_str "") in
-                let* α1 := M.read (mk_str "? How nice.
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "") in
+                let* α2 := M.read (mk_str "? How nice.
 ") in
-                let* α2 := M.alloc [ α0; α1 ] in
-                let* α3 :=
+                let* α3 := M.alloc [ α1; α2 ] in
+                let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
                     [ borrow inner ] in
-                let* α4 := M.alloc [ α3 ] in
-                let* α5 :=
+                let* α5 := M.alloc [ α4 ] in
+                let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                      pointer_coercion "Unsize" (borrow α3);
+                      pointer_coercion "Unsize" (borrow α5)
                     ] in
-                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-                M.alloc α6 in
+                let* α7 := M.call α0 [ α6 ] in
+                M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -72,15 +78,16 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | core.option.Option.None =>
               let* _ :=
-                let* α0 := M.read (mk_str "No drink? Oh well.
+                let* α0 := M.var "std::io::stdio::_print" in
+                let* α1 := M.read (mk_str "No drink? Oh well.
 ") in
-                let* α1 := M.alloc [ α0 ] in
-                let* α2 :=
+                let* α2 := M.alloc [ α1 ] in
+                let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α1) ] in
-                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                M.alloc α3 in
+                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                let* α4 := M.call α0 [ α3 ] in
+                M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
             end) :
@@ -127,32 +134,34 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc α1 in
       let* α3 := M.read (use α2) in
       if α3 then
-        let* α0 := M.read (mk_str "AAAaaaaa!!!!") in
-        let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
-        let* α2 := never_to_any α1 in
-        M.alloc α2
+        let* α0 := M.var "std::panicking::begin_panic" in
+        let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
+        let* α2 := M.call α0 [ α1 ] in
+        let* α3 := never_to_any α2 in
+        M.alloc α3
       else
         M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "I love ") in
-        let* α1 := M.read (mk_str "s!!!!!
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "I love ") in
+        let* α2 := M.read (mk_str "s!!!!!
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow inside ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -188,29 +197,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (core.option.Option.Some α0) in
     let* void := M.alloc core.option.Option.None in
     let* _ :=
-      let* α0 := M.read water in
-      let* α1 := M.call (M.var "option_and_unwrap::give_adult") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "option_and_unwrap::give_adult" in
+      let* α1 := M.read water in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read lemonade in
-      let* α1 := M.call (M.var "option_and_unwrap::give_adult") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "option_and_unwrap::give_adult" in
+      let* α1 := M.read lemonade in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read void in
-      let* α1 := M.call (M.var "option_and_unwrap::give_adult") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "option_and_unwrap::give_adult" in
+      let* α1 := M.read void in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* coffee :=
       let* α0 := M.read (mk_str "coffee") in
       M.alloc (core.option.Option.Some α0) in
     let* nothing := M.alloc core.option.Option.None in
     let* _ :=
-      let* α0 := M.read coffee in
-      let* α1 := M.call (M.var "option_and_unwrap::drink") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "option_and_unwrap::drink" in
+      let* α1 := M.read coffee in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read nothing in
-      let* α1 := M.call (M.var "option_and_unwrap::drink") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "option_and_unwrap::drink" in
+      let* α1 := M.read nothing in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

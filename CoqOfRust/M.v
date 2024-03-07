@@ -326,13 +326,21 @@ Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
 Module InstanceField.
   Inductive t : Set :=
   | Constant (constant : Value.t)
-  | Method (method : list Ty.t -> list Value.t -> M)
+  | Method (method : list Ty.t -> list Value.t -> M) (𝜏_prefix : list Ty.t)
   | Ty (ty : Ty.t).
 End InstanceField.
 
 Module Instance.
   Definition t : Set := list (string * InstanceField.t).
 End Instance.
+
+Parameter IsTraitInstance :
+  forall
+    (trait_name : string)
+    (Self : Ty.t)
+    (generic_tys : list Ty.t)
+    (instance : Instance.t),
+  Prop.
 
 Module Option.
   Definition bind {A B : Set} (x : option A) (f : A -> option B) : option B :=

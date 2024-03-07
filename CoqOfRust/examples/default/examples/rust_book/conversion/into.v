@@ -4,8 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Number *)
 
 Module Impl_core_convert_From_i32_for_into_Number.
-  Definition Self : Ty.t := Ty.path "into::Number".
-  
   (*
       fn from(item: i32) -> Self {
           Number { value: item }
@@ -13,14 +11,20 @@ Module Impl_core_convert_From_i32_for_into_Number.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ item ] =>
+    | [ Self ], [ item ] =>
       let* item := M.alloc item in
       let* α0 := M.read item in
       M.pure (Value.StructRecord "into::Number" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "into::Number" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "i32" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_i32_for_into_Number.
 
 (*

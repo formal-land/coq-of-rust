@@ -4,15 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum PhoneNumber *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -41,27 +38,30 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* Enum Job *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
-  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -85,13 +85,19 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
-  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* Enum Person *)
@@ -117,6 +123,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
           (R := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]) in
       M.catch_return
         (let* α0 :=
+          M.var
+            "unpacking_options_via_question_mark::PhoneNumber::Get_area_code" in
+        let* α1 :=
           M.get_method
             "core::ops::try_trait::Try"
             "branch"
@@ -126,7 +135,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   (Ty.path "core::option::Option")
                   [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
             ] in
-        let* α1 :=
+        let* α2 :=
+          M.var "unpacking_options_via_question_mark::Job::Get_phone_number" in
+        let* α3 :=
           M.get_method
             "core::ops::try_trait::Try"
             "branch"
@@ -136,24 +147,25 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   (Ty.path "core::option::Option")
                   [ Ty.path "unpacking_options_via_question_mark::Job" ]
             ] in
-        let* α2 := M.read self in
-        let* α3 :=
-          M.read
-            ((M.var "unpacking_options_via_question_mark::Person::Get_job")
-              (deref α2)) in
-        let* α4 := M.call α1 [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α4 :=
+          M.var "unpacking_options_via_question_mark::Person::Get_job" in
+        let* α5 := M.read self in
+        let* α6 := M.read (α4 (deref α5)) in
+        let* α7 := M.call α3 [ α6 ] in
+        let* α8 := M.alloc α7 in
+        let* α9 :=
           match_operator
-            α5
+            α8
             [
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 :=
-                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
+                    M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
                     M.get_method
@@ -182,34 +194,33 @@ Module Impl_unpacking_options_via_question_mark_Person.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 :=
-                    (M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
+                    M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
                 end) :
                 Ty.path "unpacking_options_via_question_mark::Job"
             ] in
-        let* α7 :=
-          M.read
-            ((M.var
-                "unpacking_options_via_question_mark::Job::Get_phone_number")
-              α6) in
-        let* α8 := M.call α0 [ α7 ] in
-        let* α9 := M.alloc α8 in
-        let* α10 :=
+        let* α10 := M.read (α2 α9) in
+        let* α11 := M.call α1 [ α10 ] in
+        let* α12 := M.alloc α11 in
+        let* α13 :=
           match_operator
-            α9
+            α12
             [
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 :=
-                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
+                    M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
                     M.get_method
@@ -238,20 +249,18 @@ Module Impl_unpacking_options_via_question_mark_Person.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 :=
-                    (M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
+                    M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
                 end) :
                 Ty.path "unpacking_options_via_question_mark::PhoneNumber"
             ] in
-        M.read
-          ((M.var
-              "unpacking_options_via_question_mark::PhoneNumber::Get_area_code")
-            α10))
+        M.read (α0 α13))
     | _, _ => M.impossible
     end.
 End Impl_unpacking_options_via_question_mark_Person.
@@ -317,7 +326,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :=
+              let* α0 := M.var "UnOp::not" in
+              let* α1 :=
                 M.get_method
                   "core::cmp::PartialEq"
                   "eq"
@@ -329,21 +339,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (* Rhs *)
                       Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
                   ] in
-              let* α1 := M.read left_val in
-              let* α2 := M.read right_val in
-              let* α3 := M.call α0 [ α1; α2 ] in
-              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
-              let* α5 := M.read (use α4) in
-              if α5 then
+              let* α2 := M.read left_val in
+              let* α3 := M.read right_val in
+              let* α4 := M.call α1 [ α2; α3 ] in
+              let* α5 := M.alloc (α0 α4) in
+              let* α6 := M.read (use α5) in
+              if α6 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.read kind in
-                let* α1 := M.read left_val in
-                let* α2 := M.read right_val in
-                let* α3 :=
-                  M.call
-                    (M.var "core::panicking::assert_failed")
-                    [ α0; α1; α2; core.option.Option.None ] in
-                let* α0 := M.alloc α3 in
+                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α1 := M.read kind in
+                let* α2 := M.read left_val in
+                let* α3 := M.read right_val in
+                let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
+                let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
                 let* α2 := never_to_any α1 in
                 M.alloc α2

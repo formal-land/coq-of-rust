@@ -4,27 +4,35 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Point *)
 
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
-  Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
-  
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "box_stack_heap::Point" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
-  Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
-  
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "box_stack_heap::Point" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
-  Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "box_stack_heap::Point" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* Enum Rectangle *)

@@ -4,89 +4,87 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Borrowed *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_structs::Borrowed".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Borrowed") in
-      let* α2 := M.read self in
-      let* α3 :=
-        M.alloc
-          (borrow
-            ((M.var "scoping_rules_lifetimes_structs::Borrowed::Get_0")
-              (deref α2))) in
+      let* α2 := M.var "scoping_rules_lifetimes_structs::Borrowed::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow (α2 (deref α3))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_lifetimes_structs::Borrowed" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 (* Enum NamedBorrowed *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "NamedBorrowed") in
       let* α2 := M.read (mk_str "x") in
-      let* α3 := M.read self in
-      let* α4 := M.read (mk_str "y") in
-      let* α5 := M.read self in
+      let* α3 :=
+        M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_x" in
+      let* α4 := M.read self in
+      let* α5 := M.read (mk_str "y") in
       let* α6 :=
-        M.alloc
-          (borrow
-            ((M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_y")
-              (deref α5))) in
+        M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_y" in
+      let* α7 := M.read self in
+      let* α8 := M.alloc (borrow (α6 (deref α7))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion
-            "Unsize"
-            (borrow
-              ((M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_x")
-                (deref α3)));
-          α4;
-          pointer_coercion "Unsize" (borrow α6)
+          pointer_coercion "Unsize" (borrow (α3 (deref α4)));
+          α5;
+          pointer_coercion "Unsize" (borrow α8)
         ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 (* Enum Either *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_structs::Either".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -100,9 +98,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
               let* α0 := M.read γ in
               match α0 with
               | scoping_rules_lifetimes_structs.Either.Num _ =>
-                let γ1_0 :=
-                  (M.var "scoping_rules_lifetimes_structs::Either::Get_Num_0")
-                    γ in
+                let* γ1_0 :=
+                  let* α0 :=
+                    M.var
+                      "scoping_rules_lifetimes_structs::Either::Get_Num_0" in
+                  M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
                 let* α0 := M.read f in
                 let* α1 := M.read (mk_str "Num") in
@@ -124,9 +124,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
               let* α0 := M.read γ in
               match α0 with
               | scoping_rules_lifetimes_structs.Either.Ref _ =>
-                let γ1_0 :=
-                  (M.var "scoping_rules_lifetimes_structs::Either::Get_Ref_0")
-                    γ in
+                let* γ1_0 :=
+                  let* α0 :=
+                    M.var
+                      "scoping_rules_lifetimes_structs::Either::Get_Ref_0" in
+                  M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
                 let* α0 := M.read f in
                 let* α1 := M.read (mk_str "Ref") in
@@ -146,7 +148,13 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "scoping_rules_lifetimes_structs::Either" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (*
@@ -185,87 +193,91 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (scoping_rules_lifetimes_structs.Either.Num α0) in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "x is borrowed in ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "x is borrowed in ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow single ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "x and y are borrowed in ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "x and y are borrowed in ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow double ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "x is borrowed in ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "x is borrowed in ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow reference ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "y is *not* borrowed in ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "y is *not* borrowed in ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow number ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

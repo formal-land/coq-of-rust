@@ -8,11 +8,15 @@ Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
 (* Enum Incrementer *)
 
 Module Impl_core_default_Default_for_set_code_hash_Incrementer.
-  Definition Self : Ty.t := Ty.path "set_code_hash::Incrementer".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "set_code_hash::Incrementer" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
 Module Impl_set_code_hash_Incrementer.

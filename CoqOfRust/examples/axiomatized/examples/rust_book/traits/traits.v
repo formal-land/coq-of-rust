@@ -17,8 +17,6 @@ Module Impl_traits_Sheep.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
-  Definition Self : Ty.t := Ty.path "traits::Sheep".
-  
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter name : (list Ty.t) -> (list Value.t) -> M.
@@ -27,13 +25,18 @@ Module Impl_traits_Animal_for_traits_Sheep.
   
   Parameter talk : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("new", InstanceField.Method new);
-      ("name", InstanceField.Method name);
-      ("noise", InstanceField.Method noise);
-      ("talk", InstanceField.Method talk)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "traits::Sheep" in
+    M.IsTraitInstance
+      "traits::Animal"
+      Self
+      []
+      [
+        ("new", InstanceField.Method new [ Self ]);
+        ("name", InstanceField.Method name [ Self ]);
+        ("noise", InstanceField.Method noise [ Self ]);
+        ("talk", InstanceField.Method talk [ Self ])
+      ].
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.

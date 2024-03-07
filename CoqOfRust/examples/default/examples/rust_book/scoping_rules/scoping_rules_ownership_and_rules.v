@@ -14,24 +14,25 @@ Definition destroy_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* c := M.alloc c in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Destroying a box that contains ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Destroying a box that contains ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow c ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -83,29 +84,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* y := M.copy x in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "x is ") in
-        let* α1 := M.read (mk_str ", and y is ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "x is ") in
+        let* α2 := M.read (mk_str ", and y is ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α0; α1; α2 ] in
-        let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow x ] in
+        let* α4 := M.alloc [ α1; α2; α3 ] in
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow x ] in
+        let* α6 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow y ] in
-        let* α6 := M.alloc [ α4; α5 ] in
-        let* α7 :=
+        let* α7 := M.alloc [ α5; α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α7)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* a :=
       let* α0 :=
@@ -117,33 +119,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α0 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "a contains: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "a contains: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow a ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* b := M.copy a in
     let* _ :=
-      let* α0 := M.read b in
-      let* α1 :=
-        M.call
-          (M.var "scoping_rules_ownership_and_rules::destroy_box")
-          [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "scoping_rules_ownership_and_rules::destroy_box" in
+      let* α1 := M.read b in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

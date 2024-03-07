@@ -11,38 +11,39 @@ Module Animal.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "") in
-          let* α1 := M.read (mk_str " says ") in
-          let* α2 := M.read (mk_str "
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "") in
+          let* α2 := M.read (mk_str " says ") in
+          let* α3 := M.read (mk_str "
 ") in
-          let* α3 := M.alloc [ α0; α1; α2 ] in
-          let* α4 := M.get_method "traits::Animal" "name" [ (* Self *) Self ] in
-          let* α5 := M.read self in
-          let* α6 := M.call α4 [ α5 ] in
-          let* α7 := M.alloc α6 in
-          let* α8 :=
-            M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α7 ] in
+          let* α4 := M.alloc [ α1; α2; α3 ] in
+          let* α5 := M.get_method "traits::Animal" "name" [ (* Self *) Self ] in
+          let* α6 := M.read self in
+          let* α7 := M.call α5 [ α6 ] in
+          let* α8 := M.alloc α7 in
           let* α9 :=
-            M.get_method "traits::Animal" "noise" [ (* Self *) Self ] in
-          let* α10 := M.read self in
-          let* α11 := M.call α9 [ α10 ] in
-          let* α12 := M.alloc α11 in
-          let* α13 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α12 ] in
-          let* α14 := M.alloc [ α8; α13 ] in
-          let* α15 :=
+              [ borrow α8 ] in
+          let* α10 :=
+            M.get_method "traits::Animal" "noise" [ (* Self *) Self ] in
+          let* α11 := M.read self in
+          let* α12 := M.call α10 [ α11 ] in
+          let* α13 := M.alloc α12 in
+          let* α14 :=
+            M.call
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow α13 ] in
+          let* α15 := M.alloc [ α9; α14 ] in
+          let* α16 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
               [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α14)
+                pointer_coercion "Unsize" (borrow α4);
+                pointer_coercion "Unsize" (borrow α15)
               ] in
-          let* α16 := M.call (M.var "std::io::stdio::_print") [ α15 ] in
-          M.alloc α16 in
+          let* α17 := M.call α0 [ α16 ] in
+          M.alloc α17 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0
@@ -64,15 +65,14 @@ Module Impl_traits_Sheep.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "traits::Sheep::Get_naked") (deref α0))
+      let* α0 := M.var "traits::Sheep::Get_naked" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
-  Definition Self : Ty.t := Ty.path "traits::Sheep".
-  
   (*
       fn new(name: &'static str) -> Sheep {
           Sheep {
@@ -83,7 +83,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ name ] =>
+    | [ Self ], [ name ] =>
       let* name := M.alloc name in
       let* α0 := M.read name in
       M.pure
@@ -98,10 +98,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition name (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "traits::Sheep::Get_name") (deref α0))
+      let* α0 := M.var "traits::Sheep::Get_name" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
@@ -116,7 +117,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 := M.call (Ty.path "traits::Sheep")::["is_naked"] [ α0 ] in
@@ -139,55 +140,62 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition talk (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "") in
-          let* α1 := M.read (mk_str " pauses briefly... ") in
-          let* α2 := M.read (mk_str "
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "") in
+          let* α2 := M.read (mk_str " pauses briefly... ") in
+          let* α3 := M.read (mk_str "
 ") in
-          let* α3 := M.alloc [ α0; α1; α2 ] in
-          let* α4 := M.read self in
-          let* α5 :=
+          let* α4 := M.alloc [ α1; α2; α3 ] in
+          let* α5 := M.var "traits::Sheep::Get_name" in
+          let* α6 := M.read self in
+          let* α7 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow ((M.var "traits::Sheep::Get_name") (deref α4)) ] in
-          let* α6 :=
+              [ borrow (α5 (deref α6)) ] in
+          let* α8 :=
             M.get_method
               "traits::Animal"
               "noise"
               [ (* Self *) Ty.path "traits::Sheep" ] in
-          let* α7 := M.read self in
-          let* α8 := M.call α6 [ α7 ] in
-          let* α9 := M.alloc α8 in
-          let* α10 :=
+          let* α9 := M.read self in
+          let* α10 := M.call α8 [ α9 ] in
+          let* α11 := M.alloc α10 in
+          let* α12 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α9 ] in
-          let* α11 := M.alloc [ α5; α10 ] in
-          let* α12 :=
+              [ borrow α11 ] in
+          let* α13 := M.alloc [ α7; α12 ] in
+          let* α14 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
               [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α11)
+                pointer_coercion "Unsize" (borrow α4);
+                pointer_coercion "Unsize" (borrow α13)
               ] in
-          let* α13 := M.call (M.var "std::io::stdio::_print") [ α12 ] in
-          M.alloc α13 in
+          let* α15 := M.call α0 [ α14 ] in
+          M.alloc α15 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("new", InstanceField.Method new);
-      ("name", InstanceField.Method name);
-      ("noise", InstanceField.Method noise);
-      ("talk", InstanceField.Method talk)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "traits::Sheep" in
+    M.IsTraitInstance
+      "traits::Animal"
+      Self
+      []
+      [
+        ("new", InstanceField.Method new [ Self ]);
+        ("name", InstanceField.Method name [ Self ]);
+        ("noise", InstanceField.Method noise [ Self ]);
+        ("talk", InstanceField.Method talk [ Self ])
+      ].
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.
@@ -218,60 +226,64 @@ Module Impl_traits_Sheep_2.
         if α3 then
           let* _ :=
             let* _ :=
-              let* α0 := M.read (mk_str "") in
-              let* α1 := M.read (mk_str " is already naked...
+              let* α0 := M.var "std::io::stdio::_print" in
+              let* α1 := M.read (mk_str "") in
+              let* α2 := M.read (mk_str " is already naked...
 ") in
-              let* α2 := M.alloc [ α0; α1 ] in
-              let* α3 :=
+              let* α3 := M.alloc [ α1; α2 ] in
+              let* α4 :=
                 M.get_method
                   "traits::Animal"
                   "name"
                   [ (* Self *) Ty.path "traits::Sheep" ] in
-              let* α4 := M.read self in
-              let* α5 := M.call α3 [ borrow (deref α4) ] in
-              let* α6 := M.alloc α5 in
-              let* α7 :=
+              let* α5 := M.read self in
+              let* α6 := M.call α4 [ borrow (deref α5) ] in
+              let* α7 := M.alloc α6 in
+              let* α8 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                  [ borrow α6 ] in
-              let* α8 := M.alloc [ α7 ] in
-              let* α9 :=
+                  [ borrow α7 ] in
+              let* α9 := M.alloc [ α8 ] in
+              let* α10 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                   [
-                    pointer_coercion "Unsize" (borrow α2);
-                    pointer_coercion "Unsize" (borrow α8)
+                    pointer_coercion "Unsize" (borrow α3);
+                    pointer_coercion "Unsize" (borrow α9)
                   ] in
-              let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-              M.alloc α10 in
+              let* α11 := M.call α0 [ α10 ] in
+              M.alloc α11 in
             M.alloc tt in
           M.alloc tt
         else
           let* _ :=
             let* _ :=
-              let* α0 := M.read (mk_str "") in
-              let* α1 := M.read (mk_str " gets a haircut!
+              let* α0 := M.var "std::io::stdio::_print" in
+              let* α1 := M.read (mk_str "") in
+              let* α2 := M.read (mk_str " gets a haircut!
 ") in
-              let* α2 := M.alloc [ α0; α1 ] in
-              let* α3 := M.read self in
-              let* α4 :=
+              let* α3 := M.alloc [ α1; α2 ] in
+              let* α4 := M.var "traits::Sheep::Get_name" in
+              let* α5 := M.read self in
+              let* α6 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                  [ borrow ((M.var "traits::Sheep::Get_name") (deref α3)) ] in
-              let* α5 := M.alloc [ α4 ] in
-              let* α6 :=
+                  [ borrow (α4 (deref α5)) ] in
+              let* α7 := M.alloc [ α6 ] in
+              let* α8 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                   [
-                    pointer_coercion "Unsize" (borrow α2);
-                    pointer_coercion "Unsize" (borrow α5)
+                    pointer_coercion "Unsize" (borrow α3);
+                    pointer_coercion "Unsize" (borrow α7)
                   ] in
-              let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-              M.alloc α7 in
+              let* α9 := M.call α0 [ α8 ] in
+              M.alloc α9 in
             M.alloc tt in
           let* _ :=
-            let* α0 := M.read self in
-            assign ((M.var "traits::Sheep::Get_naked") (deref α0)) true in
+            let* α0 := M.var "traits::Sheep::Get_naked" in
+            let* α1 := M.read self in
+            assign (α0 (deref α1)) true in
           M.alloc tt in
       M.read α4
     | _, _ => M.impossible

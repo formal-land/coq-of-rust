@@ -8,43 +8,57 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct FooBar *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-  Definition Self : Ty.t := Ty.path "operator_overloading::FooBar".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::FooBar" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 (* Struct BarFoo *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-  Definition Self : Ty.t := Ty.path "operator_overloading::BarFoo".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::BarFoo" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
-  Definition Self : Ty.t := Ty.path "operator_overloading::Foo".
-  
   Definition Output : Set := Ty.path "operator_overloading::FooBar".
   
   Parameter add : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("add", InstanceField.Method add) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::Foo" in
+    M.IsTraitInstance
+      "core::ops::arith::Add"
+      Self
+      [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
+      [ ("Output", TODO); ("add", InstanceField.Method add [ Self ]) ].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
-  Definition Self : Ty.t := Ty.path "operator_overloading::Bar".
-  
   Definition Output : Set := Ty.path "operator_overloading::BarFoo".
   
   Parameter add : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("add", InstanceField.Method add) ].
+  Axiom Implements :
+    let Self := Ty.path "operator_overloading::Bar" in
+    M.IsTraitInstance
+      "core::ops::arith::Add"
+      Self
+      [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
+      [ ("Output", TODO); ("add", InstanceField.Method add [ Self ]) ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

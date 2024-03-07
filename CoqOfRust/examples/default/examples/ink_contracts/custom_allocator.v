@@ -74,17 +74,15 @@ Module Impl_custom_allocator_CustomAllocator.
                   [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
               (* Idx *) Ty.path "usize"
             ] in
-        let* α1 := M.read self in
-        let* α2 :=
+        let* α1 := M.var "custom_allocator::CustomAllocator::Get_value" in
+        let* α2 := M.read self in
+        let* α3 :=
           M.call
             α0
-            [
-              borrow_mut
-                ((M.var "custom_allocator::CustomAllocator::Get_value")
-                  (deref α1));
-              (Integer.of_Z 0) : Ty.path "usize"
+            [ borrow_mut (α1 (deref α2)); (Integer.of_Z 0) : Ty.path "usize"
             ] in
-        let* α3 :=
+        let* α4 := M.var "UnOp::not" in
+        let* α5 :=
           M.get_method
             "core::ops::index::Index"
             "index"
@@ -95,18 +93,14 @@ Module Impl_custom_allocator_CustomAllocator.
                   [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
               (* Idx *) Ty.path "usize"
             ] in
-        let* α4 := M.read self in
-        let* α5 :=
+        let* α6 := M.var "custom_allocator::CustomAllocator::Get_value" in
+        let* α7 := M.read self in
+        let* α8 :=
           M.call
-            α3
-            [
-              borrow
-                ((M.var "custom_allocator::CustomAllocator::Get_value")
-                  (deref α4));
-              (Integer.of_Z 0) : Ty.path "usize"
-            ] in
-        let* α6 := M.read (deref α5) in
-        assign (deref α2) ((M.var "UnOp::not") α6) in
+            α5
+            [ borrow (α6 (deref α7)); (Integer.of_Z 0) : Ty.path "usize" ] in
+        let* α9 := M.read (deref α8) in
+        assign (deref α3) (α4 α9) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -132,17 +126,13 @@ Module Impl_custom_allocator_CustomAllocator.
                 [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
             (* Idx *) Ty.path "usize"
           ] in
-      let* α1 := M.read self in
-      let* α2 :=
+      let* α1 := M.var "custom_allocator::CustomAllocator::Get_value" in
+      let* α2 := M.read self in
+      let* α3 :=
         M.call
           α0
-          [
-            borrow
-              ((M.var "custom_allocator::CustomAllocator::Get_value")
-                (deref α1));
-            (Integer.of_Z 0) : Ty.path "usize"
-          ] in
-      M.read (deref α2)
+          [ borrow (α1 (deref α2)); (Integer.of_Z 0) : Ty.path "usize" ] in
+      M.read (deref α3)
     | _, _ => M.impossible
     end.
 End Impl_custom_allocator_CustomAllocator.

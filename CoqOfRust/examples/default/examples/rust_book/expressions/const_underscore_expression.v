@@ -11,8 +11,6 @@ Module BarTrait.
 End BarTrait.
 
 Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-  Definition Self : Ty.t := Ty.path "const_underscore_expression::Bar".
-  
   (*
           fn show(self: Self) -> String {
               self.test
@@ -20,11 +18,18 @@ Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression
   *)
   Definition show (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.read ((M.var "const_underscore_expression::Bar::Get_test") self)
+      let* α0 := M.var "const_underscore_expression::Bar::Get_test" in
+      M.read (α0 self)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("show", InstanceField.Method show) ].
+  Axiom Implements :
+    let Self := Ty.path "const_underscore_expression::Bar" in
+    M.IsTraitInstance
+      "const_underscore_expression::BarTrait"
+      Self
+      []
+      [ ("show", InstanceField.Method show [ Self ]) ].
 End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

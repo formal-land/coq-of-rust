@@ -4,8 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Droppable *)
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Definition Self : Ty.t := Ty.path "drop::Droppable".
-  
   (*
       fn drop(&mut self) {
           println!("> Dropping {}", self.name);
@@ -13,36 +11,44 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   *)
   Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "> Dropping ") in
-          let* α1 := M.read (mk_str "
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "> Dropping ") in
+          let* α2 := M.read (mk_str "
 ") in
-          let* α2 := M.alloc [ α0; α1 ] in
-          let* α3 := M.read self in
-          let* α4 :=
+          let* α3 := M.alloc [ α1; α2 ] in
+          let* α4 := M.var "drop::Droppable::Get_name" in
+          let* α5 := M.read self in
+          let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow ((M.var "drop::Droppable::Get_name") (deref α3)) ] in
-          let* α5 := M.alloc [ α4 ] in
-          let* α6 :=
+              [ borrow (α4 (deref α5)) ] in
+          let* α7 := M.alloc [ α6 ] in
+          let* α8 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
               [
-                pointer_coercion "Unsize" (borrow α2);
-                pointer_coercion "Unsize" (borrow α5)
+                pointer_coercion "Unsize" (borrow α3);
+                pointer_coercion "Unsize" (borrow α7)
               ] in
-          let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-          M.alloc α7 in
+          let* α9 := M.call α0 [ α8 ] in
+          M.alloc α9 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("drop", InstanceField.Method drop) ].
+  Axiom Implements :
+    let Self := Ty.path "drop::Droppable" in
+    M.IsTraitInstance
+      "core::ops::drop::Drop"
+      Self
+      []
+      [ ("drop", InstanceField.Method drop [ Self ]) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (*
@@ -96,69 +102,75 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.alloc (Value.StructRecord "drop::Droppable" [ ("name", α0) ]) in
         let* _ :=
           let* _ :=
-            let* α0 := M.read (mk_str "Exiting block B
+            let* α0 := M.var "std::io::stdio::_print" in
+            let* α1 := M.read (mk_str "Exiting block B
 ") in
-            let* α1 := M.alloc [ α0 ] in
-            let* α2 :=
+            let* α2 := M.alloc [ α1 ] in
+            let* α3 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ pointer_coercion "Unsize" (borrow α1) ] in
-            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-            M.alloc α3 in
+                [ pointer_coercion "Unsize" (borrow α2) ] in
+            let* α4 := M.call α0 [ α3 ] in
+            M.alloc α4 in
           M.alloc tt in
         M.alloc tt in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "Just exited block B
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "Just exited block B
 ") in
-          let* α1 := M.alloc [ α0 ] in
-          let* α2 :=
+          let* α2 := M.alloc [ α1 ] in
+          let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α1) ] in
-          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-          M.alloc α3 in
+              [ pointer_coercion "Unsize" (borrow α2) ] in
+          let* α4 := M.call α0 [ α3 ] in
+          M.alloc α4 in
         M.alloc tt in
       let* _ :=
         let* _ :=
-          let* α0 := M.read (mk_str "Exiting block A
+          let* α0 := M.var "std::io::stdio::_print" in
+          let* α1 := M.read (mk_str "Exiting block A
 ") in
-          let* α1 := M.alloc [ α0 ] in
-          let* α2 :=
+          let* α2 := M.alloc [ α1 ] in
+          let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α1) ] in
-          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-          M.alloc α3 in
+              [ pointer_coercion "Unsize" (borrow α2) ] in
+          let* α4 := M.call α0 [ α3 ] in
+          M.alloc α4 in
         M.alloc tt in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Just exited block A
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Just exited block A
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* _ :=
-      let* α0 := M.read _a in
-      let* α1 := M.call (M.var "core::mem::drop") [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.var "core::mem::drop" in
+      let* α1 := M.read _a in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "end of the main function
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "end of the main function
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

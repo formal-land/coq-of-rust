@@ -15,8 +15,10 @@ Module Impl_example05_Foo.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read ((M.var "example05::Foo::Get_0") self) in
-      (M.var "BinOp::Panic::add") α0 ((Integer.of_Z 1) : Ty.path "u32")
+      let* α0 := M.var "BinOp::Panic::add" in
+      let* α1 := M.var "example05::Foo::Get_0" in
+      let* α2 := M.read (α1 self) in
+      α0 α2 ((Integer.of_Z 1) : Ty.path "u32")
     | _, _ => M.impossible
     end.
 End Impl_example05_Foo.

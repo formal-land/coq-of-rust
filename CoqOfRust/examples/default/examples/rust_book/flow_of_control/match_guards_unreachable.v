@@ -25,38 +25,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           fun γ =>
             (let* i := M.copy γ in
             let* _ :=
-              let* α0 := M.read (mk_str "Zero
+              let* α0 := M.var "std::io::stdio::_print" in
+              let* α1 := M.read (mk_str "Zero
 ") in
-              let* α1 := M.alloc [ α0 ] in
-              let* α2 :=
+              let* α2 := M.alloc [ α1 ] in
+              let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α1) ] in
-              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-              M.alloc α3 in
+                  [ pointer_coercion "Unsize" (borrow α2) ] in
+              let* α4 := M.call α0 [ α3 ] in
+              M.alloc α4 in
             M.alloc tt) :
             Ty.tuple [];
           fun γ =>
             (let* i := M.copy γ in
             let* _ :=
-              let* α0 := M.read (mk_str "Greater than zero
+              let* α0 := M.var "std::io::stdio::_print" in
+              let* α1 := M.read (mk_str "Greater than zero
 ") in
-              let* α1 := M.alloc [ α0 ] in
-              let* α2 :=
+              let* α2 := M.alloc [ α1 ] in
+              let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α1) ] in
-              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-              M.alloc α3 in
+                  [ pointer_coercion "Unsize" (borrow α2) ] in
+              let* α4 := M.call α0 [ α3 ] in
+              M.alloc α4 in
             M.alloc tt) :
             Ty.tuple [];
           fun γ =>
-            (let* α0 :=
-              M.call
-                (M.var "core::panicking::unreachable_display")
-                [ borrow (mk_str "Should never happen.") ] in
-            let* α1 := never_to_any α0 in
-            M.alloc α1) :
+            (let* α0 := M.var "core::panicking::unreachable_display" in
+            let* α1 := M.call α0 [ borrow (mk_str "Should never happen.") ] in
+            let* α2 := never_to_any α1 in
+            M.alloc α2) :
             Ty.tuple []
         ] in
     M.read α0

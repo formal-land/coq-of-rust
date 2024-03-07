@@ -19,25 +19,33 @@ Axiom Result :
 (* Struct EmptyVec *)
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "other_uses_of_question_mark::EmptyVec" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "other_uses_of_question_mark::EmptyVec" in
+    M.IsTraitInstance
+      "core::fmt::Display"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "other_uses_of_question_mark::EmptyVec" in
+    M.IsTraitInstance "core::error::Error" Self [] [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

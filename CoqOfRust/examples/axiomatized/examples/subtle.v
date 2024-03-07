@@ -4,25 +4,33 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Choice *)
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice.
@@ -32,92 +40,121 @@ Module Impl_subtle_Choice.
 End Impl_subtle_Choice.
 
 Module Impl_core_convert_From_subtle_Choice_for_bool.
-  Definition Self : Ty.t := Ty.path "bool".
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "bool" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "subtle::Choice" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Definition Output : Set := Ty.path "subtle::Choice".
   
   Parameter bitand : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitAnd"
+      Self
+      []
+      [ ("Output", TODO); ("bitand", InstanceField.Method bitand [ Self ]) ].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter bitand_assign : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("bitand_assign", InstanceField.Method bitand_assign) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitAndAssign"
+      Self
+      []
+      [ ("bitand_assign", InstanceField.Method bitand_assign [ Self ]) ].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Definition Output : Set := Ty.path "subtle::Choice".
   
   Parameter bitor : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitOr"
+      Self
+      []
+      [ ("Output", TODO); ("bitor", InstanceField.Method bitor [ Self ]) ].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter bitor_assign : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("bitor_assign", InstanceField.Method bitor_assign) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitOrAssign"
+      Self
+      []
+      [ ("bitor_assign", InstanceField.Method bitor_assign [ Self ]) ].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Definition Output : Set := Ty.path "subtle::Choice".
   
   Parameter bitxor : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitXor"
+      Self
+      []
+      [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor [ Self ]) ].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter bitxor_assign : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::BitXorAssign"
+      Self
+      []
+      [ ("bitxor_assign", InstanceField.Method bitxor_assign [ Self ]) ].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Definition Output : Set := Ty.path "subtle::Choice".
   
   Parameter not : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Output", TODO); ("not", InstanceField.Method not) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::ops::bit::Not"
+      Self
+      []
+      [ ("Output", TODO); ("not", InstanceField.Method not [ Self ]) ].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 Parameter black_box : (list Ty.t) -> (list Value.t) -> M.
 
 Module Impl_core_convert_From_u8_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "u8" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
@@ -129,100 +166,148 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_slice_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "slice") [ T ] in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self; T ]) ].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
-  Definition Self : Ty.t := Ty.path "i8".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i8" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
-  Definition Self : Ty.t := Ty.path "i16".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i16" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
-  Definition Self : Ty.t := Ty.path "i32".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i32" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
-  Definition Self : Ty.t := Ty.path "i64".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "i64" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
-  Definition Self : Ty.t := Ty.path "usize".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "usize" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
-  Definition Self : Ty.t := Ty.path "isize".
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_eq", InstanceField.Method ct_eq) ].
+  Axiom Implements :
+    let Self := Ty.path "isize" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self ]) ].
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
@@ -238,148 +323,192 @@ Module ConditionallySelectable.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
-  Definition Self : Ty.t := Ty.path "i8".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i8" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
-  Definition Self : Ty.t := Ty.path "i16".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i16" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
-  Definition Self : Ty.t := Ty.path "i32".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i32" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
-  Definition Self : Ty.t := Ty.path "i64".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("conditional_select", InstanceField.Method conditional_select);
-      ("conditional_assign", InstanceField.Method conditional_assign);
-      ("conditional_swap", InstanceField.Method conditional_swap)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "i64" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self ]);
+        ("conditional_assign",
+          InstanceField.Method conditional_assign [ Self ]);
+        ("conditional_swap", InstanceField.Method conditional_swap [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
-  Definition Self : Ty.t := Ty.path "subtle::Choice".
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("conditional_select", InstanceField.Method conditional_select) ].
+  Axiom Implements :
+    let Self := Ty.path "subtle::Choice" in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [ ("conditional_select", InstanceField.Method conditional_select [ Self ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 (* Trait *)
@@ -388,51 +517,67 @@ Module ConditionallyNegatable.
 End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
-  Definition Self (T : Ty.t) : Ty.t := T.
-  
   Parameter conditional_negate : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("conditional_negate", InstanceField.Method (conditional_negate T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := T in
+    M.IsTraitInstance
+      "subtle::ConditionallyNegatable"
+      Self
+      []
+      [
+        ("conditional_negate",
+          InstanceField.Method conditional_negate [ Self; T ])
+      ].
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 (* Enum CtOption *)
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("clone", InstanceField.Method (clone T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self; T ]) ].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
-  Definition ℐ (T : Ty.t) : Instance.t := [].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("fmt", InstanceField.Method (fmt T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self; T ]) ].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "core::option::Option") [ T ].
-  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("from", InstanceField.Method (from T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "core::option::Option") [ T ] in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
+      [ ("from", InstanceField.Method from [ Self; T ]) ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -461,23 +606,32 @@ Module Impl_subtle_CtOption_T.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   Parameter conditional_select : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("conditional_select", InstanceField.Method (conditional_select T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "subtle::ConditionallySelectable"
+      Self
+      []
+      [
+        ("conditional_select",
+          InstanceField.Method conditional_select [ Self; T ])
+      ].
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [ T ].
-  
   Parameter ct_eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ (T : Ty.t) : Instance.t :=
-    [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
+  Axiom Implements :
+    forall (T : Ty.t),
+    let Self := Ty.apply (Ty.path "subtle::CtOption") [ T ] in
+    M.IsTraitInstance
+      "subtle::ConstantTimeEq"
+      Self
+      []
+      [ ("ct_eq", InstanceField.Method ct_eq [ Self; T ]) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 (* Trait *)
@@ -486,35 +640,51 @@ Module ConstantTimeGreater.
 End ConstantTimeGreater.
 
 Module Impl_subtle_ConstantTimeGreater_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
   Parameter ct_gt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
   Parameter ct_gt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
   Parameter ct_gt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
   Parameter ct_gt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("ct_gt", InstanceField.Method ct_gt) ].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance
+      "subtle::ConstantTimeGreater"
+      Self
+      []
+      [ ("ct_gt", InstanceField.Method ct_gt [ Self ]) ].
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
@@ -526,25 +696,25 @@ Module ConstantTimeLess.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.
-  Definition Self : Ty.t := Ty.path "u8".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u8" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
-  Definition Self : Ty.t := Ty.path "u16".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u16" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
-  Definition Self : Ty.t := Ty.path "u32".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u32" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
-  Definition Self : Ty.t := Ty.path "u64".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "u64" in
+    M.IsTraitInstance "subtle::ConstantTimeLess" Self [] [].
 End Impl_subtle_ConstantTimeLess_for_u64.

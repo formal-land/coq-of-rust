@@ -4,8 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Circle *)
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Definition Self : Ty.t := Ty.path "converting_to_string::Circle".
-  
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
           write!(f, "Circle of radius {}", self.radius)
@@ -13,33 +11,37 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Circle of radius ") in
       let* α2 := M.alloc [ α1 ] in
-      let* α3 := M.read self in
-      let* α4 :=
+      let* α3 := M.var "converting_to_string::Circle::Get_radius" in
+      let* α4 := M.read self in
+      let* α5 :=
         M.call
           (Ty.path "core::fmt::rt::Argument")::["new_display"]
-          [
-            borrow
-              ((M.var "converting_to_string::Circle::Get_radius") (deref α3))
-          ] in
-      let* α5 := M.alloc [ α4 ] in
-      let* α6 :=
+          [ borrow (α3 (deref α4)) ] in
+      let* α6 := M.alloc [ α5 ] in
+      let* α7 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_v1"]
           [
             pointer_coercion "Unsize" (borrow α2);
-            pointer_coercion "Unsize" (borrow α5)
+            pointer_coercion "Unsize" (borrow α6)
           ] in
-      M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α6 ]
+      M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α7 ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "converting_to_string::Circle" in
+    M.IsTraitInstance
+      "core::fmt::Display"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (*

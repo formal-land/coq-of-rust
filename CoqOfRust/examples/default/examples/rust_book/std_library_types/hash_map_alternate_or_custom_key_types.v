@@ -4,25 +4,22 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Account *)
 
 Module Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self : Ty.t :=
-    Ty.path "hash_map_alternate_or_custom_key_types::Account".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self : Ty.t :=
-    Ty.path "hash_map_alternate_or_custom_key_types::Account".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :=
+      let* α0 := M.var "BinOp::Pure::and" in
+      let* α1 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -30,22 +27,14 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
           ] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      let* α3 :=
-        M.call
-          α0
-          [
-            borrow
-              ((M.var
-                  "hash_map_alternate_or_custom_key_types::Account::Get_username")
-                (deref α1));
-            borrow
-              ((M.var
-                  "hash_map_alternate_or_custom_key_types::Account::Get_username")
-                (deref α2))
-          ] in
+      let* α2 :=
+        M.var "hash_map_alternate_or_custom_key_types::Account::Get_username" in
+      let* α3 := M.read self in
       let* α4 :=
+        M.var "hash_map_alternate_or_custom_key_types::Account::Get_username" in
+      let* α5 := M.read other in
+      let* α6 := M.call α1 [ borrow (α2 (deref α3)); borrow (α4 (deref α5)) ] in
+      let* α7 :=
         M.get_method
           "core::cmp::PartialEq"
           "eq"
@@ -53,39 +42,34 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
           ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
-        M.call
-          α4
-          [
-            borrow
-              ((M.var
-                  "hash_map_alternate_or_custom_key_types::Account::Get_password")
-                (deref α5));
-            borrow
-              ((M.var
-                  "hash_map_alternate_or_custom_key_types::Account::Get_password")
-                (deref α6))
-          ] in
-      M.pure ((M.var "BinOp::Pure::and") α3 α7)
+      let* α8 :=
+        M.var "hash_map_alternate_or_custom_key_types::Account::Get_password" in
+      let* α9 := M.read self in
+      let* α10 :=
+        M.var "hash_map_alternate_or_custom_key_types::Account::Get_password" in
+      let* α11 := M.read other in
+      let* α12 :=
+        M.call α7 [ borrow (α8 (deref α9)); borrow (α10 (deref α11)) ] in
+      M.pure (α0 α6 α12)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self : Ty.t :=
-    Ty.path "hash_map_alternate_or_custom_key_types::Account".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self : Ty.t :=
-    Ty.path "hash_map_alternate_or_custom_key_types::Account".
-  
   (*
   Eq
   *)
@@ -94,7 +78,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -118,23 +102,25 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self : Ty.t :=
-    Ty.path "hash_map_alternate_or_custom_key_types::Account".
-  
   (*
   Hash
   *)
   Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ __H ], [ self; state ] =>
+    | [ Self; __H ], [ self; state ] =>
       let* self := M.alloc self in
       let* state := M.alloc state in
       let* _ :=
@@ -144,43 +130,36 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
             "hash"
             [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]; (* H *) __H
             ] in
-        let* α1 := M.read self in
-        let* α2 := M.read state in
-        let* α3 :=
-          M.call
-            α0
-            [
-              borrow
-                ((M.var
-                    "hash_map_alternate_or_custom_key_types::Account::Get_username")
-                  (deref α1));
-              α2
-            ] in
-        M.alloc α3 in
+        let* α1 :=
+          M.var
+            "hash_map_alternate_or_custom_key_types::Account::Get_username" in
+        let* α2 := M.read self in
+        let* α3 := M.read state in
+        let* α4 := M.call α0 [ borrow (α1 (deref α2)); α3 ] in
+        M.alloc α4 in
       let* α0 :=
         M.get_method
           "core::hash::Hash"
           "hash"
           [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]; (* H *) __H
           ] in
-      let* α1 := M.read self in
-      let* α2 := M.read state in
-      let* α3 :=
-        M.call
-          α0
-          [
-            borrow
-              ((M.var
-                  "hash_map_alternate_or_custom_key_types::Account::Get_password")
-                (deref α1));
-            α2
-          ] in
-      let* α0 := M.alloc α3 in
+      let* α1 :=
+        M.var "hash_map_alternate_or_custom_key_types::Account::Get_password" in
+      let* α2 := M.read self in
+      let* α3 := M.read state in
+      let* α4 := M.call α0 [ borrow (α1 (deref α2)); α3 ] in
+      let* α0 := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
+  Axiom Implements :
+    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
+    M.IsTraitInstance
+      "core::hash::Hash"
+      Self
+      []
+      [ ("hash", InstanceField.Method hash [ Self ]) ].
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 (* Enum AccountInfo *)
@@ -221,57 +200,60 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* password := M.alloc password in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Username: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Username: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow username ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Password: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Password: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow password ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Attempting logon...
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Attempting logon...
 ") in
-        let* α1 := M.alloc [ α0 ] in
-        let* α2 :=
+        let* α2 := M.alloc [ α1 ] in
+        let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α1) ] in
-        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-        M.alloc α3 in
+            [ pointer_coercion "Unsize" (borrow α2) ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       M.alloc tt in
     let* logon :=
       let* α0 := M.read username in
@@ -300,73 +282,74 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := (M.var "core::option::Option::Get_Some_0") γ in
+              let* γ0_0 :=
+                let* α0 := M.var "core::option::Option::Get_Some_0" in
+                M.pure (α0 γ) in
               let* account_info := M.copy γ0_0 in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "Successful logon!
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "Successful logon!
 ") in
-                  let* α1 := M.alloc [ α0 ] in
-                  let* α2 :=
+                  let* α2 := M.alloc [ α1 ] in
+                  let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α1) ] in
-                  let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-                  M.alloc α3 in
+                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                  let* α4 := M.call α0 [ α3 ] in
+                  M.alloc α4 in
                 M.alloc tt in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "Name: ") in
-                  let* α1 := M.read (mk_str "
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "Name: ") in
+                  let* α2 := M.read (mk_str "
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 := M.read account_info in
+                  let* α3 := M.alloc [ α1; α2 ] in
                   let* α4 :=
+                    M.var
+                      "hash_map_alternate_or_custom_key_types::AccountInfo::Get_name" in
+                  let* α5 := M.read account_info in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [
-                        borrow
-                          ((M.var
-                              "hash_map_alternate_or_custom_key_types::AccountInfo::Get_name")
-                            (deref α3))
-                      ] in
-                  let* α5 := M.alloc [ α4 ] in
-                  let* α6 :=
+                      [ borrow (α4 (deref α5)) ] in
+                  let* α7 := M.alloc [ α6 ] in
+                  let* α8 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α5)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α7)
                       ] in
-                  let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-                  M.alloc α7 in
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
                 M.alloc tt in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.read (mk_str "Email: ") in
-                  let* α1 := M.read (mk_str "
+                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α1 := M.read (mk_str "Email: ") in
+                  let* α2 := M.read (mk_str "
 ") in
-                  let* α2 := M.alloc [ α0; α1 ] in
-                  let* α3 := M.read account_info in
+                  let* α3 := M.alloc [ α1; α2 ] in
                   let* α4 :=
+                    M.var
+                      "hash_map_alternate_or_custom_key_types::AccountInfo::Get_email" in
+                  let* α5 := M.read account_info in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [
-                        borrow
-                          ((M.var
-                              "hash_map_alternate_or_custom_key_types::AccountInfo::Get_email")
-                            (deref α3))
-                      ] in
-                  let* α5 := M.alloc [ α4 ] in
-                  let* α6 :=
+                      [ borrow (α4 (deref α5)) ] in
+                  let* α7 := M.alloc [ α6 ] in
+                  let* α8 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α2);
-                        pointer_coercion "Unsize" (borrow α5)
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α7)
                       ] in
-                  let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
-                  M.alloc α7 in
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -374,15 +357,16 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple [];
           fun γ =>
             (let* _ :=
-              let* α0 := M.read (mk_str "Login failed!
+              let* α0 := M.var "std::io::stdio::_print" in
+              let* α1 := M.read (mk_str "Login failed!
 ") in
-              let* α1 := M.alloc [ α0 ] in
-              let* α2 :=
+              let* α2 := M.alloc [ α1 ] in
+              let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α1) ] in
-              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
-              M.alloc α3 in
+                  [ pointer_coercion "Unsize" (borrow α2) ] in
+              let* α4 := M.call α0 [ α3 ] in
+              M.alloc α4 in
             M.alloc tt) :
             Ty.tuple []
         ] in
@@ -456,21 +440,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ borrow_mut accounts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.read (mk_str "j.everyman") in
-      let* α1 := M.read (mk_str "psasword123") in
-      let* α2 :=
-        M.call
-          (M.var "hash_map_alternate_or_custom_key_types::try_logon")
-          [ borrow accounts; α0; α1 ] in
-      M.alloc α2 in
+      let* α0 := M.var "hash_map_alternate_or_custom_key_types::try_logon" in
+      let* α1 := M.read (mk_str "j.everyman") in
+      let* α2 := M.read (mk_str "psasword123") in
+      let* α3 := M.call α0 [ borrow accounts; α1; α2 ] in
+      M.alloc α3 in
     let* _ :=
-      let* α0 := M.read (mk_str "j.everyman") in
-      let* α1 := M.read (mk_str "password123") in
-      let* α2 :=
-        M.call
-          (M.var "hash_map_alternate_or_custom_key_types::try_logon")
-          [ borrow accounts; α0; α1 ] in
-      M.alloc α2 in
+      let* α0 := M.var "hash_map_alternate_or_custom_key_types::try_logon" in
+      let* α1 := M.read (mk_str "j.everyman") in
+      let* α2 := M.read (mk_str "password123") in
+      let* α3 := M.call α0 [ borrow accounts; α1; α2 ] in
+      M.alloc α3 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

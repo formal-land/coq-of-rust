@@ -134,38 +134,42 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in
     let* _ :=
-      let* α0 :=
+      let* α0 := M.var "UnOp::not" in
+      let* α1 :=
         M.call
           (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["insert"]
           [ borrow_mut a; (Integer.of_Z 4) : Ty.path "i32" ] in
-      let* α1 := M.alloc ((M.var "UnOp::not") α0) in
-      let* α2 := M.read (use α1) in
-      if α2 then
-        let* α0 := M.read (mk_str "assertion failed: a.insert(4)") in
-        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-        let* α2 := never_to_any α1 in
-        M.alloc α2
+      let* α2 := M.alloc (α0 α1) in
+      let* α3 := M.read (use α2) in
+      if α3 then
+        let* α0 := M.var "core::panicking::panic" in
+        let* α1 := M.read (mk_str "assertion failed: a.insert(4)") in
+        let* α2 := M.call α0 [ α1 ] in
+        let* α3 := never_to_any α2 in
+        M.alloc α3
       else
         M.alloc tt in
     let* _ :=
-      let* α0 := M.alloc ((Integer.of_Z 4) : Ty.path "i32") in
-      let* α1 :=
+      let* α0 := M.var "UnOp::not" in
+      let* α1 := M.alloc ((Integer.of_Z 4) : Ty.path "i32") in
+      let* α2 :=
         M.call
           (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["contains"]
-          [ borrow a; borrow α0 ] in
-      let* α2 := M.alloc ((M.var "UnOp::not") α1) in
-      let* α3 := M.read (use α2) in
-      if α3 then
-        let* α0 := M.read (mk_str "assertion failed: a.contains(&4)") in
-        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-        let* α2 := never_to_any α1 in
-        M.alloc α2
+          [ borrow a; borrow α1 ] in
+      let* α3 := M.alloc (α0 α2) in
+      let* α4 := M.read (use α3) in
+      if α4 then
+        let* α0 := M.var "core::panicking::panic" in
+        let* α1 := M.read (mk_str "assertion failed: a.contains(&4)") in
+        let* α2 := M.call α0 [ α1 ] in
+        let* α3 := never_to_any α2 in
+        M.alloc α3
       else
         M.alloc tt in
     let* _ :=
@@ -179,53 +183,56 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α0 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "A: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "A: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow a ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "B: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "B: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow b ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Union: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Union: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "collect"
@@ -242,37 +249,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
             (Ty.apply
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["union"]
             [ borrow a; borrow b ] in
-        let* α5 := M.call α3 [ α4 ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α6 := M.call α4 [ α5 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α8)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Difference: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Difference: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "collect"
@@ -289,37 +297,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
             (Ty.apply
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["difference"]
             [ borrow a; borrow b ] in
-        let* α5 := M.call α3 [ α4 ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α6 := M.call α4 [ α5 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α8)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Intersection: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Intersection: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "collect"
@@ -336,37 +345,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
             (Ty.apply
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["intersection"]
             [ borrow a; borrow b ] in
-        let* α5 := M.call α3 [ α4 ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α6 := M.call α4 [ α5 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α8)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Symmetric Difference: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Symmetric Difference: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.get_method
             "core::iter::traits::iterator::Iterator"
             "collect"
@@ -383,29 +393,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
-        let* α4 :=
+        let* α5 :=
           M.call
             (Ty.apply
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["symmetric_difference"]
             [ borrow a; borrow b ] in
-        let* α5 := M.call α3 [ α4 ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
+        let* α6 := M.call α4 [ α5 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+            [ borrow α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α8)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α9)
             ] in
-        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

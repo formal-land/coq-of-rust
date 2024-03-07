@@ -17,9 +17,9 @@ Module Impl_generics_implementation_Val.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.pure
-        (borrow ((M.var "generics_implementation::Val::Get_val") (deref α0)))
+      let* α0 := M.var "generics_implementation::Val::Get_val" in
+      let* α1 := M.read self in
+      M.pure (borrow (α0 (deref α1)))
     | _, _ => M.impossible
     end.
 End Impl_generics_implementation_Val.
@@ -37,10 +37,9 @@ Module Impl_generics_implementation_GenVal_T.
     match 𝜏, α with
     | [ T ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.pure
-        (borrow
-          ((M.var "generics_implementation::GenVal::Get_gen_val") (deref α0)))
+      let* α0 := M.var "generics_implementation::GenVal::Get_gen_val" in
+      let* α1 := M.read self in
+      M.pure (borrow (α0 (deref α1)))
     | _, _ => M.impossible
     end.
 End Impl_generics_implementation_GenVal_T.
@@ -68,41 +67,42 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ ("gen_val", (Integer.of_Z 3) : Ty.path "i32") ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "") in
-        let* α1 := M.read (mk_str ", ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "") in
+        let* α2 := M.read (mk_str ", ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α0; α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α1; α2; α3 ] in
+        let* α5 :=
           M.call
             (Ty.path "generics_implementation::Val")::["value"]
             [ borrow x ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
+        let* α6 := M.alloc α5 in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
-        let* α7 :=
+            [ borrow α6 ] in
+        let* α8 :=
           M.call
             (Ty.apply
                 (Ty.path "generics_implementation::GenVal")
                 [ Ty.path "i32" ])::["value"]
             [ borrow y ] in
-        let* α8 := M.alloc α7 in
-        let* α9 :=
+        let* α9 := M.alloc α8 in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α8 ] in
-        let* α10 := M.alloc [ α6; α9 ] in
-        let* α11 :=
+            [ borrow α9 ] in
+        let* α11 := M.alloc [ α7; α10 ] in
+        let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α10)
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α11)
             ] in
-        let* α12 := M.call (M.var "std::io::stdio::_print") [ α11 ] in
-        M.alloc α12 in
+        let* α13 := M.call α0 [ α12 ] in
+        M.alloc α13 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

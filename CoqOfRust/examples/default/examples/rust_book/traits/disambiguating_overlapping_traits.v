@@ -14,8 +14,6 @@ End AgeWidget.
 (* Enum Form *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
-  
   (*
       fn get(&self) -> String {
           self.username.clone()
@@ -23,30 +21,30 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "alloc::string::String" ] in
-      let* α1 := M.read self in
-      M.call
-        α0
-        [
-          borrow
-            ((M.var "disambiguating_overlapping_traits::Form::Get_username")
-              (deref α1))
-        ]
+      let* α1 :=
+        M.var "disambiguating_overlapping_traits::Form::Get_username" in
+      let* α2 := M.read self in
+      M.call α0 [ borrow (α1 (deref α2)) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "disambiguating_overlapping_traits::Form" in
+    M.IsTraitInstance
+      "disambiguating_overlapping_traits::UsernameWidget"
+      Self
+      []
+      [ ("get", InstanceField.Method get [ Self ]) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
-  
   (*
       fn get(&self) -> u8 {
           self.age
@@ -54,15 +52,21 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read
-        ((M.var "disambiguating_overlapping_traits::Form::Get_age") (deref α0))
+      let* α0 := M.var "disambiguating_overlapping_traits::Form::Get_age" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("get", InstanceField.Method get) ].
+  Axiom Implements :
+    let Self := Ty.path "disambiguating_overlapping_traits::Form" in
+    M.IsTraitInstance
+      "disambiguating_overlapping_traits::AgeWidget"
+      Self
+      []
+      [ ("get", InstanceField.Method get [ Self ]) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (*
@@ -128,7 +132,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 :=
+              let* α0 := M.var "UnOp::not" in
+              let* α1 :=
                 M.get_method
                   "core::cmp::PartialEq"
                   "eq"
@@ -136,21 +141,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (* Self *) Ty.path "alloc::string::String";
                     (* Rhs *) Ty.path "alloc::string::String"
                   ] in
-              let* α1 := M.read left_val in
-              let* α2 := M.read right_val in
-              let* α3 := M.call α0 [ α1; α2 ] in
-              let* α4 := M.alloc ((M.var "UnOp::not") α3) in
-              let* α5 := M.read (use α4) in
-              if α5 then
+              let* α2 := M.read left_val in
+              let* α3 := M.read right_val in
+              let* α4 := M.call α1 [ α2; α3 ] in
+              let* α5 := M.alloc (α0 α4) in
+              let* α6 := M.read (use α5) in
+              if α6 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.read kind in
-                let* α1 := M.read left_val in
-                let* α2 := M.read right_val in
-                let* α3 :=
-                  M.call
-                    (M.var "core::panicking::assert_failed")
-                    [ α0; α1; α2; core.option.Option.None ] in
-                let* α0 := M.alloc α3 in
+                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α1 := M.read kind in
+                let* α2 := M.read left_val in
+                let* α3 := M.read right_val in
+                let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
+                let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
                 let* α2 := never_to_any α1 in
                 M.alloc α2
@@ -181,24 +184,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.read left_val in
-              let* α1 := M.read (deref α0) in
-              let* α2 := M.read right_val in
+              let* α0 := M.var "UnOp::not" in
+              let* α1 := M.var "BinOp::Pure::eq" in
+              let* α2 := M.read left_val in
               let* α3 := M.read (deref α2) in
-              let* α4 :=
-                M.alloc
-                  ((M.var "UnOp::not") ((M.var "BinOp::Pure::eq") α1 α3)) in
-              let* α5 := M.read (use α4) in
-              if α5 then
+              let* α4 := M.read right_val in
+              let* α5 := M.read (deref α4) in
+              let* α6 := M.alloc (α0 (α1 α3 α5)) in
+              let* α7 := M.read (use α6) in
+              if α7 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.read kind in
-                let* α1 := M.read left_val in
-                let* α2 := M.read right_val in
-                let* α3 :=
-                  M.call
-                    (M.var "core::panicking::assert_failed")
-                    [ α0; α1; α2; core.option.Option.None ] in
-                let* α0 := M.alloc α3 in
+                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α1 := M.read kind in
+                let* α2 := M.read left_val in
+                let* α3 := M.read right_val in
+                let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
+                let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
                 let* α2 := never_to_any α1 in
                 M.alloc α2

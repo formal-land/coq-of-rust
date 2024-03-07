@@ -4,35 +4,41 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum PhoneNumber *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self : Ty.t :=
-    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* Enum Job *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
-  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
-  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* Enum Person *)

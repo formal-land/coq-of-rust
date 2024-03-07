@@ -4,36 +4,47 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct EvenNumber *)
 
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
-  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
-  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
-  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
-  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
-  
   Definition Error : Set := Ty.tuple [].
   
   Parameter try_from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("Error", TODO); ("try_from", InstanceField.Method try_from) ].
+  Axiom Implements :
+    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
+    M.IsTraitInstance
+      "core::convert::TryFrom"
+      Self
+      [ (* T *) Ty.path "i32" ]
+      [ ("Error", TODO); ("try_from", InstanceField.Method try_from [ Self ]) ].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

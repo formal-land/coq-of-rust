@@ -4,15 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Enum Mapping *)
 
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [] =>
+    | [ Self; K; V ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -32,8 +29,14 @@ Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ (K V : Ty.t) : Instance.t :=
-    [ ("default", InstanceField.Method (default K V)) ].
+  Axiom Implements :
+    forall (K V : Ty.t),
+    let Self := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ] in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
@@ -50,9 +53,10 @@ Module Impl_trait_erc20_Mapping_K_V.
     | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -67,9 +71,10 @@ Module Impl_trait_erc20_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_trait_erc20_Mapping_K_V.
@@ -77,14 +82,12 @@ End Impl_trait_erc20_Mapping_K_V.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_trait_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -95,18 +98,22 @@ Module Impl_core_default_Default_for_trait_erc20_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_trait_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -125,13 +132,19 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_trait_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
-  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_trait_erc20_AccountId.
 
 Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
@@ -141,14 +154,12 @@ Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
 (* Enum Error *)
 
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -186,55 +197,64 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.read other in
-        let* α1 :=
-          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
-        M.alloc α1 in
-      let* α0 := M.read __self_tag in
-      let* α1 := M.read __arg1_tag in
-      let* α0 := M.alloc ((M.var "BinOp::Pure::eq") α0 α1) in
+        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α1 := M.read other in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
+      let* α0 := M.var "BinOp::Pure::eq" in
+      let* α1 := M.read __self_tag in
+      let* α2 := M.read __arg1_tag in
+      let* α0 := M.alloc (α0 α1 α2) in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
   (*
   Eq
   *)
@@ -243,17 +263,22 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Error" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
@@ -271,14 +296,12 @@ End BaseErc20.
 (* Enum Erc20 *)
 
 Module Impl_core_default_Default_for_trait_erc20_Erc20.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -321,7 +344,13 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Erc20" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_trait_erc20_Erc20.
 
 (* Enum Transfer *)
@@ -342,8 +371,9 @@ Module Impl_trait_erc20_Env.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "trait_erc20::Env::Get_caller") (deref α0))
+      let* α0 := M.var "trait_erc20::Env::Get_caller" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
@@ -357,9 +387,10 @@ Module Impl_trait_erc20_Env.
     | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_trait_erc20_Env.
@@ -375,9 +406,10 @@ Module Impl_trait_erc20_Erc20.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -504,20 +536,20 @@ Module Impl_trait_erc20_Erc20.
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
-      let* α0 := M.read self in
-      let* α1 := M.read owner in
-      let* α2 :=
+      let* α0 := M.var "trait_erc20::Erc20::Get_balances" in
+      let* α1 := M.read self in
+      let* α2 := M.read owner in
+      let* α3 :=
         M.call
           (Ty.apply
               (Ty.path "trait_erc20::Mapping")
               [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ])::["get"]
-          [ borrow ((M.var "trait_erc20::Erc20::Get_balances") (deref α0)); α1
-          ] in
+          [ borrow (α0 (deref α1)); α2 ] in
       M.call
         (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "u128" ])::["unwrap_or_default"]
-        [ α2 ]
+        [ α3 ]
     | _, _ => M.impossible
     end.
   
@@ -532,13 +564,14 @@ Module Impl_trait_erc20_Erc20.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
-      let* α0 := M.read self in
-      let* α1 := M.read owner in
-      let* α2 := M.read (deref α1) in
-      let* α3 := M.read spender in
-      let* α4 := M.read (deref α3) in
-      let* α5 := M.alloc (α2, α4) in
-      let* α6 :=
+      let* α0 := M.var "trait_erc20::Erc20::Get_allowances" in
+      let* α1 := M.read self in
+      let* α2 := M.read owner in
+      let* α3 := M.read (deref α2) in
+      let* α4 := M.read spender in
+      let* α5 := M.read (deref α4) in
+      let* α6 := M.alloc (α3, α5) in
+      let* α7 :=
         M.call
           (Ty.apply
               (Ty.path "trait_erc20::Mapping")
@@ -550,15 +583,12 @@ Module Impl_trait_erc20_Erc20.
                   ];
                 Ty.path "u128"
               ])::["get"]
-          [
-            borrow ((M.var "trait_erc20::Erc20::Get_allowances") (deref α0));
-            borrow α5
-          ] in
+          [ borrow (α0 (deref α1)); borrow α6 ] in
       M.call
         (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "u128" ])::["unwrap_or_default"]
-        [ α6 ]
+        [ α7 ]
     | _, _ => M.impossible
     end.
   
@@ -603,11 +633,12 @@ Module Impl_trait_erc20_Erc20.
               [ borrow (deref α0); α1 ] in
           M.alloc α2 in
         let* _ :=
-          let* α0 := M.read from_balance in
-          let* α1 := M.read value in
-          let* α2 := M.alloc ((M.var "BinOp::Pure::lt") α0 α1) in
-          let* α3 := M.read (use α2) in
-          if α3 then
+          let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read from_balance in
+          let* α2 := M.read value in
+          let* α3 := M.alloc (α0 α1 α2) in
+          let* α4 := M.read (use α3) in
+          if α4 then
             let* α0 :=
               return_
                 (core.result.Result.Err
@@ -618,25 +649,22 @@ Module Impl_trait_erc20_Erc20.
           else
             M.alloc tt in
         let* _ :=
-          let* α0 := M.read self in
-          let* α1 := M.read from in
-          let* α2 := M.read (deref α1) in
-          let* α3 := M.read from_balance in
-          let* α4 := M.read value in
-          let* α5 := (M.var "BinOp::Panic::sub") α3 α4 in
-          let* α6 :=
+          let* α0 := M.var "trait_erc20::Erc20::Get_balances" in
+          let* α1 := M.read self in
+          let* α2 := M.read from in
+          let* α3 := M.read (deref α2) in
+          let* α4 := M.var "BinOp::Panic::sub" in
+          let* α5 := M.read from_balance in
+          let* α6 := M.read value in
+          let* α7 := α4 α5 α6 in
+          let* α8 :=
             M.call
               (Ty.apply
                   (Ty.path "trait_erc20::Mapping")
                   [ Ty.path "trait_erc20::AccountId"; Ty.path "u128"
                   ])::["insert"]
-              [
-                borrow_mut
-                  ((M.var "trait_erc20::Erc20::Get_balances") (deref α0));
-                α2;
-                α5
-              ] in
-          M.alloc α6 in
+              [ borrow_mut (α0 (deref α1)); α3; α7 ] in
+          M.alloc α8 in
         let* to_balance :=
           let* α0 := M.read self in
           let* α1 := M.read to in
@@ -646,25 +674,22 @@ Module Impl_trait_erc20_Erc20.
               [ borrow (deref α0); α1 ] in
           M.alloc α2 in
         let* _ :=
-          let* α0 := M.read self in
-          let* α1 := M.read to in
-          let* α2 := M.read (deref α1) in
-          let* α3 := M.read to_balance in
-          let* α4 := M.read value in
-          let* α5 := (M.var "BinOp::Panic::add") α3 α4 in
-          let* α6 :=
+          let* α0 := M.var "trait_erc20::Erc20::Get_balances" in
+          let* α1 := M.read self in
+          let* α2 := M.read to in
+          let* α3 := M.read (deref α2) in
+          let* α4 := M.var "BinOp::Panic::add" in
+          let* α5 := M.read to_balance in
+          let* α6 := M.read value in
+          let* α7 := α4 α5 α6 in
+          let* α8 :=
             M.call
               (Ty.apply
                   (Ty.path "trait_erc20::Mapping")
                   [ Ty.path "trait_erc20::AccountId"; Ty.path "u128"
                   ])::["insert"]
-              [
-                borrow_mut
-                  ((M.var "trait_erc20::Erc20::Get_balances") (deref α0));
-                α2;
-                α5
-              ] in
-          M.alloc α6 in
+              [ borrow_mut (α0 (deref α1)); α3; α7 ] in
+          M.alloc α8 in
         let* _ :=
           let* α0 := M.read self in
           let* α1 :=
@@ -699,8 +724,6 @@ Module Impl_trait_erc20_Erc20.
 End Impl_trait_erc20_Erc20.
 
 Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
-  
   (*
       fn total_supply(&self) -> Balance {
           self.total_supply
@@ -708,10 +731,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition total_supply (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read ((M.var "trait_erc20::Erc20::Get_total_supply") (deref α0))
+      let* α0 := M.var "trait_erc20::Erc20::Get_total_supply" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
@@ -722,7 +746,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 := M.read self in
@@ -739,7 +763,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition allowance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner; spender ] =>
+    | [ Self ], [ self; owner; spender ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
@@ -758,7 +782,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; to; value ] =>
+    | [ Self ], [ self; to; value ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
       let* value := M.alloc value in
@@ -797,7 +821,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition approve (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; spender; value ] =>
+    | [ Self ], [ self; spender; value ] =>
       let* self := M.alloc self in
       let* spender := M.alloc spender in
       let* value := M.alloc value in
@@ -812,11 +836,12 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
           M.call (Ty.path "trait_erc20::Env")::["caller"] [ borrow α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 := M.read self in
-        let* α1 := M.read owner in
-        let* α2 := M.read spender in
-        let* α3 := M.read value in
-        let* α4 :=
+        let* α0 := M.var "trait_erc20::Erc20::Get_allowances" in
+        let* α1 := M.read self in
+        let* α2 := M.read owner in
+        let* α3 := M.read spender in
+        let* α4 := M.read value in
+        let* α5 :=
           M.call
             (Ty.apply
                 (Ty.path "trait_erc20::Mapping")
@@ -828,13 +853,8 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                     ];
                   Ty.path "u128"
                 ])::["insert"]
-            [
-              borrow_mut
-                ((M.var "trait_erc20::Erc20::Get_allowances") (deref α0));
-              (α1, α2);
-              α3
-            ] in
-        M.alloc α4 in
+            [ borrow_mut (α0 (deref α1)); (α2, α3); α4 ] in
+        M.alloc α5 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 :=
@@ -875,7 +895,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; from; to; value ] =>
+    | [ Self ], [ self; from; to; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -905,11 +925,12 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               [ borrow (deref α0); borrow from; borrow caller ] in
           M.alloc α1 in
         let* _ :=
-          let* α0 := M.read allowance in
-          let* α1 := M.read value in
-          let* α2 := M.alloc ((M.var "BinOp::Pure::lt") α0 α1) in
-          let* α3 := M.read (use α2) in
-          if α3 then
+          let* α0 := M.var "BinOp::Pure::lt" in
+          let* α1 := M.read allowance in
+          let* α2 := M.read value in
+          let* α3 := M.alloc (α0 α1 α2) in
+          let* α4 := M.read (use α3) in
+          if α4 then
             let* α0 :=
               return_
                 (core.result.Result.Err
@@ -945,9 +966,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 :=
-                    (M.var "core::ops::control_flow::ControlFlow::Get_Break_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
+                    M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
                     M.get_method
@@ -979,10 +1002,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 :=
-                    (M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0")
-                      γ in
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var
+                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
+                    M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
@@ -990,13 +1014,15 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 Ty.tuple []
             ] in
         let* _ :=
-          let* α0 := M.read self in
-          let* α1 := M.read from in
-          let* α2 := M.read caller in
-          let* α3 := M.read allowance in
-          let* α4 := M.read value in
-          let* α5 := (M.var "BinOp::Panic::sub") α3 α4 in
-          let* α6 :=
+          let* α0 := M.var "trait_erc20::Erc20::Get_allowances" in
+          let* α1 := M.read self in
+          let* α2 := M.read from in
+          let* α3 := M.read caller in
+          let* α4 := M.var "BinOp::Panic::sub" in
+          let* α5 := M.read allowance in
+          let* α6 := M.read value in
+          let* α7 := α4 α5 α6 in
+          let* α8 :=
             M.call
               (Ty.apply
                   (Ty.path "trait_erc20::Mapping")
@@ -1008,25 +1034,25 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                       ];
                     Ty.path "u128"
                   ])::["insert"]
-              [
-                borrow_mut
-                  ((M.var "trait_erc20::Erc20::Get_allowances") (deref α0));
-                (α1, α2);
-                α5
-              ] in
-          M.alloc α6 in
+              [ borrow_mut (α0 (deref α1)); (α2, α3); α7 ] in
+          M.alloc α8 in
         let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("total_supply", InstanceField.Method total_supply);
-      ("balance_of", InstanceField.Method balance_of);
-      ("allowance", InstanceField.Method allowance);
-      ("transfer", InstanceField.Method transfer);
-      ("approve", InstanceField.Method approve);
-      ("transfer_from", InstanceField.Method transfer_from)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "trait_erc20::Erc20" in
+    M.IsTraitInstance
+      "trait_erc20::BaseErc20"
+      Self
+      []
+      [
+        ("total_supply", InstanceField.Method total_supply [ Self ]);
+        ("balance_of", InstanceField.Method balance_of [ Self ]);
+        ("allowance", InstanceField.Method allowance [ Self ]);
+        ("transfer", InstanceField.Method transfer [ Self ]);
+        ("approve", InstanceField.Method approve [ Self ]);
+        ("transfer_from", InstanceField.Method transfer_from [ Self ])
+      ].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

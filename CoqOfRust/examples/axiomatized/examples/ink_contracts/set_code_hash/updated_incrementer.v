@@ -4,25 +4,33 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_updated_incrementer_AccountId.
-  Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
-  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "updated_incrementer::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_updated_incrementer_AccountId.
 
 Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
-  Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
-  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "updated_incrementer::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_updated_incrementer_AccountId.
 
 Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
-  Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "updated_incrementer::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
 Axiom Hash :

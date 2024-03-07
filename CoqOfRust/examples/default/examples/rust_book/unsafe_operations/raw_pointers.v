@@ -18,20 +18,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.alloc ((Integer.of_Z 10) : Ty.path "u32") in
       M.alloc (addr_of α0) in
     let* _ :=
-      let* α0 := M.read raw_p in
-      let* α1 := M.read (deref α0) in
-      let* α2 :=
-        M.alloc
-          ((M.var "UnOp::not")
-            ((M.var "BinOp::Pure::eq")
-              α1
-              ((Integer.of_Z 10) : Ty.path "u32"))) in
-      let* α3 := M.read (use α2) in
-      if α3 then
-        let* α0 := M.read (mk_str "assertion failed: *raw_p == 10") in
-        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-        let* α2 := never_to_any α1 in
-        M.alloc α2
+      let* α0 := M.var "UnOp::not" in
+      let* α1 := M.var "BinOp::Pure::eq" in
+      let* α2 := M.read raw_p in
+      let* α3 := M.read (deref α2) in
+      let* α4 := M.alloc (α0 (α1 α3 ((Integer.of_Z 10) : Ty.path "u32"))) in
+      let* α5 := M.read (use α4) in
+      if α5 then
+        let* α0 := M.var "core::panicking::panic" in
+        let* α1 := M.read (mk_str "assertion failed: *raw_p == 10") in
+        let* α2 := M.call α0 [ α1 ] in
+        let* α3 := never_to_any α2 in
+        M.alloc α3
       else
         M.alloc tt in
     let* α0 := M.alloc tt in

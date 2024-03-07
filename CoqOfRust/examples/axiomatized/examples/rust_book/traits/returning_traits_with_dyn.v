@@ -11,19 +11,27 @@ Module Animal.
 End Animal.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Sheep".
-  
   Parameter noise : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("noise", InstanceField.Method noise) ].
+  Axiom Implements :
+    let Self := Ty.path "returning_traits_with_dyn::Sheep" in
+    M.IsTraitInstance
+      "returning_traits_with_dyn::Animal"
+      Self
+      []
+      [ ("noise", InstanceField.Method noise [ Self ]) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Cow".
-  
   Parameter noise : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("noise", InstanceField.Method noise) ].
+  Axiom Implements :
+    let Self := Ty.path "returning_traits_with_dyn::Cow" in
+    M.IsTraitInstance
+      "returning_traits_with_dyn::Animal"
+      Self
+      []
+      [ ("noise", InstanceField.Method noise [ Self ]) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal : (list Ty.t) -> (list Value.t) -> M.

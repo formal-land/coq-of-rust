@@ -19,10 +19,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
     let _ := x in
     let* _ :=
-      let* α0 := M.read x in
-      let* α1 :=
-        (M.var "BinOp::Panic::add") α0 ((Integer.of_Z 1) : Ty.path "i32") in
-      M.alloc α1 in
+      let* α0 := M.var "BinOp::Panic::add" in
+      let* α1 := M.read x in
+      let* α2 := α0 α1 ((Integer.of_Z 1) : Ty.path "i32") in
+      M.alloc α2 in
     let* _ := M.alloc ((Integer.of_Z 15) : Ty.path "i32") in
     let* α0 := M.alloc tt in
     M.read α0

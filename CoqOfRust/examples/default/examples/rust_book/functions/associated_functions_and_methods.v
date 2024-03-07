@@ -58,10 +58,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read
-        ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
-          (deref α0))
+      let* α0 := M.var "associated_functions_and_methods::Rectangle::Get_p1" in
+      let* α1 := M.read self in
+      M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
   
@@ -80,11 +79,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      let* α1 :=
+      let* α0 := M.var "associated_functions_and_methods::Rectangle::Get_p1" in
+      let* α1 := M.read self in
+      let* α2 :=
         match_operator
-          ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
-            (deref α0))
+          (α0 (deref α1))
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -95,16 +94,21 @@ Module Impl_associated_functions_and_methods_Rectangle.
                     associated_functions_and_methods.Point.y := _;
                   |}
                   =>
-                let γ0_0 :=
-                  (M.var "associated_functions_and_methods::Point::Get_x") γ in
-                let γ0_1 :=
-                  (M.var "associated_functions_and_methods::Point::Get_y") γ in
+                let* γ0_0 :=
+                  let* α0 :=
+                    M.var "associated_functions_and_methods::Point::Get_x" in
+                  M.pure (α0 γ) in
+                let* γ0_1 :=
+                  let* α0 :=
+                    M.var "associated_functions_and_methods::Point::Get_y" in
+                  M.pure (α0 γ) in
                 let* x1 := M.copy γ0_0 in
                 let* y1 := M.copy γ0_1 in
-                let* α0 := M.read self in
+                let* α0 :=
+                  M.var "associated_functions_and_methods::Rectangle::Get_p2" in
+                let* α1 := M.read self in
                 match_operator
-                  ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
-                    (deref α0))
+                  (α0 (deref α1))
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -115,32 +119,37 @@ Module Impl_associated_functions_and_methods_Rectangle.
                             associated_functions_and_methods.Point.y := _;
                           |}
                           =>
-                        let γ0_0 :=
-                          (M.var
-                              "associated_functions_and_methods::Point::Get_x")
-                            γ in
-                        let γ0_1 :=
-                          (M.var
-                              "associated_functions_and_methods::Point::Get_y")
-                            γ in
+                        let* γ0_0 :=
+                          let* α0 :=
+                            M.var
+                              "associated_functions_and_methods::Point::Get_x" in
+                          M.pure (α0 γ) in
+                        let* γ0_1 :=
+                          let* α0 :=
+                            M.var
+                              "associated_functions_and_methods::Point::Get_y" in
+                          M.pure (α0 γ) in
                         let* x2 := M.copy γ0_0 in
                         let* y2 := M.copy γ0_1 in
-                        let* α0 := M.read x1 in
-                        let* α1 := M.read x2 in
-                        let* α2 := (M.var "BinOp::Panic::sub") α0 α1 in
-                        let* α3 := M.read y1 in
-                        let* α4 := M.read y2 in
-                        let* α5 := (M.var "BinOp::Panic::sub") α3 α4 in
-                        let* α6 := (M.var "BinOp::Panic::mul") α2 α5 in
-                        let* α7 := M.call (Ty.path "f64")::["abs"] [ α6 ] in
-                        M.alloc α7
+                        let* α0 := M.var "BinOp::Panic::mul" in
+                        let* α1 := M.var "BinOp::Panic::sub" in
+                        let* α2 := M.read x1 in
+                        let* α3 := M.read x2 in
+                        let* α4 := α1 α2 α3 in
+                        let* α5 := M.var "BinOp::Panic::sub" in
+                        let* α6 := M.read y1 in
+                        let* α7 := M.read y2 in
+                        let* α8 := α5 α6 α7 in
+                        let* α9 := α0 α4 α8 in
+                        let* α10 := M.call (Ty.path "f64")::["abs"] [ α9 ] in
+                        M.alloc α10
                       end) :
                       Ty.path "f64"
                   ]
               end) :
               Ty.path "f64"
           ] in
-      M.read α1
+      M.read α2
     | _, _ => M.impossible
     end.
   
@@ -156,11 +165,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      let* α1 :=
+      let* α0 := M.var "associated_functions_and_methods::Rectangle::Get_p1" in
+      let* α1 := M.read self in
+      let* α2 :=
         match_operator
-          ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
-            (deref α0))
+          (α0 (deref α1))
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -171,16 +180,21 @@ Module Impl_associated_functions_and_methods_Rectangle.
                     associated_functions_and_methods.Point.y := _;
                   |}
                   =>
-                let γ0_0 :=
-                  (M.var "associated_functions_and_methods::Point::Get_x") γ in
-                let γ0_1 :=
-                  (M.var "associated_functions_and_methods::Point::Get_y") γ in
+                let* γ0_0 :=
+                  let* α0 :=
+                    M.var "associated_functions_and_methods::Point::Get_x" in
+                  M.pure (α0 γ) in
+                let* γ0_1 :=
+                  let* α0 :=
+                    M.var "associated_functions_and_methods::Point::Get_y" in
+                  M.pure (α0 γ) in
                 let* x1 := M.copy γ0_0 in
                 let* y1 := M.copy γ0_1 in
-                let* α0 := M.read self in
+                let* α0 :=
+                  M.var "associated_functions_and_methods::Rectangle::Get_p2" in
+                let* α1 := M.read self in
                 match_operator
-                  ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
-                    (deref α0))
+                  (α0 (deref α1))
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -191,36 +205,42 @@ Module Impl_associated_functions_and_methods_Rectangle.
                             associated_functions_and_methods.Point.y := _;
                           |}
                           =>
-                        let γ0_0 :=
-                          (M.var
-                              "associated_functions_and_methods::Point::Get_x")
-                            γ in
-                        let γ0_1 :=
-                          (M.var
-                              "associated_functions_and_methods::Point::Get_y")
-                            γ in
+                        let* γ0_0 :=
+                          let* α0 :=
+                            M.var
+                              "associated_functions_and_methods::Point::Get_x" in
+                          M.pure (α0 γ) in
+                        let* γ0_1 :=
+                          let* α0 :=
+                            M.var
+                              "associated_functions_and_methods::Point::Get_y" in
+                          M.pure (α0 γ) in
                         let* x2 := M.copy γ0_0 in
                         let* y2 := M.copy γ0_1 in
-                        let* α0 :=
+                        let* α0 := M.var "BinOp::Panic::mul" in
+                        let* α1 :=
                           M.read (UnsupportedLiteral : Ty.path "f64") in
-                        let* α1 := M.read x1 in
-                        let* α2 := M.read x2 in
-                        let* α3 := (M.var "BinOp::Panic::sub") α1 α2 in
-                        let* α4 := M.call (Ty.path "f64")::["abs"] [ α3 ] in
-                        let* α5 := M.read y1 in
-                        let* α6 := M.read y2 in
-                        let* α7 := (M.var "BinOp::Panic::sub") α5 α6 in
-                        let* α8 := M.call (Ty.path "f64")::["abs"] [ α7 ] in
-                        let* α9 := (M.var "BinOp::Panic::add") α4 α8 in
-                        let* α10 := (M.var "BinOp::Panic::mul") α0 α9 in
-                        M.alloc α10
+                        let* α2 := M.var "BinOp::Panic::add" in
+                        let* α3 := M.var "BinOp::Panic::sub" in
+                        let* α4 := M.read x1 in
+                        let* α5 := M.read x2 in
+                        let* α6 := α3 α4 α5 in
+                        let* α7 := M.call (Ty.path "f64")::["abs"] [ α6 ] in
+                        let* α8 := M.var "BinOp::Panic::sub" in
+                        let* α9 := M.read y1 in
+                        let* α10 := M.read y2 in
+                        let* α11 := α8 α9 α10 in
+                        let* α12 := M.call (Ty.path "f64")::["abs"] [ α11 ] in
+                        let* α13 := α2 α7 α12 in
+                        let* α14 := α0 α1 α13 in
+                        M.alloc α14
                       end) :
                       Ty.path "f64"
                   ]
               end) :
               Ty.path "f64"
           ] in
-      M.read α1
+      M.read α2
     | _, _ => M.impossible
     end.
   
@@ -241,48 +261,56 @@ Module Impl_associated_functions_and_methods_Rectangle.
       let* y := M.alloc y in
       let* _ :=
         let* β :=
-          let* α0 := M.read self in
-          M.pure
-            ((M.var "associated_functions_and_methods::Point::Get_x")
-              ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
-                (deref α0))) in
-        let* α0 := M.read β in
-        let* α1 := M.read x in
-        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-        (M.var "assign") β α2 in
+          let* α0 := M.var "associated_functions_and_methods::Point::Get_x" in
+          let* α1 :=
+            M.var "associated_functions_and_methods::Rectangle::Get_p1" in
+          let* α2 := M.read self in
+          M.pure (α0 (α1 (deref α2))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Panic::add" in
+        let* α2 := M.read β in
+        let* α3 := M.read x in
+        let* α4 := α1 α2 α3 in
+        α0 β α4 in
       let* _ :=
         let* β :=
-          let* α0 := M.read self in
-          M.pure
-            ((M.var "associated_functions_and_methods::Point::Get_x")
-              ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
-                (deref α0))) in
-        let* α0 := M.read β in
-        let* α1 := M.read x in
-        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-        (M.var "assign") β α2 in
+          let* α0 := M.var "associated_functions_and_methods::Point::Get_x" in
+          let* α1 :=
+            M.var "associated_functions_and_methods::Rectangle::Get_p2" in
+          let* α2 := M.read self in
+          M.pure (α0 (α1 (deref α2))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Panic::add" in
+        let* α2 := M.read β in
+        let* α3 := M.read x in
+        let* α4 := α1 α2 α3 in
+        α0 β α4 in
       let* _ :=
         let* β :=
-          let* α0 := M.read self in
-          M.pure
-            ((M.var "associated_functions_and_methods::Point::Get_y")
-              ((M.var "associated_functions_and_methods::Rectangle::Get_p1")
-                (deref α0))) in
-        let* α0 := M.read β in
-        let* α1 := M.read y in
-        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-        (M.var "assign") β α2 in
+          let* α0 := M.var "associated_functions_and_methods::Point::Get_y" in
+          let* α1 :=
+            M.var "associated_functions_and_methods::Rectangle::Get_p1" in
+          let* α2 := M.read self in
+          M.pure (α0 (α1 (deref α2))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Panic::add" in
+        let* α2 := M.read β in
+        let* α3 := M.read y in
+        let* α4 := α1 α2 α3 in
+        α0 β α4 in
       let* _ :=
         let* β :=
-          let* α0 := M.read self in
-          M.pure
-            ((M.var "associated_functions_and_methods::Point::Get_y")
-              ((M.var "associated_functions_and_methods::Rectangle::Get_p2")
-                (deref α0))) in
-        let* α0 := M.read β in
-        let* α1 := M.read y in
-        let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
-        (M.var "assign") β α2 in
+          let* α0 := M.var "associated_functions_and_methods::Point::Get_y" in
+          let* α1 :=
+            M.var "associated_functions_and_methods::Rectangle::Get_p2" in
+          let* α2 := M.read self in
+          M.pure (α0 (α1 (deref α2))) in
+        let* α0 := M.var "assign" in
+        let* α1 := M.var "BinOp::Panic::add" in
+        let* α2 := M.read β in
+        let* α3 := M.read y in
+        let* α4 := α1 α2 α3 in
+        α0 β α4 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -316,37 +344,42 @@ Module Impl_associated_functions_and_methods_Pair.
               (let* α0 := M.read γ in
               match α0 with
               | associated_functions_and_methods.Pair.Build_t _ _ =>
-                let γ0_0 :=
-                  (M.var "associated_functions_and_methods::Pair::Get_0") γ in
-                let γ0_1 :=
-                  (M.var "associated_functions_and_methods::Pair::Get_1") γ in
+                let* γ0_0 :=
+                  let* α0 :=
+                    M.var "associated_functions_and_methods::Pair::Get_0" in
+                  M.pure (α0 γ) in
+                let* γ0_1 :=
+                  let* α0 :=
+                    M.var "associated_functions_and_methods::Pair::Get_1" in
+                  M.pure (α0 γ) in
                 let* first := M.copy γ0_0 in
                 let* second := M.copy γ0_1 in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.read (mk_str "Destroying Pair(") in
-                    let* α1 := M.read (mk_str ", ") in
-                    let* α2 := M.read (mk_str ")
+                    let* α0 := M.var "std::io::stdio::_print" in
+                    let* α1 := M.read (mk_str "Destroying Pair(") in
+                    let* α2 := M.read (mk_str ", ") in
+                    let* α3 := M.read (mk_str ")
 ") in
-                    let* α3 := M.alloc [ α0; α1; α2 ] in
-                    let* α4 :=
-                      M.call
-                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        [ borrow first ] in
+                    let* α4 := M.alloc [ α1; α2; α3 ] in
                     let* α5 :=
                       M.call
                         (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                        [ borrow first ] in
+                    let* α6 :=
+                      M.call
+                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
                         [ borrow second ] in
-                    let* α6 := M.alloc [ α4; α5 ] in
-                    let* α7 :=
+                    let* α7 := M.alloc [ α5; α6 ] in
+                    let* α8 :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" (borrow α3);
-                          pointer_coercion "Unsize" (borrow α6)
+                          pointer_coercion "Unsize" (borrow α4);
+                          pointer_coercion "Unsize" (borrow α7)
                         ] in
-                    let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-                    M.alloc α8 in
+                    let* α9 := M.call α0 [ α8 ] in
+                    M.alloc α9 in
                   M.alloc tt in
                 M.alloc tt
               end) :
@@ -414,56 +447,58 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ ("p1", α0); ("p2", α3) ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Rectangle perimeter: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Rectangle perimeter: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path
                 "associated_functions_and_methods::Rectangle")::["perimeter"]
             [ borrow rectangle ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α5 ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α7)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "Rectangle area: ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "Rectangle area: ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "associated_functions_and_methods::Rectangle")::["area"]
             [ borrow rectangle ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
+        let* α5 := M.alloc α4 in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ borrow α5 ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α6)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α7)
             ] in
-        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
-        M.alloc α8 in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* square :=
       let* α0 :=

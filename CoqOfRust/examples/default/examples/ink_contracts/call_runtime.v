@@ -4,14 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct AccountId *)
 
 Module Impl_core_default_Default_for_call_runtime_AccountId.
-  Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -22,18 +20,22 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::AccountId" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_call_runtime_AccountId.
-  Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
-  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -52,13 +54,19 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::AccountId" in
+    M.IsTraitInstance
+      "core::clone::Clone"
+      Self
+      []
+      [ ("clone", InstanceField.Method clone [ Self ]) ].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_call_runtime_AccountId.
-  Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::AccountId" in
+    M.IsTraitInstance "core::marker::Copy" Self [] [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
@@ -68,11 +76,6 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (* Enum MultiAddress *)
 
 Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
-  Definition Self : Ty.t :=
-    Ty.apply
-      (Ty.path "call_runtime::MultiAddress")
-      [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ].
-  
   (*
       fn from(_value: AccountId) -> Self {
           unimplemented!()
@@ -80,15 +83,25 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ _value ] =>
+    | [ Self ], [ _value ] =>
       let* _value := M.alloc _value in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self :=
+      Ty.apply
+        (Ty.path "call_runtime::MultiAddress")
+        [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ] in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "call_runtime::AccountId" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
 (* Enum BalancesCall *)
@@ -98,31 +111,33 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
 (* Struct RuntimeCaller *)
 
 Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeCaller".
-  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure call_runtime.RuntimeCaller.Build
+    | [ Self ], [] => M.pure call_runtime.RuntimeCaller.Build
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeCaller" in
+    M.IsTraitInstance
+      "core::default::Default"
+      Self
+      []
+      [ ("default", InstanceField.Method default [ Self ]) ].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
 (* Enum RuntimeError *)
 
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -131,42 +146,50 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       M.pure true
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   (*
   Eq
   *)
@@ -175,24 +198,27 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [
-      ("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)
-    ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::cmp::Eq"
+      Self
+      []
+      [
+        ("assert_receiver_is_total_eq",
+          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+      ].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
 (* Enum EnvError *)
 
 Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
   (*
       fn from(e: EnvError) -> Self {
           match e {
@@ -203,7 +229,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ e ] =>
+    | [ Self ], [ e ] =>
       let* e := M.alloc e in
       let* α0 :=
         match_operator
@@ -218,18 +244,25 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
               end) :
               Ty.path "call_runtime::RuntimeError";
             fun γ =>
-              (let* α0 :=
+              (let* α0 := M.var "std::panicking::begin_panic" in
+              let* α1 :=
                 M.read (mk_str "Unexpected error from `pallet-contracts`.") in
-              let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
-              let* α2 := never_to_any α1 in
-              M.alloc α2) :
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := never_to_any α2 in
+              M.alloc α3) :
               Ty.path "call_runtime::RuntimeError"
           ] in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
+  Axiom Implements :
+    let Self := Ty.path "call_runtime::RuntimeError" in
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      [ (* T *) Ty.path "call_runtime::EnvError" ]
+      [ ("from", InstanceField.Method from [ Self ]) ].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 
 Module Impl_call_runtime_Env.
@@ -245,9 +278,10 @@ Module Impl_call_runtime_Env.
     | [ Call ], [ self; _call ] =>
       let* self := M.alloc self in
       let* _call := M.alloc _call in
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
 End Impl_call_runtime_Env.
@@ -263,9 +297,10 @@ Module Impl_call_runtime_RuntimeCaller.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [] =>
-      let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
-      never_to_any α1
+      let* α0 := M.var "core::panicking::panic" in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call α0 [ α1 ] in
+      never_to_any α2
     | _, _ => M.impossible
     end.
   

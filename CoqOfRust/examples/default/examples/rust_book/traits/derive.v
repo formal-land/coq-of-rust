@@ -4,42 +4,47 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Centimeters *)
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Definition Self : Ty.t := Ty.path "derive::Centimeters".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "derive::Centimeters" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Definition Self : Ty.t := Ty.path "derive::Centimeters".
-  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.read self in
-      let* α1 := M.read ((M.var "derive::Centimeters::Get_0") (deref α0)) in
-      let* α2 := M.read other in
-      let* α3 := M.read ((M.var "derive::Centimeters::Get_0") (deref α2)) in
-      M.pure ((M.var "BinOp::Pure::eq") α1 α3)
+      let* α0 := M.var "BinOp::Pure::eq" in
+      let* α1 := M.var "derive::Centimeters::Get_0" in
+      let* α2 := M.read self in
+      let* α3 := M.read (α1 (deref α2)) in
+      let* α4 := M.var "derive::Centimeters::Get_0" in
+      let* α5 := M.read other in
+      let* α6 := M.read (α4 (deref α5)) in
+      M.pure (α0 α3 α6)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "derive::Centimeters" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Definition Self : Ty.t := Ty.path "derive::Centimeters".
-  
   (*
   PartialOrd
   *)
   Definition partial_cmp (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; other ] =>
+    | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -47,46 +52,52 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
           "core::cmp::PartialOrd"
           "partial_cmp"
           [ (* Self *) Ty.path "f64"; (* Rhs *) Ty.path "f64" ] in
-      let* α1 := M.read self in
-      let* α2 := M.read other in
-      M.call
-        α0
-        [
-          borrow ((M.var "derive::Centimeters::Get_0") (deref α1));
-          borrow ((M.var "derive::Centimeters::Get_0") (deref α2))
-        ]
+      let* α1 := M.var "derive::Centimeters::Get_0" in
+      let* α2 := M.read self in
+      let* α3 := M.var "derive::Centimeters::Get_0" in
+      let* α4 := M.read other in
+      M.call α0 [ borrow (α1 (deref α2)); borrow (α3 (deref α4)) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t :=
-    [ ("partial_cmp", InstanceField.Method partial_cmp) ].
+  Axiom Implements :
+    let Self := Ty.path "derive::Centimeters" in
+    M.IsTraitInstance
+      "core::cmp::PartialOrd"
+      Self
+      []
+      [ ("partial_cmp", InstanceField.Method partial_cmp [ Self ]) ].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
-  Definition Self : Ty.t := Ty.path "derive::Inches".
-  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; f ] =>
+    | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Inches") in
-      let* α2 := M.read self in
-      let* α3 :=
-        M.alloc (borrow ((M.var "derive::Inches::Get_0") (deref α2))) in
+      let* α2 := M.var "derive::Inches::Get_0" in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (borrow (α2 (deref α3))) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "derive::Inches" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.
@@ -114,12 +125,15 @@ Module Impl_derive_Inches.
               let* α0 := M.read γ in
               match α0 with
               | derive.Inches.Build_t _ =>
-                let γ1_0 := (M.var "derive::Inches::Get_0") γ in
+                let* γ1_0 :=
+                  let* α0 := M.var "derive::Inches::Get_0" in
+                  M.pure (α0 γ) in
                 let* inches := M.copy γ1_0 in
-                let* α0 := M.read inches in
-                let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-                let* α2 := (M.var "BinOp::Panic::mul") (rust_cast α0) α1 in
-                M.alloc (derive.Centimeters.Build_t α2)
+                let* α0 := M.var "BinOp::Panic::mul" in
+                let* α1 := M.read inches in
+                let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+                let* α3 := α0 (rust_cast α1) α2 in
+                M.alloc (derive.Centimeters.Build_t α3)
               end) :
               Ty.path "derive::Centimeters"
           ] in
@@ -167,24 +181,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (derive.Inches.Build_t ((Integer.of_Z 12) : Ty.path "i32")) in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "One foot equals ") in
-        let* α1 := M.read (mk_str "
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "One foot equals ") in
+        let* α2 := M.read (mk_str "
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ borrow foot ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* meter :=
       let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
@@ -213,24 +228,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.copy α6 in
     let* _ :=
       let* _ :=
-        let* α0 := M.read (mk_str "One foot is ") in
-        let* α1 := M.read (mk_str " than one meter.
+        let* α0 := M.var "std::io::stdio::_print" in
+        let* α1 := M.read (mk_str "One foot is ") in
+        let* α2 := M.read (mk_str " than one meter.
 ") in
-        let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 :=
+        let* α3 := M.alloc [ α1; α2 ] in
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ borrow cmp ] in
-        let* α4 := M.alloc [ α3 ] in
-        let* α5 :=
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
             [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α5)
             ] in
-        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
-        M.alloc α6 in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

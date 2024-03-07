@@ -4,36 +4,47 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Centimeters *)
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Definition Self : Ty.t := Ty.path "derive::Centimeters".
-  
-  Definition ℐ : Instance.t := [].
+  Axiom Implements :
+    let Self := Ty.path "derive::Centimeters" in
+    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Definition Self : Ty.t := Ty.path "derive::Centimeters".
-  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
+  Axiom Implements :
+    let Self := Ty.path "derive::Centimeters" in
+    M.IsTraitInstance
+      "core::cmp::PartialEq"
+      Self
+      []
+      [ ("eq", InstanceField.Method eq [ Self ]) ].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Definition Self : Ty.t := Ty.path "derive::Centimeters".
-  
   Parameter partial_cmp : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t :=
-    [ ("partial_cmp", InstanceField.Method partial_cmp) ].
+  Axiom Implements :
+    let Self := Ty.path "derive::Centimeters" in
+    M.IsTraitInstance
+      "core::cmp::PartialOrd"
+      Self
+      []
+      [ ("partial_cmp", InstanceField.Method partial_cmp [ Self ]) ].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
-  Definition Self : Ty.t := Ty.path "derive::Inches".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "derive::Inches" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.

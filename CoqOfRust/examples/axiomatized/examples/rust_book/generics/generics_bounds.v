@@ -9,21 +9,29 @@ End HasArea.
 (* Enum Rectangle *)
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
-  Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
-  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
+  Axiom Implements :
+    let Self := Ty.path "generics_bounds::Rectangle" in
+    M.IsTraitInstance
+      "core::fmt::Debug"
+      Self
+      []
+      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* Enum Triangle *)
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
-  Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
-  
   Parameter area : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [ ("area", InstanceField.Method area) ].
+  Axiom Implements :
+    let Self := Ty.path "generics_bounds::Rectangle" in
+    M.IsTraitInstance
+      "generics_bounds::HasArea"
+      Self
+      []
+      [ ("area", InstanceField.Method area [ Self ]) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Parameter print_debug : (list Ty.t) -> (list Value.t) -> M.
