@@ -13,10 +13,10 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [init_value] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
-      M.pure {| incrementer.Incrementer.value := α0; |}
+      M.pure (Value.StructRecord "incrementer::Incrementer" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -29,10 +29,12 @@ Module Impl_incrementer_Incrementer.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default (Self := Ty.path "i32") (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.call ((Ty.path "incrementer::Incrementer")::["new"] α1)
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "i32" ] in
+      let* α1 := M.call α0 [] in
+      M.call (Ty.path "incrementer::Incrementer")::["new"] [ α1 ]
     | _, _ => M.impossible
     end.
   
@@ -43,7 +45,7 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; by_] =>
+    | [], [ self; by_ ] =>
       let* self := M.alloc self in
       let* by_ := M.alloc by_ in
       let* _ :=
@@ -66,7 +68,7 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "incrementer::Incrementer::Get_value") (deref α0))

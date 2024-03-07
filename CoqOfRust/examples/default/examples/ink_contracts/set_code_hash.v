@@ -10,10 +10,10 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
 *)
 Definition set_code_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [E], [code_hash] =>
+  | [ E ], [ code_hash ] =>
     let* code_hash := M.alloc code_hash in
     let* α0 := M.read (mk_str "not implemented") in
-    let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+    let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
     never_to_any α1
   | _, _ => M.impossible
   end.
@@ -30,14 +30,16 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default (Self := Ty.path "u32") (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.pure {| set_code_hash.Incrementer.count := α1; |}
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "u32" ] in
+      let* α1 := M.call α0 [] in
+      M.pure (Value.StructRecord "set_code_hash::Incrementer" [ ("count", α1) ])
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
 Module Impl_set_code_hash_Incrementer.
@@ -52,11 +54,11 @@ Module Impl_set_code_hash_Incrementer.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "set_code_hash::Incrementer")
-            (Trait := ℐ))) in
-      M.call α0
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "set_code_hash::Incrementer" ] in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -71,7 +73,7 @@ Module Impl_set_code_hash_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* β :=
@@ -92,17 +94,20 @@ Module Impl_set_code_hash_Incrementer.
           let* α3 := M.read self in
           let* α4 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow
-                  ((M.var "set_code_hash::Incrementer::Get_count")
-                    (deref α3)))) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [
+                borrow
+                  ((M.var "set_code_hash::Incrementer::Get_count") (deref α3))
+              ] in
           let* α5 := M.alloc [ α4 ] in
           let* α6 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α5))) in
-          let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α5)
+              ] in
+          let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -117,7 +122,7 @@ Module Impl_set_code_hash_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "set_code_hash::Incrementer::Get_count") (deref α0))
@@ -134,20 +139,21 @@ Module Impl_set_code_hash_Incrementer.
   *)
   Definition set_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; code_hash] =>
+    | [], [ self; code_hash ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* _ :=
         let* α0 :=
-          M.call ((M.var "set_code_hash::set_code_hash") (borrow code_hash)) in
+          M.call (M.var "set_code_hash::set_code_hash") [ borrow code_hash ] in
         let* α1 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.tuple [];
-                    Ty.path "set_code_hash::Error"])::["unwrap_or_else"]
-              α0
-              (fun (α0 : Ty.path "set_code_hash::Error") =>
+            (Ty.apply
+                (Ty.path "core::result::Result")
+                [ Ty.tuple []; Ty.path "set_code_hash::Error"
+                ])::["unwrap_or_else"]
+            [
+              α0;
+              fun (α0 : Ty.path "set_code_hash::Error") =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
@@ -159,11 +165,12 @@ Module Impl_set_code_hash_Incrementer.
                           (mk_str
                             "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
                       let* α1 :=
-                        M.call ((M.var "std::panicking::begin_panic") α0) in
+                        M.call (M.var "std::panicking::begin_panic") [ α0 ] in
                       never_to_any α1) :
                       Ty.tuple []
                   ]) :
-                Ty.tuple [])) in
+                Ty.tuple []
+            ] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
@@ -173,15 +180,17 @@ Module Impl_set_code_hash_Incrementer.
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                (borrow code_hash)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+              [ borrow code_hash ] in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α4)
+              ] in
+          let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
           M.alloc α6 in
         M.alloc tt in
       let* α0 := M.alloc tt in

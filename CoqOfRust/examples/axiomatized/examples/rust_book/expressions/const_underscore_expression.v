@@ -15,5 +15,5 @@ Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression
   
   Parameter show : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("show", InstanceField.Method show)].
+  Definition ℐ : Instance.t := [ ("show", InstanceField.Method show) ].
 End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

@@ -30,9 +30,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.path "core::fmt::Arguments")::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                  (Ty.path "core::fmt::Arguments")::["new_const"]
+                  [ pointer_coercion "Unsize" (borrow α1) ] in
+              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
               M.alloc α3 in
             M.alloc tt) :
             Ty.tuple [];
@@ -44,17 +44,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.path "core::fmt::Arguments")::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                  (Ty.path "core::fmt::Arguments")::["new_const"]
+                  [ pointer_coercion "Unsize" (borrow α1) ] in
+              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
               M.alloc α3 in
             M.alloc tt) :
             Ty.tuple [];
           fun γ =>
             (let* α0 :=
               M.call
-                ((M.var "core::panicking::unreachable_display")
-                  (borrow (mk_str "Should never happen."))) in
+                (M.var "core::panicking::unreachable_display")
+                [ borrow (mk_str "Should never happen.") ] in
             let* α1 := never_to_any α0 in
             M.alloc α1) :
             Ty.tuple []

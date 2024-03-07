@@ -26,17 +26,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 *)
 Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [F], [f] =>
+  | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.FnOnce.call_once
-            (Self := F)
-            (Args := Ty.tuple [])
-            (Trait := ℐ))) in
+        M.get_method
+          "core::ops::function::FnOnce"
+          "call_once"
+          [ (* Self *) F; (* Args *) Ty.tuple [] ] in
       let* α1 := M.read f in
-      let* α2 := M.call (α0 α1 tt) in
+      let* α2 := M.call α0 [ α1; tt ] in
       M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0

@@ -47,15 +47,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* name :=
       let* α0 :=
         M.call
-          ((M.var "core::str::converts::from_utf8")
-            (pointer_coercion "Unsize" (borrow name_buf))) in
+          (M.var "core::str::converts::from_utf8")
+          [ pointer_coercion "Unsize" (borrow name_buf) ] in
       let* α1 :=
         M.call
-          ((Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "core::str::error::Utf8Error"])::["unwrap"]
-            α0) in
+          (Ty.apply
+              (Ty.path "core::result::Result")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "core::str::error::Utf8Error"
+              ])::["unwrap"]
+          [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -65,15 +67,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow name)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow name ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in

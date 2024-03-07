@@ -9,7 +9,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -26,7 +26,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.

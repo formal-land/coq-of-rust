@@ -10,7 +10,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 
 Module Impl_integration_flipper_Flipper.

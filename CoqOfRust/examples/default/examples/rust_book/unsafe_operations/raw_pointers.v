@@ -29,7 +29,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.read (use α2) in
       if α3 then
         let* α0 := M.read (mk_str "assertion failed: *raw_p == 10") in
-        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
         let* α2 := never_to_any α1 in
         M.alloc α2
       else

@@ -38,19 +38,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ("unimplemented parent_kind" ((Integer.of_Z 9) : Ty.path "u32")) in
+            "unimplemented parent_kind"
+            [ (Integer.of_Z 9) : Ty.path "u32" ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -79,24 +82,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 *)
 Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [up_to] =>
+  | [], [ up_to ] =>
     let* up_to := M.alloc up_to in
     let* acc := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
-              Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"])
-            (Trait := ℐ))) in
+        M.get_method
+          "core::iter::traits::collect::IntoIterator"
+          "into_iter"
+          [
+            (* Self *)
+              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ]
+          ] in
       let* α1 := M.read up_to in
       let* α2 :=
         M.call
-          (α0
-            {|
-              core.ops.range.Range.start := (Integer.of_Z 0) : Ty.path "u32";
-              core.ops.range.Range.end_ := α1;
-            |}) in
+          α0
+          [
+            Value.StructRecord
+              "core::ops::range::Range"
+              [ ("start", (Integer.of_Z 0) : Ty.path "u32"); ("end_", α1) ]
+          ] in
       let* α3 := M.alloc α2 in
       let* α4 :=
         match_operator
@@ -107,14 +113,16 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.loop
                 (let* _ :=
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.iter.traits.iterator.Iterator.next
-                        (Self :=
+                    M.get_method
+                      "core::iter::traits::iterator::Iterator"
+                      "next"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::ops::range::Range")
-                            [Ty.path "u32"])
-                        (Trait := ℐ))) in
-                  let* α1 := M.call (α0 (borrow_mut iter)) in
+                            [ Ty.path "u32" ]
+                      ] in
+                  let* α1 := M.call α0 [ borrow_mut iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -127,7 +135,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α1 := M.read α0 in
                           let* α2 := never_to_any α1 in
                           M.alloc α2
-                        | _ => M.break_match
+                        | _ => M.break_match 
                         end) :
                         Ty.tuple [];
                       fun γ =>
@@ -168,7 +176,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
                             (M.var "assign") β α2 in
                           M.alloc tt
-                        | _ => M.break_match
+                        | _ => M.break_match 
                         end) :
                         Ty.tuple []
                     ] in

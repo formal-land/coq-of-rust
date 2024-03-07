@@ -36,15 +36,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow byte_escape)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow byte_escape ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* unicode_codepoint := M.copy (mk_str (String.String "029" "")) in
@@ -58,19 +60,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow unicode_codepoint)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow unicode_codepoint ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow character_name)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow character_name ] in
         let* α6 := M.alloc [ α4; α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α3))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* long_string :=
@@ -87,15 +91,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow long_string)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow long_string ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in

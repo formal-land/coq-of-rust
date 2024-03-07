@@ -11,16 +11,15 @@ where
 *)
 Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [F], [f] =>
+  | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.Fn.call
-            (Self := F)
-            (Args := Ty.tuple [])
-            (Trait := ℐ))) in
-      let* α1 := M.call (α0 (borrow f) tt) in
+        M.get_method
+          "core::ops::function::Fn"
+          "call"
+          [ (* Self *) F; (* Args *) Ty.tuple [] ] in
+      let* α1 := M.call α0 [ borrow f; tt ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0
@@ -58,15 +57,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow x)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow x ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 let* α0 := M.alloc tt in
                 M.read α0) :
@@ -77,8 +78,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.read print in
       let* α1 :=
         M.call
-          ((M.var "functions_closures_type_anonymity_define_and_use::apply")
-            α0) in
+          (M.var "functions_closures_type_anonymity_define_and_use::apply")
+          [ α0 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

@@ -8,7 +8,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

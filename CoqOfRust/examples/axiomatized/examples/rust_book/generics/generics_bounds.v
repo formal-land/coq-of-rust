@@ -13,7 +13,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* Enum Triangle *)
@@ -23,7 +23,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   
   Parameter area : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("area", InstanceField.Method area)].
+  Definition ℐ : Instance.t := [ ("area", InstanceField.Method area) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Parameter print_debug : (list Ty.t) -> (list Value.t) -> M.

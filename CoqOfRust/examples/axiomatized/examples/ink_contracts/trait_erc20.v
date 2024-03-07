@@ -5,21 +5,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "trait_erc20::Mapping") [K; V].
+    Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ (K V : Ty.t) : Instance.t :=
-    [("default", InstanceField.Method (default K V))].
+    [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "trait_erc20::Mapping") [K; V].
+    Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
 End Impl_trait_erc20_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -29,7 +29,7 @@ Module Impl_core_default_Default_for_trait_erc20_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_trait_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
@@ -37,7 +37,7 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_trait_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
@@ -57,7 +57,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
@@ -71,7 +71,7 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
   
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
@@ -86,8 +86,10 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)].
+    [
+      ("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)
+    ].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
@@ -95,7 +97,7 @@ Axiom Result :
   (Ty.path "trait_erc20::Result") =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [T; Ty.path "trait_erc20::Error"]).
+      [ T; Ty.path "trait_erc20::Error" ]).
 
 (* Trait *)
 Module BaseErc20.
@@ -109,7 +111,7 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_trait_erc20_Erc20.
 
 (* Enum Transfer *)
@@ -158,10 +160,12 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   Parameter transfer_from : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("total_supply", InstanceField.Method total_supply);
+    [
+      ("total_supply", InstanceField.Method total_supply);
       ("balance_of", InstanceField.Method balance_of);
       ("allowance", InstanceField.Method allowance);
       ("transfer", InstanceField.Method transfer);
       ("approve", InstanceField.Method approve);
-      ("transfer_from", InstanceField.Method transfer_from)].
+      ("transfer_from", InstanceField.Method transfer_from)
+    ].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

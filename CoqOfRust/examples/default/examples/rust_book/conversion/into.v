@@ -13,14 +13,14 @@ Module Impl_core_convert_From_i32_for_into_Number.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [item] =>
+    | [], [ item ] =>
       let* item := M.alloc item in
       let* α0 := M.read item in
-      M.pure {| into.Number.value := α0; |}
+      M.pure (Value.StructRecord "into::Number" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
+  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_into_Number.
 
 (*
@@ -34,12 +34,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.convert.Into.into
-            (Self := Ty.path "i32")
-            (T := Ty.path "into::Number")
-            (Trait := ℐ))) in
-      let* α1 := M.call (α0 ((Integer.of_Z 5) : Ty.path "i32")) in
+        M.get_method
+          "core::convert::Into"
+          "into"
+          [ (* Self *) Ty.path "i32"; (* T *) Ty.path "into::Number" ] in
+      let* α1 := M.call α0 [ (Integer.of_Z 5) : Ty.path "i32" ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

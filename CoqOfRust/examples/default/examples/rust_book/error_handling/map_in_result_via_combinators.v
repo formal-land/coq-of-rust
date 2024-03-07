@@ -12,18 +12,19 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, Pars
 *)
 Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [first_number_str; second_number_str] =>
+  | [], [ first_number_str; second_number_str ] =>
     let* first_number_str := M.alloc first_number_str in
     let* second_number_str := M.alloc second_number_str in
     let* α0 := M.read first_number_str in
-    let* α1 := M.call ((Ty.path "str")::["parse"] α0) in
+    let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
     M.call
-      ((Ty.apply
-            (Ty.path "core::result::Result")
-            [Ty.path "i32";
-              Ty.path "core::num::error::ParseIntError"])::["and_then"]
-        α1
-        (fun (α0 : Ty.path "i32") =>
+      (Ty.apply
+          (Ty.path "core::result::Result")
+          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+          ])::["and_then"]
+      [
+        α1;
+        fun (α0 : Ty.path "i32") =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
@@ -31,14 +32,15 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 (let* first_number := M.copy γ in
                 let* α0 := M.read second_number_str in
-                let* α1 := M.call ((Ty.path "str")::["parse"] α0) in
+                let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
                 M.call
-                  ((Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.path "i32";
-                          Ty.path "core::num::error::ParseIntError"])::["map"]
-                    α1
-                    (fun (α0 : Ty.path "i32") =>
+                  (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                      ])::["map"]
+                  [
+                    α1;
+                    fun (α0 : Ty.path "i32") =>
                       (let* α0 := M.alloc α0 in
                       match_operator
                         α0
@@ -50,14 +52,16 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (M.var "BinOp::Panic::mul") α0 α1) :
                             Ty.path "i32"
                         ]) :
-                      Ty.path "i32"))) :
+                      Ty.path "i32"
+                  ]) :
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
             ]) :
           Ty.apply
             (Ty.path "core::result::Result")
-            [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]))
+            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+      ]
   | _, _ => M.impossible
   end.
 
@@ -71,7 +75,7 @@ fn print(result: Result<i32, ParseIntError>) {
 *)
 Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [result] =>
+  | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
       match_operator
@@ -90,18 +94,20 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow n)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow n ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -117,18 +123,20 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow e)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow e ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple []
         ] in
@@ -155,21 +163,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.read (mk_str "10") in
       let* α1 := M.read (mk_str "2") in
       let* α2 :=
-        M.call ((M.var "map_in_result_via_combinators::multiply") α0 α1) in
+        M.call (M.var "map_in_result_via_combinators::multiply") [ α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read twenty in
-      let* α1 := M.call ((M.var "map_in_result_via_combinators::print") α0) in
+      let* α1 := M.call (M.var "map_in_result_via_combinators::print") [ α0 ] in
       M.alloc α1 in
     let* tt_ :=
       let* α0 := M.read (mk_str "t") in
       let* α1 := M.read (mk_str "2") in
       let* α2 :=
-        M.call ((M.var "map_in_result_via_combinators::multiply") α0 α1) in
+        M.call (M.var "map_in_result_via_combinators::multiply") [ α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read tt_ in
-      let* α1 := M.call ((M.var "map_in_result_via_combinators::print") α0) in
+      let* α1 := M.call (M.var "map_in_result_via_combinators::print") [ α0 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

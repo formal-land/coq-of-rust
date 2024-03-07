@@ -8,7 +8,7 @@ Module Impl_core_fmt_Debug_for_structures_Person.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_structures_Person.
 
 (* Struct Unit *)

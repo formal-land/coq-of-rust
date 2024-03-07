@@ -8,9 +8,9 @@ fn decode_input<T>() -> Result<T, ()> {
 *)
 Definition decode_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [T], [] =>
+  | [ T ], [] =>
     let* α0 := M.read (mk_str "not implemented") in
-    let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+    let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
     never_to_any α1
   | _, _ => M.impossible
   end.
@@ -39,18 +39,22 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition wildcard (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.call (M.var "wildcard_selector::decode_input") in
+      let* α0 := M.call (M.var "wildcard_selector::decode_input") [] in
       let* α1 :=
         M.call
-          ((Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple
-                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                      Ty.path "alloc::string::String"];
-                  Ty.tuple []])::["unwrap"]
-            α0) in
+          (Ty.apply
+              (Ty.path "core::result::Result")
+              [
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                    Ty.path "alloc::string::String"
+                  ];
+                Ty.tuple []
+              ])::["unwrap"]
+          [ α0 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         match_operator
@@ -73,19 +77,21 @@ Module Impl_wildcard_selector_WildcardSelector.
                     let* α3 := M.alloc [ α0; α1; α2 ] in
                     let* α4 :=
                       M.call
-                        ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                          (borrow _selector)) in
+                        (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                        [ borrow _selector ] in
                     let* α5 :=
                       M.call
-                        ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                          (borrow _message)) in
+                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                        [ borrow _message ] in
                     let* α6 := M.alloc [ α4; α5 ] in
                     let* α7 :=
                       M.call
-                        ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                          (pointer_coercion "Unsize" (borrow α3))
-                          (pointer_coercion "Unsize" (borrow α6))) in
-                    let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+                        (Ty.path "core::fmt::Arguments")::["new_v1"]
+                        [
+                          pointer_coercion "Unsize" (borrow α3);
+                          pointer_coercion "Unsize" (borrow α6)
+                        ] in
+                    let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
                     M.alloc α8 in
                   M.alloc tt in
                 M.alloc tt
@@ -103,7 +109,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition wildcard_complement (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _message] =>
+    | [], [ self; _message ] =>
       let* self := M.alloc self in
       let* _message := M.alloc _message in
       let* _ :=
@@ -114,15 +120,17 @@ Module Impl_wildcard_selector_WildcardSelector.
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow _message)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow _message ] in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α4)
+              ] in
+          let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
           M.alloc α6 in
         M.alloc tt in
       let* α0 := M.alloc tt in

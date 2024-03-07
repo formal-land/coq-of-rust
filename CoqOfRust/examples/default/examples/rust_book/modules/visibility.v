@@ -17,9 +17,9 @@ Module my_mod.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -42,9 +42,9 @@ Module my_mod.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -69,13 +69,13 @@ Module my_mod.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* _ :=
-        let* α0 := M.call (M.var "visibility::my_mod::private_function") in
+        let* α0 := M.call (M.var "visibility::my_mod::private_function") [] in
         M.alloc α0 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -98,9 +98,9 @@ Module my_mod.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -125,9 +125,9 @@ Module my_mod.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -157,15 +157,16 @@ Module my_mod.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* _ :=
           let* α0 :=
             M.call
-              (M.var "visibility::my_mod::nested::public_function_in_nested") in
+              (M.var "visibility::my_mod::nested::public_function_in_nested")
+              [] in
           M.alloc α0 in
         let* α0 := M.alloc tt in
         M.read α0
@@ -193,9 +194,9 @@ Module my_mod.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -224,9 +225,9 @@ Module my_mod.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -259,15 +260,16 @@ Module my_mod.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* _ :=
         let* α0 :=
           M.call
-            (M.var "visibility::my_mod::nested::public_function_in_my_mod") in
+            (M.var "visibility::my_mod::nested::public_function_in_my_mod")
+            [] in
         M.alloc α0 in
       let* _ :=
         let* _ :=
@@ -275,16 +277,16 @@ Module my_mod.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* _ :=
         let* α0 :=
           M.call
-            (M.var
-              "visibility::my_mod::nested::public_function_in_super_mod") in
+            (M.var "visibility::my_mod::nested::public_function_in_super_mod")
+            [] in
         M.alloc α0 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -307,9 +309,9 @@ Module my_mod.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -335,9 +337,9 @@ Module my_mod.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -364,9 +366,9 @@ Module my_mod.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -391,9 +393,9 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+            (Ty.path "core::fmt::Arguments")::["new_const"]
+            [ pointer_coercion "Unsize" (borrow α1) ] in
+        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
         M.alloc α3 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -446,24 +448,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.call (M.var "visibility::function") in
+      let* α0 := M.call (M.var "visibility::function") [] in
       M.alloc α0 in
     let* _ :=
-      let* α0 := M.call (M.var "visibility::my_mod::function") in
+      let* α0 := M.call (M.var "visibility::my_mod::function") [] in
       M.alloc α0 in
     let* _ :=
-      let* α0 := M.call (M.var "visibility::my_mod::indirect_access") in
+      let* α0 := M.call (M.var "visibility::my_mod::indirect_access") [] in
       M.alloc α0 in
     let* _ :=
-      let* α0 := M.call (M.var "visibility::my_mod::nested::function") in
-      M.alloc α0 in
-    let* _ :=
-      let* α0 :=
-        M.call (M.var "visibility::my_mod::call_public_function_in_my_mod") in
+      let* α0 := M.call (M.var "visibility::my_mod::nested::function") [] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
-        M.call (M.var "visibility::my_mod::public_function_in_crate") in
+        M.call
+          (M.var "visibility::my_mod::call_public_function_in_my_mod")
+          [] in
+      M.alloc α0 in
+    let* _ :=
+      let* α0 :=
+        M.call (M.var "visibility::my_mod::public_function_in_crate") [] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

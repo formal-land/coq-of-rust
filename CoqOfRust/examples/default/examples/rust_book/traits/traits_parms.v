@@ -56,5 +56,5 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
     match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
   
   Definition ℐ : Instance.t :=
-    [("SomeType", TODO); ("some_fn", InstanceField.Method some_fn)].
+    [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn) ].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

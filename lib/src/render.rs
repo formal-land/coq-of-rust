@@ -203,3 +203,18 @@ where
         nest([text("End "), text(name), text(".")]),
     ])
 }
+
+pub(crate) fn list<'a, Item>(docs: Vec<Item>) -> Doc<'a>
+where
+    Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    if docs.is_empty() {
+        return text("[]");
+    }
+
+    group([
+        nest([text("["), line(), intersperse(docs, [text(";"), line()])]),
+        line(),
+        text("]"),
+    ])
+}

@@ -8,7 +8,7 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_contract_ref_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_ref_AccountId.
@@ -16,7 +16,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_contract_ref_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_ref_AccountId.
@@ -28,7 +28,8 @@ End Impl_core_marker_Copy_for_contract_ref_AccountId.
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
 
 Axiom Hash :
-  (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+  (Ty.path "contract_ref::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum Env *)
 
@@ -41,7 +42,7 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError.
 
 Module Impl_contract_ref_FlipperRef.

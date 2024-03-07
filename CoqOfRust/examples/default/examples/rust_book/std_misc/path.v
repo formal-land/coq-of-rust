@@ -33,53 +33,54 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* path :=
       let* α0 := M.read (mk_str ".") in
-      let* α1 := M.call ((Ty.path "std::path::Path")::["new"] α0) in
+      let* α1 := M.call (Ty.path "std::path::Path")::["new"] [ α0 ] in
       M.alloc α1 in
     let* _display :=
       let* α0 := M.read path in
-      let* α1 := M.call ((Ty.path "std::path::Path")::["display"] α0) in
+      let* α1 := M.call (Ty.path "std::path::Path")::["display"] [ α0 ] in
       M.alloc α1 in
     let* new_path :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.deref.Deref.deref
-            (Self := Ty.path "std::path::PathBuf")
-            (Trait := ℐ))) in
+        M.get_method
+          "core::ops::deref::Deref"
+          "deref"
+          [ (* Self *) Ty.path "std::path::PathBuf" ] in
       let* α1 := M.read path in
       let* α2 := M.read (mk_str "a") in
-      let* α3 := M.call ((Ty.path "std::path::Path")::["join"] α1 α2) in
+      let* α3 := M.call (Ty.path "std::path::Path")::["join"] [ α1; α2 ] in
       let* α4 := M.alloc α3 in
-      let* α5 := M.call (α0 (borrow α4)) in
+      let* α5 := M.call α0 [ borrow α4 ] in
       let* α6 := M.read (mk_str "b") in
-      let* α7 := M.call ((Ty.path "std::path::Path")::["join"] α5 α6) in
+      let* α7 := M.call (Ty.path "std::path::Path")::["join"] [ α5; α6 ] in
       M.alloc α7 in
     let* _ :=
       let* α0 := M.read (mk_str "c") in
       let* α1 :=
         M.call
-          ((Ty.path "std::path::PathBuf")::["push"] (borrow_mut new_path) α0) in
+          (Ty.path "std::path::PathBuf")::["push"]
+          [ borrow_mut new_path; α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "myfile.tar.gz") in
       let* α1 :=
         M.call
-          ((Ty.path "std::path::PathBuf")::["push"] (borrow_mut new_path) α0) in
+          (Ty.path "std::path::PathBuf")::["push"]
+          [ borrow_mut new_path; α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "package.tgz") in
       let* α1 :=
         M.call
-          ((Ty.path "std::path::PathBuf")::["set_file_name"]
-            (borrow_mut new_path)
-            α0) in
+          (Ty.path "std::path::PathBuf")::["set_file_name"]
+          [ borrow_mut new_path; α0 ] in
       M.alloc α1 in
     let* α0 :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.deref.Deref.deref
-          (Self := Ty.path "std::path::PathBuf")
-          (Trait := ℐ))) in
-    let* α1 := M.call (α0 (borrow new_path)) in
-    let* α2 := M.call ((Ty.path "std::path::Path")::["to_str"] α1) in
+      M.get_method
+        "core::ops::deref::Deref"
+        "deref"
+        [ (* Self *) Ty.path "std::path::PathBuf" ] in
+    let* α1 := M.call α0 [ borrow new_path ] in
+    let* α2 := M.call (Ty.path "std::path::Path")::["to_str"] [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α0 :=
       match_operator
@@ -91,10 +92,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             | core.option.Option.None =>
               let* α0 :=
                 M.read (mk_str "new path is not a valid UTF-8 sequence") in
-              let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+              let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
               let* α2 := never_to_any α1 in
               M.alloc α2
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -110,18 +111,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow s)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow s ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple []
         ] in

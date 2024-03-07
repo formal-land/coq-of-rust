@@ -70,9 +70,10 @@ pub(crate) enum ExprKind {
         ty_name: String,
         ty: Rc<CoqType>,
     },
-    VarWithTys {
-        path: Path,
-        tys: Vec<(String, Rc<CoqType>)>,
+    TraitMethod {
+        trait_name: Path,
+        method_name: String,
+        self_and_generic_tys: Vec<(String, Rc<CoqType>)>,
     },
     AssociatedFunction {
         ty: Rc<CoqType>,
@@ -180,7 +181,7 @@ impl Expr {
                 ty_name: _,
                 ty: _,
             } => false,
-            ExprKind::VarWithTys { path: _, tys: _ } => false,
+            ExprKind::TraitMethod { .. } => false,
             ExprKind::AssociatedFunction { ty: _, func: _ } => false,
             ExprKind::Literal(_, _) => false,
             ExprKind::Call {
@@ -366,11 +367,16 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             })),
             fresh_vars,
         ),
-        ExprKind::VarWithTys { path, tys } => (
+        ExprKind::TraitMethod {
+            trait_name,
+            method_name,
+            self_and_generic_tys,
+        } => (
             Rc::new(Expr {
-                kind: Rc::new(ExprKind::VarWithTys {
-                    path: path.clone(),
-                    tys: tys
+                kind: Rc::new(ExprKind::TraitMethod {
+                    trait_name: trait_name.clone(),
+                    method_name: method_name.clone(),
+                    self_and_generic_tys: self_and_generic_tys
                         .iter()
                         .map(|(name, ty)| (name.clone(), mt_ty(ty.clone())))
                         .collect(),
@@ -820,29 +826,33 @@ impl ExprKind {
                     ]),
                 ]),
             ),
-            ExprKind::VarWithTys { path, tys } => nest([
-                text("ltac:(M.get_method (fun ℐ =>"),
-                line(),
+            ExprKind::TraitMethod {
+                trait_name,
+                method_name,
+                self_and_generic_tys,
+            } => paren(
+                with_paren,
                 nest([
-                    path.to_doc(),
-                    concat(tys.iter().map(|(name, ty)| {
-                        concat([
-                            line(),
-                            nest([
-                                text("("),
-                                text(name),
-                                text(" :="),
-                                line(),
-                                ty.to_coq().to_doc(false),
-                                text(")"),
-                            ]),
-                        ])
-                    })),
+                    text("M.get_method"),
                     line(),
-                    text("(Trait := ℐ)"),
+                    text(format!("\"{trait_name}\"")),
+                    line(),
+                    text(format!("\"{method_name}\"")),
+                    line(),
+                    list(
+                        self_and_generic_tys
+                            .iter()
+                            .map(|(name, ty)| {
+                                nest([
+                                    text(format!("(* {name} *)")),
+                                    line(),
+                                    ty.to_coq().to_doc(false),
+                                ])
+                            })
+                            .collect(),
+                    ),
                 ]),
-                text("))"),
-            ]),
+            ),
             ExprKind::AssociatedFunction { ty, func } => nest([
                 ty.to_coq().to_doc(true),
                 text("::["),
@@ -866,28 +876,23 @@ impl ExprKind {
                 args,
                 purity: _,
                 from_user,
-            } => {
-                let inner_with_paren = with_paren || *from_user;
-                let inner_application = optional_insert_with(
-                    args.is_empty(),
-                    func.to_doc(inner_with_paren),
-                    paren(
-                        inner_with_paren,
-                        nest([
-                            func.to_doc(true),
-                            concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
-                        ]),
-                    ),
-                );
-                if *from_user {
-                    paren(
-                        with_paren,
-                        nest([text("M.call"), line(), inner_application]),
-                    )
-                } else {
-                    inner_application
-                }
-            }
+            } => paren(
+                with_paren,
+                nest([
+                    if *from_user {
+                        concat([text("M.call"), line()])
+                    } else {
+                        nil()
+                    },
+                    func.to_doc(true),
+                    line(),
+                    if *from_user {
+                        list(args.iter().map(|arg| arg.to_doc(false)).collect())
+                    } else {
+                        intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()])
+                    },
+                ]),
+            ),
             ExprKind::MonadicOperator { name, arg } => {
                 paren(with_paren, nest([text(name), line(), arg.to_doc(true)]))
             }
@@ -937,18 +942,12 @@ impl ExprKind {
                     )
                 }
             }
-            ExprKind::Array { elements } => group([
-                nest([
-                    text("["),
-                    optional_insert(elements.is_empty(), line()),
-                    intersperse(
-                        elements.iter().map(|element| element.to_doc(false)),
-                        [text(";"), line()],
-                    ),
-                ]),
-                line(),
-                text("]"),
-            ]),
+            ExprKind::Array { elements } => list(
+                elements
+                    .iter()
+                    .map(|element| element.to_doc(false))
+                    .collect(),
+            ),
             ExprKind::Tuple { elements } => paren(
                 true,
                 nest([intersperse(
@@ -1028,32 +1027,27 @@ impl ExprKind {
                 struct_or_variant,
             } => match base {
                 None => paren(
-                    with_paren && matches!(struct_or_variant, StructOrVariant::Variant { .. }),
-                    group([
-                        nest([
-                            match struct_or_variant {
-                                StructOrVariant::Struct => nil(),
-                                StructOrVariant::Variant { .. } => concat([path.to_doc(), line()]),
-                            },
-                            text("{|"),
-                            line(),
-                            intersperse(
-                                fields.iter().map(|(name, expr)| {
+                    with_paren,
+                    nest([
+                        text("Value.StructRecord"),
+                        line(),
+                        text(format!("\"{path}\"")),
+                        line(),
+                        list(
+                            fields
+                                .iter()
+                                .map(|(name, expr)| {
                                     nest([
-                                        path.to_doc(),
-                                        text("."),
-                                        text(name),
-                                        text(" :="),
+                                        text("("),
+                                        text(format!("\"{name}\"")),
+                                        text(","),
                                         line(),
                                         expr.to_doc(false),
-                                        text(";"),
+                                        text(")"),
                                     ])
-                                }),
-                                [line()],
-                            ),
-                        ]),
-                        line(),
-                        text("|}"),
+                                })
+                                .collect(),
+                        ),
                     ]),
                 ),
                 Some(base) => paren(

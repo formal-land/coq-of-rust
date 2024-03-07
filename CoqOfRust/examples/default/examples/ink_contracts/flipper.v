@@ -13,10 +13,10 @@ Module Impl_flipper_Flipper.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [init_value] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
-      M.pure {| flipper.Flipper.value := α0; |}
+      M.pure (Value.StructRecord "flipper::Flipper" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -29,12 +29,12 @@ Module Impl_flipper_Flipper.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "bool")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.call ((Ty.path "flipper::Flipper")::["new"] α1)
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "bool" ] in
+      let* α1 := M.call α0 [] in
+      M.call (Ty.path "flipper::Flipper")::["new"] [ α1 ]
     | _, _ => M.impossible
     end.
   
@@ -45,7 +45,7 @@ Module Impl_flipper_Flipper.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -66,7 +66,7 @@ Module Impl_flipper_Flipper.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "flipper::Flipper::Get_value") (deref α0))

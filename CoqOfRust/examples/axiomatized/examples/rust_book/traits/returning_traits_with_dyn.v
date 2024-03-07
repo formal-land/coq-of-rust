@@ -15,7 +15,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
   
   Parameter noise : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("noise", InstanceField.Method noise)].
+  Definition ℐ : Instance.t := [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
@@ -23,7 +23,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   
   Parameter noise : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("noise", InstanceField.Method noise)].
+  Definition ℐ : Instance.t := [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal : (list Ty.t) -> (list Value.t) -> M.

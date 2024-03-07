@@ -11,7 +11,7 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, Pars
 *)
 Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [first_number_str; second_number_str] =>
+  | [], [ first_number_str; second_number_str ] =>
     let* first_number_str := M.alloc first_number_str in
     let* second_number_str := M.alloc second_number_str in
     let return_ :=
@@ -19,20 +19,22 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (R :=
           Ty.apply
             (Ty.path "core::result::Result")
-            [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]) in
+            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]) in
     M.catch_return
       (let* first_number :=
         let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.try_trait.Try.branch
-              (Self :=
+          M.get_method
+            "core::ops::try_trait::Try"
+            "branch"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"])
-              (Trait := ℐ))) in
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+            ] in
         let* α1 := M.read first_number_str in
-        let* α2 := M.call ((Ty.path "str")::["parse"] α1) in
-        let* α3 := M.call (α0 α2) in
+        let* α2 := M.call (Ty.path "str")::["parse"] [ α1 ] in
+        let* α3 := M.call α0 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           match_operator
@@ -47,26 +49,32 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
+                    M.get_method
+                      "core::ops::try_trait::FromResidual"
+                      "from_residual"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.path "i32";
-                              Ty.path "core::num::error::ParseIntError"])
-                        (R :=
+                            [
+                              Ty.path "i32";
+                              Ty.path "core::num::error::ParseIntError"
+                            ];
+                        (* R *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.path "core::convert::Infallible";
-                              Ty.path "core::num::error::ParseIntError"])
-                        (Trait := ℐ))) in
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "core::num::error::ParseIntError"
+                            ]
+                      ] in
                   let* α1 := M.read residual in
-                  let* α2 := M.call (α0 α1) in
+                  let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "i32";
               fun γ =>
@@ -79,23 +87,25 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "i32"
             ] in
         M.copy α5 in
       let* second_number :=
         let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.try_trait.Try.branch
-              (Self :=
+          M.get_method
+            "core::ops::try_trait::Try"
+            "branch"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"])
-              (Trait := ℐ))) in
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+            ] in
         let* α1 := M.read second_number_str in
-        let* α2 := M.call ((Ty.path "str")::["parse"] α1) in
-        let* α3 := M.call (α0 α2) in
+        let* α2 := M.call (Ty.path "str")::["parse"] [ α1 ] in
+        let* α3 := M.call α0 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           match_operator
@@ -110,26 +120,32 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
+                    M.get_method
+                      "core::ops::try_trait::FromResidual"
+                      "from_residual"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.path "i32";
-                              Ty.path "core::num::error::ParseIntError"])
-                        (R :=
+                            [
+                              Ty.path "i32";
+                              Ty.path "core::num::error::ParseIntError"
+                            ];
+                        (* R *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.path "core::convert::Infallible";
-                              Ty.path "core::num::error::ParseIntError"])
-                        (Trait := ℐ))) in
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "core::num::error::ParseIntError"
+                            ]
+                      ] in
                   let* α1 := M.read residual in
-                  let* α2 := M.call (α0 α1) in
+                  let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "i32";
               fun γ =>
@@ -142,7 +158,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "i32"
             ] in
@@ -165,7 +181,7 @@ fn print(result: Result<i32, ParseIntError>) {
 *)
 Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [result] =>
+  | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
       match_operator
@@ -184,18 +200,20 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow n)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow n ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -211,18 +229,20 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow e)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow e ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple []
         ] in
@@ -243,14 +263,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.read (mk_str "10") in
       let* α1 := M.read (mk_str "2") in
-      let* α2 := M.call ((M.var "introducing_question_mark::multiply") α0 α1) in
-      let* α3 := M.call ((M.var "introducing_question_mark::print") α2) in
+      let* α2 :=
+        M.call (M.var "introducing_question_mark::multiply") [ α0; α1 ] in
+      let* α3 := M.call (M.var "introducing_question_mark::print") [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 := M.read (mk_str "t") in
       let* α1 := M.read (mk_str "2") in
-      let* α2 := M.call ((M.var "introducing_question_mark::multiply") α0 α1) in
-      let* α3 := M.call ((M.var "introducing_question_mark::print") α2) in
+      let* α2 :=
+        M.call (M.var "introducing_question_mark::multiply") [ α0; α1 ] in
+      let* α3 := M.call (M.var "introducing_question_mark::print") [ α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc tt in
     M.read α0

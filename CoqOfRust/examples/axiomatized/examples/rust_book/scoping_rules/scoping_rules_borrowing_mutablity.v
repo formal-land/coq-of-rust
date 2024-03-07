@@ -9,7 +9,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.

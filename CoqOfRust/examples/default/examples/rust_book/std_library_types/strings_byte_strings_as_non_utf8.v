@@ -47,7 +47,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (UnsupportedLiteral :
             Ty.apply
               (Ty.path "ref")
-              [Ty.apply (Ty.path "array") [Ty.path "u8"]]) in
+              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -57,15 +57,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              (borrow bytestring)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow bytestring ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* escaped :=
@@ -73,7 +75,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (UnsupportedLiteral :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "array") [Ty.path "u8"]]) in
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.read (mk_str "Some escaped bytes: ") in
@@ -82,15 +84,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              (borrow escaped)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow escaped ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* raw_bytestring :=
@@ -98,7 +102,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (UnsupportedLiteral :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "array") [Ty.path "u8"]]) in
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.read (mk_str "") in
@@ -107,23 +111,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              (borrow raw_bytestring)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow raw_bytestring ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
       let* α0 := M.read raw_bytestring in
       let* α1 :=
         M.call
-          ((M.var "core::str::converts::from_utf8")
-            (pointer_coercion "Unsize" α0)) in
+          (M.var "core::str::converts::from_utf8")
+          [ pointer_coercion "Unsize" α0 ] in
       let* α2 := M.alloc α1 in
       match_operator
         α2
@@ -142,19 +148,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow my_str)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow my_str ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ => (M.alloc tt) : Ty.path "unit"
@@ -164,19 +172,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (UnsupportedLiteral :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "array") [Ty.path "u8"]]) in
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
     let* shift_jis :=
       M.copy
         (UnsupportedLiteral :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "array") [Ty.path "u8"]]) in
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
     let* _ :=
       let* α0 := M.read shift_jis in
       let* α1 :=
         M.call
-          ((M.var "core::str::converts::from_utf8")
-            (pointer_coercion "Unsize" α0)) in
+          (M.var "core::str::converts::from_utf8")
+          [ pointer_coercion "Unsize" α0 ] in
       let* α2 := M.alloc α1 in
       match_operator
         α2
@@ -194,18 +202,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow my_str)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow my_str ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -221,18 +231,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                      (borrow e)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                    [ borrow e ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple []
         ] in

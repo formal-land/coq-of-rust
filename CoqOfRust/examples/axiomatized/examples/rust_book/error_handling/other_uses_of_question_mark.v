@@ -6,11 +6,15 @@ Axiom Result :
   (Ty.path "other_uses_of_question_mark::Result") =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [T;
+      [
+        T;
         Ty.apply
           (Ty.path "alloc::boxed::Box")
-          [Ty.dyn [("core::error::Error::Trait", [])];
-            Ty.path "alloc::alloc::Global"]]).
+          [
+            Ty.dyn [ ("core::error::Error::Trait", []) ];
+            Ty.path "alloc::alloc::Global"
+          ]
+      ]).
 
 (* Struct EmptyVec *)
 
@@ -19,7 +23,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
@@ -27,7 +31,7 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.

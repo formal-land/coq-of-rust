@@ -11,7 +11,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -23,14 +23,12 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
             ((M.var "constructor_as_function::Constructor::Get_0")
               (deref α2))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-          α0
-          α1
-          (pointer_coercion "Unsize" (borrow α3)))
+        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 (*
@@ -46,44 +44,54 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* v :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.collect
-            (Self :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "collect"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "core::iter::adapters::map::Map")
-                [Ty.apply
+                [
+                  Ty.apply
                     (Ty.path "alloc::vec::into_iter::IntoIter")
-                    [Ty.path "i32"; Ty.path "alloc::alloc::Global"];
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
                   Ty.function
-                    [Ty.path "i32"]
-                    (Ty.path "constructor_as_function::Constructor")])
-            (B :=
+                    [ Ty.path "i32" ]
+                    (Ty.path "constructor_as_function::Constructor")
+                ];
+            (* B *)
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "constructor_as_function::Constructor";
-                  Ty.path "alloc::alloc::Global"])
-            (Trait := ℐ))) in
+                [
+                  Ty.path "constructor_as_function::Constructor";
+                  Ty.path "alloc::alloc::Global"
+                ]
+          ] in
       let* α1 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.map
-            (Self :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "map"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
-            (B := Ty.path "constructor_as_function::Constructor")
-            (F :=
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+            (* B *) Ty.path "constructor_as_function::Constructor";
+            (* F *)
               Ty.function
-                [Ty.path "i32"]
-                (Ty.path "constructor_as_function::Constructor"))
-            (Trait := ℐ))) in
+                [ Ty.path "i32" ]
+                (Ty.path "constructor_as_function::Constructor")
+          ] in
       let* α2 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
+        M.get_method
+          "core::iter::traits::collect::IntoIterator"
+          "into_iter"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
-            (Trait := ℐ))) in
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+          ] in
       let* α3 :=
         M.alloc
           [
@@ -92,20 +100,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 3) : Ty.path "i32"
           ] in
       let* α4 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α3 ] in
       let* α5 := M.read α4 in
       let* α6 :=
         M.call
-          ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
-            (pointer_coercion "Unsize" α5)) in
-      let* α7 := M.call (α2 α6) in
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
+          [ pointer_coercion "Unsize" α5 ] in
+      let* α7 := M.call α2 [ α6 ] in
       let* α8 :=
         M.call
-          (α1
-            α7
-            (fun α =>
-              (M.pure (constructor_as_function.Constructor.Build_t α)) : _)) in
-      let* α9 := M.call (α0 α8) in
+          α1
+          [
+            α7;
+            fun α =>
+              (M.pure (constructor_as_function.Constructor.Build_t α)) : _
+          ] in
+      let* α9 := M.call α0 [ α8 ] in
       M.alloc α9 in
     let* _ :=
       let* _ :=
@@ -115,14 +127,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow v)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow v ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in

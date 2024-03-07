@@ -18,7 +18,7 @@ fn call(number: &str) -> &str {
 *)
 Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [number] =>
+  | [], [ number ] =>
     let* number := M.alloc number in
     let* α0 :=
       match_operator
@@ -31,7 +31,7 @@ Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again.") in
             M.alloc α0) :
-            Ty.apply (Ty.path "ref") [Ty.path "str"];
+            Ty.apply (Ty.path "ref") [ Ty.path "str" ];
           fun γ =>
             (let* α0 :=
               M.read
@@ -39,11 +39,11 @@ Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?") in
             M.alloc α0) :
-            Ty.apply (Ty.path "ref") [Ty.path "str"];
+            Ty.apply (Ty.path "ref") [ Ty.path "str" ];
           fun γ =>
             (let* α0 := M.read (mk_str "Hi! Who is this again?") in
             M.alloc α0) :
-            Ty.apply (Ty.path "ref") [Ty.path "str"]
+            Ty.apply (Ty.path "ref") [ Ty.path "str" ]
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -91,76 +91,80 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           (Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.path "std::hash::random::RandomState"])::["new"] in
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["new"]
+          [] in
       M.alloc α0 in
     let* _ :=
       let* α0 := M.read (mk_str "Daniel") in
       let* α1 := M.read (mk_str "798-1364") in
       let* α2 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["insert"]
-            (borrow_mut contacts)
-            α0
-            α1) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["insert"]
+          [ borrow_mut contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read (mk_str "Ashley") in
       let* α1 := M.read (mk_str "645-7689") in
       let* α2 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["insert"]
-            (borrow_mut contacts)
-            α0
-            α1) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["insert"]
+          [ borrow_mut contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read (mk_str "Katie") in
       let* α1 := M.read (mk_str "435-8291") in
       let* α2 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["insert"]
-            (borrow_mut contacts)
-            α0
-            α1) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["insert"]
+          [ borrow_mut contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read (mk_str "Robert") in
       let* α1 := M.read (mk_str "956-1745") in
       let* α2 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["insert"]
-            (borrow_mut contacts)
-            α0
-            α1) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["insert"]
+          [ borrow_mut contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["get"]
-            (borrow contacts)
-            (borrow (mk_str "Daniel"))) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["get"]
+          [ borrow contacts; borrow (mk_str "Daniel") ] in
       let* α1 := M.alloc α0 in
       match_operator
         α1
@@ -180,22 +184,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 := M.read number in
-                let* α4 := M.call ((M.var "hash_map::call") α3) in
+                let* α4 := M.call (M.var "hash_map::call") [ α3 ] in
                 let* α5 := M.alloc α4 in
                 let* α6 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow α5)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow α5 ] in
                 let* α7 := M.alloc [ α6 ] in
                 let* α8 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α7))) in
-                let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α7)
+                    ] in
+                let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
                 M.alloc α9 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -205,9 +211,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.path "core::fmt::Arguments")::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                  (Ty.path "core::fmt::Arguments")::["new_const"]
+                  [ pointer_coercion "Unsize" (borrow α1) ] in
+              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
               M.alloc α3 in
             M.alloc tt) :
             Ty.tuple []
@@ -217,25 +223,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (mk_str "164-6743") in
       let* α2 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["insert"]
-            (borrow_mut contacts)
-            α0
-            α1) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["insert"]
+          [ borrow_mut contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["get"]
-            (borrow contacts)
-            (borrow (mk_str "Ashley"))) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["get"]
+          [ borrow contacts; borrow (mk_str "Ashley") ] in
       let* α1 := M.alloc α0 in
       match_operator
         α1
@@ -255,22 +262,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 := M.read number in
-                let* α4 := M.call ((M.var "hash_map::call") α3) in
+                let* α4 := M.call (M.var "hash_map::call") [ α3 ] in
                 let* α5 := M.alloc α4 in
                 let* α6 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow α5)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow α5 ] in
                 let* α7 := M.alloc [ α6 ] in
                 let* α8 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α7))) in
-                let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α7)
+                    ] in
+                let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
                 M.alloc α9 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -280,9 +289,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.path "core::fmt::Arguments")::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                  (Ty.path "core::fmt::Arguments")::["new_const"]
+                  [ pointer_coercion "Unsize" (borrow α1) ] in
+              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
               M.alloc α3 in
             M.alloc tt) :
             Ty.tuple []
@@ -290,32 +299,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.apply (Ty.path "ref") [Ty.path "str"];
-                  Ty.path "std::hash::random::RandomState"])::["remove"]
-            (borrow_mut contacts)
-            (borrow (mk_str "Ashley"))) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ])::["remove"]
+          [ borrow_mut contacts; borrow (mk_str "Ashley") ] in
       M.alloc α0 in
     let* α0 :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
+      M.get_method
+        "core::iter::traits::collect::IntoIterator"
+        "into_iter"
+        [
+          (* Self *)
             Ty.apply
               (Ty.path "std::collections::hash::map::Iter")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.apply (Ty.path "ref") [Ty.path "str"]])
-          (Trait := ℐ))) in
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+              ]
+        ] in
     let* α1 :=
       M.call
-        ((Ty.apply
-              (Ty.path "std::collections::hash::map::HashMap")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.path "std::hash::random::RandomState"])::["iter"]
-          (borrow contacts)) in
-    let* α2 := M.call (α0 α1) in
+        (Ty.apply
+            (Ty.path "std::collections::hash::map::HashMap")
+            [
+              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.path "std::hash::random::RandomState"
+            ])::["iter"]
+        [ borrow contacts ] in
+    let* α2 := M.call α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
       match_operator
@@ -326,15 +342,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.loop
               (let* _ :=
                 let* α0 :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
-                      (Self :=
+                  M.get_method
+                    "core::iter::traits::iterator::Iterator"
+                    "next"
+                    [
+                      (* Self *)
                         Ty.apply
                           (Ty.path "std::collections::hash::map::Iter")
-                          [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                            Ty.apply (Ty.path "ref") [Ty.path "str"]])
-                      (Trait := ℐ))) in
-                let* α1 := M.call (α0 (borrow_mut iter)) in
+                          [
+                            Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                            Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+                          ]
+                    ] in
+                let* α1 := M.call α0 [ borrow_mut iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -347,7 +367,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 := M.read α0 in
                         let* α2 := never_to_any α1 in
                         M.alloc α2
-                      | _ => M.break_match
+                      | _ => M.break_match 
                       end) :
                       Ty.tuple [];
                     fun γ =>
@@ -375,30 +395,35 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* α3 := M.alloc [ α0; α1; α2 ] in
                               let* α4 :=
                                 M.call
-                                  ((Ty.path
-                                        "core::fmt::rt::Argument")::["new_display"]
-                                    (borrow contact)) in
+                                  (Ty.path
+                                      "core::fmt::rt::Argument")::["new_display"]
+                                  [ borrow contact ] in
                               let* α5 := M.read number in
-                              let* α6 := M.call ((M.var "hash_map::call") α5) in
+                              let* α6 :=
+                                M.call (M.var "hash_map::call") [ α5 ] in
                               let* α7 := M.alloc α6 in
                               let* α8 :=
                                 M.call
-                                  ((Ty.path
-                                        "core::fmt::rt::Argument")::["new_display"]
-                                    (borrow α7)) in
+                                  (Ty.path
+                                      "core::fmt::rt::Argument")::["new_display"]
+                                  [ borrow α7 ] in
                               let* α9 := M.alloc [ α4; α8 ] in
                               let* α10 :=
                                 M.call
-                                  ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                                    (pointer_coercion "Unsize" (borrow α3))
-                                    (pointer_coercion "Unsize" (borrow α9))) in
+                                  (Ty.path "core::fmt::Arguments")::["new_v1"]
+                                  [
+                                    pointer_coercion "Unsize" (borrow α3);
+                                    pointer_coercion "Unsize" (borrow α9)
+                                  ] in
                               let* α11 :=
-                                M.call ((M.var "std::io::stdio::_print") α10) in
+                                M.call
+                                  (M.var "std::io::stdio::_print")
+                                  [ α10 ] in
                               M.alloc α11 in
                             M.alloc tt in
                           M.alloc tt
                         end
-                      | _ => M.break_match
+                      | _ => M.break_match 
                       end) :
                       Ty.tuple []
                   ] in

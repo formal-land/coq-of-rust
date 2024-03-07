@@ -8,36 +8,43 @@ fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
 *)
 Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [vec] =>
+  | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* α0 :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.deref.Deref.deref
-          (Self :=
+      M.get_method
+        "core::ops::deref::Deref"
+        "deref"
+        [
+          (* Self *)
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.path "alloc::alloc::Global"])
-          (Trait := ℐ))) in
-    let* α1 := M.call (α0 (borrow vec)) in
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "alloc::alloc::Global"
+              ]
+        ] in
+    let* α1 := M.call α0 [ borrow vec ] in
     let* α2 :=
       M.call
-        ((Ty.apply
-              (Ty.path "slice")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["first"]
-          α1) in
+        (Ty.apply
+            (Ty.path "slice")
+            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["first"]
+        [ α1 ] in
     M.call
-      ((Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]]])::["map"]
-        α2
-        (fun
+      (Ty.apply
+          (Ty.path "core::option::Option")
+          [
+            Ty.apply
+              (Ty.path "ref")
+              [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]
+          ])::["map"]
+      [
+        α2;
+        fun
             (α0 :
               Ty.apply
                 (Ty.path "ref")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]]) =>
+                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
@@ -46,14 +53,15 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* first := M.copy γ in
                 let* α0 := M.read first in
                 let* α1 := M.read (deref α0) in
-                let* α2 := M.call ((Ty.path "str")::["parse"] α1) in
+                let* α2 := M.call (Ty.path "str")::["parse"] [ α1 ] in
                 M.call
-                  ((Ty.apply
-                        (Ty.path "core::result::Result")
-                        [Ty.path "i32";
-                          Ty.path "core::num::error::ParseIntError"])::["map"]
-                    α2
-                    (fun (α0 : Ty.path "i32") =>
+                  (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                      ])::["map"]
+                  [
+                    α2;
+                    fun (α0 : Ty.path "i32") =>
                       (let* α0 := M.alloc α0 in
                       match_operator
                         α0
@@ -66,14 +74,16 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               α0) :
                             Ty.path "i32"
                         ]) :
-                      Ty.path "i32"))) :
+                      Ty.path "i32"
+                  ]) :
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
             ]) :
           Ty.apply
             (Ty.path "core::result::Result")
-            [Ty.path "i32"; Ty.path "core::num::error::ParseIntError"]))
+            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+      ]
   | _, _ => M.impossible
   end.
 
@@ -102,22 +112,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.read (mk_str "18") in
       let* α3 := M.alloc [ α0; α1; α2 ] in
       let* α4 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α3 ] in
       let* α5 := M.read α4 in
       let* α6 :=
         M.call
-          ((Ty.apply
-                (Ty.path "slice")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["into_vec"]
-            (pointer_coercion "Unsize" α5)) in
+          (Ty.apply
+              (Ty.path "slice")
+              [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
+          [ pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* empty :=
       let* α0 :=
         M.call
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [Ty.apply (Ty.path "ref") [Ty.path "str"];
-                Ty.path "alloc::alloc::Global"])::["new"] in
+              [
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.path "alloc::alloc::Global"
+              ])::["new"]
+          [] in
       M.alloc α0 in
     let* strings :=
       let* α0 := M.read (mk_str "tofu") in
@@ -125,14 +140,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.read (mk_str "18") in
       let* α3 := M.alloc [ α0; α1; α2 ] in
       let* α4 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α3 ] in
       let* α5 := M.read α4 in
       let* α6 :=
         M.call
-          ((Ty.apply
-                (Ty.path "slice")
-                [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["into_vec"]
-            (pointer_coercion "Unsize" α5)) in
+          (Ty.apply
+              (Ty.path "slice")
+              [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
+          [ pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* _ :=
       let* _ :=
@@ -142,18 +159,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 := M.read numbers in
         let* α4 :=
-          M.call ((M.var "pulling_results_out_of_options::double_first") α3) in
+          M.call
+            (M.var "pulling_results_out_of_options::double_first")
+            [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α5)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α7)
+            ] in
+        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
     let* _ :=
@@ -164,18 +186,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 := M.read empty in
         let* α4 :=
-          M.call ((M.var "pulling_results_out_of_options::double_first") α3) in
+          M.call
+            (M.var "pulling_results_out_of_options::double_first")
+            [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α5)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α7)
+            ] in
+        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
     let* _ :=
@@ -186,18 +213,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 := M.read strings in
         let* α4 :=
-          M.call ((M.var "pulling_results_out_of_options::double_first") α3) in
+          M.call
+            (M.var "pulling_results_out_of_options::double_first")
+            [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α5)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α7)
+            ] in
+        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
     let* α0 := M.alloc tt in

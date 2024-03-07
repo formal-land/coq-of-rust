@@ -281,7 +281,7 @@ impl Pattern {
                         ),
                         text(")"),
                     ]),
-                    None => nest([text("["), intersperse(pats, [text(";"), line()]), text("]")]),
+                    None => list(pats),
                 }
             }
         }

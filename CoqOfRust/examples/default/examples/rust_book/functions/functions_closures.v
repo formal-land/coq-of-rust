@@ -72,28 +72,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.function.Fn.call
-              (Self := Ty.function [Ty.tuple [Ty.path "i32"]] (Ty.path "i32"))
-              (Args := Ty.tuple [Ty.path "i32"])
-              (Trait := ℐ))) in
+          M.get_method
+            "core::ops::function::Fn"
+            "call"
+            [
+              (* Self *)
+                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32");
+              (* Args *) Ty.tuple [ Ty.path "i32" ]
+            ] in
         let* α4 :=
           M.call
-            (α3
-              (borrow closure_annotated)
-              ((Integer.of_Z 1) : Ty.path "i32")) in
+            α3
+            [ borrow closure_annotated; ((Integer.of_Z 1) : Ty.path "i32") ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α5)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α7)
+            ] in
+        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
     let* _ :=
@@ -103,26 +107,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.function.Fn.call
-              (Self := Ty.function [Ty.tuple [Ty.path "i32"]] (Ty.path "i32"))
-              (Args := Ty.tuple [Ty.path "i32"])
-              (Trait := ℐ))) in
+          M.get_method
+            "core::ops::function::Fn"
+            "call"
+            [
+              (* Self *)
+                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32");
+              (* Args *) Ty.tuple [ Ty.path "i32" ]
+            ] in
         let* α4 :=
           M.call
-            (α3 (borrow closure_inferred) ((Integer.of_Z 1) : Ty.path "i32")) in
+            α3
+            [ borrow closure_inferred; ((Integer.of_Z 1) : Ty.path "i32") ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α5)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α7)
+            ] in
+        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
     let* one :=
@@ -143,24 +153,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.function.Fn.call
-              (Self := Ty.function [Ty.tuple []] (Ty.path "i32"))
-              (Args := Ty.tuple [])
-              (Trait := ℐ))) in
-        let* α4 := M.call (α3 (borrow one) tt) in
+          M.get_method
+            "core::ops::function::Fn"
+            "call"
+            [
+              (* Self *) Ty.function [ Ty.tuple [] ] (Ty.path "i32");
+              (* Args *) Ty.tuple []
+            ] in
+        let* α4 := M.call α3 [ borrow one; tt ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α5)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α7))) in
-        let* α9 := M.call ((M.var "std::io::stdio::_print") α8) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α7)
+            ] in
+        let* α9 := M.call (M.var "std::io::stdio::_print") [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
     let* α0 := M.alloc tt in

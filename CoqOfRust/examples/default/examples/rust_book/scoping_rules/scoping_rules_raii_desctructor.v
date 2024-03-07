@@ -13,7 +13,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   *)
   Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -22,9 +22,9 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -32,7 +32,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("drop", InstanceField.Method drop)].
+  Definition ℐ : Instance.t := [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (*
@@ -53,9 +53,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+            (Ty.path "core::fmt::Arguments")::["new_const"]
+            [ pointer_coercion "Unsize" (borrow α1) ] in
+        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
         M.alloc α3 in
       M.alloc tt in
     let* α0 := M.alloc tt in

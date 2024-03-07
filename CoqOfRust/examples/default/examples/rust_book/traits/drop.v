@@ -13,7 +13,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   *)
   Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -24,15 +24,17 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
           let* α3 := M.read self in
           let* α4 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow ((M.var "drop::Droppable::Get_name") (deref α3)))) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow ((M.var "drop::Droppable::Get_name") (deref α3)) ] in
           let* α5 := M.alloc [ α4 ] in
           let* α6 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α5))) in
-          let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α5)
+              ] in
+          let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -40,7 +42,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("drop", InstanceField.Method drop)].
+  Definition ℐ : Instance.t := [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (*
@@ -80,18 +82,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _a :=
       let* α0 := M.read (mk_str "a") in
-      M.alloc {| drop.Droppable.name := α0; |} in
+      M.alloc (Value.StructRecord "drop::Droppable" [ ("name", α0) ]) in
     let* _ :=
       let* _b :=
         let* α0 := M.read (mk_str "b") in
-        M.alloc {| drop.Droppable.name := α0; |} in
+        M.alloc (Value.StructRecord "drop::Droppable" [ ("name", α0) ]) in
       let* _ :=
         let* _c :=
           let* α0 := M.read (mk_str "c") in
-          M.alloc {| drop.Droppable.name := α0; |} in
+          M.alloc (Value.StructRecord "drop::Droppable" [ ("name", α0) ]) in
         let* _d :=
           let* α0 := M.read (mk_str "d") in
-          M.alloc {| drop.Droppable.name := α0; |} in
+          M.alloc (Value.StructRecord "drop::Droppable" [ ("name", α0) ]) in
         let* _ :=
           let* _ :=
             let* α0 := M.read (mk_str "Exiting block B
@@ -99,9 +101,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         M.alloc tt in
@@ -112,9 +114,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* _ :=
@@ -124,9 +126,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       M.alloc tt in
@@ -137,14 +139,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+            (Ty.path "core::fmt::Arguments")::["new_const"]
+            [ pointer_coercion "Unsize" (borrow α1) ] in
+        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
         M.alloc α3 in
       M.alloc tt in
     let* _ :=
       let* α0 := M.read _a in
-      let* α1 := M.call ((M.var "core::mem::drop") α0) in
+      let* α1 := M.call (M.var "core::mem::drop") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -153,9 +155,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+            (Ty.path "core::fmt::Arguments")::["new_const"]
+            [ pointer_coercion "Unsize" (borrow α1) ] in
+        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
         M.alloc α3 in
       M.alloc tt in
     let* α0 := M.alloc tt in

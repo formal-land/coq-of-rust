@@ -13,7 +13,7 @@ Module checked.
     *)
     Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
-      | [], [self; f] =>
+      | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
         let* α0 := M.read f in
@@ -32,9 +32,9 @@ Module checked.
                     =>
                   let* α0 := M.read (mk_str "DivisionByZero") in
                   M.alloc α0
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
-                Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -46,9 +46,9 @@ Module checked.
                     =>
                   let* α0 := M.read (mk_str "NonPositiveLogarithm") in
                   M.alloc α0
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
-                Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -60,24 +60,26 @@ Module checked.
                     =>
                   let* α0 := M.read (mk_str "NegativeSquareRoot") in
                   M.alloc α0
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
-                Ty.apply (Ty.path "ref") [Ty.path "str"]
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ]
             ] in
         let* α2 := M.read α1 in
-        M.call ((Ty.path "core::fmt::Formatter")::["write_str"] α0 α2)
+        M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
       | _, _ => M.impossible
       end.
     
-    Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+    Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :
     (Ty.path "result_chaining_with_question_mark::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [Ty.path "f64";
-          Ty.path "result_chaining_with_question_mark::checked::MathError"]).
+        [
+          Ty.path "f64";
+          Ty.path "result_chaining_with_question_mark::checked::MathError"
+        ]).
   
   (*
       fn div(x: f64, y: f64) -> MathResult {
@@ -90,7 +92,7 @@ Module checked.
   *)
   Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x; y] =>
+    | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
       let* α0 := M.read y in
@@ -122,7 +124,7 @@ Module checked.
   *)
   Definition sqrt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x] =>
+    | [], [ x ] =>
       let* x := M.alloc x in
       let* α0 := M.read x in
       let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
@@ -135,7 +137,7 @@ Module checked.
               result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot)
         else
           let* α0 := M.read x in
-          let* α1 := M.call ((Ty.path "f64")::["sqrt"] α0) in
+          let* α1 := M.call (Ty.path "f64")::["sqrt"] [ α0 ] in
           M.alloc (core.result.Result.Ok α1) in
       M.read α4
     | _, _ => M.impossible
@@ -152,7 +154,7 @@ Module checked.
   *)
   Definition ln (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x] =>
+    | [], [ x ] =>
       let* x := M.alloc x in
       let* α0 := M.read x in
       let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
@@ -165,7 +167,7 @@ Module checked.
               result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm)
         else
           let* α0 := M.read x in
-          let* α1 := M.call ((Ty.path "f64")::["ln"] α0) in
+          let* α1 := M.call (Ty.path "f64")::["ln"] [ α0 ] in
           M.alloc (core.result.Result.Ok α1) in
       M.read α4
     | _, _ => M.impossible
@@ -184,7 +186,7 @@ Module checked.
   *)
   Definition op_ (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x; y] =>
+    | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
       let return_ :=
@@ -192,29 +194,33 @@ Module checked.
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.path "f64";
-                Ty.path
-                  "result_chaining_with_question_mark::checked::MathError"]) in
+              [
+                Ty.path "f64";
+                Ty.path "result_chaining_with_question_mark::checked::MathError"
+              ]) in
       M.catch_return
         (let* ratio :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.ops.try_trait.Try.branch
-                (Self :=
+            M.get_method
+              "core::ops::try_trait::Try"
+              "branch"
+              [
+                (* Self *)
                   Ty.apply
                     (Ty.path "core::result::Result")
-                    [Ty.path "f64";
+                    [
+                      Ty.path "f64";
                       Ty.path
-                        "result_chaining_with_question_mark::checked::MathError"])
-                (Trait := ℐ))) in
+                        "result_chaining_with_question_mark::checked::MathError"
+                    ]
+              ] in
           let* α1 := M.read x in
           let* α2 := M.read y in
           let* α3 :=
             M.call
-              ((M.var "result_chaining_with_question_mark::checked::div")
-                α1
-                α2) in
-          let* α4 := M.call (α0 α3) in
+              (M.var "result_chaining_with_question_mark::checked::div")
+              [ α1; α2 ] in
+          let* α4 := M.call α0 [ α3 ] in
           let* α5 := M.alloc α4 in
           let* α6 :=
             match_operator
@@ -230,28 +236,34 @@ Module checked.
                         γ in
                     let* residual := M.copy γ0_0 in
                     let* α0 :=
-                      ltac:(M.get_method (fun ℐ =>
-                        core.ops.try_trait.FromResidual.from_residual
-                          (Self :=
+                      M.get_method
+                        "core::ops::try_trait::FromResidual"
+                        "from_residual"
+                        [
+                          (* Self *)
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [Ty.path "f64";
+                              [
+                                Ty.path "f64";
                                 Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"])
-                          (R :=
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ];
+                          (* R *)
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [Ty.path "core::convert::Infallible";
+                              [
+                                Ty.path "core::convert::Infallible";
                                 Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"])
-                          (Trait := ℐ))) in
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ]
+                        ] in
                     let* α1 := M.read residual in
-                    let* α2 := M.call (α0 α1) in
+                    let* α2 := M.call α0 [ α1 ] in
                     let* α3 := return_ α2 in
                     let* α4 := M.read α3 in
                     let* α5 := never_to_any α4 in
                     M.alloc α5
-                  | _ => M.break_match
+                  | _ => M.break_match 
                   end) :
                   Ty.path "f64";
                 fun γ =>
@@ -264,27 +276,32 @@ Module checked.
                         γ in
                     let* val := M.copy γ0_0 in
                     M.pure val
-                  | _ => M.break_match
+                  | _ => M.break_match 
                   end) :
                   Ty.path "f64"
               ] in
           M.copy α6 in
         let* ln :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.ops.try_trait.Try.branch
-                (Self :=
+            M.get_method
+              "core::ops::try_trait::Try"
+              "branch"
+              [
+                (* Self *)
                   Ty.apply
                     (Ty.path "core::result::Result")
-                    [Ty.path "f64";
+                    [
+                      Ty.path "f64";
                       Ty.path
-                        "result_chaining_with_question_mark::checked::MathError"])
-                (Trait := ℐ))) in
+                        "result_chaining_with_question_mark::checked::MathError"
+                    ]
+              ] in
           let* α1 := M.read ratio in
           let* α2 :=
             M.call
-              ((M.var "result_chaining_with_question_mark::checked::ln") α1) in
-          let* α3 := M.call (α0 α2) in
+              (M.var "result_chaining_with_question_mark::checked::ln")
+              [ α1 ] in
+          let* α3 := M.call α0 [ α2 ] in
           let* α4 := M.alloc α3 in
           let* α5 :=
             match_operator
@@ -300,28 +317,34 @@ Module checked.
                         γ in
                     let* residual := M.copy γ0_0 in
                     let* α0 :=
-                      ltac:(M.get_method (fun ℐ =>
-                        core.ops.try_trait.FromResidual.from_residual
-                          (Self :=
+                      M.get_method
+                        "core::ops::try_trait::FromResidual"
+                        "from_residual"
+                        [
+                          (* Self *)
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [Ty.path "f64";
+                              [
+                                Ty.path "f64";
                                 Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"])
-                          (R :=
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ];
+                          (* R *)
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [Ty.path "core::convert::Infallible";
+                              [
+                                Ty.path "core::convert::Infallible";
                                 Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"])
-                          (Trait := ℐ))) in
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ]
+                        ] in
                     let* α1 := M.read residual in
-                    let* α2 := M.call (α0 α1) in
+                    let* α2 := M.call α0 [ α1 ] in
                     let* α3 := return_ α2 in
                     let* α4 := M.read α3 in
                     let* α5 := never_to_any α4 in
                     M.alloc α5
-                  | _ => M.break_match
+                  | _ => M.break_match 
                   end) :
                   Ty.path "f64";
                 fun γ =>
@@ -334,7 +357,7 @@ Module checked.
                         γ in
                     let* val := M.copy γ0_0 in
                     M.pure val
-                  | _ => M.break_match
+                  | _ => M.break_match 
                   end) :
                   Ty.path "f64"
               ] in
@@ -342,7 +365,8 @@ Module checked.
         let* α0 := M.read ln in
         let* α1 :=
           M.call
-            ((M.var "result_chaining_with_question_mark::checked::sqrt") α0) in
+            (M.var "result_chaining_with_question_mark::checked::sqrt")
+            [ α0 ] in
         let* α0 := M.alloc α1 in
         M.read α0)
     | _, _ => M.impossible
@@ -365,14 +389,15 @@ Module checked.
   *)
   Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x; y] =>
+    | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
       let* α0 := M.read x in
       let* α1 := M.read y in
       let* α2 :=
         M.call
-          ((M.var "result_chaining_with_question_mark::checked::op_") α0 α1) in
+          (M.var "result_chaining_with_question_mark::checked::op_")
+          [ α0; α1 ] in
       let* α3 := M.alloc α2 in
       let* α4 :=
         match_operator
@@ -395,9 +420,9 @@ Module checked.
                             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
                             =>
                           M.pure (mk_str "logarithm of non-positive number")
-                        | _ => M.break_match
+                        | _ => M.break_match 
                         end) :
-                        Ty.apply (Ty.path "ref") [Ty.path "str"];
+                        Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -406,9 +431,9 @@ Module checked.
                             =>
                           let* α0 := M.read (mk_str "division by zero") in
                           M.alloc α0
-                        | _ => M.break_match
+                        | _ => M.break_match 
                         end) :
-                        Ty.apply (Ty.path "ref") [Ty.path "str"];
+                        Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -418,16 +443,17 @@ Module checked.
                           let* α0 :=
                             M.read (mk_str "square root of negative number") in
                           M.alloc α0
-                        | _ => M.break_match
+                        | _ => M.break_match 
                         end) :
-                        Ty.apply (Ty.path "ref") [Ty.path "str"]
+                        Ty.apply (Ty.path "ref") [ Ty.path "str" ]
                     ] in
                 let* α1 :=
                   M.call
-                    ((M.var "core::panicking::panic_display") (borrow α0)) in
+                    (M.var "core::panicking::panic_display")
+                    [ borrow α0 ] in
                 let* α2 := never_to_any α1 in
                 M.alloc α2
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.tuple [];
             fun γ =>
@@ -443,18 +469,20 @@ Module checked.
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow value)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow value ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.tuple []
           ] in
@@ -477,7 +505,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
       let* α2 :=
         M.call
-          ((M.var "result_chaining_with_question_mark::checked::op") α0 α1) in
+          (M.var "result_chaining_with_question_mark::checked::op")
+          [ α0; α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0

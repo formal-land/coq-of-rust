@@ -13,16 +13,16 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "u128")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "u128" ] in
+      let* α1 := M.call α0 [] in
       M.pure (conditional_compilation.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_conditional_compilation_AccountId.
 
 Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
@@ -33,7 +33,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -41,7 +41,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.path "u128"]))
+                [ Ty.path "u128" ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -52,7 +52,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_conditional_compilation_AccountId.
 
 Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
@@ -89,7 +89,7 @@ Module Impl_conditional_compilation_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "conditional_compilation::Env::Get_caller") (deref α0))
@@ -103,11 +103,11 @@ Module Impl_conditional_compilation_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _event] =>
+    | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -119,10 +119,10 @@ Module Impl_conditional_compilation_Env.
   *)
   Definition block_number (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -143,7 +143,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [], [] =>
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -155,11 +155,12 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.call
         (Ty.path
             "conditional_compilation::ConditionalCompilation")::["init_env"]
+        []
     | _, _ => M.impossible
     end.
   
@@ -174,12 +175,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "bool")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.pure {| conditional_compilation.ConditionalCompilation.value := α1; |}
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "bool" ] in
+      let* α1 := M.call α0 [] in
+      M.pure
+        (Value.StructRecord
+          "conditional_compilation::ConditionalCompilation"
+          [ ("value", α1) ])
     | _, _ => M.impossible
     end.
   
@@ -190,10 +194,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition new_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [value] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
-      M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}
+      M.pure
+        (Value.StructRecord
+          "conditional_compilation::ConditionalCompilation"
+          [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -204,10 +211,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition new_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [value] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
-      M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}
+      M.pure
+        (Value.StructRecord
+          "conditional_compilation::ConditionalCompilation"
+          [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -218,10 +228,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition new_foo_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [value] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
-      M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}
+      M.pure
+        (Value.StructRecord
+          "conditional_compilation::ConditionalCompilation"
+          [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -237,7 +250,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition inherent_flip_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -255,18 +268,20 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         let* α0 :=
           M.call
             (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"] in
+                "conditional_compilation::ConditionalCompilation")::["init_env"]
+            [] in
         let* α1 := M.alloc α0 in
         let* α2 :=
           M.call
-            ((Ty.path "conditional_compilation::Env")::["caller"]
-              (borrow α1)) in
+            (Ty.path "conditional_compilation::Env")::["caller"]
+            [ borrow α1 ] in
         M.alloc α2 in
       let* _ :=
         let* α0 :=
           M.call
             (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"] in
+                "conditional_compilation::ConditionalCompilation")::["init_env"]
+            [] in
         let* α1 := M.alloc α0 in
         let* α2 := M.read self in
         let* α3 :=
@@ -277,13 +292,14 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         let* α4 := M.read caller in
         let* α5 :=
           M.call
-            ((Ty.path "conditional_compilation::Env")::["emit_event"]
-              (borrow α1)
-              (conditional_compilation.Event.Changes
-                {|
-                  conditional_compilation.Changes.new_value := α3;
-                  conditional_compilation.Changes.by_ := α4;
-                |})) in
+            (Ty.path "conditional_compilation::Env")::["emit_event"]
+            [
+              borrow α1;
+              conditional_compilation.Event.Changes
+                (Value.StructRecord
+                  "conditional_compilation::Changes"
+                  [ ("new_value", α3); ("by_", α4) ])
+            ] in
         M.alloc α5 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -304,29 +320,31 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition inherent_flip_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
           M.call
             (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"] in
+                "conditional_compilation::ConditionalCompilation")::["init_env"]
+            [] in
         let* α1 := M.alloc α0 in
         let* α2 :=
           M.call
-            ((Ty.path "conditional_compilation::Env")::["caller"]
-              (borrow α1)) in
+            (Ty.path "conditional_compilation::Env")::["caller"]
+            [ borrow α1 ] in
         M.alloc α2 in
       let* block_number :=
         let* α0 :=
           M.call
             (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"] in
+                "conditional_compilation::ConditionalCompilation")::["init_env"]
+            [] in
         let* α1 := M.alloc α0 in
         let* α2 :=
           M.call
-            ((Ty.path "conditional_compilation::Env")::["block_number"]
-              (borrow α1)) in
+            (Ty.path "conditional_compilation::Env")::["block_number"]
+            [ borrow α1 ] in
         M.alloc α2 in
       let* _ :=
         let* α0 := M.read self in
@@ -344,7 +362,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         let* α0 :=
           M.call
             (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"] in
+                "conditional_compilation::ConditionalCompilation")::["init_env"]
+            [] in
         let* α1 := M.alloc α0 in
         let* α2 := M.read self in
         let* α3 :=
@@ -356,14 +375,14 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         let* α5 := M.read block_number in
         let* α6 :=
           M.call
-            ((Ty.path "conditional_compilation::Env")::["emit_event"]
-              (borrow α1)
-              (conditional_compilation.Event.ChangesDated
-                {|
-                  conditional_compilation.ChangesDated.new_value := α3;
-                  conditional_compilation.ChangesDated.by_ := α4;
-                  conditional_compilation.ChangesDated.when := α5;
-                |})) in
+            (Ty.path "conditional_compilation::Env")::["emit_event"]
+            [
+              borrow α1;
+              conditional_compilation.Event.ChangesDated
+                (Value.StructRecord
+                  "conditional_compilation::ChangesDated"
+                  [ ("new_value", α3); ("by_", α4); ("when", α5) ])
+            ] in
         M.alloc α6 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -382,7 +401,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -408,7 +427,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read
@@ -429,37 +448,40 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   *)
   Definition push_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; value] =>
+    | [], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
       let* caller :=
         let* α0 :=
           M.call
             (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"] in
+                "conditional_compilation::ConditionalCompilation")::["init_env"]
+            [] in
         let* α1 := M.alloc α0 in
         let* α2 :=
           M.call
-            ((Ty.path "conditional_compilation::Env")::["caller"]
-              (borrow α1)) in
+            (Ty.path "conditional_compilation::Env")::["caller"]
+            [ borrow α1 ] in
         M.alloc α2 in
       let* _ :=
         let* α0 :=
           M.call
             (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"] in
+                "conditional_compilation::ConditionalCompilation")::["init_env"]
+            [] in
         let* α1 := M.alloc α0 in
         let* α2 := M.read value in
         let* α3 := M.read caller in
         let* α4 :=
           M.call
-            ((Ty.path "conditional_compilation::Env")::["emit_event"]
-              (borrow α1)
-              (conditional_compilation.Event.Changes
-                {|
-                  conditional_compilation.Changes.new_value := α2;
-                  conditional_compilation.Changes.by_ := α3;
-                |})) in
+            (Ty.path "conditional_compilation::Env")::["emit_event"]
+            [
+              borrow α1;
+              conditional_compilation.Event.Changes
+                (Value.StructRecord
+                  "conditional_compilation::Changes"
+                  [ ("new_value", α2); ("by_", α3) ])
+            ] in
         M.alloc α4 in
       let* _ :=
         let* α0 := M.read self in
@@ -474,7 +496,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     end.
   
   Definition ℐ : Instance.t :=
-    [("flip", InstanceField.Method flip);
+    [
+      ("flip", InstanceField.Method flip);
       ("get", InstanceField.Method get);
-      ("push_foo", InstanceField.Method push_foo)].
+      ("push_foo", InstanceField.Method push_foo)
+    ].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

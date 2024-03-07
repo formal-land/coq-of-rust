@@ -5,15 +5,15 @@ Require Import CoqOfRust.CoqOfRust.
 Module ProvidedAndRequired.
   Definition provided (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          provided_method.ProvidedAndRequired.required
-            (Self := Self)
-            (Trait := ℐ))) in
+        M.get_method
+          "provided_method::ProvidedAndRequired"
+          "required"
+          [ (* Self *) Self ] in
       let* α1 := M.read self in
-      let* α2 := M.call (α0 α1) in
+      let* α2 := M.call α0 [ α1 ] in
       (M.var "BinOp::Panic::add") ((Integer.of_Z 42) : Ty.path "i32") α2
     | _, _ => M.impossible
     end.
@@ -32,14 +32,14 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
   *)
   Definition required (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (deref α0)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("required", InstanceField.Method required)].
+  Definition ℐ : Instance.t := [ ("required", InstanceField.Method required) ].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
@@ -52,7 +52,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
   *)
   Definition required (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 := M.read (deref α0) in
@@ -67,15 +67,17 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
   *)
   Definition provided (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure ((Integer.of_Z 0) : Ty.path "i32")
     | _, _ => M.impossible
     end.
   
   Definition ℐ : Instance.t :=
-    [("required", InstanceField.Method required);
-      ("provided", InstanceField.Method provided)].
+    [
+      ("required", InstanceField.Method required);
+      ("provided", InstanceField.Method provided)
+    ].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (*
@@ -93,11 +95,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          provided_method.ProvidedAndRequired.provided
-            (Self := Ty.path "i32")
-            (Trait := ℐ))) in
-      let* α1 := M.call (α0 (borrow x)) in
+        M.get_method
+          "provided_method::ProvidedAndRequired"
+          "provided"
+          [ (* Self *) Ty.path "i32" ] in
+      let* α1 := M.call α0 [ borrow x ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc ((Integer.of_Z 47) : Ty.path "i32") in
       let* α4 := M.alloc (borrow α2, borrow α3) in
@@ -127,11 +129,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read right_val in
                 let* α3 :=
                   M.call
-                    ((M.var "core::panicking::assert_failed")
-                      α0
-                      α1
-                      α2
-                      core.option.Option.None) in
+                    (M.var "core::panicking::assert_failed")
+                    [ α0; α1; α2; core.option.Option.None ] in
                 let* α0 := M.alloc α3 in
                 let* α1 := M.read α0 in
                 let* α2 := never_to_any α1 in
@@ -144,11 +143,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* y := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          provided_method.ProvidedAndRequired.provided
-            (Self := Ty.path "u32")
-            (Trait := ℐ))) in
-      let* α1 := M.call (α0 (borrow y)) in
+        M.get_method
+          "provided_method::ProvidedAndRequired"
+          "provided"
+          [ (* Self *) Ty.path "u32" ] in
+      let* α1 := M.call α0 [ borrow y ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
       let* α4 := M.alloc (borrow α2, borrow α3) in
@@ -178,11 +177,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read right_val in
                 let* α3 :=
                   M.call
-                    ((M.var "core::panicking::assert_failed")
-                      α0
-                      α1
-                      α2
-                      core.option.Option.None) in
+                    (M.var "core::panicking::assert_failed")
+                    [ α0; α1; α2; core.option.Option.None ] in
                 let* α0 := M.alloc α3 in
                 let* α1 := M.read α0 in
                 let* α2 := never_to_any α1 in

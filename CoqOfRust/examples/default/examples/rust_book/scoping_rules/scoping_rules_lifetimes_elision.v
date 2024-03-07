@@ -8,7 +8,7 @@ fn elided_input(x: &i32) {
 *)
 Definition elided_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [x] =>
+  | [], [ x ] =>
     let* x := M.alloc x in
     let* _ :=
       let* _ :=
@@ -18,14 +18,17 @@ Definition elided_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow x)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow x ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -40,7 +43,7 @@ fn annotated_input<'a>(x: &'a i32) {
 *)
 Definition annotated_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [x] =>
+  | [], [ x ] =>
     let* x := M.alloc x in
     let* _ :=
       let* _ :=
@@ -50,14 +53,17 @@ Definition annotated_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow x)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow x ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -72,7 +78,7 @@ fn elided_pass(x: &i32) -> &i32 {
 *)
 Definition elided_pass (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [x] =>
+  | [], [ x ] =>
     let* x := M.alloc x in
     M.read x
   | _, _ => M.impossible
@@ -85,7 +91,7 @@ fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
 *)
 Definition annotated_pass (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [x] =>
+  | [], [ x ] =>
     let* x := M.alloc x in
     M.read x
   | _, _ => M.impossible
@@ -110,14 +116,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "scoping_rules_lifetimes_elision::elided_input")
-            (borrow x)) in
+          (M.var "scoping_rules_lifetimes_elision::elided_input")
+          [ borrow x ] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "scoping_rules_lifetimes_elision::annotated_input")
-            (borrow x)) in
+          (M.var "scoping_rules_lifetimes_elision::annotated_input")
+          [ borrow x ] in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -127,20 +133,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((M.var "scoping_rules_lifetimes_elision::elided_pass")
-              (borrow x)) in
+            (M.var "scoping_rules_lifetimes_elision::elided_pass")
+            [ borrow x ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -151,20 +159,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((M.var "scoping_rules_lifetimes_elision::annotated_pass")
-              (borrow x)) in
+            (M.var "scoping_rules_lifetimes_elision::annotated_pass")
+            [ borrow x ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* α0 := M.alloc tt in

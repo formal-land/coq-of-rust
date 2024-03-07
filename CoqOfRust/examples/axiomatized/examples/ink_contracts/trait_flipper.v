@@ -22,5 +22,5 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("flip", InstanceField.Method flip); ("get", InstanceField.Method get)].
+    [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

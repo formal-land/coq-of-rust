@@ -8,7 +8,7 @@ pub fn add(a: i32, b: i32) -> i32 {
 *)
 Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [a; b] =>
+  | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
     let* α0 := M.read a in
@@ -28,7 +28,7 @@ pub fn div(a: i32, b: i32) -> i32 {
 *)
 Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [a; b] =>
+  | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
     let* _ :=
@@ -39,7 +39,7 @@ Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.read (use α1) in
       if α2 then
         let* α0 := M.read (mk_str "Divide-by-zero error") in
-        let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+        let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
         let* α2 := never_to_any α1 in
         M.alloc α2
       else

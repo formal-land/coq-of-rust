@@ -15,7 +15,7 @@ Module Impl_generics_new_type_idiom_Years.
   *)
   Definition to_days (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -37,7 +37,7 @@ Module Impl_generics_new_type_idiom_Days.
   *)
   Definition to_years (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -56,7 +56,7 @@ fn old_enough(age: &Years) -> bool {
 *)
 Definition old_enough (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [age] =>
+  | [], [ age ] =>
     let* age := M.alloc age in
     let* α0 := M.read age in
     let* α1 :=
@@ -85,8 +85,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* age_days :=
       let* α0 :=
         M.call
-          ((Ty.path "generics_new_type_idiom::Years")::["to_days"]
-            (borrow age)) in
+          (Ty.path "generics_new_type_idiom::Years")::["to_days"]
+          [ borrow age ] in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -95,19 +95,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          M.call ((M.var "generics_new_type_idiom::old_enough") (borrow age)) in
+          M.call (M.var "generics_new_type_idiom::old_enough") [ borrow age ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -118,23 +120,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "generics_new_type_idiom::Days")::["to_years"]
-              (borrow age_days)) in
+            (Ty.path "generics_new_type_idiom::Days")::["to_years"]
+            [ borrow age_days ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
-          M.call ((M.var "generics_new_type_idiom::old_enough") (borrow α4)) in
+          M.call (M.var "generics_new_type_idiom::old_enough") [ borrow α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α6)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α8)
+            ] in
+        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in

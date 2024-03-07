@@ -16,7 +16,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
   *)
   Definition print_in_option (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [ T ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -28,15 +28,17 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α4 := M.alloc (core.option.Option.Some α3) in
           let* α5 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                (borrow α4)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+              [ borrow α4 ] in
           let* α6 := M.alloc [ α5 ] in
           let* α7 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α6))) in
-          let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α6)
+              ] in
+          let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
           M.alloc α8 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -45,7 +47,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
     end.
   
   Definition ℐ (T : Ty.t) : Instance.t :=
-    [("print_in_option", InstanceField.Method (print_in_option T))].
+    [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (*
@@ -68,24 +70,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 3) : Ty.path "i32"
           ] in
       let* α1 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α0 ] in
       let* α2 := M.read α1 in
       let* α3 :=
         M.call
-          ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
-            (pointer_coercion "Unsize" α2)) in
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
+          [ pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          generics_where_clauses.PrintInOption.print_in_option
-            (Self :=
+        M.get_method
+          "generics_where_clauses::PrintInOption"
+          "print_in_option"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
-            (Trait := ℐ))) in
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+          ] in
       let* α1 := M.read vec in
-      let* α2 := M.call (α0 α1) in
+      let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc tt in
     M.read α0

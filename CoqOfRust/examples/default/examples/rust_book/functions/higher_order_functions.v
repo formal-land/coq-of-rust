@@ -8,7 +8,7 @@ fn is_odd(n: u32) -> bool {
 *)
 Definition is_odd (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [n] =>
+  | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 := M.read n in
     let* α1 :=
@@ -63,27 +63,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+            (Ty.path "core::fmt::Arguments")::["new_const"]
+            [ pointer_coercion "Unsize" (borrow α1) ] in
+        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
         M.alloc α3 in
       M.alloc tt in
     let* upper := M.alloc ((Integer.of_Z 1000) : Ty.path "u32") in
     let* acc := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
-              Ty.apply (Ty.path "core::ops::range::RangeFrom") [Ty.path "u32"])
-            (Trait := ℐ))) in
+        M.get_method
+          "core::iter::traits::collect::IntoIterator"
+          "into_iter"
+          [
+            (* Self *)
+              Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ]
+          ] in
       let* α1 :=
         M.call
-          (α0
-            {|
-              core.ops.range.RangeFrom.start :=
-                (Integer.of_Z 0) : Ty.path "u32";
-            |}) in
+          α0
+          [
+            Value.StructRecord
+              "core::ops::range::RangeFrom"
+              [ ("start", (Integer.of_Z 0) : Ty.path "u32") ]
+          ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         match_operator
@@ -94,14 +97,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.loop
                 (let* _ :=
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.iter.traits.iterator.Iterator.next
-                        (Self :=
+                    M.get_method
+                      "core::iter::traits::iterator::Iterator"
+                      "next"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::ops::range::RangeFrom")
-                            [Ty.path "u32"])
-                        (Trait := ℐ))) in
-                  let* α1 := M.call (α0 (borrow_mut iter)) in
+                            [ Ty.path "u32" ]
+                      ] in
+                  let* α1 := M.call α0 [ borrow_mut iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -114,7 +119,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α1 := M.read α0 in
                           let* α2 := never_to_any α1 in
                           M.alloc α2
-                        | _ => M.break_match
+                        | _ => M.break_match 
                         end) :
                         Ty.tuple [];
                       fun γ =>
@@ -143,7 +148,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α0 := M.read n_squared in
                             let* α1 :=
                               M.call
-                                ((M.var "higher_order_functions::is_odd") α0) in
+                                (M.var "higher_order_functions::is_odd")
+                                [ α0 ] in
                             let* α2 := M.alloc α1 in
                             let* α3 := M.read (use α2) in
                             if α3 then
@@ -156,7 +162,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.alloc tt
                             else
                               M.alloc tt
-                        | _ => M.break_match
+                        | _ => M.break_match 
                         end) :
                         Ty.tuple []
                     ] in
@@ -172,93 +178,120 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow acc)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow acc ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* sum_of_squared_odd_numbers :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.sum
-            (Self :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "sum"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "core::iter::adapters::filter::Filter")
-                [Ty.apply
+                [
+                  Ty.apply
                     (Ty.path "core::iter::adapters::take_while::TakeWhile")
-                    [Ty.apply
+                    [
+                      Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
-                        [Ty.apply
+                        [
+                          Ty.apply
                             (Ty.path "core::ops::range::RangeFrom")
-                            [Ty.path "u32"];
+                            [ Ty.path "u32" ];
                           Ty.function
-                            [Ty.tuple [Ty.path "u32"]]
-                            (Ty.path "u32")];
+                            [ Ty.tuple [ Ty.path "u32" ] ]
+                            (Ty.path "u32")
+                        ];
                       Ty.function
-                        [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
-                        (Ty.path "bool")];
+                        [
+                          Ty.tuple
+                            [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ]
+                        ]
+                        (Ty.path "bool")
+                    ];
                   Ty.function
-                    [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
-                    (Ty.path "bool")])
-            (S := Ty.path "u32")
-            (Trait := ℐ))) in
+                    [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                    (Ty.path "bool")
+                ];
+            (* S *) Ty.path "u32"
+          ] in
       let* α1 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.filter
-            (Self :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "filter"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "core::iter::adapters::take_while::TakeWhile")
-                [Ty.apply
+                [
+                  Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
-                    [Ty.apply
+                    [
+                      Ty.apply
                         (Ty.path "core::ops::range::RangeFrom")
-                        [Ty.path "u32"];
-                      Ty.function [Ty.tuple [Ty.path "u32"]] (Ty.path "u32")];
+                        [ Ty.path "u32" ];
+                      Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                    ];
                   Ty.function
-                    [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
-                    (Ty.path "bool")])
-            (P :=
+                    [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                    (Ty.path "bool")
+                ];
+            (* P *)
               Ty.function
-                [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
-                (Ty.path "bool"))
-            (Trait := ℐ))) in
+                [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                (Ty.path "bool")
+          ] in
       let* α2 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.take_while
-            (Self :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "take_while"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "core::iter::adapters::map::Map")
-                [Ty.apply
+                [
+                  Ty.apply
                     (Ty.path "core::ops::range::RangeFrom")
-                    [Ty.path "u32"];
-                  Ty.function [Ty.tuple [Ty.path "u32"]] (Ty.path "u32")])
-            (P :=
+                    [ Ty.path "u32" ];
+                  Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                ];
+            (* P *)
               Ty.function
-                [Ty.tuple [Ty.apply (Ty.path "ref") [Ty.path "u32"]]]
-                (Ty.path "bool"))
-            (Trait := ℐ))) in
+                [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                (Ty.path "bool")
+          ] in
       let* α3 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.map
-            (Self :=
-              Ty.apply (Ty.path "core::ops::range::RangeFrom") [Ty.path "u32"])
-            (B := Ty.path "u32")
-            (F := Ty.function [Ty.tuple [Ty.path "u32"]] (Ty.path "u32"))
-            (Trait := ℐ))) in
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "map"
+          [
+            (* Self *)
+              Ty.apply
+                (Ty.path "core::ops::range::RangeFrom")
+                [ Ty.path "u32" ];
+            (* B *) Ty.path "u32";
+            (* F *) Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+          ] in
       let* α4 :=
         M.call
-          (α3
-            {|
-              core.ops.range.RangeFrom.start :=
-                (Integer.of_Z 0) : Ty.path "u32";
-            |}
-            (fun (α0 : Ty.path "u32") =>
+          α3
+          [
+            Value.StructRecord
+              "core::ops::range::RangeFrom"
+              [ ("start", (Integer.of_Z 0) : Ty.path "u32") ];
+            fun (α0 : Ty.path "u32") =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
@@ -270,12 +303,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (M.var "BinOp::Panic::mul") α0 α1) :
                     Ty.path "u32"
                 ]) :
-              Ty.path "u32")) in
+              Ty.path "u32"
+          ] in
       let* α5 :=
         M.call
-          (α2
-            α4
-            (fun (α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"]) =>
+          α2
+          [
+            α4;
+            fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "u32" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
@@ -290,12 +325,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure ((M.var "BinOp::Pure::lt") α0 α1)) :
                     Ty.path "bool"
                 ]) :
-              Ty.path "bool")) in
+              Ty.path "bool"
+          ] in
       let* α6 :=
         M.call
-          (α1
-            α5
-            (fun (α0 : Ty.apply (Ty.path "ref") [Ty.path "u32"]) =>
+          α1
+          [
+            α5;
+            fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "u32" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
@@ -306,11 +343,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.pure (deref α0) in
                     let* n_squared := M.copy γ in
                     let* α0 := M.read n_squared in
-                    M.call ((M.var "higher_order_functions::is_odd") α0)) :
+                    M.call (M.var "higher_order_functions::is_odd") [ α0 ]) :
                     Ty.path "bool"
                 ]) :
-              Ty.path "bool")) in
-      let* α7 := M.call (α0 α6) in
+              Ty.path "bool"
+          ] in
+      let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in
     let* _ :=
       let* _ :=
@@ -320,15 +358,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow sum_of_squared_odd_numbers)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow sum_of_squared_odd_numbers ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in

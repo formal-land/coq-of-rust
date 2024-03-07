@@ -1306,10 +1306,10 @@ fn compile_expr_kind<'a>(
                         // We know that the first type is the `Self` type
                         let self_ty = &tys.first().unwrap().1;
 
-                        if Some((parent_path, self_ty.clone())) == env.current_trait_impl {
-                            ExprKind::LocalVar(symbol.unwrap().to_string())
-                        } else {
-                            ExprKind::VarWithTys { path, tys }
+                        ExprKind::TraitMethod {
+                            trait_name: parent_path,
+                            method_name: symbol.unwrap().to_string(),
+                            self_and_generic_tys: tys,
                         }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {

@@ -37,15 +37,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow borrow1)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow borrow1 ] in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α4)
+              ] in
+          let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
           M.alloc α6 in
         M.alloc tt in
       M.alloc tt in
@@ -58,15 +60,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow borrow2)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow borrow2 ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in

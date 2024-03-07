@@ -55,11 +55,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read right_val in
                 let* α3 :=
                   M.call
-                    ((M.var "core::panicking::assert_failed")
-                      α0
-                      α1
-                      α2
-                      core.option.Option.None) in
+                    (M.var "core::panicking::assert_failed")
+                    [ α0; α1; α2; core.option.Option.None ] in
                 let* α0 := M.alloc α3 in
                 let* α1 := M.read α0 in
                 let* α2 := never_to_any α1 in

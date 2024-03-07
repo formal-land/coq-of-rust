@@ -13,16 +13,16 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "u128")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "u128" ] in
+      let* α1 := M.call α0 [] in
       M.pure (call_builder.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -33,7 +33,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -41,7 +41,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.path "u128"]))
+                [ Ty.path "u128" ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -52,7 +52,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -64,7 +64,8 @@ End Impl_core_marker_Copy_for_call_builder_AccountId.
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
 Axiom Hash :
-  (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+  (Ty.path "call_builder::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum LangError *)
 
@@ -80,10 +81,10 @@ Module Impl_call_builder_Selector.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [bytes] =>
+    | [], [ bytes ] =>
       let* bytes := M.alloc bytes in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -103,7 +104,7 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.
@@ -118,11 +119,11 @@ Module Impl_call_builder_CallBuilderTest.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "call_builder::CallBuilderTest")
-            (Trait := ℐ))) in
-      M.call α0
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "call_builder::CallBuilderTest" ] in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -147,13 +148,13 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; address; selector] =>
+    | [], [ self; address; selector ] =>
       let* self := M.alloc self in
       let* address := M.alloc address in
       let* selector := M.alloc selector in
       let* result :=
         let* α0 := M.read (mk_str "not yet implemented") in
-        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
         let* α2 := never_to_any α1 in
         M.alloc α2 in
       let* α0 :=
@@ -166,11 +167,11 @@ Module Impl_call_builder_CallBuilderTest.
               | core.result.Result.Ok _ =>
                 let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
                 M.alloc core.option.Option.None
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.apply
                 (Ty.path "core::option::Option")
-                [Ty.path "call_builder::LangError"];
+                [ Ty.path "call_builder::LangError" ];
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -182,13 +183,13 @@ Module Impl_call_builder_CallBuilderTest.
                 | call_builder.LangError.CouldNotReadInput =>
                   let* α0 := M.read e in
                   M.alloc (core.option.Option.Some α0)
-                | _ => M.break_match
+                | _ => M.break_match 
                 end
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.apply
                 (Ty.path "core::option::Option")
-                [Ty.path "call_builder::LangError"];
+                [ Ty.path "call_builder::LangError" ];
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -200,21 +201,23 @@ Module Impl_call_builder_CallBuilderTest.
                       "not implemented: No other `LangError` variants exist at the moment.") in
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
-                  M.call (Ty.path "core::fmt::rt::Argument")::["none"] in
+                  M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
                 let* α3 := M.alloc α2 in
                 let* α4 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α1))
-                      (pointer_coercion "Unsize" (borrow α3))) in
-                let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α1);
+                      pointer_coercion "Unsize" (borrow α3)
+                    ] in
+                let* α5 := M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
                 let* α6 := never_to_any α5 in
                 M.alloc α6
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.apply
                 (Ty.path "core::option::Option")
-                [Ty.path "call_builder::LangError"]
+                [ Ty.path "call_builder::LangError" ]
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -233,7 +236,7 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition invoke (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; address; selector] =>
+    | [], [ self; address; selector ] =>
       let* self := M.alloc self in
       let* address := M.alloc address in
       let* selector := M.alloc selector in
@@ -273,7 +276,7 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition call_instantiate (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; code_hash; selector; init_value] =>
+    | [], [ self; code_hash; selector; init_value ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
@@ -311,7 +314,7 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition call_instantiate_fallible (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; code_hash; selector; init_value] =>
+    | [], [ self; code_hash; selector; init_value ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in

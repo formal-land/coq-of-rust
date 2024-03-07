@@ -47,25 +47,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* a :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.collect
-            (Self :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "collect"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
-            (B :=
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+            (* B *)
               Ty.apply
                 (Ty.path "std::collections::hash::set::HashSet")
-                [Ty.path "i32"; Ty.path "std::hash::random::RandomState"])
-            (Trait := ℐ))) in
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
+          ] in
       let* α1 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
+        M.get_method
+          "core::iter::traits::collect::IntoIterator"
+          "into_iter"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
-            (Trait := ℐ))) in
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+          ] in
       let* α2 :=
         M.alloc
           [
@@ -74,36 +78,42 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 3) : Ty.path "i32"
           ] in
       let* α3 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α2) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α2 ] in
       let* α4 := M.read α3 in
       let* α5 :=
         M.call
-          ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
-            (pointer_coercion "Unsize" α4)) in
-      let* α6 := M.call (α1 α5) in
-      let* α7 := M.call (α0 α6) in
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
+          [ pointer_coercion "Unsize" α4 ] in
+      let* α6 := M.call α1 [ α5 ] in
+      let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in
     let* b :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.collect
-            (Self :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "collect"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
-            (B :=
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+            (* B *)
               Ty.apply
                 (Ty.path "std::collections::hash::set::HashSet")
-                [Ty.path "i32"; Ty.path "std::hash::random::RandomState"])
-            (Trait := ℐ))) in
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
+          ] in
       let* α1 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
+        M.get_method
+          "core::iter::traits::collect::IntoIterator"
+          "into_iter"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])
-            (Trait := ℐ))) in
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+          ] in
       let* α2 :=
         M.alloc
           [
@@ -112,29 +122,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 4) : Ty.path "i32"
           ] in
       let* α3 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α2) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α2 ] in
       let* α4 := M.read α3 in
       let* α5 :=
         M.call
-          ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
-            (pointer_coercion "Unsize" α4)) in
-      let* α6 := M.call (α1 α5) in
-      let* α7 := M.call (α0 α6) in
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
+          [ pointer_coercion "Unsize" α4 ] in
+      let* α6 := M.call α1 [ α5 ] in
+      let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::set::HashSet")
-                [Ty.path "i32";
-                  Ty.path "std::hash::random::RandomState"])::["insert"]
-            (borrow_mut a)
-            ((Integer.of_Z 4) : Ty.path "i32")) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::set::HashSet")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
+              ])::["insert"]
+          [ borrow_mut a; (Integer.of_Z 4) : Ty.path "i32" ] in
       let* α1 := M.alloc ((M.var "UnOp::not") α0) in
       let* α2 := M.read (use α1) in
       if α2 then
         let* α0 := M.read (mk_str "assertion failed: a.insert(4)") in
-        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
         let* α2 := never_to_any α1 in
         M.alloc α2
       else
@@ -143,17 +154,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.alloc ((Integer.of_Z 4) : Ty.path "i32") in
       let* α1 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::set::HashSet")
-                [Ty.path "i32";
-                  Ty.path "std::hash::random::RandomState"])::["contains"]
-            (borrow a)
-            (borrow α0)) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::set::HashSet")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
+              ])::["contains"]
+          [ borrow a; borrow α0 ] in
       let* α2 := M.alloc ((M.var "UnOp::not") α1) in
       let* α3 := M.read (use α2) in
       if α3 then
         let* α0 := M.read (mk_str "assertion failed: a.contains(&4)") in
-        let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+        let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
         let* α2 := never_to_any α1 in
         M.alloc α2
       else
@@ -161,12 +171,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.apply
-                (Ty.path "std::collections::hash::set::HashSet")
-                [Ty.path "i32";
-                  Ty.path "std::hash::random::RandomState"])::["insert"]
-            (borrow_mut b)
-            ((Integer.of_Z 5) : Ty.path "i32")) in
+          (Ty.apply
+              (Ty.path "std::collections::hash::set::HashSet")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
+              ])::["insert"]
+          [ borrow_mut b; (Integer.of_Z 5) : Ty.path "i32" ] in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -176,14 +185,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow a)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow a ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -194,14 +206,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow b)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow b ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -211,38 +226,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.iter.traits.iterator.Iterator.collect
-              (Self :=
+          M.get_method
+            "core::iter::traits::iterator::Iterator"
+            "collect"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "std::collections::hash::set::Union")
-                  [Ty.path "i32"; Ty.path "std::hash::random::RandomState"])
-              (B :=
+                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
+              (* B *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.apply (Ty.path "ref") [Ty.path "i32"];
-                    Ty.path "alloc::alloc::Global"])
-              (Trait := ℐ))) in
+                  [
+                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.path "alloc::alloc::Global"
+                  ]
+            ] in
         let* α4 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "std::collections::hash::set::HashSet")
-                  [Ty.path "i32";
-                    Ty.path "std::hash::random::RandomState"])::["union"]
-              (borrow a)
-              (borrow b)) in
-        let* α5 := M.call (α3 α4) in
+            (Ty.apply
+                (Ty.path "std::collections::hash::set::HashSet")
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
+                ])::["union"]
+            [ borrow a; borrow b ] in
+        let* α5 := M.call α3 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α6)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α8)
+            ] in
+        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
     let* _ :=
@@ -252,38 +273,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.iter.traits.iterator.Iterator.collect
-              (Self :=
+          M.get_method
+            "core::iter::traits::iterator::Iterator"
+            "collect"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "std::collections::hash::set::Difference")
-                  [Ty.path "i32"; Ty.path "std::hash::random::RandomState"])
-              (B :=
+                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
+              (* B *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.apply (Ty.path "ref") [Ty.path "i32"];
-                    Ty.path "alloc::alloc::Global"])
-              (Trait := ℐ))) in
+                  [
+                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.path "alloc::alloc::Global"
+                  ]
+            ] in
         let* α4 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "std::collections::hash::set::HashSet")
-                  [Ty.path "i32";
-                    Ty.path "std::hash::random::RandomState"])::["difference"]
-              (borrow a)
-              (borrow b)) in
-        let* α5 := M.call (α3 α4) in
+            (Ty.apply
+                (Ty.path "std::collections::hash::set::HashSet")
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
+                ])::["difference"]
+            [ borrow a; borrow b ] in
+        let* α5 := M.call α3 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α6)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α8)
+            ] in
+        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
     let* _ :=
@@ -293,38 +320,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.iter.traits.iterator.Iterator.collect
-              (Self :=
+          M.get_method
+            "core::iter::traits::iterator::Iterator"
+            "collect"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "std::collections::hash::set::Intersection")
-                  [Ty.path "i32"; Ty.path "std::hash::random::RandomState"])
-              (B :=
+                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
+              (* B *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.apply (Ty.path "ref") [Ty.path "i32"];
-                    Ty.path "alloc::alloc::Global"])
-              (Trait := ℐ))) in
+                  [
+                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.path "alloc::alloc::Global"
+                  ]
+            ] in
         let* α4 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "std::collections::hash::set::HashSet")
-                  [Ty.path "i32";
-                    Ty.path "std::hash::random::RandomState"])::["intersection"]
-              (borrow a)
-              (borrow b)) in
-        let* α5 := M.call (α3 α4) in
+            (Ty.apply
+                (Ty.path "std::collections::hash::set::HashSet")
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
+                ])::["intersection"]
+            [ borrow a; borrow b ] in
+        let* α5 := M.call α3 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α6)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α8)
+            ] in
+        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
     let* _ :=
@@ -334,39 +367,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.iter.traits.iterator.Iterator.collect
-              (Self :=
+          M.get_method
+            "core::iter::traits::iterator::Iterator"
+            "collect"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "std::collections::hash::set::SymmetricDifference")
-                  [Ty.path "i32"; Ty.path "std::hash::random::RandomState"])
-              (B :=
+                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
+              (* B *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.apply (Ty.path "ref") [Ty.path "i32"];
-                    Ty.path "alloc::alloc::Global"])
-              (Trait := ℐ))) in
+                  [
+                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.path "alloc::alloc::Global"
+                  ]
+            ] in
         let* α4 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "std::collections::hash::set::HashSet")
-                  [Ty.path "i32";
-                    Ty.path
-                      "std::hash::random::RandomState"])::["symmetric_difference"]
-              (borrow a)
-              (borrow b)) in
-        let* α5 := M.call (α3 α4) in
+            (Ty.apply
+                (Ty.path "std::collections::hash::set::HashSet")
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
+                ])::["symmetric_difference"]
+            [ borrow a; borrow b ] in
+        let* α5 := M.call α3 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α6)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α8)
+            ] in
+        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in

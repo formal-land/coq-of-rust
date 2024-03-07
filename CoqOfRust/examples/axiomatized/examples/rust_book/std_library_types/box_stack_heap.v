@@ -9,7 +9,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
@@ -18,7 +18,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.

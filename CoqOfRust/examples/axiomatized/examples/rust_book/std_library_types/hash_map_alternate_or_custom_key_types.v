@@ -16,7 +16,7 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
   
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -33,8 +33,10 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)].
+    [
+      ("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)
+    ].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
@@ -43,7 +45,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 (* Enum AccountInfo *)
@@ -52,9 +54,11 @@ Axiom Accounts :
   (Ty.path "hash_map_alternate_or_custom_key_types::Accounts") =
     (Ty.apply
       (Ty.path "std::collections::hash::map::HashMap")
-      [Ty.path "hash_map_alternate_or_custom_key_types::Account";
+      [
+        Ty.path "hash_map_alternate_or_custom_key_types::Account";
         Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
-        Ty.path "std::hash::random::RandomState"]).
+        Ty.path "std::hash::random::RandomState"
+      ]).
 
 Parameter try_logon : (list Ty.t) -> (list Value.t) -> M.
 

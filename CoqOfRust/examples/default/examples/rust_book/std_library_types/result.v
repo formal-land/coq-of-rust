@@ -12,7 +12,7 @@ Module checked.
     *)
     Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
-      | [], [self; f] =>
+      | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
         let* α0 := M.read f in
@@ -29,9 +29,9 @@ Module checked.
                 | result.checked.MathError.DivisionByZero =>
                   let* α0 := M.read (mk_str "DivisionByZero") in
                   M.alloc α0
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
-                Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -41,9 +41,9 @@ Module checked.
                 | result.checked.MathError.NonPositiveLogarithm =>
                   let* α0 := M.read (mk_str "NonPositiveLogarithm") in
                   M.alloc α0
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
-                Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -53,23 +53,23 @@ Module checked.
                 | result.checked.MathError.NegativeSquareRoot =>
                   let* α0 := M.read (mk_str "NegativeSquareRoot") in
                   M.alloc α0
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
-                Ty.apply (Ty.path "ref") [Ty.path "str"]
+                Ty.apply (Ty.path "ref") [ Ty.path "str" ]
             ] in
         let* α2 := M.read α1 in
-        M.call ((Ty.path "core::fmt::Formatter")::["write_str"] α0 α2)
+        M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
       | _, _ => M.impossible
       end.
     
-    Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+    Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
     (Ty.path "result::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [Ty.path "f64"; Ty.path "result::checked::MathError"]).
+        [ Ty.path "f64"; Ty.path "result::checked::MathError" ]).
   
   (*
       pub fn div(x: f64, y: f64) -> MathResult {
@@ -85,7 +85,7 @@ Module checked.
   *)
   Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x; y] =>
+    | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
       let* α0 := M.read y in
@@ -116,7 +116,7 @@ Module checked.
   *)
   Definition sqrt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x] =>
+    | [], [ x ] =>
       let* x := M.alloc x in
       let* α0 := M.read x in
       let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
@@ -128,7 +128,7 @@ Module checked.
             (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
         else
           let* α0 := M.read x in
-          let* α1 := M.call ((Ty.path "f64")::["sqrt"] α0) in
+          let* α1 := M.call (Ty.path "f64")::["sqrt"] [ α0 ] in
           M.alloc (core.result.Result.Ok α1) in
       M.read α4
     | _, _ => M.impossible
@@ -145,7 +145,7 @@ Module checked.
   *)
   Definition ln (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [x] =>
+    | [], [ x ] =>
       let* x := M.alloc x in
       let* α0 := M.read x in
       let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
@@ -158,7 +158,7 @@ Module checked.
               result.checked.MathError.NonPositiveLogarithm)
         else
           let* α0 := M.read x in
-          let* α1 := M.call ((Ty.path "f64")::["ln"] α0) in
+          let* α1 := M.call (Ty.path "f64")::["ln"] [ α0 ] in
           M.alloc (core.result.Result.Ok α1) in
       M.read α4
     | _, _ => M.impossible
@@ -182,12 +182,12 @@ fn op(x: f64, y: f64) -> f64 {
 *)
 Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [x; y] =>
+  | [], [ x; y ] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
     let* α0 := M.read x in
     let* α1 := M.read y in
-    let* α2 := M.call ((M.var "result::checked::div") α0 α1) in
+    let* α2 := M.call (M.var "result::checked::div") [ α0; α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
       match_operator
@@ -203,18 +203,20 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    (borrow why)) in
+                  (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                  [ borrow why ] in
               let* α3 := M.alloc [ α2 ] in
               let* α4 :=
                 M.call
-                  ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α1))
-                    (pointer_coercion "Unsize" (borrow α3))) in
-              let* α5 := M.call ((M.var "core::panicking::panic_fmt") α4) in
+                  (Ty.path "core::fmt::Arguments")::["new_v1"]
+                  [
+                    pointer_coercion "Unsize" (borrow α1);
+                    pointer_coercion "Unsize" (borrow α3)
+                  ] in
+              let* α5 := M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
               let* α6 := never_to_any α5 in
               M.alloc α6
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.path "f64";
           fun γ =>
@@ -224,7 +226,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
               let* ratio := M.copy γ0_0 in
               let* α0 := M.read ratio in
-              let* α1 := M.call ((M.var "result::checked::ln") α0) in
+              let* α1 := M.call (M.var "result::checked::ln") [ α0 ] in
               let* α2 := M.alloc α1 in
               match_operator
                 α2
@@ -239,19 +241,21 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 := M.alloc [ α0 ] in
                       let* α2 :=
                         M.call
-                          ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                            (borrow why)) in
+                          (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                          [ borrow why ] in
                       let* α3 := M.alloc [ α2 ] in
                       let* α4 :=
                         M.call
-                          ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                            (pointer_coercion "Unsize" (borrow α1))
-                            (pointer_coercion "Unsize" (borrow α3))) in
+                          (Ty.path "core::fmt::Arguments")::["new_v1"]
+                          [
+                            pointer_coercion "Unsize" (borrow α1);
+                            pointer_coercion "Unsize" (borrow α3)
+                          ] in
                       let* α5 :=
-                        M.call ((M.var "core::panicking::panic_fmt") α4) in
+                        M.call (M.var "core::panicking::panic_fmt") [ α4 ] in
                       let* α6 := never_to_any α5 in
                       M.alloc α6
-                    | _ => M.break_match
+                    | _ => M.break_match 
                     end) :
                     Ty.path "f64";
                   fun γ =>
@@ -261,7 +265,8 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let γ0_0 := (M.var "core::result::Result::Get_Ok_0") γ in
                       let* ln := M.copy γ0_0 in
                       let* α0 := M.read ln in
-                      let* α1 := M.call ((M.var "result::checked::sqrt") α0) in
+                      let* α1 :=
+                        M.call (M.var "result::checked::sqrt") [ α0 ] in
                       let* α2 := M.alloc α1 in
                       match_operator
                         α2
@@ -277,21 +282,24 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* α1 := M.alloc [ α0 ] in
                               let* α2 :=
                                 M.call
-                                  ((Ty.path
-                                        "core::fmt::rt::Argument")::["new_debug"]
-                                    (borrow why)) in
+                                  (Ty.path
+                                      "core::fmt::rt::Argument")::["new_debug"]
+                                  [ borrow why ] in
                               let* α3 := M.alloc [ α2 ] in
                               let* α4 :=
                                 M.call
-                                  ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                                    (pointer_coercion "Unsize" (borrow α1))
-                                    (pointer_coercion "Unsize" (borrow α3))) in
+                                  (Ty.path "core::fmt::Arguments")::["new_v1"]
+                                  [
+                                    pointer_coercion "Unsize" (borrow α1);
+                                    pointer_coercion "Unsize" (borrow α3)
+                                  ] in
                               let* α5 :=
                                 M.call
-                                  ((M.var "core::panicking::panic_fmt") α4) in
+                                  (M.var "core::panicking::panic_fmt")
+                                  [ α4 ] in
                               let* α6 := never_to_any α5 in
                               M.alloc α6
-                            | _ => M.break_match
+                            | _ => M.break_match 
                             end) :
                             Ty.path "f64";
                           fun γ =>
@@ -302,15 +310,15 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 (M.var "core::result::Result::Get_Ok_0") γ in
                               let* sqrt := M.copy γ0_0 in
                               M.pure sqrt
-                            | _ => M.break_match
+                            | _ => M.break_match 
                             end) :
                             Ty.path "f64"
                         ]
-                    | _ => M.break_match
+                    | _ => M.break_match 
                     end) :
                     Ty.path "f64"
                 ]
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.path "f64"
         ] in
@@ -336,19 +344,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 := M.read (UnsupportedLiteral : Ty.path "f64") in
         let* α4 := M.read (UnsupportedLiteral : Ty.path "f64") in
-        let* α5 := M.call ((M.var "result::op") α3 α4) in
+        let* α5 := M.call (M.var "result::op") [ α3; α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α6)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α8))) in
-        let* α10 := M.call ((M.var "std::io::stdio::_print") α9) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α8)
+            ] in
+        let* α10 := M.call (M.var "std::io::stdio::_print") [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in

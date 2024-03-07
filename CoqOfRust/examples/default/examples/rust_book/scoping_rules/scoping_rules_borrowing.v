@@ -8,7 +8,7 @@ fn eat_box_i32(boxed_i32: Box<i32>) {
 *)
 Definition eat_box_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [boxed_i32] =>
+  | [], [ boxed_i32 ] =>
     let* boxed_i32 := M.alloc boxed_i32 in
     let* _ :=
       let* _ :=
@@ -18,15 +18,17 @@ Definition eat_box_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow boxed_i32)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow boxed_i32 ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -41,7 +43,7 @@ fn borrow_i32(borrowed_i32: &i32) {
 *)
 Definition borrow_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [borrowed_i32] =>
+  | [], [ borrowed_i32 ] =>
     let* borrowed_i32 := M.alloc borrowed_i32 in
     let* _ :=
       let* _ :=
@@ -51,15 +53,17 @@ Definition borrow_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow borrowed_i32)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow borrowed_i32 ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -103,23 +107,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* boxed_i32 :=
       let* α0 :=
         M.call
-          ((Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])::["new"]
-            ((Integer.of_Z 5) : Ty.path "i32")) in
+          (Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
+          [ (Integer.of_Z 5) : Ty.path "i32" ] in
       M.alloc α0 in
     let* stacked_i32 := M.alloc ((Integer.of_Z 6) : Ty.path "i32") in
     let* _ :=
       let* α0 := M.read boxed_i32 in
       let* α1 :=
         M.call
-          ((M.var "scoping_rules_borrowing::borrow_i32") (borrow (deref α0))) in
+          (M.var "scoping_rules_borrowing::borrow_i32")
+          [ borrow (deref α0) ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "scoping_rules_borrowing::borrow_i32")
-            (borrow stacked_i32)) in
+          (M.var "scoping_rules_borrowing::borrow_i32")
+          [ borrow stacked_i32 ] in
       M.alloc α0 in
     let* _ :=
       let* _ref_to_i32 :=
@@ -127,12 +132,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (borrow (deref α0)) in
       let* _ :=
         let* α0 := M.read _ref_to_i32 in
-        let* α1 := M.call ((M.var "scoping_rules_borrowing::borrow_i32") α0) in
+        let* α1 :=
+          M.call (M.var "scoping_rules_borrowing::borrow_i32") [ α0 ] in
         M.alloc α1 in
       M.alloc tt in
     let* _ :=
       let* α0 := M.read boxed_i32 in
-      let* α1 := M.call ((M.var "scoping_rules_borrowing::eat_box_i32") α0) in
+      let* α1 := M.call (M.var "scoping_rules_borrowing::eat_box_i32") [ α0 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

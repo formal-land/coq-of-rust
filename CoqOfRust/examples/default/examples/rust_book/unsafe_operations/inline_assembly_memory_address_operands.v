@@ -25,7 +25,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 *)
 Definition load_fpu_control_word (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [control] =>
+  | [], [ control ] =>
     let* control := M.alloc control in
     let _ := InlineAssembly in
     let* α0 := M.alloc tt in

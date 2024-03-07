@@ -63,19 +63,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                        (borrow i)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                      [ borrow i ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ => (M.alloc tt) : Ty.path "unit"
@@ -98,19 +100,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                        (borrow i)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                      [ borrow i ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -124,9 +128,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                    (Ty.path "core::fmt::Arguments")::["new_const"]
+                    [ pointer_coercion "Unsize" (borrow α1) ] in
+                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
                 M.alloc α3 in
               M.alloc tt in
             M.alloc tt) :
@@ -151,19 +155,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                        (borrow i)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                      [ borrow i ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -179,9 +185,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.alloc [ α0 ] in
                   let* α2 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_const"]
-                        (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                      (Ty.path "core::fmt::Arguments")::["new_const"]
+                      [ pointer_coercion "Unsize" (borrow α1) ] in
+                  let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
                   M.alloc α3 in
                 M.alloc tt in
               M.alloc tt
@@ -196,9 +202,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.alloc [ α0 ] in
                   let* α2 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_const"]
-                        (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                      (Ty.path "core::fmt::Arguments")::["new_const"]
+                      [ pointer_coercion "Unsize" (borrow α1) ] in
+                  let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
                   M.alloc α3 in
                 M.alloc tt in
               M.alloc tt) :

@@ -9,7 +9,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -18,7 +18,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -36,7 +36,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -45,7 +45,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -61,31 +61,31 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [Unit].
+      [ Unit ].
   
-  Parameter fmt : forall (Unit : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ (Unit : Ty.t) : Instance.t :=
-    [("fmt", InstanceField.Method (fmt Unit))].
+    [ ("fmt", InstanceField.Method (fmt Unit)) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [Unit].
+      [ Unit ].
   
-  Parameter clone : forall (Unit : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ (Unit : Ty.t) : Instance.t :=
-    [("clone", InstanceField.Method (clone Unit))].
+    [ ("clone", InstanceField.Method (clone Unit)) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [Unit].
+      [ Unit ].
   
   Definition ℐ (Unit : Ty.t) : Instance.t := [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -94,17 +94,17 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-      [Unit].
+      [ Unit ].
   
   Definition Output : Set :=
     Ty.apply
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-        [Unit].
+        [ Unit ].
   
-  Parameter add : forall (Unit : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter add : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ (Unit : Ty.t) : Instance.t :=
-    [("Output", TODO); ("add", InstanceField.Method (add Unit))].
+    [ ("Output", TODO); ("add", InstanceField.Method (add Unit)) ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

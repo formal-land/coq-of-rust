@@ -38,7 +38,7 @@ fn red<T: Red>(_: &T) -> &'static str {
 *)
 Definition red (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [T], [arg] =>
+  | [ T ], [ arg ] =>
     let* arg := M.alloc arg in
     M.read (mk_str "red")
   | _, _ => M.impossible
@@ -51,7 +51,7 @@ fn blue<T: Blue>(_: &T) -> &'static str {
 *)
 Definition blue (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [T], [arg] =>
+  | [ T ], [ arg ] =>
     let* arg := M.alloc arg in
     M.read (mk_str "blue")
   | _, _ => M.impossible
@@ -89,20 +89,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((M.var "generics_bounds_test_case_empty_bounds::red")
-              (borrow cardinal)) in
+            (M.var "generics_bounds_test_case_empty_bounds::red")
+            [ borrow cardinal ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -113,20 +115,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((M.var "generics_bounds_test_case_empty_bounds::blue")
-              (borrow blue_jay)) in
+            (M.var "generics_bounds_test_case_empty_bounds::blue")
+            [ borrow blue_jay ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* α0 := M.alloc tt in

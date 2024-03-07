@@ -12,7 +12,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -20,7 +20,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"]]))
+                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] ]))
           [
             fun γ =>
               (match_operator
@@ -28,7 +28,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
                   (A :=
                     Ty.apply
                       (Ty.path "core::clone::AssertParamIsClone")
-                      [Ty.path "u32"]))
+                      [ Ty.path "u32" ]))
                 [
                   fun γ =>
                     (let* α0 := M.read self in
@@ -41,7 +41,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -61,7 +61,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -69,10 +69,12 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.apply
+                [
+                  Ty.apply
                     (Ty.path "core::option::Option")
-                    [Ty.path
-                        "unpacking_options_via_question_mark::PhoneNumber"]]))
+                    [ Ty.path "unpacking_options_via_question_mark::PhoneNumber"
+                    ]
+                ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -83,7 +85,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
@@ -108,34 +110,38 @@ Module Impl_unpacking_options_via_question_mark_Person.
   *)
   Definition work_phone_area_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let return_ :=
         M.return_
-          (R := Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"]) in
+          (R := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]) in
       M.catch_return
         (let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.try_trait.Try.branch
-              (Self :=
+          M.get_method
+            "core::ops::try_trait::Try"
+            "branch"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [Ty.path "unpacking_options_via_question_mark::PhoneNumber"])
-              (Trait := ℐ))) in
+                  [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
+            ] in
         let* α1 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.try_trait.Try.branch
-              (Self :=
+          M.get_method
+            "core::ops::try_trait::Try"
+            "branch"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [Ty.path "unpacking_options_via_question_mark::Job"])
-              (Trait := ℐ))) in
+                  [ Ty.path "unpacking_options_via_question_mark::Job" ]
+            ] in
         let* α2 := M.read self in
         let* α3 :=
           M.read
             ((M.var "unpacking_options_via_question_mark::Person::Get_job")
               (deref α2)) in
-        let* α4 := M.call (α1 α3) in
+        let* α4 := M.call α1 [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           match_operator
@@ -150,24 +156,26 @@ Module Impl_unpacking_options_via_question_mark_Person.
                       γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
+                    M.get_method
+                      "core::ops::try_trait::FromResidual"
+                      "from_residual"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::option::Option")
-                            [Ty.path "u8"])
-                        (R :=
+                            [ Ty.path "u8" ];
+                        (* R *)
                           Ty.apply
                             (Ty.path "core::option::Option")
-                            [Ty.path "core::convert::Infallible"])
-                        (Trait := ℐ))) in
+                            [ Ty.path "core::convert::Infallible" ]
+                      ] in
                   let* α1 := M.read residual in
-                  let* α2 := M.call (α0 α1) in
+                  let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "unpacking_options_via_question_mark::Job";
               fun γ =>
@@ -180,7 +188,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                       γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "unpacking_options_via_question_mark::Job"
             ] in
@@ -189,7 +197,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
             ((M.var
                 "unpacking_options_via_question_mark::Job::Get_phone_number")
               α6) in
-        let* α8 := M.call (α0 α7) in
+        let* α8 := M.call α0 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 :=
           match_operator
@@ -204,24 +212,26 @@ Module Impl_unpacking_options_via_question_mark_Person.
                       γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
+                    M.get_method
+                      "core::ops::try_trait::FromResidual"
+                      "from_residual"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::option::Option")
-                            [Ty.path "u8"])
-                        (R :=
+                            [ Ty.path "u8" ];
+                        (* R *)
                           Ty.apply
                             (Ty.path "core::option::Option")
-                            [Ty.path "core::convert::Infallible"])
-                        (Trait := ℐ))) in
+                            [ Ty.path "core::convert::Infallible" ]
+                      ] in
                   let* α1 := M.read residual in
-                  let* α2 := M.call (α0 α1) in
+                  let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "unpacking_options_via_question_mark::PhoneNumber";
               fun γ =>
@@ -234,7 +244,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                       γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.path "unpacking_options_via_question_mark::PhoneNumber"
             ] in
@@ -266,27 +276,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* p :=
       M.alloc
-        {|
-          unpacking_options_via_question_mark.Person.job :=
-            core.option.Option.Some
-              {|
-                unpacking_options_via_question_mark.Job.phone_number :=
-                  core.option.Option.Some
-                    {|
-                      unpacking_options_via_question_mark.PhoneNumber.area_code :=
-                        core.option.Option.Some
-                          ((Integer.of_Z 61) : Ty.path "u8");
-                      unpacking_options_via_question_mark.PhoneNumber.number :=
-                        (Integer.of_Z 439222222) : Ty.path "u32";
-                    |};
-              |};
-        |} in
+        (Value.StructRecord
+          "unpacking_options_via_question_mark::Person"
+          [
+            ("job",
+              core.option.Option.Some
+                (Value.StructRecord
+                  "unpacking_options_via_question_mark::Job"
+                  [
+                    ("phone_number",
+                      core.option.Option.Some
+                        (Value.StructRecord
+                          "unpacking_options_via_question_mark::PhoneNumber"
+                          [
+                            ("area_code",
+                              core.option.Option.Some
+                                ((Integer.of_Z 61) : Ty.path "u8"));
+                            ("number", (Integer.of_Z 439222222) : Ty.path "u32")
+                          ]))
+                  ]))
+          ]) in
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.path
-                "unpacking_options_via_question_mark::Person")::["work_phone_area_code"]
-            (borrow p)) in
+          (Ty.path
+              "unpacking_options_via_question_mark::Person")::["work_phone_area_code"]
+          [ borrow p ] in
       let* α1 := M.alloc α0 in
       let* α2 :=
         M.alloc (core.option.Option.Some ((Integer.of_Z 61) : Ty.path "u8")) in
@@ -303,16 +318,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
               let* α0 :=
-                ltac:(M.get_method (fun ℐ =>
-                  core.cmp.PartialEq.eq
-                    (Self :=
-                      Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])
-                    (Rhs :=
-                      Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])
-                    (Trait := ℐ))) in
+                M.get_method
+                  "core::cmp::PartialEq"
+                  "eq"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [ Ty.path "u8" ];
+                    (* Rhs *)
+                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
+                  ] in
               let* α1 := M.read left_val in
               let* α2 := M.read right_val in
-              let* α3 := M.call (α0 α1 α2) in
+              let* α3 := M.call α0 [ α1; α2 ] in
               let* α4 := M.alloc ((M.var "UnOp::not") α3) in
               let* α5 := M.read (use α4) in
               if α5 then
@@ -322,11 +341,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read right_val in
                 let* α3 :=
                   M.call
-                    ((M.var "core::panicking::assert_failed")
-                      α0
-                      α1
-                      α2
-                      core.option.Option.None) in
+                    (M.var "core::panicking::assert_failed")
+                    [ α0; α1; α2; core.option.Option.None ] in
                 let* α0 := M.alloc α3 in
                 let* α1 := M.read α0 in
                 let* α2 := never_to_any α1 in

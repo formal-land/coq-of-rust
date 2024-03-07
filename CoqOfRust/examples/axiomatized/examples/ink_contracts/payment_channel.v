@@ -8,7 +8,7 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_payment_channel_AccountId.
 
 Module Impl_core_clone_Clone_for_payment_channel_AccountId.
@@ -16,7 +16,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
 
 Module Impl_core_marker_Copy_for_payment_channel_AccountId.
@@ -36,7 +36,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
@@ -51,8 +51,10 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)].
+    [
+      ("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)
+    ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -60,7 +62,7 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
+  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
@@ -84,7 +86,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
@@ -99,8 +101,10 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)].
+    [
+      ("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)
+    ].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
@@ -108,7 +112,7 @@ Axiom Result :
   (Ty.path "payment_channel::Result") =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [T; Ty.path "payment_channel::Error"]).
+      [ T; Ty.path "payment_channel::Error" ]).
 
 (* Enum SenderCloseStarted *)
 
@@ -157,33 +161,33 @@ Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
   
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
   
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
   
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
   
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
@@ -191,7 +195,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
   
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
@@ -199,7 +203,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
   
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
@@ -207,7 +211,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
   
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
@@ -215,7 +219,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
   
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_PaymentChannel.

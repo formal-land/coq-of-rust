@@ -43,27 +43,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.alloc [ α0; α1; α2; α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow nanoseconds)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow nanoseconds ] in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow inches)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow inches ] in
         let* α7 := M.read nanoseconds in
         let* α8 := M.read inches in
         let* α9 := (M.var "BinOp::Panic::add") α7 α8 in
         let* α10 := M.alloc α9 in
         let* α11 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α10)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α10 ] in
         let* α12 := M.alloc [ α5; α6; α11 ] in
         let* α13 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α4))
-              (pointer_coercion "Unsize" (borrow α12))) in
-        let* α14 := M.call ((M.var "std::io::stdio::_print") α13) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α12)
+            ] in
+        let* α14 := M.call (M.var "std::io::stdio::_print") [ α13 ] in
         M.alloc α14 in
       M.alloc tt in
     let* α0 := M.alloc tt in

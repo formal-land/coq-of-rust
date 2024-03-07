@@ -5,31 +5,31 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [K; V].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ (K V : Ty.t) : Instance.t :=
-    [("default", InstanceField.Method (default K V))].
+    [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [K; V].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
   
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : (list Ty.t) -> (list Value.t) -> M.
 End Impl_mapping_integration_tests_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -39,7 +39,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
@@ -47,7 +47,7 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
@@ -74,7 +74,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
 
 Module Impl_mapping_integration_tests_Mappings.

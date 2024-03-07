@@ -11,7 +11,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -23,14 +23,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
             ((M.var "scoping_rules_lifetimes_structs::Borrowed::Get_0")
               (deref α2))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-          α0
-          α1
-          (pointer_coercion "Unsize" (borrow α3)))
+        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 (* Enum NamedBorrowed *)
@@ -44,7 +42,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -59,21 +57,23 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             ((M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_y")
               (deref α5))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
-          α0
-          α1
-          α2
-          (pointer_coercion
+        (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
+        [
+          α0;
+          α1;
+          α2;
+          pointer_coercion
             "Unsize"
             (borrow
               ((M.var "scoping_rules_lifetimes_structs::NamedBorrowed::Get_x")
-                (deref α3))))
-          α4
-          (pointer_coercion "Unsize" (borrow α6)))
+                (deref α3)));
+          α4;
+          pointer_coercion "Unsize" (borrow α6)
+        ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 (* Enum Either *)
@@ -86,7 +86,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -108,17 +108,15 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                 let* α1 := M.read (mk_str "Num") in
                 let* α2 :=
                   M.call
-                    ((Ty.path
-                          "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-                      α0
-                      α1
-                      (pointer_coercion "Unsize" (borrow __self_0))) in
+                    (Ty.path
+                        "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+                    [ α0; α1; pointer_coercion "Unsize" (borrow __self_0) ] in
                 M.alloc α2
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.apply
                 (Ty.path "core::result::Result")
-                [Ty.tuple []; Ty.path "core::fmt::Error"];
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ];
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -134,23 +132,21 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                 let* α1 := M.read (mk_str "Ref") in
                 let* α2 :=
                   M.call
-                    ((Ty.path
-                          "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-                      α0
-                      α1
-                      (pointer_coercion "Unsize" (borrow __self_0))) in
+                    (Ty.path
+                        "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+                    [ α0; α1; pointer_coercion "Unsize" (borrow __self_0) ] in
                 M.alloc α2
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.apply
                 (Ty.path "core::result::Result")
-                [Ty.tuple []; Ty.path "core::fmt::Error"]
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
           ] in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (*
@@ -179,10 +175,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (scoping_rules_lifetimes_structs.Borrowed.Build_t (borrow x)) in
     let* double :=
       M.alloc
-        {|
-          scoping_rules_lifetimes_structs.NamedBorrowed.x := borrow x;
-          scoping_rules_lifetimes_structs.NamedBorrowed.y := borrow y;
-        |} in
+        (Value.StructRecord
+          "scoping_rules_lifetimes_structs::NamedBorrowed"
+          [ ("x", borrow x); ("y", borrow y) ]) in
     let* reference :=
       M.alloc (scoping_rules_lifetimes_structs.Either.Ref (borrow x)) in
     let* number :=
@@ -196,15 +191,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              (borrow single)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow single ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -215,15 +212,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              (borrow double)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow double ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -234,15 +233,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              (borrow reference)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow reference ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -253,15 +254,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              (borrow number)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow number ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in

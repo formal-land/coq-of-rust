@@ -1,7 +1,7 @@
 use crate::path::Path;
 use crate::render::{
-    self, concat, curly_brackets, group, hardline, intersperse, line, nest, nil, optional_insert,
-    optional_insert_vec, optional_insert_with, paren, text, Doc,
+    self, concat, curly_brackets, group, hardline, intersperse, line, list, nest, nil,
+    optional_insert, optional_insert_vec, optional_insert_with, paren, text, Doc,
 };
 use crate::top_level::VariantItem;
 use std::marker::PhantomData;
@@ -1008,14 +1008,7 @@ impl<'a> Expression<'a> {
                     ]),
                 ]),
             ),
-            Self::List { exprs } => nest([
-                text("["),
-                intersperse(
-                    exprs.iter().map(|expr| expr.to_doc(false)),
-                    [text(";"), line()],
-                ),
-                text("]"),
-            ]),
+            Self::List { exprs } => list(exprs.iter().map(|expr| expr.to_doc(false)).collect()),
             Self::ModeWrapper { mode, expr } => concat([
                 text(mode.to_owned()),
                 text(":("),

@@ -11,7 +11,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -28,9 +28,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
               | combinators_map.Food.Apple =>
                 let* α0 := M.read (mk_str "Apple") in
                 M.alloc α0
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
-              Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -40,9 +40,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
               | combinators_map.Food.Carrot =>
                 let* α0 := M.read (mk_str "Carrot") in
                 M.alloc α0
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
-              Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -52,16 +52,16 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
               | combinators_map.Food.Potato =>
                 let* α0 := M.read (mk_str "Potato") in
                 M.alloc α0
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
-              Ty.apply (Ty.path "ref") [Ty.path "str"]
+              Ty.apply (Ty.path "ref") [ Ty.path "str" ]
           ] in
       let* α2 := M.read α1 in
-      M.call ((Ty.path "core::fmt::Formatter")::["write_str"] α0 α2)
+      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
@@ -74,7 +74,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -84,14 +84,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
         M.alloc
           (borrow ((M.var "combinators_map::Peeled::Get_0") (deref α2))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-          α0
-          α1
-          (pointer_coercion "Unsize" (borrow α3)))
+        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
@@ -104,7 +102,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -114,14 +112,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
         M.alloc
           (borrow ((M.var "combinators_map::Chopped::Get_0") (deref α2))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-          α0
-          α1
-          (pointer_coercion "Unsize" (borrow α3)))
+        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
@@ -134,7 +130,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -144,14 +140,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
         M.alloc
           (borrow ((M.var "combinators_map::Cooked::Get_0") (deref α2))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-          α0
-          α1
-          (pointer_coercion "Unsize" (borrow α3)))
+        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 (*
@@ -164,7 +158,7 @@ fn peel(food: Option<Food>) -> Option<Peeled> {
 *)
 Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [food] =>
+  | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
       match_operator
@@ -179,20 +173,20 @@ Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read food in
               M.alloc
                 (core.option.Option.Some (combinators_map.Peeled.Build_t α0))
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.apply
               (Ty.path "core::option::Option")
-              [Ty.path "combinators_map::Peeled"];
+              [ Ty.path "combinators_map::Peeled" ];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.None => M.alloc core.option.Option.None
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.apply
               (Ty.path "core::option::Option")
-              [Ty.path "combinators_map::Peeled"]
+              [ Ty.path "combinators_map::Peeled" ]
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -208,7 +202,7 @@ fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
 *)
 Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [peeled] =>
+  | [], [ peeled ] =>
     let* peeled := M.alloc peeled in
     let* α0 :=
       match_operator
@@ -228,20 +222,20 @@ Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc
                   (core.option.Option.Some (combinators_map.Chopped.Build_t α0))
               end
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.apply
               (Ty.path "core::option::Option")
-              [Ty.path "combinators_map::Chopped"];
+              [ Ty.path "combinators_map::Chopped" ];
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.None => M.alloc core.option.Option.None
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.apply
               (Ty.path "core::option::Option")
-              [Ty.path "combinators_map::Chopped"]
+              [ Ty.path "combinators_map::Chopped" ]
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -254,15 +248,16 @@ fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
 *)
 Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [chopped] =>
+  | [], [ chopped ] =>
     let* chopped := M.alloc chopped in
     let* α0 := M.read chopped in
     M.call
-      ((Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.path "combinators_map::Chopped"])::["map"]
-        α0
-        (fun (α0 : Ty.path "combinators_map::Chopped") =>
+      (Ty.apply
+          (Ty.path "core::option::Option")
+          [ Ty.path "combinators_map::Chopped" ])::["map"]
+      [
+        α0;
+        fun (α0 : Ty.path "combinators_map::Chopped") =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
@@ -278,7 +273,8 @@ Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 end) :
                 Ty.path "combinators_map::Cooked"
             ]) :
-          Ty.path "combinators_map::Cooked"))
+          Ty.path "combinators_map::Cooked"
+      ]
   | _, _ => M.impossible
   end.
 
@@ -291,16 +287,17 @@ fn process(food: Option<Food>) -> Option<Cooked> {
 *)
 Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [food] =>
+  | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 := M.read food in
     let* α1 :=
       M.call
-        ((Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.path "combinators_map::Food"])::["map"]
-          α0
-          (fun (α0 : Ty.path "combinators_map::Food") =>
+        (Ty.apply
+            (Ty.path "core::option::Option")
+            [ Ty.path "combinators_map::Food" ])::["map"]
+        [
+          α0;
+          fun (α0 : Ty.path "combinators_map::Food") =>
             (let* α0 := M.alloc α0 in
             match_operator
               α0
@@ -311,14 +308,16 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (combinators_map.Peeled.Build_t α0)) :
                   Ty.path "combinators_map::Peeled"
               ]) :
-            Ty.path "combinators_map::Peeled")) in
+            Ty.path "combinators_map::Peeled"
+        ] in
     let* α2 :=
       M.call
-        ((Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.path "combinators_map::Peeled"])::["map"]
-          α1
-          (fun (α0 : Ty.path "combinators_map::Peeled") =>
+        (Ty.apply
+            (Ty.path "core::option::Option")
+            [ Ty.path "combinators_map::Peeled" ])::["map"]
+        [
+          α1;
+          fun (α0 : Ty.path "combinators_map::Peeled") =>
             (let* α0 := M.alloc α0 in
             match_operator
               α0
@@ -334,13 +333,15 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   end) :
                   Ty.path "combinators_map::Chopped"
               ]) :
-            Ty.path "combinators_map::Chopped")) in
+            Ty.path "combinators_map::Chopped"
+        ] in
     M.call
-      ((Ty.apply
-            (Ty.path "core::option::Option")
-            [Ty.path "combinators_map::Chopped"])::["map"]
-        α2
-        (fun (α0 : Ty.path "combinators_map::Chopped") =>
+      (Ty.apply
+          (Ty.path "core::option::Option")
+          [ Ty.path "combinators_map::Chopped" ])::["map"]
+      [
+        α2;
+        fun (α0 : Ty.path "combinators_map::Chopped") =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
@@ -356,7 +357,8 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 end) :
                 Ty.path "combinators_map::Cooked"
             ]) :
-          Ty.path "combinators_map::Cooked"))
+          Ty.path "combinators_map::Cooked"
+      ]
   | _, _ => M.impossible
   end.
 
@@ -370,7 +372,7 @@ fn eat(food: Option<Cooked>) {
 *)
 Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [food] =>
+  | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
       match_operator
@@ -389,18 +391,20 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                      (borrow food)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                    [ borrow food ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -413,12 +417,12 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                    (Ty.path "core::fmt::Arguments")::["new_const"]
+                    [ pointer_coercion "Unsize" (borrow α1) ] in
+                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
                 M.alloc α3 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple []
         ] in
@@ -453,31 +457,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* potato := M.alloc core.option.Option.None in
     let* cooked_apple :=
       let* α0 := M.read apple in
-      let* α1 := M.call ((M.var "combinators_map::peel") α0) in
-      let* α2 := M.call ((M.var "combinators_map::chop") α1) in
-      let* α3 := M.call ((M.var "combinators_map::cook") α2) in
+      let* α1 := M.call (M.var "combinators_map::peel") [ α0 ] in
+      let* α2 := M.call (M.var "combinators_map::chop") [ α1 ] in
+      let* α3 := M.call (M.var "combinators_map::cook") [ α2 ] in
       M.alloc α3 in
     let* cooked_carrot :=
       let* α0 := M.read carrot in
-      let* α1 := M.call ((M.var "combinators_map::peel") α0) in
-      let* α2 := M.call ((M.var "combinators_map::chop") α1) in
-      let* α3 := M.call ((M.var "combinators_map::cook") α2) in
+      let* α1 := M.call (M.var "combinators_map::peel") [ α0 ] in
+      let* α2 := M.call (M.var "combinators_map::chop") [ α1 ] in
+      let* α3 := M.call (M.var "combinators_map::cook") [ α2 ] in
       M.alloc α3 in
     let* cooked_potato :=
       let* α0 := M.read potato in
-      let* α1 := M.call ((M.var "combinators_map::process") α0) in
+      let* α1 := M.call (M.var "combinators_map::process") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read cooked_apple in
-      let* α1 := M.call ((M.var "combinators_map::eat") α0) in
+      let* α1 := M.call (M.var "combinators_map::eat") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read cooked_carrot in
-      let* α1 := M.call ((M.var "combinators_map::eat") α0) in
+      let* α1 := M.call (M.var "combinators_map::eat") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read cooked_potato in
-      let* α1 := M.call ((M.var "combinators_map::eat") α0) in
+      let* α1 := M.call (M.var "combinators_map::eat") [ α0 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

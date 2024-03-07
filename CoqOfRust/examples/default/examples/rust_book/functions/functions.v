@@ -14,7 +14,7 @@ fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
 *)
 Definition is_divisible_by (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [lhs; rhs] =>
+  | [], [ lhs; rhs ] =>
     let* lhs := M.alloc lhs in
     let* rhs := M.alloc rhs in
     let return_ := M.return_ (R := Ty.path "bool") in
@@ -57,14 +57,13 @@ fn fizzbuzz(n: u32) -> () {
 *)
 Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [n] =>
+  | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 := M.read n in
     let* α1 :=
       M.call
-        ((M.var "functions::is_divisible_by")
-          α0
-          ((Integer.of_Z 15) : Ty.path "u32")) in
+        (M.var "functions::is_divisible_by")
+        [ α0; (Integer.of_Z 15) : Ty.path "u32" ] in
     let* α2 := M.alloc α1 in
     let* α3 := M.read (use α2) in
     let* α4 :=
@@ -76,9 +75,9 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         M.alloc tt
@@ -86,9 +85,8 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α0 := M.read n in
         let* α1 :=
           M.call
-            ((M.var "functions::is_divisible_by")
-              α0
-              ((Integer.of_Z 3) : Ty.path "u32")) in
+            (M.var "functions::is_divisible_by")
+            [ α0; (Integer.of_Z 3) : Ty.path "u32" ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.read (use α2) in
         if α3 then
@@ -99,9 +97,9 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.alloc [ α0 ] in
               let* α2 :=
                 M.call
-                  ((Ty.path "core::fmt::Arguments")::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                  (Ty.path "core::fmt::Arguments")::["new_const"]
+                  [ pointer_coercion "Unsize" (borrow α1) ] in
+              let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
               M.alloc α3 in
             M.alloc tt in
           M.alloc tt
@@ -109,9 +107,8 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α0 := M.read n in
           let* α1 :=
             M.call
-              ((M.var "functions::is_divisible_by")
-                α0
-                ((Integer.of_Z 5) : Ty.path "u32")) in
+              (M.var "functions::is_divisible_by")
+              [ α0; (Integer.of_Z 5) : Ty.path "u32" ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read (use α2) in
           if α3 then
@@ -122,9 +119,9 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                    (Ty.path "core::fmt::Arguments")::["new_const"]
+                    [ pointer_coercion "Unsize" (borrow α1) ] in
+                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
                 M.alloc α3 in
               M.alloc tt in
             M.alloc tt
@@ -137,15 +134,17 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow n)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow n ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt in
             M.alloc tt in
@@ -162,25 +161,26 @@ fn fizzbuzz_to(n: u32) {
 *)
 Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [n] =>
+  | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
+      M.get_method
+        "core::iter::traits::collect::IntoIterator"
+        "into_iter"
+        [
+          (* Self *)
             Ty.apply
               (Ty.path "core::ops::range::RangeInclusive")
-              [Ty.path "u32"])
-          (Trait := ℐ))) in
+              [ Ty.path "u32" ]
+        ] in
     let* α1 := M.read n in
     let* α2 :=
       M.call
-        ((Ty.apply
-              (Ty.path "core::ops::range::RangeInclusive")
-              [Ty.path "u32"])::["new"]
-          ((Integer.of_Z 1) : Ty.path "u32")
-          α1) in
-    let* α3 := M.call (α0 α2) in
+        (Ty.apply
+            (Ty.path "core::ops::range::RangeInclusive")
+            [ Ty.path "u32" ])::["new"]
+        [ (Integer.of_Z 1) : Ty.path "u32"; α1 ] in
+    let* α3 := M.call α0 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 :=
       match_operator
@@ -191,14 +191,16 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.loop
               (let* _ :=
                 let* α0 :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
-                      (Self :=
+                  M.get_method
+                    "core::iter::traits::iterator::Iterator"
+                    "next"
+                    [
+                      (* Self *)
                         Ty.apply
                           (Ty.path "core::ops::range::RangeInclusive")
-                          [Ty.path "u32"])
-                      (Trait := ℐ))) in
-                let* α1 := M.call (α0 (borrow_mut iter)) in
+                          [ Ty.path "u32" ]
+                    ] in
+                let* α1 := M.call α0 [ borrow_mut iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -211,7 +213,7 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 := M.read α0 in
                         let* α2 := never_to_any α1 in
                         M.alloc α2
-                      | _ => M.break_match
+                      | _ => M.break_match 
                       end) :
                       Ty.tuple [];
                     fun γ =>
@@ -224,10 +226,10 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* _ :=
                           let* α0 := M.read n in
                           let* α1 :=
-                            M.call ((M.var "functions::fizzbuzz") α0) in
+                            M.call (M.var "functions::fizzbuzz") [ α0 ] in
                           M.alloc α1 in
                         M.alloc tt
-                      | _ => M.break_match
+                      | _ => M.break_match 
                       end) :
                       Ty.tuple []
                   ] in
@@ -251,8 +253,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "functions::fizzbuzz_to")
-            ((Integer.of_Z 100) : Ty.path "u32")) in
+          (M.var "functions::fizzbuzz_to")
+          [ (Integer.of_Z 100) : Ty.path "u32" ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

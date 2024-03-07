@@ -5,37 +5,38 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_core_default_Default_for_dns_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "dns::Mapping") [K; V].
+    Ty.apply (Ty.path "dns::Mapping") [ K; V ].
   
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ K; V ], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.apply (Ty.path "core::marker::PhantomData") [K])
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ K ] ] in
+      let* α1 := M.call α0 [] in
       let* α2 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.apply (Ty.path "core::marker::PhantomData") [V])
-            (Trait := ℐ))) in
-      let* α3 := M.call α2 in
-      M.pure {| dns.Mapping._key := α1; dns.Mapping._value := α3; |}
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ V ] ] in
+      let* α3 := M.call α2 [] in
+      M.pure
+        (Value.StructRecord "dns::Mapping" [ ("_key", α1); ("_value", α3) ])
     | _, _ => M.impossible
     end.
   
   Definition ℐ (K V : Ty.t) : Instance.t :=
-    [("default", InstanceField.Method (default K V))].
+    [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "dns::Mapping") [K; V].
+    Ty.apply (Ty.path "dns::Mapping") [ K; V ].
   
   (*
       fn contains(&self, _key: &K) -> bool {
@@ -44,11 +45,11 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _key] =>
+    | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -60,11 +61,11 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _key] =>
+    | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -76,12 +77,12 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _key; _value] =>
+    | [ K; V ], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -93,9 +94,9 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ K; V ], [] =>
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -107,11 +108,11 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition remove (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _key] =>
+    | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -123,11 +124,11 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition size (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _key] =>
+    | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -139,11 +140,11 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition take (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _key] =>
+    | [ K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -161,16 +162,16 @@ Module Impl_core_default_Default_for_dns_AccountId.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "u128")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "u128" ] in
+      let* α1 := M.call α0 [] in
       M.pure (dns.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_AccountId.
 
 Module Impl_core_clone_Clone_for_dns_AccountId.
@@ -181,7 +182,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -189,7 +190,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.path "u128"]))
+                [ Ty.path "u128" ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -200,7 +201,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_dns_AccountId.
 
 Module Impl_core_marker_Copy_for_dns_AccountId.
@@ -223,7 +224,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; other] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
@@ -234,7 +235,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_dns_AccountId.
@@ -247,21 +248,21 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [_value] =>
+    | [], [ _value ] =>
       let* _value := M.alloc _value in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
+  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
 
 Axiom Hash :
-  (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+  (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum Env *)
 
@@ -283,7 +284,7 @@ Module Impl_dns_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "dns::Env::Get_caller") (deref α0))
@@ -297,11 +298,11 @@ Module Impl_dns_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _event] =>
+    | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -318,12 +319,14 @@ Definition zero_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* α0 :=
-      ltac:(M.get_method (fun ℐ =>
-        core.convert.Into.into
-          (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
-          (T := Ty.path "dns::AccountId")
-          (Trait := ℐ))) in
-    M.call (α0 (repeat ((Integer.of_Z 0) : Ty.path "u8") 32))
+      M.get_method
+        "core::convert::Into"
+        "into"
+        [
+          (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+          (* T *) Ty.path "dns::AccountId"
+        ] in
+    M.call α0 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ]
   | _, _ => M.impossible
   end.
 
@@ -352,68 +355,76 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
           M.call
             (Ty.apply
                 (Ty.path "dns::Mapping")
-                [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                  Ty.path "dns::AccountId"])::["new"] in
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                  Ty.path "dns::AccountId"
+                ])::["new"]
+            [] in
         M.alloc α0 in
       let* _ :=
         let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.default.Default.default
-              (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
-              (Trait := ℐ))) in
-        let* α1 := M.call α0 in
-        let* α2 := M.call (M.var "dns::zero_address") in
+          M.get_method
+            "core::default::Default"
+            "default"
+            [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+        let* α1 := M.call α0 [] in
+        let* α2 := M.call (M.var "dns::zero_address") [] in
         let* α3 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "dns::Mapping")
-                  [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                    Ty.path "dns::AccountId"])::["insert"]
-              (borrow_mut name_to_address)
-              α1
-              α2) in
+            (Ty.apply
+                (Ty.path "dns::Mapping")
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                  Ty.path "dns::AccountId"
+                ])::["insert"]
+            [ borrow_mut name_to_address; α1; α2 ] in
         M.alloc α3 in
       let* name_to_owner :=
         let* α0 :=
           M.call
             (Ty.apply
                 (Ty.path "dns::Mapping")
-                [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                  Ty.path "dns::AccountId"])::["new"] in
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                  Ty.path "dns::AccountId"
+                ])::["new"]
+            [] in
         M.alloc α0 in
       let* _ :=
         let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.default.Default.default
-              (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
-              (Trait := ℐ))) in
-        let* α1 := M.call α0 in
-        let* α2 := M.call (M.var "dns::zero_address") in
+          M.get_method
+            "core::default::Default"
+            "default"
+            [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+        let* α1 := M.call α0 [] in
+        let* α2 := M.call (M.var "dns::zero_address") [] in
         let* α3 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "dns::Mapping")
-                  [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                    Ty.path "dns::AccountId"])::["insert"]
-              (borrow_mut name_to_owner)
-              α1
-              α2) in
+            (Ty.apply
+                (Ty.path "dns::Mapping")
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                  Ty.path "dns::AccountId"
+                ])::["insert"]
+            [ borrow_mut name_to_owner; α1; α2 ] in
         M.alloc α3 in
       let* α0 := M.read name_to_address in
       let* α1 := M.read name_to_owner in
-      let* α2 := M.call (M.var "dns::zero_address") in
+      let* α2 := M.call (M.var "dns::zero_address") [] in
       let* α0 :=
         M.alloc
-          {|
-            dns.DomainNameService.name_to_address := α0;
-            dns.DomainNameService.name_to_owner := α1;
-            dns.DomainNameService.default_address := α2;
-          |} in
+          (Value.StructRecord
+            "dns::DomainNameService"
+            [
+              ("name_to_address", α0);
+              ("name_to_owner", α1);
+              ("default_address", α2)
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
 (* Enum Error *)
@@ -432,16 +443,18 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; other] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
         let* α0 := M.read self in
-        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
+        let* α1 :=
+          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
         M.alloc α1 in
       let* __arg1_tag :=
         let* α0 := M.read other in
-        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
+        let* α1 :=
+          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
         M.alloc α1 in
       let* α0 := M.read __self_tag in
       let* α1 := M.read __arg1_tag in
@@ -450,7 +463,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
 
 Module Impl_core_marker_StructuralEq_for_dns_Error.
@@ -470,21 +483,23 @@ Module Impl_core_cmp_Eq_for_dns_Error.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
   
   Definition ℐ : Instance.t :=
-    [("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)].
+    [
+      ("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)
+    ].
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
   forall (T : Ty.t),
   (Ty.path "dns::Result") =
-    (Ty.apply (Ty.path "core::result::Result") [T; Ty.path "dns::Error"]).
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "dns::Error" ]).
 
 Module Impl_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".
@@ -498,7 +513,7 @@ Module Impl_dns_DomainNameService.
     match 𝜏, α with
     | [], [] =>
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -510,9 +525,9 @@ Module Impl_dns_DomainNameService.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "dns::DomainNameService")::["init_env"]
+      M.call (Ty.path "dns::DomainNameService")::["init_env"] []
     | _, _ => M.impossible
     end.
   
@@ -525,11 +540,11 @@ Module Impl_dns_DomainNameService.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "dns::DomainNameService")
-            (Trait := ℐ))) in
-      M.call α0
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "dns::DomainNameService" ] in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -549,7 +564,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition register (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; name] =>
+    | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let return_ :=
@@ -557,29 +572,33 @@ Module Impl_dns_DomainNameService.
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "dns::Error"]) in
+              [ Ty.tuple []; Ty.path "dns::Error" ]) in
       M.catch_return
         (let* caller :=
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "dns::DomainNameService")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
-          let* α3 := M.call ((Ty.path "dns::Env")::["caller"] (borrow α2)) in
+          let* α3 := M.call (Ty.path "dns::Env")::["caller"] [ borrow α2 ] in
           M.alloc α3 in
         let* _ :=
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "dns::Mapping")
-                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                      Ty.path "dns::AccountId"])::["contains"]
-                (borrow
+              (Ty.apply
+                  (Ty.path "dns::Mapping")
+                  [
+                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ])::["contains"]
+              [
+                borrow
                   ((M.var "dns::DomainNameService::Get_name_to_owner")
-                    (deref α0)))
-                (borrow name)) in
+                    (deref α0));
+                borrow name
+              ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read (use α2) in
           if α3 then
@@ -596,31 +615,39 @@ Module Impl_dns_DomainNameService.
           let* α2 := M.read caller in
           let* α3 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "dns::Mapping")
-                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                      Ty.path "dns::AccountId"])::["insert"]
-                (borrow_mut
+              (Ty.apply
+                  (Ty.path "dns::Mapping")
+                  [
+                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ])::["insert"]
+              [
+                borrow_mut
                   ((M.var "dns::DomainNameService::Get_name_to_owner")
-                    (deref α0)))
-                α1
-                α2) in
+                    (deref α0));
+                α1;
+                α2
+              ] in
           M.alloc α3 in
         let* _ :=
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "dns::DomainNameService")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read name in
           let* α4 := M.read caller in
           let* α5 :=
             M.call
-              ((Ty.path "dns::Env")::["emit_event"]
-                (borrow α2)
-                (dns.Event.Register
-                  {| dns.Register.name := α3; dns.Register.from := α4; |})) in
+              (Ty.path "dns::Env")::["emit_event"]
+              [
+                borrow α2;
+                dns.Event.Register
+                  (Value.StructRecord
+                    "dns::Register"
+                    [ ("name", α3); ("from", α4) ])
+              ] in
           M.alloc α5 in
         let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
@@ -636,29 +663,32 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_owner_or_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; name] =>
+    | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.read self in
       let* α1 :=
         M.call
-          ((Ty.apply
-                (Ty.path "dns::Mapping")
-                [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                  Ty.path "dns::AccountId"])::["get"]
-            (borrow
-              ((M.var "dns::DomainNameService::Get_name_to_owner") (deref α0)))
-            (borrow name)) in
+          (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])::["get"]
+          [
+            borrow
+              ((M.var "dns::DomainNameService::Get_name_to_owner") (deref α0));
+            borrow name
+          ] in
       let* α2 := M.read self in
       let* α3 :=
         M.read
           ((M.var "dns::DomainNameService::Get_default_address") (deref α2)) in
       M.call
-        ((Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.path "dns::AccountId"])::["unwrap_or"]
-          α1
-          α3)
+        (Ty.apply
+            (Ty.path "core::option::Option")
+            [ Ty.path "dns::AccountId" ])::["unwrap_or"]
+        [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -684,7 +714,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition set_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; name; new_address] =>
+    | [], [ self; name; new_address ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* new_address := M.alloc new_address in
@@ -693,34 +723,35 @@ Module Impl_dns_DomainNameService.
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "dns::Error"]) in
+              [ Ty.tuple []; Ty.path "dns::Error" ]) in
       M.catch_return
         (let* caller :=
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "dns::DomainNameService")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
-          let* α3 := M.call ((Ty.path "dns::Env")::["caller"] (borrow α2)) in
+          let* α3 := M.call (Ty.path "dns::Env")::["caller"] [ borrow α2 ] in
           M.alloc α3 in
         let* owner :=
           let* α0 := M.read self in
           let* α1 := M.read name in
           let* α2 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["get_owner_or_default"]
-                (borrow (deref α0))
-                α1) in
+              (Ty.path "dns::DomainNameService")::["get_owner_or_default"]
+              [ borrow (deref α0); α1 ] in
           M.alloc α2 in
         let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.cmp.PartialEq.ne
-                (Self := Ty.path "dns::AccountId")
-                (Rhs := Ty.path "dns::AccountId")
-                (Trait := ℐ))) in
-          let* α1 := M.call (α0 (borrow caller) (borrow owner)) in
+            M.get_method
+              "core::cmp::PartialEq"
+              "ne"
+              [
+                (* Self *) Ty.path "dns::AccountId";
+                (* Rhs *) Ty.path "dns::AccountId"
+              ] in
+          let* α1 := M.call α0 [ borrow caller; borrow owner ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read (use α2) in
           if α3 then
@@ -735,14 +766,18 @@ Module Impl_dns_DomainNameService.
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "dns::Mapping")
-                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                      Ty.path "dns::AccountId"])::["get"]
-                (borrow
+              (Ty.apply
+                  (Ty.path "dns::Mapping")
+                  [
+                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ])::["get"]
+              [
+                borrow
                   ((M.var "dns::DomainNameService::Get_name_to_address")
-                    (deref α0)))
-                (borrow name)) in
+                    (deref α0));
+                borrow name
+              ] in
           M.alloc α1 in
         let* _ :=
           let* α0 := M.read self in
@@ -750,22 +785,26 @@ Module Impl_dns_DomainNameService.
           let* α2 := M.read new_address in
           let* α3 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "dns::Mapping")
-                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                      Ty.path "dns::AccountId"])::["insert"]
-                (borrow_mut
+              (Ty.apply
+                  (Ty.path "dns::Mapping")
+                  [
+                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ])::["insert"]
+              [
+                borrow_mut
                   ((M.var "dns::DomainNameService::Get_name_to_address")
-                    (deref α0)))
-                α1
-                α2) in
+                    (deref α0));
+                α1;
+                α2
+              ] in
           M.alloc α3 in
         let* _ :=
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "dns::DomainNameService")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read name in
           let* α4 := M.read caller in
@@ -773,15 +812,19 @@ Module Impl_dns_DomainNameService.
           let* α6 := M.read new_address in
           let* α7 :=
             M.call
-              ((Ty.path "dns::Env")::["emit_event"]
-                (borrow α2)
-                (dns.Event.SetAddress
-                  {|
-                    dns.SetAddress.name := α3;
-                    dns.SetAddress.from := α4;
-                    dns.SetAddress.old_address := α5;
-                    dns.SetAddress.new_address := α6;
-                  |})) in
+              (Ty.path "dns::Env")::["emit_event"]
+              [
+                borrow α2;
+                dns.Event.SetAddress
+                  (Value.StructRecord
+                    "dns::SetAddress"
+                    [
+                      ("name", α3);
+                      ("from", α4);
+                      ("old_address", α5);
+                      ("new_address", α6)
+                    ])
+              ] in
           M.alloc α7 in
         let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
@@ -811,7 +854,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; name; to] =>
+    | [], [ self; name; to ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* to := M.alloc to in
@@ -820,34 +863,35 @@ Module Impl_dns_DomainNameService.
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "dns::Error"]) in
+              [ Ty.tuple []; Ty.path "dns::Error" ]) in
       M.catch_return
         (let* caller :=
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "dns::DomainNameService")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
-          let* α3 := M.call ((Ty.path "dns::Env")::["caller"] (borrow α2)) in
+          let* α3 := M.call (Ty.path "dns::Env")::["caller"] [ borrow α2 ] in
           M.alloc α3 in
         let* owner :=
           let* α0 := M.read self in
           let* α1 := M.read name in
           let* α2 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["get_owner_or_default"]
-                (borrow (deref α0))
-                α1) in
+              (Ty.path "dns::DomainNameService")::["get_owner_or_default"]
+              [ borrow (deref α0); α1 ] in
           M.alloc α2 in
         let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.cmp.PartialEq.ne
-                (Self := Ty.path "dns::AccountId")
-                (Rhs := Ty.path "dns::AccountId")
-                (Trait := ℐ))) in
-          let* α1 := M.call (α0 (borrow caller) (borrow owner)) in
+            M.get_method
+              "core::cmp::PartialEq"
+              "ne"
+              [
+                (* Self *) Ty.path "dns::AccountId";
+                (* Rhs *) Ty.path "dns::AccountId"
+              ] in
+          let* α1 := M.call α0 [ borrow caller; borrow owner ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read (use α2) in
           if α3 then
@@ -862,14 +906,18 @@ Module Impl_dns_DomainNameService.
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "dns::Mapping")
-                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                      Ty.path "dns::AccountId"])::["get"]
-                (borrow
+              (Ty.apply
+                  (Ty.path "dns::Mapping")
+                  [
+                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ])::["get"]
+              [
+                borrow
                   ((M.var "dns::DomainNameService::Get_name_to_owner")
-                    (deref α0)))
-                (borrow name)) in
+                    (deref α0));
+                borrow name
+              ] in
           M.alloc α1 in
         let* _ :=
           let* α0 := M.read self in
@@ -877,22 +925,26 @@ Module Impl_dns_DomainNameService.
           let* α2 := M.read to in
           let* α3 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "dns::Mapping")
-                    [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                      Ty.path "dns::AccountId"])::["insert"]
-                (borrow_mut
+              (Ty.apply
+                  (Ty.path "dns::Mapping")
+                  [
+                    Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ])::["insert"]
+              [
+                borrow_mut
                   ((M.var "dns::DomainNameService::Get_name_to_owner")
-                    (deref α0)))
-                α1
-                α2) in
+                    (deref α0));
+                α1;
+                α2
+              ] in
           M.alloc α3 in
         let* _ :=
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "dns::DomainNameService")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "dns::DomainNameService")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read name in
           let* α4 := M.read caller in
@@ -900,15 +952,19 @@ Module Impl_dns_DomainNameService.
           let* α6 := M.read to in
           let* α7 :=
             M.call
-              ((Ty.path "dns::Env")::["emit_event"]
-                (borrow α2)
-                (dns.Event.Transfer
-                  {|
-                    dns.Transfer.name := α3;
-                    dns.Transfer.from := α4;
-                    dns.Transfer.old_owner := α5;
-                    dns.Transfer.new_owner := α6;
-                  |})) in
+              (Ty.path "dns::Env")::["emit_event"]
+              [
+                borrow α2;
+                dns.Event.Transfer
+                  (Value.StructRecord
+                    "dns::Transfer"
+                    [
+                      ("name", α3);
+                      ("from", α4);
+                      ("old_owner", α5);
+                      ("new_owner", α6)
+                    ])
+              ] in
           M.alloc α7 in
         let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
@@ -924,30 +980,33 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_address_or_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; name] =>
+    | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.read self in
       let* α1 :=
         M.call
-          ((Ty.apply
-                (Ty.path "dns::Mapping")
-                [Ty.apply (Ty.path "array") [Ty.path "u8"];
-                  Ty.path "dns::AccountId"])::["get"]
-            (borrow
+          (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])::["get"]
+          [
+            borrow
               ((M.var "dns::DomainNameService::Get_name_to_address")
-                (deref α0)))
-            (borrow name)) in
+                (deref α0));
+            borrow name
+          ] in
       let* α2 := M.read self in
       let* α3 :=
         M.read
           ((M.var "dns::DomainNameService::Get_default_address") (deref α2)) in
       M.call
-        ((Ty.apply
-              (Ty.path "core::option::Option")
-              [Ty.path "dns::AccountId"])::["unwrap_or"]
-          α1
-          α3)
+        (Ty.apply
+            (Ty.path "core::option::Option")
+            [ Ty.path "dns::AccountId" ])::["unwrap_or"]
+        [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -958,13 +1017,14 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; name] =>
+    | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.read self in
       let* α1 := M.read name in
       M.call
-        ((Ty.path "dns::DomainNameService")::["get_address_or_default"] α0 α1)
+        (Ty.path "dns::DomainNameService")::["get_address_or_default"]
+        [ α0; α1 ]
     | _, _ => M.impossible
     end.
   
@@ -975,13 +1035,14 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; name] =>
+    | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.read self in
       let* α1 := M.read name in
       M.call
-        ((Ty.path "dns::DomainNameService")::["get_owner_or_default"] α0 α1)
+        (Ty.path "dns::DomainNameService")::["get_owner_or_default"]
+        [ α0; α1 ]
     | _, _ => M.impossible
     end.
 End Impl_dns_DomainNameService.

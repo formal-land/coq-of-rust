@@ -14,15 +14,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.read (mk_str "12") in
-      let* α1 := M.call ((Ty.path "str")::["parse"] α0) in
+      let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "true") in
-      let* α1 := M.call ((Ty.path "str")::["parse"] α0) in
+      let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "unparsable") in
-      let* α1 := M.call ((Ty.path "str")::["parse"] α0) in
+      let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

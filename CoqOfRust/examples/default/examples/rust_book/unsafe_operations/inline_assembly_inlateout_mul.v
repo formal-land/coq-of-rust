@@ -49,7 +49,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 *)
 Definition mul (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [a; b] =>
+  | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
     let* lo := M.copy (DeclaredButUndefinedVariable (A := Ty.path "u64")) in

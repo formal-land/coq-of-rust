@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition LANGUAGE
-    : Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+    : Ty.apply (Ty.path "ref") [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ] :=
   M.run (M.alloc (mk_str "Rust")).
 
 Definition THRESHOLD : Ty.path "i32" :=
@@ -16,7 +16,7 @@ fn is_big(n: i32) -> bool {
 *)
 Definition is_big (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [n] =>
+  | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 := M.read n in
     let* α1 := M.read (M.var "constants::THRESHOLD") in
@@ -51,14 +51,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 := M.read (M.var "constants::LANGUAGE") in
         let* α4 :=
-          M.call ((Ty.path "core::fmt::rt::Argument")::["new_display"] α3) in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α3 ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α5))) in
-        let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α5)
+            ] in
+        let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* _ :=
@@ -69,15 +71,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow (M.var "constants::THRESHOLD"))) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow (M.var "constants::THRESHOLD") ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -89,9 +93,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow n)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow n ] in
         let* α5 := M.read n in
-        let* α6 := M.call ((M.var "constants::is_big") α5) in
+        let* α6 := M.call (M.var "constants::is_big") [ α5 ] in
         let* α7 := M.alloc α6 in
         let* α8 := M.read (use α7) in
         let* α9 :=
@@ -102,15 +107,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc α0 in
         let* α10 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α9)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α9 ] in
         let* α11 := M.alloc [ α4; α10 ] in
         let* α12 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α3))
-              (pointer_coercion "Unsize" (borrow α11))) in
-        let* α13 := M.call ((M.var "std::io::stdio::_print") α12) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α11)
+            ] in
+        let* α13 := M.call (M.var "std::io::stdio::_print") [ α12 ] in
         M.alloc α13 in
       M.alloc tt in
     let* α0 := M.alloc tt in

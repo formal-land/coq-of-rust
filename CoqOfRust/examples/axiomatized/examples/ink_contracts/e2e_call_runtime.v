@@ -8,7 +8,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
@@ -16,7 +16,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
@@ -42,7 +42,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_e2e_call_runtime_Contract.
 
 Module Impl_e2e_call_runtime_Contract.

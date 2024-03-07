@@ -8,7 +8,7 @@ Module Impl_core_convert_From_i32_for_from_Number.
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
+  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

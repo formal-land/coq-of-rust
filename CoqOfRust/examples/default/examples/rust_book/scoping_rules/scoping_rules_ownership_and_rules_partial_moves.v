@@ -34,25 +34,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* person :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.convert.From.from
-            (Self := Ty.path "alloc::string::String")
-            (T := Ty.apply (Ty.path "ref") [Ty.path "str"])
-            (Trait := ℐ))) in
+        M.get_method
+          "core::convert::From"
+          "from"
+          [
+            (* Self *) Ty.path "alloc::string::String";
+            (* T *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+          ] in
       let* α1 := M.read (mk_str "Alice") in
-      let* α2 := M.call (α0 α1) in
+      let* α2 := M.call α0 [ α1 ] in
       let* α3 :=
         M.call
-          ((Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.path "u8"; Ty.path "alloc::alloc::Global"])::["new"]
-            ((Integer.of_Z 20) : Ty.path "u8")) in
+          (Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])::["new"]
+          [ (Integer.of_Z 20) : Ty.path "u8" ] in
       M.alloc
-        {|
-          scoping_rules_ownership_and_rules_partial_moves.main.Person.name :=
-            α2;
-          scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α3;
-        |} in
+        (Value.StructRecord
+          "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+          [ ("name", α2); ("age", α3) ]) in
     let* α0 :=
       match_operator
         person
@@ -88,15 +88,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow age)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow age ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt in
               let* _ :=
@@ -107,15 +109,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow name)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow name ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt in
               let* _ :=
@@ -127,18 +131,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.alloc [ α0; α1 ] in
                   let* α3 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [
+                        borrow
                           ((M.var
                               "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_age")
-                            person))) in
+                            person)
+                      ] in
                   let* α4 := M.alloc [ α3 ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α2);
+                        pointer_coercion "Unsize" (borrow α4)
+                      ] in
+                  let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                   M.alloc α6 in
                 M.alloc tt in
               M.alloc tt
@@ -160,7 +168,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -176,20 +184,22 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
                 "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_age")
               (deref α5))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
-          α0
-          α1
-          α2
-          (pointer_coercion
+        (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
+        [
+          α0;
+          α1;
+          α2;
+          pointer_coercion
             "Unsize"
             (borrow
               ((M.var
                   "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_name")
-                (deref α3))))
-          α4
-          (pointer_coercion "Unsize" (borrow α6)))
+                (deref α3)));
+          α4;
+          pointer_coercion "Unsize" (borrow α6)
+        ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

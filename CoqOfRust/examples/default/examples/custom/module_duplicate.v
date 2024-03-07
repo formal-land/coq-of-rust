@@ -18,9 +18,9 @@ Module foo.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -45,13 +45,13 @@ Module foo.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* _ :=
-        let* α0 := M.call (M.var "module_duplicate::foo::gre::f_foo_gre") in
+        let* α0 := M.call (M.var "module_duplicate::foo::gre::f_foo_gre") [] in
         M.alloc α0 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -68,7 +68,7 @@ Definition f (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.call (M.var "module_duplicate::foo::f_foo") in
+      let* α0 := M.call (M.var "module_duplicate::foo::f_foo") [] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

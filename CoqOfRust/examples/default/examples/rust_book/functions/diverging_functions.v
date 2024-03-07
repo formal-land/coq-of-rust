@@ -21,6 +21,6 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* α0 := M.read (mk_str "This call never returns.") in
-    M.call ((M.var "std::panicking::begin_panic") α0)
+    M.call (M.var "std::panicking::begin_panic") [ α0 ]
   | _, _ => M.impossible
   end.

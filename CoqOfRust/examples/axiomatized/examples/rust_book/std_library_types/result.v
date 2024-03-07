@@ -9,14 +9,14 @@ Module checked.
     
     Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
     
-    Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+    Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
     (Ty.path "result::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [Ty.path "f64"; Ty.path "result::checked::MathError"]).
+        [ Ty.path "f64"; Ty.path "result::checked::MathError" ]).
   
   Parameter div : (list Ty.t) -> (list Value.t) -> M.
   

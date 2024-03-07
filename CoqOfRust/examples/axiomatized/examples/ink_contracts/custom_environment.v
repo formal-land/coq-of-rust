@@ -8,7 +8,7 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_AccountId.
 
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
@@ -16,7 +16,7 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
 
 Module Impl_core_marker_Copy_for_custom_environment_AccountId.
@@ -36,7 +36,7 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_Topics.
 
 (* Enum EventWithTopics *)
@@ -46,7 +46,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)

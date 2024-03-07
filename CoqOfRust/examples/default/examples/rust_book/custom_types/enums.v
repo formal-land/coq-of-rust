@@ -20,7 +20,7 @@ fn inspect(event: WebEvent) {
 *)
 Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [event] =>
+  | [], [ event ] =>
     let* event := M.alloc event in
     let* α0 :=
       match_operator
@@ -42,12 +42,12 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                    (Ty.path "core::fmt::Arguments")::["new_const"]
+                    [ pointer_coercion "Unsize" (borrow α1) ] in
+                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
                 M.alloc α3 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -60,12 +60,12 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.alloc [ α0 ] in
                 let* α2 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                    (Ty.path "core::fmt::Arguments")::["new_const"]
+                    [ pointer_coercion "Unsize" (borrow α1) ] in
+                let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
                 M.alloc α3 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -81,18 +81,20 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow c)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow c ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -108,18 +110,20 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.alloc [ α0; α1 ] in
                 let* α3 :=
                   M.call
-                    ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      (borrow s)) in
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ borrow s ] in
                 let* α4 := M.alloc [ α3 ] in
                 let* α5 :=
                   M.call
-                    ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    [
+                      pointer_coercion "Unsize" (borrow α2);
+                      pointer_coercion "Unsize" (borrow α4)
+                    ] in
+                let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
                 M.alloc α6 in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple [];
           fun γ =>
@@ -143,23 +147,25 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α3 := M.alloc [ α0; α1; α2 ] in
                   let* α4 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow x)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow x ] in
                   let* α5 :=
                     M.call
-                      ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        (borrow y)) in
+                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                      [ borrow y ] in
                   let* α6 := M.alloc [ α4; α5 ] in
                   let* α7 :=
                     M.call
-                      ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α3))
-                        (pointer_coercion "Unsize" (borrow α6))) in
-                  let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      [
+                        pointer_coercion "Unsize" (borrow α3);
+                        pointer_coercion "Unsize" (borrow α6)
+                      ] in
+                  let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
                   M.alloc α8 in
                 M.alloc tt in
               M.alloc tt
-            | _ => M.break_match
+            | _ => M.break_match 
             end) :
             Ty.tuple []
         ] in
@@ -190,41 +196,42 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* pressed := M.alloc (enums.WebEvent.KeyPress "x"%char) in
     let* pasted :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          alloc.borrow.ToOwned.to_owned
-            (Self := Ty.path "str")
-            (Trait := ℐ))) in
+        M.get_method
+          "alloc::borrow::ToOwned"
+          "to_owned"
+          [ (* Self *) Ty.path "str" ] in
       let* α1 := M.read (mk_str "my text") in
-      let* α2 := M.call (α0 α1) in
+      let* α2 := M.call α0 [ α1 ] in
       M.alloc (enums.WebEvent.Paste α2) in
     let* click :=
       M.alloc
-        (enums.WebEvent.Click
-          {|
-          enums.WebEvent.Click.x := (Integer.of_Z 20) : Ty.path "i64";
-          enums.WebEvent.Click.y := (Integer.of_Z 80) : Ty.path "i64";
-        |}) in
+        (Value.StructRecord
+          "enums::WebEvent::Click"
+          [
+            ("x", (Integer.of_Z 20) : Ty.path "i64");
+            ("y", (Integer.of_Z 80) : Ty.path "i64")
+          ]) in
     let* load := M.alloc enums.WebEvent.PageLoad in
     let* unload := M.alloc enums.WebEvent.PageUnload in
     let* _ :=
       let* α0 := M.read pressed in
-      let* α1 := M.call ((M.var "enums::inspect") α0) in
+      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read pasted in
-      let* α1 := M.call ((M.var "enums::inspect") α0) in
+      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read click in
-      let* α1 := M.call ((M.var "enums::inspect") α0) in
+      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read load in
-      let* α1 := M.call ((M.var "enums::inspect") α0) in
+      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read unload in
-      let* α1 := M.call ((M.var "enums::inspect") α0) in
+      let* α1 := M.call (M.var "enums::inspect") [ α0 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

@@ -16,9 +16,9 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+            (Ty.path "core::fmt::Arguments")::["new_const"]
+            [ pointer_coercion "Unsize" (borrow α1) ] in
+        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
         M.alloc α3 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -42,9 +42,9 @@ Module cool.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -69,9 +69,9 @@ Module my.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -95,9 +95,9 @@ Module my.
             let* α1 := M.alloc [ α0 ] in
             let* α2 :=
               M.call
-                ((Ty.path "core::fmt::Arguments")::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+                (Ty.path "core::fmt::Arguments")::["new_const"]
+                [ pointer_coercion "Unsize" (borrow α1) ] in
+            let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
             M.alloc α3 in
           M.alloc tt in
         let* α0 := M.alloc tt in
@@ -141,25 +141,25 @@ Module my.
           let* α1 := M.alloc [ α0 ] in
           let* α2 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+              (Ty.path "core::fmt::Arguments")::["new_const"]
+              [ pointer_coercion "Unsize" (borrow α1) ] in
+          let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
           M.alloc α3 in
         M.alloc tt in
       let* _ :=
-        let* α0 := M.call (M.var "super_and_self::my::function") in
+        let* α0 := M.call (M.var "super_and_self::my::function") [] in
         M.alloc α0 in
       let* _ :=
-        let* α0 := M.call (M.var "super_and_self::my::function") in
+        let* α0 := M.call (M.var "super_and_self::my::function") [] in
         M.alloc α0 in
       let* _ :=
-        let* α0 := M.call (M.var "super_and_self::my::cool::function") in
+        let* α0 := M.call (M.var "super_and_self::my::cool::function") [] in
         M.alloc α0 in
       let* _ :=
-        let* α0 := M.call (M.var "super_and_self::function") in
+        let* α0 := M.call (M.var "super_and_self::function") [] in
         M.alloc α0 in
       let* _ :=
-        let* α0 := M.call (M.var "super_and_self::cool::function") in
+        let* α0 := M.call (M.var "super_and_self::cool::function") [] in
         M.alloc α0 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -177,7 +177,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.call (M.var "super_and_self::my::indirect_call") in
+      let* α0 := M.call (M.var "super_and_self::my::indirect_call") [] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

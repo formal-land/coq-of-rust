@@ -13,16 +13,16 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "u128")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "u128" ] in
+      let* α1 := M.call α0 [] in
       M.pure (e2e_call_runtime.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
@@ -33,7 +33,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -41,7 +41,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.path "u128"]))
+                [ Ty.path "u128" ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -52,7 +52,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
@@ -75,10 +75,10 @@ Module Impl_e2e_call_runtime_Env.
   *)
   Definition balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -98,7 +98,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_e2e_call_runtime_Contract.
 
 Module Impl_e2e_call_runtime_Contract.
@@ -113,7 +113,7 @@ Module Impl_e2e_call_runtime_Contract.
     match 𝜏, α with
     | [], [] =>
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -125,9 +125,9 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "e2e_call_runtime::Contract")::["init_env"]
+      M.call (Ty.path "e2e_call_runtime::Contract")::["init_env"] []
     | _, _ => M.impossible
     end.
   
@@ -149,12 +149,13 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition get_contract_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      let* α1 := M.call ((Ty.path "e2e_call_runtime::Contract")::["env"] α0) in
+      let* α1 :=
+        M.call (Ty.path "e2e_call_runtime::Contract")::["env"] [ α0 ] in
       let* α2 := M.alloc α1 in
-      M.call ((Ty.path "e2e_call_runtime::Env")::["balance"] (borrow α2))
+      M.call (Ty.path "e2e_call_runtime::Env")::["balance"] [ borrow α2 ]
     | _, _ => M.impossible
     end.
 End Impl_e2e_call_runtime_Contract.

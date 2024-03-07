@@ -18,7 +18,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
   *)
   Definition double_drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; Pattern] =>
+    | [ T; U ], [ self; Pattern ] =>
       let* self := M.alloc self in
       let* Pattern := M.alloc Pattern in
       M.pure tt
@@ -26,7 +26,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
     end.
   
   Definition ℐ (T U : Ty.t) : Instance.t :=
-    [("double_drop", InstanceField.Method (double_drop T U))].
+    [ ("double_drop", InstanceField.Method (double_drop T U)) ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (*
@@ -50,14 +50,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* null := M.alloc generics_traits.Null.Build in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          generics_traits.DoubleDrop.double_drop
-            (Self := Ty.path "generics_traits::Empty")
-            (T := Ty.path "generics_traits::Null")
-            (Trait := ℐ))) in
+        M.get_method
+          "generics_traits::DoubleDrop"
+          "double_drop"
+          [
+            (* Self *) Ty.path "generics_traits::Empty";
+            (* T *) Ty.path "generics_traits::Null"
+          ] in
       let* α1 := M.read empty in
       let* α2 := M.read null in
-      let* α3 := M.call (α0 α1 α2) in
+      let* α3 := M.call α0 [ α1; α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc tt in
     M.read α0

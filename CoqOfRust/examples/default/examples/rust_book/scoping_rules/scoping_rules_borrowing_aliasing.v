@@ -66,14 +66,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* point :=
       M.alloc
-        {|
-          scoping_rules_borrowing_aliasing.Point.x :=
-            (Integer.of_Z 0) : Ty.path "i32";
-          scoping_rules_borrowing_aliasing.Point.y :=
-            (Integer.of_Z 0) : Ty.path "i32";
-          scoping_rules_borrowing_aliasing.Point.z :=
-            (Integer.of_Z 0) : Ty.path "i32";
-        |} in
+        (Value.StructRecord
+          "scoping_rules_borrowing_aliasing::Point"
+          [
+            ("x", (Integer.of_Z 0) : Ty.path "i32");
+            ("y", (Integer.of_Z 0) : Ty.path "i32");
+            ("z", (Integer.of_Z 0) : Ty.path "i32")
+          ]) in
     let* borrowed_point := M.alloc (borrow point) in
     let* another_borrow := M.alloc (borrow point) in
     let* _ :=
@@ -87,30 +86,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 := M.read borrowed_point in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_x")
-                  (deref α5)))) in
+                  (deref α5))
+            ] in
         let* α7 := M.read another_borrow in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_y")
-                  (deref α7)))) in
+                  (deref α7))
+            ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
-                ((M.var "scoping_rules_borrowing_aliasing::Point::Get_z")
-                  point))) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
+                ((M.var "scoping_rules_borrowing_aliasing::Point::Get_z") point)
+            ] in
         let* α10 := M.alloc [ α6; α8; α9 ] in
         let* α11 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α4))
-              (pointer_coercion "Unsize" (borrow α10))) in
-        let* α12 := M.call ((M.var "std::io::stdio::_print") α11) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α10)
+            ] in
+        let* α12 := M.call (M.var "std::io::stdio::_print") [ α11 ] in
         M.alloc α12 in
       M.alloc tt in
     let* _ :=
@@ -124,30 +130,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 := M.read borrowed_point in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_x")
-                  (deref α5)))) in
+                  (deref α5))
+            ] in
         let* α7 := M.read another_borrow in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_y")
-                  (deref α7)))) in
+                  (deref α7))
+            ] in
         let* α9 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
-                ((M.var "scoping_rules_borrowing_aliasing::Point::Get_z")
-                  point))) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
+                ((M.var "scoping_rules_borrowing_aliasing::Point::Get_z") point)
+            ] in
         let* α10 := M.alloc [ α6; α8; α9 ] in
         let* α11 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α4))
-              (pointer_coercion "Unsize" (borrow α10))) in
-        let* α12 := M.call ((M.var "std::io::stdio::_print") α11) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α10)
+            ] in
+        let* α12 := M.call (M.var "std::io::stdio::_print") [ α11 ] in
         M.alloc α12 in
       M.alloc tt in
     let* mutable_borrow := M.alloc (borrow_mut point) in
@@ -177,31 +190,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 := M.read mutable_borrow in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_x")
-                  (deref α5)))) in
+                  (deref α5))
+            ] in
         let* α7 := M.read mutable_borrow in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_y")
-                  (deref α7)))) in
+                  (deref α7))
+            ] in
         let* α9 := M.read mutable_borrow in
         let* α10 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_z")
-                  (deref α9)))) in
+                  (deref α9))
+            ] in
         let* α11 := M.alloc [ α6; α8; α10 ] in
         let* α12 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α4))
-              (pointer_coercion "Unsize" (borrow α11))) in
-        let* α13 := M.call ((M.var "std::io::stdio::_print") α12) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α11)
+            ] in
+        let* α13 := M.call (M.var "std::io::stdio::_print") [ α12 ] in
         M.alloc α13 in
       M.alloc tt in
     let* new_borrowed_point := M.alloc (borrow point) in
@@ -216,31 +237,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 := M.read new_borrowed_point in
         let* α6 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_x")
-                  (deref α5)))) in
+                  (deref α5))
+            ] in
         let* α7 := M.read new_borrowed_point in
         let* α8 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_y")
-                  (deref α7)))) in
+                  (deref α7))
+            ] in
         let* α9 := M.read new_borrowed_point in
         let* α10 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [
+              borrow
                 ((M.var "scoping_rules_borrowing_aliasing::Point::Get_z")
-                  (deref α9)))) in
+                  (deref α9))
+            ] in
         let* α11 := M.alloc [ α6; α8; α10 ] in
         let* α12 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α4))
-              (pointer_coercion "Unsize" (borrow α11))) in
-        let* α13 := M.call ((M.var "std::io::stdio::_print") α12) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α4);
+              pointer_coercion "Unsize" (borrow α11)
+            ] in
+        let* α13 := M.call (M.var "std::io::stdio::_print") [ α12 ] in
         M.alloc α13 in
       M.alloc tt in
     let* α0 := M.alloc tt in

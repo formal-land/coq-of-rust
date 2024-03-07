@@ -13,7 +13,7 @@ Module Impl_functions_order_SomeType.
   *)
   Definition meth2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
@@ -26,12 +26,12 @@ Module Impl_functions_order_SomeType.
   *)
   Definition meth1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
         let* α1 :=
-          M.call ((Ty.path "functions_order::SomeType")::["meth2"] α0) in
+          M.call (Ty.path "functions_order::SomeType")::["meth2"] [ α0 ] in
         M.alloc α1 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -52,7 +52,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   *)
   Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
@@ -65,16 +65,23 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   *)
   Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.call (some_trait_bar α0)
+      let* α0 :=
+        M.get_method
+          "functions_order::SomeTrait"
+          "some_trait_bar"
+          [ (* Self *) Ty.path "functions_order::SomeType" ] in
+      let* α1 := M.read self in
+      M.call α0 [ α1 ]
     | _, _ => M.impossible
     end.
   
   Definition ℐ : Instance.t :=
-    [("some_trait_bar", InstanceField.Method some_trait_bar);
-      ("some_trait_foo", InstanceField.Method some_trait_foo)].
+    [
+      ("some_trait_bar", InstanceField.Method some_trait_bar);
+      ("some_trait_foo", InstanceField.Method some_trait_foo)
+    ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -85,7 +92,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   *)
   Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
@@ -96,15 +103,17 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   *)
   Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
   
   Definition ℐ : Instance.t :=
-    [("some_trait_foo", InstanceField.Method some_trait_foo);
-      ("some_trait_bar", InstanceField.Method some_trait_bar)].
+    [
+      ("some_trait_foo", InstanceField.Method some_trait_foo);
+      ("some_trait_bar", InstanceField.Method some_trait_bar)
+    ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 (*
@@ -115,28 +124,28 @@ fn depends_on_trait_impl(u: u32, b: bool) {
 *)
 Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [u; b] =>
+  | [], [ u; b ] =>
     let* u := M.alloc u in
     let* b := M.alloc b in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          functions_order.SomeTrait.some_trait_foo
-            (Self := Ty.path "functions_order::OtherType")
-            (Trait := ℐ))) in
+        M.get_method
+          "functions_order::SomeTrait"
+          "some_trait_foo"
+          [ (* Self *) Ty.path "functions_order::OtherType" ] in
       let* α1 := M.read b in
       let* α2 := M.alloc (functions_order.OtherType.Build_t α1) in
-      let* α3 := M.call (α0 (borrow α2)) in
+      let* α3 := M.call α0 [ borrow α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          functions_order.SomeTrait.some_trait_foo
-            (Self := Ty.path "functions_order::SomeType")
-            (Trait := ℐ))) in
+        M.get_method
+          "functions_order::SomeTrait"
+          "some_trait_foo"
+          [ (* Self *) Ty.path "functions_order::SomeType" ] in
       let* α1 := M.read u in
       let* α2 := M.alloc (functions_order.SomeType.Build_t α1) in
-      let* α3 := M.call (α0 (borrow α2)) in
+      let* α3 := M.call α0 [ borrow α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc tt in
     M.read α0
@@ -160,7 +169,7 @@ Module inner_mod.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.call (M.var "functions_order::inner_mod::tar") in
+        let* α0 := M.call (M.var "functions_order::inner_mod::tar") [] in
         M.alloc α0 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -184,7 +193,7 @@ Module inner_mod.
       | [], [] =>
         let* _ :=
           let* α0 :=
-            M.call (M.var "functions_order::inner_mod::nested_mod::tack") in
+            M.call (M.var "functions_order::inner_mod::nested_mod::tack") [] in
           M.alloc α0 in
         let* α0 := M.alloc tt in
         M.read α0
@@ -212,17 +221,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.call (M.var "functions_order::foo") in
+      let* α0 := M.call (M.var "functions_order::foo") [] in
       M.alloc α0 in
     let* _ :=
-      let* α0 := M.call (M.var "functions_order::inner_mod::bar") in
+      let* α0 := M.call (M.var "functions_order::inner_mod::bar") [] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.path "functions_order::SomeType")::["meth1"]
-            (functions_order.SomeType.Build_t
-              ((Integer.of_Z 0) : Ty.path "u32"))) in
+          (Ty.path "functions_order::SomeType")::["meth1"]
+          [ functions_order.SomeType.Build_t ((Integer.of_Z 0) : Ty.path "u32")
+          ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

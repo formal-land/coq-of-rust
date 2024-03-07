@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom Hash :
   (Ty.path "call_builder_delegate::Hash") =
-    (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum LangError *)
 
@@ -15,7 +15,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.

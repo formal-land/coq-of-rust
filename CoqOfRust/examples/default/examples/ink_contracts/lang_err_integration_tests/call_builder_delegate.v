@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom Hash :
   (Ty.path "call_builder_delegate::Hash") =
-    (Ty.apply (Ty.path "array") [Ty.path "u8"]).
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum LangError *)
 
@@ -20,14 +20,19 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default (Self := Ty.path "i32") (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α1; |}
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "i32" ] in
+      let* α1 := M.call α0 [] in
+      M.pure
+        (Value.StructRecord
+          "call_builder_delegate::CallBuilderDelegateTest"
+          [ ("value", α1) ])
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.
@@ -41,10 +46,13 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [value] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
-      M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α0; |}
+      M.pure
+        (Value.StructRecord
+          "call_builder_delegate::CallBuilderDelegateTest"
+          [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -69,7 +77,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   *)
   Definition delegate (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; code_hash; selector] =>
+    | [], [ self; code_hash; selector ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
@@ -91,7 +99,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   *)
   Definition invoke (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; code_hash; selector] =>
+    | [], [ self; code_hash; selector ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in

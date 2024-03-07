@@ -277,23 +277,23 @@ Module LowM.
   (** This constructor is not strictly necessary, but is used as a marker for
       functions calls in the generated code, to help the tactics to recognize
       points where we can compose lemma about functions. *)
-  | Call (e : t A) (k : A -> t A).
+  | Call (f : Value.t) (args : list Value.t) (k : Value.t -> t A).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
   Arguments Loop {_}.
   Arguments Impossible {_}.
   Arguments Call {_}.
 
-  Fixpoint let_ {A : Set} (e1 : t A) (f : A -> t A) : t A :=
+  Fixpoint let_ {A : Set} (e1 : t A) (e2 : A -> t A) : t A :=
     match e1 with
-    | Pure v => f v
+    | Pure v => e2 v
     | CallPrimitive primitive k =>
-      CallPrimitive primitive (fun v => let_ (k v) f)
+      CallPrimitive primitive (fun v => let_ (k v) e2)
     | Loop body k =>
-      Loop body (fun v => let_ (k v) f)
+      Loop body (fun v => let_ (k v) e2)
     | Impossible => Impossible
-    | Call e k =>
-      Call e (fun v => let_ (k v) f)
+    | Call f args k =>
+      Call f args (fun v => let_ (k v) e2)
     end.
 End LowM.
 
@@ -416,8 +416,8 @@ Definition break_match : M :=
 Definition panic (message : string) : M :=
   raise (Exception.Panic message).
 
-Definition call (e : M) : M :=
-  LowM.Call e LowM.Pure.
+Definition call (f : Value.t) (args : list Value.t) : M :=
+  LowM.Call f args pure.
 
 Definition call_primitive (primitive : Primitive.t) : M :=
   LowM.CallPrimitive primitive (fun result =>
@@ -525,3 +525,5 @@ Fixpoint match_operator
         end
       )
   end.
+
+Parameter get_method : string -> string -> list Ty.t -> M.

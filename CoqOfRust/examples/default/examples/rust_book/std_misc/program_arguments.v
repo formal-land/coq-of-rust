@@ -20,17 +20,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* args :=
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.collect
-            (Self := Ty.path "std::env::Args")
-            (B :=
+        M.get_method
+          "core::iter::traits::iterator::Iterator"
+          "collect"
+          [
+            (* Self *) Ty.path "std::env::Args";
+            (* B *)
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "alloc::string::String";
-                  Ty.path "alloc::alloc::Global"])
-            (Trait := ℐ))) in
-      let* α1 := M.call (M.var "std::env::args") in
-      let* α2 := M.call (α0 α1) in
+                [
+                  Ty.path "alloc::string::String";
+                  Ty.path "alloc::alloc::Global"
+                ]
+          ] in
+      let* α1 := M.call (M.var "std::env::args") [] in
+      let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
@@ -39,26 +43,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.index.Index.index
-              (Self :=
+          M.get_method
+            "core::ops::index::Index"
+            "index"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.path "alloc::string::String";
-                    Ty.path "alloc::alloc::Global"])
-              (Idx := Ty.path "usize")
-              (Trait := ℐ))) in
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ];
+              (* Idx *) Ty.path "usize"
+            ] in
         let* α4 :=
-          M.call (α3 (borrow args) ((Integer.of_Z 0) : Ty.path "usize")) in
+          M.call α3 [ borrow args; (Integer.of_Z 0) : Ty.path "usize" ] in
         let* α5 :=
-          M.call ((Ty.path "core::fmt::rt::Argument")::["new_display"] α4) in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -70,49 +80,60 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α0; α1; α2 ] in
         let* α4 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [Ty.path "alloc::string::String";
-                    Ty.path "alloc::alloc::Global"])::["len"]
-              (borrow args)) in
+            (Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.path "alloc::string::String";
+                  Ty.path "alloc::alloc::Global"
+                ])::["len"]
+            [ borrow args ] in
         let* α5 :=
           (M.var "BinOp::Panic::sub") α4 ((Integer.of_Z 1) : Ty.path "usize") in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α6)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α6 ] in
         let* α8 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.index.Index.index
-              (Self :=
+          M.get_method
+            "core::ops::index::Index"
+            "index"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.path "alloc::string::String";
-                    Ty.path "alloc::alloc::Global"])
-              (Idx :=
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ];
+              (* Idx *)
                 Ty.apply
                   (Ty.path "core::ops::range::RangeFrom")
-                  [Ty.path "usize"])
-              (Trait := ℐ))) in
+                  [ Ty.path "usize" ]
+            ] in
         let* α9 :=
           M.call
-            (α8
-              (borrow args)
-              {|
-                core.ops.range.RangeFrom.start :=
-                  (Integer.of_Z 1) : Ty.path "usize";
-              |}) in
+            α8
+            [
+              borrow args;
+              Value.StructRecord
+                "core::ops::range::RangeFrom"
+                [ ("start", (Integer.of_Z 1) : Ty.path "usize") ]
+            ] in
         let* α10 := M.alloc α9 in
         let* α11 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow α10)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow α10 ] in
         let* α12 := M.alloc [ α7; α11 ] in
         let* α13 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α3))
-              (pointer_coercion "Unsize" (borrow α12))) in
-        let* α14 := M.call ((M.var "std::io::stdio::_print") α13) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α3);
+              pointer_coercion "Unsize" (borrow α12)
+            ] in
+        let* α14 := M.call (M.var "std::io::stdio::_print") [ α13 ] in
         M.alloc α14 in
       M.alloc tt in
     let* α0 := M.alloc tt in

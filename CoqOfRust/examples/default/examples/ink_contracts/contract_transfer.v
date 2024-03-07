@@ -13,16 +13,16 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "u128")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "u128" ] in
+      let* α1 := M.call α0 [] in
       M.pure (contract_transfer.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_contract_transfer_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
@@ -33,7 +33,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -41,7 +41,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.path "u128"]))
+                [ Ty.path "u128" ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -52,7 +52,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_contract_transfer_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
@@ -75,7 +75,7 @@ Module Impl_contract_transfer_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "contract_transfer::Env::Get_caller") (deref α0))
@@ -89,10 +89,10 @@ Module Impl_contract_transfer_Env.
   *)
   Definition balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -104,12 +104,12 @@ Module Impl_contract_transfer_Env.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _to; _value] =>
+    | [], [ self; _to; _value ] =>
       let* self := M.alloc self in
       let* _to := M.alloc _to in
       let* _value := M.alloc _value in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -121,10 +121,10 @@ Module Impl_contract_transfer_Env.
   *)
   Definition transferred_value (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -144,7 +144,7 @@ Module Impl_contract_transfer_GiveMe.
     match 𝜏, α with
     | [], [] =>
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -156,9 +156,9 @@ Module Impl_contract_transfer_GiveMe.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "contract_transfer::GiveMe")::["init_env"]
+      M.call (Ty.path "contract_transfer::GiveMe")::["init_env"] []
     | _, _ => M.impossible
     end.
   
@@ -191,7 +191,7 @@ Module Impl_contract_transfer_GiveMe.
   *)
   Definition give_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; value] =>
+    | [], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
       let* _ :=
@@ -202,15 +202,17 @@ Module Impl_contract_transfer_GiveMe.
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow value)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow value ] in
           let* α4 := M.alloc [ α3 ] in
           let* α5 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α4)
+              ] in
+          let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
           M.alloc α6 in
         M.alloc tt in
       let* _ :=
@@ -222,24 +224,27 @@ Module Impl_contract_transfer_GiveMe.
           let* α3 := M.read self in
           let* α4 :=
             M.call
-              ((Ty.path "contract_transfer::GiveMe")::["env"]
-                (borrow (deref α3))) in
+              (Ty.path "contract_transfer::GiveMe")::["env"]
+              [ borrow (deref α3) ] in
           let* α5 := M.alloc α4 in
           let* α6 :=
             M.call
-              ((Ty.path "contract_transfer::Env")::["balance"] (borrow α5)) in
+              (Ty.path "contract_transfer::Env")::["balance"]
+              [ borrow α5 ] in
           let* α7 := M.alloc α6 in
           let* α8 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow α7)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow α7 ] in
           let* α9 := M.alloc [ α8 ] in
           let* α10 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α9))) in
-          let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α9)
+              ] in
+          let* α11 := M.call (M.var "std::io::stdio::_print") [ α10 ] in
           M.alloc α11 in
         M.alloc tt in
       let* _ :=
@@ -247,18 +252,19 @@ Module Impl_contract_transfer_GiveMe.
         let* α1 := M.read self in
         let* α2 :=
           M.call
-            ((Ty.path "contract_transfer::GiveMe")::["env"]
-              (borrow (deref α1))) in
+            (Ty.path "contract_transfer::GiveMe")::["env"]
+            [ borrow (deref α1) ] in
         let* α3 := M.alloc α2 in
         let* α4 :=
           M.call
-            ((Ty.path "contract_transfer::Env")::["balance"] (borrow α3)) in
+            (Ty.path "contract_transfer::Env")::["balance"]
+            [ borrow α3 ] in
         let* α5 :=
           M.alloc ((M.var "UnOp::not") ((M.var "BinOp::Pure::le") α0 α4)) in
         let* α6 := M.read (use α5) in
         if α6 then
           let* α0 := M.read (mk_str "insufficient funds!") in
-          let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+          let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
           let* α2 := never_to_any α1 in
           M.alloc α2
         else
@@ -266,31 +272,29 @@ Module Impl_contract_transfer_GiveMe.
       let* α0 := M.read self in
       let* α1 :=
         M.call
-          ((Ty.path "contract_transfer::GiveMe")::["env"]
-            (borrow (deref α0))) in
+          (Ty.path "contract_transfer::GiveMe")::["env"]
+          [ borrow (deref α0) ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.read self in
       let* α4 :=
         M.call
-          ((Ty.path "contract_transfer::GiveMe")::["env"]
-            (borrow (deref α3))) in
+          (Ty.path "contract_transfer::GiveMe")::["env"]
+          [ borrow (deref α3) ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
-        M.call ((Ty.path "contract_transfer::Env")::["caller"] (borrow α5)) in
+        M.call (Ty.path "contract_transfer::Env")::["caller"] [ borrow α5 ] in
       let* α7 := M.read value in
       let* α8 :=
         M.call
-          ((Ty.path "contract_transfer::Env")::["transfer"]
-            (borrow_mut α2)
-            α6
-            α7) in
+          (Ty.path "contract_transfer::Env")::["transfer"]
+          [ borrow_mut α2; α6; α7 ] in
       let* α9 := M.alloc α8 in
       let* α10 :=
         M.call
-          ((Ty.apply
-                (Ty.path "core::result::Result")
-                [Ty.tuple []; Ty.tuple []])::["is_err"]
-            (borrow α9)) in
+          (Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.tuple []; Ty.tuple [] ])::["is_err"]
+          [ borrow α9 ] in
       let* α11 := M.alloc α10 in
       let* α12 := M.read (use α11) in
       let* α0 :=
@@ -299,7 +303,7 @@ Module Impl_contract_transfer_GiveMe.
             M.read
               (mk_str
                 "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.") in
-          let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+          let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
           let* α2 := never_to_any α1 in
           M.alloc α2
         else
@@ -316,7 +320,7 @@ Module Impl_contract_transfer_GiveMe.
   *)
   Definition was_it_ten (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -326,34 +330,37 @@ Module Impl_contract_transfer_GiveMe.
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 := M.read self in
           let* α4 :=
-            M.call ((Ty.path "contract_transfer::GiveMe")::["env"] α3) in
+            M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α3 ] in
           let* α5 := M.alloc α4 in
           let* α6 :=
             M.call
-              ((Ty.path "contract_transfer::Env")::["transferred_value"]
-                (borrow α5)) in
+              (Ty.path "contract_transfer::Env")::["transferred_value"]
+              [ borrow α5 ] in
           let* α7 := M.alloc α6 in
           let* α8 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow α7)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow α7 ] in
           let* α9 := M.alloc [ α8 ] in
           let* α10 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α9))) in
-          let* α11 := M.call ((M.var "std::io::stdio::_print") α10) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α9)
+              ] in
+          let* α11 := M.call (M.var "std::io::stdio::_print") [ α10 ] in
           M.alloc α11 in
         M.alloc tt in
       let* _ :=
         let* α0 := M.read self in
-        let* α1 := M.call ((Ty.path "contract_transfer::GiveMe")::["env"] α0) in
+        let* α1 :=
+          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α0 ] in
         let* α2 := M.alloc α1 in
         let* α3 :=
           M.call
-            ((Ty.path "contract_transfer::Env")::["transferred_value"]
-              (borrow α2)) in
+            (Ty.path "contract_transfer::Env")::["transferred_value"]
+            [ borrow α2 ] in
         let* α4 :=
           M.alloc
             ((M.var "UnOp::not")
@@ -363,7 +370,7 @@ Module Impl_contract_transfer_GiveMe.
         let* α5 := M.read (use α4) in
         if α5 then
           let* α0 := M.read (mk_str "payment was not ten") in
-          let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+          let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
           let* α2 := never_to_any α1 in
           M.alloc α2
         else

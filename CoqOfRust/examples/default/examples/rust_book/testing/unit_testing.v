@@ -8,7 +8,7 @@ pub fn add(a: i32, b: i32) -> i32 {
 *)
 Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [a; b] =>
+  | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
     let* α0 := M.read a in
@@ -25,7 +25,7 @@ fn bad_add(a: i32, b: i32) -> i32 {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition bad_add (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [a; b] =>
+  | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
     let* α0 := M.read a in
@@ -46,9 +46,9 @@ Module tests.
       let* _ :=
         let* α0 :=
           M.call
-            ((M.var "unit_testing::add")
-              ((Integer.of_Z 1) : Ty.path "i32")
-              ((Integer.of_Z 2) : Ty.path "i32")) in
+            (M.var "unit_testing::add")
+            [ (Integer.of_Z 1) : Ty.path "i32"; (Integer.of_Z 2) : Ty.path "i32"
+            ] in
         let* α1 := M.alloc α0 in
         let* α2 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
         let* α3 := M.alloc (borrow α1, borrow α2) in
@@ -78,11 +78,8 @@ Module tests.
                   let* α2 := M.read right_val in
                   let* α3 :=
                     M.call
-                      ((M.var "core::panicking::assert_failed")
-                        α0
-                        α1
-                        α2
-                        core.option.Option.None) in
+                      (M.var "core::panicking::assert_failed")
+                      [ α0; α1; α2; core.option.Option.None ] in
                   let* α0 := M.alloc α3 in
                   let* α1 := M.read α0 in
                   let* α2 := never_to_any α1 in
@@ -110,9 +107,9 @@ Module tests.
       let* _ :=
         let* α0 :=
           M.call
-            ((M.var "unit_testing::bad_add")
-              ((Integer.of_Z 1) : Ty.path "i32")
-              ((Integer.of_Z 2) : Ty.path "i32")) in
+            (M.var "unit_testing::bad_add")
+            [ (Integer.of_Z 1) : Ty.path "i32"; (Integer.of_Z 2) : Ty.path "i32"
+            ] in
         let* α1 := M.alloc α0 in
         let* α2 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
         let* α3 := M.alloc (borrow α1, borrow α2) in
@@ -142,11 +139,8 @@ Module tests.
                   let* α2 := M.read right_val in
                   let* α3 :=
                     M.call
-                      ((M.var "core::panicking::assert_failed")
-                        α0
-                        α1
-                        α2
-                        core.option.Option.None) in
+                      (M.var "core::panicking::assert_failed")
+                      [ α0; α1; α2; core.option.Option.None ] in
                   let* α0 := M.alloc α3 in
                   let* α1 := M.read α0 in
                   let* α2 := never_to_any α1 in

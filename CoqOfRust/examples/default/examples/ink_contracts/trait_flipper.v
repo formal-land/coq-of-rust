@@ -22,12 +22,12 @@ Module Impl_trait_flipper_Flipper.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "bool")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.pure {| trait_flipper.Flipper.value := α1; |}
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "bool" ] in
+      let* α1 := M.call α0 [] in
+      M.pure (Value.StructRecord "trait_flipper::Flipper" [ ("value", α1) ])
     | _, _ => M.impossible
     end.
 End Impl_trait_flipper_Flipper.
@@ -42,7 +42,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -64,7 +64,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "trait_flipper::Flipper::Get_value") (deref α0))
@@ -72,5 +72,5 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     end.
   
   Definition ℐ : Instance.t :=
-    [("flip", InstanceField.Method flip); ("get", InstanceField.Method get)].
+    [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

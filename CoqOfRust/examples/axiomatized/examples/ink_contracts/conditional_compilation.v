@@ -8,7 +8,7 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_conditional_compilation_AccountId.
 
 Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
@@ -16,7 +16,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_conditional_compilation_AccountId.
 
 Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
@@ -87,7 +87,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   Parameter push_foo : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("flip", InstanceField.Method flip);
+    [
+      ("flip", InstanceField.Method flip);
       ("get", InstanceField.Method get);
-      ("push_foo", InstanceField.Method push_foo)].
+      ("push_foo", InstanceField.Method push_foo)
+    ].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

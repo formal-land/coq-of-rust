@@ -9,12 +9,10 @@ End PrintInOption.
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Definition Self (T : Ty.t) : Ty.t := T.
   
-  Parameter print_in_option :
-      forall (T : Ty.t),
-      (list Ty.t) -> (list Value.t) -> M.
+  Parameter print_in_option : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ (T : Ty.t) : Instance.t :=
-    [("print_in_option", InstanceField.Method (print_in_option T))].
+    [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

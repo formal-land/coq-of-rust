@@ -20,11 +20,11 @@ Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression
   *)
   Definition show (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.read ((M.var "const_underscore_expression::Bar::Get_test") self)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("show", InstanceField.Method show)].
+  Definition ℐ : Instance.t := [ ("show", InstanceField.Method show) ].
 End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

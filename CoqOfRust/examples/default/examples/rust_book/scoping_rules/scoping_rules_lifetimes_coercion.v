@@ -8,18 +8,20 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
 *)
 Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [first; second] =>
+  | [], [ first; second ] =>
     let* first := M.alloc first in
     let* second := M.alloc second in
     let* α0 :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.arith.Mul.mul
-          (Self := Ty.apply (Ty.path "ref") [Ty.path "i32"])
-          (Rhs := Ty.apply (Ty.path "ref") [Ty.path "i32"])
-          (Trait := ℐ))) in
+      M.get_method
+        "core::ops::arith::Mul"
+        "mul"
+        [
+          (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+          (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
+        ] in
     let* α1 := M.read first in
     let* α2 := M.read second in
-    M.call (α0 α1 α2)
+    M.call α0 [ α1; α2 ]
   | _, _ => M.impossible
   end.
 
@@ -30,7 +32,7 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
 *)
 Definition choose_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [first; arg] =>
+  | [], [ first; arg ] =>
     let* first := M.alloc first in
     let* arg := M.alloc arg in
     M.read first
@@ -64,21 +66,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((M.var "scoping_rules_lifetimes_coercion::multiply")
-                (borrow first)
-                (borrow second)) in
+              (M.var "scoping_rules_lifetimes_coercion::multiply")
+              [ borrow first; borrow second ] in
           let* α4 := M.alloc α3 in
           let* α5 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow α4)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow α4 ] in
           let* α6 := M.alloc [ α5 ] in
           let* α7 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α6))) in
-          let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α6)
+              ] in
+          let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
           M.alloc α8 in
         M.alloc tt in
       let* _ :=
@@ -89,21 +92,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.alloc [ α0; α1 ] in
           let* α3 :=
             M.call
-              ((M.var "scoping_rules_lifetimes_coercion::choose_first")
-                (borrow first)
-                (borrow second)) in
+              (M.var "scoping_rules_lifetimes_coercion::choose_first")
+              [ borrow first; borrow second ] in
           let* α4 := M.alloc α3 in
           let* α5 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow α4)) in
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ borrow α4 ] in
           let* α6 := M.alloc [ α5 ] in
           let* α7 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α6))) in
-          let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α6)
+              ] in
+          let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
           M.alloc α8 in
         M.alloc tt in
       M.alloc tt in

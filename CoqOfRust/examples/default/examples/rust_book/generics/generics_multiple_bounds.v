@@ -9,7 +9,7 @@ fn compare_prints<T: Debug + Display>(t: &T) {
 *)
 Definition compare_prints (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [T], [t] =>
+  | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
@@ -19,14 +19,17 @@ Definition compare_prints (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow t)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow t ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -37,14 +40,17 @@ Definition compare_prints (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"] (borrow t)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow t ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -60,7 +66,7 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
 *)
 Definition compare_types (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [T; U], [t; u] =>
+  | [ T; U ], [ t; u ] =>
     let* t := M.alloc t in
     let* u := M.alloc u in
     let* _ :=
@@ -71,14 +77,17 @@ Definition compare_types (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow t)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow t ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* _ :=
@@ -89,14 +98,17 @@ Definition compare_types (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow u)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow u ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -138,25 +150,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Integer.of_Z 3) : Ty.path "i32"
           ] in
       let* α1 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α0 ] in
       let* α2 := M.read α1 in
       let* α3 :=
         M.call
-          ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
-            (pointer_coercion "Unsize" α2)) in
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
+          [ pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "generics_multiple_bounds::compare_prints")
-            (borrow string)) in
+          (M.var "generics_multiple_bounds::compare_prints")
+          [ borrow string ] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "generics_multiple_bounds::compare_types")
-            (borrow array_)
-            (borrow vec)) in
+          (M.var "generics_multiple_bounds::compare_types")
+          [ borrow array_; borrow vec ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

@@ -17,7 +17,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   *)
   Definition run (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; x; y] =>
+    | [], [ self; x; y ] =>
       let* self := M.alloc self in
       let* x := M.alloc x in
       let* y := M.alloc y in
@@ -38,7 +38,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                 let* α1 := M.read y in
                 let* α2 := (M.var "BinOp::Panic::add") α0 α1 in
                 M.alloc α2
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.path "i32";
             fun γ =>
@@ -54,7 +54,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                 let* α1 := M.read y in
                 let* α2 := (M.var "BinOp::Panic::sub") α0 α1 in
                 M.alloc α2
-              | _ => M.break_match
+              | _ => M.break_match 
               end) :
               Ty.path "i32"
           ] in

@@ -5,14 +5,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [T].
+    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
   
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [ T ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -24,15 +24,13 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
             ((M.var "scoping_rules_lifetimes_bounds::Ref::Get_0")
               (deref α2))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-          α0
-          α1
-          (pointer_coercion "Unsize" (borrow α3)))
+        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
+        [ α0; α1; pointer_coercion "Unsize" (borrow α3) ]
     | _, _ => M.impossible
     end.
   
   Definition ℐ (T : Ty.t) : Instance.t :=
-    [("fmt", InstanceField.Method (fmt T))].
+    [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 (*
@@ -45,7 +43,7 @@ where
 *)
 Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [T], [t] =>
+  | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
@@ -55,14 +53,17 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow t)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow t ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -80,7 +81,7 @@ where
 *)
 Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [T], [t] =>
+  | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
@@ -90,14 +91,17 @@ Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_debug"] (borrow t)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+            [ borrow t ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.alloc tt in
@@ -124,12 +128,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "scoping_rules_lifetimes_bounds::print_ref")
-            (borrow ref_x)) in
+          (M.var "scoping_rules_lifetimes_bounds::print_ref")
+          [ borrow ref_x ] in
       M.alloc α0 in
     let* _ :=
       let* α0 := M.read ref_x in
-      let* α1 := M.call ((M.var "scoping_rules_lifetimes_bounds::print") α0) in
+      let* α1 :=
+        M.call (M.var "scoping_rules_lifetimes_bounds::print") [ α0 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

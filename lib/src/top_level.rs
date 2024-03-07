@@ -1364,6 +1364,8 @@ impl FunDefinition {
         })
     }
 
+    /// The generics [generic_tys] are not part of the definition itself, but
+    /// come from above, for example from the generics of the enclosing `impl`.
     fn to_coq<'a>(
         &'a self,
         name: &'a str,
@@ -1387,10 +1389,7 @@ impl FunDefinition {
                         name,
                         &coq::DefinitionKind::Assumption {
                             ty: coq::Expression::PiType {
-                                args: vec![coq::ArgDecl::of_ty_params(
-                                    &generic_tys,
-                                    coq::ArgSpecKind::Explicit,
-                                )],
+                                args: vec![],
                                 image: Rc::new(coq::Expression::FunctionType {
                                     domains: vec![
                                         coq::Expression::just_name("list")
@@ -1438,8 +1437,8 @@ impl FunDefinition {
                                     (
                                         vec![
                                             coq::Expression::List {
-                                                exprs: self
-                                                    .ty_params
+                                                exprs: [generic_tys, self.ty_params.clone()]
+                                                    .concat()
                                                     .iter()
                                                     .map(|ty_param| {
                                                         coq::Expression::just_name(ty_param)

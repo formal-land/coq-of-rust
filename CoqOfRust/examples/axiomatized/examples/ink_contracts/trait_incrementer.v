@@ -29,7 +29,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("inc", InstanceField.Method inc); ("get", InstanceField.Method get)].
+    [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
@@ -37,5 +37,5 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
   
   Parameter reset : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("reset", InstanceField.Method reset)].
+  Definition ℐ : Instance.t := [ ("reset", InstanceField.Method reset) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

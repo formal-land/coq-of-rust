@@ -23,10 +23,11 @@ Module Impl_trait_incrementer_Incrementer.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [init_value] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
-      M.pure {| trait_incrementer.Incrementer.value := α0; |}
+      M.pure
+        (Value.StructRecord "trait_incrementer::Incrementer" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -37,7 +38,7 @@ Module Impl_trait_incrementer_Incrementer.
   *)
   Definition inc_by (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; delta] =>
+    | [], [ self; delta ] =>
       let* self := M.alloc self in
       let* delta := M.alloc delta in
       let* _ :=
@@ -65,13 +66,12 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.call
-        ((Ty.path "trait_incrementer::Incrementer")::["inc_by"]
-          α0
-          ((Integer.of_Z 1) : Ty.path "u64"))
+        (Ty.path "trait_incrementer::Incrementer")::["inc_by"]
+        [ α0; (Integer.of_Z 1) : Ty.path "u64" ]
     | _, _ => M.impossible
     end.
   
@@ -82,7 +82,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "trait_incrementer::Incrementer::Get_value") (deref α0))
@@ -90,7 +90,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     end.
   
   Definition ℐ : Instance.t :=
-    [("inc", InstanceField.Method inc); ("get", InstanceField.Method get)].
+    [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
@@ -103,7 +103,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
   *)
   Definition reset (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -115,5 +115,5 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("reset", InstanceField.Method reset)].
+  Definition ℐ : Instance.t := [ ("reset", InstanceField.Method reset) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

@@ -13,16 +13,16 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "FlipperError") in
-      M.call ((Ty.path "core::fmt::Formatter")::["write_str"] α0 α1)
+      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α1 ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 
 Module Impl_integration_flipper_Flipper.
@@ -35,10 +35,11 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [init_value] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
-      M.pure {| integration_flipper.Flipper.value := α0; |}
+      M.pure
+        (Value.StructRecord "integration_flipper::Flipper" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -51,12 +52,12 @@ Module Impl_integration_flipper_Flipper.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "bool")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.call ((Ty.path "integration_flipper::Flipper")::["new"] α1)
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "bool" ] in
+      let* α1 := M.call α0 [] in
+      M.call (Ty.path "integration_flipper::Flipper")::["new"] [ α1 ]
     | _, _ => M.impossible
     end.
   
@@ -71,13 +72,13 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition try_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [succeed] =>
+    | [], [ succeed ] =>
       let* succeed := M.alloc succeed in
       let* α0 := M.read (use succeed) in
       let* α1 :=
         if α0 then
           let* α0 :=
-            M.call ((Ty.path "integration_flipper::Flipper")::["new"] true) in
+            M.call (Ty.path "integration_flipper::Flipper")::["new"] [ true ] in
           M.alloc (core.result.Result.Ok α0)
         else
           M.alloc
@@ -93,7 +94,7 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -116,7 +117,7 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "integration_flipper::Flipper::Get_value") (deref α0))
@@ -131,12 +132,12 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition err_flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
         let* α1 :=
-          M.call ((Ty.path "integration_flipper::Flipper")::["flip"] α0) in
+          M.call (Ty.path "integration_flipper::Flipper")::["flip"] [ α0 ] in
         M.alloc α1 in
       let* α0 := M.alloc (core.result.Result.Err tt) in
       M.read α0

@@ -13,7 +13,7 @@ fn division(dividend: i32, divisor: i32) -> i32 {
 *)
 Definition division (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [dividend; divisor] =>
+  | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
     let* α0 := M.read divisor in
@@ -24,7 +24,7 @@ Definition division (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α3 :=
       if α2 then
         let* α0 := M.read (mk_str "division by zero") in
-        let* α1 := M.call ((M.var "std::panicking::begin_panic") α0) in
+        let* α1 := M.call (M.var "std::panicking::begin_panic") [ α0 ] in
         let* α2 := never_to_any α1 in
         M.alloc α2
       else
@@ -56,17 +56,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _x :=
       let* α0 :=
         M.call
-          ((Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.path "i32"; Ty.path "alloc::alloc::Global"])::["new"]
-            ((Integer.of_Z 0) : Ty.path "i32")) in
+          (Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
+          [ (Integer.of_Z 0) : Ty.path "i32" ] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
         M.call
-          ((M.var "panic::division")
-            ((Integer.of_Z 3) : Ty.path "i32")
-            ((Integer.of_Z 0) : Ty.path "i32")) in
+          (M.var "panic::division")
+          [ (Integer.of_Z 3) : Ty.path "i32"; (Integer.of_Z 0) : Ty.path "i32"
+          ] in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -75,9 +75,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.alloc [ α0 ] in
         let* α2 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 := M.call ((M.var "std::io::stdio::_print") α2) in
+            (Ty.path "core::fmt::Arguments")::["new_const"]
+            [ pointer_coercion "Unsize" (borrow α1) ] in
+        let* α3 := M.call (M.var "std::io::stdio::_print") [ α2 ] in
         M.alloc α3 in
       M.alloc tt in
     let* α0 := M.alloc tt in

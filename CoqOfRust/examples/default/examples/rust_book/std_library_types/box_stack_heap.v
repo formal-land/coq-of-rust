@@ -12,7 +12,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; f] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read f in
@@ -24,19 +24,21 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       let* α6 :=
         M.alloc (borrow ((M.var "box_stack_heap::Point::Get_y") (deref α5))) in
       M.call
-        ((Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
-          α0
-          α1
-          α2
-          (pointer_coercion
+        (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
+        [
+          α0;
+          α1;
+          α2;
+          pointer_coercion
             "Unsize"
-            (borrow ((M.var "box_stack_heap::Point::Get_x") (deref α3))))
-          α4
-          (pointer_coercion "Unsize" (borrow α6)))
+            (borrow ((M.var "box_stack_heap::Point::Get_x") (deref α3)));
+          α4;
+          pointer_coercion "Unsize" (borrow α6)
+        ]
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
@@ -48,7 +50,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -56,7 +58,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.path "f64"]))
+                [ Ty.path "f64" ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -67,7 +69,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
@@ -88,7 +90,7 @@ Definition origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
     let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-    M.pure {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |}
+    M.pure (Value.StructRecord "box_stack_heap::Point" [ ("x", α0); ("y", α1) ])
   | _, _ => M.impossible
   end.
 
@@ -104,11 +106,11 @@ Definition boxed_origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
     let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
     M.call
-      ((Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [Ty.path "box_stack_heap::Point";
-              Ty.path "alloc::alloc::Global"])::["new"]
-        {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |})
+      (Ty.apply
+          (Ty.path "alloc::boxed::Box")
+          [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global"
+          ])::["new"]
+      [ Value.StructRecord "box_stack_heap::Point" [ ("x", α0); ("y", α1) ] ]
   | _, _ => M.impossible
   end.
 
@@ -170,57 +172,72 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* point :=
-      let* α0 := M.call (M.var "box_stack_heap::origin") in
+      let* α0 := M.call (M.var "box_stack_heap::origin") [] in
       M.alloc α0 in
     let* rectangle :=
-      let* α0 := M.call (M.var "box_stack_heap::origin") in
+      let* α0 := M.call (M.var "box_stack_heap::origin") [] in
       let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
       let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
       M.alloc
-        {|
-          box_stack_heap.Rectangle.top_left := α0;
-          box_stack_heap.Rectangle.bottom_right :=
-            {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α2; |};
-        |} in
+        (Value.StructRecord
+          "box_stack_heap::Rectangle"
+          [
+            ("top_left", α0);
+            ("bottom_right",
+              Value.StructRecord
+                "box_stack_heap::Point"
+                [ ("x", α1); ("y", α2) ])
+          ]) in
     let* boxed_rectangle :=
-      let* α0 := M.call (M.var "box_stack_heap::origin") in
+      let* α0 := M.call (M.var "box_stack_heap::origin") [] in
       let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
       let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
       let* α3 :=
         M.call
-          ((Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.path "box_stack_heap::Rectangle";
-                  Ty.path "alloc::alloc::Global"])::["new"]
-            {|
-              box_stack_heap.Rectangle.top_left := α0;
-              box_stack_heap.Rectangle.bottom_right :=
-                {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α2;
-                |};
-            |}) in
+          (Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [
+                Ty.path "box_stack_heap::Rectangle";
+                Ty.path "alloc::alloc::Global"
+              ])::["new"]
+          [
+            Value.StructRecord
+              "box_stack_heap::Rectangle"
+              [
+                ("top_left", α0);
+                ("bottom_right",
+                  Value.StructRecord
+                    "box_stack_heap::Point"
+                    [ ("x", α1); ("y", α2) ])
+              ]
+          ] in
       M.alloc α3 in
     let* boxed_point :=
-      let* α0 := M.call (M.var "box_stack_heap::origin") in
+      let* α0 := M.call (M.var "box_stack_heap::origin") [] in
       let* α1 :=
         M.call
-          ((Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.path "box_stack_heap::Point";
-                  Ty.path "alloc::alloc::Global"])::["new"]
-            α0) in
+          (Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global"
+              ])::["new"]
+          [ α0 ] in
       M.alloc α1 in
     let* box_in_a_box :=
-      let* α0 := M.call (M.var "box_stack_heap::boxed_origin") in
+      let* α0 := M.call (M.var "box_stack_heap::boxed_origin") [] in
       let* α1 :=
         M.call
-          ((Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    [Ty.path "box_stack_heap::Point";
-                      Ty.path "alloc::alloc::Global"];
-                  Ty.path "alloc::alloc::Global"])::["new"]
-            α0) in
+          (Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  [
+                    Ty.path "box_stack_heap::Point";
+                    Ty.path "alloc::alloc::Global"
+                  ];
+                Ty.path "alloc::alloc::Global"
+              ])::["new"]
+          [ α0 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -228,19 +245,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.read (mk_str " bytes on the stack
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
-        let* α3 := M.call ((M.var "core::mem::size_of_val") (borrow point)) in
+        let* α3 := M.call (M.var "core::mem::size_of_val") [ borrow point ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -250,19 +269,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          M.call ((M.var "core::mem::size_of_val") (borrow rectangle)) in
+          M.call (M.var "core::mem::size_of_val") [ borrow rectangle ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -272,19 +293,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          M.call ((M.var "core::mem::size_of_val") (borrow boxed_point)) in
+          M.call (M.var "core::mem::size_of_val") [ borrow boxed_point ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -294,19 +317,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          M.call ((M.var "core::mem::size_of_val") (borrow boxed_rectangle)) in
+          M.call (M.var "core::mem::size_of_val") [ borrow boxed_rectangle ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* _ :=
@@ -316,19 +341,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          M.call ((M.var "core::mem::size_of_val") (borrow box_in_a_box)) in
+          M.call (M.var "core::mem::size_of_val") [ borrow box_in_a_box ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* unboxed_point :=
@@ -341,19 +368,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
-          M.call ((M.var "core::mem::size_of_val") (borrow unboxed_point)) in
+          M.call (M.var "core::mem::size_of_val") [ borrow unboxed_point ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow α4)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 := M.call ((M.var "std::io::stdio::_print") α7) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α6)
+            ] in
+        let* α8 := M.call (M.var "std::io::stdio::_print") [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* α0 := M.alloc tt in

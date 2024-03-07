@@ -8,7 +8,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
@@ -18,7 +18,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
@@ -28,7 +28,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
@@ -38,7 +38,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel : (list Ty.t) -> (list Value.t) -> M.

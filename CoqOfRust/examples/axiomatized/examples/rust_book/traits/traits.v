@@ -28,10 +28,12 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Parameter talk : (list Ty.t) -> (list Value.t) -> M.
   
   Definition ℐ : Instance.t :=
-    [("new", InstanceField.Method new);
+    [
+      ("new", InstanceField.Method new);
       ("name", InstanceField.Method name);
       ("noise", InstanceField.Method noise);
-      ("talk", InstanceField.Method talk)].
+      ("talk", InstanceField.Method talk)
+    ].
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.

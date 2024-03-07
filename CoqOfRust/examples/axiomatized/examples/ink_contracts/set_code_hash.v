@@ -12,7 +12,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
 Module Impl_set_code_hash_Incrementer.

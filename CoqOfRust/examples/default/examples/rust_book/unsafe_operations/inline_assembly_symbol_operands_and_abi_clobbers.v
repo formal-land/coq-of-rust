@@ -42,7 +42,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 *)
 Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [arg] =>
+  | [], [ arg ] =>
     let* arg := M.alloc arg in
     let* _ :=
       let* _ :=
@@ -52,15 +52,17 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.alloc [ α0; α1 ] in
         let* α3 :=
           M.call
-            ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-              (borrow arg)) in
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ borrow arg ] in
         let* α4 := M.alloc [ α3 ] in
         let* α5 :=
           M.call
-            ((Ty.path "core::fmt::Arguments")::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 := M.call ((M.var "std::io::stdio::_print") α5) in
+            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            [
+              pointer_coercion "Unsize" (borrow α2);
+              pointer_coercion "Unsize" (borrow α4)
+            ] in
+        let* α6 := M.call (M.var "std::io::stdio::_print") [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
     let* α0 := M.read arg in
@@ -93,7 +95,7 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
 *)
 Definition call_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [arg] =>
+  | [], [ arg ] =>
     let* arg := M.alloc arg in
     let* result := M.copy (DeclaredButUndefinedVariable (A := Ty.path "i32")) in
     let _ := InlineAssembly in

@@ -13,16 +13,16 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "u128")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "u128" ] in
+      let* α1 := M.call α0 [] in
       M.pure (payment_channel.AccountId.Build_t α1)
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_payment_channel_AccountId.
 
 Module Impl_core_clone_Clone_for_payment_channel_AccountId.
@@ -33,7 +33,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -41,7 +41,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
             (A :=
               Ty.apply
                 (Ty.path "core::clone::AssertParamIsClone")
-                [Ty.path "u128"]))
+                [ Ty.path "u128" ]))
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -52,7 +52,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
 
 Module Impl_core_marker_Copy_for_payment_channel_AccountId.
@@ -75,7 +75,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; other] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
@@ -88,7 +88,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
@@ -108,21 +108,25 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
-              Ty.apply (Ty.path "core::cmp::AssertParamIsEq") [Ty.path "u128"]))
+              Ty.apply
+                (Ty.path "core::cmp::AssertParamIsEq")
+                [ Ty.path "u128" ]))
           [ fun γ => (M.alloc tt) : Ty.path "unit" ] in
       M.read α0
     | _, _ => M.impossible
     end.
   
   Definition ℐ : Instance.t :=
-    [("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)].
+    [
+      ("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)
+    ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -135,15 +139,15 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [value] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
+  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
@@ -170,16 +174,18 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; other] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
         let* α0 := M.read self in
-        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
+        let* α1 :=
+          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
         M.alloc α1 in
       let* __arg1_tag :=
         let* α0 := M.read other in
-        let* α1 := M.call ((M.var "core::intrinsics::discriminant_value") α0) in
+        let* α1 :=
+          M.call (M.var "core::intrinsics::discriminant_value") [ α0 ] in
         M.alloc α1 in
       let* α0 := M.read __self_tag in
       let* α1 := M.read __arg1_tag in
@@ -188,7 +194,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("eq", InstanceField.Method eq)].
+  Definition ℐ : Instance.t := [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
@@ -208,15 +214,17 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
   
   Definition ℐ : Instance.t :=
-    [("assert_receiver_is_total_eq",
-        InstanceField.Method assert_receiver_is_total_eq)].
+    [
+      ("assert_receiver_is_total_eq",
+        InstanceField.Method assert_receiver_is_total_eq)
+    ].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
@@ -224,7 +232,7 @@ Axiom Result :
   (Ty.path "payment_channel::Result") =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [T; Ty.path "payment_channel::Error"]).
+      [ T; Ty.path "payment_channel::Error" ]).
 
 (* Enum SenderCloseStarted *)
 
@@ -240,7 +248,7 @@ Module Impl_payment_channel_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "payment_channel::Env::Get_caller") (deref α0))
@@ -254,11 +262,11 @@ Module Impl_payment_channel_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; _event] =>
+    | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -270,11 +278,11 @@ Module Impl_payment_channel_Env.
   *)
   Definition terminate_contract (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; sender] =>
+    | [], [ self; sender ] =>
       let* self := M.alloc self in
       let* sender := M.alloc sender in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -286,12 +294,12 @@ Module Impl_payment_channel_Env.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; recipient; amount] =>
+    | [], [ self; recipient; amount ] =>
       let* self := M.alloc self in
       let* recipient := M.alloc recipient in
       let* amount := M.alloc amount in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -303,10 +311,10 @@ Module Impl_payment_channel_Env.
   *)
   Definition block_timestamp (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -318,10 +326,10 @@ Module Impl_payment_channel_Env.
   *)
   Definition balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -333,10 +341,10 @@ Module Impl_payment_channel_Env.
   *)
   Definition account_id (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -362,11 +370,11 @@ where
 *)
 Definition hash_encoded (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [H; T], [input; output] =>
+  | [ H; T ], [ input; output ] =>
     let* input := M.alloc input in
     let* output := M.alloc output in
     let* α0 := M.read (mk_str "not implemented") in
-    let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+    let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
     never_to_any α1
   | _, _ => M.impossible
   end.
@@ -382,12 +390,12 @@ pub fn ecdsa_recover(
 *)
 Definition ecdsa_recover (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [signature; message_hash; output] =>
+  | [], [ signature; message_hash; output ] =>
     let* signature := M.alloc signature in
     let* message_hash := M.alloc message_hash in
     let* output := M.alloc output in
     let* α0 := M.read (mk_str "not implemented") in
-    let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+    let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
     never_to_any α1
   | _, _ => M.impossible
   end.
@@ -406,9 +414,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   (*
       type Type = [u8; 32];
   *)
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
@@ -417,9 +425,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   (*
       type Type = [u8; 32];
   *)
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
@@ -428,9 +436,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   (*
       type Type = [u8; 32];
   *)
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
@@ -439,9 +447,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   (*
       type Type = [u8; 16];
   *)
-  Definition Type_ : Set := Ty.apply (Ty.path "array") [Ty.path "u8"].
+  Definition Type_ : Set := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
-  Definition ℐ : Instance.t := [("Type_", TODO)].
+  Definition ℐ : Instance.t := [ ("Type_", TODO) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
@@ -454,16 +462,16 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
   *)
   Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [input; output] =>
+    | [], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
@@ -476,16 +484,16 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
   *)
   Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [input; output] =>
+    | [], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
@@ -498,16 +506,16 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
   *)
   Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [input; output] =>
+    | [], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
@@ -520,16 +528,16 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
   *)
   Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [input; output] =>
+    | [], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
   
-  Definition ℐ : Instance.t := [("hash", InstanceField.Method hash)].
+  Definition ℐ : Instance.t := [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_PaymentChannel.
@@ -544,7 +552,7 @@ Module Impl_payment_channel_PaymentChannel.
     match 𝜏, α with
     | [], [] =>
       let* α0 := M.read (mk_str "not implemented") in
-      let* α1 := M.call ((M.var "core::panicking::panic") α0) in
+      let* α1 := M.call (M.var "core::panicking::panic") [ α0 ] in
       never_to_any α1
     | _, _ => M.impossible
     end.
@@ -556,9 +564,9 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "payment_channel::PaymentChannel")::["init_env"]
+      M.call (Ty.path "payment_channel::PaymentChannel")::["init_env"] []
     | _, _ => M.impossible
     end.
   
@@ -579,51 +587,50 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition is_signature_valid (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; amount; signature] =>
+    | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
       let* signature := M.alloc signature in
       let* encodable :=
         let* α0 := M.read self in
         let* α1 :=
-          M.call ((Ty.path "payment_channel::PaymentChannel")::["env"] α0) in
+          M.call (Ty.path "payment_channel::PaymentChannel")::["env"] [ α0 ] in
         let* α2 := M.alloc α1 in
         let* α3 :=
           M.call
-            ((Ty.path "payment_channel::Env")::["account_id"] (borrow α2)) in
+            (Ty.path "payment_channel::Env")::["account_id"]
+            [ borrow α2 ] in
         let* α4 := M.read amount in
         M.alloc (α3, α4) in
       let* message :=
         let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.default.Default.default
-              (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
-              (Trait := ℐ))) in
-        let* α1 := M.call α0 in
+          M.get_method
+            "core::default::Default"
+            "default"
+            [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+        let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* _ :=
         let* α0 :=
           M.call
-            ((M.var "payment_channel::hash_encoded")
-              (borrow encodable)
-              (borrow_mut message)) in
+            (M.var "payment_channel::hash_encoded")
+            [ borrow encodable; borrow_mut message ] in
         M.alloc α0 in
       let* pub_key := M.alloc (repeat ((Integer.of_Z 0) : Ty.path "u8") 33) in
       let* _ :=
         let* α0 :=
           M.call
-            ((M.var "payment_channel::ecdsa_recover")
-              (borrow signature)
-              (borrow message)
-              (borrow_mut pub_key)) in
+            (M.var "payment_channel::ecdsa_recover")
+            [ borrow signature; borrow message; borrow_mut pub_key ] in
         let* α1 :=
           M.call
-            ((Ty.apply
-                  (Ty.path "core::result::Result")
-                  [Ty.tuple [];
-                    Ty.path "payment_channel::Error"])::["unwrap_or_else"]
-              α0
-              (fun (α0 : Ty.path "payment_channel::Error") =>
+            (Ty.apply
+                (Ty.path "core::result::Result")
+                [ Ty.tuple []; Ty.path "payment_channel::Error"
+                ])::["unwrap_or_else"]
+            [
+              α0;
+              fun (α0 : Ty.path "payment_channel::Error") =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
@@ -632,49 +639,58 @@ Module Impl_payment_channel_PaymentChannel.
                       (let* err := M.copy γ in
                       let* α0 := M.read (mk_str "recover failed: {err:?}") in
                       let* α1 :=
-                        M.call ((M.var "std::panicking::begin_panic") α0) in
+                        M.call (M.var "std::panicking::begin_panic") [ α0 ] in
                       never_to_any α1) :
                       Ty.tuple []
                   ]) :
-                Ty.tuple [])) in
+                Ty.tuple []
+            ] in
         M.alloc α1 in
       let* signature_account_id :=
         M.alloc (repeat ((Integer.of_Z 0) : Ty.path "u8") 32) in
       let* _ :=
         let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            payment_channel.CryptoHash.hash
-              (Self := Ty.path "payment_channel::Blake2x256")
-              (Trait := ℐ))) in
+          M.get_method
+            "payment_channel::CryptoHash"
+            "hash"
+            [ (* Self *) Ty.path "payment_channel::Blake2x256" ] in
         let* α1 :=
           M.call
-            (α0
-              (pointer_coercion "Unsize" (borrow pub_key))
-              (borrow_mut signature_account_id)) in
+            α0
+            [
+              pointer_coercion "Unsize" (borrow pub_key);
+              borrow_mut signature_account_id
+            ] in
         M.alloc α1 in
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.cmp.PartialEq.eq
-            (Self := Ty.path "payment_channel::AccountId")
-            (Rhs := Ty.path "payment_channel::AccountId")
-            (Trait := ℐ))) in
+        M.get_method
+          "core::cmp::PartialEq"
+          "eq"
+          [
+            (* Self *) Ty.path "payment_channel::AccountId";
+            (* Rhs *) Ty.path "payment_channel::AccountId"
+          ] in
       let* α1 := M.read self in
       let* α2 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.convert.Into.into
-            (Self := Ty.apply (Ty.path "array") [Ty.path "u8"])
-            (T := Ty.path "payment_channel::AccountId")
-            (Trait := ℐ))) in
+        M.get_method
+          "core::convert::Into"
+          "into"
+          [
+            (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+            (* T *) Ty.path "payment_channel::AccountId"
+          ] in
       let* α3 := M.read signature_account_id in
-      let* α4 := M.call (α2 α3) in
+      let* α4 := M.call α2 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
         M.call
-          (α0
-            (borrow
+          α0
+          [
+            borrow
               ((M.var "payment_channel::PaymentChannel::Get_recipient")
-                (deref α1)))
-            (borrow α5)) in
+                (deref α1));
+            borrow α5
+          ] in
       let* α0 := M.alloc α6 in
       M.read α0
     | _, _ => M.impossible
@@ -693,25 +709,26 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [recipient; close_duration] =>
+    | [], [ recipient; close_duration ] =>
       let* recipient := M.alloc recipient in
       let* close_duration := M.alloc close_duration in
       let* α0 :=
-        M.call (Ty.path "payment_channel::PaymentChannel")::["init_env"] in
+        M.call (Ty.path "payment_channel::PaymentChannel")::["init_env"] [] in
       let* α1 := M.alloc α0 in
       let* α2 :=
-        M.call ((Ty.path "payment_channel::Env")::["caller"] (borrow α1)) in
+        M.call (Ty.path "payment_channel::Env")::["caller"] [ borrow α1 ] in
       let* α3 := M.read recipient in
       let* α4 := M.read close_duration in
       M.pure
-        {|
-          payment_channel.PaymentChannel.sender := α2;
-          payment_channel.PaymentChannel.recipient := α3;
-          payment_channel.PaymentChannel.expiration := core.option.Option.None;
-          payment_channel.PaymentChannel.withdrawn :=
-            (Integer.of_Z 0) : Ty.path "u128";
-          payment_channel.PaymentChannel.close_duration := α4;
-        |}
+        (Value.StructRecord
+          "payment_channel::PaymentChannel"
+          [
+            ("sender", α2);
+            ("recipient", α3);
+            ("expiration", core.option.Option.None);
+            ("withdrawn", (Integer.of_Z 0) : Ty.path "u128");
+            ("close_duration", α4)
+          ])
     | _, _ => M.impossible
     end.
   
@@ -739,7 +756,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition close_inner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; amount; signature] =>
+    | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
       let* signature := M.alloc signature in
@@ -748,32 +765,36 @@ Module Impl_payment_channel_PaymentChannel.
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "payment_channel::Error"]) in
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ]) in
       M.catch_return
         (let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.cmp.PartialEq.ne
-                (Self := Ty.path "payment_channel::AccountId")
-                (Rhs := Ty.path "payment_channel::AccountId")
-                (Trait := ℐ))) in
+            M.get_method
+              "core::cmp::PartialEq"
+              "ne"
+              [
+                (* Self *) Ty.path "payment_channel::AccountId";
+                (* Rhs *) Ty.path "payment_channel::AccountId"
+              ] in
           let* α1 := M.read self in
           let* α2 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α1))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α1) ] in
           let* α3 := M.alloc α2 in
           let* α4 :=
-            M.call ((Ty.path "payment_channel::Env")::["caller"] (borrow α3)) in
+            M.call (Ty.path "payment_channel::Env")::["caller"] [ borrow α3 ] in
           let* α5 := M.alloc α4 in
           let* α6 := M.read self in
           let* α7 :=
             M.call
-              (α0
-                (borrow α5)
-                (borrow
+              α0
+              [
+                borrow α5;
+                borrow
                   ((M.var "payment_channel::PaymentChannel::Get_recipient")
-                    (deref α6)))) in
+                    (deref α6))
+              ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.read (use α8) in
           if α9 then
@@ -811,11 +832,9 @@ Module Impl_payment_channel_PaymentChannel.
           let* α2 := M.read signature in
           let* α3 :=
             M.call
-              ((Ty.path
-                    "payment_channel::PaymentChannel")::["is_signature_valid"]
-                (borrow (deref α0))
-                α1
-                α2) in
+              (Ty.path
+                  "payment_channel::PaymentChannel")::["is_signature_valid"]
+              [ borrow (deref α0); α1; α2 ] in
           let* α4 := M.alloc ((M.var "UnOp::not") α3) in
           let* α5 := M.read (use α4) in
           if α5 then
@@ -830,18 +849,20 @@ Module Impl_payment_channel_PaymentChannel.
             M.alloc tt in
         let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.ops.try_trait.Try.branch
-                (Self :=
+            M.get_method
+              "core::ops::try_trait::Try"
+              "branch"
+              [
+                (* Self *)
                   Ty.apply
                     (Ty.path "core::result::Result")
-                    [Ty.tuple []; Ty.path "payment_channel::Error"])
-                (Trait := ℐ))) in
+                    [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+              ] in
           let* α1 := M.read self in
           let* α2 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α1))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α1) ] in
           let* α3 := M.alloc α2 in
           let* α4 := M.read self in
           let* α5 :=
@@ -857,18 +878,17 @@ Module Impl_payment_channel_PaymentChannel.
           let* α9 := (M.var "BinOp::Panic::sub") α6 α8 in
           let* α10 :=
             M.call
-              ((Ty.path "payment_channel::Env")::["transfer"]
-                (borrow α3)
-                α5
-                α9) in
+              (Ty.path "payment_channel::Env")::["transfer"]
+              [ borrow α3; α5; α9 ] in
           let* α11 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple [];
-                      Ty.path "payment_channel::Error"])::["map_err"]
-                α10
-                (fun (α0 : Ty.path "payment_channel::Error") =>
+              (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "payment_channel::Error"
+                  ])::["map_err"]
+              [
+                α10;
+                fun (α0 : Ty.path "payment_channel::Error") =>
                   (let* α0 := M.alloc α0 in
                   match_operator
                     α0
@@ -877,8 +897,9 @@ Module Impl_payment_channel_PaymentChannel.
                         (M.pure payment_channel.Error.TransferFailed) :
                         Ty.path "payment_channel::Error"
                     ]) :
-                  Ty.path "payment_channel::Error")) in
-          let* α12 := M.call (α0 α11) in
+                  Ty.path "payment_channel::Error"
+              ] in
+          let* α12 := M.call α0 [ α11 ] in
           let* α13 := M.alloc α12 in
           match_operator
             α13
@@ -892,25 +913,29 @@ Module Impl_payment_channel_PaymentChannel.
                       γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
+                    M.get_method
+                      "core::ops::try_trait::FromResidual"
+                      "from_residual"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.tuple []; Ty.path "payment_channel::Error"])
-                        (R :=
+                            [ Ty.tuple []; Ty.path "payment_channel::Error" ];
+                        (* R *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.path "core::convert::Infallible";
-                              Ty.path "payment_channel::Error"])
-                        (Trait := ℐ))) in
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "payment_channel::Error"
+                            ]
+                      ] in
                   let* α1 := M.read residual in
-                  let* α2 := M.call (α0 α1) in
+                  let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.tuple [];
               fun γ =>
@@ -923,7 +948,7 @@ Module Impl_payment_channel_PaymentChannel.
                       γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.tuple []
             ] in
@@ -942,7 +967,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition close (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; amount; signature] =>
+    | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
       let* signature := M.alloc signature in
@@ -951,27 +976,27 @@ Module Impl_payment_channel_PaymentChannel.
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "payment_channel::Error"]) in
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ]) in
       M.catch_return
         (let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.ops.try_trait.Try.branch
-                (Self :=
+            M.get_method
+              "core::ops::try_trait::Try"
+              "branch"
+              [
+                (* Self *)
                   Ty.apply
                     (Ty.path "core::result::Result")
-                    [Ty.tuple []; Ty.path "payment_channel::Error"])
-                (Trait := ℐ))) in
+                    [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+              ] in
           let* α1 := M.read self in
           let* α2 := M.read amount in
           let* α3 := M.read signature in
           let* α4 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["close_inner"]
-                α1
-                α2
-                α3) in
-          let* α5 := M.call (α0 α4) in
+              (Ty.path "payment_channel::PaymentChannel")::["close_inner"]
+              [ α1; α2; α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
           let* α6 := M.alloc α5 in
           match_operator
             α6
@@ -985,25 +1010,29 @@ Module Impl_payment_channel_PaymentChannel.
                       γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
+                    M.get_method
+                      "core::ops::try_trait::FromResidual"
+                      "from_residual"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.tuple []; Ty.path "payment_channel::Error"])
-                        (R :=
+                            [ Ty.tuple []; Ty.path "payment_channel::Error" ];
+                        (* R *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.path "core::convert::Infallible";
-                              Ty.path "payment_channel::Error"])
-                        (Trait := ℐ))) in
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "payment_channel::Error"
+                            ]
+                      ] in
                   let* α1 := M.read residual in
-                  let* α2 := M.call (α0 α1) in
+                  let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.tuple [];
               fun γ =>
@@ -1016,7 +1045,7 @@ Module Impl_payment_channel_PaymentChannel.
                       γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.tuple []
             ] in
@@ -1024,8 +1053,8 @@ Module Impl_payment_channel_PaymentChannel.
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read self in
           let* α4 :=
@@ -1034,9 +1063,8 @@ Module Impl_payment_channel_PaymentChannel.
                 (deref α3)) in
           let* α5 :=
             M.call
-              ((Ty.path "payment_channel::Env")::["terminate_contract"]
-                (borrow α2)
-                α4) in
+              (Ty.path "payment_channel::Env")::["terminate_contract"]
+              [ borrow α2; α4 ] in
           M.alloc α5 in
         let* α0 := M.alloc (core.result.Result.Ok tt) in
         M.read α0)
@@ -1065,39 +1093,43 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition start_sender_close (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let return_ :=
         M.return_
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "payment_channel::Error"]) in
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ]) in
       M.catch_return
         (let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.cmp.PartialEq.ne
-                (Self := Ty.path "payment_channel::AccountId")
-                (Rhs := Ty.path "payment_channel::AccountId")
-                (Trait := ℐ))) in
+            M.get_method
+              "core::cmp::PartialEq"
+              "ne"
+              [
+                (* Self *) Ty.path "payment_channel::AccountId";
+                (* Rhs *) Ty.path "payment_channel::AccountId"
+              ] in
           let* α1 := M.read self in
           let* α2 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α1))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α1) ] in
           let* α3 := M.alloc α2 in
           let* α4 :=
-            M.call ((Ty.path "payment_channel::Env")::["caller"] (borrow α3)) in
+            M.call (Ty.path "payment_channel::Env")::["caller"] [ borrow α3 ] in
           let* α5 := M.alloc α4 in
           let* α6 := M.read self in
           let* α7 :=
             M.call
-              (α0
-                (borrow α5)
-                (borrow
+              α0
+              [
+                borrow α5;
+                borrow
                   ((M.var "payment_channel::PaymentChannel::Get_sender")
-                    (deref α6)))) in
+                    (deref α6))
+              ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.read (use α8) in
           if α9 then
@@ -1114,13 +1146,13 @@ Module Impl_payment_channel_PaymentChannel.
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
           let* α3 :=
             M.call
-              ((Ty.path "payment_channel::Env")::["block_timestamp"]
-                (borrow α2)) in
+              (Ty.path "payment_channel::Env")::["block_timestamp"]
+              [ borrow α2 ] in
           M.alloc α3 in
         let* expiration :=
           let* α0 := M.read now in
@@ -1135,8 +1167,8 @@ Module Impl_payment_channel_PaymentChannel.
           let* α0 := M.read self in
           let* α1 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α0))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α0) ] in
           let* α2 := M.alloc α1 in
           let* α3 := M.read expiration in
           let* α4 := M.read self in
@@ -1146,13 +1178,14 @@ Module Impl_payment_channel_PaymentChannel.
                 (deref α4)) in
           let* α6 :=
             M.call
-              ((Ty.path "payment_channel::Env")::["emit_event"]
-                (borrow α2)
-                (payment_channel.Event.SenderCloseStarted
-                  {|
-                    payment_channel.SenderCloseStarted.expiration := α3;
-                    payment_channel.SenderCloseStarted.close_duration := α5;
-                  |})) in
+              (Ty.path "payment_channel::Env")::["emit_event"]
+              [
+                borrow α2;
+                payment_channel.Event.SenderCloseStarted
+                  (Value.StructRecord
+                    "payment_channel::SenderCloseStarted"
+                    [ ("expiration", α3); ("close_duration", α5) ])
+              ] in
           M.alloc α6 in
         let* _ :=
           let* α0 := M.read self in
@@ -1188,14 +1221,14 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition claim_timeout (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let return_ :=
         M.return_
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "payment_channel::Error"]) in
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ]) in
       M.catch_return
         (let* α0 := M.read self in
         let* α1 :=
@@ -1213,13 +1246,13 @@ Module Impl_payment_channel_PaymentChannel.
                     let* α0 := M.read self in
                     let* α1 :=
                       M.call
-                        ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                          (borrow (deref α0))) in
+                        (Ty.path "payment_channel::PaymentChannel")::["env"]
+                        [ borrow (deref α0) ] in
                     let* α2 := M.alloc α1 in
                     let* α3 :=
                       M.call
-                        ((Ty.path "payment_channel::Env")::["block_timestamp"]
-                          (borrow α2)) in
+                        (Ty.path "payment_channel::Env")::["block_timestamp"]
+                        [ borrow α2 ] in
                     M.alloc α3 in
                   let* _ :=
                     let* α0 := M.read now in
@@ -1240,8 +1273,8 @@ Module Impl_payment_channel_PaymentChannel.
                     let* α0 := M.read self in
                     let* α1 :=
                       M.call
-                        ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                          (borrow (deref α0))) in
+                        (Ty.path "payment_channel::PaymentChannel")::["env"]
+                        [ borrow (deref α0) ] in
                     let* α2 := M.alloc α1 in
                     let* α3 := M.read self in
                     let* α4 :=
@@ -1250,28 +1283,26 @@ Module Impl_payment_channel_PaymentChannel.
                           (deref α3)) in
                     let* α5 :=
                       M.call
-                        ((Ty.path
-                              "payment_channel::Env")::["terminate_contract"]
-                          (borrow α2)
-                          α4) in
+                        (Ty.path "payment_channel::Env")::["terminate_contract"]
+                        [ borrow α2; α4 ] in
                     M.alloc α5 in
                   M.alloc (core.result.Result.Ok tt)
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.tuple []; Ty.path "payment_channel::Error"];
+                  [ Ty.tuple []; Ty.path "payment_channel::Error" ];
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.option.Option.None =>
                   M.alloc
                     (core.result.Result.Err payment_channel.Error.NotYetExpired)
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [Ty.tuple []; Ty.path "payment_channel::Error"]
+                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
             ] in
         M.read α1)
     | _, _ => M.impossible
@@ -1305,7 +1336,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition withdraw (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self; amount; signature] =>
+    | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
       let* signature := M.alloc signature in
@@ -1314,32 +1345,36 @@ Module Impl_payment_channel_PaymentChannel.
           (R :=
             Ty.apply
               (Ty.path "core::result::Result")
-              [Ty.tuple []; Ty.path "payment_channel::Error"]) in
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ]) in
       M.catch_return
         (let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.cmp.PartialEq.ne
-                (Self := Ty.path "payment_channel::AccountId")
-                (Rhs := Ty.path "payment_channel::AccountId")
-                (Trait := ℐ))) in
+            M.get_method
+              "core::cmp::PartialEq"
+              "ne"
+              [
+                (* Self *) Ty.path "payment_channel::AccountId";
+                (* Rhs *) Ty.path "payment_channel::AccountId"
+              ] in
           let* α1 := M.read self in
           let* α2 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α1))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α1) ] in
           let* α3 := M.alloc α2 in
           let* α4 :=
-            M.call ((Ty.path "payment_channel::Env")::["caller"] (borrow α3)) in
+            M.call (Ty.path "payment_channel::Env")::["caller"] [ borrow α3 ] in
           let* α5 := M.alloc α4 in
           let* α6 := M.read self in
           let* α7 :=
             M.call
-              (α0
-                (borrow α5)
-                (borrow
+              α0
+              [
+                borrow α5;
+                borrow
                   ((M.var "payment_channel::PaymentChannel::Get_recipient")
-                    (deref α6)))) in
+                    (deref α6))
+              ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.read (use α8) in
           if α9 then
@@ -1358,11 +1393,9 @@ Module Impl_payment_channel_PaymentChannel.
           let* α2 := M.read signature in
           let* α3 :=
             M.call
-              ((Ty.path
-                    "payment_channel::PaymentChannel")::["is_signature_valid"]
-                (borrow (deref α0))
-                α1
-                α2) in
+              (Ty.path
+                  "payment_channel::PaymentChannel")::["is_signature_valid"]
+              [ borrow (deref α0); α1; α2 ] in
           let* α4 := M.alloc ((M.var "UnOp::not") α3) in
           let* α5 := M.read (use α4) in
           if α5 then
@@ -1415,18 +1448,20 @@ Module Impl_payment_channel_PaymentChannel.
           (M.var "assign") β α2 in
         let* _ :=
           let* α0 :=
-            ltac:(M.get_method (fun ℐ =>
-              core.ops.try_trait.Try.branch
-                (Self :=
+            M.get_method
+              "core::ops::try_trait::Try"
+              "branch"
+              [
+                (* Self *)
                   Ty.apply
                     (Ty.path "core::result::Result")
-                    [Ty.tuple []; Ty.path "payment_channel::Error"])
-                (Trait := ℐ))) in
+                    [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+              ] in
           let* α1 := M.read self in
           let* α2 :=
             M.call
-              ((Ty.path "payment_channel::PaymentChannel")::["env"]
-                (borrow (deref α1))) in
+              (Ty.path "payment_channel::PaymentChannel")::["env"]
+              [ borrow (deref α1) ] in
           let* α3 := M.alloc α2 in
           let* α4 := M.read self in
           let* α5 :=
@@ -1436,18 +1471,17 @@ Module Impl_payment_channel_PaymentChannel.
           let* α6 := M.read amount_to_withdraw in
           let* α7 :=
             M.call
-              ((Ty.path "payment_channel::Env")::["transfer"]
-                (borrow α3)
-                α5
-                α6) in
+              (Ty.path "payment_channel::Env")::["transfer"]
+              [ borrow α3; α5; α6 ] in
           let* α8 :=
             M.call
-              ((Ty.apply
-                    (Ty.path "core::result::Result")
-                    [Ty.tuple [];
-                      Ty.path "payment_channel::Error"])::["map_err"]
-                α7
-                (fun (α0 : Ty.path "payment_channel::Error") =>
+              (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "payment_channel::Error"
+                  ])::["map_err"]
+              [
+                α7;
+                fun (α0 : Ty.path "payment_channel::Error") =>
                   (let* α0 := M.alloc α0 in
                   match_operator
                     α0
@@ -1456,8 +1490,9 @@ Module Impl_payment_channel_PaymentChannel.
                         (M.pure payment_channel.Error.TransferFailed) :
                         Ty.path "payment_channel::Error"
                     ]) :
-                  Ty.path "payment_channel::Error")) in
-          let* α9 := M.call (α0 α8) in
+                  Ty.path "payment_channel::Error"
+              ] in
+          let* α9 := M.call α0 [ α8 ] in
           let* α10 := M.alloc α9 in
           match_operator
             α10
@@ -1471,25 +1506,29 @@ Module Impl_payment_channel_PaymentChannel.
                       γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
+                    M.get_method
+                      "core::ops::try_trait::FromResidual"
+                      "from_residual"
+                      [
+                        (* Self *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.tuple []; Ty.path "payment_channel::Error"])
-                        (R :=
+                            [ Ty.tuple []; Ty.path "payment_channel::Error" ];
+                        (* R *)
                           Ty.apply
                             (Ty.path "core::result::Result")
-                            [Ty.path "core::convert::Infallible";
-                              Ty.path "payment_channel::Error"])
-                        (Trait := ℐ))) in
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "payment_channel::Error"
+                            ]
+                      ] in
                   let* α1 := M.read residual in
-                  let* α2 := M.call (α0 α1) in
+                  let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.tuple [];
               fun γ =>
@@ -1502,7 +1541,7 @@ Module Impl_payment_channel_PaymentChannel.
                       γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match
+                | _ => M.break_match 
                 end) :
                 Ty.tuple []
             ] in
@@ -1518,7 +1557,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition get_sender (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read ((M.var "payment_channel::PaymentChannel::Get_sender") (deref α0))
@@ -1532,7 +1571,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition get_recipient (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read
@@ -1547,7 +1586,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition get_expiration (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read
@@ -1562,7 +1601,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition get_withdrawn (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read
@@ -1577,7 +1616,7 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition get_close_duration (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read
@@ -1593,13 +1632,13 @@ Module Impl_payment_channel_PaymentChannel.
   *)
   Definition get_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
-        M.call ((Ty.path "payment_channel::PaymentChannel")::["env"] α0) in
+        M.call (Ty.path "payment_channel::PaymentChannel")::["env"] [ α0 ] in
       let* α2 := M.alloc α1 in
-      M.call ((Ty.path "payment_channel::Env")::["balance"] (borrow α2))
+      M.call (Ty.path "payment_channel::Env")::["balance"] [ borrow α2 ]
     | _, _ => M.impossible
     end.
 End Impl_payment_channel_PaymentChannel.

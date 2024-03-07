@@ -18,7 +18,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("get", InstanceField.Method get)].
+  Definition ℐ : Instance.t := [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -26,7 +26,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("get", InstanceField.Method get)].
+  Definition ℐ : Instance.t := [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

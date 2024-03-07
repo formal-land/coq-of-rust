@@ -8,7 +8,7 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
   
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("default", InstanceField.Method default)].
+  Definition ℐ : Instance.t := [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_constructors_return_value_AccountId.
 
 Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
@@ -16,7 +16,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
   
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("clone", InstanceField.Method clone)].
+  Definition ℐ : Instance.t := [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_constructors_return_value_AccountId.
 
 Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
@@ -30,7 +30,7 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("from", InstanceField.Method from)].
+  Definition ℐ : Instance.t := [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance :
@@ -45,7 +45,7 @@ Axiom ConstructorResult :
   (Ty.path "constructors_return_value::ConstructorResult") =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [T; Ty.path "constructors_return_value::LangError"]).
+      [ T; Ty.path "constructors_return_value::LangError" ]).
 
 (* Struct ConstructorError *)
 
@@ -55,7 +55,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
   
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
-  Definition ℐ : Instance.t := [("fmt", InstanceField.Method fmt)].
+  Definition ℐ : Instance.t := [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 
 (* Struct ReturnFlags *)

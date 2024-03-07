@@ -13,7 +13,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   *)
   Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* β :=
@@ -37,7 +37,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   *)
   Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -48,17 +48,21 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let* α3 := M.read self in
           let* α4 :=
             M.call
-              ((Ty.path "core::fmt::rt::Argument")::["new_display"]
-                (borrow
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [
+                borrow
                   ((M.var "scoping_rules_lifetimes_methods::Owner::Get_0")
-                    (deref α3)))) in
+                    (deref α3))
+              ] in
           let* α5 := M.alloc [ α4 ] in
           let* α6 :=
             M.call
-              ((Ty.path "core::fmt::Arguments")::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α5))) in
-          let* α7 := M.call ((M.var "std::io::stdio::_print") α6) in
+              (Ty.path "core::fmt::Arguments")::["new_v1"]
+              [
+                pointer_coercion "Unsize" (borrow α2);
+                pointer_coercion "Unsize" (borrow α5)
+              ] in
+          let* α7 := M.call (M.var "std::io::stdio::_print") [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
       let* α0 := M.alloc tt in
@@ -86,14 +90,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.path "scoping_rules_lifetimes_methods::Owner")::["add_one"]
-            (borrow_mut owner)) in
+          (Ty.path "scoping_rules_lifetimes_methods::Owner")::["add_one"]
+          [ borrow_mut owner ] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
         M.call
-          ((Ty.path "scoping_rules_lifetimes_methods::Owner")::["print"]
-            (borrow owner)) in
+          (Ty.path "scoping_rules_lifetimes_methods::Owner")::["print"]
+          [ borrow owner ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

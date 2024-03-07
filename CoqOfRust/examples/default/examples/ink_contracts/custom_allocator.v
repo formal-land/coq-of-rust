@@ -15,18 +15,23 @@ Module Impl_custom_allocator_CustomAllocator.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [init_value] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       let* α1 := M.alloc [ α0 ] in
       let* α2 :=
-        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α1) in
+        M.call
+          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+          [ α1 ] in
       let* α3 := M.read α2 in
       let* α4 :=
         M.call
-          ((Ty.apply (Ty.path "slice") [Ty.path "bool"])::["into_vec"]
-            (pointer_coercion "Unsize" α3)) in
-      M.pure {| custom_allocator.CustomAllocator.value := α4; |}
+          (Ty.apply (Ty.path "slice") [ Ty.path "bool" ])::["into_vec"]
+          [ pointer_coercion "Unsize" α3 ] in
+      M.pure
+        (Value.StructRecord
+          "custom_allocator::CustomAllocator"
+          [ ("value", α4) ])
     | _, _ => M.impossible
     end.
   
@@ -39,12 +44,12 @@ Module Impl_custom_allocator_CustomAllocator.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := Ty.path "bool")
-            (Trait := ℐ))) in
-      let* α1 := M.call α0 in
-      M.call ((Ty.path "custom_allocator::CustomAllocator")::["new"] α1)
+        M.get_method
+          "core::default::Default"
+          "default"
+          [ (* Self *) Ty.path "bool" ] in
+      let* α1 := M.call α0 [] in
+      M.call (Ty.path "custom_allocator::CustomAllocator")::["new"] [ α1 ]
     | _, _ => M.impossible
     end.
   
@@ -55,43 +60,51 @@ Module Impl_custom_allocator_CustomAllocator.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.index.IndexMut.index_mut
-              (Self :=
+          M.get_method
+            "core::ops::index::IndexMut"
+            "index_mut"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.path "bool"; Ty.path "alloc::alloc::Global"])
-              (Idx := Ty.path "usize")
-              (Trait := ℐ))) in
+                  [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
+              (* Idx *) Ty.path "usize"
+            ] in
         let* α1 := M.read self in
         let* α2 :=
           M.call
-            (α0
-              (borrow_mut
+            α0
+            [
+              borrow_mut
                 ((M.var "custom_allocator::CustomAllocator::Get_value")
-                  (deref α1)))
-              ((Integer.of_Z 0) : Ty.path "usize")) in
+                  (deref α1));
+              (Integer.of_Z 0) : Ty.path "usize"
+            ] in
         let* α3 :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.index.Index.index
-              (Self :=
+          M.get_method
+            "core::ops::index::Index"
+            "index"
+            [
+              (* Self *)
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [Ty.path "bool"; Ty.path "alloc::alloc::Global"])
-              (Idx := Ty.path "usize")
-              (Trait := ℐ))) in
+                  [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
+              (* Idx *) Ty.path "usize"
+            ] in
         let* α4 := M.read self in
         let* α5 :=
           M.call
-            (α3
-              (borrow
+            α3
+            [
+              borrow
                 ((M.var "custom_allocator::CustomAllocator::Get_value")
-                  (deref α4)))
-              ((Integer.of_Z 0) : Ty.path "usize")) in
+                  (deref α4));
+              (Integer.of_Z 0) : Ty.path "usize"
+            ] in
         let* α6 := M.read (deref α5) in
         assign (deref α2) ((M.var "UnOp::not") α6) in
       let* α0 := M.alloc tt in
@@ -106,25 +119,29 @@ Module Impl_custom_allocator_CustomAllocator.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [self] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.index.Index.index
-            (Self :=
+        M.get_method
+          "core::ops::index::Index"
+          "index"
+          [
+            (* Self *)
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [Ty.path "bool"; Ty.path "alloc::alloc::Global"])
-            (Idx := Ty.path "usize")
-            (Trait := ℐ))) in
+                [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
+            (* Idx *) Ty.path "usize"
+          ] in
       let* α1 := M.read self in
       let* α2 :=
         M.call
-          (α0
-            (borrow
+          α0
+          [
+            borrow
               ((M.var "custom_allocator::CustomAllocator::Get_value")
-                (deref α1)))
-            ((Integer.of_Z 0) : Ty.path "usize")) in
+                (deref α1));
+            (Integer.of_Z 0) : Ty.path "usize"
+          ] in
       M.read (deref α2)
     | _, _ => M.impossible
     end.
