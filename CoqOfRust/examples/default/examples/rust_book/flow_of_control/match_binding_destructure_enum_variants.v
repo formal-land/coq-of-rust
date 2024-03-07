@@ -9,7 +9,10 @@ fn some_number() -> Option<u32> {
 Definition some_number (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    M.pure (core.option.Option.Some ((Integer.of_Z 42) : Ty.path "u32"))
+    M.pure
+      (Value.StructTuple
+        "core::option::Option::Some"
+        [ (Integer.of_Z 42) : Ty.path "u32" ])
   | _, _ => M.impossible
   end.
 

@@ -7,30 +7,31 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "call_builder::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "call_builder::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
   Axiom Implements :
-    let Self := Ty.path "call_builder::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "call_builder::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
@@ -47,6 +48,8 @@ Module Impl_call_builder_Selector.
   Definition Self : Ty.t := Ty.path "call_builder::Selector".
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
 End Impl_call_builder_Selector.
 
 (* Struct CallBuilderTest *)
@@ -55,12 +58,11 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "call_builder::CallBuilderTest" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "call_builder::CallBuilderTest")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.
@@ -68,11 +70,28 @@ Module Impl_call_builder_CallBuilderTest.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter call : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call [].
   
   Parameter invoke : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_invoke :
+    M.IsAssociatedFunction Self "invoke" invoke [].
+  
   Parameter call_instantiate : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_call_instantiate :
+    M.IsAssociatedFunction Self "call_instantiate" call_instantiate [].
+  
   Parameter call_instantiate_fallible : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_call_instantiate_fallible :
+    M.IsAssociatedFunction
+      Self
+      "call_instantiate_fallible"
+      call_instantiate_fallible
+      [].
 End Impl_call_builder_CallBuilderTest.

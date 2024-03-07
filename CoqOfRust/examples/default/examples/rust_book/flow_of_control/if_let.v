@@ -42,7 +42,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* number :=
-      M.alloc (core.option.Option.Some ((Integer.of_Z 7) : Ty.path "i32")) in
+      M.alloc
+        (Value.StructTuple
+          "core::option::Option::Some"
+          [ (Integer.of_Z 7) : Ty.path "i32" ]) in
     let* letter := M.alloc core.option.Option.None in
     let* emoticon := M.alloc core.option.Option.None in
     let* _ :=

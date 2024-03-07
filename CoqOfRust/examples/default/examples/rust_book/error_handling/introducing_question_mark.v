@@ -173,7 +173,8 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read first_number in
       let* α2 := M.read second_number in
       let* α3 := α0 α1 α2 in
-      let* α0 := M.alloc (core.result.Result.Ok α3) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
       M.read α0)
   | _, _ => M.impossible
   end.

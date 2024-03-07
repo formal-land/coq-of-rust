@@ -1,3 +1,4 @@
+use crate::coq;
 use crate::env::*;
 use crate::path::*;
 use crate::pattern::*;
@@ -1079,17 +1080,17 @@ impl ExprKind {
                 path,
                 fields,
                 struct_or_variant,
-            } => paren(
-                with_paren && !fields.is_empty(),
-                nest([
-                    path.to_doc(),
-                    match struct_or_variant {
-                        StructOrVariant::Struct => text(".Build_t"),
-                        StructOrVariant::Variant { .. } => nil(),
+            } => coq::Expression::just_name("Value.StructTuple")
+                .apply_many(&[
+                    coq::Expression::String(path.to_string()),
+                    coq::Expression::List {
+                        exprs: fields
+                            .iter()
+                            .map(|expr| coq::Expression::Code(expr.to_doc(false)))
+                            .collect(),
                     },
-                    concat(fields.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
-                ]),
-            ),
+                ])
+                .to_doc(with_paren),
             ExprKind::StructUnit {
                 path,
                 struct_or_variant,

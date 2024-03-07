@@ -9,12 +9,11 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Parameter next : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "iterators::Fibonacci" in
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
-      Self
+      (* Self *) (Ty.path "iterators::Fibonacci")
       []
-      [ ("Item", TODO); ("next", InstanceField.Method next [ Self ]) ].
+      [ ("Item", TODO); ("next", InstanceField.Method next []) ].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Parameter fibonacci : (list Ty.t) -> (list Value.t) -> M.

@@ -185,7 +185,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Alignment.Unknown;
               (Integer.of_Z 8) : Ty.path "u32";
               core.fmt.rt.Count.Implied;
-              core.fmt.rt.Count.Is ((Integer.of_Z 4) : Ty.path "usize")
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ (Integer.of_Z 4) : Ty.path "usize" ]
             ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
@@ -228,7 +230,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Alignment.Unknown;
               (Integer.of_Z 8) : Ty.path "u32";
               core.fmt.rt.Count.Implied;
-              core.fmt.rt.Count.Is ((Integer.of_Z 4) : Ty.path "usize")
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ (Integer.of_Z 4) : Ty.path "usize" ]
             ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
@@ -271,7 +275,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Alignment.Unknown;
               (Integer.of_Z 8) : Ty.path "u32";
               core.fmt.rt.Count.Implied;
-              core.fmt.rt.Count.Is ((Integer.of_Z 4) : Ty.path "usize")
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ (Integer.of_Z 4) : Ty.path "usize" ]
             ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in

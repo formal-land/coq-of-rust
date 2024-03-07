@@ -119,7 +119,7 @@ Definition cat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.var "core::result::Result::Get_Ok_0" in
                   M.pure (α0 γ) in
                 let* α0 := M.read s in
-                M.alloc (core.result.Result.Ok α0)
+                M.alloc (Value.StructTuple "core::result::Result::Ok" [ α0 ])
               | _ => M.break_match 
               end) :
               Ty.apply
@@ -137,7 +137,7 @@ Definition cat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* e := M.copy γ0_0 in
                 let* α0 := M.read e in
-                M.alloc (core.result.Result.Err α0)
+                M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
               | _ => M.break_match 
               end) :
               Ty.apply
@@ -291,7 +291,7 @@ Definition touch (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* γ0_0 :=
                 let* α0 := M.var "core::result::Result::Get_Ok_0" in
                 M.pure (α0 γ) in
-              M.alloc (core.result.Result.Ok tt)
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ])
             | _ => M.break_match 
             end) :
             Ty.apply
@@ -306,7 +306,7 @@ Definition touch (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (α0 γ) in
               let* e := M.copy γ0_0 in
               let* α0 := M.read e in
-              M.alloc (core.result.Result.Err α0)
+              M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
             | _ => M.break_match 
             end) :
             Ty.apply

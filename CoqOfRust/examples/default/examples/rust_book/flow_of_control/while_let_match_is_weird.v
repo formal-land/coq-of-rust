@@ -33,7 +33,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* optional :=
-      M.alloc (core.option.Option.Some ((Integer.of_Z 0) : Ty.path "i32")) in
+      M.alloc
+        (Value.StructTuple
+          "core::option::Option::Some"
+          [ (Integer.of_Z 0) : Ty.path "i32" ]) in
     let* α0 :=
       M.loop
         (match_operator
@@ -94,7 +97,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.var "BinOp::Panic::add" in
                     let* α1 := M.read i in
                     let* α2 := α0 α1 ((Integer.of_Z 1) : Ty.path "i32") in
-                    assign optional (core.option.Option.Some α2) in
+                    assign
+                      optional
+                      (Value.StructTuple "core::option::Option::Some" [ α2 ]) in
                   M.alloc tt
               | _ => M.break_match 
               end) :

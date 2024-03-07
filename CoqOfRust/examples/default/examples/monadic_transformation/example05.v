@@ -13,7 +13,7 @@ Module Impl_example05_Foo.
   *)
   Definition plus1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "BinOp::Panic::add" in
       let* α1 := M.var "example05::Foo::Get_0" in
@@ -21,6 +21,8 @@ Module Impl_example05_Foo.
       α0 α2 ((Integer.of_Z 1) : Ty.path "u32")
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1 [].
 End Impl_example05_Foo.
 
 (*
@@ -34,7 +36,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* foo :=
-      M.alloc (example05.Foo.Build_t ((Integer.of_Z 0) : Ty.path "u32")) in
+      M.alloc
+        (Value.StructTuple
+          "example05::Foo"
+          [ (Integer.of_Z 0) : Ty.path "u32" ]) in
     let* _ :=
       let* α0 := M.read foo in
       let* α1 := M.call (Ty.path "example05::Foo")::["plus1"] [ α0 ] in

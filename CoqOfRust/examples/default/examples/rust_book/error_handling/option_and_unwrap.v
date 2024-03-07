@@ -191,10 +191,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* water :=
       let* α0 := M.read (mk_str "water") in
-      M.alloc (core.option.Option.Some α0) in
+      M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* lemonade :=
       let* α0 := M.read (mk_str "lemonade") in
-      M.alloc (core.option.Option.Some α0) in
+      M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* void := M.alloc core.option.Option.None in
     let* _ :=
       let* α0 := M.var "option_and_unwrap::give_adult" in
@@ -213,7 +213,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α2 in
     let* coffee :=
       let* α0 := M.read (mk_str "coffee") in
-      M.alloc (core.option.Option.Some α0) in
+      M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* nothing := M.alloc core.option.Option.None in
     let* _ :=
       let* α0 := M.var "option_and_unwrap::drink" in

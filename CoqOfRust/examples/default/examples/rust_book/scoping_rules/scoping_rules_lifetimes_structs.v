@@ -24,12 +24,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_lifetimes_structs::Borrowed" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "scoping_rules_lifetimes_structs::Borrowed")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 (* Enum NamedBorrowed *)
@@ -68,12 +67,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 (* Enum Either *)
@@ -149,12 +147,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_lifetimes_structs::Either" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "scoping_rules_lifetimes_structs::Either")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (*
@@ -180,17 +177,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc ((Integer.of_Z 18) : Ty.path "i32") in
     let* y := M.alloc ((Integer.of_Z 15) : Ty.path "i32") in
     let* single :=
-      M.alloc (scoping_rules_lifetimes_structs.Borrowed.Build_t (borrow x)) in
+      M.alloc
+        (Value.StructTuple
+          "scoping_rules_lifetimes_structs::Borrowed"
+          [ borrow x ]) in
     let* double :=
       M.alloc
         (Value.StructRecord
           "scoping_rules_lifetimes_structs::NamedBorrowed"
           [ ("x", borrow x); ("y", borrow y) ]) in
     let* reference :=
-      M.alloc (scoping_rules_lifetimes_structs.Either.Ref (borrow x)) in
+      M.alloc
+        (Value.StructTuple
+          "scoping_rules_lifetimes_structs::Either::Ref"
+          [ borrow x ]) in
     let* number :=
       let* α0 := M.read y in
-      M.alloc (scoping_rules_lifetimes_structs.Either.Num α0) in
+      M.alloc
+        (Value.StructTuple
+          "scoping_rules_lifetimes_structs::Either::Num"
+          [ α0 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

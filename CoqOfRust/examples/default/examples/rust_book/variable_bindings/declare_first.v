@@ -30,8 +30,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* a_binding :=
-      M.copy (DeclaredButUndefinedVariable (A := Ty.path "i32")) in
+    let* a_binding := M.copy Value.DeclaredButUndefined in
     let* _ :=
       let* x := M.alloc ((Integer.of_Z 2) : Ty.path "i32") in
       let* _ :=
@@ -63,8 +62,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
-    let* another_binding :=
-      M.copy (DeclaredButUndefinedVariable (A := Ty.path "i32")) in
+    let* another_binding := M.copy Value.DeclaredButUndefined in
     let* _ := assign another_binding ((Integer.of_Z 1) : Ty.path "i32") in
     let* _ :=
       let* _ :=

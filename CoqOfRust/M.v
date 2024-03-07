@@ -133,7 +133,10 @@ Module Value.
   | Closure : {'(t, M) : Set * Set @ t -> M} -> t
   (** A special value that does not appear in the translation, but that we use
       to implement primitive functions over values that are not total. *)
-  | Error (message : string).
+  | Error (message : string)
+  (** To implement the ability to declare a variable but not give it a value
+      yet. *)
+  | DeclaredButUndefined.
 
   (** Read the part of the value that is at a given pointer path, starting from
       the main value. It might return [None] if the path does not have a shape
@@ -340,6 +343,14 @@ Parameter IsTraitInstance :
     (Self : Ty.t)
     (generic_tys : list Ty.t)
     (instance : Instance.t),
+  Prop.
+
+Parameter IsAssociatedFunction :
+  forall
+    (Self : Ty.t)
+    (method_name : string)
+    (method : list Ty.t -> list Value.t -> M)
+    (𝜏_prefix : list Ty.t),
   Prop.
 
 Module Option.

@@ -31,13 +31,12 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
   
   Axiom Implements :
     forall (K V : Ty.t),
-    let Self :=
-      Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ] in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *)
+        (Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ])
       []
-      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
+      [ ("default", InstanceField.Method default [ K; V ]) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
@@ -51,7 +50,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -60,6 +59,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_contains :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -68,7 +71,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -78,6 +81,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+  
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
@@ -85,7 +92,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   *)
   Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key; _value ] =>
+    | [ Self; K; V ], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -96,6 +103,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_insert :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+  
   (*
       fn new() -> Mapping<K, V> {
           unimplemented!()
@@ -103,13 +114,17 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [] =>
+    | [ Self; K; V ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "new" new [ K; V ].
   
   (*
       fn remove(&self, _key: K) {
@@ -118,7 +133,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   *)
   Definition remove (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -127,6 +142,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_remove :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -135,7 +154,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   *)
   Definition size (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -145,6 +164,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_size :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+  
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
@@ -152,7 +175,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   *)
   Definition take (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -161,6 +184,10 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_take :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
 End Impl_mapping_integration_tests_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -178,17 +205,16 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (mapping_integration_tests.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "mapping_integration_tests::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "mapping_integration_tests::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "mapping_integration_tests::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
@@ -201,11 +227,7 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -217,18 +239,20 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "mapping_integration_tests::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "mapping_integration_tests::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
   Axiom Implements :
-    let Self := Ty.path "mapping_integration_tests::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "mapping_integration_tests::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 
 Axiom Balance :
@@ -246,13 +270,16 @@ Module Impl_mapping_integration_tests_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "mapping_integration_tests::Env::Get_caller" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
 End Impl_mapping_integration_tests_Env.
 
 (* Enum Mappings *)
@@ -284,12 +311,11 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "mapping_integration_tests::Mappings" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "mapping_integration_tests::Mappings")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
 
 Module Impl_mapping_integration_tests_Mappings.
@@ -302,13 +328,16 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env() -> Env {
@@ -317,13 +346,15 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -333,7 +364,7 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* balances :=
         let* α0 :=
           M.get_method
@@ -360,6 +391,8 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       pub fn get_balance(&self) -> Option<Balance> {
           let caller = Self::env().caller();
@@ -368,7 +401,7 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition get_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
@@ -393,6 +426,9 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get_balance :
+    M.IsAssociatedFunction Self "get_balance" get_balance [].
+  
   (*
       pub fn insert_balance(&mut self, value: Balance) -> Option<u32> {
           let caller = Self::env().caller();
@@ -401,7 +437,7 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition insert_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; value ] =>
+    | [ Self ], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
       let* caller :=
@@ -429,6 +465,9 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_insert_balance :
+    M.IsAssociatedFunction Self "insert_balance" insert_balance [].
+  
   (*
       pub fn size_balance(&mut self) -> Option<u32> {
           let caller = Self::env().caller();
@@ -437,7 +476,7 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition size_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
@@ -463,6 +502,9 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_size_balance :
+    M.IsAssociatedFunction Self "size_balance" size_balance [].
+  
   (*
       pub fn contains_balance(&self) -> bool {
           let caller = Self::env().caller();
@@ -471,7 +513,7 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition contains_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
@@ -496,6 +538,9 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_contains_balance :
+    M.IsAssociatedFunction Self "contains_balance" contains_balance [].
+  
   (*
       pub fn remove_balance(&mut self) {
           let caller = Self::env().caller();
@@ -504,7 +549,7 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition remove_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
@@ -532,6 +577,9 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_remove_balance :
+    M.IsAssociatedFunction Self "remove_balance" remove_balance [].
+  
   (*
       pub fn take_balance(&mut self) -> Option<Balance> {
           let caller = Self::env().caller();
@@ -540,7 +588,7 @@ Module Impl_mapping_integration_tests_Mappings.
   *)
   Definition take_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
@@ -565,4 +613,7 @@ Module Impl_mapping_integration_tests_Mappings.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_take_balance :
+    M.IsAssociatedFunction Self "take_balance" take_balance [].
 End Impl_mapping_integration_tests_Mappings.

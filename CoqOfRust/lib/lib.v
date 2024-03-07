@@ -132,7 +132,8 @@ Module Eq.
       | Value.StructTuple _ _, Value.StructTuple _ _
       | Value.Pointer _, Value.Pointer _
       | Value.Closure _, Value.Closure _
-      | Value.Error _, Value.Error _ =>
+      | Value.Error _, Value.Error _
+      | Value.DeclaredButUndefined, Value.DeclaredButUndefined =>
       true
     | _, _ => false
     end.

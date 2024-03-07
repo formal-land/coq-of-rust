@@ -41,8 +41,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* b := M.alloc if_let_match_enum_values.Foo.Baz in
     let* c :=
       M.alloc
-        (if_let_match_enum_values.Foo.Qux
-          ((Integer.of_Z 100) : Ty.path "u32")) in
+        (Value.StructTuple
+          "if_let_match_enum_values::Foo::Qux"
+          [ (Integer.of_Z 100) : Ty.path "u32" ]) in
     let* _ :=
       match_operator
         a

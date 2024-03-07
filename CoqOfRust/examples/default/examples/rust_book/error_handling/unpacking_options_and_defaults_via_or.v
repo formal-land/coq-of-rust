@@ -84,12 +84,11 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_and_defaults_via_or::Fruit" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "unpacking_options_and_defaults_via_or::Fruit")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
 
 (*
@@ -115,12 +114,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* apple :=
       M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or.Fruit.Apple) in
+        (Value.StructTuple
+          "core::option::Option::Some"
+          [ unpacking_options_and_defaults_via_or.Fruit.Apple ]) in
     let* orange :=
       M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or.Fruit.Orange) in
+        (Value.StructTuple
+          "core::option::Option::Some"
+          [ unpacking_options_and_defaults_via_or.Fruit.Orange ]) in
     let* no_fruit := M.alloc core.option.Option.None in
     let* first_available_fruit :=
       let* α0 := M.read no_fruit in

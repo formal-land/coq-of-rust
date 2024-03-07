@@ -19,12 +19,11 @@ Module Impl_core_convert_From_i32_for_into_Number.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "into::Number" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "into::Number")
       [ (* T *) Ty.path "i32" ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_i32_for_into_Number.
 
 (*

@@ -29,12 +29,11 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
   
   Axiom Implements :
     forall (K V : Ty.t),
-    let Self := Ty.apply (Ty.path "erc20::Mapping") [ K; V ] in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.apply (Ty.path "erc20::Mapping") [ K; V ])
       []
-      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
+      [ ("default", InstanceField.Method default [ K; V ]) ].
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
@@ -48,7 +47,7 @@ Module Impl_erc20_Mapping_K_V.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -58,6 +57,10 @@ Module Impl_erc20_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+  
   (*
       fn insert(&mut self, _key: K, _value: V) {
           unimplemented!()
@@ -65,7 +68,7 @@ Module Impl_erc20_Mapping_K_V.
   *)
   Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key; _value ] =>
+    | [ Self; K; V ], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -75,6 +78,10 @@ Module Impl_erc20_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_insert :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
 End Impl_erc20_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -92,17 +99,16 @@ Module Impl_core_default_Default_for_erc20_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (erc20.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "erc20::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc20::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "erc20::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_erc20_AccountId.
@@ -115,11 +121,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -131,18 +133,20 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc20::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "erc20::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_erc20_AccountId.
   Axiom Implements :
-    let Self := Ty.path "erc20::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "erc20::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_erc20_AccountId.
 
 Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
@@ -198,12 +202,11 @@ Module Impl_core_default_Default_for_erc20_Erc20.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc20::Erc20" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "erc20::Erc20")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_erc20_Erc20.
 
 (* Enum Transfer *)
@@ -229,13 +232,16 @@ Module Impl_erc20_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "erc20::Env::Get_caller" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -244,7 +250,7 @@ Module Impl_erc20_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _event ] =>
+    | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.var "core::panicking::panic" in
@@ -253,6 +259,9 @@ Module Impl_erc20_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_emit_event :
+    M.IsAssociatedFunction Self "emit_event" emit_event [].
 End Impl_erc20_Env.
 
 Module Impl_erc20_Erc20.
@@ -265,13 +274,16 @@ Module Impl_erc20_Erc20.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -280,11 +292,13 @@ Module Impl_erc20_Erc20.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "erc20::Erc20")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
 End Impl_erc20_Erc20.
 
 Module Impl_erc20_Erc20_2.
@@ -309,7 +323,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ total_supply ] =>
+    | [ Self ], [ total_supply ] =>
       let* total_supply := M.alloc total_supply in
       let* balances :=
         let* α0 :=
@@ -349,14 +363,18 @@ Module Impl_erc20_Erc20_2.
             (Ty.path "erc20::Env")::["emit_event"]
             [
               borrow α1;
-              erc20.Event.Transfer
-                (Value.StructRecord
-                  "erc20::Transfer"
-                  [
-                    ("from", core.option.Option.None);
-                    ("to", core.option.Option.Some α2);
-                    ("value", α3)
-                  ])
+              Value.StructTuple
+                "erc20::Event::Transfer"
+                [
+                  Value.StructRecord
+                    "erc20::Transfer"
+                    [
+                      ("from", core.option.Option.None);
+                      ("to",
+                        Value.StructTuple "core::option::Option::Some" [ α2 ]);
+                      ("value", α3)
+                    ]
+                ]
             ] in
         M.alloc α4 in
       let* α0 := M.read total_supply in
@@ -385,6 +403,8 @@ Module Impl_erc20_Erc20_2.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       fn total_supply(&self) -> Balance {
           self.total_supply
@@ -392,13 +412,16 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition total_supply (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "erc20::Erc20::Get_total_supply" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_total_supply :
+    M.IsAssociatedFunction Self "total_supply" total_supply [].
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -407,7 +430,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition balance_of_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 := M.var "erc20::Erc20::Get_balances" in
@@ -427,6 +450,9 @@ Module Impl_erc20_Erc20_2.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_balance_of_impl :
+    M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl [].
+  
   (*
       fn balance_of(&self, owner: AccountId) -> Balance {
           self.balance_of_impl(&owner)
@@ -434,13 +460,16 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 := M.read self in
       M.call (Ty.path "erc20::Erc20")::["balance_of_impl"] [ α0; borrow owner ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_balance_of :
+    M.IsAssociatedFunction Self "balance_of" balance_of [].
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -449,7 +478,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition allowance_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner; spender ] =>
+    | [ Self ], [ self; owner; spender ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
@@ -478,6 +507,9 @@ Module Impl_erc20_Erc20_2.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_allowance_impl :
+    M.IsAssociatedFunction Self "allowance_impl" allowance_impl [].
+  
   (*
       fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
           self.allowance_impl(&owner, &spender)
@@ -485,7 +517,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition allowance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner; spender ] =>
+    | [ Self ], [ self; owner; spender ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
@@ -495,6 +527,9 @@ Module Impl_erc20_Erc20_2.
         [ α0; borrow owner; borrow spender ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_allowance :
+    M.IsAssociatedFunction Self "allowance" allowance [].
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -516,7 +551,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition transfer_from_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; from; to; value ] =>
+    | [ Self ], [ self; from; to; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -545,7 +580,9 @@ Module Impl_erc20_Erc20_2.
           if α4 then
             let* α0 :=
               return_
-                (core.result.Result.Err erc20.Error.InsufficientBalance) in
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ erc20.Error.InsufficientBalance ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -606,20 +643,33 @@ Module Impl_erc20_Erc20_2.
               (Ty.path "erc20::Env")::["emit_event"]
               [
                 borrow α2;
-                erc20.Event.Transfer
-                  (Value.StructRecord
-                    "erc20::Transfer"
-                    [
-                      ("from", core.option.Option.Some α4);
-                      ("to", core.option.Option.Some α6);
-                      ("value", α7)
-                    ])
+                Value.StructTuple
+                  "erc20::Event::Transfer"
+                  [
+                    Value.StructRecord
+                      "erc20::Transfer"
+                      [
+                        ("from",
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ α4 ]);
+                        ("to",
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ α6 ]);
+                        ("value", α7)
+                      ]
+                  ]
               ] in
           M.alloc α8 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_transfer_from_to :
+    M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to [].
   
   (*
       fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
@@ -629,7 +679,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; to; value ] =>
+    | [ Self ], [ self; to; value ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
       let* value := M.alloc value in
@@ -651,6 +701,9 @@ Module Impl_erc20_Erc20_2.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_transfer :
+    M.IsAssociatedFunction Self "transfer" transfer [].
+  
   (*
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
           let owner = self.env().caller();
@@ -665,7 +718,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition approve (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; spender; value ] =>
+    | [ Self ], [ self; spender; value ] =>
       let* self := M.alloc self in
       let* spender := M.alloc spender in
       let* value := M.alloc value in
@@ -706,16 +759,23 @@ Module Impl_erc20_Erc20_2.
             (Ty.path "erc20::Env")::["emit_event"]
             [
               borrow α2;
-              erc20.Event.Approval
-                (Value.StructRecord
-                  "erc20::Approval"
-                  [ ("owner", α3); ("spender", α4); ("value", α5) ])
+              Value.StructTuple
+                "erc20::Event::Approval"
+                [
+                  Value.StructRecord
+                    "erc20::Approval"
+                    [ ("owner", α3); ("spender", α4); ("value", α5) ]
+                ]
             ] in
         M.alloc α6 in
-      let* α0 := M.alloc (core.result.Result.Ok tt) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_approve :
+    M.IsAssociatedFunction Self "approve" approve [].
   
   (*
       fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
@@ -731,7 +791,7 @@ Module Impl_erc20_Erc20_2.
   *)
   Definition transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; from; to; value ] =>
+    | [ Self ], [ self; from; to; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -766,7 +826,9 @@ Module Impl_erc20_Erc20_2.
           if α4 then
             let* α0 :=
               return_
-                (core.result.Result.Err erc20.Error.InsufficientAllowance) in
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ erc20.Error.InsufficientAllowance ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -866,8 +928,12 @@ Module Impl_erc20_Erc20_2.
                   ])::["insert"]
               [ borrow_mut (α0 (deref α1)); (α2, α3); α7 ] in
           M.alloc α8 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_transfer_from :
+    M.IsAssociatedFunction Self "transfer_from" transfer_from [].
 End Impl_erc20_Erc20_2.

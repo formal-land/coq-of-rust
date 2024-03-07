@@ -8,12 +8,11 @@ Module checked.
     Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Implements :
-      let Self := Ty.path "result::checked::MathError" in
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Self *) (Ty.path "result::checked::MathError")
         []
-        [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+        [ ("fmt", InstanceField.Method fmt []) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :

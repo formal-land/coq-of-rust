@@ -13,19 +13,11 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (match_operator
-                (DeclaredButUndefinedVariable
-                  (A :=
-                    Ty.apply
-                      (Ty.path "core::clone::AssertParamIsClone")
-                      [ Ty.path "u32" ]))
+                Value.DeclaredButUndefined
                 [
                   fun γ =>
                     (let* α0 := M.read self in
@@ -39,18 +31,20 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
     end.
   
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
+      []
+      [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* Enum Job *)
@@ -65,16 +59,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    [ Ty.path "unpacking_options_via_question_mark::PhoneNumber"
-                    ]
-                ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -86,18 +71,20 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
+      []
+      [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* Enum Person *)
@@ -116,7 +103,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
   *)
   Definition work_phone_area_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let return_ :=
         M.return_
@@ -263,6 +250,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
         M.read (α0 α13))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_work_phone_area_code :
+    M.IsAssociatedFunction Self "work_phone_area_code" work_phone_area_code [].
 End Impl_unpacking_options_via_question_mark_Person.
 
 (*
@@ -289,21 +279,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "unpacking_options_via_question_mark::Person"
           [
             ("job",
-              core.option.Option.Some
-                (Value.StructRecord
-                  "unpacking_options_via_question_mark::Job"
-                  [
-                    ("phone_number",
-                      core.option.Option.Some
-                        (Value.StructRecord
-                          "unpacking_options_via_question_mark::PhoneNumber"
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  Value.StructRecord
+                    "unpacking_options_via_question_mark::Job"
+                    [
+                      ("phone_number",
+                        Value.StructTuple
+                          "core::option::Option::Some"
                           [
-                            ("area_code",
-                              core.option.Option.Some
-                                ((Integer.of_Z 61) : Ty.path "u8"));
-                            ("number", (Integer.of_Z 439222222) : Ty.path "u32")
-                          ]))
-                  ]))
+                            Value.StructRecord
+                              "unpacking_options_via_question_mark::PhoneNumber"
+                              [
+                                ("area_code",
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [ (Integer.of_Z 61) : Ty.path "u8" ]);
+                                ("number",
+                                  (Integer.of_Z 439222222) : Ty.path "u32")
+                              ]
+                          ])
+                    ]
+                ])
           ]) in
     let* _ :=
       let* α0 :=
@@ -313,7 +311,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ borrow p ] in
       let* α1 := M.alloc α0 in
       let* α2 :=
-        M.alloc (core.option.Option.Some ((Integer.of_Z 61) : Ty.path "u8")) in
+        M.alloc
+          (Value.StructTuple
+            "core::option::Option::Some"
+            [ (Integer.of_Z 61) : Ty.path "u8" ]) in
       let* α3 := M.alloc (borrow α1, borrow α2) in
       match_operator
         α3

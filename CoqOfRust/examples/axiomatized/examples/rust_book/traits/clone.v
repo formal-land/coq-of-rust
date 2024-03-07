@@ -7,30 +7,31 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Unit" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Unit" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
   Axiom Implements :
-    let Self := Ty.path "clone::Unit" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "clone::Unit")
+      []
+      [].
 End Impl_core_marker_Copy_for_clone_Unit.
 
 (* Struct Pair *)
@@ -39,24 +40,22 @@ Module Impl_core_clone_Clone_for_clone_Pair.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Pair" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Pair" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

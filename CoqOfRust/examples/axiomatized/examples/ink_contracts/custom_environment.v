@@ -7,30 +7,31 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "custom_environment::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "custom_environment::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_custom_environment_AccountId.
 
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "custom_environment::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "custom_environment::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
 
 Module Impl_core_marker_Copy_for_custom_environment_AccountId.
   Axiom Implements :
-    let Self := Ty.path "custom_environment::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "custom_environment::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
@@ -43,12 +44,11 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "custom_environment::Topics" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "custom_environment::Topics")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_custom_environment_Topics.
 
 (* Enum EventWithTopics *)
@@ -57,12 +57,11 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "custom_environment::EventWithTopics" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "custom_environment::EventWithTopics")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)
@@ -72,7 +71,13 @@ Module Impl_custom_environment_Env.
   
   Parameter caller : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
+  
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_emit_event :
+    M.IsAssociatedFunction Self "emit_event" emit_event [].
 End Impl_custom_environment_Env.
 
 Module Impl_custom_environment_Topics.
@@ -80,9 +85,19 @@ Module Impl_custom_environment_Topics.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
+  
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter trigger : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_trigger :
+    M.IsAssociatedFunction Self "trigger" trigger [].
 End Impl_custom_environment_Topics.

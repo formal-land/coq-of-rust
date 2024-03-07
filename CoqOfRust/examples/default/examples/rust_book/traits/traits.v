@@ -63,13 +63,16 @@ Module Impl_traits_Sheep.
   *)
   Definition is_naked (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "traits::Sheep::Get_naked" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_is_naked :
+    M.IsAssociatedFunction Self "is_naked" is_naked [].
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
@@ -185,16 +188,15 @@ Module Impl_traits_Animal_for_traits_Sheep.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "traits::Sheep" in
     M.IsTraitInstance
       "traits::Animal"
-      Self
+      (* Self *) (Ty.path "traits::Sheep")
       []
       [
-        ("new", InstanceField.Method new [ Self ]);
-        ("name", InstanceField.Method name [ Self ]);
-        ("noise", InstanceField.Method noise [ Self ]);
-        ("talk", InstanceField.Method talk [ Self ])
+        ("new", InstanceField.Method new []);
+        ("name", InstanceField.Method name []);
+        ("noise", InstanceField.Method noise []);
+        ("talk", InstanceField.Method talk [])
       ].
 End Impl_traits_Animal_for_traits_Sheep.
 
@@ -215,7 +217,7 @@ Module Impl_traits_Sheep_2.
   *)
   Definition shear (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -288,6 +290,8 @@ Module Impl_traits_Sheep_2.
       M.read α4
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear [].
 End Impl_traits_Sheep_2.
 
 (*

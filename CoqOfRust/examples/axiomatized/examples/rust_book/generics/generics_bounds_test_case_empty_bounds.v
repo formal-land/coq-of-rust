@@ -19,14 +19,20 @@ End Blue.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
   Axiom Implements :
-    let Self := Ty.path "generics_bounds_test_case_empty_bounds::Cardinal" in
-    M.IsTraitInstance "generics_bounds_test_case_empty_bounds::Red" Self [] [].
+    M.IsTraitInstance
+      "generics_bounds_test_case_empty_bounds::Red"
+      (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::Cardinal")
+      []
+      [].
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
   Axiom Implements :
-    let Self := Ty.path "generics_bounds_test_case_empty_bounds::BlueJay" in
-    M.IsTraitInstance "generics_bounds_test_case_empty_bounds::Blue" Self [] [].
+    M.IsTraitInstance
+      "generics_bounds_test_case_empty_bounds::Blue"
+      (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::BlueJay")
+      []
+      [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Parameter red : (list Ty.t) -> (list Value.t) -> M.

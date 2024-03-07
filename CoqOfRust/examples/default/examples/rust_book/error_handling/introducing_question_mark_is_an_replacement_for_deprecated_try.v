@@ -59,7 +59,9 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       ] in
                   let* α1 := M.read err in
                   let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := return_ (core.result.Result.Err α2) in
+                  let* α3 :=
+                    return_
+                      (Value.StructTuple "core::result::Result::Err" [ α2 ]) in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
@@ -106,7 +108,9 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       ] in
                   let* α1 := M.read err in
                   let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := return_ (core.result.Result.Err α2) in
+                  let* α3 :=
+                    return_
+                      (Value.StructTuple "core::result::Result::Err" [ α2 ]) in
                   let* α4 := M.read α3 in
                   let* α5 := never_to_any α4 in
                   M.alloc α5
@@ -119,7 +123,8 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read first_number in
       let* α2 := M.read second_number in
       let* α3 := α0 α1 α2 in
-      let* α0 := M.alloc (core.result.Result.Ok α3) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
       M.read α0)
   | _, _ => M.impossible
   end.

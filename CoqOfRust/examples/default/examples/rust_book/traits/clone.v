@@ -19,12 +19,11 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Unit" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
@@ -41,18 +40,20 @@ Module Impl_core_clone_Clone_for_clone_Unit.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Unit" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
   Axiom Implements :
-    let Self := Ty.path "clone::Unit" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "clone::Unit")
+      []
+      [].
 End Impl_core_marker_Copy_for_clone_Unit.
 
 (* Struct Pair *)
@@ -91,17 +92,16 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       let* α5 := M.var "clone::Pair::Get_1" in
       let* α6 := M.read self in
       let* α7 := M.call α4 [ borrow (α5 (deref α6)) ] in
-      M.pure (clone.Pair.Build_t α3 α7)
+      M.pure (Value.StructTuple "clone::Pair" [ α3; α7 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Pair" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
@@ -132,12 +132,11 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "clone::Pair" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (*
@@ -239,7 +238,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
           [ (Integer.of_Z 2) : Ty.path "i32" ] in
-      M.alloc (clone.Pair.Build_t α0 α1) in
+      M.alloc (Value.StructTuple "clone::Pair" [ α0; α1 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

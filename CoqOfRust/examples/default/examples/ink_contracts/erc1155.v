@@ -29,12 +29,11 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
   
   Axiom Implements :
     forall (K V : Ty.t),
-    let Self := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ] in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.apply (Ty.path "erc1155::Mapping") [ K; V ])
       []
-      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
+      [ ("default", InstanceField.Method default [ K; V ]) ].
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
@@ -48,7 +47,7 @@ Module Impl_erc1155_Mapping_K_V.
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -57,6 +56,10 @@ Module Impl_erc1155_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_contains :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -65,7 +68,7 @@ Module Impl_erc1155_Mapping_K_V.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -75,6 +78,10 @@ Module Impl_erc1155_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+  
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
@@ -82,7 +89,7 @@ Module Impl_erc1155_Mapping_K_V.
   *)
   Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key; _value ] =>
+    | [ Self; K; V ], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -93,6 +100,10 @@ Module Impl_erc1155_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_insert :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+  
   (*
       fn remove(&self, _key: K) {
           unimplemented!()
@@ -100,7 +111,7 @@ Module Impl_erc1155_Mapping_K_V.
   *)
   Definition remove (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -109,6 +120,10 @@ Module Impl_erc1155_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_remove :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -117,7 +132,7 @@ Module Impl_erc1155_Mapping_K_V.
   *)
   Definition size (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -127,6 +142,10 @@ Module Impl_erc1155_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_size :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+  
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
@@ -134,7 +153,7 @@ Module Impl_erc1155_Mapping_K_V.
   *)
   Definition take (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -143,6 +162,10 @@ Module Impl_erc1155_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_take :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
 End Impl_erc1155_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -160,17 +183,16 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (erc1155.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "erc1155::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "erc1155::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_erc1155_AccountId.
 
 Module Impl_core_clone_Clone_for_erc1155_AccountId.
@@ -183,11 +205,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -199,24 +217,29 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "erc1155::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_erc1155_AccountId.
 
 Module Impl_core_marker_Copy_for_erc1155_AccountId.
   Axiom Implements :
-    let Self := Ty.path "erc1155::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "erc1155::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_erc1155_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
   Axiom Implements :
-    let Self := Ty.path "erc1155::AccountId" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "erc1155::AccountId")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
@@ -240,12 +263,11 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::AccountId" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "erc1155::AccountId")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
@@ -266,12 +288,11 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::AccountId" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "erc1155::AccountId")
       [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
@@ -326,8 +347,11 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Axiom Implements :
-    let Self := Ty.path "erc1155::Error" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "erc1155::Error")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_Error.
@@ -358,18 +382,20 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::Error" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "erc1155::Error")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc1155_Error.
   Axiom Implements :
-    let Self := Ty.path "erc1155::Error" in
-    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralEq"
+      (* Self *) (Ty.path "erc1155::Error")
+      []
+      [].
 End Impl_core_marker_StructuralEq_for_erc1155_Error.
 
 Module Impl_core_cmp_Eq_for_erc1155_Error.
@@ -388,14 +414,13 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::Error" in
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Self *) (Ty.path "erc1155::Error")
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+          InstanceField.Method assert_receiver_is_total_eq [])
       ].
 End Impl_core_cmp_Eq_for_erc1155_Error.
 
@@ -436,13 +461,16 @@ Module Impl_erc1155_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "erc1155::Env::Get_caller" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -451,7 +479,7 @@ Module Impl_erc1155_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _event ] =>
+    | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.var "core::panicking::panic" in
@@ -460,6 +488,9 @@ Module Impl_erc1155_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_emit_event :
+    M.IsAssociatedFunction Self "emit_event" emit_event [].
 End Impl_erc1155_Env.
 
 (* Enum Contract *)
@@ -515,12 +546,11 @@ Module Impl_core_default_Default_for_erc1155_Contract.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::Contract" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "erc1155::Contract")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_erc1155_Contract.
 
 Module Impl_erc1155_Contract.
@@ -533,13 +563,16 @@ Module Impl_erc1155_Contract.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -548,11 +581,13 @@ Module Impl_erc1155_Contract.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "erc1155::Contract")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -561,7 +596,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -570,6 +605,8 @@ Module Impl_erc1155_Contract.
       M.call α0 []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn create(&mut self, value: Balance) -> TokenId {
@@ -594,7 +631,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition create (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; value ] =>
+    | [ Self ], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
       let* caller :=
@@ -647,7 +684,7 @@ Module Impl_erc1155_Contract.
             M.alloc core.option.Option.None
           else
             let* α0 := M.read caller in
-            M.alloc (core.option.Option.Some α0) in
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
         let* α9 := M.read α8 in
         let* α10 := M.var "erc1155::Contract::Get_token_id_nonce" in
         let* α11 := M.read self in
@@ -658,16 +695,20 @@ Module Impl_erc1155_Contract.
             (Ty.path "erc1155::Env")::["emit_event"]
             [
               borrow α2;
-              erc1155.Event.TransferSingle
-                (Value.StructRecord
-                  "erc1155::TransferSingle"
-                  [
-                    ("operator", core.option.Option.Some α3);
-                    ("from", core.option.Option.None);
-                    ("to", α9);
-                    ("token_id", α12);
-                    ("value", α13)
-                  ])
+              Value.StructTuple
+                "erc1155::Event::TransferSingle"
+                [
+                  Value.StructRecord
+                    "erc1155::TransferSingle"
+                    [
+                      ("operator",
+                        Value.StructTuple "core::option::Option::Some" [ α3 ]);
+                      ("from", core.option.Option.None);
+                      ("to", α9);
+                      ("token_id", α12);
+                      ("value", α13)
+                    ]
+                ]
             ] in
         M.alloc α14 in
       let* α0 := M.var "erc1155::Contract::Get_token_id_nonce" in
@@ -675,6 +716,9 @@ Module Impl_erc1155_Contract.
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_create :
+    M.IsAssociatedFunction Self "create" create [].
   
   (*
       pub fn mint(&mut self, token_id: TokenId, value: Balance) -> Result<()> {
@@ -697,7 +741,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition mint (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; token_id; value ] =>
+    | [ Self ], [ self; token_id; value ] =>
       let* self := M.alloc self in
       let* token_id := M.alloc token_id in
       let* value := M.alloc value in
@@ -727,7 +771,8 @@ Module Impl_erc1155_Contract.
                   (* T *) Ty.path "erc1155::Error"
                 ] in
             let* α1 := M.call α0 [ erc1155.Error.UnexistentToken ] in
-            let* α2 := return_ (core.result.Result.Err α1) in
+            let* α2 :=
+              return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
             let* α4 := never_to_any α3 in
             M.alloc α4
@@ -775,22 +820,34 @@ Module Impl_erc1155_Contract.
               (Ty.path "erc1155::Env")::["emit_event"]
               [
                 borrow α2;
-                erc1155.Event.TransferSingle
-                  (Value.StructRecord
-                    "erc1155::TransferSingle"
-                    [
-                      ("operator", core.option.Option.Some α3);
-                      ("from", core.option.Option.None);
-                      ("to", core.option.Option.Some α4);
-                      ("token_id", α5);
-                      ("value", α6)
-                    ])
+                Value.StructTuple
+                  "erc1155::Event::TransferSingle"
+                  [
+                    Value.StructRecord
+                      "erc1155::TransferSingle"
+                      [
+                        ("operator",
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ α3 ]);
+                        ("from", core.option.Option.None);
+                        ("to",
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ α4 ]);
+                        ("token_id", α5);
+                        ("value", α6)
+                      ]
+                  ]
               ] in
           M.alloc α7 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint [].
   
   (*
       fn perform_transfer(
@@ -823,7 +880,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition perform_transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; from; to; token_id; value ] =>
+    | [ Self ], [ self; from; to; token_id; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -949,22 +1006,31 @@ Module Impl_erc1155_Contract.
             (Ty.path "erc1155::Env")::["emit_event"]
             [
               borrow α2;
-              erc1155.Event.TransferSingle
-                (Value.StructRecord
-                  "erc1155::TransferSingle"
-                  [
-                    ("operator", core.option.Option.Some α3);
-                    ("from", core.option.Option.Some α4);
-                    ("to", core.option.Option.Some α5);
-                    ("token_id", α6);
-                    ("value", α7)
-                  ])
+              Value.StructTuple
+                "erc1155::Event::TransferSingle"
+                [
+                  Value.StructRecord
+                    "erc1155::TransferSingle"
+                    [
+                      ("operator",
+                        Value.StructTuple "core::option::Option::Some" [ α3 ]);
+                      ("from",
+                        Value.StructTuple "core::option::Option::Some" [ α4 ]);
+                      ("to",
+                        Value.StructTuple "core::option::Option::Some" [ α5 ]);
+                      ("token_id", α6);
+                      ("value", α7)
+                    ]
+                ]
             ] in
         M.alloc α8 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_perform_transfer :
+    M.IsAssociatedFunction Self "perform_transfer" perform_transfer [].
   
   (*
       fn transfer_acceptance_check(
@@ -1041,7 +1107,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition transfer_acceptance_check (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; caller; from; to; token_id; value; data ] =>
+    | [ Self ], [ self; caller; from; to; token_id; value; data ] =>
       let* self := M.alloc self in
       let* caller := M.alloc caller in
       let* from := M.alloc from in
@@ -1052,6 +1118,13 @@ Module Impl_erc1155_Contract.
       M.pure tt
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_transfer_acceptance_check :
+    M.IsAssociatedFunction
+      Self
+      "transfer_acceptance_check"
+      transfer_acceptance_check
+      [].
 End Impl_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155_for_erc1155_Contract.
@@ -1205,7 +1278,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       (* T *) Ty.path "erc1155::Error"
                     ] in
                 let* α1 := M.call α0 [ erc1155.Error.NotApproved ] in
-                let* α2 := return_ (core.result.Result.Err α1) in
+                let* α2 :=
+                  return_
+                    (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
                 let* α3 := M.read α2 in
                 let* α4 := never_to_any α3 in
                 M.alloc α4
@@ -1240,7 +1315,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   (* T *) Ty.path "erc1155::Error"
                 ] in
             let* α1 := M.call α0 [ erc1155.Error.ZeroAddressTransfer ] in
-            let* α2 := return_ (core.result.Result.Err α1) in
+            let* α2 :=
+              return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
             let* α4 := never_to_any α3 in
             M.alloc α4
@@ -1274,7 +1350,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   (* T *) Ty.path "erc1155::Error"
                 ] in
             let* α1 := M.call α0 [ erc1155.Error.InsufficientBalance ] in
-            let* α2 := return_ (core.result.Result.Err α1) in
+            let* α2 :=
+              return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
             let* α4 := never_to_any α3 in
             M.alloc α4
@@ -1304,7 +1381,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               (Ty.path "erc1155::Contract")::["transfer_acceptance_check"]
               [ α0; α1; α2; α3; α4; α5; α6 ] in
           M.alloc α7 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -1409,7 +1487,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       (* T *) Ty.path "erc1155::Error"
                     ] in
                 let* α1 := M.call α0 [ erc1155.Error.NotApproved ] in
-                let* α2 := return_ (core.result.Result.Err α1) in
+                let* α2 :=
+                  return_
+                    (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
                 let* α3 := M.read α2 in
                 let* α4 := never_to_any α3 in
                 M.alloc α4
@@ -1444,7 +1524,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   (* T *) Ty.path "erc1155::Error"
                 ] in
             let* α1 := M.call α0 [ erc1155.Error.ZeroAddressTransfer ] in
-            let* α2 := return_ (core.result.Result.Err α1) in
+            let* α2 :=
+              return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
             let* α4 := never_to_any α3 in
             M.alloc α4
@@ -1472,7 +1553,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   (* T *) Ty.path "erc1155::Error"
                 ] in
             let* α1 := M.call α0 [ erc1155.Error.BatchTransferMismatch ] in
-            let* α2 := return_ (core.result.Result.Err α1) in
+            let* α2 :=
+              return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
             let* α4 := never_to_any α3 in
             M.alloc α4
@@ -1505,7 +1587,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   (* T *) Ty.path "erc1155::Error"
                 ] in
             let* α1 := M.call α0 [ erc1155.Error.BatchTransferMismatch ] in
-            let* α2 := return_ (core.result.Result.Err α1) in
+            let* α2 :=
+              return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
             let* α4 := never_to_any α3 in
             M.alloc α4
@@ -1692,7 +1775,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         α0
                                         [ erc1155.Error.InsufficientBalance ] in
                                     let* α2 :=
-                                      return_ (core.result.Result.Err α1) in
+                                      return_
+                                        (Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ α1 ]) in
                                     let* α3 := M.read α2 in
                                     let* α4 := never_to_any α3 in
                                     M.alloc α4
@@ -1854,7 +1940,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               (Ty.path "erc1155::Contract")::["transfer_acceptance_check"]
               [ α0; α1; α2; α3; α6; α9; α10 ] in
           M.alloc α11 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -2135,7 +2222,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   (* T *) Ty.path "erc1155::Error"
                 ] in
             let* α1 := M.call α0 [ erc1155.Error.SelfApproval ] in
-            let* α2 := return_ (core.result.Result.Err α1) in
+            let* α2 :=
+              return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
             let* α4 := never_to_any α3 in
             M.alloc α4
@@ -2200,34 +2288,34 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               (Ty.path "erc1155::Env")::["emit_event"]
               [
                 borrow α2;
-                erc1155.Event.ApprovalForAll
-                  (Value.StructRecord
-                    "erc1155::ApprovalForAll"
-                    [ ("owner", α3); ("operator", α4); ("approved", α5) ])
+                Value.StructTuple
+                  "erc1155::Event::ApprovalForAll"
+                  [
+                    Value.StructRecord
+                      "erc1155::ApprovalForAll"
+                      [ ("owner", α3); ("operator", α4); ("approved", α5) ]
+                  ]
               ] in
           M.alloc α6 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::Contract" in
     M.IsTraitInstance
       "erc1155::Erc1155"
-      Self
+      (* Self *) (Ty.path "erc1155::Contract")
       []
       [
-        ("is_approved_for_all",
-          InstanceField.Method is_approved_for_all [ Self ]);
-        ("balance_of", InstanceField.Method balance_of [ Self ]);
-        ("safe_transfer_from",
-          InstanceField.Method safe_transfer_from [ Self ]);
+        ("is_approved_for_all", InstanceField.Method is_approved_for_all []);
+        ("balance_of", InstanceField.Method balance_of []);
+        ("safe_transfer_from", InstanceField.Method safe_transfer_from []);
         ("safe_batch_transfer_from",
-          InstanceField.Method safe_batch_transfer_from [ Self ]);
-        ("balance_of_batch", InstanceField.Method balance_of_batch [ Self ]);
-        ("set_approval_for_all",
-          InstanceField.Method set_approval_for_all [ Self ])
+          InstanceField.Method safe_batch_transfer_from []);
+        ("balance_of_batch", InstanceField.Method balance_of_batch []);
+        ("set_approval_for_all", InstanceField.Method set_approval_for_all [])
       ].
 End Impl_erc1155_Erc1155_for_erc1155_Contract.
 
@@ -2337,13 +2425,12 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc1155::Contract" in
     M.IsTraitInstance
       "erc1155::Erc1155TokenReceiver"
-      Self
+      (* Self *) (Ty.path "erc1155::Contract")
       []
       [
-        ("on_received", InstanceField.Method on_received [ Self ]);
-        ("on_batch_received", InstanceField.Method on_batch_received [ Self ])
+        ("on_received", InstanceField.Method on_received []);
+        ("on_batch_received", InstanceField.Method on_batch_received [])
       ].
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.

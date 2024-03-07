@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (call_builder.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "call_builder::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_builder::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_builder::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
   Axiom Implements :
-    let Self := Ty.path "call_builder::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "call_builder::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
@@ -89,7 +86,7 @@ Module Impl_call_builder_Selector.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ bytes ] =>
+    | [ Self ], [ bytes ] =>
       let* bytes := M.alloc bytes in
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
@@ -97,6 +94,8 @@ Module Impl_call_builder_Selector.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
 End Impl_call_builder_Selector.
 
 (* Struct CallBuilderTest *)
@@ -112,12 +111,11 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_builder::CallBuilderTest" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "call_builder::CallBuilderTest")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.
@@ -130,7 +128,7 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -139,6 +137,8 @@ Module Impl_call_builder_CallBuilderTest.
       M.call α0 []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn call(&mut self, address: AccountId, selector: [u8; 4]) -> Option<LangError> {
@@ -161,7 +161,7 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; address; selector ] =>
+    | [ Self ], [ self; address; selector ] =>
       let* self := M.alloc self in
       let* address := M.alloc address in
       let* selector := M.alloc selector in
@@ -200,7 +200,8 @@ Module Impl_call_builder_CallBuilderTest.
                 match α0 with
                 | call_builder.LangError.CouldNotReadInput =>
                   let* α0 := M.read e in
-                  M.alloc (core.option.Option.Some α0)
+                  M.alloc
+                    (Value.StructTuple "core::option::Option::Some" [ α0 ])
                 | _ => M.break_match 
                 end
               | _ => M.break_match 
@@ -244,6 +245,8 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call [].
+  
   (*
       pub fn invoke(&mut self, address: AccountId, selector: [u8; 4]) {
           // use ink::env::call::build_call;
@@ -257,13 +260,16 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition invoke (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; address; selector ] =>
+    | [ Self ], [ self; address; selector ] =>
       let* self := M.alloc self in
       let* address := M.alloc address in
       let* selector := M.alloc selector in
       M.pure tt
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_invoke :
+    M.IsAssociatedFunction Self "invoke" invoke [].
   
   (*
       pub fn call_instantiate(
@@ -297,7 +303,7 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition call_instantiate (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; code_hash; selector; init_value ] =>
+    | [ Self ], [ self; code_hash; selector; init_value ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
@@ -305,6 +311,9 @@ Module Impl_call_builder_CallBuilderTest.
       M.pure core.option.Option.None
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_call_instantiate :
+    M.IsAssociatedFunction Self "call_instantiate" call_instantiate [].
   
   (*
       pub fn call_instantiate_fallible(
@@ -335,7 +344,7 @@ Module Impl_call_builder_CallBuilderTest.
   *)
   Definition call_instantiate_fallible (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; code_hash; selector; init_value ] =>
+    | [ Self ], [ self; code_hash; selector; init_value ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
@@ -343,4 +352,11 @@ Module Impl_call_builder_CallBuilderTest.
       M.pure core.option.Option.None
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_call_instantiate_fallible :
+    M.IsAssociatedFunction
+      Self
+      "call_instantiate_fallible"
+      call_instantiate_fallible
+      [].
 End Impl_call_builder_CallBuilderTest.

@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (updated_incrementer.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "updated_incrementer::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "updated_incrementer::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "updated_incrementer::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_updated_incrementer_AccountId.
 
 Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "updated_incrementer::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "updated_incrementer::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_updated_incrementer_AccountId.
 
 Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
   Axiom Implements :
-    let Self := Ty.path "updated_incrementer::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "updated_incrementer::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
 Axiom Hash :
@@ -87,7 +84,7 @@ Module Impl_updated_incrementer_Env.
   *)
   Definition set_code_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ E ], [ self; code_hash ] =>
+    | [ Self; E ], [ self; code_hash ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* α0 := M.var "core::panicking::panic" in
@@ -96,6 +93,9 @@ Module Impl_updated_incrementer_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_set_code_hash :
+    M.IsAssociatedFunction Self "set_code_hash" set_code_hash [].
 End Impl_updated_incrementer_Env.
 
 (* Enum Incrementer *)
@@ -110,13 +110,16 @@ Module Impl_updated_incrementer_Incrementer.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -125,11 +128,13 @@ Module Impl_updated_incrementer_Incrementer.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "updated_incrementer::Incrementer")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -138,7 +143,7 @@ Module Impl_updated_incrementer_Incrementer.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::unreachable_display" in
       let* α1 :=
         M.call
@@ -152,6 +157,8 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       pub fn inc(&mut self) {
           self.count += 4;
@@ -163,7 +170,7 @@ Module Impl_updated_incrementer_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* β :=
@@ -207,6 +214,8 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc [].
+  
   (*
       pub fn get(&self) -> u32 {
           self.count
@@ -214,13 +223,15 @@ Module Impl_updated_incrementer_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "updated_incrementer::Incrementer::Get_count" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
   
   (*
       pub fn set_code(&mut self, code_hash: Hash) {
@@ -232,7 +243,7 @@ Module Impl_updated_incrementer_Incrementer.
   *)
   Definition set_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; code_hash ] =>
+    | [ Self ], [ self; code_hash ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* _ :=
@@ -299,4 +310,7 @@ Module Impl_updated_incrementer_Incrementer.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_set_code :
+    M.IsAssociatedFunction Self "set_code" set_code [].
 End Impl_updated_incrementer_Incrementer.

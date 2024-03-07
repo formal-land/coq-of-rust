@@ -16,7 +16,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x := M.copy (DeclaredButUndefinedVariable (A := Ty.path "u64")) in
+    let* x := M.copy Value.DeclaredButUndefined in
     let* _ :=
       let _ := InlineAssembly in
       M.alloc tt in

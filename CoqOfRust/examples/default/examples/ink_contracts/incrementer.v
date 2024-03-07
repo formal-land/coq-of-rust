@@ -13,12 +13,14 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ init_value ] =>
+    | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure (Value.StructRecord "incrementer::Incrementer" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn new_default() -> Self {
@@ -27,7 +29,7 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -38,6 +40,9 @@ Module Impl_incrementer_Incrementer.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new_default :
+    M.IsAssociatedFunction Self "new_default" new_default [].
+  
   (*
       pub fn inc(&mut self, by: i32) {
           self.value += by;
@@ -45,7 +50,7 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; by_ ] =>
+    | [ Self ], [ self; by_ ] =>
       let* self := M.alloc self in
       let* by_ := M.alloc by_ in
       let* _ :=
@@ -64,6 +69,8 @@ Module Impl_incrementer_Incrementer.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc [].
+  
   (*
       pub fn get(&self) -> i32 {
           self.value
@@ -71,11 +78,13 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "incrementer::Incrementer::Get_value" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_incrementer_Incrementer.

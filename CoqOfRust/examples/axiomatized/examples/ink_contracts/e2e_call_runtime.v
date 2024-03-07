@@ -7,30 +7,31 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
@@ -41,6 +42,9 @@ Module Impl_e2e_call_runtime_Env.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Env".
   
   Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_balance :
+    M.IsAssociatedFunction Self "balance" balance [].
 End Impl_e2e_call_runtime_Env.
 
 (* Struct Contract *)
@@ -49,12 +53,11 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::Contract" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "e2e_call_runtime::Contract")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_e2e_call_runtime_Contract.
 
 Module Impl_e2e_call_runtime_Contract.
@@ -62,9 +65,19 @@ Module Impl_e2e_call_runtime_Contract.
   
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
+  
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter get_contract_balance : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_get_contract_balance :
+    M.IsAssociatedFunction Self "get_contract_balance" get_contract_balance [].
 End Impl_e2e_call_runtime_Contract.

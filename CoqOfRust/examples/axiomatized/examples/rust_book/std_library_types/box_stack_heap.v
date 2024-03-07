@@ -8,12 +8,11 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "box_stack_heap::Point" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "box_stack_heap::Point")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
@@ -21,18 +20,20 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "box_stack_heap::Point" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "box_stack_heap::Point")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   Axiom Implements :
-    let Self := Ty.path "box_stack_heap::Point" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "box_stack_heap::Point")
+      []
+      [].
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* Enum Rectangle *)

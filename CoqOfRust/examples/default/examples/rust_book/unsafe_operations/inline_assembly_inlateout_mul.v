@@ -52,8 +52,8 @@ Definition mul (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
-    let* lo := M.copy (DeclaredButUndefinedVariable (A := Ty.path "u64")) in
-    let* hi := M.copy (DeclaredButUndefinedVariable (A := Ty.path "u64")) in
+    let* lo := M.copy Value.DeclaredButUndefined in
+    let* hi := M.copy Value.DeclaredButUndefined in
     let* _ :=
       let _ := InlineAssembly in
       M.alloc tt in

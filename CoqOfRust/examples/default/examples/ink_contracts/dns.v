@@ -29,12 +29,11 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
   
   Axiom Implements :
     forall (K V : Ty.t),
-    let Self := Ty.apply (Ty.path "dns::Mapping") [ K; V ] in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.apply (Ty.path "dns::Mapping") [ K; V ])
       []
-      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
+      [ ("default", InstanceField.Method default [ K; V ]) ].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
@@ -48,7 +47,7 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -57,6 +56,10 @@ Module Impl_dns_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_contains :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -65,7 +68,7 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -75,6 +78,10 @@ Module Impl_dns_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+  
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
@@ -82,7 +89,7 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key; _value ] =>
+    | [ Self; K; V ], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -93,6 +100,10 @@ Module Impl_dns_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_insert :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+  
   (*
       fn new() -> Mapping<K, V> {
           unimplemented!()
@@ -100,13 +111,17 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [] =>
+    | [ Self; K; V ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "new" new [ K; V ].
   
   (*
       fn remove(&self, _key: K) {
@@ -115,7 +130,7 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition remove (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -124,6 +139,10 @@ Module Impl_dns_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_remove :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -132,7 +151,7 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition size (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -142,6 +161,10 @@ Module Impl_dns_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_size :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+  
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
@@ -149,7 +172,7 @@ Module Impl_dns_Mapping_K_V.
   *)
   Definition take (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -158,6 +181,10 @@ Module Impl_dns_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_take :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
 End Impl_dns_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -175,17 +202,16 @@ Module Impl_core_default_Default_for_dns_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (dns.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "dns::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "dns::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "dns::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_dns_AccountId.
 
 Module Impl_core_clone_Clone_for_dns_AccountId.
@@ -198,11 +224,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -214,24 +236,29 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "dns::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "dns::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_dns_AccountId.
 
 Module Impl_core_marker_Copy_for_dns_AccountId.
   Axiom Implements :
-    let Self := Ty.path "dns::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "dns::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_dns_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
   Axiom Implements :
-    let Self := Ty.path "dns::AccountId" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "dns::AccountId")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_dns_AccountId.
@@ -255,12 +282,11 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "dns::AccountId" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "dns::AccountId")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_dns_AccountId.
@@ -281,12 +307,11 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "dns::AccountId" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "dns::AccountId")
       [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_array_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
@@ -314,13 +339,16 @@ Module Impl_dns_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "dns::Env::Get_caller" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -329,7 +357,7 @@ Module Impl_dns_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _event ] =>
+    | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.var "core::panicking::panic" in
@@ -338,6 +366,9 @@ Module Impl_dns_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_emit_event :
+    M.IsAssociatedFunction Self "emit_event" emit_event [].
 End Impl_dns_Env.
 
 (* Enum DomainNameService *)
@@ -458,20 +489,22 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "dns::DomainNameService" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "dns::DomainNameService")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
 (* Enum Error *)
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Axiom Implements :
-    let Self := Ty.path "dns::Error" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "dns::Error")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
 
 Module Impl_core_cmp_PartialEq_for_dns_Error.
@@ -502,18 +535,20 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "dns::Error" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "dns::Error")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
 
 Module Impl_core_marker_StructuralEq_for_dns_Error.
   Axiom Implements :
-    let Self := Ty.path "dns::Error" in
-    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralEq"
+      (* Self *) (Ty.path "dns::Error")
+      []
+      [].
 End Impl_core_marker_StructuralEq_for_dns_Error.
 
 Module Impl_core_cmp_Eq_for_dns_Error.
@@ -532,14 +567,13 @@ Module Impl_core_cmp_Eq_for_dns_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "dns::Error" in
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Self *) (Ty.path "dns::Error")
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+          InstanceField.Method assert_receiver_is_total_eq [])
       ].
 End Impl_core_cmp_Eq_for_dns_Error.
 
@@ -558,13 +592,16 @@ Module Impl_dns_DomainNameService.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -573,11 +610,13 @@ Module Impl_dns_DomainNameService.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "dns::DomainNameService")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -586,7 +625,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -595,6 +634,8 @@ Module Impl_dns_DomainNameService.
       M.call α0 []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn register(&mut self, name: Hash) -> Result<()> {
@@ -612,7 +653,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition register (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; name ] =>
+    | [ Self ], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let return_ :=
@@ -647,7 +688,10 @@ Module Impl_dns_DomainNameService.
           let* α4 := M.read (use α3) in
           if α4 then
             let* α0 :=
-              return_ (core.result.Result.Err dns.Error.NameAlreadyExists) in
+              return_
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ dns.Error.NameAlreadyExists ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -682,16 +726,23 @@ Module Impl_dns_DomainNameService.
               (Ty.path "dns::Env")::["emit_event"]
               [
                 borrow α2;
-                dns.Event.Register
-                  (Value.StructRecord
-                    "dns::Register"
-                    [ ("name", α3); ("from", α4) ])
+                Value.StructTuple
+                  "dns::Event::Register"
+                  [
+                    Value.StructRecord
+                      "dns::Register"
+                      [ ("name", α3); ("from", α4) ]
+                  ]
               ] in
           M.alloc α5 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_register :
+    M.IsAssociatedFunction Self "register" register [].
   
   (*
       fn get_owner_or_default(&self, name: Hash) -> AccountId {
@@ -702,7 +753,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_owner_or_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; name ] =>
+    | [ Self ], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.var "dns::DomainNameService::Get_name_to_owner" in
@@ -727,6 +778,9 @@ Module Impl_dns_DomainNameService.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get_owner_or_default :
+    M.IsAssociatedFunction Self "get_owner_or_default" get_owner_or_default [].
+  
   (*
       pub fn set_address(&mut self, name: Hash, new_address: AccountId) -> Result<()> {
           let caller = self.env().caller();
@@ -749,7 +803,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition set_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; name; new_address ] =>
+    | [ Self ], [ self; name; new_address ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* new_address := M.alloc new_address in
@@ -791,7 +845,10 @@ Module Impl_dns_DomainNameService.
           let* α3 := M.read (use α2) in
           if α3 then
             let* α0 :=
-              return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
+              return_
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ dns.Error.CallerIsNotOwner ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -841,21 +898,28 @@ Module Impl_dns_DomainNameService.
               (Ty.path "dns::Env")::["emit_event"]
               [
                 borrow α2;
-                dns.Event.SetAddress
-                  (Value.StructRecord
-                    "dns::SetAddress"
-                    [
-                      ("name", α3);
-                      ("from", α4);
-                      ("old_address", α5);
-                      ("new_address", α6)
-                    ])
+                Value.StructTuple
+                  "dns::Event::SetAddress"
+                  [
+                    Value.StructRecord
+                      "dns::SetAddress"
+                      [
+                        ("name", α3);
+                        ("from", α4);
+                        ("old_address", α5);
+                        ("new_address", α6)
+                      ]
+                  ]
               ] in
           M.alloc α7 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_set_address :
+    M.IsAssociatedFunction Self "set_address" set_address [].
   
   (*
       pub fn transfer(&mut self, name: Hash, to: AccountId) -> Result<()> {
@@ -880,7 +944,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; name; to ] =>
+    | [ Self ], [ self; name; to ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* to := M.alloc to in
@@ -922,7 +986,10 @@ Module Impl_dns_DomainNameService.
           let* α3 := M.read (use α2) in
           if α3 then
             let* α0 :=
-              return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
+              return_
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ dns.Error.CallerIsNotOwner ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -972,21 +1039,28 @@ Module Impl_dns_DomainNameService.
               (Ty.path "dns::Env")::["emit_event"]
               [
                 borrow α2;
-                dns.Event.Transfer
-                  (Value.StructRecord
-                    "dns::Transfer"
-                    [
-                      ("name", α3);
-                      ("from", α4);
-                      ("old_owner", α5);
-                      ("new_owner", α6)
-                    ])
+                Value.StructTuple
+                  "dns::Event::Transfer"
+                  [
+                    Value.StructRecord
+                      "dns::Transfer"
+                      [
+                        ("name", α3);
+                        ("from", α4);
+                        ("old_owner", α5);
+                        ("new_owner", α6)
+                      ]
+                  ]
               ] in
           M.alloc α7 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_transfer :
+    M.IsAssociatedFunction Self "transfer" transfer [].
   
   (*
       fn get_address_or_default(&self, name: Hash) -> AccountId {
@@ -997,7 +1071,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_address_or_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; name ] =>
+    | [ Self ], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.var "dns::DomainNameService::Get_name_to_address" in
@@ -1022,6 +1096,13 @@ Module Impl_dns_DomainNameService.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get_address_or_default :
+    M.IsAssociatedFunction
+      Self
+      "get_address_or_default"
+      get_address_or_default
+      [].
+  
   (*
       pub fn get_address(&self, name: Hash) -> AccountId {
           self.get_address_or_default(name)
@@ -1029,7 +1110,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; name ] =>
+    | [ Self ], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.read self in
@@ -1040,6 +1121,9 @@ Module Impl_dns_DomainNameService.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get_address :
+    M.IsAssociatedFunction Self "get_address" get_address [].
+  
   (*
       pub fn get_owner(&self, name: Hash) -> AccountId {
           self.get_owner_or_default(name)
@@ -1047,7 +1131,7 @@ Module Impl_dns_DomainNameService.
   *)
   Definition get_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; name ] =>
+    | [ Self ], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* α0 := M.read self in
@@ -1057,4 +1141,7 @@ Module Impl_dns_DomainNameService.
         [ α0; α1 ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get_owner :
+    M.IsAssociatedFunction Self "get_owner" get_owner [].
 End Impl_dns_DomainNameService.

@@ -105,18 +105,17 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     end.
   
   Axiom Implements :
-    let Self := Ty.path "generics_associated_types_solution::Container" in
     M.IsTraitInstance
       "generics_associated_types_solution::Contains"
-      Self
+      (* Self *) (Ty.path "generics_associated_types_solution::Container")
       []
       [
         ("A", TODO);
         ("B", TODO);
-        ("contains", InstanceField.Method contains [ Self ]);
-        ("first", InstanceField.Method first [ Self ]);
-        ("last", InstanceField.Method last [ Self ]);
-        ("a", InstanceField.Method a [ Self ])
+        ("contains", InstanceField.Method contains []);
+        ("first", InstanceField.Method first []);
+        ("last", InstanceField.Method last []);
+        ("a", InstanceField.Method a [])
       ].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
@@ -195,7 +194,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* container :=
       let* α0 := M.read number_1 in
       let* α1 := M.read number_2 in
-      M.alloc (generics_associated_types_solution.Container.Build_t α0 α1) in
+      M.alloc
+        (Value.StructTuple
+          "generics_associated_types_solution::Container"
+          [ α0; α1 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

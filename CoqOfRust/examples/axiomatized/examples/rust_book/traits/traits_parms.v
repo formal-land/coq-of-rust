@@ -25,20 +25,29 @@ End SomeTrait.
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
   Axiom Implements :
-    let Self := Ty.path "traits_parms::SomeOtherType" in
-    M.IsTraitInstance "traits_parms::Foo" Self [] [].
+    M.IsTraitInstance
+      "traits_parms::Foo"
+      (* Self *) (Ty.path "traits_parms::SomeOtherType")
+      []
+      [].
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
   Axiom Implements :
-    let Self := Ty.path "traits_parms::SomeOtherType" in
-    M.IsTraitInstance "traits_parms::Bar" Self [] [].
+    M.IsTraitInstance
+      "traits_parms::Bar"
+      (* Self *) (Ty.path "traits_parms::SomeOtherType")
+      []
+      [].
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
   Axiom Implements :
-    let Self := Ty.path "traits_parms::SomeOtherType" in
-    M.IsTraitInstance "traits_parms::Tar" Self [] [].
+    M.IsTraitInstance
+      "traits_parms::Tar"
+      (* Self *) (Ty.path "traits_parms::SomeOtherType")
+      []
+      [].
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
@@ -47,11 +56,9 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Parameter some_fn : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "traits_parms::SomeOtherType" in
     M.IsTraitInstance
       "traits_parms::SomeTrait"
-      Self
+      (* Self *) (Ty.path "traits_parms::SomeOtherType")
       []
-      [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn [ Self ])
-      ].
+      [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn []) ].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

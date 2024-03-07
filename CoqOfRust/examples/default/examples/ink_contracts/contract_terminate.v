@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (contract_terminate.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "contract_terminate::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "contract_terminate::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "contract_terminate::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_contract_terminate_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "contract_terminate::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "contract_terminate::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_contract_terminate_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
   Axiom Implements :
-    let Self := Ty.path "contract_terminate::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "contract_terminate::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 
 (* Enum Env *)
@@ -81,13 +78,16 @@ Module Impl_contract_terminate_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "contract_terminate::Env::Get_caller" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
   
   (*
       fn terminate_contract(&self, _account: AccountId) {
@@ -96,7 +96,7 @@ Module Impl_contract_terminate_Env.
   *)
   Definition terminate_contract (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _account ] =>
+    | [ Self ], [ self; _account ] =>
       let* self := M.alloc self in
       let* _account := M.alloc _account in
       let* α0 := M.var "core::panicking::panic" in
@@ -105,6 +105,9 @@ Module Impl_contract_terminate_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_terminate_contract :
+    M.IsAssociatedFunction Self "terminate_contract" terminate_contract [].
 End Impl_contract_terminate_Env.
 
 (* Struct JustTerminate *)
@@ -119,13 +122,16 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -134,11 +140,13 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "contract_terminate::JustTerminate")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -147,9 +155,11 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure contract_terminate.JustTerminate.Build
+    | [ Self ], [] => M.pure contract_terminate.JustTerminate.Build
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn terminate_me(&mut self) {
@@ -158,7 +168,7 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition terminate_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -186,4 +196,7 @@ Module Impl_contract_terminate_JustTerminate.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_terminate_me :
+    M.IsAssociatedFunction Self "terminate_me" terminate_me [].
 End Impl_contract_terminate_JustTerminate.

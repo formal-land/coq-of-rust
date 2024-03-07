@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (contract_ref.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "contract_ref::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "contract_ref::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "contract_ref::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_contract_ref_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_ref_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "contract_ref::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "contract_ref::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_contract_ref_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_ref_AccountId.
   Axiom Implements :
-    let Self := Ty.path "contract_ref::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "contract_ref::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_contract_ref_AccountId.
 
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
@@ -97,12 +94,11 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "contract_ref::FlipperError" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "contract_ref::FlipperError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError.
 
 Module Impl_contract_ref_FlipperRef.
@@ -115,13 +111,16 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -130,11 +129,13 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "contract_ref::FlipperRef")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new(init_value: bool) -> Self {
@@ -143,12 +144,14 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ init_value ] =>
+    | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure (Value.StructRecord "contract_ref::FlipperRef" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn new_default() -> Self {
@@ -157,7 +160,7 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -167,6 +170,9 @@ Module Impl_contract_ref_FlipperRef.
       M.call (Ty.path "contract_ref::FlipperRef")::["new"] [ α1 ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new_default :
+    M.IsAssociatedFunction Self "new_default" new_default [].
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
@@ -179,19 +185,25 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Definition try_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ succeed ] =>
+    | [ Self ], [ succeed ] =>
       let* succeed := M.alloc succeed in
       let* α0 := M.read (use succeed) in
       let* α1 :=
         if α0 then
           let* α0 :=
             M.call (Ty.path "contract_ref::FlipperRef")::["new"] [ true ] in
-          M.alloc (core.result.Result.Ok α0)
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α0 ])
         else
-          M.alloc (core.result.Result.Err contract_ref.FlipperError.Build) in
+          M.alloc
+            (Value.StructTuple
+              "core::result::Result::Err"
+              [ contract_ref.FlipperError.Build ]) in
       M.read α1
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_try_new :
+    M.IsAssociatedFunction Self "try_new" try_new [].
   
   (*
       pub fn flip(&mut self) {
@@ -200,7 +212,7 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.var "contract_ref::FlipperRef::Get_value" in
@@ -215,6 +227,8 @@ Module Impl_contract_ref_FlipperRef.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  
   (*
       pub fn get(&self) -> bool {
           self.value
@@ -222,13 +236,15 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "contract_ref::FlipperRef::Get_value" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_contract_ref_FlipperRef.
 
 (* Enum ContractRef *)
@@ -250,7 +266,7 @@ Module Impl_contract_ref_ContractRef.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ version; flipper_code_hash ] =>
+    | [ Self ], [ version; flipper_code_hash ] =>
       let* version := M.alloc version in
       let* flipper_code_hash := M.alloc flipper_code_hash in
       let* salt :=
@@ -270,6 +286,8 @@ Module Impl_contract_ref_ContractRef.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn try_new(version: u32, flipper_code_hash: Hash, succeed: bool) -> Self {
@@ -291,7 +309,7 @@ Module Impl_contract_ref_ContractRef.
   *)
   Definition try_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ version; flipper_code_hash; succeed ] =>
+    | [ Self ], [ version; flipper_code_hash; succeed ] =>
       let* version := M.alloc version in
       let* flipper_code_hash := M.alloc flipper_code_hash in
       let* succeed := M.alloc succeed in
@@ -323,6 +341,9 @@ Module Impl_contract_ref_ContractRef.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_try_new :
+    M.IsAssociatedFunction Self "try_new" try_new [].
+  
   (*
       pub fn flip(&mut self) {
           self.flipper.flip();
@@ -330,7 +351,7 @@ Module Impl_contract_ref_ContractRef.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
@@ -345,6 +366,8 @@ Module Impl_contract_ref_ContractRef.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  
   (*
       pub fn get(&mut self) -> bool {
           self.flipper.get()
@@ -352,7 +375,7 @@ Module Impl_contract_ref_ContractRef.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
       let* α1 := M.read self in
@@ -361,4 +384,6 @@ Module Impl_contract_ref_ContractRef.
         [ borrow (α0 (deref α1)) ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_contract_ref_ContractRef.

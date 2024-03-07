@@ -17,7 +17,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   *)
   Definition run (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; x; y ] =>
+    | [ Self ], [ self; x; y ] =>
       let* self := M.alloc self in
       let* x := M.alloc x in
       let* y := M.alloc y in
@@ -63,4 +63,6 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run [].
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

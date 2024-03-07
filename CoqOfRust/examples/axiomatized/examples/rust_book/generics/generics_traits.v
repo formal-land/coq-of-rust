@@ -15,12 +15,11 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
   
   Axiom Implements :
     forall (T U : Ty.t),
-    let Self := U in
     M.IsTraitInstance
       "generics_traits::DoubleDrop"
-      Self
+      (* Self *) U
       [ (* T *) T ]
-      [ ("double_drop", InstanceField.Method double_drop [ Self; T; U ]) ].
+      [ ("double_drop", InstanceField.Method double_drop [ T; U ]) ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

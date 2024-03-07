@@ -14,24 +14,22 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
   Parameter noise : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "returning_traits_with_dyn::Sheep" in
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      Self
+      (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
       []
-      [ ("noise", InstanceField.Method noise [ Self ]) ].
+      [ ("noise", InstanceField.Method noise []) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Parameter noise : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "returning_traits_with_dyn::Cow" in
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      Self
+      (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
       []
-      [ ("noise", InstanceField.Method noise [ Self ]) ].
+      [ ("noise", InstanceField.Method noise []) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal : (list Ty.t) -> (list Value.t) -> M.

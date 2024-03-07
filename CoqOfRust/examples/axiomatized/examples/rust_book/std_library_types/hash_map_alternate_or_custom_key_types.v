@@ -5,40 +5,44 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Axiom Implements :
-    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
   Axiom Implements :
-    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
-    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralEq"
+      (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
+      []
+      [].
 End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+          InstanceField.Method assert_receiver_is_total_eq [])
       ].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -46,12 +50,11 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "hash_map_alternate_or_custom_key_types::Account" in
     M.IsTraitInstance
       "core::hash::Hash"
-      Self
+      (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       []
-      [ ("hash", InstanceField.Method hash [ Self ]) ].
+      [ ("hash", InstanceField.Method hash []) ].
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 (* Enum AccountInfo *)

@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (constructors_return_value.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "constructors_return_value::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "constructors_return_value::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "constructors_return_value::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_constructors_return_value_AccountId.
 
 Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "constructors_return_value::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "constructors_return_value::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_constructors_return_value_AccountId.
 
 Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
   Axiom Implements :
-    let Self := Ty.path "constructors_return_value::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "constructors_return_value::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
@@ -87,12 +84,11 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "constructors_return_value::AccountId" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "constructors_return_value::AccountId")
       [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance :
@@ -127,12 +123,11 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "constructors_return_value::ConstructorError" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "constructors_return_value::ConstructorError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 
 (* Struct ReturnFlags *)
@@ -147,7 +142,7 @@ Module Impl_constructors_return_value_ReturnFlags.
   *)
   Definition new_with_reverted (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ has_reverted ] =>
+    | [ Self ], [ has_reverted ] =>
       let* has_reverted := M.alloc has_reverted in
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
@@ -155,6 +150,9 @@ Module Impl_constructors_return_value_ReturnFlags.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new_with_reverted :
+    M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted [].
 End Impl_constructors_return_value_ReturnFlags.
 
 (*
@@ -184,7 +182,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ init_value ] =>
+    | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure
@@ -193,6 +191,8 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           [ ("value", α0) ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, ConstructorError> {
@@ -205,7 +205,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition try_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ succeed ] =>
+    | [ Self ], [ succeed ] =>
       let* succeed := M.alloc succeed in
       let* α0 := M.read (use succeed) in
       let* α1 :=
@@ -215,14 +215,18 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               (Ty.path
                   "constructors_return_value::ConstructorsReturnValue")::["new"]
               [ true ] in
-          M.alloc (core.result.Result.Ok α0)
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α0 ])
         else
           M.alloc
-            (core.result.Result.Err
-              constructors_return_value.ConstructorError.Build) in
+            (Value.StructTuple
+              "core::result::Result::Err"
+              [ constructors_return_value.ConstructorError.Build ]) in
       M.read α1
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_try_new :
+    M.IsAssociatedFunction Self "try_new" try_new [].
   
   (*
       pub fn revert_new(_init_value: bool) -> Self {
@@ -234,7 +238,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition revert_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ _init_value ] =>
+    | [ Self ], [ _init_value ] =>
       let* _init_value := M.alloc _init_value in
       let* α0 := M.var "constructors_return_value::return_value" in
       let* α1 :=
@@ -251,11 +255,15 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
           ] in
       let* α3 := M.call α2 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ] in
-      let* α4 := M.alloc (core.result.Result.Ok α3) in
+      let* α4 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
       let* α5 := M.call α0 [ α1; borrow α4 ] in
       never_to_any α5
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_revert_new :
+    M.IsAssociatedFunction Self "revert_new" revert_new [].
   
   (*
       pub fn try_revert_new(init_value: bool) -> Result<Self, ConstructorError> {
@@ -273,7 +281,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition try_revert_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ init_value ] =>
+    | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* value :=
         let* α0 := M.read (use init_value) in
@@ -289,11 +297,15 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 ] in
             let* α1 :=
               M.call α0 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ] in
-            M.alloc (core.result.Result.Ok (core.result.Result.Ok α1))
+            M.alloc
+              (Value.StructTuple
+                "core::result::Result::Ok"
+                [ Value.StructTuple "core::result::Result::Ok" [ α1 ] ])
           else
             M.alloc
-              (core.result.Result.Err
-                constructors_return_value.LangError.CouldNotReadInput) in
+              (Value.StructTuple
+                "core::result::Result::Err"
+                [ constructors_return_value.LangError.CouldNotReadInput ]) in
         M.copy α1 in
       let* α0 := M.var "constructors_return_value::return_value" in
       let* α1 :=
@@ -308,6 +320,9 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_try_revert_new :
+    M.IsAssociatedFunction Self "try_revert_new" try_revert_new [].
+  
   (*
       pub fn get_value(&self) -> bool {
           self.value
@@ -315,7 +330,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition get_value (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.var "constructors_return_value::ConstructorsReturnValue::Get_value" in
@@ -323,4 +338,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get_value :
+    M.IsAssociatedFunction Self "get_value" get_value [].
 End Impl_constructors_return_value_ConstructorsReturnValue.

@@ -9,12 +9,11 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "integration_flipper::FlipperError" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "integration_flipper::FlipperError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 
 Module Impl_integration_flipper_Flipper.
@@ -22,13 +21,28 @@ Module Impl_integration_flipper_Flipper.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_new_default :
+    M.IsAssociatedFunction Self "new_default" new_default [].
   
   Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_try_new :
+    M.IsAssociatedFunction Self "try_new" try_new [].
+  
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  
   Parameter err_flip : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_err_flip :
+    M.IsAssociatedFunction Self "err_flip" err_flip [].
 End Impl_integration_flipper_Flipper.

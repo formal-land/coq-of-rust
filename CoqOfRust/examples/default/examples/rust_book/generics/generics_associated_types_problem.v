@@ -80,15 +80,14 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     end.
   
   Axiom Implements :
-    let Self := Ty.path "generics_associated_types_problem::Container" in
     M.IsTraitInstance
       "generics_associated_types_problem::Contains"
-      Self
+      (* Self *) (Ty.path "generics_associated_types_problem::Container")
       [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
       [
-        ("contains", InstanceField.Method contains [ Self ]);
-        ("first", InstanceField.Method first [ Self ]);
-        ("last", InstanceField.Method last [ Self ])
+        ("contains", InstanceField.Method contains []);
+        ("first", InstanceField.Method first []);
+        ("last", InstanceField.Method last [])
       ].
 End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
@@ -151,7 +150,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* container :=
       let* α0 := M.read number_1 in
       let* α1 := M.read number_2 in
-      M.alloc (generics_associated_types_problem.Container.Build_t α0 α1) in
+      M.alloc
+        (Value.StructTuple
+          "generics_associated_types_problem::Container"
+          [ α0; α1 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

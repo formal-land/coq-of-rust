@@ -7,12 +7,11 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "hash::Person" in
     M.IsTraitInstance
       "core::hash::Hash"
-      Self
+      (* Self *) (Ty.path "hash::Person")
       []
-      [ ("hash", InstanceField.Method hash [ Self ]) ].
+      [ ("hash", InstanceField.Method hash []) ].
 End Impl_core_hash_Hash_for_hash_Person.
 
 Parameter calculate_hash : (list Ty.t) -> (list Value.t) -> M.

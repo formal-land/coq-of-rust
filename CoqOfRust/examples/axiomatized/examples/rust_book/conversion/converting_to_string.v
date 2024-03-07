@@ -7,12 +7,11 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "converting_to_string::Circle" in
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Self *) (Ty.path "converting_to_string::Circle")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

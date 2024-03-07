@@ -24,18 +24,20 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
   Axiom Implements :
-    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
@@ -59,12 +61,11 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
@@ -96,21 +97,21 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
         if α5 then
           let* α0 := M.read value in
           M.alloc
-            (core.result.Result.Ok
-              (try_from_and_try_into.EvenNumber.Build_t α0))
+            (Value.StructTuple
+              "core::result::Result::Ok"
+              [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ α0 ] ])
         else
-          M.alloc (core.result.Result.Err tt) in
+          M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
       M.read α6
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "try_from_and_try_into::EvenNumber" in
     M.IsTraitInstance
       "core::convert::TryFrom"
-      Self
+      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       [ (* T *) Ty.path "i32" ]
-      [ ("Error", TODO); ("try_from", InstanceField.Method try_from [ Self ]) ].
+      [ ("Error", TODO); ("try_from", InstanceField.Method try_from []) ].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (*
@@ -145,9 +146,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc α1 in
       let* α3 :=
         M.alloc
-          (core.result.Result.Ok
-            (try_from_and_try_into.EvenNumber.Build_t
-              ((Integer.of_Z 8) : Ty.path "i32"))) in
+          (Value.StructTuple
+            "core::result::Result::Ok"
+            [
+              Value.StructTuple
+                "try_from_and_try_into::EvenNumber"
+                [ (Integer.of_Z 8) : Ty.path "i32" ]
+            ]) in
       let* α4 := M.alloc (borrow α2, borrow α3) in
       match_operator
         α4
@@ -213,7 +218,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 := M.call α0 [ (Integer.of_Z 5) : Ty.path "i32" ] in
       let* α2 := M.alloc α1 in
-      let* α3 := M.alloc (core.result.Result.Err tt) in
+      let* α3 :=
+        M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
       let* α4 := M.alloc (borrow α2, borrow α3) in
       match_operator
         α4
@@ -282,9 +288,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.alloc
-          (core.result.Result.Ok
-            (try_from_and_try_into.EvenNumber.Build_t
-              ((Integer.of_Z 8) : Ty.path "i32"))) in
+          (Value.StructTuple
+            "core::result::Result::Ok"
+            [
+              Value.StructTuple
+                "try_from_and_try_into::EvenNumber"
+                [ (Integer.of_Z 8) : Ty.path "i32" ]
+            ]) in
       let* α1 := M.alloc (borrow result, borrow α0) in
       match_operator
         α1
@@ -351,7 +361,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call α0 [ (Integer.of_Z 5) : Ty.path "i32" ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.alloc (core.result.Result.Err tt) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
       let* α1 := M.alloc (borrow result, borrow α0) in
       match_operator
         α1

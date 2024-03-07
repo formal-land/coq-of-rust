@@ -13,7 +13,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   *)
   Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* β :=
@@ -30,6 +30,9 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_add_one :
+    M.IsAssociatedFunction Self "add_one" add_one [].
+  
   (*
       fn print<'a>(&'a self) {
           println!("`print`: {}", self.0);
@@ -37,7 +40,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   *)
   Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -67,6 +70,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print [].
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (*
@@ -83,8 +88,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* owner :=
       M.alloc
-        (scoping_rules_lifetimes_methods.Owner.Build_t
-          ((Integer.of_Z 18) : Ty.path "i32")) in
+        (Value.StructTuple
+          "scoping_rules_lifetimes_methods::Owner"
+          [ (Integer.of_Z 18) : Ty.path "i32" ]) in
     let* _ :=
       let* α0 :=
         M.call

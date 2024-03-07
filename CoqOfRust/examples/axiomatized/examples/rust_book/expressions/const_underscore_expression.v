@@ -14,10 +14,9 @@ Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression
   Parameter show : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "const_underscore_expression::Bar" in
     M.IsTraitInstance
       "const_underscore_expression::BarTrait"
-      Self
+      (* Self *) (Ty.path "const_underscore_expression::Bar")
       []
-      [ ("show", InstanceField.Method show [ Self ]) ].
+      [ ("show", InstanceField.Method show []) ].
 End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

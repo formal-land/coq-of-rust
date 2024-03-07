@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (basic_contract_caller.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "basic_contract_caller::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "basic_contract_caller::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_basic_contract_caller_AccountId.
 
 Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "basic_contract_caller::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
 
 Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
   Axiom Implements :
-    let Self := Ty.path "basic_contract_caller::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "basic_contract_caller::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :
@@ -87,7 +84,7 @@ Module Impl_basic_contract_caller_OtherContract.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ init_value ] =>
+    | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure
@@ -97,6 +94,8 @@ Module Impl_basic_contract_caller_OtherContract.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       pub fn flip(&mut self) {
           self.value = !self.value;
@@ -104,7 +103,7 @@ Module Impl_basic_contract_caller_OtherContract.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.var "basic_contract_caller::OtherContract::Get_value" in
@@ -119,6 +118,8 @@ Module Impl_basic_contract_caller_OtherContract.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  
   (*
       pub fn get(&self) -> bool {
           self.value
@@ -126,13 +127,15 @@ Module Impl_basic_contract_caller_OtherContract.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "basic_contract_caller::OtherContract::Get_value" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_basic_contract_caller_OtherContract.
 
 (* Enum BasicContractCaller *)
@@ -155,7 +158,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ other_contract_code_hash ] =>
+    | [ Self ], [ other_contract_code_hash ] =>
       let* other_contract_code_hash := M.alloc other_contract_code_hash in
       let* other_contract :=
         let* α0 := M.var "core::panicking::panic" in
@@ -173,6 +176,8 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       pub fn flip_and_get(&mut self) -> bool {
           self.other_contract.flip();
@@ -181,7 +186,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   *)
   Definition flip_and_get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
@@ -205,4 +210,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_flip_and_get :
+    M.IsAssociatedFunction Self "flip_and_get" flip_and_get [].
 End Impl_basic_contract_caller_BasicContractCaller.

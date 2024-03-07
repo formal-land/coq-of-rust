@@ -14,6 +14,9 @@ Module Impl_traits_Sheep.
   Definition Self : Ty.t := Ty.path "traits::Sheep".
   
   Parameter is_naked : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_is_naked :
+    M.IsAssociatedFunction Self "is_naked" is_naked [].
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
@@ -26,16 +29,15 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Parameter talk : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "traits::Sheep" in
     M.IsTraitInstance
       "traits::Animal"
-      Self
+      (* Self *) (Ty.path "traits::Sheep")
       []
       [
-        ("new", InstanceField.Method new [ Self ]);
-        ("name", InstanceField.Method name [ Self ]);
-        ("noise", InstanceField.Method noise [ Self ]);
-        ("talk", InstanceField.Method talk [ Self ])
+        ("new", InstanceField.Method new []);
+        ("name", InstanceField.Method name []);
+        ("noise", InstanceField.Method noise []);
+        ("talk", InstanceField.Method talk [])
       ].
 End Impl_traits_Animal_for_traits_Sheep.
 
@@ -43,6 +45,8 @@ Module Impl_traits_Sheep_2.
   Definition Self : Ty.t := Ty.path "traits::Sheep".
   
   Parameter shear : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear [].
 End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

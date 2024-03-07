@@ -61,12 +61,11 @@ Module checked.
       end.
     
     Axiom Implements :
-      let Self := Ty.path "result::checked::MathError" in
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Self *) (Ty.path "result::checked::MathError")
         []
-        [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+        [ ("fmt", InstanceField.Method fmt []) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
@@ -100,13 +99,15 @@ Module checked.
       let* α5 :=
         if α4 then
           M.alloc
-            (core.result.Result.Err result.checked.MathError.DivisionByZero)
+            (Value.StructTuple
+              "core::result::Result::Err"
+              [ result.checked.MathError.DivisionByZero ])
         else
           let* α0 := M.var "BinOp::Panic::div" in
           let* α1 := M.read x in
           let* α2 := M.read y in
           let* α3 := α0 α1 α2 in
-          M.alloc (core.result.Result.Ok α3) in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
       M.read α5
     | _, _ => M.impossible
     end.
@@ -132,11 +133,13 @@ Module checked.
       let* α5 :=
         if α4 then
           M.alloc
-            (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
+            (Value.StructTuple
+              "core::result::Result::Err"
+              [ result.checked.MathError.NegativeSquareRoot ])
         else
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["sqrt"] [ α0 ] in
-          M.alloc (core.result.Result.Ok α1) in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
       M.read α5
     | _, _ => M.impossible
     end.
@@ -162,12 +165,13 @@ Module checked.
       let* α5 :=
         if α4 then
           M.alloc
-            (core.result.Result.Err
-              result.checked.MathError.NonPositiveLogarithm)
+            (Value.StructTuple
+              "core::result::Result::Err"
+              [ result.checked.MathError.NonPositiveLogarithm ])
         else
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["ln"] [ α0 ] in
-          M.alloc (core.result.Result.Ok α1) in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
       M.read α5
     | _, _ => M.impossible
     end.

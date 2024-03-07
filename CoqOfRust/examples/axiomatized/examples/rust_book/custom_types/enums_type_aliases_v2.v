@@ -8,4 +8,6 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     Ty.path "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers".
   
   Parameter run : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run [].
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

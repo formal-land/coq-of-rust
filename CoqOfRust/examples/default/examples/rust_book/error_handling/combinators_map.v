@@ -60,12 +60,11 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_map::Food" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_map::Food")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
@@ -91,12 +90,11 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_map::Peeled" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_map::Peeled")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
@@ -122,12 +120,11 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_map::Chopped" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_map::Chopped")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
@@ -153,12 +150,11 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_map::Cooked" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_map::Cooked")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 (*
@@ -187,7 +183,9 @@ Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* food := M.copy γ0_0 in
               let* α0 := M.read food in
               M.alloc
-                (core.option.Option.Some (combinators_map.Peeled.Build_t α0))
+                (Value.StructTuple
+                  "core::option::Option::Some"
+                  [ Value.StructTuple "combinators_map::Peeled" [ α0 ] ])
             | _ => M.break_match 
             end) :
             Ty.apply
@@ -239,7 +237,9 @@ Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* food := M.copy γ1_0 in
                 let* α0 := M.read food in
                 M.alloc
-                  (core.option.Option.Some (combinators_map.Chopped.Build_t α0))
+                  (Value.StructTuple
+                    "core::option::Option::Some"
+                    [ Value.StructTuple "combinators_map::Chopped" [ α0 ] ])
               end
             | _ => M.break_match 
             end) :
@@ -290,7 +290,7 @@ Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* food := M.copy γ0_0 in
                   let* α0 := M.read food in
-                  M.pure (combinators_map.Cooked.Build_t α0)
+                  M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
                 end) :
                 Ty.path "combinators_map::Cooked"
             ]) :
@@ -326,7 +326,7 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   (let* f := M.copy γ in
                   let* α0 := M.read f in
-                  M.pure (combinators_map.Peeled.Build_t α0)) :
+                  M.pure (Value.StructTuple "combinators_map::Peeled" [ α0 ])) :
                   Ty.path "combinators_map::Peeled"
               ]) :
             Ty.path "combinators_map::Peeled"
@@ -352,7 +352,7 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.pure (α0 γ) in
                     let* f := M.copy γ0_0 in
                     let* α0 := M.read f in
-                    M.pure (combinators_map.Chopped.Build_t α0)
+                    M.pure (Value.StructTuple "combinators_map::Chopped" [ α0 ])
                   end) :
                   Ty.path "combinators_map::Chopped"
               ]) :
@@ -378,7 +378,7 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* f := M.copy γ0_0 in
                   let* α0 := M.read f in
-                  M.pure (combinators_map.Cooked.Build_t α0)
+                  M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
                 end) :
                 Ty.path "combinators_map::Cooked"
             ]) :
@@ -480,9 +480,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* apple :=
-      M.alloc (core.option.Option.Some combinators_map.Food.Apple) in
+      M.alloc
+        (Value.StructTuple
+          "core::option::Option::Some"
+          [ combinators_map.Food.Apple ]) in
     let* carrot :=
-      M.alloc (core.option.Option.Some combinators_map.Food.Carrot) in
+      M.alloc
+        (Value.StructTuple
+          "core::option::Option::Some"
+          [ combinators_map.Food.Carrot ]) in
     let* potato := M.alloc core.option.Option.None in
     let* cooked_apple :=
       let* α0 := M.var "combinators_map::cook" in

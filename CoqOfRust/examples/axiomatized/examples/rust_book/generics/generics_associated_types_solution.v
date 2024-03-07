@@ -22,18 +22,17 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   Parameter a : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "generics_associated_types_solution::Container" in
     M.IsTraitInstance
       "generics_associated_types_solution::Contains"
-      Self
+      (* Self *) (Ty.path "generics_associated_types_solution::Container")
       []
       [
         ("A", TODO);
         ("B", TODO);
-        ("contains", InstanceField.Method contains [ Self ]);
-        ("first", InstanceField.Method first [ Self ]);
-        ("last", InstanceField.Method last [ Self ]);
-        ("a", InstanceField.Method a [ Self ])
+        ("contains", InstanceField.Method contains []);
+        ("first", InstanceField.Method first []);
+        ("last", InstanceField.Method last []);
+        ("a", InstanceField.Method a [])
       ].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 

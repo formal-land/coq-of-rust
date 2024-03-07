@@ -24,12 +24,11 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "constructor_as_function::Constructor" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "constructor_as_function::Constructor")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 (*

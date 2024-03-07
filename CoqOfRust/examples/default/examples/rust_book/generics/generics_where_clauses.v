@@ -24,7 +24,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
 ") in
           let* α3 := M.alloc [ α1; α2 ] in
           let* α4 := M.read self in
-          let* α5 := M.alloc (core.option.Option.Some α4) in
+          let* α5 :=
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α4 ]) in
           let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_debug"]
@@ -47,12 +48,11 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
   
   Axiom Implements :
     forall (T : Ty.t),
-    let Self := T in
     M.IsTraitInstance
       "generics_where_clauses::PrintInOption"
-      Self
+      (* Self *) T
       []
-      [ ("print_in_option", InstanceField.Method print_in_option [ Self; T ]) ].
+      [ ("print_in_option", InstanceField.Method print_in_option [ T ]) ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (*

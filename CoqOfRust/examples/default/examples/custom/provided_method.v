@@ -39,12 +39,11 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "i32" in
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
-      Self
+      (* Self *) (Ty.path "i32")
       []
-      [ ("required", InstanceField.Method required [ Self ]) ].
+      [ ("required", InstanceField.Method required []) ].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
@@ -77,14 +76,13 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "u32" in
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
-      Self
+      (* Self *) (Ty.path "u32")
       []
       [
-        ("required", InstanceField.Method required [ Self ]);
-        ("provided", InstanceField.Method provided [ Self ])
+        ("required", InstanceField.Method required []);
+        ("provided", InstanceField.Method provided [])
       ].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 

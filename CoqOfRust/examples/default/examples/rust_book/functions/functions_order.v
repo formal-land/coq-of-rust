@@ -13,11 +13,13 @@ Module Impl_functions_order_SomeType.
   *)
   Definition meth2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.pure tt
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2 [].
   
   (*
       pub fn meth1(self) {
@@ -26,7 +28,7 @@ Module Impl_functions_order_SomeType.
   *)
   Definition meth1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -37,6 +39,8 @@ Module Impl_functions_order_SomeType.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1 [].
 End Impl_functions_order_SomeType.
 
 (* Trait *)
@@ -76,14 +80,13 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "functions_order::SomeType" in
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      Self
+      (* Self *) (Ty.path "functions_order::SomeType")
       []
       [
-        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ]);
-        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ])
+        ("some_trait_bar", InstanceField.Method some_trait_bar []);
+        ("some_trait_foo", InstanceField.Method some_trait_foo [])
       ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
@@ -111,14 +114,13 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "functions_order::OtherType" in
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      Self
+      (* Self *) (Ty.path "functions_order::OtherType")
       []
       [
-        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ]);
-        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ])
+        ("some_trait_foo", InstanceField.Method some_trait_foo []);
+        ("some_trait_bar", InstanceField.Method some_trait_bar [])
       ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
@@ -140,7 +142,8 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "some_trait_foo"
           [ (* Self *) Ty.path "functions_order::OtherType" ] in
       let* α1 := M.read b in
-      let* α2 := M.alloc (functions_order.OtherType.Build_t α1) in
+      let* α2 :=
+        M.alloc (Value.StructTuple "functions_order::OtherType" [ α1 ]) in
       let* α3 := M.call α0 [ borrow α2 ] in
       M.alloc α3 in
     let* _ :=
@@ -150,7 +153,8 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "some_trait_foo"
           [ (* Self *) Ty.path "functions_order::SomeType" ] in
       let* α1 := M.read u in
-      let* α2 := M.alloc (functions_order.SomeType.Build_t α1) in
+      let* α2 :=
+        M.alloc (Value.StructTuple "functions_order::SomeType" [ α1 ]) in
       let* α3 := M.call α0 [ borrow α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc tt in
@@ -239,7 +243,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.call
           (Ty.path "functions_order::SomeType")::["meth1"]
-          [ functions_order.SomeType.Build_t ((Integer.of_Z 0) : Ty.path "u32")
+          [
+            Value.StructTuple
+              "functions_order::SomeType"
+              [ (Integer.of_Z 0) : Ty.path "u32" ]
           ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in

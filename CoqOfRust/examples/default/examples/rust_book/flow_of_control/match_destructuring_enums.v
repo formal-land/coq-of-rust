@@ -32,10 +32,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* color :=
       M.alloc
-        (match_destructuring_enums.Color.RGB
-          ((Integer.of_Z 122) : Ty.path "u32")
-          ((Integer.of_Z 17) : Ty.path "u32")
-          ((Integer.of_Z 40) : Ty.path "u32")) in
+        (Value.StructTuple
+          "match_destructuring_enums::Color::RGB"
+          [
+            (Integer.of_Z 122) : Ty.path "u32";
+            (Integer.of_Z 17) : Ty.path "u32";
+            (Integer.of_Z 40) : Ty.path "u32"
+          ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

@@ -47,18 +47,18 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
         let* α7 := α2 α3 α6 in
         assign (α0 (deref α1)) α7 in
       let* α0 := M.read current in
-      let* α0 := M.alloc (core.option.Option.Some α0) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
       M.read α0
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "iterators::Fibonacci" in
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
-      Self
+      (* Self *) (Ty.path "iterators::Fibonacci")
       []
-      [ ("Item", TODO); ("next", InstanceField.Method next [ Self ]) ].
+      [ ("Item", TODO); ("next", InstanceField.Method next []) ].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 (*

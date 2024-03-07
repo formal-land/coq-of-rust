@@ -17,7 +17,7 @@ Module my.
     *)
     Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
-      | [ T ], [ contents ] =>
+      | [ Self; T ], [ contents ] =>
         let* contents := M.alloc contents in
         let* α0 := M.read contents in
         M.pure
@@ -26,6 +26,10 @@ Module my.
             [ ("contents", α0) ])
       | _, _ => M.impossible
       end.
+    
+    Axiom AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction (Self T) "new" new [ T ].
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 

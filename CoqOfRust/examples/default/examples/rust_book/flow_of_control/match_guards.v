@@ -24,8 +24,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* temperature :=
       M.alloc
-        (match_guards.Temperature.Celsius
-          ((Integer.of_Z 35) : Ty.path "i32")) in
+        (Value.StructTuple
+          "match_guards::Temperature::Celsius"
+          [ (Integer.of_Z 35) : Ty.path "i32" ]) in
     let* α0 :=
       match_operator
         temperature

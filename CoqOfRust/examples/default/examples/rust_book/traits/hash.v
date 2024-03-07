@@ -49,12 +49,11 @@ Module Impl_core_hash_Hash_for_hash_Person.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "hash::Person" in
     M.IsTraitInstance
       "core::hash::Hash"
-      Self
+      (* Self *) (Ty.path "hash::Person")
       []
-      [ ("hash", InstanceField.Method hash [ Self ]) ].
+      [ ("hash", InstanceField.Method hash []) ].
 End Impl_core_hash_Hash_for_hash_Person.
 
 (*

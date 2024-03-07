@@ -29,12 +29,11 @@ Module Impl_core_default_Default_for_erc721_Mapping_K_V.
   
   Axiom Implements :
     forall (K V : Ty.t),
-    let Self := Ty.apply (Ty.path "erc721::Mapping") [ K; V ] in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.apply (Ty.path "erc721::Mapping") [ K; V ])
       []
-      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
+      [ ("default", InstanceField.Method default [ K; V ]) ].
 End Impl_core_default_Default_for_erc721_Mapping_K_V.
 
 Module Impl_erc721_Mapping_K_V.
@@ -48,7 +47,7 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -57,6 +56,10 @@ Module Impl_erc721_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_contains :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -65,7 +68,7 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -75,6 +78,10 @@ Module Impl_erc721_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+  
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
@@ -82,7 +89,7 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key; _value ] =>
+    | [ Self; K; V ], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -93,6 +100,10 @@ Module Impl_erc721_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_insert :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+  
   (*
       fn remove(&self, _key: K) {
           unimplemented!()
@@ -100,7 +111,7 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Definition remove (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -109,6 +120,10 @@ Module Impl_erc721_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_remove :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -117,7 +132,7 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Definition size (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -127,6 +142,10 @@ Module Impl_erc721_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_size :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+  
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
@@ -134,7 +153,7 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Definition take (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -143,6 +162,10 @@ Module Impl_erc721_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_take :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
 End Impl_erc721_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -160,17 +183,16 @@ Module Impl_core_default_Default_for_erc721_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (erc721.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "erc721::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "erc721::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_erc721_AccountId.
 
 Module Impl_core_clone_Clone_for_erc721_AccountId.
@@ -183,11 +205,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -199,24 +217,29 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "erc721::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_erc721_AccountId.
 
 Module Impl_core_marker_Copy_for_erc721_AccountId.
   Axiom Implements :
-    let Self := Ty.path "erc721::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "erc721::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_erc721_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
   Axiom Implements :
-    let Self := Ty.path "erc721::AccountId" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "erc721::AccountId")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
@@ -240,12 +263,11 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::AccountId" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "erc721::AccountId")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_erc721_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
@@ -266,12 +288,11 @@ Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::AccountId" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "erc721::AccountId")
       [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_array_u8_for_erc721_AccountId.
 
 Axiom Balance : (Ty.path "erc721::Balance") = (Ty.path "u128").
@@ -351,20 +372,22 @@ Module Impl_core_default_Default_for_erc721_Erc721.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::Erc721" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "erc721::Erc721")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_erc721_Erc721.
 
 (* Enum Error *)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_Error.
   Axiom Implements :
-    let Self := Ty.path "erc721::Error" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "erc721::Error")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc721_Error.
@@ -395,18 +418,20 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::Error" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "erc721::Error")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_erc721_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc721_Error.
   Axiom Implements :
-    let Self := Ty.path "erc721::Error" in
-    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralEq"
+      (* Self *) (Ty.path "erc721::Error")
+      []
+      [].
 End Impl_core_marker_StructuralEq_for_erc721_Error.
 
 Module Impl_core_cmp_Eq_for_erc721_Error.
@@ -425,14 +450,13 @@ Module Impl_core_cmp_Eq_for_erc721_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::Error" in
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Self *) (Ty.path "erc721::Error")
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+          InstanceField.Method assert_receiver_is_total_eq [])
       ].
 End Impl_core_cmp_Eq_for_erc721_Error.
 
@@ -450,18 +474,20 @@ Module Impl_core_clone_Clone_for_erc721_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "erc721::Error" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "erc721::Error")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_erc721_Error.
 
 Module Impl_core_marker_Copy_for_erc721_Error.
   Axiom Implements :
-    let Self := Ty.path "erc721::Error" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "erc721::Error")
+      []
+      [].
 End Impl_core_marker_Copy_for_erc721_Error.
 
 (* Enum Transfer *)
@@ -482,13 +508,16 @@ Module Impl_erc721_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "erc721::Env::Get_caller" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -497,7 +526,7 @@ Module Impl_erc721_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _event ] =>
+    | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.var "core::panicking::panic" in
@@ -506,6 +535,9 @@ Module Impl_erc721_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_emit_event :
+    M.IsAssociatedFunction Self "emit_event" emit_event [].
 End Impl_erc721_Env.
 
 Module Impl_erc721_Erc721.
@@ -518,13 +550,16 @@ Module Impl_erc721_Erc721.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -533,11 +568,13 @@ Module Impl_erc721_Erc721.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "erc721::Erc721")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -546,7 +583,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -556,6 +593,8 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
           self.owned_tokens_count.get(of).unwrap_or(0 as u32)
@@ -563,7 +602,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition balance_of_or_zero (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; of ] =>
+    | [ Self ], [ self; of ] =>
       let* self := M.alloc self in
       let* of := M.alloc of in
       let* α0 := M.var "erc721::Erc721::Get_owned_tokens_count" in
@@ -585,6 +624,9 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_balance_of_or_zero :
+    M.IsAssociatedFunction Self "balance_of_or_zero" balance_of_or_zero [].
+  
   (*
       fn clear_approval(&mut self, id: TokenId) {
           self.token_approvals.remove(id);
@@ -592,7 +634,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition clear_approval (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; id ] =>
+    | [ Self ], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
       let* _ :=
@@ -611,6 +653,9 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_clear_approval :
+    M.IsAssociatedFunction Self "clear_approval" clear_approval [].
+  
   (*
       fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
           self.operator_approvals.contains(&(owner, operator))
@@ -618,7 +663,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition approved_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner; operator ] =>
+    | [ Self ], [ self; owner; operator ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* operator := M.alloc operator in
@@ -639,6 +684,9 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_approved_for_all :
+    M.IsAssociatedFunction Self "approved_for_all" approved_for_all [].
+  
   (*
       pub fn owner_of(&self, id: TokenId) -> Option<AccountId> {
           self.token_owner.get(&id)
@@ -646,7 +694,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition owner_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; id ] =>
+    | [ Self ], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
       let* α0 := M.var "erc721::Erc721::Get_token_owner" in
@@ -658,6 +706,9 @@ Module Impl_erc721_Erc721.
         [ borrow (α0 (deref α1)); borrow id ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_owner_of :
+    M.IsAssociatedFunction Self "owner_of" owner_of [].
   
   (*
       fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
@@ -673,7 +724,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition approved_or_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; from; id ] =>
+    | [ Self ], [ self; from; id ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* id := M.alloc id in
@@ -706,7 +757,8 @@ Module Impl_erc721_Erc721.
             (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
           ] in
       let* α3 := M.call α2 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ] in
-      let* α4 := M.alloc (core.option.Option.Some α3) in
+      let* α4 :=
+        M.alloc (Value.StructTuple "core::option::Option::Some" [ α3 ]) in
       let* α5 := M.call α1 [ borrow from; borrow α4 ] in
       let* α6 := M.var "BinOp::Pure::or" in
       let* α7 := M.var "BinOp::Pure::or" in
@@ -775,6 +827,9 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_approved_or_owner :
+    M.IsAssociatedFunction Self "approved_or_owner" approved_or_owner [].
+  
   (*
       fn exists(&self, id: TokenId) -> bool {
           self.token_owner.contains(&id)
@@ -782,7 +837,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition exists_ (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; id ] =>
+    | [ Self ], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
       let* α0 := M.var "erc721::Erc721::Get_token_owner" in
@@ -795,6 +850,9 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_exists_ :
+    M.IsAssociatedFunction Self "exists_" exists_ [].
+  
   (*
       pub fn balance_of(&self, owner: AccountId) -> u32 {
           self.balance_of_or_zero(&owner)
@@ -802,7 +860,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 := M.read self in
@@ -812,6 +870,9 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_balance_of :
+    M.IsAssociatedFunction Self "balance_of" balance_of [].
+  
   (*
       pub fn get_approved(&self, id: TokenId) -> Option<AccountId> {
           self.token_approvals.get(&id)
@@ -819,7 +880,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition get_approved (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; id ] =>
+    | [ Self ], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
       let* α0 := M.var "erc721::Erc721::Get_token_approvals" in
@@ -832,6 +893,9 @@ Module Impl_erc721_Erc721.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get_approved :
+    M.IsAssociatedFunction Self "get_approved" get_approved [].
+  
   (*
       pub fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
           self.approved_for_all(owner, operator)
@@ -839,7 +903,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition is_approved_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner; operator ] =>
+    | [ Self ], [ self; owner; operator ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* operator := M.alloc operator in
@@ -849,6 +913,9 @@ Module Impl_erc721_Erc721.
       M.call (Ty.path "erc721::Erc721")::["approved_for_all"] [ α0; α1; α2 ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_is_approved_for_all :
+    M.IsAssociatedFunction Self "is_approved_for_all" is_approved_for_all [].
   
   (*
       fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -873,7 +940,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition approve_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; to; approved ] =>
+    | [ Self ], [ self; to; approved ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
       let* approved := M.alloc approved in
@@ -905,7 +972,10 @@ Module Impl_erc721_Erc721.
           let* α3 := M.read (use α2) in
           if α3 then
             let* α0 :=
-              return_ (core.result.Result.Err erc721.Error.NotAllowed) in
+              return_
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ erc721.Error.NotAllowed ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -924,10 +994,13 @@ Module Impl_erc721_Erc721.
               (Ty.path "erc721::Env")::["emit_event"]
               [
                 borrow α2;
-                erc721.Event.ApprovalForAll
-                  (Value.StructRecord
-                    "erc721::ApprovalForAll"
-                    [ ("owner", α3); ("operator", α4); ("approved", α5) ])
+                Value.StructTuple
+                  "erc721::Event::ApprovalForAll"
+                  [
+                    Value.StructRecord
+                      "erc721::ApprovalForAll"
+                      [ ("owner", α3); ("operator", α4); ("approved", α5) ]
+                  ]
               ] in
           M.alloc α6 in
         let* _ :=
@@ -974,10 +1047,14 @@ Module Impl_erc721_Erc721.
                   [ borrow (α0 (deref α1)); (α2, α3) ] in
               M.alloc α4 in
             M.alloc tt in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_approve_for_all :
+    M.IsAssociatedFunction Self "approve_for_all" approve_for_all [].
   
   (*
       pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -987,7 +1064,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition set_approval_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; to; approved ] =>
+    | [ Self ], [ self; to; approved ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
       let* approved := M.alloc approved in
@@ -1072,10 +1149,14 @@ Module Impl_erc721_Erc721.
                 end) :
                 Ty.tuple []
             ] in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_set_approval_for_all :
+    M.IsAssociatedFunction Self "set_approval_for_all" set_approval_for_all [].
   
   (*
       fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -1108,7 +1189,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition approve_for (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; to; id ] =>
+    | [ Self ], [ self; to; id ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
       let* id := M.alloc id in
@@ -1152,7 +1233,8 @@ Module Impl_erc721_Erc721.
                     [ Ty.path "erc721::AccountId" ]
               ] in
           let* α3 := M.read caller in
-          let* α4 := M.alloc (core.option.Option.Some α3) in
+          let* α4 :=
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α3 ]) in
           let* α5 := M.call α2 [ borrow owner; borrow α4 ] in
           let* α6 := M.read self in
           let* α7 := M.read owner in
@@ -1172,7 +1254,10 @@ Module Impl_erc721_Erc721.
           let* α13 := M.read (use α12) in
           if α13 then
             let* α0 :=
-              return_ (core.result.Result.Err erc721.Error.NotAllowed) in
+              return_
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ erc721.Error.NotAllowed ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -1204,7 +1289,10 @@ Module Impl_erc721_Erc721.
           let* α7 := M.read (use α6) in
           if α7 then
             let* α0 :=
-              return_ (core.result.Result.Err erc721.Error.NotAllowed) in
+              return_
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ erc721.Error.NotAllowed ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -1223,7 +1311,10 @@ Module Impl_erc721_Erc721.
           let* α4 := M.read (use α3) in
           if α4 then
             let* α0 :=
-              return_ (core.result.Result.Err erc721.Error.CannotInsert) in
+              return_
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ erc721.Error.CannotInsert ]) in
             let* α1 := M.read α0 in
             let* α2 := never_to_any α1 in
             M.alloc α2
@@ -1257,16 +1348,23 @@ Module Impl_erc721_Erc721.
               (Ty.path "erc721::Env")::["emit_event"]
               [
                 borrow α2;
-                erc721.Event.Approval
-                  (Value.StructRecord
-                    "erc721::Approval"
-                    [ ("from", α3); ("to", α5); ("id", α6) ])
+                Value.StructTuple
+                  "erc721::Event::Approval"
+                  [
+                    Value.StructRecord
+                      "erc721::Approval"
+                      [ ("from", α3); ("to", α5); ("id", α6) ]
+                  ]
               ] in
           M.alloc α7 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_approve_for :
+    M.IsAssociatedFunction Self "approve_for" approve_for [].
   
   (*
       pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
@@ -1276,7 +1374,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition approve (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; to; id ] =>
+    | [ Self ], [ self; to; id ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
       let* id := M.alloc id in
@@ -1360,10 +1458,14 @@ Module Impl_erc721_Erc721.
                 end) :
                 Ty.tuple []
             ] in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_approve :
+    M.IsAssociatedFunction Self "approve" approve [].
   
   (*
       fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -1389,7 +1491,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition remove_token_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; from; id ] =>
+    | [ Self ], [ self; from; id ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* id := M.alloc id in
@@ -1439,7 +1541,9 @@ Module Impl_erc721_Erc721.
                     if α4 then
                       let* α0 :=
                         return_
-                          (core.result.Result.Err erc721.Error.TokenNotFound) in
+                          (Value.StructTuple
+                            "core::result::Result::Err"
+                            [ erc721.Error.TokenNotFound ]) in
                       let* α1 := M.read α0 in
                       let* α2 := never_to_any α1 in
                       M.alloc α2
@@ -1579,7 +1683,7 @@ Module Impl_erc721_Erc721.
                             ])::["remove"]
                         [ borrow (deref α0); α1 ] in
                     M.alloc α2 in
-                  M.alloc (core.result.Result.Ok tt)
+                  M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ])
                 end) :
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -1588,6 +1692,9 @@ Module Impl_erc721_Erc721.
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_remove_token_from :
+    M.IsAssociatedFunction Self "remove_token_from" remove_token_from [].
   
   (*
       fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -1618,6 +1725,9 @@ Module Impl_erc721_Erc721.
   *)
   Parameter add_token_to : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_add_token_to :
+    M.IsAssociatedFunction Self "add_token_to" add_token_to [].
+  
   (*
       fn transfer_token_from(
           &mut self,
@@ -1645,6 +1755,9 @@ Module Impl_erc721_Erc721.
   *)
   Parameter transfer_token_from : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_transfer_token_from :
+    M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from [].
+  
   (*
       pub fn transfer(&mut self, destination: AccountId, id: TokenId) -> Result<(), Error> {
           let caller = self.env().caller();
@@ -1654,7 +1767,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; destination; id ] =>
+    | [ Self ], [ self; destination; id ] =>
       let* self := M.alloc self in
       let* destination := M.alloc destination in
       let* id := M.alloc id in
@@ -1745,10 +1858,14 @@ Module Impl_erc721_Erc721.
                 end) :
                 Ty.tuple []
             ] in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_transfer :
+    M.IsAssociatedFunction Self "transfer" transfer [].
   
   (*
       pub fn transfer_from(
@@ -1763,7 +1880,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; from; to; id ] =>
+    | [ Self ], [ self; from; to; id ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -1848,10 +1965,14 @@ Module Impl_erc721_Erc721.
                 end) :
                 Ty.tuple []
             ] in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_transfer_from :
+    M.IsAssociatedFunction Self "transfer_from" transfer_from [].
   
   (*
       pub fn mint(&mut self, id: TokenId) -> Result<(), Error> {
@@ -1867,7 +1988,7 @@ Module Impl_erc721_Erc721.
   *)
   Definition mint (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; id ] =>
+    | [ Self ], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
       let return_ :=
@@ -1979,20 +2100,32 @@ Module Impl_erc721_Erc721.
               (Ty.path "erc721::Env")::["emit_event"]
               [
                 borrow α2;
-                erc721.Event.Transfer
-                  (Value.StructRecord
-                    "erc721::Transfer"
-                    [
-                      ("from", core.option.Option.Some α4);
-                      ("to", core.option.Option.Some α5);
-                      ("id", α6)
-                    ])
+                Value.StructTuple
+                  "erc721::Event::Transfer"
+                  [
+                    Value.StructRecord
+                      "erc721::Transfer"
+                      [
+                        ("from",
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ α4 ]);
+                        ("to",
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ α5 ]);
+                        ("id", α6)
+                      ]
+                  ]
               ] in
           M.alloc α7 in
-        let* α0 := M.alloc (core.result.Result.Ok tt) in
+        let* α0 :=
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint [].
   
   (*
       pub fn burn(&mut self, id: TokenId) -> Result<(), Error> {
@@ -2025,4 +2158,6 @@ Module Impl_erc721_Erc721.
       }
   *)
   Parameter burn : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn [].
 End Impl_erc721_Erc721.

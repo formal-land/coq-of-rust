@@ -9,6 +9,8 @@ Module Impl_generics_implementation_Val.
   Definition Self : Ty.t := Ty.path "generics_implementation::Val".
   
   Parameter value : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value [].
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
@@ -16,6 +18,10 @@ Module Impl_generics_implementation_GenVal_T.
     Ty.apply (Ty.path "generics_implementation::GenVal") [ T ].
   
   Parameter value : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_value :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction (Self T) "value" value [ T ].
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

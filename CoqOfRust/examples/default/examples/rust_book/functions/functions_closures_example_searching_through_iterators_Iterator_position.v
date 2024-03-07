@@ -98,7 +98,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.alloc
-          (core.option.Option.Some ((Integer.of_Z 5) : Ty.path "usize")) in
+          (Value.StructTuple
+            "core::option::Option::Some"
+            [ (Integer.of_Z 5) : Ty.path "usize" ]) in
       let* α1 := M.alloc (borrow index_of_first_even_number, borrow α0) in
       match_operator
         α1

@@ -60,12 +60,11 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_and_then::Food" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_and_then::Food")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -127,12 +126,11 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_and_then::Day" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_and_then::Day")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 (*
@@ -162,7 +160,7 @@ Definition have_ingredients (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "combinators_and_then::Food" ];
           fun γ =>
             (let* α0 := M.read food in
-            M.alloc (core.option.Option.Some α0)) :
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])) :
             Ty.apply
               (Ty.path "core::option::Option")
               [ Ty.path "combinators_and_then::Food" ]
@@ -199,7 +197,7 @@ Definition have_recipe (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "combinators_and_then::Food" ];
           fun γ =>
             (let* α0 := M.read food in
-            M.alloc (core.option.Option.Some α0)) :
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])) :
             Ty.apply
               (Ty.path "core::option::Option")
               [ Ty.path "combinators_and_then::Food" ]
@@ -273,7 +271,8 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.pure (α0 γ) in
                       let* food := M.copy γ0_0 in
                       let* α0 := M.read food in
-                      M.alloc (core.option.Option.Some α0)
+                      M.alloc
+                        (Value.StructTuple "core::option::Option::Some" [ α0 ])
                     | _ => M.break_match 
                     end) :
                     Ty.apply

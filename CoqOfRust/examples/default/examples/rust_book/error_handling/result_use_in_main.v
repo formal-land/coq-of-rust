@@ -53,7 +53,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* e := M.copy γ0_0 in
                   let* α0 := M.read e in
-                  let* α1 := return_ (core.result.Result.Err α0) in
+                  let* α1 :=
+                    return_
+                      (Value.StructTuple "core::result::Result::Err" [ α0 ]) in
                   let* α2 := M.read α1 in
                   let* α3 := never_to_any α2 in
                   M.alloc α3
@@ -84,7 +86,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
-      let* α0 := M.alloc (core.result.Result.Ok tt) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
       M.read α0)
   | _, _ => M.impossible
   end.

@@ -32,12 +32,11 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_raii_desctructor::ToDrop" in
     M.IsTraitInstance
       "core::ops::drop::Drop"
-      Self
+      (* Self *) (Ty.path "scoping_rules_raii_desctructor::ToDrop")
       []
-      [ ("drop", InstanceField.Method drop [ Self ]) ].
+      [ ("drop", InstanceField.Method drop []) ].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (*

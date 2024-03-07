@@ -14,9 +14,11 @@ Module Impl_enums_testcase_linked_list_List.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure enums_testcase_linked_list.List.Nil
+    | [ Self ], [] => M.pure enums_testcase_linked_list.List.Nil
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       fn prepend(self, elem: u32) -> List {
@@ -26,7 +28,7 @@ Module Impl_enums_testcase_linked_list_List.
   *)
   Definition prepend (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; elem ] =>
+    | [ Self ], [ self; elem ] =>
       let* self := M.alloc self in
       let* elem := M.alloc elem in
       let* α0 := M.read elem in
@@ -40,9 +42,13 @@ Module Impl_enums_testcase_linked_list_List.
                 Ty.path "alloc::alloc::Global"
               ])::["new"]
           [ α1 ] in
-      M.pure (enums_testcase_linked_list.List.Cons α0 α2)
+      M.pure
+        (Value.StructTuple "enums_testcase_linked_list::List::Cons" [ α0; α2 ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_prepend :
+    M.IsAssociatedFunction Self "prepend" prepend [].
   
   (*
       fn len(&self) -> u32 {
@@ -64,7 +70,7 @@ Module Impl_enums_testcase_linked_list_List.
   *)
   Definition len (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -109,6 +115,8 @@ Module Impl_enums_testcase_linked_list_List.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len [].
+  
   (*
       fn stringify(&self) -> String {
           match *self {
@@ -125,7 +133,7 @@ Module Impl_enums_testcase_linked_list_List.
   *)
   Definition stringify (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -203,6 +211,9 @@ Module Impl_enums_testcase_linked_list_List.
       M.read α1
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_stringify :
+    M.IsAssociatedFunction Self "stringify" stringify [].
 End Impl_enums_testcase_linked_list_List.
 
 (*

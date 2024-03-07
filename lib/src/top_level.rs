@@ -1753,6 +1753,68 @@ impl TopLevelItem {
                 } else {
                     format!("Impl_{message}")
                 };
+                let applied_self_coq = coq::Expression::just_name("Self").apply_many(
+                    &generic_tys
+                        .iter()
+                        .map(|generic_ty| coq::Expression::just_name(generic_ty))
+                        .collect_vec(),
+                );
+                let items_coq = items
+                    .iter()
+                    .flat_map(|item| {
+                        let ImplItem {
+                            name,
+                            snippet,
+                            kind,
+                        } = item.as_ref();
+                        [
+                            vec![coq::TopLevelItem::Line],
+                            match snippet {
+                                None => vec![],
+                                Some(snippet) => snippet.to_coq(),
+                            },
+                            vec![
+                                coq::TopLevelItem::Code(concat([kind.to_doc(
+                                    name,
+                                    [vec!["Self".to_string()], generic_tys.clone()].concat(),
+                                )])),
+                                coq::TopLevelItem::Line,
+                                coq::TopLevelItem::Definition(coq::Definition::new(
+                                    &format!("AssociatedFunction_{name}"),
+                                    &coq::DefinitionKind::Axiom {
+                                        ty: coq::Expression::PiType {
+                                            args: vec![coq::ArgDecl::of_ty_params(
+                                                generic_tys,
+                                                coq::ArgSpecKind::Explicit,
+                                            )],
+                                            image: Rc::new(
+                                                coq::Expression::just_name(
+                                                    "M.IsAssociatedFunction",
+                                                )
+                                                .apply_many(&[
+                                                    applied_self_coq.clone(),
+                                                    coq::Expression::String(name.to_string()),
+                                                    coq::Expression::just_name(name),
+                                                    coq::Expression::List {
+                                                        exprs: generic_tys
+                                                            .iter()
+                                                            .map(|generic_ty| {
+                                                                coq::Expression::just_name(
+                                                                    generic_ty,
+                                                                )
+                                                            })
+                                                            .collect(),
+                                                    },
+                                                ]),
+                                            ),
+                                        },
+                                    },
+                                )),
+                            ],
+                        ]
+                        .concat()
+                    })
+                    .collect_vec();
 
                 coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
                     &module_name,
@@ -1768,29 +1830,7 @@ impl TopLevelItem {
                                 body: self_ty.to_coq(),
                             },
                         ))]),
-                        coq::TopLevel::new(
-                            &items
-                                .iter()
-                                .flat_map(|item| {
-                                    let ImplItem {
-                                        name,
-                                        snippet,
-                                        kind,
-                                    } = item.as_ref();
-                                    [
-                                        vec![coq::TopLevelItem::Line],
-                                        match snippet {
-                                            None => vec![],
-                                            Some(snippet) => snippet.to_coq(),
-                                        },
-                                        vec![coq::TopLevelItem::Code(concat([
-                                            kind.to_doc(name, generic_tys.clone())
-                                        ]))],
-                                    ]
-                                    .concat()
-                                })
-                                .collect::<Vec<_>>(),
-                        ),
+                        coq::TopLevel::new(&items_coq),
                     ]),
                 ))])
                 .to_doc()
@@ -1880,18 +1920,12 @@ impl TopLevelItem {
                                             .apply_many(&[
                                                 coq::Expression::just_name(item.name.as_str()),
                                                 coq::Expression::List {
-                                                    exprs: [
-                                                        vec![coq::Expression::just_name("Self")],
-                                                        generic_tys
-                                                            .iter()
-                                                            .map(|generic_ty| {
-                                                                coq::Expression::just_name(
-                                                                    generic_ty,
-                                                                )
-                                                            })
-                                                            .collect(),
-                                                    ]
-                                                    .concat(),
+                                                    exprs: generic_tys
+                                                        .iter()
+                                                        .map(|generic_ty| {
+                                                            coq::Expression::just_name(generic_ty)
+                                                        })
+                                                        .collect(),
                                                 },
                                             ])
                                     }
@@ -1943,22 +1977,19 @@ impl TopLevelItem {
                                             generic_tys,
                                             coq::ArgSpecKind::Explicit,
                                         )],
-                                        image: Rc::new(coq::Expression::Let {
-                                            name: "Self".to_string(),
-                                            ty: None,
-                                            value: Rc::new(self_ty.to_coq()),
-                                            body: Rc::new(
-                                                coq::Expression::just_name("M.IsTraitInstance")
-                                                    .apply_many(&[
-                                                        coq::Expression::String(
-                                                            of_trait.to_string(),
-                                                        ),
-                                                        coq::Expression::just_name("Self"),
-                                                        coq::Expression::List {
-                                                            exprs: trait_ty_params
-                                                                .iter()
-                                                                .filter_map(|(name, ty)| {
-                                                                    match ty.as_ref() {
+                                        image: Rc::new(
+                                            coq::Expression::just_name("M.IsTraitInstance")
+                                                .apply_many(&[
+                                                    coq::Expression::String(of_trait.to_string()),
+                                                    coq::Expression::Comment(
+                                                        "Self".to_string(),
+                                                        Rc::new(self_ty.to_coq()),
+                                                    ),
+                                                    coq::Expression::List {
+                                                        exprs: trait_ty_params
+                                                            .iter()
+                                                            .filter_map(|(name, ty)| {
+                                                                match ty.as_ref() {
                                                                 FieldWithDefault::RequiredValue(
                                                                     ty,
                                                                 )
@@ -1972,13 +2003,12 @@ impl TopLevelItem {
                                                                 }
                                                                 FieldWithDefault::Default => None,
                                                             }
-                                                                })
-                                                                .collect(),
-                                                        },
-                                                        coq::Expression::List { exprs: items_coq },
-                                                    ]),
-                                            ),
-                                        }),
+                                                            })
+                                                            .collect(),
+                                                    },
+                                                    coq::Expression::List { exprs: items_coq },
+                                                ]),
+                                        ),
                                     },
                                 },
                             ))],

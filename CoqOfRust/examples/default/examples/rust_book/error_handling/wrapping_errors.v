@@ -66,12 +66,11 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
@@ -154,12 +153,11 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
@@ -207,7 +205,10 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                   M.pure (α0 γ) in
                 let* e := M.alloc (borrow γ0_0) in
                 let* α0 := M.read e in
-                M.alloc (core.option.Option.Some (pointer_coercion "Unsize" α0))
+                M.alloc
+                  (Value.StructTuple
+                    "core::option::Option::Some"
+                    [ pointer_coercion "Unsize" α0 ])
               | _ => M.break_match 
               end) :
               Ty.apply
@@ -223,12 +224,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::error::Error"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       []
-      [ ("source", InstanceField.Method source [ Self ]) ].
+      [ ("source", InstanceField.Method source []) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
@@ -242,17 +242,16 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
     | [ Self ], [ err ] =>
       let* err := M.alloc err in
       let* α0 := M.read err in
-      M.pure (wrapping_errors.DoubleError.Parse α0)
+      M.pure (Value.StructTuple "wrapping_errors::DoubleError::Parse" [ α0 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       [ (* T *) Ty.path "core::num::error::ParseIntError" ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 (*
@@ -465,7 +464,8 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.var "BinOp::Panic::mul" in
       let* α1 := M.read parsed in
       let* α2 := α0 ((Integer.of_Z 2) : Ty.path "i32") α1 in
-      let* α0 := M.alloc (core.result.Result.Ok α2) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
       M.read α0)
   | _, _ => M.impossible
   end.

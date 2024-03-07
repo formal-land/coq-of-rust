@@ -123,11 +123,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "f32" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -139,18 +135,20 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "foreign_function_interface::Complex" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "foreign_function_interface::Complex")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   Axiom Implements :
-    let Self := Ty.path "foreign_function_interface::Complex" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "foreign_function_interface::Complex")
+      []
+      [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
@@ -247,10 +245,9 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "foreign_function_interface::Complex" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "foreign_function_interface::Complex")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

@@ -5,32 +5,33 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Axiom Implements :
-    let Self := Ty.path "derive::Centimeters" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "derive::Centimeters")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "derive::Centimeters" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "derive::Centimeters")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Parameter partial_cmp : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "derive::Centimeters" in
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Self *) (Ty.path "derive::Centimeters")
       []
-      [ ("partial_cmp", InstanceField.Method partial_cmp [ Self ]) ].
+      [ ("partial_cmp", InstanceField.Method partial_cmp []) ].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)
@@ -39,18 +40,20 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "derive::Inches" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "derive::Inches")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.
   Definition Self : Ty.t := Ty.path "derive::Inches".
   
   Parameter to_centimeters : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_to_centimeters :
+    M.IsAssociatedFunction Self "to_centimeters" to_centimeters [].
 End Impl_derive_Inches.
 
 (* Struct Seconds *)

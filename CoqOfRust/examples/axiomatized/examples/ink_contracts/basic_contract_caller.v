@@ -7,30 +7,31 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "basic_contract_caller::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_basic_contract_caller_AccountId.
 
 Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "basic_contract_caller::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
 
 Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
   Axiom Implements :
-    let Self := Ty.path "basic_contract_caller::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "basic_contract_caller::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :
@@ -46,9 +47,15 @@ Module Impl_basic_contract_caller_OtherContract.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_basic_contract_caller_OtherContract.
 
 (* Enum BasicContractCaller *)
@@ -59,5 +66,10 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter flip_and_get : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_flip_and_get :
+    M.IsAssociatedFunction Self "flip_and_get" flip_and_get [].
 End Impl_basic_contract_caller_BasicContractCaller.

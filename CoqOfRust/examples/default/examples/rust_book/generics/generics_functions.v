@@ -72,30 +72,49 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.var "generics_functions::reg_fn" in
       let* α1 :=
-        M.call α0 [ generics_functions.S.Build_t generics_functions.A.Build ] in
+        M.call
+          α0
+          [
+            Value.StructTuple
+              "generics_functions::S"
+              [ generics_functions.A.Build ]
+          ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "generics_functions::gen_spec_t" in
       let* α1 :=
         M.call
           α0
-          [ generics_functions.SGen.Build_t generics_functions.A.Build ] in
+          [
+            Value.StructTuple
+              "generics_functions::SGen"
+              [ generics_functions.A.Build ]
+          ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "generics_functions::gen_spec_i32" in
       let* α1 :=
         M.call
           α0
-          [ generics_functions.SGen.Build_t ((Integer.of_Z 6) : Ty.path "i32")
+          [
+            Value.StructTuple
+              "generics_functions::SGen"
+              [ (Integer.of_Z 6) : Ty.path "i32" ]
           ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "generics_functions::generic" in
-      let* α1 := M.call α0 [ generics_functions.SGen.Build_t "a"%char ] in
+      let* α1 :=
+        M.call
+          α0
+          [ Value.StructTuple "generics_functions::SGen" [ "a"%char ] ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "generics_functions::generic" in
-      let* α1 := M.call α0 [ generics_functions.SGen.Build_t "c"%char ] in
+      let* α1 :=
+        M.call
+          α0
+          [ Value.StructTuple "generics_functions::SGen" [ "c"%char ] ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

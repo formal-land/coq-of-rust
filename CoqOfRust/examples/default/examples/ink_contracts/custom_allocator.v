@@ -15,7 +15,7 @@ Module Impl_custom_allocator_CustomAllocator.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ init_value ] =>
+    | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       let* α1 := M.alloc [ α0 ] in
@@ -35,6 +35,8 @@ Module Impl_custom_allocator_CustomAllocator.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       pub fn default() -> Self {
           Self::new(Default::default())
@@ -42,7 +44,7 @@ Module Impl_custom_allocator_CustomAllocator.
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -53,6 +55,9 @@ Module Impl_custom_allocator_CustomAllocator.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_default :
+    M.IsAssociatedFunction Self "default" default [].
+  
   (*
       pub fn flip(&mut self) {
           self.value[0] = !self.value[0];
@@ -60,7 +65,7 @@ Module Impl_custom_allocator_CustomAllocator.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
@@ -106,6 +111,8 @@ Module Impl_custom_allocator_CustomAllocator.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  
   (*
       pub fn get(&self) -> bool {
           self.value[0]
@@ -113,7 +120,7 @@ Module Impl_custom_allocator_CustomAllocator.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_method
@@ -135,4 +142,6 @@ Module Impl_custom_allocator_CustomAllocator.
       M.read (deref α3)
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_custom_allocator_CustomAllocator.

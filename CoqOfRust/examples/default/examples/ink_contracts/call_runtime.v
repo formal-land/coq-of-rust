@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (call_runtime.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "call_runtime::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_runtime::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "call_runtime::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_call_runtime_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_runtime::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "call_runtime::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_call_runtime_AccountId.
   Axiom Implements :
-    let Self := Ty.path "call_runtime::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "call_runtime::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
@@ -93,15 +90,14 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
     end.
   
   Axiom Implements :
-    let Self :=
-      Ty.apply
-        (Ty.path "call_runtime::MultiAddress")
-        [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ] in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *)
+        (Ty.apply
+          (Ty.path "call_runtime::MultiAddress")
+          [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ])
       [ (* T *) Ty.path "call_runtime::AccountId" ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
 (* Enum BalancesCall *)
@@ -121,12 +117,11 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_runtime::RuntimeCaller" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "call_runtime::RuntimeCaller")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
 (* Enum RuntimeError *)
@@ -147,18 +142,20 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_runtime::RuntimeError" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "call_runtime::RuntimeError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
   Axiom Implements :
-    let Self := Ty.path "call_runtime::RuntimeError" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
@@ -175,18 +172,20 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_runtime::RuntimeError" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "call_runtime::RuntimeError")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
   Axiom Implements :
-    let Self := Ty.path "call_runtime::RuntimeError" in
-    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralEq"
+      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      []
+      [].
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
@@ -205,14 +204,13 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_runtime::RuntimeError" in
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Self *) (Ty.path "call_runtime::RuntimeError")
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+          InstanceField.Method assert_receiver_is_total_eq [])
       ].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
@@ -257,12 +255,11 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
     end.
   
   Axiom Implements :
-    let Self := Ty.path "call_runtime::RuntimeError" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "call_runtime::RuntimeError")
       [ (* T *) Ty.path "call_runtime::EnvError" ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 
 Module Impl_call_runtime_Env.
@@ -275,7 +272,7 @@ Module Impl_call_runtime_Env.
   *)
   Definition call_runtime (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Call ], [ self; _call ] =>
+    | [ Self; Call ], [ self; _call ] =>
       let* self := M.alloc self in
       let* _call := M.alloc _call in
       let* α0 := M.var "core::panicking::panic" in
@@ -284,6 +281,9 @@ Module Impl_call_runtime_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_call_runtime :
+    M.IsAssociatedFunction Self "call_runtime" call_runtime [].
 End Impl_call_runtime_Env.
 
 Module Impl_call_runtime_RuntimeCaller.
@@ -296,13 +296,16 @@ Module Impl_call_runtime_RuntimeCaller.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -311,11 +314,13 @@ Module Impl_call_runtime_RuntimeCaller.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "call_runtime::RuntimeCaller")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -324,7 +329,7 @@ Module Impl_call_runtime_RuntimeCaller.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -333,6 +338,8 @@ Module Impl_call_runtime_RuntimeCaller.
       M.call α0 []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn transfer_through_runtime(
@@ -350,7 +357,7 @@ Module Impl_call_runtime_RuntimeCaller.
   *)
   Definition transfer_through_runtime (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; receiver; value ] =>
+    | [ Self ], [ self; receiver; value ] =>
       let* self := M.alloc self in
       let* receiver := M.alloc receiver in
       let* value := M.alloc value in
@@ -376,10 +383,13 @@ Module Impl_call_runtime_RuntimeCaller.
       let* α6 := M.read value in
       let* α7 :=
         M.alloc
-          (call_runtime.RuntimeCall.Balances
-            (Value.StructRecord
-              "call_runtime::BalancesCall::Transfer"
-              [ ("dest", α5); ("value", α6) ])) in
+          (Value.StructTuple
+            "call_runtime::RuntimeCall::Balances"
+            [
+              Value.StructRecord
+                "call_runtime::BalancesCall::Transfer"
+                [ ("dest", α5); ("value", α6) ]
+            ]) in
       let* α8 :=
         M.call
           (Ty.path "call_runtime::Env")::["call_runtime"]
@@ -400,6 +410,13 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_transfer_through_runtime :
+    M.IsAssociatedFunction
+      Self
+      "transfer_through_runtime"
+      transfer_through_runtime
+      [].
+  
   (*
       pub fn call_nonexistent_extrinsic(&mut self) -> Result<(), RuntimeError> {
           self.env().call_runtime(&()).map_err(Into::into)
@@ -410,7 +427,7 @@ Module Impl_call_runtime_RuntimeCaller.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -438,4 +455,11 @@ Module Impl_call_runtime_RuntimeCaller.
         [ α4; α5 ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_call_nonexistent_extrinsic :
+    M.IsAssociatedFunction
+      Self
+      "call_nonexistent_extrinsic"
+      call_nonexistent_extrinsic
+      [].
 End Impl_call_runtime_RuntimeCaller.

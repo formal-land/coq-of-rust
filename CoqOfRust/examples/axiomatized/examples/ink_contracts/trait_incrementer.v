@@ -18,7 +18,12 @@ Module Impl_trait_incrementer_Incrementer.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter inc_by : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_inc_by :
+    M.IsAssociatedFunction Self "inc_by" inc_by [].
 End Impl_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
@@ -27,14 +32,13 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "trait_incrementer::Incrementer" in
     M.IsTraitInstance
       "trait_incrementer::Increment"
-      Self
+      (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
       [
-        ("inc", InstanceField.Method inc [ Self ]);
-        ("get", InstanceField.Method get [ Self ])
+        ("inc", InstanceField.Method inc []);
+        ("get", InstanceField.Method get [])
       ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
@@ -42,10 +46,9 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
   Parameter reset : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "trait_incrementer::Incrementer" in
     M.IsTraitInstance
       "trait_incrementer::Reset"
-      Self
+      (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
-      [ ("reset", InstanceField.Method reset [ Self ]) ].
+      [ ("reset", InstanceField.Method reset []) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

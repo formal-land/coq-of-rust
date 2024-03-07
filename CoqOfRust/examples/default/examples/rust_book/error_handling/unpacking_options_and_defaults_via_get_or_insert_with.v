@@ -94,13 +94,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
     end.
   
   Axiom Implements :
-    let Self :=
-      Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *)
+        (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
 
 (*
@@ -220,8 +219,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc tt in
     let* my_apple :=
       M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple) in
+        (Value.StructTuple
+          "core::option::Option::Some"
+          [ unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
+          ]) in
     let* should_be_apple :=
       let* α0 := M.read get_lemon_as_fallback in
       let* α1 :=

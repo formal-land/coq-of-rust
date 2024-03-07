@@ -14,27 +14,15 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (match_operator
-                (DeclaredButUndefinedVariable
-                  (A :=
-                    Ty.apply
-                      (Ty.path "core::clone::AssertParamIsClone")
-                      [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]))
+                Value.DeclaredButUndefined
                 [
                   fun γ =>
                     (match_operator
-                      (DeclaredButUndefinedVariable
-                        (A :=
-                          Ty.apply
-                            (Ty.path "core::clone::AssertParamIsClone")
-                            [ Ty.path "u32" ]))
+                      Value.DeclaredButUndefined
                       [
                         fun γ =>
                           (let* α0 := M.read self in
@@ -50,18 +38,20 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_borrowing_mutablity::Book" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_borrowing_mutablity::Book" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
+      []
+      [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 (*

@@ -25,12 +25,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_lifetimes_traits::Borrowed" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
@@ -51,12 +50,11 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "scoping_rules_lifetimes_traits::Borrowed" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (*

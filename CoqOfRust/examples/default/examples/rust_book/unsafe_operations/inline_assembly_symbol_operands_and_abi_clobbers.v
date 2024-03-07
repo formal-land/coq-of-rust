@@ -98,7 +98,7 @@ Definition call_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ arg ] =>
     let* arg := M.alloc arg in
-    let* result := M.copy (DeclaredButUndefinedVariable (A := Ty.path "i32")) in
+    let* result := M.copy Value.DeclaredButUndefined in
     let _ := InlineAssembly in
     M.read result
   | _, _ => M.impossible

@@ -7,24 +7,22 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "defining_an_error_type::DoubleError" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "defining_an_error_type::DoubleError" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
@@ -38,12 +36,11 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "defining_an_error_type::DoubleError" in
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

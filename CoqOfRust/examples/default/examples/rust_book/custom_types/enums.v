@@ -206,7 +206,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* pressed := M.alloc (enums.WebEvent.KeyPress "x"%char) in
+    let* pressed :=
+      M.alloc (Value.StructTuple "enums::WebEvent::KeyPress" [ "x"%char ]) in
     let* pasted :=
       let* α0 :=
         M.get_method
@@ -215,7 +216,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) Ty.path "str" ] in
       let* α1 := M.read (mk_str "my text") in
       let* α2 := M.call α0 [ α1 ] in
-      M.alloc (enums.WebEvent.Paste α2) in
+      M.alloc (Value.StructTuple "enums::WebEvent::Paste" [ α2 ]) in
     let* click :=
       M.alloc
         (Value.StructRecord

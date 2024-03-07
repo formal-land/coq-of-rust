@@ -5,8 +5,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Axiom Implements :
-    let Self := Ty.path "derive::Centimeters" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "derive::Centimeters")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -30,12 +33,11 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "derive::Centimeters" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "derive::Centimeters")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -61,12 +63,11 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "derive::Centimeters" in
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Self *) (Ty.path "derive::Centimeters")
       []
-      [ ("partial_cmp", InstanceField.Method partial_cmp [ Self ]) ].
+      [ ("partial_cmp", InstanceField.Method partial_cmp []) ].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)
@@ -92,12 +93,11 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "derive::Inches" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "derive::Inches")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.
@@ -112,7 +112,7 @@ Module Impl_derive_Inches.
   *)
   Definition to_centimeters (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -133,13 +133,16 @@ Module Impl_derive_Inches.
                 let* α1 := M.read inches in
                 let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
                 let* α3 := α0 (rust_cast α1) α2 in
-                M.alloc (derive.Centimeters.Build_t α3)
+                M.alloc (Value.StructTuple "derive::Centimeters" [ α3 ])
               end) :
               Ty.path "derive::Centimeters"
           ] in
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_to_centimeters :
+    M.IsAssociatedFunction Self "to_centimeters" to_centimeters [].
 End Impl_derive_Inches.
 
 (* Struct Seconds *)
@@ -176,9 +179,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _one_second :=
-      M.alloc (derive.Seconds.Build_t ((Integer.of_Z 1) : Ty.path "i32")) in
+      M.alloc
+        (Value.StructTuple
+          "derive::Seconds"
+          [ (Integer.of_Z 1) : Ty.path "i32" ]) in
     let* foot :=
-      M.alloc (derive.Inches.Build_t ((Integer.of_Z 12) : Ty.path "i32")) in
+      M.alloc
+        (Value.StructTuple
+          "derive::Inches"
+          [ (Integer.of_Z 12) : Ty.path "i32" ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -203,7 +212,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc tt in
     let* meter :=
       let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      M.alloc (derive.Centimeters.Build_t α0) in
+      M.alloc (Value.StructTuple "derive::Centimeters" [ α0 ]) in
     let* cmp :=
       let* α0 :=
         M.get_method

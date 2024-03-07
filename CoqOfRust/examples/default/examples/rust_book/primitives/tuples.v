@@ -71,12 +71,11 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "tuples::Matrix" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "tuples::Matrix")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (*
@@ -376,7 +375,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.read (UnsupportedLiteral : Ty.path "f32") in
                 let* α2 := M.read (UnsupportedLiteral : Ty.path "f32") in
                 let* α3 := M.read (UnsupportedLiteral : Ty.path "f32") in
-                M.alloc (tuples.Matrix.Build_t α0 α1 α2 α3) in
+                M.alloc
+                  (Value.StructTuple "tuples::Matrix" [ α0; α1; α2; α3 ]) in
               let* _ :=
                 let* _ :=
                   let* α0 := M.var "std::io::stdio::_print" in

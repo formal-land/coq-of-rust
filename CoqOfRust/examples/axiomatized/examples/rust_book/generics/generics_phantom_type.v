@@ -6,9 +6,12 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Axiom Implements :
     forall (A B : Ty.t),
-    let Self :=
-      Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ] in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *)
+        (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -16,13 +19,12 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   
   Axiom Implements :
     forall (A B : Ty.t),
-    let Self :=
-      Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ] in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *)
+        (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
       []
-      [ ("eq", InstanceField.Method eq [ Self; A; B ]) ].
+      [ ("eq", InstanceField.Method eq [ A; B ]) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 (* Enum PhantomStruct *)
@@ -30,9 +32,12 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Axiom Implements :
     forall (A B : Ty.t),
-    let Self :=
-      Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ] in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *)
+        (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -40,13 +45,12 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   
   Axiom Implements :
     forall (A B : Ty.t),
-    let Self :=
-      Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ] in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *)
+        (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
       []
-      [ ("eq", InstanceField.Method eq [ Self; A; B ]) ].
+      [ ("eq", InstanceField.Method eq [ A; B ]) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

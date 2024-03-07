@@ -36,12 +36,11 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
     end.
   
   Axiom Implements :
-    let Self := Ty.path "disambiguating_overlapping_traits::Form" in
     M.IsTraitInstance
       "disambiguating_overlapping_traits::UsernameWidget"
-      Self
+      (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       []
-      [ ("get", InstanceField.Method get [ Self ]) ].
+      [ ("get", InstanceField.Method get []) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -61,12 +60,11 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
     end.
   
   Axiom Implements :
-    let Self := Ty.path "disambiguating_overlapping_traits::Form" in
     M.IsTraitInstance
       "disambiguating_overlapping_traits::AgeWidget"
-      Self
+      (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       []
-      [ ("get", InstanceField.Method get [ Self ]) ].
+      [ ("get", InstanceField.Method get []) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (*

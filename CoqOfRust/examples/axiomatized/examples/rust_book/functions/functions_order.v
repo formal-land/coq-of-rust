@@ -10,7 +10,11 @@ Module Impl_functions_order_SomeType.
   
   Parameter meth2 : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2 [].
+  
   Parameter meth1 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1 [].
 End Impl_functions_order_SomeType.
 
 (* Trait *)
@@ -24,14 +28,13 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "functions_order::SomeType" in
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      Self
+      (* Self *) (Ty.path "functions_order::SomeType")
       []
       [
-        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ]);
-        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ])
+        ("some_trait_bar", InstanceField.Method some_trait_bar []);
+        ("some_trait_foo", InstanceField.Method some_trait_foo [])
       ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
@@ -41,14 +44,13 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "functions_order::OtherType" in
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      Self
+      (* Self *) (Ty.path "functions_order::OtherType")
       []
       [
-        ("some_trait_foo", InstanceField.Method some_trait_foo [ Self ]);
-        ("some_trait_bar", InstanceField.Method some_trait_bar [ Self ])
+        ("some_trait_foo", InstanceField.Method some_trait_foo []);
+        ("some_trait_bar", InstanceField.Method some_trait_bar [])
       ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 

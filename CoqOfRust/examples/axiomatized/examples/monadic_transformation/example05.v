@@ -7,6 +7,8 @@ Module Impl_example05_Foo.
   Definition Self : Ty.t := Ty.path "example05::Foo".
   
   Parameter plus1 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1 [].
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

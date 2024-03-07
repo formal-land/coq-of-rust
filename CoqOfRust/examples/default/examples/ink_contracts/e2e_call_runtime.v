@@ -16,17 +16,16 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (e2e_call_runtime.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "e2e_call_runtime::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
@@ -39,11 +38,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -55,18 +50,20 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
@@ -83,7 +80,7 @@ Module Impl_e2e_call_runtime_Env.
   *)
   Definition balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
@@ -91,6 +88,9 @@ Module Impl_e2e_call_runtime_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_balance :
+    M.IsAssociatedFunction Self "balance" balance [].
 End Impl_e2e_call_runtime_Env.
 
 (* Struct Contract *)
@@ -106,12 +106,11 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "e2e_call_runtime::Contract" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "e2e_call_runtime::Contract")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_e2e_call_runtime_Contract.
 
 Module Impl_e2e_call_runtime_Contract.
@@ -124,13 +123,16 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -139,11 +141,13 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "e2e_call_runtime::Contract")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new() -> Self {
@@ -152,9 +156,11 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure e2e_call_runtime.Contract.Build
+    | [ Self ], [] => M.pure e2e_call_runtime.Contract.Build
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn get_contract_balance(&self) -> Balance {
@@ -163,7 +169,7 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition get_contract_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -172,4 +178,7 @@ Module Impl_e2e_call_runtime_Contract.
       M.call (Ty.path "e2e_call_runtime::Env")::["balance"] [ borrow α2 ]
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_get_contract_balance :
+    M.IsAssociatedFunction Self "get_contract_balance" get_contract_balance [].
 End Impl_e2e_call_runtime_Contract.

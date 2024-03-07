@@ -8,9 +8,18 @@ Module Impl_custom_allocator_CustomAllocator.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_default :
+    M.IsAssociatedFunction Self "default" default [].
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_custom_allocator_CustomAllocator.

@@ -11,12 +11,11 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
   
   Axiom Implements :
     forall (T : Ty.t),
-    let Self := T in
     M.IsTraitInstance
       "generics_where_clauses::PrintInOption"
-      Self
+      (* Self *) T
       []
-      [ ("print_in_option", InstanceField.Method print_in_option [ Self; T ]) ].
+      [ ("print_in_option", InstanceField.Method print_in_option [ T ]) ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

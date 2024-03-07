@@ -254,7 +254,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Alignment.Right;
               (Integer.of_Z 0) : Ty.path "u32";
               core.fmt.rt.Count.Implied;
-              core.fmt.rt.Count.Is ((Integer.of_Z 5) : Ty.path "usize")
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ (Integer.of_Z 5) : Ty.path "usize" ]
             ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
@@ -292,7 +294,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Alignment.Left;
               (Integer.of_Z 0) : Ty.path "u32";
               core.fmt.rt.Count.Implied;
-              core.fmt.rt.Count.Is ((Integer.of_Z 5) : Ty.path "usize")
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ (Integer.of_Z 5) : Ty.path "usize" ]
             ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
@@ -335,7 +339,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Alignment.Right;
               (Integer.of_Z 0) : Ty.path "u32";
               core.fmt.rt.Count.Implied;
-              core.fmt.rt.Count.Param ((Integer.of_Z 1) : Ty.path "usize")
+              Value.StructTuple
+                "core::fmt::rt::Count::Param"
+                [ (Integer.of_Z 1) : Ty.path "usize" ]
             ] in
         let* α10 := M.alloc [ α9 ] in
         let* α11 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
@@ -396,7 +402,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               core.fmt.rt.Alignment.Right;
               (Integer.of_Z 0) : Ty.path "u32";
               core.fmt.rt.Count.Implied;
-              core.fmt.rt.Count.Param ((Integer.of_Z 1) : Ty.path "usize")
+              Value.StructTuple
+                "core::fmt::rt::Count::Param"
+                [ (Integer.of_Z 1) : Ty.path "usize" ]
             ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in

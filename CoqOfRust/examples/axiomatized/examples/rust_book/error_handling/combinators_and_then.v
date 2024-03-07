@@ -7,12 +7,11 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_and_then::Food" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_and_then::Food")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -21,12 +20,11 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "combinators_and_then::Day" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "combinators_and_then::Day")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Parameter have_ingredients : (list Ty.t) -> (list Value.t) -> M.

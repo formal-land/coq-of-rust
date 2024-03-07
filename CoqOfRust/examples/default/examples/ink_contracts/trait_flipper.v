@@ -20,7 +20,7 @@ Module Impl_trait_flipper_Flipper.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 :=
         M.get_method
           "core::default::Default"
@@ -30,6 +30,8 @@ Module Impl_trait_flipper_Flipper.
       M.pure (Value.StructRecord "trait_flipper::Flipper" [ ("value", α1) ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
 End Impl_trait_flipper_Flipper.
 
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
@@ -71,13 +73,12 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "trait_flipper::Flipper" in
     M.IsTraitInstance
       "trait_flipper::Flip"
-      Self
+      (* Self *) (Ty.path "trait_flipper::Flipper")
       []
       [
-        ("flip", InstanceField.Method flip [ Self ]);
-        ("get", InstanceField.Method get [ Self ])
+        ("flip", InstanceField.Method flip []);
+        ("get", InstanceField.Method get [])
       ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

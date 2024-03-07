@@ -7,12 +7,11 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
@@ -26,36 +25,33 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Parameter source : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::error::Error"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       []
-      [ ("source", InstanceField.Method source [ Self ]) ].
+      [ ("source", InstanceField.Method source []) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "wrapping_errors::DoubleError" in
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Self *) (Ty.path "wrapping_errors::DoubleError")
       [ (* T *) Ty.path "core::num::error::ParseIntError" ]
-      [ ("from", InstanceField.Method from [ Self ]) ].
+      [ ("from", InstanceField.Method from []) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

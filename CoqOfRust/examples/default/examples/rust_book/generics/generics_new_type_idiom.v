@@ -15,16 +15,19 @@ Module Impl_generics_new_type_idiom_Years.
   *)
   Definition to_days (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "BinOp::Panic::mul" in
       let* α1 := M.var "generics_new_type_idiom::Years::Get_0" in
       let* α2 := M.read self in
       let* α3 := M.read (α1 (deref α2)) in
       let* α4 := α0 α3 ((Integer.of_Z 365) : Ty.path "i64") in
-      M.pure (generics_new_type_idiom.Days.Build_t α4)
+      M.pure (Value.StructTuple "generics_new_type_idiom::Days" [ α4 ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_to_days :
+    M.IsAssociatedFunction Self "to_days" to_days [].
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
@@ -37,16 +40,19 @@ Module Impl_generics_new_type_idiom_Days.
   *)
   Definition to_years (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "BinOp::Panic::div" in
       let* α1 := M.var "generics_new_type_idiom::Days::Get_0" in
       let* α2 := M.read self in
       let* α3 := M.read (α1 (deref α2)) in
       let* α4 := α0 α3 ((Integer.of_Z 365) : Ty.path "i64") in
-      M.pure (generics_new_type_idiom.Years.Build_t α4)
+      M.pure (Value.StructTuple "generics_new_type_idiom::Years" [ α4 ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_to_years :
+    M.IsAssociatedFunction Self "to_years" to_years [].
 End Impl_generics_new_type_idiom_Days.
 
 (*
@@ -81,8 +87,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* age :=
       M.alloc
-        (generics_new_type_idiom.Years.Build_t
-          ((Integer.of_Z 5) : Ty.path "i64")) in
+        (Value.StructTuple
+          "generics_new_type_idiom::Years"
+          [ (Integer.of_Z 5) : Ty.path "i64" ]) in
     let* age_days :=
       let* α0 :=
         M.call

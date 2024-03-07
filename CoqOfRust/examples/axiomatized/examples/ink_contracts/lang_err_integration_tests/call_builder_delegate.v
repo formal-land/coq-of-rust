@@ -13,12 +13,11 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "call_builder_delegate::CallBuilderDelegateTest" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "call_builder_delegate::CallBuilderDelegateTest")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.
@@ -27,7 +26,15 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   Parameter delegate : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom AssociatedFunction_delegate :
+    M.IsAssociatedFunction Self "delegate" delegate [].
+  
   Parameter invoke : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_invoke :
+    M.IsAssociatedFunction Self "invoke" invoke [].
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

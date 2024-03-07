@@ -25,12 +25,11 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
     end.
   
   Axiom Implements :
-    let Self := Ty.path "returning_traits_with_dyn::Sheep" in
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      Self
+      (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
       []
-      [ ("noise", InstanceField.Method noise [ Self ]) ].
+      [ ("noise", InstanceField.Method noise []) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
@@ -48,12 +47,11 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "returning_traits_with_dyn::Cow" in
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      Self
+      (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
       []
-      [ ("noise", InstanceField.Method noise [ Self ]) ].
+      [ ("noise", InstanceField.Method noise []) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 (*

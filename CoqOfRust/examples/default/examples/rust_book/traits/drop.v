@@ -43,12 +43,11 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "drop::Droppable" in
     M.IsTraitInstance
       "core::ops::drop::Drop"
-      Self
+      (* Self *) (Ty.path "drop::Droppable")
       []
-      [ ("drop", InstanceField.Method drop [ Self ]) ].
+      [ ("drop", InstanceField.Method drop []) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (*

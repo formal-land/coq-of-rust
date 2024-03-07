@@ -22,42 +22,42 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "boxing_errors::EmptyVec" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "boxing_errors::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "boxing_errors::EmptyVec" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "boxing_errors::EmptyVec")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "boxing_errors::EmptyVec" in
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Self *) (Ty.path "boxing_errors::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
   Axiom Implements :
-    let Self := Ty.path "boxing_errors::EmptyVec" in
-    M.IsTraitInstance "core::error::Error" Self [] [].
+    M.IsTraitInstance
+      "core::error::Error"
+      (* Self *) (Ty.path "boxing_errors::EmptyVec")
+      []
+      [].
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

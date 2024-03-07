@@ -129,7 +129,8 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "std::fs::File" ])::["new"]
           [ α1 ] in
       let* α3 := M.call α0 [ α2 ] in
-      let* α0 := M.alloc (core.result.Result.Ok α3) in
+      let* α0 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
       M.read α0)
   | _, _ => M.impossible
   end.

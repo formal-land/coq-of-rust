@@ -23,13 +23,15 @@ Module Impl_trait_incrementer_Incrementer.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ init_value ] =>
+    | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure
         (Value.StructRecord "trait_incrementer::Incrementer" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn inc_by(&mut self, delta: u64) {
@@ -38,7 +40,7 @@ Module Impl_trait_incrementer_Incrementer.
   *)
   Definition inc_by (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; delta ] =>
+    | [ Self ], [ self; delta ] =>
       let* self := M.alloc self in
       let* delta := M.alloc delta in
       let* _ :=
@@ -56,6 +58,9 @@ Module Impl_trait_incrementer_Incrementer.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_inc_by :
+    M.IsAssociatedFunction Self "inc_by" inc_by [].
 End Impl_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
@@ -91,14 +96,13 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "trait_incrementer::Incrementer" in
     M.IsTraitInstance
       "trait_incrementer::Increment"
-      Self
+      (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
       [
-        ("inc", InstanceField.Method inc [ Self ]);
-        ("get", InstanceField.Method get [ Self ])
+        ("inc", InstanceField.Method inc []);
+        ("get", InstanceField.Method get [])
       ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
@@ -122,10 +126,9 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "trait_incrementer::Incrementer" in
     M.IsTraitInstance
       "trait_incrementer::Reset"
-      Self
+      (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
-      [ ("reset", InstanceField.Method reset [ Self ]) ].
+      [ ("reset", InstanceField.Method reset []) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

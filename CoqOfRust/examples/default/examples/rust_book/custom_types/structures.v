@@ -35,12 +35,11 @@ Module Impl_core_fmt_Debug_for_structures_Person.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "structures::Person" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "structures::Person")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_structures_Person.
 
 (* Struct Unit *)
@@ -252,9 +251,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* pair :=
                 let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
                 M.alloc
-                  (structures.Pair.Build_t
-                    ((Integer.of_Z 1) : Ty.path "i32")
-                    α0) in
+                  (Value.StructTuple
+                    "structures::Pair"
+                    [ (Integer.of_Z 1) : Ty.path "i32"; α0 ]) in
               let* _ :=
                 let* _ :=
                   let* α0 := M.var "std::io::stdio::_print" in

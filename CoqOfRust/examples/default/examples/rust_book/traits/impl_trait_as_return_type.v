@@ -207,7 +207,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α3 in
     let* _ :=
       let* α0 :=
-        M.alloc (core.option.Option.Some ((Integer.of_Z 1) : Ty.path "i32")) in
+        M.alloc
+          (Value.StructTuple
+            "core::option::Option::Some"
+            [ (Integer.of_Z 1) : Ty.path "i32" ]) in
       let* α1 :=
         M.get_method
           "core::iter::traits::iterator::Iterator"
@@ -265,7 +268,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* α0 :=
-        M.alloc (core.option.Option.Some ((Integer.of_Z 2) : Ty.path "i32")) in
+        M.alloc
+          (Value.StructTuple
+            "core::option::Option::Some"
+            [ (Integer.of_Z 2) : Ty.path "i32" ]) in
       let* α1 :=
         M.get_method
           "core::iter::traits::iterator::Iterator"
@@ -323,7 +329,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* α0 :=
-        M.alloc (core.option.Option.Some ((Integer.of_Z 3) : Ty.path "i32")) in
+        M.alloc
+          (Value.StructTuple
+            "core::option::Option::Some"
+            [ (Integer.of_Z 3) : Ty.path "i32" ]) in
       let* α1 :=
         M.get_method
           "core::iter::traits::iterator::Iterator"
@@ -381,7 +390,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* α0 :=
-        M.alloc (core.option.Option.Some ((Integer.of_Z 4) : Ty.path "i32")) in
+        M.alloc
+          (Value.StructTuple
+            "core::option::Option::Some"
+            [ (Integer.of_Z 4) : Ty.path "i32" ]) in
       let* α1 :=
         M.get_method
           "core::iter::traits::iterator::Iterator"
@@ -439,7 +451,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* α0 :=
-        M.alloc (core.option.Option.Some ((Integer.of_Z 5) : Ty.path "i32")) in
+        M.alloc
+          (Value.StructTuple
+            "core::option::Option::Some"
+            [ (Integer.of_Z 5) : Ty.path "i32" ]) in
       let* α1 :=
         M.get_method
           "core::iter::traits::iterator::Iterator"

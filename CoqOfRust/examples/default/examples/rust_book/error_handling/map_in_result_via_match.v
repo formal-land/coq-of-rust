@@ -50,7 +50,8 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 := M.read first_number in
                       let* α2 := M.read second_number in
                       let* α3 := α0 α1 α2 in
-                      M.alloc (core.result.Result.Ok α3)
+                      M.alloc
+                        (Value.StructTuple "core::result::Result::Ok" [ α3 ])
                     | _ => M.break_match 
                     end) :
                     Ty.apply
@@ -66,7 +67,8 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.pure (α0 γ) in
                       let* e := M.copy γ0_0 in
                       let* α0 := M.read e in
-                      M.alloc (core.result.Result.Err α0)
+                      M.alloc
+                        (Value.StructTuple "core::result::Result::Err" [ α0 ])
                     | _ => M.break_match 
                     end) :
                     Ty.apply
@@ -88,7 +90,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (α0 γ) in
               let* e := M.copy γ0_0 in
               let* α0 := M.read e in
-              M.alloc (core.result.Result.Err α0)
+              M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
             | _ => M.break_match 
             end) :
             Ty.apply

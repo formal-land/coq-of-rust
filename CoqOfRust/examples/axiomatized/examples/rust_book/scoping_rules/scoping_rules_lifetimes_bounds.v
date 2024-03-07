@@ -8,13 +8,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   
   Axiom Implements :
     forall (T : Ty.t),
-    let Self :=
-      Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ] in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *)
+        (Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ])
       []
-      [ ("fmt", InstanceField.Method fmt [ Self; T ]) ].
+      [ ("fmt", InstanceField.Method fmt [ T ]) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Parameter print : (list Ty.t) -> (list Value.t) -> M.

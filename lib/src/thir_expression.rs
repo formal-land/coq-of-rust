@@ -1420,11 +1420,9 @@ fn compile_stmts<'a>(
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, thir, initializer),
                         None => Rc::new(Expr {
-                            kind: Rc::new(ExprKind::VarWithTy {
-                                path: Path::new(&["DeclaredButUndefinedVariable"]),
-                                ty_name: "A".to_string(),
-                                ty: compile_type(env, &pattern.ty),
-                            }),
+                            kind: Rc::new(ExprKind::LocalVar(
+                                "Value.DeclaredButUndefined".to_string(),
+                            )),
                             ty: None,
                         }),
                     };

@@ -31,12 +31,11 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
   
   Axiom Implements :
     forall (K V : Ty.t),
-    let Self := Ty.apply (Ty.path "multisig::Mapping") [ K; V ] in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.apply (Ty.path "multisig::Mapping") [ K; V ])
       []
-      [ ("default", InstanceField.Method default [ Self; K; V ]) ].
+      [ ("default", InstanceField.Method default [ K; V ]) ].
 End Impl_core_default_Default_for_multisig_Mapping_K_V.
 
 Module Impl_multisig_Mapping_K_V.
@@ -50,7 +49,7 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -59,6 +58,10 @@ Module Impl_multisig_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_contains :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -67,7 +70,7 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -77,6 +80,10 @@ Module Impl_multisig_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_get :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+  
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
@@ -84,7 +91,7 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key; _value ] =>
+    | [ Self; K; V ], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -95,6 +102,10 @@ Module Impl_multisig_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_insert :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+  
   (*
       fn remove(&self, _key: K) {
           unimplemented!()
@@ -102,7 +113,7 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Definition remove (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -111,6 +122,10 @@ Module Impl_multisig_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_remove :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -119,7 +134,7 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Definition size (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -129,6 +144,10 @@ Module Impl_multisig_Mapping_K_V.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_size :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+  
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
@@ -136,7 +155,7 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Definition take (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ K; V ], [ self; _key ] =>
+    | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.var "core::panicking::panic" in
@@ -145,6 +164,10 @@ Module Impl_multisig_Mapping_K_V.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_take :
+    forall (K V : Ty.t),
+    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
 End Impl_multisig_Mapping_K_V.
 
 (* Struct AccountId *)
@@ -162,17 +185,16 @@ Module Impl_core_default_Default_for_multisig_AccountId.
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
-      M.pure (multisig.AccountId.Build_t α1)
+      M.pure (Value.StructTuple "multisig::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "multisig::AccountId")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_multisig_AccountId.
 
 Module Impl_core_fmt_Debug_for_multisig_AccountId.
@@ -196,12 +218,11 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "multisig::AccountId")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_multisig_AccountId.
 
 Module Impl_core_clone_Clone_for_multisig_AccountId.
@@ -214,11 +235,7 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -230,24 +247,29 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "multisig::AccountId")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_multisig_AccountId.
 
 Module Impl_core_marker_Copy_for_multisig_AccountId.
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "multisig::AccountId")
+      []
+      [].
 End Impl_core_marker_Copy_for_multisig_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "multisig::AccountId")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
@@ -271,18 +293,20 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "multisig::AccountId")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_multisig_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
-    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralEq"
+      (* Self *) (Ty.path "multisig::AccountId")
+      []
+      [].
 End Impl_core_marker_StructuralEq_for_multisig_AccountId.
 
 Module Impl_core_cmp_Eq_for_multisig_AccountId.
@@ -298,25 +322,20 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::cmp::AssertParamIsEq")
-                [ Ty.path "u128" ]))
+          Value.DeclaredButUndefined
           [ fun γ => (M.alloc tt) : Ty.path "unit" ] in
       M.read α0
     | _, _ => M.impossible
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Self *) (Ty.path "multisig::AccountId")
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+          InstanceField.Method assert_receiver_is_total_eq [])
       ].
 End Impl_core_cmp_Eq_for_multisig_AccountId.
 
@@ -343,12 +362,11 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Self *) (Ty.path "multisig::AccountId")
       []
-      [ ("partial_cmp", InstanceField.Method partial_cmp [ Self ]) ].
+      [ ("partial_cmp", InstanceField.Method partial_cmp []) ].
 End Impl_core_cmp_PartialOrd_for_multisig_AccountId.
 
 Module Impl_core_cmp_Ord_for_multisig_AccountId.
@@ -371,12 +389,11 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::AccountId" in
     M.IsTraitInstance
       "core::cmp::Ord"
-      Self
+      (* Self *) (Ty.path "multisig::AccountId")
       []
-      [ ("cmp", InstanceField.Method cmp [ Self ]) ].
+      [ ("cmp", InstanceField.Method cmp []) ].
 End Impl_core_cmp_Ord_for_multisig_AccountId.
 
 Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
@@ -406,11 +423,7 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
       let* self := M.alloc self in
       let* α0 :=
         match_operator
-          (DeclaredButUndefinedVariable
-            (A :=
-              Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone")
-                [ Ty.path "u32" ]))
+          Value.DeclaredButUndefined
           [
             fun γ =>
               (let* α0 := M.read self in
@@ -422,18 +435,20 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::ConfirmationStatus" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "multisig::ConfirmationStatus")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
 
 Module Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
   Axiom Implements :
-    let Self := Ty.path "multisig::ConfirmationStatus" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "multisig::ConfirmationStatus")
+      []
+      [].
 End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
 
 (* Enum Transaction *)
@@ -501,12 +516,11 @@ Module Impl_core_default_Default_for_multisig_Transaction.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::Transaction" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "multisig::Transaction")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_multisig_Transaction.
 
 (* Enum Error *)
@@ -525,24 +539,29 @@ Module Impl_core_clone_Clone_for_multisig_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::Error" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "multisig::Error")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_multisig_Error.
 
 Module Impl_core_marker_Copy_for_multisig_Error.
   Axiom Implements :
-    let Self := Ty.path "multisig::Error" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "multisig::Error")
+      []
+      [].
 End Impl_core_marker_Copy_for_multisig_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_multisig_Error.
   Axiom Implements :
-    let Self := Ty.path "multisig::Error" in
-    M.IsTraitInstance "core::marker::StructuralPartialEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralPartialEq"
+      (* Self *) (Ty.path "multisig::Error")
+      []
+      [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_Error.
 
 Module Impl_core_cmp_PartialEq_for_multisig_Error.
@@ -559,18 +578,20 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::Error" in
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Self *) (Ty.path "multisig::Error")
       []
-      [ ("eq", InstanceField.Method eq [ Self ]) ].
+      [ ("eq", InstanceField.Method eq []) ].
 End Impl_core_cmp_PartialEq_for_multisig_Error.
 
 Module Impl_core_marker_StructuralEq_for_multisig_Error.
   Axiom Implements :
-    let Self := Ty.path "multisig::Error" in
-    M.IsTraitInstance "core::marker::StructuralEq" Self [] [].
+    M.IsTraitInstance
+      "core::marker::StructuralEq"
+      (* Self *) (Ty.path "multisig::Error")
+      []
+      [].
 End Impl_core_marker_StructuralEq_for_multisig_Error.
 
 Module Impl_core_cmp_Eq_for_multisig_Error.
@@ -589,14 +610,13 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::Error" in
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Self *) (Ty.path "multisig::Error")
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [ Self ])
+          InstanceField.Method assert_receiver_is_total_eq [])
       ].
 End Impl_core_cmp_Eq_for_multisig_Error.
 
@@ -634,12 +654,11 @@ Module Impl_core_default_Default_for_multisig_Transactions.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::Transactions" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "multisig::Transactions")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_multisig_Transactions.
 
 (* Enum Confirmation *)
@@ -670,13 +689,16 @@ Module Impl_multisig_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "multisig::Env::Get_caller" in
       let* α1 := M.read self in
       M.read (α0 (deref α1))
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_caller :
+    M.IsAssociatedFunction Self "caller" caller [].
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -685,7 +707,7 @@ Module Impl_multisig_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _event ] =>
+    | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.var "core::panicking::panic" in
@@ -695,6 +717,9 @@ Module Impl_multisig_Env.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_emit_event :
+    M.IsAssociatedFunction Self "emit_event" emit_event [].
+  
   (*
       fn transferred_value(&self) -> Balance {
           unimplemented!()
@@ -702,7 +727,7 @@ Module Impl_multisig_Env.
   *)
   Definition transferred_value (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
@@ -711,6 +736,9 @@ Module Impl_multisig_Env.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_transferred_value :
+    M.IsAssociatedFunction Self "transferred_value" transferred_value [].
+  
   (*
       fn account_id(&self) -> AccountId {
           unimplemented!()
@@ -718,7 +746,7 @@ Module Impl_multisig_Env.
   *)
   Definition account_id (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
@@ -726,6 +754,9 @@ Module Impl_multisig_Env.
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_account_id :
+    M.IsAssociatedFunction Self "account_id" account_id [].
 End Impl_multisig_Env.
 
 (* Enum Multisig *)
@@ -824,12 +855,11 @@ Module Impl_core_default_Default_for_multisig_Multisig.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "multisig::Multisig" in
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Self *) (Ty.path "multisig::Multisig")
       []
-      [ ("default", InstanceField.Method default [ Self ]) ].
+      [ ("default", InstanceField.Method default []) ].
 End Impl_core_default_Default_for_multisig_Multisig.
 
 (*
@@ -888,13 +918,16 @@ Module Impl_multisig_Multisig.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] =>
+    | [ Self ], [] =>
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       never_to_any α2
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_init_env :
+    M.IsAssociatedFunction Self "init_env" init_env [].
   
   (*
       fn env(&self) -> Env {
@@ -903,11 +936,13 @@ Module Impl_multisig_Multisig.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       M.call (Ty.path "multisig::Multisig")::["init_env"] []
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
   
   (*
       pub fn new(requirement: u32, mut owners: Vec<AccountId>) -> Self {
@@ -928,7 +963,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ requirement; owners ] =>
+    | [ Self ], [ requirement; owners ] =>
       let* requirement := M.alloc requirement in
       let* owners := M.alloc owners in
       let* contract :=
@@ -1090,6 +1125,8 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  
   (*
       fn ensure_confirmed(&self, trans_id: TransactionId) {
           assert!(
@@ -1102,7 +1139,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition ensure_confirmed (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; trans_id ] =>
+    | [ Self ], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* _ :=
@@ -1146,6 +1183,9 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_ensure_confirmed :
+    M.IsAssociatedFunction Self "ensure_confirmed" ensure_confirmed [].
+  
   (*
       fn ensure_transaction_exists(&self, trans_id: TransactionId) {
           self.transactions
@@ -1155,7 +1195,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition ensure_transaction_exists (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; trans_id ] =>
+    | [ Self ], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* _ :=
@@ -1181,6 +1221,13 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_ensure_transaction_exists :
+    M.IsAssociatedFunction
+      Self
+      "ensure_transaction_exists"
+      ensure_transaction_exists
+      [].
+  
   (*
       fn ensure_owner(&self, owner: &AccountId) {
           assert!(self.is_owner.contains(owner));
@@ -1188,7 +1235,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition ensure_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* _ :=
@@ -1218,6 +1265,9 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_ensure_owner :
+    M.IsAssociatedFunction Self "ensure_owner" ensure_owner [].
+  
   (*
       fn ensure_caller_is_owner(&self) {
           self.ensure_owner(&self.env().caller());
@@ -1225,7 +1275,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition ensure_caller_is_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -1244,6 +1294,13 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_ensure_caller_is_owner :
+    M.IsAssociatedFunction
+      Self
+      "ensure_caller_is_owner"
+      ensure_caller_is_owner
+      [].
+  
   (*
       fn ensure_from_wallet(&self) {
           assert_eq!(self.env().caller(), self.env().account_id());
@@ -1251,7 +1308,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition ensure_from_wallet (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -1313,6 +1370,9 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_ensure_from_wallet :
+    M.IsAssociatedFunction Self "ensure_from_wallet" ensure_from_wallet [].
+  
   (*
       fn ensure_no_owner(&self, owner: &AccountId) {
           assert!(!self.is_owner.contains(owner));
@@ -1320,7 +1380,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition ensure_no_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* _ :=
@@ -1352,6 +1412,9 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_ensure_no_owner :
+    M.IsAssociatedFunction Self "ensure_no_owner" ensure_no_owner [].
+  
   (*
       pub fn add_owner(&mut self, new_owner: AccountId) {
           self.ensure_from_wallet();
@@ -1365,7 +1428,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition add_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; new_owner ] =>
+    | [ Self ], [ self; new_owner ] =>
       let* self := M.alloc self in
       let* new_owner := M.alloc new_owner in
       let* _ :=
@@ -1436,14 +1499,19 @@ Module Impl_multisig_Multisig.
             (Ty.path "multisig::Env")::["emit_event"]
             [
               borrow α2;
-              multisig.Event.OwnerAddition
-                (Value.StructRecord "multisig::OwnerAddition" [ ("owner", α3) ])
+              Value.StructTuple
+                "multisig::Event::OwnerAddition"
+                [ Value.StructRecord "multisig::OwnerAddition" [ ("owner", α3) ]
+                ]
             ] in
         M.alloc α4 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_add_owner :
+    M.IsAssociatedFunction Self "add_owner" add_owner [].
   
   (*
       fn owner_index(&self, owner: &AccountId) -> u32 {
@@ -1455,7 +1523,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition owner_index (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 :=
@@ -1541,6 +1609,9 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_owner_index :
+    M.IsAssociatedFunction Self "owner_index" owner_index [].
+  
   (*
       fn clean_owner_confirmations(&mut self, owner: &AccountId) {
           for trans_id in &self.transaction_list.transactions {
@@ -1556,7 +1627,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition clean_owner_confirmations (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 :=
@@ -1725,6 +1796,13 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_clean_owner_confirmations :
+    M.IsAssociatedFunction
+      Self
+      "clean_owner_confirmations"
+      clean_owner_confirmations
+      [].
+  
   (*
       pub fn remove_owner(&mut self, owner: AccountId) {
           self.ensure_from_wallet();
@@ -1743,7 +1821,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition remove_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; owner ] =>
+    | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* _ :=
@@ -1843,14 +1921,19 @@ Module Impl_multisig_Multisig.
             (Ty.path "multisig::Env")::["emit_event"]
             [
               borrow α2;
-              multisig.Event.OwnerRemoval
-                (Value.StructRecord "multisig::OwnerRemoval" [ ("owner", α3) ])
+              Value.StructTuple
+                "multisig::Event::OwnerRemoval"
+                [ Value.StructRecord "multisig::OwnerRemoval" [ ("owner", α3) ]
+                ]
             ] in
         M.alloc α4 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_remove_owner :
+    M.IsAssociatedFunction Self "remove_owner" remove_owner [].
   
   (*
       pub fn replace_owner(&mut self, old_owner: AccountId, new_owner: AccountId) {
@@ -1870,7 +1953,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition replace_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; old_owner; new_owner ] =>
+    | [ Self ], [ self; old_owner; new_owner ] =>
       let* self := M.alloc self in
       let* old_owner := M.alloc old_owner in
       let* new_owner := M.alloc new_owner in
@@ -1965,8 +2048,10 @@ Module Impl_multisig_Multisig.
             (Ty.path "multisig::Env")::["emit_event"]
             [
               borrow α2;
-              multisig.Event.OwnerRemoval
-                (Value.StructRecord "multisig::OwnerRemoval" [ ("owner", α3) ])
+              Value.StructTuple
+                "multisig::Event::OwnerRemoval"
+                [ Value.StructRecord "multisig::OwnerRemoval" [ ("owner", α3) ]
+                ]
             ] in
         M.alloc α4 in
       let* _ :=
@@ -1982,14 +2067,19 @@ Module Impl_multisig_Multisig.
             (Ty.path "multisig::Env")::["emit_event"]
             [
               borrow α2;
-              multisig.Event.OwnerAddition
-                (Value.StructRecord "multisig::OwnerAddition" [ ("owner", α3) ])
+              Value.StructTuple
+                "multisig::Event::OwnerAddition"
+                [ Value.StructRecord "multisig::OwnerAddition" [ ("owner", α3) ]
+                ]
             ] in
         M.alloc α4 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_replace_owner :
+    M.IsAssociatedFunction Self "replace_owner" replace_owner [].
   
   (*
       pub fn change_requirement(&mut self, new_requirement: u32) {
@@ -2004,7 +2094,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition change_requirement (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; new_requirement ] =>
+    | [ Self ], [ self; new_requirement ] =>
       let* self := M.alloc self in
       let* new_requirement := M.alloc new_requirement in
       let* _ :=
@@ -2046,16 +2136,22 @@ Module Impl_multisig_Multisig.
             (Ty.path "multisig::Env")::["emit_event"]
             [
               borrow α2;
-              multisig.Event.RequirementChange
-                (Value.StructRecord
-                  "multisig::RequirementChange"
-                  [ ("new_requirement", α3) ])
+              Value.StructTuple
+                "multisig::Event::RequirementChange"
+                [
+                  Value.StructRecord
+                    "multisig::RequirementChange"
+                    [ ("new_requirement", α3) ]
+                ]
             ] in
         M.alloc α4 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_change_requirement :
+    M.IsAssociatedFunction Self "change_requirement" change_requirement [].
   
   (*
       fn confirm_by_caller(
@@ -2093,7 +2189,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition confirm_by_caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; confirmer; transaction ] =>
+    | [ Self ], [ self; confirmer; transaction ] =>
       let* self := M.alloc self in
       let* confirmer := M.alloc confirmer in
       let* transaction := M.alloc transaction in
@@ -2190,7 +2286,10 @@ Module Impl_multisig_Multisig.
             let* α3 := M.read (α1 (deref α2)) in
             let* α4 := M.read count in
             let* α5 := α0 α3 α4 in
-            M.alloc (multisig.ConfirmationStatus.ConfirmationsNeeded α5) in
+            M.alloc
+              (Value.StructTuple
+                "multisig::ConfirmationStatus::ConfirmationsNeeded"
+                [ α5 ]) in
         M.copy α7 in
       let* _ :=
         let* α0 := M.read (use new_confirmation) in
@@ -2210,10 +2309,13 @@ Module Impl_multisig_Multisig.
                 (Ty.path "multisig::Env")::["emit_event"]
                 [
                   borrow α2;
-                  multisig.Event.Confirmation
-                    (Value.StructRecord
-                      "multisig::Confirmation"
-                      [ ("transaction", α3); ("from", α4); ("status", α5) ])
+                  Value.StructTuple
+                    "multisig::Event::Confirmation"
+                    [
+                      Value.StructRecord
+                        "multisig::Confirmation"
+                        [ ("transaction", α3); ("from", α4); ("status", α5) ]
+                    ]
                 ] in
             M.alloc α6 in
           M.alloc tt
@@ -2222,6 +2324,9 @@ Module Impl_multisig_Multisig.
       M.read status
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_confirm_by_caller :
+    M.IsAssociatedFunction Self "confirm_by_caller" confirm_by_caller [].
   
   (*
       pub fn submit_transaction(
@@ -2246,7 +2351,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition submit_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; transaction ] =>
+    | [ Self ], [ self; transaction ] =>
       let* self := M.alloc self in
       let* transaction := M.alloc transaction in
       let* _ :=
@@ -2314,10 +2419,13 @@ Module Impl_multisig_Multisig.
             (Ty.path "multisig::Env")::["emit_event"]
             [
               borrow α2;
-              multisig.Event.Submission
-                (Value.StructRecord
-                  "multisig::Submission"
-                  [ ("transaction", α3) ])
+              Value.StructTuple
+                "multisig::Event::Submission"
+                [
+                  Value.StructRecord
+                    "multisig::Submission"
+                    [ ("transaction", α3) ]
+                ]
             ] in
         M.alloc α4 in
       let* α0 := M.read trans_id in
@@ -2336,6 +2444,9 @@ Module Impl_multisig_Multisig.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_submit_transaction :
+    M.IsAssociatedFunction Self "submit_transaction" submit_transaction [].
   
   (*
       fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
@@ -2359,7 +2470,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition take_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; trans_id ] =>
+    | [ Self ], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* transaction :=
@@ -2608,6 +2719,9 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_take_transaction :
+    M.IsAssociatedFunction Self "take_transaction" take_transaction [].
+  
   (*
       pub fn cancel_transaction(&mut self, trans_id: TransactionId) {
           self.ensure_from_wallet();
@@ -2620,7 +2734,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition cancel_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; trans_id ] =>
+    | [ Self ], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* _ :=
@@ -2660,10 +2774,13 @@ Module Impl_multisig_Multisig.
                 (Ty.path "multisig::Env")::["emit_event"]
                 [
                   borrow α2;
-                  multisig.Event.Cancellation
-                    (Value.StructRecord
-                      "multisig::Cancellation"
-                      [ ("transaction", α3) ])
+                  Value.StructTuple
+                    "multisig::Event::Cancellation"
+                    [
+                      Value.StructRecord
+                        "multisig::Cancellation"
+                        [ ("transaction", α3) ]
+                    ]
                 ] in
             M.alloc α4 in
           M.alloc tt
@@ -2672,6 +2789,9 @@ Module Impl_multisig_Multisig.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_cancel_transaction :
+    M.IsAssociatedFunction Self "cancel_transaction" cancel_transaction [].
   
   (*
       pub fn confirm_transaction(&mut self, trans_id: TransactionId) -> ConfirmationStatus {
@@ -2682,7 +2802,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition confirm_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; trans_id ] =>
+    | [ Self ], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* _ :=
@@ -2716,6 +2836,9 @@ Module Impl_multisig_Multisig.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_confirm_transaction :
+    M.IsAssociatedFunction Self "confirm_transaction" confirm_transaction [].
+  
   (*
       pub fn revoke_confirmation(&mut self, trans_id: TransactionId) {
           self.ensure_caller_is_owner();
@@ -2738,7 +2861,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition revoke_confirmation (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; trans_id ] =>
+    | [ Self ], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* _ :=
@@ -2843,10 +2966,13 @@ Module Impl_multisig_Multisig.
                 (Ty.path "multisig::Env")::["emit_event"]
                 [
                   borrow α2;
-                  multisig.Event.Revocation
-                    (Value.StructRecord
-                      "multisig::Revocation"
-                      [ ("transaction", α3); ("from", α4) ])
+                  Value.StructTuple
+                    "multisig::Event::Revocation"
+                    [
+                      Value.StructRecord
+                        "multisig::Revocation"
+                        [ ("transaction", α3); ("from", α4) ]
+                    ]
                 ] in
             M.alloc α5 in
           M.alloc tt
@@ -2855,6 +2981,9 @@ Module Impl_multisig_Multisig.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_revoke_confirmation :
+    M.IsAssociatedFunction Self "revoke_confirmation" revoke_confirmation [].
   
   (*
       pub fn invoke_transaction(&mut self, trans_id: TransactionId) -> Result<(), Error> {
@@ -2885,7 +3014,7 @@ Module Impl_multisig_Multisig.
   *)
   Definition invoke_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; trans_id ] =>
+    | [ Self ], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* _ :=
@@ -2964,7 +3093,8 @@ Module Impl_multisig_Multisig.
                     let* γ1_0 :=
                       let* α0 := M.var "core::result::Result::Get_Ok_0" in
                       M.pure (α0 γ0_0) in
-                    M.alloc (core.result.Result.Ok tt)
+                    M.alloc
+                      (Value.StructTuple "core::result::Result::Ok" [ tt ])
                   | _ => M.break_match 
                   end
                 | _ => M.break_match 
@@ -2974,7 +3104,9 @@ Module Impl_multisig_Multisig.
                   [ Ty.tuple []; Ty.path "multisig::Error" ];
               fun γ =>
                 (M.alloc
-                  (core.result.Result.Err multisig.Error.TransactionFailed)) :
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ multisig.Error.TransactionFailed ])) :
                 Ty.apply
                   (Ty.path "core::result::Result")
                   [ Ty.tuple []; Ty.path "multisig::Error" ]
@@ -3024,15 +3156,21 @@ Module Impl_multisig_Multisig.
             (Ty.path "multisig::Env")::["emit_event"]
             [
               borrow α2;
-              multisig.Event.Execution
-                (Value.StructRecord
-                  "multisig::Execution"
-                  [ ("transaction", α3); ("result", α5) ])
+              Value.StructTuple
+                "multisig::Event::Execution"
+                [
+                  Value.StructRecord
+                    "multisig::Execution"
+                    [ ("transaction", α3); ("result", α5) ]
+                ]
             ] in
         M.alloc α6 in
       M.read result
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_invoke_transaction :
+    M.IsAssociatedFunction Self "invoke_transaction" invoke_transaction [].
   
   (*
       pub fn eval_transaction(&mut self, trans_id: TransactionId) -> Result<Vec<u8>, Error> {
@@ -3061,4 +3199,7 @@ Module Impl_multisig_Multisig.
       }
   *)
   Parameter eval_transaction : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_eval_transaction :
+    M.IsAssociatedFunction Self "eval_transaction" eval_transaction [].
 End Impl_multisig_Multisig.

@@ -103,7 +103,9 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ])::["map_or"]
         [
           α0;
-          core.result.Result.Ok core.option.Option.None;
+          Value.StructTuple
+            "core::result::Result::Ok"
+            [ core.option.Option.None ];
           fun
               (α0 :
                 Ty.apply

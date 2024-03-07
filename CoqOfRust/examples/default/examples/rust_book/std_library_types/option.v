@@ -29,7 +29,7 @@ Definition checked_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 := M.read dividend in
         let* α2 := M.read divisor in
         let* α3 := α0 α1 α2 in
-        M.alloc (core.option.Option.Some α3) in
+        M.alloc (Value.StructTuple "core::option::Option::Some" [ α3 ]) in
     M.read α4
   | _, _ => M.impossible
   end.
@@ -185,7 +185,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _equivalent_none := M.alloc core.option.Option.None in
     let* optional_float :=
       let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
-      M.alloc (core.option.Option.Some α0) in
+      M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

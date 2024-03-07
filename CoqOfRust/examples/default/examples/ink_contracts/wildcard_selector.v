@@ -28,9 +28,11 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure wildcard_selector.WildcardSelector.Build
+    | [ Self ], [] => M.pure wildcard_selector.WildcardSelector.Build
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
   
   (*
       pub fn wildcard(&mut self) {
@@ -40,7 +42,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition wildcard (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self ] =>
+    | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.var "wildcard_selector::decode_input" in
       let* α1 := M.call α0 [] in
@@ -105,6 +107,9 @@ Module Impl_wildcard_selector_WildcardSelector.
     | _, _ => M.impossible
     end.
   
+  Axiom AssociatedFunction_wildcard :
+    M.IsAssociatedFunction Self "wildcard" wildcard [].
+  
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
           println!("Wildcard complement message: {}", _message);
@@ -112,7 +117,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition wildcard_complement (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [ self; _message ] =>
+    | [ Self ], [ self; _message ] =>
       let* self := M.alloc self in
       let* _message := M.alloc _message in
       let* _ :=
@@ -141,4 +146,7 @@ Module Impl_wildcard_selector_WildcardSelector.
       M.read α0
     | _, _ => M.impossible
     end.
+  
+  Axiom AssociatedFunction_wildcard_complement :
+    M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement [].
 End Impl_wildcard_selector_WildcardSelector.

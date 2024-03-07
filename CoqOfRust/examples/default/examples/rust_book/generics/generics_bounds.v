@@ -40,12 +40,11 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "generics_bounds::Rectangle" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *) (Ty.path "generics_bounds::Rectangle")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* Enum Triangle *)
@@ -72,12 +71,11 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
     end.
   
   Axiom Implements :
-    let Self := Ty.path "generics_bounds::Rectangle" in
     M.IsTraitInstance
       "generics_bounds::HasArea"
-      Self
+      (* Self *) (Ty.path "generics_bounds::Rectangle")
       []
-      [ ("area", InstanceField.Method area [ Self ]) ].
+      [ ("area", InstanceField.Method area []) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 (*

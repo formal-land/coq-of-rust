@@ -7,18 +7,20 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::PhoneNumber" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
+      []
+      [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* Enum Job *)
@@ -27,18 +29,20 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
       []
-      [ ("clone", InstanceField.Method clone [ Self ]) ].
+      [ ("clone", InstanceField.Method clone []) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Axiom Implements :
-    let Self := Ty.path "unpacking_options_via_question_mark::Job" in
-    M.IsTraitInstance "core::marker::Copy" Self [] [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
+      []
+      [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* Enum Person *)
@@ -48,6 +52,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
     Ty.path "unpacking_options_via_question_mark::Person".
   
   Parameter work_phone_area_code : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_work_phone_area_code :
+    M.IsAssociatedFunction Self "work_phone_area_code" work_phone_area_code [].
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

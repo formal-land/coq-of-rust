@@ -198,11 +198,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
     end.
   
   Axiom Implements :
-    let Self :=
-      Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person" in
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Self *)
+        (Ty.path
+          "scoping_rules_ownership_and_rules_partial_moves::main::Person")
       []
-      [ ("fmt", InstanceField.Method fmt [ Self ]) ].
+      [ ("fmt", InstanceField.Method fmt []) ].
 End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
