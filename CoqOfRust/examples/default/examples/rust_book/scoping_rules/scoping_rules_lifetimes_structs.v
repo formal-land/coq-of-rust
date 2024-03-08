@@ -27,9 +27,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_structs::Borrowed")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 (* Struct NamedBorrowed *)
@@ -71,9 +71,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 (* Enum Either *)
@@ -113,10 +113,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                     [ α0; α1; pointer_coercion "Unsize" __self_0 ] in
                 M.alloc α2
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -139,10 +136,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                     [ α0; α1; pointer_coercion "Unsize" __self_0 ] in
                 M.alloc α2
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -152,9 +146,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_structs::Either")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (*

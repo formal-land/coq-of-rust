@@ -15,7 +15,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
       (* Self *)
         (Ty.path
           "scoping_rules_ownership_and_rules_partial_moves::main::Person")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

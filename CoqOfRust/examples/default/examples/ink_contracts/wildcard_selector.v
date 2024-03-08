@@ -100,8 +100,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                     M.alloc α9 in
                   M.alloc tt in
                 M.alloc tt
-              end) :
-              Ty.path "unit"
+              end)
           ] in
       M.read α4
     | _, _ => M.impossible

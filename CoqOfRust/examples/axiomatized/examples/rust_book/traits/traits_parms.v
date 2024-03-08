@@ -28,9 +28,9 @@ Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
     M.IsTraitInstance
       "traits_parms::Foo"
       (* Self *) (Ty.path "traits_parms::SomeOtherType")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
@@ -38,9 +38,9 @@ Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
     M.IsTraitInstance
       "traits_parms::Bar"
       (* Self *) (Ty.path "traits_parms::SomeOtherType")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
@@ -48,9 +48,9 @@ Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
     M.IsTraitInstance
       "traits_parms::Tar"
       (* Self *) (Ty.path "traits_parms::SomeOtherType")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
@@ -62,7 +62,8 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
     M.IsTraitInstance
       "traits_parms::SomeTrait"
       (* Self *) (Ty.path "traits_parms::SomeOtherType")
-      []
-      [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [ ("SomeType", TODO); ("some_fn", InstanceField.Method some_fn) ]
+      (* Instance polymorphic types *) [].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

@@ -71,8 +71,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* n := M.copy γ in
             let* _ :=
@@ -93,8 +92,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α7 := M.call α0 [ α6 ] in
               M.alloc α7 in
-            M.alloc tt) :
-            Ty.tuple [];
+            M.alloc tt);
           fun γ =>
             (let* n := M.copy γ in
             let* _ :=
@@ -115,8 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α7 := M.call α0 [ α6 ] in
               M.alloc α7 in
-            M.alloc tt) :
-            Ty.tuple [];
+            M.alloc tt);
           fun γ =>
             (let* n := M.copy γ in
             let* _ :=
@@ -137,8 +134,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α7 := M.call α0 [ α6 ] in
               M.alloc α7 in
-            M.alloc tt) :
-            Ty.tuple []
+            M.alloc tt)
         ] in
     M.read α0
   | _, _ => M.impossible

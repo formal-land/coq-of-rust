@@ -10,9 +10,9 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Unit")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
@@ -22,9 +22,9 @@ Module Impl_core_clone_Clone_for_clone_Unit.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Unit")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
@@ -32,9 +32,9 @@ Module Impl_core_marker_Copy_for_clone_Unit.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "clone::Unit")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_clone_Unit.
 
 (* Struct Pair *)
@@ -46,9 +46,9 @@ Module Impl_core_clone_Clone_for_clone_Pair.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Pair")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
@@ -58,9 +58,9 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Pair")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

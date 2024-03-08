@@ -37,9 +37,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | i32.Make 0 => M.alloc false
             | _ => M.break_match 
-            end) :
-            Ty.path "bool";
-          fun γ => (M.alloc true) : Ty.path "bool"
+            end);
+          fun γ => (M.alloc true)
         ] in
     let* _ :=
       let* α0 := M.alloc true in

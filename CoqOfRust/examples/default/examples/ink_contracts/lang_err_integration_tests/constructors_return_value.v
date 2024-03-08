@@ -24,9 +24,9 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_constructors_return_value_AccountId.
 
 Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
@@ -38,12 +38,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (M.read self) : Ty.path "constructors_return_value::AccountId"
-          ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -52,9 +47,9 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_constructors_return_value_AccountId.
 
 Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
@@ -62,9 +57,9 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
@@ -88,9 +83,10 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
-      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance :
@@ -128,9 +124,9 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructors_return_value::ConstructorError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 
 (* Struct ReturnFlags *)

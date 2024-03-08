@@ -53,11 +53,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.alloc
                         (Value.StructTuple "core::result::Result::Ok" [ α3 ])
                     | _ => M.break_match 
-                    end) :
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                      ];
+                    end);
                   fun γ =>
                     (let* α0 := M.read γ in
                     match α0 with
@@ -70,17 +66,10 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.alloc
                         (Value.StructTuple "core::result::Result::Err" [ α0 ])
                     | _ => M.break_match 
-                    end) :
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                      ]
+                    end)
                 ]
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -92,10 +81,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read e in
               M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+            end)
         ] in
     M.read α3
   | _, _ => M.impossible
@@ -145,8 +131,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -175,8 +160,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

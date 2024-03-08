@@ -16,9 +16,9 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "i32")
-      []
-      [ ("required", InstanceField.Method required) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("required", InstanceField.Method required) ]
+      (* Instance polymorphic types *) [].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
@@ -30,12 +30,13 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "u32")
-      []
-      [
-        ("required", InstanceField.Method required);
-        ("provided", InstanceField.Method provided)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("required", InstanceField.Method required);
+          ("provided", InstanceField.Method provided)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

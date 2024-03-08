@@ -8,9 +8,9 @@ Module Impl_core_marker_Copy_for_subtle_Choice.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
@@ -20,9 +20,9 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
@@ -32,9 +32,9 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice.
@@ -53,9 +53,9 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "bool")
-      [ (* T *) Ty.path "subtle::Choice" ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *) [ (* T *) Ty.path "subtle::Choice" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -67,9 +67,10 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitAnd"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -79,9 +80,9 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitAndAssign"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("bitand_assign", InstanceField.Method bitand_assign) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -93,9 +94,9 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitOr"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -105,9 +106,9 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitOrAssign"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("bitor_assign", InstanceField.Method bitor_assign) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -119,9 +120,10 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitXor"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -131,9 +133,9 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitXorAssign"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("bitxor_assign", InstanceField.Method bitxor_assign) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
@@ -145,9 +147,9 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::Not"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("Output", TODO); ("not", InstanceField.Method not) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Output", TODO); ("not", InstanceField.Method not) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 Parameter black_box : (list Ty.t) -> (list Value.t) -> M.
@@ -159,9 +161,9 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "subtle::Choice")
-      [ (* T *) Ty.path "u8" ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
@@ -180,9 +182,9 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "slice") [ T ])
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [ T ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [ T ].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -192,9 +194,9 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
@@ -204,9 +206,9 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u8")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
@@ -216,9 +218,9 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i8")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
@@ -228,9 +230,9 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u16")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
@@ -240,9 +242,9 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i16")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
@@ -252,9 +254,9 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u32")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
@@ -264,9 +266,9 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i32")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
@@ -276,9 +278,9 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u64")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
@@ -288,9 +290,9 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i64")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
@@ -300,9 +302,9 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "usize")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
@@ -312,9 +314,9 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "isize")
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
@@ -340,13 +342,14 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "u8")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
@@ -360,13 +363,14 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "i8")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
@@ -380,13 +384,14 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "u16")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
@@ -400,13 +405,14 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "i16")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
@@ -420,13 +426,14 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "u32")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
@@ -440,13 +447,14 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "i32")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
@@ -460,13 +468,14 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "u64")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
@@ -480,13 +489,14 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "i64")
-      []
-      [
-        ("conditional_select", InstanceField.Method conditional_select);
-        ("conditional_assign", InstanceField.Method conditional_assign);
-        ("conditional_swap", InstanceField.Method conditional_swap)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("conditional_select", InstanceField.Method conditional_select);
+          ("conditional_assign", InstanceField.Method conditional_assign);
+          ("conditional_swap", InstanceField.Method conditional_swap)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
@@ -496,9 +506,10 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "subtle::Choice")
-      []
-      [ ("conditional_select", InstanceField.Method conditional_select) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [ ("conditional_select", InstanceField.Method conditional_select) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 (* Trait *)
@@ -514,9 +525,10 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     M.IsTraitInstance
       "subtle::ConditionallyNegatable"
       (* Self *) T
-      []
-      [ ("conditional_negate", InstanceField.Method conditional_negate) ]
-      [ T ].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [ ("conditional_negate", InstanceField.Method conditional_negate) ]
+      (* Instance polymorphic types *) [ T ].
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 (* Struct CtOption *)
@@ -529,9 +541,9 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [ T ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [ T ].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -540,9 +552,9 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-      []
-      []
-      [ T ].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [ T ].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -553,9 +565,9 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [ T ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [ T ].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
@@ -566,9 +578,10 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.apply (Ty.path "core::option::Option") [ T ])
-      [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
-      [ ("from", InstanceField.Method from) ]
-      [ T ].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [ T ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -644,9 +657,10 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-      []
-      [ ("conditional_select", InstanceField.Method conditional_select) ]
-      [ T ].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [ ("conditional_select", InstanceField.Method conditional_select) ]
+      (* Instance polymorphic types *) [ T ].
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -657,9 +671,9 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-      []
-      [ ("ct_eq", InstanceField.Method ct_eq) ]
-      [ T ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
+      (* Instance polymorphic types *) [ T ].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 (* Trait *)
@@ -674,9 +688,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u8")
-      []
-      [ ("ct_gt", InstanceField.Method ct_gt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
@@ -686,9 +700,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u16")
-      []
-      [ ("ct_gt", InstanceField.Method ct_gt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
@@ -698,9 +712,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u32")
-      []
-      [ ("ct_gt", InstanceField.Method ct_gt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
@@ -710,9 +724,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u64")
-      []
-      [ ("ct_gt", InstanceField.Method ct_gt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
@@ -728,9 +742,9 @@ Module Impl_subtle_ConstantTimeLess_for_u8.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u8")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
@@ -738,9 +752,9 @@ Module Impl_subtle_ConstantTimeLess_for_u16.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u16")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
@@ -748,9 +762,9 @@ Module Impl_subtle_ConstantTimeLess_for_u32.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u32")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
@@ -758,7 +772,7 @@ Module Impl_subtle_ConstantTimeLess_for_u64.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u64")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_subtle_ConstantTimeLess_for_u64.

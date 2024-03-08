@@ -24,9 +24,9 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.read self) : Ty.path "call_builder::AccountId" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -49,9 +47,9 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "call_builder::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -59,9 +57,9 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "call_builder::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
@@ -112,9 +110,9 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::CallBuilderTest")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.
@@ -183,10 +181,7 @@ Module Impl_call_builder_CallBuilderTest.
                   M.pure (α0 γ) in
                 M.alloc core.option.Option.None
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "call_builder::LangError" ];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -204,10 +199,7 @@ Module Impl_call_builder_CallBuilderTest.
                 | _ => M.break_match 
                 end
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "call_builder::LangError" ];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -233,10 +225,7 @@ Module Impl_call_builder_CallBuilderTest.
                 let* α7 := never_to_any α6 in
                 M.alloc α7
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "call_builder::LangError" ]
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible

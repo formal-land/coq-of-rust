@@ -17,9 +17,9 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
@@ -27,9 +27,9 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
@@ -39,7 +39,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

@@ -113,10 +113,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "i32";
                             Ty.path "core::num::error::ParseIntError"
                           ])::["ok"]
-                      [ α1 ]) :
-                    _
-                ]) :
-              _
+                      [ α1 ])
+                ])
           ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in

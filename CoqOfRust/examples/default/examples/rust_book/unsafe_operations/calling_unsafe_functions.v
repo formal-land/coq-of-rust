@@ -113,8 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* α0 := M.alloc tt in
     M.read α0

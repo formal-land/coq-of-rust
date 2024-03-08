@@ -32,9 +32,9 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "erc20::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
@@ -108,9 +108,9 @@ Module Impl_core_default_Default_for_erc20_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "erc20::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_erc20_AccountId.
@@ -122,9 +122,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.read self) : Ty.path "erc20::AccountId" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -133,9 +131,9 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "erc20::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_erc20_AccountId.
@@ -143,9 +141,9 @@ Module Impl_core_marker_Copy_for_erc20_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "erc20::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_erc20_AccountId.
 
 Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
@@ -204,9 +202,9 @@ Module Impl_core_default_Default_for_erc20_Erc20.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "erc20::Erc20")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_erc20_Erc20.
 
 (* Struct Transfer *)
@@ -879,8 +877,7 @@ Module Impl_erc20_Erc20_2.
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.tuple [];
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -893,8 +890,7 @@ Module Impl_erc20_Erc20_2.
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.tuple []
+                end)
             ] in
         let* _ :=
           let* α0 := M.var "erc20::Erc20::Get_allowances" in

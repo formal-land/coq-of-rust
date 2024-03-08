@@ -67,9 +67,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
-          fun γ => (M.alloc tt) : Ty.path "unit"
+            end);
+          fun γ => (M.alloc tt)
         ] in
     let* _ :=
       match_operator
@@ -94,9 +93,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
-          fun γ => (M.alloc tt) : Ty.path "unit"
+            end);
+          fun γ => (M.alloc tt)
         ] in
     let* _ :=
       match_operator
@@ -134,9 +132,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
-          fun γ => (M.alloc tt) : Ty.path "unit"
+            end);
+          fun γ => (M.alloc tt)
         ] in
     let* α0 :=
       match_operator
@@ -170,9 +167,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               | _ => M.break_match 
               end
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
-          fun γ => (M.alloc tt) : Ty.path "unit"
+            end);
+          fun γ => (M.alloc tt)
         ] in
     M.read α0
   | _, _ => M.impossible

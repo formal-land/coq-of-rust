@@ -28,9 +28,9 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
-      []
-      [ ("noise", InstanceField.Method noise) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("noise", InstanceField.Method noise) ]
+      (* Instance polymorphic types *) [].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
@@ -51,9 +51,9 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
-      []
-      [ ("noise", InstanceField.Method noise) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("noise", InstanceField.Method noise) ]
+      (* Instance polymorphic types *) [].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 (*

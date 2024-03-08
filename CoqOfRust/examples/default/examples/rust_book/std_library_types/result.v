@@ -28,8 +28,7 @@ Module checked.
                   let* α0 := M.read (mk_str "DivisionByZero") in
                   M.alloc α0
                 | _ => M.break_match 
-                end) :
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                end);
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -40,8 +39,7 @@ Module checked.
                   let* α0 := M.read (mk_str "NonPositiveLogarithm") in
                   M.alloc α0
                 | _ => M.break_match 
-                end) :
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                end);
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -52,8 +50,7 @@ Module checked.
                   let* α0 := M.read (mk_str "NegativeSquareRoot") in
                   M.alloc α0
                 | _ => M.break_match 
-                end) :
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+                end)
             ] in
         let* α2 := M.read α1 in
         M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
@@ -64,9 +61,9 @@ Module checked.
       M.IsTraitInstance
         "core::fmt::Debug"
         (* Self *) (Ty.path "result::checked::MathError")
-        []
-        [ ("fmt", InstanceField.Method fmt) ]
-        [].
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+        (* Instance polymorphic types *) [].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
@@ -232,8 +229,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α7 := never_to_any α6 in
               M.alloc α7
             | _ => M.break_match 
-            end) :
-            Ty.path "f64";
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -276,8 +272,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α7 := never_to_any α6 in
                       M.alloc α7
                     | _ => M.break_match 
-                    end) :
-                    Ty.path "f64";
+                    end);
                   fun γ =>
                     (let* α0 := M.read γ in
                     match α0 with
@@ -322,8 +317,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* α7 := never_to_any α6 in
                               M.alloc α7
                             | _ => M.break_match 
-                            end) :
-                            Ty.path "f64";
+                            end);
                           fun γ =>
                             (let* α0 := M.read γ in
                             match α0 with
@@ -335,16 +329,13 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* sqrt := M.copy γ0_0 in
                               M.pure sqrt
                             | _ => M.break_match 
-                            end) :
-                            Ty.path "f64"
+                            end)
                         ]
                     | _ => M.break_match 
-                    end) :
-                    Ty.path "f64"
+                    end)
                 ]
             | _ => M.break_match 
-            end) :
-            Ty.path "f64"
+            end)
         ] in
     M.read α5
   | _, _ => M.impossible

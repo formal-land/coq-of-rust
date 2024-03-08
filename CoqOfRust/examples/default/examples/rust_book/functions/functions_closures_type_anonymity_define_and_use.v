@@ -71,10 +71,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     let* _ :=
       let* α0 :=
         M.var "functions_closures_type_anonymity_define_and_use::apply" in

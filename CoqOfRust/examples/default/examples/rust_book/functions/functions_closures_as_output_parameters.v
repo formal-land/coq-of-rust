@@ -49,10 +49,8 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -107,10 +105,8 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -165,10 +161,8 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     M.read α0
   | _, _ => M.impossible
   end.

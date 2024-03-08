@@ -30,8 +30,7 @@ Module checked.
                   let* α0 := M.read (mk_str "DivisionByZero") in
                   M.alloc α0
                 | _ => M.break_match 
-                end) :
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                end);
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -44,8 +43,7 @@ Module checked.
                   let* α0 := M.read (mk_str "NonPositiveLogarithm") in
                   M.alloc α0
                 | _ => M.break_match 
-                end) :
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                end);
               fun γ =>
                 (let* γ :=
                   let* α0 := M.read γ in
@@ -58,8 +56,7 @@ Module checked.
                   let* α0 := M.read (mk_str "NegativeSquareRoot") in
                   M.alloc α0
                 | _ => M.break_match 
-                end) :
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+                end)
             ] in
         let* α2 := M.read α1 in
         M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
@@ -71,9 +68,9 @@ Module checked.
         "core::fmt::Debug"
         (* Self *)
           (Ty.path "result_chaining_with_question_mark::checked::MathError")
-        []
-        [ ("fmt", InstanceField.Method fmt) ]
-        [].
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+        (* Instance polymorphic types *) [].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :
@@ -280,8 +277,7 @@ Module checked.
                     let* α5 := never_to_any α4 in
                     M.alloc α5
                   | _ => M.break_match 
-                  end) :
-                  Ty.path "f64";
+                  end);
                 fun γ =>
                   (let* α0 := M.read γ in
                   match α0 with
@@ -294,8 +290,7 @@ Module checked.
                     let* val := M.copy γ0_0 in
                     M.pure val
                   | _ => M.break_match 
-                  end) :
-                  Ty.path "f64"
+                  end)
               ] in
           M.copy α7 in
         let* ln :=
@@ -361,8 +356,7 @@ Module checked.
                     let* α5 := never_to_any α4 in
                     M.alloc α5
                   | _ => M.break_match 
-                  end) :
-                  Ty.path "f64";
+                  end);
                 fun γ =>
                   (let* α0 := M.read γ in
                   match α0 with
@@ -375,8 +369,7 @@ Module checked.
                     let* val := M.copy γ0_0 in
                     M.pure val
                   | _ => M.break_match 
-                  end) :
-                  Ty.path "f64"
+                  end)
               ] in
           M.copy α6 in
         let* α0 := M.var "result_chaining_with_question_mark::checked::sqrt" in
@@ -437,8 +430,7 @@ Module checked.
                             =>
                           M.pure (mk_str "logarithm of non-positive number")
                         | _ => M.break_match 
-                        end) :
-                        Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -448,8 +440,7 @@ Module checked.
                           let* α0 := M.read (mk_str "division by zero") in
                           M.alloc α0
                         | _ => M.break_match 
-                        end) :
-                        Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -460,15 +451,13 @@ Module checked.
                             M.read (mk_str "square root of negative number") in
                           M.alloc α0
                         | _ => M.break_match 
-                        end) :
-                        Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+                        end)
                     ] in
                 let* α2 := M.call α0 [ α1 ] in
                 let* α3 := never_to_any α2 in
                 M.alloc α3
               | _ => M.break_match 
-              end) :
-              Ty.tuple [];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -499,8 +488,7 @@ Module checked.
                   M.alloc α7 in
                 M.alloc tt
               | _ => M.break_match 
-              end) :
-              Ty.tuple []
+              end)
           ] in
       M.read α5
     | _, _ => M.impossible

@@ -39,8 +39,7 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -69,8 +68,7 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -88,8 +86,7 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

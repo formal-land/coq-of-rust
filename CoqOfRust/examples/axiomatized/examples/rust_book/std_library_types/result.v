@@ -11,9 +11,9 @@ Module checked.
       M.IsTraitInstance
         "core::fmt::Debug"
         (* Self *) (Ty.path "result::checked::MathError")
-        []
-        [ ("fmt", InstanceField.Method fmt) ]
-        [].
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+        (* Instance polymorphic types *) [].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :

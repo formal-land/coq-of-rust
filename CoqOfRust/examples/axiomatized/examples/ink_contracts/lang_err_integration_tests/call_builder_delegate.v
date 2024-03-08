@@ -16,9 +16,9 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "call_builder_delegate::CallBuilderDelegateTest")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.

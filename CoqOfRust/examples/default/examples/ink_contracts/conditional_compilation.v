@@ -24,9 +24,9 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_conditional_compilation_AccountId.
 
 Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
@@ -38,12 +38,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (M.read self) : Ty.path "conditional_compilation::AccountId"
-          ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -52,9 +47,9 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_conditional_compilation_AccountId.
 
 Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
@@ -62,9 +57,9 @@ Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_conditional_compilation_AccountId.
 
 Axiom Balance : (Ty.path "conditional_compilation::Balance") = (Ty.path "u128").
@@ -529,11 +524,12 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     M.IsTraitInstance
       "conditional_compilation::Flip"
       (* Self *) (Ty.path "conditional_compilation::ConditionalCompilation")
-      []
-      [
-        ("flip", InstanceField.Method flip);
-        ("get", InstanceField.Method get);
-        ("push_foo", InstanceField.Method push_foo)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("flip", InstanceField.Method flip);
+          ("get", InstanceField.Method get);
+          ("push_foo", InstanceField.Method push_foo)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

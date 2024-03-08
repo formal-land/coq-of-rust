@@ -158,9 +158,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
-          fun γ => (M.alloc tt) : Ty.path "unit"
+            end);
+          fun γ => (M.alloc tt)
         ] in
     let* _quotes :=
       M.copy
@@ -210,8 +209,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -240,8 +238,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* α0 := M.alloc tt in
     M.read α0

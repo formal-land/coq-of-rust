@@ -12,9 +12,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
       (* Self *) (Ty.path "iterators::Fibonacci")
-      []
-      [ ("Item", TODO); ("next", InstanceField.Method next) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Item", TODO); ("next", InstanceField.Method next) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Parameter fibonacci : (list Ty.t) -> (list Value.t) -> M.

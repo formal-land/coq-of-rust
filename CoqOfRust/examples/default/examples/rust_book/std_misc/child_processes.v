@@ -61,10 +61,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           pointer_coercion "Unsize" α4
                         ] in
                     let* α6 := M.call α0 [ α5 ] in
-                    never_to_any α6) :
-                    _
-                ]) :
-              _
+                    never_to_any α6)
+                ])
           ] in
       M.alloc α6 in
     let* α0 := M.var "std::process::Output::Get_status" in

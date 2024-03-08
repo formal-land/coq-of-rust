@@ -97,8 +97,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple "core::option::Option::Some" [ α2 ]) in
                   M.alloc tt
               | _ => M.break_match 
-              end) :
-              Ty.tuple [];
+              end);
             fun γ =>
               (let* _ :=
                 let* α0 := M.break in
@@ -108,8 +107,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.alloc tt in
               let* α1 := M.read α0 in
               let* α2 := never_to_any α1 in
-              M.alloc α2) :
-              Ty.tuple []
+              M.alloc α2)
           ]) in
     M.read α0
   | _, _ => M.impossible

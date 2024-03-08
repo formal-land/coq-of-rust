@@ -10,9 +10,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Food")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -24,9 +24,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Day")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Parameter have_ingredients : (list Ty.t) -> (list Value.t) -> M.

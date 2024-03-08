@@ -10,9 +10,9 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
@@ -20,9 +20,9 @@ Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
@@ -32,9 +32,9 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
@@ -46,9 +46,10 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
     M.IsTraitInstance
       "core::convert::TryFrom"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
-      [ (* T *) Ty.path "i32" ]
-      [ ("Error", TODO); ("try_from", InstanceField.Method try_from) ]
-      [].
+      (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
+      (* Instance *)
+        [ ("Error", TODO); ("try_from", InstanceField.Method try_from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

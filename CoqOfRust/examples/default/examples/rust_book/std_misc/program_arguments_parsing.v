@@ -214,8 +214,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc tt in
                 M.alloc tt
               | _ => M.break_match 
-              end) :
-              Ty.tuple [];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -272,8 +271,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         | _ => M.break_match 
                         end
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple [];
+                      end);
                     fun γ =>
                       (let* _ :=
                         let* α0 := M.var "std::io::stdio::_print" in
@@ -286,12 +284,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [ pointer_coercion "Unsize" α2 ] in
                         let* α4 := M.call α0 [ α3 ] in
                         M.alloc α4 in
-                      M.alloc tt) :
-                      Ty.tuple []
+                      M.alloc tt)
                   ]
               | _ => M.break_match 
-              end) :
-              Ty.tuple [];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -357,8 +353,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* n := M.copy γ0_0 in
                             M.pure n
                           | _ => M.break_match 
-                          end) :
-                          Ty.path "i32";
+                          end);
                         fun γ =>
                           (let* α0 := M.read γ in
                           match α0 with
@@ -394,8 +389,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α2 := never_to_any α1 in
                             M.alloc α2
                           | _ => M.break_match 
-                          end) :
-                          Ty.path "i32"
+                          end)
                       ] in
                   M.copy α5 in
                 let* α0 :=
@@ -416,14 +410,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* α0 := M.var "program_arguments_parsing::increase" in
                       let* α1 := M.read number in
                       let* α2 := M.call α0 [ α1 ] in
-                      M.alloc α2) :
-                      Ty.tuple [];
+                      M.alloc α2);
                     fun γ =>
                       (let* α0 := M.var "program_arguments_parsing::decrease" in
                       let* α1 := M.read number in
                       let* α2 := M.call α0 [ α1 ] in
-                      M.alloc α2) :
-                      Ty.tuple [];
+                      M.alloc α2);
                     fun γ =>
                       (let* _ :=
                         let* _ :=
@@ -443,19 +435,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.var "program_arguments_parsing::help" in
                         let* α1 := M.call α0 [] in
                         M.alloc α1 in
-                      M.alloc tt) :
-                      Ty.tuple []
+                      M.alloc tt)
                   ]
               | _ => M.break_match 
-              end) :
-              Ty.tuple [];
+              end);
             fun γ =>
               (let* _ :=
                 let* α0 := M.var "program_arguments_parsing::help" in
                 let* α1 := M.call α0 [] in
                 M.alloc α1 in
-              M.alloc tt) :
-              Ty.tuple []
+              M.alloc tt)
           ] in
       M.read α0)
   | _, _ => M.impossible

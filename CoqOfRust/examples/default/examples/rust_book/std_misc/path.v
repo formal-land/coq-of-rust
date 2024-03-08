@@ -93,8 +93,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 := never_to_any α2 in
               M.alloc α3
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -123,8 +122,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

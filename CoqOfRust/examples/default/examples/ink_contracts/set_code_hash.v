@@ -42,9 +42,9 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "set_code_hash::Incrementer")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
 Module Impl_set_code_hash_Incrementer.
@@ -176,10 +176,8 @@ Module Impl_set_code_hash_Incrementer.
                           (mk_str
                             "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
                       let* α2 := M.call α0 [ α1 ] in
-                      never_to_any α2) :
-                      _
-                  ]) :
-                _
+                      never_to_any α2)
+                  ])
             ] in
         M.alloc α2 in
       let* _ :=

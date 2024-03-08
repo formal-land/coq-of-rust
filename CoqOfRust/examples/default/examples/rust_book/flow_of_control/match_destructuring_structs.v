@@ -94,8 +94,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 | _ => M.break_match 
                 end
               end
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -138,8 +137,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc tt
               | _ => M.break_match 
               end
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -167,8 +165,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
               M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

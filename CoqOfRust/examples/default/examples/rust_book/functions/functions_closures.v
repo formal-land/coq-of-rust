@@ -47,10 +47,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 := M.var "BinOp::Panic::add" in
                 let* α1 := M.read i in
                 let* α2 := M.read outer_var in
-                α0 α1 α2) :
-                _
-            ]) :
-          _) in
+                α0 α1 α2)
+            ])) in
     let* closure_inferred :=
       M.alloc
         (fun (α0 : Ty.path "i32") =>
@@ -63,10 +61,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 := M.var "BinOp::Panic::add" in
                 let* α1 := M.read i in
                 let* α2 := M.read outer_var in
-                α0 α1 α2) :
-                _
-            ]) :
-          _) in
+                α0 α1 α2)
+            ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -131,8 +127,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            [ fun γ => (M.pure ((Integer.of_Z 1) : Ty.path "i32")) : _ ]) :
-          _) in
+            [ fun γ => (M.pure ((Integer.of_Z 1) : Ty.path "i32")) ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

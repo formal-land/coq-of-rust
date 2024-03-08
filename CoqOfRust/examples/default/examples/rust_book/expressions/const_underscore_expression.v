@@ -29,7 +29,7 @@ Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression
     M.IsTraitInstance
       "const_underscore_expression::BarTrait"
       (* Self *) (Ty.path "const_underscore_expression::Bar")
-      []
-      [ ("show", InstanceField.Method show) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("show", InstanceField.Method show) ]
+      (* Instance polymorphic types *) [].
 End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

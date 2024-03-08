@@ -11,9 +11,9 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "erc20::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
@@ -42,9 +42,9 @@ Module Impl_core_default_Default_for_erc20_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "erc20::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_erc20_AccountId.
@@ -54,9 +54,9 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "erc20::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_erc20_AccountId.
@@ -64,9 +64,9 @@ Module Impl_core_marker_Copy_for_erc20_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "erc20::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_erc20_AccountId.
 
 Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
@@ -82,9 +82,9 @@ Module Impl_core_default_Default_for_erc20_Erc20.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "erc20::Erc20")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_erc20_Erc20.
 
 (* Struct Transfer *)

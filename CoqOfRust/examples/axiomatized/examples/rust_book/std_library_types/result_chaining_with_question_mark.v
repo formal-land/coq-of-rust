@@ -12,9 +12,9 @@ Module checked.
         "core::fmt::Debug"
         (* Self *)
           (Ty.path "result_chaining_with_question_mark::checked::MathError")
-        []
-        [ ("fmt", InstanceField.Method fmt) ]
-        [].
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+        (* Instance polymorphic types *) [].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :

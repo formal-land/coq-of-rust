@@ -11,9 +11,9 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "erc1155::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
@@ -66,9 +66,9 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "erc1155::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_erc1155_AccountId.
 
 Module Impl_core_clone_Clone_for_erc1155_AccountId.
@@ -78,9 +78,9 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "erc1155::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_erc1155_AccountId.
 
 Module Impl_core_marker_Copy_for_erc1155_AccountId.
@@ -88,9 +88,9 @@ Module Impl_core_marker_Copy_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "erc1155::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_erc1155_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
@@ -98,9 +98,9 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc1155::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
@@ -110,9 +110,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc1155::AccountId")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
@@ -122,9 +122,10 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "erc1155::AccountId")
-      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
@@ -146,9 +147,9 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc1155::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_Error.
@@ -158,9 +159,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc1155::Error")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc1155_Error.
@@ -168,9 +169,9 @@ Module Impl_core_marker_StructuralEq_for_erc1155_Error.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "erc1155::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_erc1155_Error.
 
 Module Impl_core_cmp_Eq_for_erc1155_Error.
@@ -180,12 +181,13 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "erc1155::Error")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
@@ -238,9 +240,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "erc1155::Contract")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_erc1155_Contract.
 
 Module Impl_erc1155_Contract.
@@ -300,17 +302,18 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
     M.IsTraitInstance
       "erc1155::Erc1155"
       (* Self *) (Ty.path "erc1155::Contract")
-      []
-      [
-        ("is_approved_for_all", InstanceField.Method is_approved_for_all);
-        ("balance_of", InstanceField.Method balance_of);
-        ("safe_transfer_from", InstanceField.Method safe_transfer_from);
-        ("safe_batch_transfer_from",
-          InstanceField.Method safe_batch_transfer_from);
-        ("balance_of_batch", InstanceField.Method balance_of_batch);
-        ("set_approval_for_all", InstanceField.Method set_approval_for_all)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("is_approved_for_all", InstanceField.Method is_approved_for_all);
+          ("balance_of", InstanceField.Method balance_of);
+          ("safe_transfer_from", InstanceField.Method safe_transfer_from);
+          ("safe_batch_transfer_from",
+            InstanceField.Method safe_batch_transfer_from);
+          ("balance_of_batch", InstanceField.Method balance_of_batch);
+          ("set_approval_for_all", InstanceField.Method set_approval_for_all)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_erc1155_Erc1155_for_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
@@ -322,10 +325,11 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
     M.IsTraitInstance
       "erc1155::Erc1155TokenReceiver"
       (* Self *) (Ty.path "erc1155::Contract")
-      []
-      [
-        ("on_received", InstanceField.Method on_received);
-        ("on_batch_received", InstanceField.Method on_batch_received)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("on_received", InstanceField.Method on_received);
+          ("on_batch_received", InstanceField.Method on_batch_received)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.

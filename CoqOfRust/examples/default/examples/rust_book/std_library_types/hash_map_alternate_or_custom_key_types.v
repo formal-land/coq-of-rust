@@ -8,9 +8,9 @@ Module Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -61,9 +61,9 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -71,9 +71,9 @@ Module Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -94,8 +94,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
             fun γ =>
               (match_operator
                 Value.DeclaredButUndefined
-                [ fun γ => (M.alloc tt) : Ty.path "unit" ]) :
-              Ty.path "unit"
+                [ fun γ => (M.alloc tt) ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -105,12 +104,13 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
@@ -156,9 +156,9 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
     M.IsTraitInstance
       "core::hash::Hash"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 (* Struct AccountInfo *)
@@ -346,8 +346,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* _ :=
               let* α0 := M.var "std::io::stdio::_print" in
@@ -360,8 +359,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
-            M.alloc tt) :
-            Ty.tuple []
+            M.alloc tt)
         ] in
     M.read α0
   | _, _ => M.impossible

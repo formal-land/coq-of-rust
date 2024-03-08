@@ -114,10 +114,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     let* _ :=
       let* α0 :=
         M.get_method
@@ -181,10 +179,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.alloc α7 in
                   M.alloc tt in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     let* _ :=
       let* α0 :=
         M.get_method
@@ -252,10 +248,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.call α0 [ α1 ] in
                   M.alloc α2 in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     let* _ :=
       let* α0 :=
         M.get_method

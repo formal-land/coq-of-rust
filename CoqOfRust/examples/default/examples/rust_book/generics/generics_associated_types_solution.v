@@ -108,16 +108,17 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     M.IsTraitInstance
       "generics_associated_types_solution::Contains"
       (* Self *) (Ty.path "generics_associated_types_solution::Container")
-      []
-      [
-        ("A", TODO);
-        ("B", TODO);
-        ("contains", InstanceField.Method contains);
-        ("first", InstanceField.Method first);
-        ("last", InstanceField.Method last);
-        ("a", InstanceField.Method a)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("A", TODO);
+          ("B", TODO);
+          ("contains", InstanceField.Method contains);
+          ("first", InstanceField.Method first);
+          ("last", InstanceField.Method last);
+          ("a", InstanceField.Method a)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 (*

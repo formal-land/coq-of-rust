@@ -10,9 +10,9 @@ Module Impl_core_convert_From_i32_for_from_Number.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "from::Number")
-      [ (* T *) Ty.path "i32" ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_i32_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

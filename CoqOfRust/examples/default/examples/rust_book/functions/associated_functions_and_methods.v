@@ -151,11 +151,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
                         let* α9 := α0 α4 α8 in
                         let* α10 := M.call (Ty.path "f64")::["abs"] [ α9 ] in
                         M.alloc α10
-                      end) :
-                      Ty.path "f64"
+                      end)
                   ]
-              end) :
-              Ty.path "f64"
+              end)
           ] in
       M.read α2
     | _, _ => M.impossible
@@ -244,11 +242,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
                         let* α13 := α2 α7 α12 in
                         let* α14 := α0 α1 α13 in
                         M.alloc α14
-                      end) :
-                      Ty.path "f64"
+                      end)
                   ]
-              end) :
-              Ty.path "f64"
+              end)
           ] in
       M.read α2
     | _, _ => M.impossible
@@ -398,8 +394,7 @@ Module Impl_associated_functions_and_methods_Pair.
                     M.alloc α9 in
                   M.alloc tt in
                 M.alloc tt
-              end) :
-              Ty.path "unit"
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible

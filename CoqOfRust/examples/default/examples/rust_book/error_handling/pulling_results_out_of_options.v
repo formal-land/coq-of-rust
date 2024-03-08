@@ -70,14 +70,10 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (let* n := M.copy γ in
                             let* α0 := M.var "BinOp::Panic::mul" in
                             let* α1 := M.read n in
-                            α0 ((Integer.of_Z 2) : Ty.path "i32") α1) :
-                            _
-                        ]) :
-                      _
-                  ]) :
-                _
-            ]) :
-          _
+                            α0 ((Integer.of_Z 2) : Ty.path "i32") α1)
+                        ])
+                  ])
+            ])
       ]
   | _, _ => M.impossible
   end.

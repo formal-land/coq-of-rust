@@ -11,9 +11,9 @@ Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
@@ -42,9 +42,9 @@ Module Impl_core_default_Default_for_trait_erc20_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "trait_erc20::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_trait_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
@@ -54,9 +54,9 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "trait_erc20::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_trait_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
@@ -64,9 +64,9 @@ Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "trait_erc20::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_trait_erc20_AccountId.
 
 Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
@@ -82,9 +82,9 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "trait_erc20::Error")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
@@ -92,9 +92,9 @@ Module Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "trait_erc20::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
@@ -104,9 +104,9 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "trait_erc20::Error")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
@@ -114,9 +114,9 @@ Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "trait_erc20::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
@@ -126,12 +126,13 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "trait_erc20::Error")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
@@ -155,9 +156,9 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "trait_erc20::Erc20")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_trait_erc20_Erc20.
 
 (* Struct Transfer *)
@@ -229,14 +230,15 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     M.IsTraitInstance
       "trait_erc20::BaseErc20"
       (* Self *) (Ty.path "trait_erc20::Erc20")
-      []
-      [
-        ("total_supply", InstanceField.Method total_supply);
-        ("balance_of", InstanceField.Method balance_of);
-        ("allowance", InstanceField.Method allowance);
-        ("transfer", InstanceField.Method transfer);
-        ("approve", InstanceField.Method approve);
-        ("transfer_from", InstanceField.Method transfer_from)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("total_supply", InstanceField.Method total_supply);
+          ("balance_of", InstanceField.Method balance_of);
+          ("allowance", InstanceField.Method allowance);
+          ("transfer", InstanceField.Method transfer);
+          ("approve", InstanceField.Method approve);
+          ("transfer_from", InstanceField.Method transfer_from)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

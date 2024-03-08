@@ -131,10 +131,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   (let* s := M.copy γ in
                   let* α0 := M.read s in
-                  M.call (Ty.path "str")::["parse"] [ α0 ]) :
-                  _
-              ]) :
-            _
+                  M.call (Ty.path "str")::["parse"] [ α0 ])
+              ])
         ] in
     let* α6 :=
       M.call
@@ -409,8 +407,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
-            end) :
-            Ty.path "unit"
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

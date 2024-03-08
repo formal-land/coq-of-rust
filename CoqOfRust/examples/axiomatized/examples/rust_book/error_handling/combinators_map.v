@@ -10,9 +10,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Food")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
@@ -24,9 +24,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Peeled")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
@@ -38,9 +38,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Chopped")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
@@ -52,9 +52,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Cooked")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel : (list Ty.t) -> (list Value.t) -> M.

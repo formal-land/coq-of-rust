@@ -31,12 +31,13 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     M.IsTraitInstance
       "functions_order::SomeTrait"
       (* Self *) (Ty.path "functions_order::SomeType")
-      []
-      [
-        ("some_trait_bar", InstanceField.Method some_trait_bar);
-        ("some_trait_foo", InstanceField.Method some_trait_foo)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("some_trait_bar", InstanceField.Method some_trait_bar);
+          ("some_trait_foo", InstanceField.Method some_trait_foo)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -48,12 +49,13 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     M.IsTraitInstance
       "functions_order::SomeTrait"
       (* Self *) (Ty.path "functions_order::OtherType")
-      []
-      [
-        ("some_trait_foo", InstanceField.Method some_trait_foo);
-        ("some_trait_bar", InstanceField.Method some_trait_bar)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("some_trait_foo", InstanceField.Method some_trait_foo);
+          ("some_trait_bar", InstanceField.Method some_trait_bar)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.

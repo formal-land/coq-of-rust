@@ -40,8 +40,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                 let* α3 := α0 α1 α2 in
                 M.alloc α3
               | _ => M.break_match 
-              end) :
-              Ty.path "i32";
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -57,8 +56,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                 let* α3 := α0 α1 α2 in
                 M.alloc α3
               | _ => M.break_match 
-              end) :
-              Ty.path "i32"
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible

@@ -10,9 +10,9 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
     M.IsTraitInstance
       "core::fmt::Display"
       (* Self *) (Ty.path "converting_to_string::Circle")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

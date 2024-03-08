@@ -12,13 +12,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (M.read self) :
-              Ty.path "scoping_rules_borrowing_the_ref_pattern::Point"
-          ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -27,9 +21,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "scoping_rules_borrowing_the_ref_pattern::Point")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
@@ -37,9 +31,9 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "scoping_rules_borrowing_the_ref_pattern::Point")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (*
@@ -177,8 +171,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.pure (α0 γ) in
                         let* ref_to_x := M.alloc (borrow γ0_0) in
                         M.read ref_to_x
-                      end) :
-                      Ty.path "i32"
+                      end)
                   ] in
               M.copy α0 in
             let* mutable_point := M.copy point in
@@ -210,8 +203,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read mut_ref_to_y in
                         assign α0 ((Integer.of_Z 1) : Ty.path "i32") in
                       M.alloc tt
-                    end) :
-                    Ty.path "unit"
+                    end)
                 ] in
             let* _ :=
               let* _ :=
@@ -299,8 +291,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read last in
                         assign α0 ((Integer.of_Z 2) : Ty.path "u32") in
                       M.alloc tt
-                    end) :
-                    Ty.path "unit"
+                    end)
                 ] in
             let* _ :=
               let* _ :=
@@ -322,8 +313,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
               M.alloc tt in
-            M.alloc tt) :
-            Ty.path "unit"
+            M.alloc tt)
         ] in
     M.read α0
   | _, _ => M.impossible

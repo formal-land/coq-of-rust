@@ -102,8 +102,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α2 := never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple [];
+                      end);
                     fun γ =>
                       (let* α0 := M.read γ in
                       match α0 with
@@ -131,8 +130,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     [ pointer_coercion "Unsize" α2 ] in
                                 let* α4 := M.call α0 [ α3 ] in
                                 M.alloc α4 in
-                              M.alloc tt) :
-                              Ty.tuple [];
+                              M.alloc tt);
                             fun γ =>
                               (let* _ :=
                                 let* α0 := M.var "std::io::stdio::_print" in
@@ -155,15 +153,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     ] in
                                 let* α7 := M.call α0 [ α6 ] in
                                 M.alloc α7 in
-                              M.alloc tt) :
-                              Ty.tuple []
+                              M.alloc tt)
                           ]
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple []
+                      end)
                   ] in
-              M.alloc tt)) :
-            Ty.tuple []
+              M.alloc tt))
         ] in
     M.read (use α6)
   | _, _ => M.impossible

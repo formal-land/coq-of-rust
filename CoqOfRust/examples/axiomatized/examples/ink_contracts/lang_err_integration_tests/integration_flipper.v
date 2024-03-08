@@ -12,9 +12,9 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "integration_flipper::FlipperError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 
 Module Impl_integration_flipper_Flipper.

@@ -187,10 +187,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   fun γ =>
                     (let* s := M.copy γ in
                     let* α0 := M.read s in
-                    M.call (Ty.path "str")::["parse"] [ α0 ]) :
-                    _
-                ]) :
-              _
+                    M.call (Ty.path "str")::["parse"] [ α0 ])
+                ])
           ] in
       let* α7 :=
         M.call
@@ -238,19 +236,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                             "core::num::error::ParseIntError";
                                           Ty.path "alloc::alloc::Global"
                                         ])::["push"]
-                                    [ errors; α0 ]) :
-                                  _
-                              ]) :
-                            _
+                                    [ errors; α0 ])
+                              ])
                         ] in
                     M.call
                       (Ty.apply
                           (Ty.path "core::result::Result")
                           [ Ty.path "u8"; Ty.tuple [] ])::["ok"]
-                      [ α1 ]) :
-                    _
-                ]) :
-              _
+                      [ α1 ])
+                ])
           ] in
       let* α8 := M.call α0 [ α7 ] in
       M.alloc α8 in

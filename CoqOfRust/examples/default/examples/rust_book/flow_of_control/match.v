@@ -77,8 +77,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -96,8 +95,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -115,8 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -134,8 +131,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -153,8 +149,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -172,8 +167,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* _ :=
               let* α0 := M.var "std::io::stdio::_print" in
@@ -186,8 +180,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
-            M.alloc tt) :
-            Ty.tuple [];
+            M.alloc tt);
           fun γ =>
             (let* _ :=
               let* α0 := M.var "std::io::stdio::_print" in
@@ -200,8 +193,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
-            M.alloc tt) :
-            Ty.tuple []
+            M.alloc tt)
         ] in
     let* boolean := M.alloc true in
     let* binary :=
@@ -209,10 +201,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         match_operator
           boolean
           [
-            fun γ =>
-              (M.alloc ((Integer.of_Z 0) : Ty.path "i32")) : Ty.path "i32";
-            fun γ =>
-              (M.alloc ((Integer.of_Z 1) : Ty.path "i32")) : Ty.path "i32"
+            fun γ => (M.alloc ((Integer.of_Z 0) : Ty.path "i32"));
+            fun γ => (M.alloc ((Integer.of_Z 1) : Ty.path "i32"))
           ] in
       M.copy α0 in
     let* _ :=

@@ -57,9 +57,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
       (* Self *) (Ty.path "iterators::Fibonacci")
-      []
-      [ ("Item", TODO); ("next", InstanceField.Method next) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Item", TODO); ("next", InstanceField.Method next) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 (*
@@ -318,8 +318,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -354,11 +353,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.alloc tt in
                           M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α3) in
     let* _ :=
@@ -429,8 +426,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -465,11 +461,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.alloc tt in
                           M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α7) in
     let* _ :=
@@ -559,8 +553,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -595,11 +588,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.alloc tt in
                           M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α9) in
     let* array_ :=
@@ -674,8 +665,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α2 := never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple [];
+                      end);
                     fun γ =>
                       (let* α0 := M.read γ in
                       match α0 with
@@ -709,11 +699,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc tt in
                         M.alloc tt
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple []
+                      end)
                   ] in
-              M.alloc tt)) :
-            Ty.tuple []
+              M.alloc tt))
         ] in
     M.read (use α4)
   | _, _ => M.impossible

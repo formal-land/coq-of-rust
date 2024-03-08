@@ -86,8 +86,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α7 := never_to_any α6 in
                 M.alloc α7
               | _ => M.break_match 
-              end) :
-              Ty.path "std::process::Child";
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -98,8 +97,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* process := M.copy γ0_0 in
                 M.pure process
               | _ => M.break_match 
-              end) :
-              Ty.path "std::process::Child"
+              end)
           ] in
       M.copy α9 in
     let* _ :=
@@ -151,8 +149,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α7 := never_to_any α6 in
               M.alloc α7
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -173,8 +170,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* s :=
       let* α0 := M.call (Ty.path "alloc::string::String")::["new"] [] in
@@ -224,8 +220,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α7 := never_to_any α6 in
               M.alloc α7
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -252,8 +247,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α6 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

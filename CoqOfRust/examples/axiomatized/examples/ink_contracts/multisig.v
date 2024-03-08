@@ -11,9 +11,9 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "multisig::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_multisig_Mapping_K_V.
 
 Module Impl_multisig_Mapping_K_V.
@@ -66,9 +66,9 @@ Module Impl_core_default_Default_for_multisig_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_multisig_AccountId.
 
 Module Impl_core_fmt_Debug_for_multisig_AccountId.
@@ -78,9 +78,9 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_multisig_AccountId.
 
 Module Impl_core_clone_Clone_for_multisig_AccountId.
@@ -90,9 +90,9 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_multisig_AccountId.
 
 Module Impl_core_marker_Copy_for_multisig_AccountId.
@@ -100,9 +100,9 @@ Module Impl_core_marker_Copy_for_multisig_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_multisig_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
@@ -110,9 +110,9 @@ Module Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
@@ -122,9 +122,9 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_multisig_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
@@ -132,9 +132,9 @@ Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_multisig_AccountId.
 
 Module Impl_core_cmp_Eq_for_multisig_AccountId.
@@ -144,12 +144,13 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_multisig_AccountId.
 
 Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
@@ -159,9 +160,9 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialOrd"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      [ ("partial_cmp", InstanceField.Method partial_cmp) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialOrd_for_multisig_AccountId.
 
 Module Impl_core_cmp_Ord_for_multisig_AccountId.
@@ -171,9 +172,9 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
     M.IsTraitInstance
       "core::cmp::Ord"
       (* Self *) (Ty.path "multisig::AccountId")
-      []
-      [ ("cmp", InstanceField.Method cmp) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("cmp", InstanceField.Method cmp) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Ord_for_multisig_AccountId.
 
 Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
@@ -197,9 +198,9 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "multisig::ConfirmationStatus")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
 
 Module Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
@@ -207,9 +208,9 @@ Module Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "multisig::ConfirmationStatus")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
 
 (* Struct Transaction *)
@@ -221,9 +222,9 @@ Module Impl_core_default_Default_for_multisig_Transaction.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "multisig::Transaction")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_multisig_Transaction.
 
 (* Enum Error *)
@@ -235,9 +236,9 @@ Module Impl_core_clone_Clone_for_multisig_Error.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "multisig::Error")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_multisig_Error.
 
 Module Impl_core_marker_Copy_for_multisig_Error.
@@ -245,9 +246,9 @@ Module Impl_core_marker_Copy_for_multisig_Error.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "multisig::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_multisig_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_multisig_Error.
@@ -255,9 +256,9 @@ Module Impl_core_marker_StructuralPartialEq_for_multisig_Error.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "multisig::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_Error.
 
 Module Impl_core_cmp_PartialEq_for_multisig_Error.
@@ -267,9 +268,9 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "multisig::Error")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_multisig_Error.
 
 Module Impl_core_marker_StructuralEq_for_multisig_Error.
@@ -277,9 +278,9 @@ Module Impl_core_marker_StructuralEq_for_multisig_Error.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "multisig::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_multisig_Error.
 
 Module Impl_core_cmp_Eq_for_multisig_Error.
@@ -289,12 +290,13 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "multisig::Error")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_multisig_Error.
 
 (* Struct Transactions *)
@@ -306,9 +308,9 @@ Module Impl_core_default_Default_for_multisig_Transactions.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "multisig::Transactions")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_multisig_Transactions.
 
 (* Struct Confirmation *)
@@ -362,9 +364,9 @@ Module Impl_core_default_Default_for_multisig_Multisig.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "multisig::Multisig")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_multisig_Multisig.
 
 Parameter ensure_requirement_is_valid : (list Ty.t) -> (list Value.t) -> M.

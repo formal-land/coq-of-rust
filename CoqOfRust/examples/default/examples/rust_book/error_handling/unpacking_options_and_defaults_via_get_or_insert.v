@@ -27,8 +27,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                 let* α0 := M.read (mk_str "Apple") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -39,8 +38,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                 let* α0 := M.read (mk_str "Orange") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -51,8 +49,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                 let* α0 := M.read (mk_str "Banana") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -63,8 +60,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                 let* α0 := M.read (mk_str "Kiwi") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -75,8 +71,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                 let* α0 := M.read (mk_str "Lemon") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+              end)
           ] in
       let* α2 := M.read α1 in
       M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
@@ -88,9 +83,9 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
       "core::fmt::Debug"
       (* Self *)
         (Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 (*

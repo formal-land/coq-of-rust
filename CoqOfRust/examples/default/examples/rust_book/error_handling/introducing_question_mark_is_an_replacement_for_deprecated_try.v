@@ -39,8 +39,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32";
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -66,8 +65,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32"
+                end)
             ] in
         M.copy α3 in
       let* second_number :=
@@ -88,8 +86,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32";
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -115,8 +112,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32"
+                end)
             ] in
         M.copy α3 in
       let* α0 := M.var "BinOp::Panic::mul" in
@@ -173,8 +169,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -203,8 +198,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

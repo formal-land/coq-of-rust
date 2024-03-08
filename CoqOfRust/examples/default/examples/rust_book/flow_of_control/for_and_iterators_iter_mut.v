@@ -101,8 +101,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -125,21 +124,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     M.read
                                       (mk_str
                                         "There is a rustacean among us!") in
-                                  M.alloc α0) :
-                                  Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                                  M.alloc α0);
                                 fun γ =>
                                   (let* α0 := M.read (mk_str "Hello") in
-                                  M.alloc α0) :
-                                  Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+                                  M.alloc α0)
                               ] in
                           let* α2 := M.read α1 in
                           assign α0 α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α6) in
     let* _ :=

@@ -10,9 +10,9 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructor_as_function::Constructor")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

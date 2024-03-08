@@ -11,9 +11,9 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
       "core::fmt::Debug"
       (* Self *)
         (Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -89,8 +89,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -144,10 +143,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                               M.alloc α7 in
                                             M.alloc tt in
                                           let* α0 := M.alloc tt in
-                                          M.read α0) :
-                                          _
-                                      ]) :
-                                    _
+                                          M.read α0)
+                                      ])
                                 ] in
                             let* α2 :=
                               M.call
@@ -163,11 +160,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.alloc α2 in
                           M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α5) in
     let* α0 :=
@@ -223,8 +218,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α2 := never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple [];
+                      end);
                     fun γ =>
                       (let* α0 := M.read γ in
                       match α0 with
@@ -241,15 +235,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 [ Ty.tuple [] ])::["join"]
                             [ α0 ] in
                         let* α2 := M.alloc α1 in
-                        match_operator
-                          α2
-                          [ fun γ => (M.alloc tt) : Ty.path "unit" ]
+                        match_operator α2 [ fun γ => (M.alloc tt) ]
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple []
+                      end)
                   ] in
-              M.alloc tt)) :
-            Ty.tuple []
+              M.alloc tt))
         ] in
     M.read (use α4)
   | _, _ => M.impossible

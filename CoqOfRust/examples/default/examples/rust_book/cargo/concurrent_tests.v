@@ -38,8 +38,7 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -57,8 +56,7 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -155,8 +153,7 @@ Module tests.
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -190,11 +187,9 @@ Module tests.
                             M.alloc α5 in
                           M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.read (use α3)
     | _, _ => M.impossible
@@ -290,8 +285,7 @@ Module tests.
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -325,11 +319,9 @@ Module tests.
                             M.alloc α5 in
                           M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.read (use α3)
     | _, _ => M.impossible

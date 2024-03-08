@@ -28,9 +28,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
@@ -54,9 +54,9 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (*

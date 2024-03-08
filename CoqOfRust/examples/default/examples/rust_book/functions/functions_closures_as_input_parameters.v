@@ -179,10 +179,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.call α0 [ α1 ] in
                   M.alloc α2 in
                 let* α0 := M.alloc tt in
-                M.read α0) :
-                _
-            ]) :
-          _) in
+                M.read α0)
+            ])) in
     let* _ :=
       let* α0 := M.var "functions_closures_as_input_parameters::apply" in
       let* α1 := M.read diary in
@@ -199,10 +197,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (let* x := M.copy γ in
                 let* α0 := M.var "BinOp::Panic::mul" in
                 let* α1 := M.read x in
-                α0 ((Integer.of_Z 2) : Ty.path "i32") α1) :
-                _
-            ]) :
-          _) in
+                α0 ((Integer.of_Z 2) : Ty.path "i32") α1)
+            ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

@@ -22,9 +22,9 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -43,9 +43,9 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
@@ -81,9 +81,9 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
     M.IsTraitInstance
       "core::fmt::Display"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 (*
@@ -174,11 +174,8 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           α0
                           [
                             fun γ =>
-                              (M.pure
-                                defining_an_error_type.DoubleError.Build) :
-                              _
-                          ]) :
-                        _
+                              (M.pure defining_an_error_type.DoubleError.Build)
+                          ])
                     ] in
                 M.call
                   (Ty.apply
@@ -198,14 +195,10 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (let* i := M.copy γ in
                             let* α0 := M.var "BinOp::Panic::mul" in
                             let* α1 := M.read i in
-                            α0 ((Integer.of_Z 2) : Ty.path "i32") α1) :
-                            _
-                        ]) :
-                      _
-                  ]) :
-                _
-            ]) :
-          _
+                            α0 ((Integer.of_Z 2) : Ty.path "i32") α1)
+                        ])
+                  ])
+            ])
       ]
   | _, _ => M.impossible
   end.
@@ -254,8 +247,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -284,8 +276,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

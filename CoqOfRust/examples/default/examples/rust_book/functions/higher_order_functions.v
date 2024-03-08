@@ -122,8 +122,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -168,11 +167,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             else
                               M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α3) in
     let* _ :=
@@ -302,10 +299,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.var "BinOp::Panic::mul" in
                     let* α1 := M.read n in
                     let* α2 := M.read n in
-                    α0 α1 α2) :
-                    _
-                ]) :
-              _
+                    α0 α1 α2)
+                ])
           ] in
       let* α5 :=
         M.call
@@ -325,10 +320,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.var "BinOp::Pure::lt" in
                     let* α1 := M.read n_squared in
                     let* α2 := M.read upper in
-                    M.pure (α0 α1 α2)) :
-                    _
-                ]) :
-              _
+                    M.pure (α0 α1 α2))
+                ])
           ] in
       let* α6 :=
         M.call
@@ -347,10 +340,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* n_squared := M.copy γ in
                     let* α0 := M.var "higher_order_functions::is_odd" in
                     let* α1 := M.read n_squared in
-                    M.call α0 [ α1 ]) :
-                    _
-                ]) :
-              _
+                    M.call α0 [ α1 ])
+                ])
           ] in
       let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in

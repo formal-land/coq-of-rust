@@ -27,8 +27,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                 let* α0 := M.read (mk_str "CordonBleu") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -39,8 +38,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                 let* α0 := M.read (mk_str "Steak") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -51,8 +49,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                 let* α0 := M.read (mk_str "Sushi") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+              end)
           ] in
       let* α2 := M.read α1 in
       M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
@@ -63,9 +60,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Food")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -94,8 +91,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                 let* α0 := M.read (mk_str "Monday") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -106,8 +102,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                 let* α0 := M.read (mk_str "Tuesday") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -118,8 +113,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                 let* α0 := M.read (mk_str "Wednesday") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+              end)
           ] in
       let* α2 := M.read α1 in
       M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
@@ -130,9 +124,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Day")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 (*
@@ -156,16 +150,10 @@ Definition have_ingredients (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | combinators_and_then.Food.Sushi => M.alloc core.option.Option.None
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_and_then::Food" ];
+            end);
           fun γ =>
             (let* α0 := M.read food in
-            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_and_then::Food" ]
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]))
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -193,16 +181,10 @@ Definition have_recipe (𝜏 : list Ty.t) (α : list Value.t) : M :=
             | combinators_and_then.Food.CordonBleu =>
               M.alloc core.option.Option.None
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_and_then::Food" ];
+            end);
           fun γ =>
             (let* α0 := M.read food in
-            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_and_then::Food" ]
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]))
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -236,10 +218,7 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | core.option.Option.None => M.alloc core.option.Option.None
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_and_then::Food" ];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -260,10 +239,7 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     match α0 with
                     | core.option.Option.None => M.alloc core.option.Option.None
                     | _ => M.break_match 
-                    end) :
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.path "combinators_and_then::Food" ];
+                    end);
                   fun γ =>
                     (let* α0 := M.read γ in
                     match α0 with
@@ -276,16 +252,10 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.alloc
                         (Value.StructTuple "core::option::Option::Some" [ α0 ])
                     | _ => M.break_match 
-                    end) :
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.path "combinators_and_then::Food" ]
+                    end)
                 ]
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_and_then::Food" ]
+            end)
         ] in
     M.read α4
   | _, _ => M.impossible
@@ -366,8 +336,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α9 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -392,8 +361,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α4
   | _, _ => M.impossible
@@ -448,8 +416,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.call α0 [ α1; combinators_and_then.Day.Wednesday ] in
                 M.alloc α2 in
               M.alloc tt
-            end) :
-            Ty.path "unit"
+            end)
         ] in
     M.read α1
   | _, _ => M.impossible

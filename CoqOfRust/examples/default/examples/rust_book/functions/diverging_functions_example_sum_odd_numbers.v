@@ -132,8 +132,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -156,13 +155,12 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               match_operator
                                 α4
                                 [
-                                  fun γ => (M.pure i) : Ty.path "u32";
+                                  fun γ => (M.pure i);
                                   fun γ =>
                                     (let* α0 := M.continue in
                                     let* α1 := M.read α0 in
                                     let* α2 := never_to_any α1 in
-                                    M.alloc α2) :
-                                    Ty.path "u32"
+                                    M.alloc α2)
                                 ] in
                             M.copy α5 in
                           let* _ :=
@@ -175,11 +173,9 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             α0 β α4 in
                           M.alloc tt
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α4) in
     M.read acc

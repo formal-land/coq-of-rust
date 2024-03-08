@@ -87,8 +87,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α7 := M.call α0 [ α6 ] in
               M.alloc α7 in
-            M.alloc tt) :
-            Ty.tuple []
+            M.alloc tt)
         ] in
     let* _ :=
       let* α0 := M.read reference in
@@ -115,8 +114,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α7 := M.call α0 [ α6 ] in
               M.alloc α7 in
-            M.alloc tt) :
-            Ty.tuple []
+            M.alloc tt)
         ] in
     let* _not_a_reference := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
     let* α0 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
@@ -155,8 +153,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           ] in
                       let* α7 := M.call α0 [ α6 ] in
                       M.alloc α7 in
-                    M.alloc tt) :
-                    Ty.tuple []
+                    M.alloc tt)
                 ] in
             match_operator
               mut_value
@@ -192,10 +189,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α7 := M.call α0 [ α6 ] in
                       M.alloc α7 in
                     M.alloc tt in
-                  M.alloc tt) :
-                  Ty.tuple []
-              ]) :
-            Ty.tuple []
+                  M.alloc tt)
+              ])
         ] in
     M.read α0
   | _, _ => M.impossible

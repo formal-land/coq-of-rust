@@ -32,14 +32,15 @@ Module Impl_traits_Animal_for_traits_Sheep.
     M.IsTraitInstance
       "traits::Animal"
       (* Self *) (Ty.path "traits::Sheep")
-      []
-      [
-        ("new", InstanceField.Method new);
-        ("name", InstanceField.Method name);
-        ("noise", InstanceField.Method noise);
-        ("talk", InstanceField.Method talk)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("new", InstanceField.Method new);
+          ("name", InstanceField.Method name);
+          ("noise", InstanceField.Method noise);
+          ("talk", InstanceField.Method talk)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.

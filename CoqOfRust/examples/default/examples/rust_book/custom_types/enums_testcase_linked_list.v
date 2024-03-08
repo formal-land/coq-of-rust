@@ -100,16 +100,14 @@ Module Impl_enums_testcase_linked_list_List.
                 let* α4 := α0 ((Integer.of_Z 1) : Ty.path "u32") α3 in
                 M.alloc α4
               | _ => M.break_match 
-              end) :
-              Ty.path "u32";
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
               | enums_testcase_linked_list.List.Nil =>
                 M.alloc ((Integer.of_Z 0) : Ty.path "u32")
               | _ => M.break_match 
-              end) :
-              Ty.path "u32"
+              end)
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -187,8 +185,7 @@ Module Impl_enums_testcase_linked_list_List.
                   M.alloc α12 in
                 M.pure res
               | _ => M.break_match 
-              end) :
-              Ty.path "alloc::string::String";
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -205,8 +202,7 @@ Module Impl_enums_testcase_linked_list_List.
                   M.alloc α4 in
                 M.pure res
               | _ => M.break_match 
-              end) :
-              Ty.path "alloc::string::String"
+              end)
           ] in
       M.read α1
     | _, _ => M.impossible

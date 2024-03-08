@@ -72,8 +72,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := never_to_any α8 in
                 M.alloc α9
               | _ => M.break_match 
-              end) :
-              Ty.path "std::fs::File";
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -84,8 +83,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* file := M.copy γ0_0 in
                 M.pure file
               | _ => M.break_match 
-              end) :
-              Ty.path "std::fs::File"
+              end)
           ] in
       M.copy α2 in
     let* s :=
@@ -132,8 +130,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α9 := never_to_any α8 in
               M.alloc α9
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -165,8 +162,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α8 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

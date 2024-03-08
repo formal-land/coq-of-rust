@@ -24,9 +24,9 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "contract_transfer::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_contract_transfer_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.read self) : Ty.path "contract_transfer::AccountId" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -49,9 +47,9 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_transfer::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_contract_transfer_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
@@ -59,9 +57,9 @@ Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_transfer::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_contract_transfer_AccountId.
 
 Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").

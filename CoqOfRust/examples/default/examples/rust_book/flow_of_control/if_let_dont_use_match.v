@@ -64,9 +64,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
-          fun γ => (M.alloc tt) : Ty.tuple []
+            end);
+          fun γ => (M.alloc tt)
         ] in
     let* α0 := M.alloc tt in
     M.read α0

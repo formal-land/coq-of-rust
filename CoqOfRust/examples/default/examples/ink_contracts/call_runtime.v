@@ -24,9 +24,9 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "call_runtime::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_call_runtime_AccountId.
@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.read self) : Ty.path "call_runtime::AccountId" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -49,9 +47,9 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "call_runtime::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_call_runtime_AccountId.
@@ -59,9 +57,9 @@ Module Impl_core_marker_Copy_for_call_runtime_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "call_runtime::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
@@ -94,9 +92,10 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
         (Ty.apply
           (Ty.path "call_runtime::MultiAddress")
           [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ])
-      [ (* T *) Ty.path "call_runtime::AccountId" ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.path "call_runtime::AccountId" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
 (* Enum BalancesCall *)
@@ -119,9 +118,9 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "call_runtime::RuntimeCaller")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
 (* Enum RuntimeError *)
@@ -145,9 +144,9 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
@@ -155,9 +154,9 @@ Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
@@ -177,9 +176,9 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
@@ -187,9 +186,9 @@ Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
@@ -211,12 +210,13 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
 (* Enum EnvError *)
@@ -244,16 +244,14 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
               | call_runtime.EnvError.CallRuntimeFailed =>
                 M.alloc call_runtime.RuntimeError.CallRuntimeFailed
               | _ => M.break_match 
-              end) :
-              Ty.path "call_runtime::RuntimeError";
+              end);
             fun γ =>
               (let* α0 := M.var "std::panicking::begin_panic" in
               let* α1 :=
                 M.read (mk_str "Unexpected error from `pallet-contracts`.") in
               let* α2 := M.call α0 [ α1 ] in
               let* α3 := never_to_any α2 in
-              M.alloc α3) :
-              Ty.path "call_runtime::RuntimeError"
+              M.alloc α3)
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -263,9 +261,9 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
-      [ (* T *) Ty.path "call_runtime::EnvError" ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *) [ (* T *) Ty.path "call_runtime::EnvError" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 
 Module Impl_call_runtime_Env.

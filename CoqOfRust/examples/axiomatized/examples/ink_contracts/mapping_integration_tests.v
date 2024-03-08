@@ -12,9 +12,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
       "core::default::Default"
       (* Self *)
         (Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
@@ -73,9 +73,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "mapping_integration_tests::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
@@ -85,9 +85,9 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "mapping_integration_tests::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
 
 Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
@@ -95,9 +95,9 @@ Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "mapping_integration_tests::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 
 Axiom Balance :
@@ -123,9 +123,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "mapping_integration_tests::Mappings")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
 
 Module Impl_mapping_integration_tests_Mappings.

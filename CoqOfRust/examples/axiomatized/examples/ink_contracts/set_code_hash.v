@@ -14,9 +14,9 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "set_code_hash::Incrementer")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
 Module Impl_set_code_hash_Incrementer.

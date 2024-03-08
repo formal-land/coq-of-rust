@@ -28,8 +28,7 @@ Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read bool_param in
               let* α1 := M.read int_param in
               M.alloc (α0, α1)
-            end) :
-            Ty.tuple [ Ty.path "bool"; Ty.path "i32" ]
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -74,9 +73,9 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "tuples::Matrix")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (*
@@ -372,8 +371,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
-            end) :
-            Ty.path "unit"
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

@@ -12,9 +12,9 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "tuples::Matrix")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

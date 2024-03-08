@@ -32,9 +32,9 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "mother::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_mother_Mapping_K_V.
 
 Module Impl_mother_Mapping_K_V.
@@ -108,9 +108,9 @@ Module Impl_core_default_Default_for_mother_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "mother::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_mother_AccountId.
 
 Module Impl_core_clone_Clone_for_mother_AccountId.
@@ -122,9 +122,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.read self) : Ty.path "mother::AccountId" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -133,9 +131,9 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "mother::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_mother_AccountId.
 
 Module Impl_core_marker_Copy_for_mother_AccountId.
@@ -143,9 +141,9 @@ Module Impl_core_marker_Copy_for_mother_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "mother::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_mother_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
@@ -153,9 +151,9 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "mother::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_mother_AccountId.
@@ -182,9 +180,9 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "mother::AccountId")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_mother_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_mother_AccountId.
@@ -192,9 +190,9 @@ Module Impl_core_marker_StructuralEq_for_mother_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "mother::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_mother_AccountId.
 
 Module Impl_core_cmp_Eq_for_mother_AccountId.
@@ -209,9 +207,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.alloc tt) : Ty.path "unit" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.alloc tt) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -220,12 +216,13 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "mother::AccountId")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_mother_AccountId.
 
 Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
@@ -278,9 +275,9 @@ Module Impl_core_default_Default_for_mother_Bids.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "mother::Bids")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_mother_Bids.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Bids.
@@ -288,9 +285,9 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Bids.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "mother::Bids")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Bids.
 
 Module Impl_core_cmp_PartialEq_for_mother_Bids.
@@ -354,9 +351,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "mother::Bids")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_mother_Bids.
 
 Module Impl_core_marker_StructuralEq_for_mother_Bids.
@@ -364,9 +361,9 @@ Module Impl_core_marker_StructuralEq_for_mother_Bids.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "mother::Bids")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_mother_Bids.
 
 Module Impl_core_cmp_Eq_for_mother_Bids.
@@ -381,9 +378,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.alloc tt) : Ty.path "unit" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.alloc tt) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -392,12 +387,13 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "mother::Bids")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_mother_Bids.
 
 Module Impl_core_clone_Clone_for_mother_Bids.
@@ -442,9 +438,9 @@ Module Impl_core_clone_Clone_for_mother_Bids.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "mother::Bids")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_mother_Bids.
 
 (* Enum Outline *)
@@ -454,9 +450,9 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "mother::Outline")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Outline.
 
 Module Impl_core_cmp_PartialEq_for_mother_Outline.
@@ -490,9 +486,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "mother::Outline")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_mother_Outline.
 
 Module Impl_core_marker_StructuralEq_for_mother_Outline.
@@ -500,9 +496,9 @@ Module Impl_core_marker_StructuralEq_for_mother_Outline.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "mother::Outline")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_mother_Outline.
 
 Module Impl_core_cmp_Eq_for_mother_Outline.
@@ -524,12 +520,13 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "mother::Outline")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_mother_Outline.
 
 Module Impl_core_clone_Clone_for_mother_Outline.
@@ -552,8 +549,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
               match α0 with
               | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Outline";
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -563,8 +559,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
               | mother.Outline.WinnerDetected =>
                 M.alloc mother.Outline.WinnerDetected
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Outline";
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -574,8 +569,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
               | mother.Outline.PayoutCompleted =>
                 M.alloc mother.Outline.PayoutCompleted
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Outline"
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -585,9 +579,9 @@ Module Impl_core_clone_Clone_for_mother_Outline.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "mother::Outline")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_mother_Outline.
 
 (* Enum Status *)
@@ -597,9 +591,9 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "mother::Status")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Status.
 
 Module Impl_core_cmp_PartialEq_for_mother_Status.
@@ -668,8 +662,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   end
                 | _ => M.break_match 
                 end
-              end) :
-              Ty.path "bool";
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -712,8 +705,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   end
                 | _ => M.break_match 
                 end
-              end) :
-              Ty.path "bool";
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -750,9 +742,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   end
                 | _ => M.break_match 
                 end
-              end) :
-              Ty.path "bool";
-            fun γ => (M.alloc true) : Ty.path "bool"
+              end);
+            fun γ => (M.alloc true)
           ] in
       let* α8 := M.read α7 in
       let* α0 := M.alloc (α0 (α1 α2 α3) α8) in
@@ -764,9 +755,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "mother::Status")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_mother_Status.
 
 Module Impl_core_marker_StructuralEq_for_mother_Status.
@@ -774,9 +765,9 @@ Module Impl_core_marker_StructuralEq_for_mother_Status.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "mother::Status")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_mother_Status.
 
 Module Impl_core_cmp_Eq_for_mother_Status.
@@ -797,8 +788,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
             fun γ =>
               (match_operator
                 Value.DeclaredButUndefined
-                [ fun γ => (M.alloc tt) : Ty.path "unit" ]) :
-              Ty.path "unit"
+                [ fun γ => (M.alloc tt) ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -808,12 +798,13 @@ Module Impl_core_cmp_Eq_for_mother_Status.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "mother::Status")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_mother_Status.
 
 Module Impl_core_clone_Clone_for_mother_Status.
@@ -836,8 +827,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
               match α0 with
               | mother.Status.NotStarted => M.alloc mother.Status.NotStarted
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Status";
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -847,8 +837,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
               | mother.Status.OpeningPeriod =>
                 M.alloc mother.Status.OpeningPeriod
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Status";
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -870,8 +859,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                 M.alloc
                   (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ])
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Status";
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -892,8 +880,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                 let* α2 := M.call α0 [ α1 ] in
                 M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ])
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Status";
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -914,8 +901,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                 let* α2 := M.call α0 [ α1 ] in
                 M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ])
               | _ => M.break_match 
-              end) :
-              Ty.path "mother::Status"
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -925,9 +911,9 @@ Module Impl_core_clone_Clone_for_mother_Status.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "mother::Status")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_mother_Status.
 
 (* Struct Auction *)
@@ -937,9 +923,9 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Auction.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "mother::Auction")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Auction.
 
 Module Impl_core_cmp_PartialEq_for_mother_Auction.
@@ -1054,9 +1040,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "mother::Auction")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_mother_Auction.
 
 Module Impl_core_marker_StructuralEq_for_mother_Auction.
@@ -1064,9 +1050,9 @@ Module Impl_core_marker_StructuralEq_for_mother_Auction.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "mother::Auction")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_mother_Auction.
 
 Module Impl_core_cmp_Eq_for_mother_Auction.
@@ -1107,21 +1093,12 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
                                           fun γ =>
                                             (match_operator
                                               Value.DeclaredButUndefined
-                                              [
-                                                fun γ =>
-                                                  (M.alloc tt) : Ty.path "unit"
-                                              ]) :
-                                            Ty.path "unit"
-                                        ]) :
-                                      Ty.path "unit"
-                                  ]) :
-                                Ty.path "unit"
-                            ]) :
-                          Ty.path "unit"
-                      ]) :
-                    Ty.path "unit"
-                ]) :
-              Ty.path "unit"
+                                              [ fun γ => (M.alloc tt) ])
+                                        ])
+                                  ])
+                            ])
+                      ])
+                ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -1131,12 +1108,13 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "mother::Auction")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_mother_Auction.
 
 Module Impl_core_clone_Clone_for_mother_Auction.
@@ -1227,9 +1205,9 @@ Module Impl_core_clone_Clone_for_mother_Auction.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "mother::Auction")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_mother_Auction.
 
 Module Impl_core_default_Default_for_mother_Auction.
@@ -1303,9 +1281,9 @@ Module Impl_core_default_Default_for_mother_Auction.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "mother::Auction")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_mother_Auction.
 
 (* Enum Failure *)
@@ -1315,9 +1293,9 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "mother::Failure")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Failure.
 
 Module Impl_core_cmp_PartialEq_for_mother_Failure.
@@ -1392,9 +1370,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                   end
                 | _ => M.break_match 
                 end
-              end) :
-              Ty.path "bool";
-            fun γ => (M.alloc true) : Ty.path "bool"
+              end);
+            fun γ => (M.alloc true)
           ] in
       let* α8 := M.read α7 in
       let* α0 := M.alloc (α0 (α1 α2 α3) α8) in
@@ -1406,9 +1383,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "mother::Failure")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_mother_Failure.
 
 Module Impl_core_marker_StructuralEq_for_mother_Failure.
@@ -1416,9 +1393,9 @@ Module Impl_core_marker_StructuralEq_for_mother_Failure.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "mother::Failure")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_mother_Failure.
 
 Module Impl_core_cmp_Eq_for_mother_Failure.
@@ -1433,9 +1410,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.alloc tt) : Ty.path "unit" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.alloc tt) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1444,12 +1419,13 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "mother::Failure")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_mother_Failure.
 
 (* Struct AuctionEchoed *)
@@ -1535,9 +1511,9 @@ Module Impl_core_default_Default_for_mother_Mother.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "mother::Mother")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_mother_Mother.
 
 Module Impl_mother_Mother.
@@ -1761,10 +1737,7 @@ Module Impl_mother_Mother.
                 | _ => M.break_match 
                 end
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "mother::Failure" ];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -1783,20 +1756,14 @@ Module Impl_mother_Mother.
                 | _ => M.break_match 
                 end
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "mother::Failure" ];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.None =>
                 M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ])
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "mother::Failure" ]
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible

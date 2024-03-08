@@ -10,9 +10,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
@@ -29,9 +29,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
     M.IsTraitInstance
       "core::fmt::Display"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
@@ -41,9 +41,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
     M.IsTraitInstance
       "core::error::Error"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      []
-      [ ("source", InstanceField.Method source) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("source", InstanceField.Method source) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
@@ -53,9 +53,10 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      [ (* T *) Ty.path "core::num::error::ParseIntError" ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.path "core::num::error::ParseIntError" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

@@ -151,10 +151,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* x := M.copy γ in
                       let* α0 := M.var "BinOp::Pure::eq" in
                       let* α1 := M.read x in
-                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32"))) :
-                      _
-                  ]) :
-                _
+                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32")))
+                  ])
             ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -205,10 +203,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* x := M.copy γ in
                       let* α0 := M.var "BinOp::Pure::eq" in
                       let* α1 := M.read x in
-                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32"))) :
-                      _
-                  ]) :
-                _
+                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32")))
+                  ])
             ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -290,10 +286,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* x := M.copy γ in
                       let* α0 := M.var "BinOp::Pure::eq" in
                       let* α1 := M.read x in
-                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32"))) :
-                      _
-                  ]) :
-                _
+                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32")))
+                  ])
             ] in
         let* α8 := M.alloc α7 in
         let* α9 :=
@@ -366,10 +360,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α0 := M.var "BinOp::Pure::eq" in
                       let* α1 := M.read x in
                       let* α2 := M.read α1 in
-                      M.pure (α0 α2 ((Integer.of_Z 2) : Ty.path "i32"))) :
-                      _
-                  ]) :
-                _
+                      M.pure (α0 α2 ((Integer.of_Z 2) : Ty.path "i32")))
+                  ])
             ] in
         let* α9 := M.alloc α8 in
         let* α10 :=

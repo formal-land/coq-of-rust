@@ -10,9 +10,9 @@ Module Impl_core_hash_Hash_for_hash_Person.
     M.IsTraitInstance
       "core::hash::Hash"
       (* Self *) (Ty.path "hash::Person")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_hash_Hash_for_hash_Person.
 
 Parameter calculate_hash : (list Ty.t) -> (list Value.t) -> M.

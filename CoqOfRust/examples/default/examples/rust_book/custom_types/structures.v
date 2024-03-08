@@ -38,9 +38,9 @@ Module Impl_core_fmt_Debug_for_structures_Person.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "structures::Person")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_structures_Person.
 
 (* Struct Unit *)
@@ -316,11 +316,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc α9 in
                         M.alloc tt in
                       M.alloc tt
-                    end) :
-                    Ty.path "unit"
+                    end)
                 ]
-            end) :
-            Ty.path "unit"
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

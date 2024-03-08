@@ -10,9 +10,9 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
     M.IsTraitInstance
       "core::ops::drop::Drop"
       (* Self *) (Ty.path "scoping_rules_raii_desctructor::ToDrop")
-      []
-      [ ("drop", InstanceField.Method drop) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("drop", InstanceField.Method drop) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

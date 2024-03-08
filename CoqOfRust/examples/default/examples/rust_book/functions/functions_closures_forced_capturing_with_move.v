@@ -66,10 +66,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read needle in
                 M.call
                   (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["contains"]
-                  [ α1; α2 ]) :
-                _
-            ]) :
-          _) in
+                  [ α1; α2 ])
+            ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in

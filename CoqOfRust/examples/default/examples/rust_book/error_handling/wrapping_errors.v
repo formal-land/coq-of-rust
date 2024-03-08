@@ -31,10 +31,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                     [ α0; α1 ] in
                 M.alloc α2
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -56,10 +53,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                     [ α0; α1; pointer_coercion "Unsize" __self_0 ] in
                 M.alloc α2
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -69,9 +63,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
@@ -121,10 +115,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                     [ α0; α3 ] in
                 M.alloc α4
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -144,10 +135,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                     [ α0; α3 ] in
                 M.alloc α4
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+              end)
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -157,9 +145,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
     M.IsTraitInstance
       "core::fmt::Display"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
@@ -189,14 +177,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               | wrapping_errors.DoubleError.EmptyVec =>
                 M.alloc core.option.Option.None
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [
-                  Ty.apply
-                    (Ty.path "ref")
-                    [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                ];
+              end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
@@ -212,14 +193,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                     "core::option::Option::Some"
                     [ pointer_coercion "Unsize" α0 ])
               | _ => M.break_match 
-              end) :
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [
-                  Ty.apply
-                    (Ty.path "ref")
-                    [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                ]
+              end)
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -229,9 +203,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
     M.IsTraitInstance
       "core::error::Error"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      []
-      [ ("source", InstanceField.Method source) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("source", InstanceField.Method source) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
@@ -253,9 +227,10 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
-      [ (* T *) Ty.path "core::num::error::ParseIntError" ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.path "core::num::error::ParseIntError" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 (*
@@ -368,10 +343,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.apply
-                  (Ty.path "ref")
-                  [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -384,10 +356,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.apply
-                  (Ty.path "ref")
-                  [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]
+                end)
             ] in
         M.copy α7 in
       let* parsed :=
@@ -447,8 +416,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32";
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -461,8 +429,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32"
+                end)
             ] in
         M.copy α6 in
       let* α0 := M.var "BinOp::Panic::mul" in
@@ -523,8 +490,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -598,13 +564,11 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.alloc tt in
                       M.alloc tt
                     | _ => M.break_match 
-                    end) :
-                    Ty.tuple [];
-                  fun γ => (M.alloc tt) : Ty.path "unit"
+                    end);
+                  fun γ => (M.alloc tt)
                 ]
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

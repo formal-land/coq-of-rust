@@ -27,9 +27,9 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructor_as_function::Constructor")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 (*
@@ -115,8 +115,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α1
           [
             α7;
-            fun α =>
-              (M.pure (constructor_as_function.Constructor.Build_t α)) : _
+            fun α => (M.pure (constructor_as_function.Constructor.Build_t α))
           ] in
       let* α9 := M.call α0 [ α8 ] in
       M.alloc α9 in

@@ -41,9 +41,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc α4 in
                 M.alloc tt in
               M.alloc tt
-            end) :
-            Ty.tuple [];
-          fun γ => (M.alloc tt) : Ty.path "unit"
+            end);
+          fun γ => (M.alloc tt)
         ] in
     M.read α0
   | _, _ => M.impossible

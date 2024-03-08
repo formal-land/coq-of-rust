@@ -10,9 +10,9 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -22,9 +22,9 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
@@ -41,9 +41,9 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
     M.IsTraitInstance
       "core::fmt::Display"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

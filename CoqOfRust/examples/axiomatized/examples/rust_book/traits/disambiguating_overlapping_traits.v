@@ -20,9 +20,9 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
     M.IsTraitInstance
       "disambiguating_overlapping_traits::UsernameWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
-      []
-      [ ("get", InstanceField.Method get) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("get", InstanceField.Method get) ]
+      (* Instance polymorphic types *) [].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -32,9 +32,9 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
     M.IsTraitInstance
       "disambiguating_overlapping_traits::AgeWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
-      []
-      [ ("get", InstanceField.Method get) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("get", InstanceField.Method get) ]
+      (* Instance polymorphic types *) [].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

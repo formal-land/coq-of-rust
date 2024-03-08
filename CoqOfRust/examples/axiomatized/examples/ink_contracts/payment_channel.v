@@ -10,9 +10,9 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_payment_channel_AccountId.
 
 Module Impl_core_clone_Clone_for_payment_channel_AccountId.
@@ -22,9 +22,9 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
 
 Module Impl_core_marker_Copy_for_payment_channel_AccountId.
@@ -32,9 +32,9 @@ Module Impl_core_marker_Copy_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
@@ -42,9 +42,9 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
@@ -54,9 +54,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
@@ -64,9 +64,9 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
@@ -76,12 +76,13 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -91,9 +92,10 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
@@ -111,9 +113,9 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
@@ -123,9 +125,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
@@ -133,9 +135,9 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
@@ -145,12 +147,13 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
@@ -232,9 +235,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Sha2x256")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
@@ -244,9 +247,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Keccak256")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
@@ -256,9 +259,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Blake2x256")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
@@ -268,9 +271,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Blake2x128")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
@@ -280,9 +283,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Sha2x256")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
@@ -292,9 +295,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Keccak256")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
@@ -304,9 +307,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Blake2x256")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
@@ -316,9 +319,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Blake2x128")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_PaymentChannel.

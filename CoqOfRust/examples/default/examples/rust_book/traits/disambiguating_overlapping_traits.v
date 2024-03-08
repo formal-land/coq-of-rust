@@ -39,9 +39,9 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
     M.IsTraitInstance
       "disambiguating_overlapping_traits::UsernameWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
-      []
-      [ ("get", InstanceField.Method get) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("get", InstanceField.Method get) ]
+      (* Instance polymorphic types *) [].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -64,9 +64,9 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
     M.IsTraitInstance
       "disambiguating_overlapping_traits::AgeWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
-      []
-      [ ("get", InstanceField.Method get) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("get", InstanceField.Method get) ]
+      (* Instance polymorphic types *) [].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (*
@@ -159,8 +159,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* age :=
       let* α0 :=
@@ -205,8 +204,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* α0 := M.alloc tt in
     M.read α0

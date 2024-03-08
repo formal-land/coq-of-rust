@@ -308,8 +308,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* _ :=
       let* α0 := M.alloc empty_array in
@@ -369,8 +368,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* α0 :=
       M.get_method
@@ -427,8 +425,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α2 := never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple [];
+                      end);
                     fun γ =>
                       (let* α0 := M.read γ in
                       match α0 with
@@ -487,8 +484,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc α9 in
                                 M.alloc tt
                               | _ => M.break_match 
-                              end) :
-                              Ty.tuple [];
+                              end);
                             fun γ =>
                               (let* α0 := M.read γ in
                               match α0 with
@@ -517,15 +513,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc α7 in
                                 M.alloc tt
                               | _ => M.break_match 
-                              end) :
-                              Ty.tuple []
+                              end)
                           ]
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple []
+                      end)
                   ] in
-              M.alloc tt)) :
-            Ty.tuple []
+              M.alloc tt))
         ] in
     M.read (use α6)
   | _, _ => M.impossible

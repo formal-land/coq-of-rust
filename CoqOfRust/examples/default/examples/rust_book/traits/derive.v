@@ -8,9 +8,9 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "derive::Centimeters")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -37,9 +37,9 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "derive::Centimeters")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -68,9 +68,9 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
     M.IsTraitInstance
       "core::cmp::PartialOrd"
       (* Self *) (Ty.path "derive::Centimeters")
-      []
-      [ ("partial_cmp", InstanceField.Method partial_cmp) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)
@@ -99,9 +99,9 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "derive::Inches")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.
@@ -138,8 +138,7 @@ Module Impl_derive_Inches.
                 let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
                 let* α3 := α0 (rust_cast α1) α2 in
                 M.alloc (Value.StructTuple "derive::Centimeters" [ α3 ])
-              end) :
-              Ty.path "derive::Centimeters"
+              end)
           ] in
       M.read α0
     | _, _ => M.impossible

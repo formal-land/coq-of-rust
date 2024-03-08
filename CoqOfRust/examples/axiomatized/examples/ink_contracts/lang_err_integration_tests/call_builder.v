@@ -10,9 +10,9 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -22,9 +22,9 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "call_builder::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -32,9 +32,9 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "call_builder::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
@@ -64,9 +64,9 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::CallBuilderTest")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.

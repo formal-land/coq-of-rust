@@ -39,9 +39,9 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "box_stack_heap::Point")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
@@ -54,9 +54,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.read self) : Ty.path "box_stack_heap::Point" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -65,9 +63,9 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "box_stack_heap::Point")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
@@ -75,9 +73,9 @@ Module Impl_core_marker_Copy_for_box_stack_heap_Point.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "box_stack_heap::Point")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* Struct Rectangle *)

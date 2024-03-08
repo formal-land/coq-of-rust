@@ -24,9 +24,9 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_payment_channel_AccountId.
 
 Module Impl_core_clone_Clone_for_payment_channel_AccountId.
@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.read self) : Ty.path "payment_channel::AccountId" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -49,9 +47,9 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
 
 Module Impl_core_marker_Copy_for_payment_channel_AccountId.
@@ -59,9 +57,9 @@ Module Impl_core_marker_Copy_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
@@ -69,9 +67,9 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
@@ -98,9 +96,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
@@ -108,9 +106,9 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
@@ -125,9 +123,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [ fun γ => (M.alloc tt) : Ty.path "unit" ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.alloc tt) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -136,12 +132,13 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -165,9 +162,10 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "payment_channel::AccountId")
-      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
@@ -185,9 +183,9 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
@@ -221,9 +219,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
@@ -231,9 +229,9 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
@@ -255,12 +253,13 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "payment_channel::Error")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
@@ -484,9 +483,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Sha2x256")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
@@ -499,9 +498,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Keccak256")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
@@ -514,9 +513,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Blake2x256")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
@@ -529,9 +528,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
     M.IsTraitInstance
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Blake2x128")
-      []
-      [ ("Type_", TODO) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("Type_", TODO) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
@@ -556,9 +555,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Sha2x256")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
@@ -583,9 +582,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Keccak256")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
@@ -610,9 +609,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Blake2x256")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
@@ -637,9 +636,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
     M.IsTraitInstance
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Blake2x128")
-      []
-      [ ("hash", InstanceField.Method hash) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("hash", InstanceField.Method hash) ]
+      (* Instance polymorphic types *) [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_PaymentChannel.
@@ -742,10 +741,8 @@ Module Impl_payment_channel_PaymentChannel.
                       let* α0 := M.var "std::panicking::begin_panic" in
                       let* α1 := M.read (mk_str "recover failed: {err:?}") in
                       let* α2 := M.call α0 [ α1 ] in
-                      never_to_any α2) :
-                      _
-                  ]) :
-                _
+                      never_to_any α2)
+                  ])
             ] in
         M.alloc α2 in
       let* signature_account_id :=
@@ -981,9 +978,7 @@ Module Impl_payment_channel_PaymentChannel.
                   (let* α0 := M.alloc α0 in
                   match_operator
                     α0
-                    [ fun γ => (M.pure payment_channel.Error.TransferFailed) : _
-                    ]) :
-                  _
+                    [ fun γ => (M.pure payment_channel.Error.TransferFailed) ])
               ] in
           let* α15 := M.call α0 [ α14 ] in
           let* α16 := M.alloc α15 in
@@ -1024,8 +1019,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.tuple [];
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -1038,8 +1032,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.tuple []
+                end)
             ] in
         let* α0 :=
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
@@ -1128,8 +1121,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.tuple [];
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -1142,8 +1134,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.tuple []
+                end)
             ] in
         let* _ :=
           let* α0 := M.read self in
@@ -1388,10 +1379,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.alloc α6 in
                   M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ])
                 | _ => M.break_match 
-                end) :
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.tuple []; Ty.path "payment_channel::Error" ];
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -1401,10 +1389,7 @@ Module Impl_payment_channel_PaymentChannel.
                       "core::result::Result::Err"
                       [ payment_channel.Error.NotYetExpired ])
                 | _ => M.break_match 
-                end) :
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
+                end)
             ] in
         M.read α2)
     | _, _ => M.impossible
@@ -1584,9 +1569,7 @@ Module Impl_payment_channel_PaymentChannel.
                   (let* α0 := M.alloc α0 in
                   match_operator
                     α0
-                    [ fun γ => (M.pure payment_channel.Error.TransferFailed) : _
-                    ]) :
-                  _
+                    [ fun γ => (M.pure payment_channel.Error.TransferFailed) ])
               ] in
           let* α10 := M.call α0 [ α9 ] in
           let* α11 := M.alloc α10 in
@@ -1627,8 +1610,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.tuple [];
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -1641,8 +1623,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.tuple []
+                end)
             ] in
         let* α0 :=
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in

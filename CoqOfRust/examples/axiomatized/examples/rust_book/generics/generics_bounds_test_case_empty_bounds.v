@@ -22,9 +22,9 @@ Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Red"
       (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::Cardinal")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
@@ -32,9 +32,9 @@ Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Blue"
       (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::BlueJay")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Parameter red : (list Ty.t) -> (list Value.t) -> M.

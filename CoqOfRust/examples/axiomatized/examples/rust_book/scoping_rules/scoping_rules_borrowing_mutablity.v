@@ -11,9 +11,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
@@ -21,9 +21,9 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book : (list Ty.t) -> (list Value.t) -> M.

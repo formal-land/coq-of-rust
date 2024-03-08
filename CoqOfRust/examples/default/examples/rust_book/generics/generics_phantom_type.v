@@ -10,9 +10,9 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTup
       "core::marker::StructuralPartialEq"
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
-      []
-      []
-      [ A; B ].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [ A; B ].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -58,9 +58,9 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       "core::cmp::PartialEq"
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [ A; B ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [ A; B ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 (* Struct PhantomStruct *)
@@ -72,9 +72,9 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStr
       "core::marker::StructuralPartialEq"
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
-      []
-      []
-      [ A; B ].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [ A; B ].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -120,9 +120,9 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       "core::cmp::PartialEq"
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [ A; B ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [ A; B ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (*

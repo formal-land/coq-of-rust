@@ -10,9 +10,9 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_basic_contract_caller_AccountId.
 
 Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
@@ -22,9 +22,9 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
 
 Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
@@ -32,9 +32,9 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :

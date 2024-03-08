@@ -10,9 +10,9 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -20,9 +20,9 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* Struct Job *)
@@ -34,9 +34,9 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
@@ -44,9 +44,9 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* Struct Person *)

@@ -1976,11 +1976,13 @@ impl TopLevelItem {
                                                         "Self".to_string(),
                                                         Rc::new(self_ty.to_coq()),
                                                     ),
-                                                    coq::Expression::List {
-                                                        exprs: trait_ty_params
-                                                            .iter()
-                                                            .filter_map(|(name, ty)| {
-                                                                match ty.as_ref() {
+                                                    coq::Expression::Comment(
+                                                        "Trait polymorphic types".to_string(),
+                                                        Rc::new(coq::Expression::List {
+                                                            exprs: trait_ty_params
+                                                                .iter()
+                                                                .filter_map(|(name, ty)| {
+                                                                    match ty.as_ref() {
                                                                 FieldWithDefault::RequiredValue(
                                                                     ty,
                                                                 )
@@ -1994,20 +1996,29 @@ impl TopLevelItem {
                                                                 }
                                                                 FieldWithDefault::Default => None,
                                                             }
-                                                            })
-                                                            .collect(),
-                                                    },
-                                                    coq::Expression::List { exprs: items_coq },
-                                                    coq::Expression::List {
-                                                        exprs: generic_tys
-                                                            .iter()
-                                                            .map(|generic_ty| {
-                                                                coq::Expression::just_name(
-                                                                    generic_ty,
-                                                                )
-                                                            })
-                                                            .collect(),
-                                                    },
+                                                                })
+                                                                .collect(),
+                                                        }),
+                                                    ),
+                                                    coq::Expression::Comment(
+                                                        "Instance".to_string(),
+                                                        Rc::new(coq::Expression::List {
+                                                            exprs: items_coq,
+                                                        }),
+                                                    ),
+                                                    coq::Expression::Comment(
+                                                        "Instance polymorphic types".to_string(),
+                                                        Rc::new(coq::Expression::List {
+                                                            exprs: generic_tys
+                                                                .iter()
+                                                                .map(|generic_ty| {
+                                                                    coq::Expression::just_name(
+                                                                        generic_ty,
+                                                                    )
+                                                                })
+                                                                .collect(),
+                                                        }),
+                                                    ),
                                                 ]),
                                         ),
                                     },

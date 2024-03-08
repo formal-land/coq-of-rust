@@ -30,20 +30,17 @@ Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (mk_str
                   "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again.") in
-            M.alloc α0) :
-            Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+            M.alloc α0);
           fun γ =>
             (let* α0 :=
               M.read
                 (mk_str
                   "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?") in
-            M.alloc α0) :
-            Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+            M.alloc α0);
           fun γ =>
             (let* α0 := M.read (mk_str "Hi! Who is this again?") in
-            M.alloc α0) :
-            Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+            M.alloc α0)
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -204,8 +201,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α11 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* _ :=
               let* α0 := M.var "std::io::stdio::_print" in
@@ -218,8 +214,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
-            M.alloc tt) :
-            Ty.tuple []
+            M.alloc tt)
         ] in
     let* _ :=
       let* α0 := M.read (mk_str "Daniel") in
@@ -285,8 +280,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α11 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* _ :=
               let* α0 := M.var "std::io::stdio::_print" in
@@ -299,8 +293,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
-            M.alloc tt) :
-            Ty.tuple []
+            M.alloc tt)
         ] in
     let* _ :=
       let* α0 :=
@@ -374,8 +367,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α2 := never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple [];
+                      end);
                     fun γ =>
                       (let* α0 := M.read γ in
                       match α0 with
@@ -429,11 +421,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.alloc tt
                         end
                       | _ => M.break_match 
-                      end) :
-                      Ty.tuple []
+                      end)
                   ] in
-              M.alloc tt)) :
-            Ty.tuple []
+              M.alloc tt))
         ] in
     M.read (use α4)
   | _, _ => M.impossible

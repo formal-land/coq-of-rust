@@ -171,8 +171,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α2 := never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple [];
+                        end);
                       fun γ =>
                         (let* α0 := M.read γ in
                         match α0 with
@@ -312,10 +311,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                                     Ty.path
                                                                       "u32"
                                                                   ])::["expect"]
-                                                              [ α1; α2 ]) :
-                                                            _
-                                                        ]) :
-                                                      _
+                                                              [ α1; α2 ])
+                                                        ])
                                                   ] in
                                               let* α5 := M.call α0 [ α4 ] in
                                               M.alloc α5 in
@@ -361,10 +358,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                 let* α9 := M.call α0 [ α8 ] in
                                                 M.alloc α9 in
                                               M.alloc tt in
-                                            M.read result) :
-                                            _
-                                        ]) :
-                                      _
+                                            M.read result)
+                                        ])
                                   ] in
                               let* α2 :=
                                 M.call
@@ -381,11 +376,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.alloc tt
                           end
                         | _ => M.break_match 
-                        end) :
-                        Ty.tuple []
+                        end)
                     ] in
-                M.alloc tt)) :
-              Ty.tuple []
+                M.alloc tt))
           ] in
       M.pure (use α6) in
     let* final_result :=
@@ -498,10 +491,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 Ty.path "alloc::alloc::Global"
                               ]
                           ])::["unwrap"]
-                      [ α1 ]) :
-                    _
-                ]) :
-              _
+                      [ α1 ])
+                ])
           ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in

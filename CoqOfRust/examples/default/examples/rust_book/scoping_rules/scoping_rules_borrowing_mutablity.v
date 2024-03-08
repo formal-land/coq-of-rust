@@ -23,14 +23,8 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
                   fun γ =>
                     (match_operator
                       Value.DeclaredButUndefined
-                      [
-                        fun γ =>
-                          (M.read self) :
-                          Ty.path "scoping_rules_borrowing_mutablity::Book"
-                      ]) :
-                    Ty.path "scoping_rules_borrowing_mutablity::Book"
-                ]) :
-              Ty.path "scoping_rules_borrowing_mutablity::Book"
+                      [ fun γ => (M.read self) ])
+                ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -40,9 +34,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
@@ -50,9 +44,9 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 (*

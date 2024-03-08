@@ -19,13 +19,15 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     M.IsTraitInstance
       "generics_associated_types_problem::Contains"
       (* Self *) (Ty.path "generics_associated_types_problem::Container")
-      [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
-      [
-        ("contains", InstanceField.Method contains);
-        ("first", InstanceField.Method first);
-        ("last", InstanceField.Method last)
-      ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
+      (* Instance *)
+        [
+          ("contains", InstanceField.Method contains);
+          ("first", InstanceField.Method first);
+          ("last", InstanceField.Method last)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.

@@ -36,8 +36,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (α0 γ) in
               let* years_as_primitive_2 := M.copy γ0_0 in
               M.alloc tt
-            end) :
-            Ty.path "unit"
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

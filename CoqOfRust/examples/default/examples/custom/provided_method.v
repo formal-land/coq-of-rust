@@ -42,9 +42,9 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "i32")
-      []
-      [ ("required", InstanceField.Method required) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("required", InstanceField.Method required) ]
+      (* Instance polymorphic types *) [].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
@@ -80,12 +80,13 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "u32")
-      []
-      [
-        ("required", InstanceField.Method required);
-        ("provided", InstanceField.Method provided)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("required", InstanceField.Method required);
+          ("provided", InstanceField.Method provided)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (*
@@ -143,8 +144,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* y := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
     let* _ :=
@@ -189,8 +189,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* α0 := M.alloc tt in
     M.read α0

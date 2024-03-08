@@ -88,8 +88,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α9 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -128,8 +127,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α11 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α5
   | _, _ => M.impossible

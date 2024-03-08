@@ -27,8 +27,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                 let* α0 := M.read (mk_str "Apple") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -39,8 +38,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                 let* α0 := M.read (mk_str "Carrot") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              end);
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
@@ -51,8 +49,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                 let* α0 := M.read (mk_str "Potato") in
                 M.alloc α0
               | _ => M.break_match 
-              end) :
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+              end)
           ] in
       let* α2 := M.read α1 in
       M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
@@ -63,9 +60,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Food")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
@@ -94,9 +91,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Peeled")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
@@ -125,9 +122,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Chopped")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
@@ -156,9 +153,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Cooked")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 (*
@@ -191,19 +188,13 @@ Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "core::option::Option::Some"
                   [ Value.StructTuple "combinators_map::Peeled" [ α0 ] ])
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_map::Peeled" ];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.None => M.alloc core.option.Option.None
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_map::Peeled" ]
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -246,19 +237,13 @@ Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [ Value.StructTuple "combinators_map::Chopped" [ α0 ] ])
               end
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_map::Chopped" ];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.None => M.alloc core.option.Option.None
             | _ => M.break_match 
-            end) :
-            Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "combinators_map::Chopped" ]
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -295,10 +280,8 @@ Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* food := M.copy γ0_0 in
                   let* α0 := M.read food in
                   M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
-                end) :
-                _
-            ]) :
-          _
+                end)
+            ])
       ]
   | _, _ => M.impossible
   end.
@@ -330,10 +313,8 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   (let* f := M.copy γ in
                   let* α0 := M.read f in
-                  M.pure (Value.StructTuple "combinators_map::Peeled" [ α0 ])) :
-                  _
-              ]) :
-            _
+                  M.pure (Value.StructTuple "combinators_map::Peeled" [ α0 ]))
+              ])
         ] in
     let* α2 :=
       M.call
@@ -357,10 +338,8 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* f := M.copy γ0_0 in
                     let* α0 := M.read f in
                     M.pure (Value.StructTuple "combinators_map::Chopped" [ α0 ])
-                  end) :
-                  _
-              ]) :
-            _
+                  end)
+              ])
         ] in
     M.call
       (Ty.apply
@@ -383,10 +362,8 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* f := M.copy γ0_0 in
                   let* α0 := M.read f in
                   M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
-                end) :
-                _
-            ]) :
-          _
+                end)
+            ])
       ]
   | _, _ => M.impossible
   end.
@@ -435,8 +412,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -454,8 +430,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α4 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

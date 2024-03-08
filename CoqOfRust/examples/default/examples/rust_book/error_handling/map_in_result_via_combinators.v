@@ -50,14 +50,10 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α0 := M.var "BinOp::Panic::mul" in
                             let* α1 := M.read first_number in
                             let* α2 := M.read second_number in
-                            α0 α1 α2) :
-                            _
-                        ]) :
-                      _
-                  ]) :
-                _
-            ]) :
-          _
+                            α0 α1 α2)
+                        ])
+                  ])
+            ])
       ]
   | _, _ => M.impossible
   end.
@@ -106,8 +102,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple [];
+            end);
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -136,8 +131,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α7 in
               M.alloc tt
             | _ => M.break_match 
-            end) :
-            Ty.tuple []
+            end)
         ] in
     M.read α0
   | _, _ => M.impossible

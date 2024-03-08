@@ -902,18 +902,8 @@ impl ExprKind {
                 body,
                 is_for_match: _,
             } => {
-                let body = group([
-                    body.to_doc(true),
-                    text(" :"),
-                    line(),
-                    match &body.ty {
-                        Some(ret_ty) => CoqType::Monad(ret_ty.clone()).to_coq().to_doc(false),
-                        None => text("_"),
-                    },
-                ]);
-
                 if args.is_empty() {
-                    paren(with_paren, body)
+                    paren(with_paren, body.to_doc(true))
                 } else {
                     paren(
                         with_paren,
@@ -938,7 +928,7 @@ impl ExprKind {
                                 text(" =>"),
                             ]),
                             line(),
-                            body,
+                            body.to_doc(true),
                         ]),
                     )
                 }

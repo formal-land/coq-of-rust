@@ -89,10 +89,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α1 := M.var "BinOp::Panic::rem" in
                     let* α2 := M.read x in
                     let* α3 := α1 α2 ((Integer.of_Z 2) : Ty.path "i32") in
-                    M.pure (α0 α3 ((Integer.of_Z 0) : Ty.path "i32"))) :
-                    _
-                ]) :
-              _
+                    M.pure (α0 α3 ((Integer.of_Z 0) : Ty.path "i32")))
+                ])
           ] in
       M.alloc α5 in
     let* _ :=
@@ -146,8 +144,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* index_of_first_negative_number :=
       let* α0 :=
@@ -188,10 +185,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (let* x := M.copy γ in
                     let* α0 := M.var "BinOp::Pure::lt" in
                     let* α1 := M.read x in
-                    M.pure (α0 α1 ((Integer.of_Z 0) : Ty.path "i32"))) :
-                    _
-                ]) :
-              _
+                    M.pure (α0 α1 ((Integer.of_Z 0) : Ty.path "i32")))
+                ])
           ] in
       M.alloc α5 in
     let* _ :=
@@ -241,8 +236,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* α0 := M.alloc tt in
     M.read α0

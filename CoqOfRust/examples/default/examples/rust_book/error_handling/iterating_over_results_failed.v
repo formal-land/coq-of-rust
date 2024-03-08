@@ -114,10 +114,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   fun γ =>
                     (let* s := M.copy γ in
                     let* α0 := M.read s in
-                    M.call (Ty.path "str")::["parse"] [ α0 ]) :
-                    _
-                ]) :
-              _
+                    M.call (Ty.path "str")::["parse"] [ α0 ])
+                ])
           ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in

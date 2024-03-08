@@ -42,8 +42,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* number := M.copy γ0_0 in
                   M.pure number
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32";
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -60,8 +59,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α3 := never_to_any α2 in
                   M.alloc α3
                 | _ => M.break_match 
-                end) :
-                Ty.path "i32"
+                end)
             ] in
         M.copy α3 in
       let* _ :=

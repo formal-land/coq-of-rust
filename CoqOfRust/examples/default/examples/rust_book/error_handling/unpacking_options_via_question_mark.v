@@ -18,12 +18,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
             fun γ =>
               (match_operator
                 Value.DeclaredButUndefined
-                [
-                  fun γ =>
-                    (M.read self) :
-                    Ty.path "unpacking_options_via_question_mark::PhoneNumber"
-                ]) :
-              Ty.path "unpacking_options_via_question_mark::PhoneNumber"
+                [ fun γ => (M.read self) ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -33,9 +28,9 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -43,9 +38,9 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* Struct Job *)
@@ -59,12 +54,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (M.read self) : Ty.path "unpacking_options_via_question_mark::Job"
-          ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -73,9 +63,9 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
@@ -83,9 +73,9 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* Struct Person *)
@@ -176,8 +166,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.path "unpacking_options_via_question_mark::Job";
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -190,8 +179,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.path "unpacking_options_via_question_mark::Job"
+                end)
             ] in
         let* α10 := M.read (α2 α9) in
         let* α11 := M.call α1 [ α10 ] in
@@ -231,8 +219,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   let* α5 := never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
-                end) :
-                Ty.path "unpacking_options_via_question_mark::PhoneNumber";
+                end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
@@ -245,8 +232,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match 
-                end) :
-                Ty.path "unpacking_options_via_question_mark::PhoneNumber"
+                end)
             ] in
         M.read (α0 α13))
     | _, _ => M.impossible
@@ -359,8 +345,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α2
               else
                 M.alloc tt
-            end) :
-            Ty.tuple []
+            end)
         ] in
     let* α0 := M.alloc tt in
     M.read α0

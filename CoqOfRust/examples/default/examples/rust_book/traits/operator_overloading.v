@@ -26,9 +26,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::FooBar")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 (* Struct BarFoo *)
@@ -52,9 +52,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
     M.IsTraitInstance
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::BarFoo")
-      []
-      [ ("fmt", InstanceField.Method fmt) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
@@ -97,9 +97,10 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
     M.IsTraitInstance
       "core::ops::arith::Add"
       (* Self *) (Ty.path "operator_overloading::Foo")
-      [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
-      [ ("Output", TODO); ("add", InstanceField.Method add) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
+      (* Instance *) [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
@@ -142,9 +143,10 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
     M.IsTraitInstance
       "core::ops::arith::Add"
       (* Self *) (Ty.path "operator_overloading::Bar")
-      [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
-      [ ("Output", TODO); ("add", InstanceField.Method add) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
+      (* Instance *) [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 (*

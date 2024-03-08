@@ -11,9 +11,9 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "dns::Mapping") [ K; V ])
-      []
-      [ ("default", InstanceField.Method default) ]
-      [ K; V ].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [ K; V ].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
@@ -72,9 +72,9 @@ Module Impl_core_default_Default_for_dns_AccountId.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "dns::AccountId")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_dns_AccountId.
 
 Module Impl_core_clone_Clone_for_dns_AccountId.
@@ -84,9 +84,9 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
     M.IsTraitInstance
       "core::clone::Clone"
       (* Self *) (Ty.path "dns::AccountId")
-      []
-      [ ("clone", InstanceField.Method clone) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("clone", InstanceField.Method clone) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_clone_Clone_for_dns_AccountId.
 
 Module Impl_core_marker_Copy_for_dns_AccountId.
@@ -94,9 +94,9 @@ Module Impl_core_marker_Copy_for_dns_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "dns::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_dns_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
@@ -104,9 +104,9 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "dns::AccountId")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_dns_AccountId.
@@ -116,9 +116,9 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "dns::AccountId")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_dns_AccountId.
@@ -128,9 +128,10 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       (* Self *) (Ty.path "dns::AccountId")
-      [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from) ]
-      [].
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Instance *) [ ("from", InstanceField.Method from) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_convert_From_array_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
@@ -173,9 +174,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
     M.IsTraitInstance
       "core::default::Default"
       (* Self *) (Ty.path "dns::DomainNameService")
-      []
-      [ ("default", InstanceField.Method default) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("default", InstanceField.Method default) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
 (* Enum Error *)
@@ -185,9 +186,9 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "dns::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
 
 Module Impl_core_cmp_PartialEq_for_dns_Error.
@@ -197,9 +198,9 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "dns::Error")
-      []
-      [ ("eq", InstanceField.Method eq) ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) [ ("eq", InstanceField.Method eq) ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_PartialEq_for_dns_Error.
 
 Module Impl_core_marker_StructuralEq_for_dns_Error.
@@ -207,9 +208,9 @@ Module Impl_core_marker_StructuralEq_for_dns_Error.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "dns::Error")
-      []
-      []
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *) []
+      (* Instance polymorphic types *) [].
 End Impl_core_marker_StructuralEq_for_dns_Error.
 
 Module Impl_core_cmp_Eq_for_dns_Error.
@@ -219,12 +220,13 @@ Module Impl_core_cmp_Eq_for_dns_Error.
     M.IsTraitInstance
       "core::cmp::Eq"
       (* Self *) (Ty.path "dns::Error")
-      []
-      [
-        ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq)
-      ]
-      [].
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method assert_receiver_is_total_eq)
+        ]
+      (* Instance polymorphic types *) [].
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
