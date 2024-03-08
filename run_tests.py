@@ -110,6 +110,28 @@ Module Mapping := Mapping.
         f.write(content)
 
 
+def update_erc_721():
+    file_name = "CoqOfRust/examples/default/examples/ink_contracts/erc721.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+
+    content = content.replace(
+        "Module  Mapping.",
+        """Require Import CoqOfRust.examples.default.examples.ink_contracts.Lib.
+
+Module Mapping := Mapping.
+
+(* Module  Mapping. (*""",
+    )
+    content = content.replace(
+        "End Impl_erc721_Mapping_t_K_V.",
+        "End Impl_erc721_Mapping_t_K_V. *)",
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 def update_payment_channel():
     file_name = "CoqOfRust/examples/default/examples/ink_contracts/payment_channel.v"
     with open(file_name, "r") as f:
@@ -164,5 +186,6 @@ def update_payment_channel_axiomatized():
 
 # update files for last changes
 update_erc_20()
+update_erc_721()
 update_payment_channel()
 update_payment_channel_axiomatized()
