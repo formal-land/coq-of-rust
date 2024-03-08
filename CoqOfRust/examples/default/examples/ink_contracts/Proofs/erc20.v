@@ -365,7 +365,7 @@ Lemma sub_eq_optimistic (v1 v2 : u128.t) :
     Integer.Valid.t v1 ->
     Integer.Valid.t v2 ->
     v1 <u128 v2 = false ->
-    BinOp.Panic.sub v1 v2 =
+    BinOp.Panic.make_arithmetic Z.sub v1 v2 =
     M.pure (BinOp.Optimistic.sub v1 v2).
 Proof.
   unfold Integer.Valid.t.
@@ -570,7 +570,7 @@ Proof.
     apply run_allowance_impl
   ).
   unfold use.
-  destruct (_ <u128 _) eqn:H_lt; simpl; run_symbolic.
+  destruct (_ <? _) eqn:H_lt; simpl; run_symbolic.
   eapply Run.Call. {
     now apply run_transfer_from_to.
   }
@@ -825,14 +825,13 @@ Lemma transfer_from_to_is_valid
   end.
 Proof.
   unfold Simulations.erc20.transfer_from_to; cbn.
-  destruct (_ <u128 _) eqn:H_lt; [scongruence|]; cbn.
+  destruct (_ <? _) eqn:H_lt; [scongruence|]; cbn.
   match goal with
   | |- context[Lib.Mapping.insert _ ?diff_value _] =>
     set (diff := diff_value)
   end.
   assert (H_diff : Integer.Valid.t diff). {
     unfold diff; clear diff.
-    unfold BinOp.Pure.lt, BinOp.Pure.make_comparison in H_lt.
     pose proof (balance_of_impl_is_valid storage from).
     sauto qb: on drew: off solve: lia.
   }
@@ -932,7 +931,6 @@ Lemma transfer_from_is_valid
   end.
 Proof.
   cbn.
-  unfold BinOp.Pure.lt, BinOp.Pure.make_comparison; cbn.
   destruct (_ <? _) eqn:H_lt; [trivial|].
   pose proof (H_transfer :=
     transfer_from_to_is_valid storage from to value H_storage H_value).
@@ -1159,12 +1157,14 @@ Module Action_from_log.
     end.
   Proof.
     cbn.
-    destruct (_ <u128 _) eqn:?; cbn; [easy|].
+    destruct (_ <? _) eqn:?; cbn; [easy|].
+    destruct erc20.balance_of_impl eqn:balance_of_impl_eq.
+    destruct value eqn:value_eq.
     unfold
       BinOp.Error.add,
       BinOp.Error.make_arithmetic,
       Integer.normalize_error.
-    do 2 (destruct (_ <? _); cbn; [easy|]).
+    do 3 (destruct (_ <? _); cbn; [easy|]).
     unfold balances_of_transfer.
     destruct AccountId.eqb eqn:?.
     { replace to with from in * by (apply AccountId.eqb_true; assumption).
@@ -1177,6 +1177,7 @@ Module Action_from_log.
       f_equal.
       destruct initial_value as [initial_value], value as [value].
       f_equal.
+      inversion balance_of_impl_eq.
       lia.
     }
     { assert (from <> to) by now apply AccountId.eqb_false.
@@ -1215,7 +1216,7 @@ Module Action_from_log.
     end.
   Proof.
     cbn.
-    destruct (_ <u128 _); cbn; [easy|].
+    destruct (_ <? _); cbn; [easy|].
     now destruct BinOp.Error.add.
   Qed.
 
@@ -1237,7 +1238,7 @@ Module Action_from_log.
     Opaque Simulations.erc20.transfer_from_to.
     destruct write_message; cbn;
       unfold Simulations.erc20.transfer, M.StateError.bind;
-      try (destruct (_ <u128 _) eqn:?; cbn; [easy|]);
+      try (destruct (_ <? _) eqn:?; cbn; [easy|]);
       try match goal with
       | |- context[erc20.transfer_from_to ?from ?to ?value (?storage, [])] =>
         pose proof (
