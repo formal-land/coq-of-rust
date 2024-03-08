@@ -11,7 +11,8 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       "core::ops::drop::Drop"
       (* Self *) (Ty.path "scoping_rules_raii_desctructor::ToDrop")
       []
-      [ ("drop", InstanceField.Method drop []) ].
+      [ ("drop", InstanceField.Method drop) ]
+      [].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

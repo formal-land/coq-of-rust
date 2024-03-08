@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
 
-(* Enum Incrementer *)
+(* Struct Incrementer *)
 
 Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
@@ -15,7 +15,8 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
       "core::default::Default"
       (* Self *) (Ty.path "set_code_hash::Incrementer")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
 Module Impl_set_code_hash_Incrementer.

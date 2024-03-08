@@ -18,7 +18,8 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
       []
-      [ ("noise", InstanceField.Method noise []) ].
+      [ ("noise", InstanceField.Method noise) ]
+      [].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
@@ -29,7 +30,8 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
       []
-      [ ("noise", InstanceField.Method noise []) ].
+      [ ("noise", InstanceField.Method noise) ]
+      [].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal : (list Ty.t) -> (list Value.t) -> M.

@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_updated_incrementer_AccountId.
 
 Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_updated_incrementer_AccountId.
 
 Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
@@ -40,7 +43,7 @@ Axiom Hash :
 
 (* Enum Error *)
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_updated_incrementer_Env.
   Definition Self : Ty.t := Ty.path "updated_incrementer::Env".
@@ -51,7 +54,7 @@ Module Impl_updated_incrementer_Env.
     M.IsAssociatedFunction Self "set_code_hash" set_code_hash [].
 End Impl_updated_incrementer_Env.
 
-(* Enum Incrementer *)
+(* Struct Incrementer *)
 
 Module Impl_updated_incrementer_Incrementer.
   Definition Self : Ty.t := Ty.path "updated_incrementer::Incrementer".

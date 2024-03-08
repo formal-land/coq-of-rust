@@ -13,7 +13,8 @@ Module checked.
         (* Self *)
           (Ty.path "result_chaining_with_question_mark::checked::MathError")
         []
-        [ ("fmt", InstanceField.Method fmt []) ].
+        [ ("fmt", InstanceField.Method fmt) ]
+        [].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :

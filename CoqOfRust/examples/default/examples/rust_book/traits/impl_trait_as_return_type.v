@@ -216,9 +216,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ borrow_mut v3 ] in
+      let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (borrow α0, borrow α3) in
+      let* α4 := M.alloc (α0, α3) in
       match_operator
         α4
         [
@@ -277,9 +277,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ borrow_mut v3 ] in
+      let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (borrow α0, borrow α3) in
+      let* α4 := M.alloc (α0, α3) in
       match_operator
         α4
         [
@@ -338,9 +338,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ borrow_mut v3 ] in
+      let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (borrow α0, borrow α3) in
+      let* α4 := M.alloc (α0, α3) in
       match_operator
         α4
         [
@@ -399,9 +399,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ borrow_mut v3 ] in
+      let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (borrow α0, borrow α3) in
+      let* α4 := M.alloc (α0, α3) in
       match_operator
         α4
         [
@@ -460,9 +460,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ borrow_mut v3 ] in
+      let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (borrow α0, borrow α3) in
+      let* α4 := M.alloc (α0, α3) in
       match_operator
         α4
         [
@@ -519,7 +519,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α2) ] in
+            [ pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in

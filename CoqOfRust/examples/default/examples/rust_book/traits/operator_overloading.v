@@ -27,7 +27,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::FooBar")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 (* Struct BarFoo *)
@@ -52,7 +53,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::BarFoo")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
@@ -82,7 +84,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
           let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α2) ] in
+              [ pointer_coercion "Unsize" α2 ] in
           let* α4 := M.call α0 [ α3 ] in
           M.alloc α4 in
         M.alloc tt in
@@ -96,7 +98,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
       "core::ops::arith::Add"
       (* Self *) (Ty.path "operator_overloading::Foo")
       [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
-      [ ("Output", TODO); ("add", InstanceField.Method add []) ].
+      [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      [].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
@@ -126,7 +129,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
           let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α2) ] in
+              [ pointer_coercion "Unsize" α2 ] in
           let* α4 := M.call α0 [ α3 ] in
           M.alloc α4 in
         M.alloc tt in
@@ -140,7 +143,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       "core::ops::arith::Add"
       (* Self *) (Ty.path "operator_overloading::Bar")
       [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
-      [ ("Output", TODO); ("add", InstanceField.Method add []) ].
+      [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      [].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 (*
@@ -175,17 +179,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -211,17 +210,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

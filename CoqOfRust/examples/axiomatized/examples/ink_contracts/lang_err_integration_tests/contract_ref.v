@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_ref::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_contract_ref_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_ref_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_ref::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_contract_ref_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_ref_AccountId.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_contract_ref_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_ref::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_contract_ref_AccountId.
@@ -40,9 +43,9 @@ Axiom Hash :
   (Ty.path "contract_ref::Hash") =
     (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
-(* Enum Env *)
+(* Struct Env *)
 
-(* Enum FlipperRef *)
+(* Struct FlipperRef *)
 
 (* Struct FlipperError *)
 
@@ -54,7 +57,8 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "contract_ref::FlipperError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError.
 
 Module Impl_contract_ref_FlipperRef.
@@ -92,7 +96,7 @@ Module Impl_contract_ref_FlipperRef.
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_contract_ref_FlipperRef.
 
-(* Enum ContractRef *)
+(* Struct ContractRef *)
 
 Module Impl_contract_ref_ContractRef.
   Definition Self : Ty.t := Ty.path "contract_ref::ContractRef".

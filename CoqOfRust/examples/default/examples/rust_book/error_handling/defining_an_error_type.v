@@ -23,7 +23,8 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -43,7 +44,8 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       "core::clone::Clone"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
@@ -70,7 +72,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       let* α3 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_const"]
-          [ pointer_coercion "Unsize" (borrow α2) ] in
+          [ pointer_coercion "Unsize" α2 ] in
       M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α3 ]
     | _, _ => M.impossible
     end.
@@ -80,7 +82,8 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       "core::fmt::Display"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 (*
@@ -113,7 +116,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "alloc::alloc::Global"
               ]
         ] in
-    let* α1 := M.call α0 [ borrow vec ] in
+    let* α1 := M.call α0 [ vec ] in
     let* α2 :=
       M.call
         (Ty.apply
@@ -153,7 +156,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 (let* s := M.copy γ in
                 let* α0 := M.read s in
-                let* α1 := M.read (deref α0) in
+                let* α1 := M.read α0 in
                 let* α2 := M.call (Ty.path "str")::["parse"] [ α1 ] in
                 let* α3 :=
                   M.call
@@ -173,9 +176,9 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               (M.pure
                                 defining_an_error_type.DoubleError.Build) :
-                              Ty.path "defining_an_error_type::DoubleError"
+                              _
                           ]) :
-                        Ty.path "defining_an_error_type::DoubleError"
+                        _
                     ] in
                 M.call
                   (Ty.apply
@@ -196,18 +199,13 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α0 := M.var "BinOp::Panic::mul" in
                             let* α1 := M.read i in
                             α0 ((Integer.of_Z 2) : Ty.path "i32") α1) :
-                            Ty.path "i32"
+                            _
                         ]) :
-                      Ty.path "i32"
+                      _
                   ]) :
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError"
-                  ]
+                _
             ]) :
-          Ty.apply
-            (Ty.path "core::result::Result")
-            [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ]
+          _
       ]
   | _, _ => M.impossible
   end.
@@ -245,14 +243,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow n ] in
+                    [ n ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -277,14 +273,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow e ] in
+                    [ e ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

@@ -11,7 +11,8 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       "core::fmt::Debug"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
@@ -19,6 +20,7 @@ Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
+      []
       []
       [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
@@ -31,7 +33,8 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       []
-      [ ("eq", InstanceField.Method eq []) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
@@ -44,7 +47,8 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
       "core::convert::TryFrom"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       [ (* T *) Ty.path "i32" ]
-      [ ("Error", TODO); ("try_from", InstanceField.Method try_from []) ].
+      [ ("Error", TODO); ("try_from", InstanceField.Method try_from) ]
+      [].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

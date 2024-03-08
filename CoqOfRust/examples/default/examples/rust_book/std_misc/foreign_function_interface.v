@@ -57,21 +57,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α4 := M.alloc [ α1; α2; α3 ] in
         let* α5 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow z ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ z ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow z_sqrt ] in
+            [ z_sqrt ] in
         let* α7 := M.alloc [ α5; α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α4);
-              pointer_coercion "Unsize" (borrow α7)
-            ] in
+            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α7 ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -84,25 +79,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α4 := M.alloc [ α1; α2; α3 ] in
         let* α5 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow z ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ z ] in
         let* α6 := M.var "foreign_function_interface::cos" in
         let* α7 := M.read z in
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α9 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α9 ] in
         let* α11 := M.alloc [ α5; α10 ] in
         let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α4);
-              pointer_coercion "Unsize" (borrow α11)
-            ] in
+            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α11 ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in
       M.alloc tt in
@@ -111,7 +99,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Enum Complex *)
+(* Struct Complex *)
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   (*
@@ -126,9 +114,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
           Value.DeclaredButUndefined
           [
             fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "foreign_function_interface::Complex"
+              (M.read self) : Ty.path "foreign_function_interface::Complex"
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -139,7 +125,8 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
       "core::clone::Clone"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
@@ -147,6 +134,7 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
@@ -169,7 +157,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       let* α0 := M.var "BinOp::Pure::lt" in
       let* α1 := M.var "foreign_function_interface::Complex::Get_im" in
       let* α2 := M.read self in
-      let* α3 := M.read (α1 (deref α2)) in
+      let* α3 := M.read (α1 α2) in
       let* α4 := M.read (UnsupportedLiteral : Ty.path "f32") in
       let* α5 := M.alloc (α0 α3 α4) in
       let* α6 := M.read (use α5) in
@@ -185,25 +173,22 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α7 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow (α5 (deref α6)) ] in
+              [ α5 α6 ] in
           let* α8 := M.var "UnOp::neg" in
           let* α9 := M.var "foreign_function_interface::Complex::Get_im" in
           let* α10 := M.read self in
-          let* α11 := M.read (α9 (deref α10)) in
+          let* α11 := M.read (α9 α10) in
           let* α12 := α8 α11 in
           let* α13 := M.alloc α12 in
           let* α14 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α13 ] in
+              [ α13 ] in
           let* α15 := M.alloc [ α7; α14 ] in
           let* α16 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α4);
-                pointer_coercion "Unsize" (borrow α15)
-              ] in
+              [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α15 ] in
           let* α17 :=
             M.call
               (Ty.path "core::fmt::Formatter")::["write_fmt"]
@@ -220,21 +205,18 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α7 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow (α5 (deref α6)) ] in
+              [ α5 α6 ] in
           let* α8 := M.var "foreign_function_interface::Complex::Get_im" in
           let* α9 := M.read self in
           let* α10 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow (α8 (deref α9)) ] in
+              [ α8 α9 ] in
           let* α11 := M.alloc [ α7; α10 ] in
           let* α12 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α4);
-                pointer_coercion "Unsize" (borrow α11)
-              ] in
+              [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α11 ] in
           let* α13 :=
             M.call
               (Ty.path "core::fmt::Formatter")::["write_fmt"]
@@ -249,5 +231,6 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       "core::fmt::Debug"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

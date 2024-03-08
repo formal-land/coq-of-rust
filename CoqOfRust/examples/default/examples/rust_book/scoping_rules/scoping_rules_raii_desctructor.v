@@ -22,7 +22,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
           let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α2) ] in
+              [ pointer_coercion "Unsize" α2 ] in
           let* α4 := M.call α0 [ α3 ] in
           M.alloc α4 in
         M.alloc tt in
@@ -36,7 +36,8 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       "core::ops::drop::Drop"
       (* Self *) (Ty.path "scoping_rules_raii_desctructor::ToDrop")
       []
-      [ ("drop", InstanceField.Method drop []) ].
+      [ ("drop", InstanceField.Method drop) ]
+      [].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (*
@@ -59,7 +60,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α2) ] in
+            [ pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in

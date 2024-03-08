@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -39,12 +40,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "call_builder::AccountId"
-          ] in
+          [ fun γ => (M.read self) : Ty.path "call_builder::AccountId" ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -54,7 +50,8 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -62,6 +59,7 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "call_builder::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -115,7 +113,8 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::CallBuilderTest")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.
@@ -228,9 +227,7 @@ Module Impl_call_builder_CallBuilderTest.
                 let* α5 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α2);
-                      pointer_coercion "Unsize" (borrow α4)
+                    [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
                     ] in
                 let* α6 := M.call α0 [ α5 ] in
                 let* α7 := never_to_any α6 in

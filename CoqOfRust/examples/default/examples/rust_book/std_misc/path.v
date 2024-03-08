@@ -49,37 +49,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.read (mk_str "a") in
       let* α3 := M.call (Ty.path "std::path::Path")::["join"] [ α1; α2 ] in
       let* α4 := M.alloc α3 in
-      let* α5 := M.call α0 [ borrow α4 ] in
+      let* α5 := M.call α0 [ α4 ] in
       let* α6 := M.read (mk_str "b") in
       let* α7 := M.call (Ty.path "std::path::Path")::["join"] [ α5; α6 ] in
       M.alloc α7 in
     let* _ :=
       let* α0 := M.read (mk_str "c") in
       let* α1 :=
-        M.call
-          (Ty.path "std::path::PathBuf")::["push"]
-          [ borrow_mut new_path; α0 ] in
+        M.call (Ty.path "std::path::PathBuf")::["push"] [ new_path; α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "myfile.tar.gz") in
       let* α1 :=
-        M.call
-          (Ty.path "std::path::PathBuf")::["push"]
-          [ borrow_mut new_path; α0 ] in
+        M.call (Ty.path "std::path::PathBuf")::["push"] [ new_path; α0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.read (mk_str "package.tgz") in
       let* α1 :=
         M.call
           (Ty.path "std::path::PathBuf")::["set_file_name"]
-          [ borrow_mut new_path; α0 ] in
+          [ new_path; α0 ] in
       M.alloc α1 in
     let* α0 :=
       M.get_method
         "core::ops::deref::Deref"
         "deref"
         [ (* Self *) Ty.path "std::path::PathBuf" ] in
-    let* α1 := M.call α0 [ borrow new_path ] in
+    let* α1 := M.call α0 [ new_path ] in
     let* α2 := M.call (Ty.path "std::path::Path")::["to_str"] [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α0 :=
@@ -116,14 +112,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow s ] in
+                    [ s ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

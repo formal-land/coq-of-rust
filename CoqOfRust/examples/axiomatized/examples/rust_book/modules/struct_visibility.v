@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
-  (* Enum OpenBox *)
+  (* Struct OpenBox *)
   
-  (* Enum ClosedBox *)
+  (* Struct ClosedBox *)
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self (T : Ty.t) : Ty.t :=

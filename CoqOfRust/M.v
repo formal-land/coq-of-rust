@@ -329,7 +329,7 @@ Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
 Module InstanceField.
   Inductive t : Set :=
   | Constant (constant : Value.t)
-  | Method (method : list Ty.t -> list Value.t -> M) (𝜏_prefix : list Ty.t)
+  | Method (method : list Ty.t -> list Value.t -> M)
   | Ty (ty : Ty.t).
 End InstanceField.
 
@@ -342,7 +342,8 @@ Parameter IsTraitInstance :
     (trait_name : string)
     (Self : Ty.t)
     (generic_tys : list Ty.t)
-    (instance : Instance.t),
+    (instance : Instance.t)
+    (𝜏_prefix : list Ty.t),
   Prop.
 
 Parameter IsAssociatedFunction :

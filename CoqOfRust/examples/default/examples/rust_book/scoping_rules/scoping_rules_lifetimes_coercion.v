@@ -66,20 +66,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
           let* α3 := M.alloc [ α1; α2 ] in
           let* α4 := M.var "scoping_rules_lifetimes_coercion::multiply" in
-          let* α5 := M.call α4 [ borrow first; borrow second ] in
+          let* α5 := M.call α4 [ first; second ] in
           let* α6 := M.alloc α5 in
           let* α7 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α6 ] in
+              [ α6 ] in
           let* α8 := M.alloc [ α7 ] in
           let* α9 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α8)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in
         M.alloc tt in
@@ -91,20 +88,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
           let* α3 := M.alloc [ α1; α2 ] in
           let* α4 := M.var "scoping_rules_lifetimes_coercion::choose_first" in
-          let* α5 := M.call α4 [ borrow first; borrow second ] in
+          let* α5 := M.call α4 [ first; second ] in
           let* α6 := M.alloc α5 in
           let* α7 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α6 ] in
+              [ α6 ] in
           let* α8 := M.alloc [ α7 ] in
           let* α9 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α8)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in
         M.alloc tt in

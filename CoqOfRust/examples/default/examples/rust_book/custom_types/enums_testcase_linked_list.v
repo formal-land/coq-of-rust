@@ -75,7 +75,7 @@ Module Impl_enums_testcase_linked_list_List.
       let* α0 := M.read self in
       let* α1 :=
         match_operator
-          (deref α0)
+          α0
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -92,11 +92,11 @@ Module Impl_enums_testcase_linked_list_List.
                 let* tail := M.alloc (borrow γ0_1) in
                 let* α0 := M.var "BinOp::Panic::add" in
                 let* α1 := M.read tail in
-                let* α2 := M.read (deref α1) in
+                let* α2 := M.read α1 in
                 let* α3 :=
                   M.call
                     (Ty.path "enums_testcase_linked_list::List")::["len"]
-                    [ borrow (deref α2) ] in
+                    [ α2 ] in
                 let* α4 := α0 ((Integer.of_Z 1) : Ty.path "u32") α3 in
                 M.alloc α4
               | _ => M.break_match 
@@ -138,7 +138,7 @@ Module Impl_enums_testcase_linked_list_List.
       let* α0 := M.read self in
       let* α1 :=
         match_operator
-          (deref α0)
+          α0
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -162,26 +162,26 @@ Module Impl_enums_testcase_linked_list_List.
                   let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ borrow head ] in
+                      [ head ] in
                   let* α5 := M.read tail in
-                  let* α6 := M.read (deref α5) in
+                  let* α6 := M.read α5 in
                   let* α7 :=
                     M.call
                       (Ty.path
                           "enums_testcase_linked_list::List")::["stringify"]
-                      [ borrow (deref α6) ] in
+                      [ α6 ] in
                   let* α8 := M.alloc α7 in
                   let* α9 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ borrow α8 ] in
+                      [ α8 ] in
                   let* α10 := M.alloc [ α4; α9 ] in
                   let* α11 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α3);
-                        pointer_coercion "Unsize" (borrow α10)
+                        pointer_coercion "Unsize" α3;
+                        pointer_coercion "Unsize" α10
                       ] in
                   let* α12 := M.call α0 [ α11 ] in
                   M.alloc α12 in
@@ -200,7 +200,7 @@ Module Impl_enums_testcase_linked_list_List.
                   let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                      [ pointer_coercion "Unsize" α2 ] in
                   let* α4 := M.call α0 [ α3 ] in
                   M.alloc α4 in
                 M.pure res
@@ -270,20 +270,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "enums_testcase_linked_list::List")::["len"]
-            [ borrow list ] in
+            [ list ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α7)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -297,20 +292,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "enums_testcase_linked_list::List")::["stringify"]
-            [ borrow list ] in
+            [ list ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α7)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in

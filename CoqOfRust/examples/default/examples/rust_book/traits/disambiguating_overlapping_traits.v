@@ -11,7 +11,7 @@ Module AgeWidget.
   
 End AgeWidget.
 
-(* Enum Form *)
+(* Struct Form *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   (*
@@ -31,7 +31,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
       let* α1 :=
         M.var "disambiguating_overlapping_traits::Form::Get_username" in
       let* α2 := M.read self in
-      M.call α0 [ borrow (α1 (deref α2)) ]
+      M.call α0 [ α1 α2 ]
     | _, _ => M.impossible
     end.
   
@@ -40,7 +40,8 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
       "disambiguating_overlapping_traits::UsernameWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       []
-      [ ("get", InstanceField.Method get []) ].
+      [ ("get", InstanceField.Method get) ]
+      [].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -55,7 +56,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       let* self := M.alloc self in
       let* α0 := M.var "disambiguating_overlapping_traits::Form::Get_age" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -64,7 +65,8 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       "disambiguating_overlapping_traits::AgeWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       []
-      [ ("get", InstanceField.Method get []) ].
+      [ ("get", InstanceField.Method get) ]
+      [].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (*
@@ -107,7 +109,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "disambiguating_overlapping_traits::UsernameWidget"
           "get"
           [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
-      let* α1 := M.call α0 [ borrow form ] in
+      let* α1 := M.call α0 [ form ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -118,7 +120,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (mk_str "rustacean") in
       let* α2 := M.call α0 [ α1 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (borrow α3, borrow username) in
+      let* α4 := M.alloc (α3, username) in
       match_operator
         α4
         [
@@ -166,11 +168,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "disambiguating_overlapping_traits::AgeWidget"
           "get"
           [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
-      let* α1 := M.call α0 [ borrow form ] in
+      let* α1 := M.call α0 [ form ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.alloc ((Integer.of_Z 28) : Ty.path "u8") in
-      let* α1 := M.alloc (borrow α0, borrow age) in
+      let* α1 := M.alloc (α0, age) in
       match_operator
         α1
         [
@@ -185,9 +187,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.var "UnOp::not" in
               let* α1 := M.var "BinOp::Pure::eq" in
               let* α2 := M.read left_val in
-              let* α3 := M.read (deref α2) in
+              let* α3 := M.read α2 in
               let* α4 := M.read right_val in
-              let* α5 := M.read (deref α4) in
+              let* α5 := M.read α4 in
               let* α6 := M.alloc (α0 (α1 α3 α5)) in
               let* α7 := M.read (use α6) in
               if α7 then

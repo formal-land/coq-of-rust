@@ -64,7 +64,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α2 := M.call α1 [ borrow vec ] in
+      let* α2 := M.call α1 [ vec ] in
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["iter"]
@@ -74,7 +74,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           α0
           [
-            borrow_mut α4;
+            α4;
             fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "i32" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
@@ -90,9 +90,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read x in
                     let* α3 := α1 α2 ((Integer.of_Z 2) : Ty.path "i32") in
                     M.pure (α0 α3 ((Integer.of_Z 0) : Ty.path "i32"))) :
-                    Ty.path "bool"
+                    _
                 ]) :
-              Ty.path "bool"
+              _
           ] in
       M.alloc α5 in
     let* _ :=
@@ -101,7 +101,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Value.StructTuple
             "core::option::Option::Some"
             [ (Integer.of_Z 5) : Ty.path "usize" ]) in
-      let* α1 := M.alloc (borrow index_of_first_even_number, borrow α0) in
+      let* α1 := M.alloc (index_of_first_even_number, α0) in
       match_operator
         α1
         [
@@ -178,7 +178,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.call
           α0
           [
-            borrow_mut α4;
+            α4;
             fun (α0 : Ty.path "i32") =>
               (let* α0 := M.alloc α0 in
               match_operator
@@ -189,14 +189,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.var "BinOp::Pure::lt" in
                     let* α1 := M.read x in
                     M.pure (α0 α1 ((Integer.of_Z 0) : Ty.path "i32"))) :
-                    Ty.path "bool"
+                    _
                 ]) :
-              Ty.path "bool"
+              _
           ] in
       M.alloc α5 in
     let* _ :=
       let* α0 := M.alloc core.option.Option.None in
-      let* α1 := M.alloc (borrow index_of_first_negative_number, borrow α0) in
+      let* α1 := M.alloc (index_of_first_negative_number, α0) in
       match_operator
         α1
         [

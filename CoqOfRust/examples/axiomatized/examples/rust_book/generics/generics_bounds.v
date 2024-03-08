@@ -6,7 +6,7 @@ Module HasArea.
   
 End HasArea.
 
-(* Enum Rectangle *)
+(* Struct Rectangle *)
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -16,10 +16,11 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       "core::fmt::Debug"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
-(* Enum Triangle *)
+(* Struct Triangle *)
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Parameter area : (list Ty.t) -> (list Value.t) -> M.
@@ -29,7 +30,8 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       "generics_bounds::HasArea"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       []
-      [ ("area", InstanceField.Method area []) ].
+      [ ("area", InstanceField.Method area) ]
+      [].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Parameter print_debug : (list Ty.t) -> (list Value.t) -> M.

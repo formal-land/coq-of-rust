@@ -19,7 +19,8 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       "generics_traits::DoubleDrop"
       (* Self *) U
       [ (* T *) T ]
-      [ ("double_drop", InstanceField.Method double_drop [ T; U ]) ].
+      [ ("double_drop", InstanceField.Method double_drop) ]
+      [ T; U ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

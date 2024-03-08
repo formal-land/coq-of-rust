@@ -99,7 +99,8 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
       (* Self *)
         (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
 
 (*
@@ -148,7 +149,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α3 :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_const"]
-                        [ pointer_coercion "Unsize" (borrow α2) ] in
+                        [ pointer_coercion "Unsize" α2 ] in
                     let* α4 := M.call α0 [ α3 ] in
                     M.alloc α4 in
                   M.alloc tt in
@@ -156,11 +157,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc
                     unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
                 M.read α0) :
-                Ty.path
-                  "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
+                _
             ]) :
-          Ty.path
-            "unpacking_options_and_defaults_via_get_or_insert_with::Fruit") in
+          _) in
     let* first_available_fruit :=
       let* α0 := M.read get_lemon_as_fallback in
       let* α1 :=
@@ -171,7 +170,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path
                   "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
               ])::["get_or_insert_with"]
-          [ borrow_mut my_fruit; α0 ] in
+          [ my_fruit; α0 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -183,15 +182,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow first_available_fruit ] in
+            [ first_available_fruit ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -205,15 +201,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow first_available_fruit ] in
+            [ first_available_fruit ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -233,7 +226,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path
                   "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
               ])::["get_or_insert_with"]
-          [ borrow_mut my_apple; α0 ] in
+          [ my_apple; α0 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -245,15 +238,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow should_be_apple ] in
+            [ should_be_apple ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -267,15 +257,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow my_apple ] in
+            [ my_apple ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

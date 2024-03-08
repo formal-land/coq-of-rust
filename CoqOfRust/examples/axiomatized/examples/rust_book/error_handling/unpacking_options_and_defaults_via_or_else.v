@@ -11,7 +11,8 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
       "core::fmt::Debug"
       (* Self *) (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

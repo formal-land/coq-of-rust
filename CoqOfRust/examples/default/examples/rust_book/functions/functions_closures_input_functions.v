@@ -16,7 +16,7 @@ Definition call_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::Fn"
           "call"
           [ (* Self *) F; (* Args *) Ty.tuple [] ] in
-      let* α1 := M.call α0 [ borrow f; tt ] in
+      let* α1 := M.call α0 [ f; tt ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0
@@ -40,7 +40,7 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α2) ] in
+            [ pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -78,14 +78,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" (borrow α2) ] in
+                      [ pointer_coercion "Unsize" α2 ] in
                   let* α4 := M.call α0 [ α3 ] in
                   M.alloc α4 in
                 let* α0 := M.alloc tt in
                 M.read α0) :
-                Ty.tuple []
+                _
             ]) :
-          Ty.tuple []) in
+          _) in
     let* _ :=
       let* α0 := M.var "functions_closures_input_functions::call_me" in
       let* α1 := M.read closure in

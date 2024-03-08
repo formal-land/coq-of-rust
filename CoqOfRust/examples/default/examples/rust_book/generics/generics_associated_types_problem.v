@@ -31,8 +31,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           ] in
       let* α2 := M.var "generics_associated_types_problem::Container::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
-      let* α5 := M.call α1 [ borrow α4; borrow number_1 ] in
+      let* α4 := M.alloc (α2 α3) in
+      let* α5 := M.call α1 [ α4; number_1 ] in
       let* α6 :=
         M.get_method
           "core::cmp::PartialEq"
@@ -43,8 +43,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           ] in
       let* α7 := M.var "generics_associated_types_problem::Container::Get_1" in
       let* α8 := M.read self in
-      let* α9 := M.alloc (borrow (α7 (deref α8))) in
-      let* α10 := M.call α6 [ borrow α9; borrow number_2 ] in
+      let* α9 := M.alloc (α7 α8) in
+      let* α10 := M.call α6 [ α9; number_2 ] in
       M.pure (α0 α5 α10)
     | _, _ => M.impossible
     end.
@@ -60,7 +60,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
       let* self := M.alloc self in
       let* α0 := M.var "generics_associated_types_problem::Container::Get_0" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -75,7 +75,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
       let* self := M.alloc self in
       let* α0 := M.var "generics_associated_types_problem::Container::Get_1" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -85,10 +85,11 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
       (* Self *) (Ty.path "generics_associated_types_problem::Container")
       [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
       [
-        ("contains", InstanceField.Method contains []);
-        ("first", InstanceField.Method first []);
-        ("last", InstanceField.Method last [])
-      ].
+        ("contains", InstanceField.Method contains);
+        ("first", InstanceField.Method first);
+        ("last", InstanceField.Method last)
+      ]
+      [].
 End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
 (*
@@ -163,16 +164,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str "
 ") in
         let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 := M.alloc (borrow number_1) in
+        let* α6 := M.alloc number_1 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
-        let* α8 := M.alloc (borrow number_2) in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
+        let* α8 := M.alloc number_2 in
         let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α8 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α8 ] in
         let* α10 :=
           M.get_method
             "generics_associated_types_problem::Contains"
@@ -182,21 +179,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* A *) Ty.path "i32";
               (* B *) Ty.path "i32"
             ] in
-        let* α11 :=
-          M.call α10 [ borrow container; borrow number_1; borrow number_2 ] in
+        let* α11 := M.call α10 [ container; number_1; number_2 ] in
         let* α12 := M.alloc α11 in
         let* α13 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α12 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α12 ] in
         let* α14 := M.alloc [ α7; α9; α13 ] in
         let* α15 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α5);
-              pointer_coercion "Unsize" (borrow α14)
-            ] in
+            [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α14 ] in
         let* α16 := M.call α0 [ α15 ] in
         M.alloc α16 in
       M.alloc tt in
@@ -216,20 +207,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* A *) Ty.path "i32";
               (* B *) Ty.path "i32"
             ] in
-        let* α5 := M.call α4 [ borrow container ] in
+        let* α5 := M.call α4 [ container ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -249,20 +235,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* A *) Ty.path "i32";
               (* B *) Ty.path "i32"
             ] in
-        let* α5 := M.call α4 [ borrow container ] in
+        let* α5 := M.call α4 [ container ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -274,20 +255,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 := M.var "generics_associated_types_problem::difference" in
-        let* α5 := M.call α4 [ borrow container ] in
+        let* α5 := M.call α4 [ container ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

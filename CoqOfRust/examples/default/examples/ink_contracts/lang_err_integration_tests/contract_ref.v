@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_ref::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_contract_ref_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_ref_AccountId.
@@ -39,12 +40,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "contract_ref::AccountId"
-          ] in
+          [ fun γ => (M.read self) : Ty.path "contract_ref::AccountId" ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -54,7 +50,8 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_ref::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_contract_ref_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_ref_AccountId.
@@ -62,6 +59,7 @@ Module Impl_core_marker_Copy_for_contract_ref_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_ref::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_contract_ref_AccountId.
@@ -72,9 +70,9 @@ Axiom Hash :
   (Ty.path "contract_ref::Hash") =
     (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
-(* Enum Env *)
+(* Struct Env *)
 
-(* Enum FlipperRef *)
+(* Struct FlipperRef *)
 
 (* Struct FlipperError *)
 
@@ -98,7 +96,8 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "contract_ref::FlipperError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError.
 
 Module Impl_contract_ref_FlipperRef.
@@ -220,8 +219,8 @@ Module Impl_contract_ref_FlipperRef.
         let* α2 := M.var "UnOp::not" in
         let* α3 := M.var "contract_ref::FlipperRef::Get_value" in
         let* α4 := M.read self in
-        let* α5 := M.read (α3 (deref α4)) in
-        assign (α0 (deref α1)) (α2 α5) in
+        let* α5 := M.read (α3 α4) in
+        assign (α0 α1) (α2 α5) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -240,14 +239,14 @@ Module Impl_contract_ref_FlipperRef.
       let* self := M.alloc self in
       let* α0 := M.var "contract_ref::FlipperRef::Get_value" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_contract_ref_FlipperRef.
 
-(* Enum ContractRef *)
+(* Struct ContractRef *)
 
 Module Impl_contract_ref_ContractRef.
   Definition Self : Ty.t := Ty.path "contract_ref::ContractRef".
@@ -357,9 +356,7 @@ Module Impl_contract_ref_ContractRef.
         let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
         let* α1 := M.read self in
         let* α2 :=
-          M.call
-            (Ty.path "contract_ref::FlipperRef")::["flip"]
-            [ borrow_mut (α0 (deref α1)) ] in
+          M.call (Ty.path "contract_ref::FlipperRef")::["flip"] [ α0 α1 ] in
         M.alloc α2 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -379,9 +376,7 @@ Module Impl_contract_ref_ContractRef.
       let* self := M.alloc self in
       let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
       let* α1 := M.read self in
-      M.call
-        (Ty.path "contract_ref::FlipperRef")::["get"]
-        [ borrow (α0 (deref α1)) ]
+      M.call (Ty.path "contract_ref::FlipperRef")::["get"] [ α0 α1 ]
     | _, _ => M.impossible
     end.
   

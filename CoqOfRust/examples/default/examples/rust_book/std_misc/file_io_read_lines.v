@@ -124,7 +124,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               [ Ty.path "std::fs::File" ]
                           ]
                     ] in
-                let* α1 := M.call α0 [ borrow_mut iter ] in
+                let* α1 := M.call α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -170,14 +170,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.call
                                 (Ty.path
                                     "core::fmt::rt::Argument")::["new_display"]
-                                [ borrow α6 ] in
+                                [ α6 ] in
                             let* α8 := M.alloc [ α7 ] in
                             let* α9 :=
                               M.call
                                 (Ty.path "core::fmt::Arguments")::["new_v1"]
                                 [
-                                  pointer_coercion "Unsize" (borrow α3);
-                                  pointer_coercion "Unsize" (borrow α8)
+                                  pointer_coercion "Unsize" α3;
+                                  pointer_coercion "Unsize" α8
                                 ] in
                             let* α10 := M.call α0 [ α9 ] in
                             M.alloc α10 in

@@ -23,10 +23,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α2);
-              pointer_coercion "Unsize" (borrow α4)
-            ] in
+            [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4 ] in
         let* α6 := M.call α0 [ α5 ] in
         M.alloc α6 in
       M.alloc tt in
@@ -46,17 +43,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.call α4 [ α6; (Integer.of_Z 2) : Ty.path "i32" ] in
         let* α8 := M.alloc α7 in
         let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α8 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α8 ] in
         let* α10 := M.alloc [ α9 ] in
         let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α10)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
       M.alloc tt in
@@ -78,17 +70,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 := M.call α4 [ (Integer.of_Z 5) : Ty.path "i32"; α8 ] in
         let* α10 := M.alloc α9 in
         let* α11 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α10 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α10 ] in
         let* α12 := M.alloc [ α11 ] in
         let* α13 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α12)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α12 ] in
         let* α14 := M.call α0 [ α13 ] in
         M.alloc α14 in
       M.alloc tt in

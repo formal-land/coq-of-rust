@@ -26,7 +26,8 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Debug"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
@@ -37,7 +38,8 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Display"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
@@ -45,6 +47,7 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     M.IsTraitInstance
       "core::error::Error"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
+      []
       []
       [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.

@@ -34,7 +34,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (deref α0)
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -43,7 +43,8 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "i32")
       []
-      [ ("required", InstanceField.Method required []) ].
+      [ ("required", InstanceField.Method required) ]
+      [].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
@@ -57,7 +58,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      let* α1 := M.read (deref α0) in
+      let* α1 := M.read α0 in
       M.pure (rust_cast α1)
     | _, _ => M.impossible
     end.
@@ -81,9 +82,10 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       (* Self *) (Ty.path "u32")
       []
       [
-        ("required", InstanceField.Method required []);
-        ("provided", InstanceField.Method provided [])
-      ].
+        ("required", InstanceField.Method required);
+        ("provided", InstanceField.Method provided)
+      ]
+      [].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (*
@@ -105,10 +107,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "provided_method::ProvidedAndRequired"
           "provided"
           [ (* Self *) Ty.path "i32" ] in
-      let* α1 := M.call α0 [ borrow x ] in
+      let* α1 := M.call α0 [ x ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc ((Integer.of_Z 47) : Ty.path "i32") in
-      let* α4 := M.alloc (borrow α2, borrow α3) in
+      let* α4 := M.alloc (α2, α3) in
       match_operator
         α4
         [
@@ -123,9 +125,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.var "UnOp::not" in
               let* α1 := M.var "BinOp::Pure::eq" in
               let* α2 := M.read left_val in
-              let* α3 := M.read (deref α2) in
+              let* α3 := M.read α2 in
               let* α4 := M.read right_val in
-              let* α5 := M.read (deref α4) in
+              let* α5 := M.read α4 in
               let* α6 := M.alloc (α0 (α1 α3 α5)) in
               let* α7 := M.read (use α6) in
               if α7 then
@@ -151,10 +153,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "provided_method::ProvidedAndRequired"
           "provided"
           [ (* Self *) Ty.path "u32" ] in
-      let* α1 := M.call α0 [ borrow y ] in
+      let* α1 := M.call α0 [ y ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
-      let* α4 := M.alloc (borrow α2, borrow α3) in
+      let* α4 := M.alloc (α2, α3) in
       match_operator
         α4
         [
@@ -169,9 +171,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.var "UnOp::not" in
               let* α1 := M.var "BinOp::Pure::eq" in
               let* α2 := M.read left_val in
-              let* α3 := M.read (deref α2) in
+              let* α3 := M.read α2 in
               let* α4 := M.read right_val in
-              let* α5 := M.read (deref α4) in
+              let* α5 := M.read α4 in
               let* α6 := M.alloc (α0 (α1 α3 α5)) in
               let* α7 := M.read (use α6) in
               if α7 then

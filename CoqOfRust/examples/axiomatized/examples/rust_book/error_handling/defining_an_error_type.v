@@ -11,7 +11,8 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       "core::clone::Clone"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
@@ -40,7 +42,8 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       "core::fmt::Display"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

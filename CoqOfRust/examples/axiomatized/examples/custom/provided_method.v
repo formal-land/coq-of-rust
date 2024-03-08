@@ -17,7 +17,8 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "i32")
       []
-      [ ("required", InstanceField.Method required []) ].
+      [ ("required", InstanceField.Method required) ]
+      [].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
@@ -31,9 +32,10 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       (* Self *) (Ty.path "u32")
       []
       [
-        ("required", InstanceField.Method required []);
-        ("provided", InstanceField.Method provided [])
-      ].
+        ("required", InstanceField.Method required);
+        ("provided", InstanceField.Method provided)
+      ]
+      [].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_contract_transfer_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
@@ -39,12 +40,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "contract_transfer::AccountId"
-          ] in
+          [ fun γ => (M.read self) : Ty.path "contract_transfer::AccountId" ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -54,7 +50,8 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_contract_transfer_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
@@ -63,12 +60,13 @@ Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_contract_transfer_AccountId.
 
 Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_contract_transfer_Env.
   Definition Self : Ty.t := Ty.path "contract_transfer::Env".
@@ -84,7 +82,7 @@ Module Impl_contract_transfer_Env.
       let* self := M.alloc self in
       let* α0 := M.var "contract_transfer::Env::Get_caller" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -233,15 +231,12 @@ Module Impl_contract_transfer_GiveMe.
           let* α4 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow value ] in
+              [ value ] in
           let* α5 := M.alloc [ α4 ] in
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α5)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
@@ -254,27 +249,20 @@ Module Impl_contract_transfer_GiveMe.
           let* α3 := M.alloc [ α1; α2 ] in
           let* α4 := M.read self in
           let* α5 :=
-            M.call
-              (Ty.path "contract_transfer::GiveMe")::["env"]
-              [ borrow (deref α4) ] in
+            M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α4 ] in
           let* α6 := M.alloc α5 in
           let* α7 :=
-            M.call
-              (Ty.path "contract_transfer::Env")::["balance"]
-              [ borrow α6 ] in
+            M.call (Ty.path "contract_transfer::Env")::["balance"] [ α6 ] in
           let* α8 := M.alloc α7 in
           let* α9 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α8 ] in
+              [ α8 ] in
           let* α10 := M.alloc [ α9 ] in
           let* α11 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α10)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
           let* α12 := M.call α0 [ α11 ] in
           M.alloc α12 in
         M.alloc tt in
@@ -284,14 +272,10 @@ Module Impl_contract_transfer_GiveMe.
         let* α2 := M.read value in
         let* α3 := M.read self in
         let* α4 :=
-          M.call
-            (Ty.path "contract_transfer::GiveMe")::["env"]
-            [ borrow (deref α3) ] in
+          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          M.call
-            (Ty.path "contract_transfer::Env")::["balance"]
-            [ borrow α5 ] in
+          M.call (Ty.path "contract_transfer::Env")::["balance"] [ α5 ] in
         let* α7 := M.alloc (α0 (α1 α2 α6)) in
         let* α8 := M.read (use α7) in
         if α8 then
@@ -303,31 +287,24 @@ Module Impl_contract_transfer_GiveMe.
         else
           M.alloc tt in
       let* α0 := M.read self in
-      let* α1 :=
-        M.call
-          (Ty.path "contract_transfer::GiveMe")::["env"]
-          [ borrow (deref α0) ] in
+      let* α1 := M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α0 ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.read self in
-      let* α4 :=
-        M.call
-          (Ty.path "contract_transfer::GiveMe")::["env"]
-          [ borrow (deref α3) ] in
+      let* α4 := M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α3 ] in
       let* α5 := M.alloc α4 in
-      let* α6 :=
-        M.call (Ty.path "contract_transfer::Env")::["caller"] [ borrow α5 ] in
+      let* α6 := M.call (Ty.path "contract_transfer::Env")::["caller"] [ α5 ] in
       let* α7 := M.read value in
       let* α8 :=
         M.call
           (Ty.path "contract_transfer::Env")::["transfer"]
-          [ borrow_mut α2; α6; α7 ] in
+          [ α2; α6; α7 ] in
       let* α9 := M.alloc α8 in
       let* α10 :=
         M.call
           (Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.tuple [] ])::["is_err"]
-          [ borrow α9 ] in
+          [ α9 ] in
       let* α11 := M.alloc α10 in
       let* α12 := M.read (use α11) in
       let* α0 :=
@@ -373,20 +350,17 @@ Module Impl_contract_transfer_GiveMe.
           let* α7 :=
             M.call
               (Ty.path "contract_transfer::Env")::["transferred_value"]
-              [ borrow α6 ] in
+              [ α6 ] in
           let* α8 := M.alloc α7 in
           let* α9 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α8 ] in
+              [ α8 ] in
           let* α10 := M.alloc [ α9 ] in
           let* α11 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α10)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
           let* α12 := M.call α0 [ α11 ] in
           M.alloc α12 in
         M.alloc tt in
@@ -400,7 +374,7 @@ Module Impl_contract_transfer_GiveMe.
         let* α5 :=
           M.call
             (Ty.path "contract_transfer::Env")::["transferred_value"]
-            [ borrow α4 ] in
+            [ α4 ] in
         let* α6 := M.alloc (α0 (α1 α5 ((Integer.of_Z 10) : Ty.path "u128"))) in
         let* α7 := M.read (use α6) in
         if α7 then

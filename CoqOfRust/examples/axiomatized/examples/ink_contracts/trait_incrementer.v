@@ -11,7 +11,7 @@ Module Reset.
   
 End Reset.
 
-(* Enum Incrementer *)
+(* Struct Incrementer *)
 
 Module Impl_trait_incrementer_Incrementer.
   Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
@@ -36,10 +36,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       "trait_incrementer::Increment"
       (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
-      [
-        ("inc", InstanceField.Method inc []);
-        ("get", InstanceField.Method get [])
-      ].
+      [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ]
+      [].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
@@ -50,5 +48,6 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       "trait_incrementer::Reset"
       (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
-      [ ("reset", InstanceField.Method reset []) ].
+      [ ("reset", InstanceField.Method reset) ]
+      [].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

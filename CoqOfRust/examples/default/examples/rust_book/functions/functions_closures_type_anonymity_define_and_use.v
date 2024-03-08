@@ -19,7 +19,7 @@ Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::Fn"
           "call"
           [ (* Self *) F; (* Args *) Ty.tuple [] ] in
-      let* α1 := M.call α0 [ borrow f; tt ] in
+      let* α1 := M.call α0 [ f; tt ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0
@@ -59,22 +59,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ borrow x ] in
+                      [ x ] in
                   let* α5 := M.alloc [ α4 ] in
                   let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α3);
-                        pointer_coercion "Unsize" (borrow α5)
+                        pointer_coercion "Unsize" α3;
+                        pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
                 let* α0 := M.alloc tt in
                 M.read α0) :
-                Ty.tuple []
+                _
             ]) :
-          Ty.tuple []) in
+          _) in
     let* _ :=
       let* α0 :=
         M.var "functions_closures_type_anonymity_define_and_use::apply" in

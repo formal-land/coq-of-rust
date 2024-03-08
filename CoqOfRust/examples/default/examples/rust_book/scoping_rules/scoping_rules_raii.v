@@ -107,7 +107,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::ops::range::Range")
                           [ Ty.path "u32" ]
                     ] in
-                let* α1 := M.call α0 [ borrow_mut iter ] in
+                let* α1 := M.call α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2

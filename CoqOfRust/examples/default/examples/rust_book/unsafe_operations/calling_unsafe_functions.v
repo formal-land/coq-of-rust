@@ -44,7 +44,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])::["as_ptr"]
-          [ borrow some_vector ] in
+          [ some_vector ] in
       M.alloc α0 in
     let* length :=
       let* α0 :=
@@ -52,7 +52,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])::["len"]
-          [ borrow some_vector ] in
+          [ some_vector ] in
       M.alloc α0 in
     let* my_slice :=
       let* α0 := M.var "core::slice::raw::from_raw_parts" in
@@ -66,9 +66,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::vec::Vec")
               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])::["as_slice"]
-          [ borrow some_vector ] in
+          [ some_vector ] in
       let* α1 := M.alloc α0 in
-      let* α2 := M.alloc (borrow α1, borrow my_slice) in
+      let* α2 := M.alloc (α1, my_slice) in
       match_operator
         α2
         [

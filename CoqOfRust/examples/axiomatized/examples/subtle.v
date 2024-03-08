@@ -9,6 +9,7 @@ Module Impl_core_marker_Copy_for_subtle_Choice.
       "core::marker::Copy"
       (* Self *) (Ty.path "subtle::Choice")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_subtle_Choice.
 
@@ -20,7 +21,8 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       "core::clone::Clone"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
@@ -31,7 +33,8 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       "core::fmt::Debug"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice.
@@ -51,7 +54,8 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
       "core::convert::From"
       (* Self *) (Ty.path "bool")
       [ (* T *) Ty.path "subtle::Choice" ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -64,7 +68,8 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       "core::ops::bit::BitAnd"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("bitand", InstanceField.Method bitand []) ].
+      [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ]
+      [].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -75,7 +80,8 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       "core::ops::bit::BitAndAssign"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("bitand_assign", InstanceField.Method bitand_assign []) ].
+      [ ("bitand_assign", InstanceField.Method bitand_assign) ]
+      [].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -88,7 +94,8 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       "core::ops::bit::BitOr"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("bitor", InstanceField.Method bitor []) ].
+      [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ]
+      [].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -99,7 +106,8 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       "core::ops::bit::BitOrAssign"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("bitor_assign", InstanceField.Method bitor_assign []) ].
+      [ ("bitor_assign", InstanceField.Method bitor_assign) ]
+      [].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -112,7 +120,8 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       "core::ops::bit::BitXor"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor []) ].
+      [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ]
+      [].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -123,7 +132,8 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       "core::ops::bit::BitXorAssign"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("bitxor_assign", InstanceField.Method bitxor_assign []) ].
+      [ ("bitxor_assign", InstanceField.Method bitxor_assign) ]
+      [].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
@@ -136,7 +146,8 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       "core::ops::bit::Not"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("not", InstanceField.Method not []) ].
+      [ ("Output", TODO); ("not", InstanceField.Method not) ]
+      [].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 Parameter black_box : (list Ty.t) -> (list Value.t) -> M.
@@ -149,7 +160,8 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
       "core::convert::From"
       (* Self *) (Ty.path "subtle::Choice")
       [ (* T *) Ty.path "u8" ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
@@ -169,7 +181,8 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "slice") [ T ])
       []
-      [ ("ct_eq", InstanceField.Method ct_eq [ T ]) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [ T ].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -180,7 +193,8 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
@@ -191,7 +205,8 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u8")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
@@ -202,7 +217,8 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i8")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
@@ -213,7 +229,8 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u16")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
@@ -224,7 +241,8 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i16")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
@@ -235,7 +253,8 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u32")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
@@ -246,7 +265,8 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i32")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
@@ -257,7 +277,8 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u64")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
@@ -268,7 +289,8 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i64")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
@@ -279,7 +301,8 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "usize")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
@@ -290,7 +313,8 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "isize")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
@@ -318,10 +342,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       (* Self *) (Ty.path "u8")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
@@ -337,10 +362,11 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       (* Self *) (Ty.path "i8")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
@@ -356,10 +382,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       (* Self *) (Ty.path "u16")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
@@ -375,10 +402,11 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       (* Self *) (Ty.path "i16")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
@@ -394,10 +422,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       (* Self *) (Ty.path "u32")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
@@ -413,10 +442,11 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       (* Self *) (Ty.path "i32")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
@@ -432,10 +462,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       (* Self *) (Ty.path "u64")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
@@ -451,10 +482,11 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       (* Self *) (Ty.path "i64")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
@@ -465,7 +497,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("conditional_select", InstanceField.Method conditional_select []) ].
+      [ ("conditional_select", InstanceField.Method conditional_select) ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 (* Trait *)
@@ -482,10 +515,11 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
       "subtle::ConditionallyNegatable"
       (* Self *) T
       []
-      [ ("conditional_negate", InstanceField.Method conditional_negate [ T ]) ].
+      [ ("conditional_negate", InstanceField.Method conditional_negate) ]
+      [ T ].
 End Impl_subtle_ConditionallyNegatable_for_T.
 
-(* Enum CtOption *)
+(* Struct CtOption *)
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
@@ -496,7 +530,8 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       "core::clone::Clone"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("clone", InstanceField.Method clone [ T ]) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [ T ].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -506,7 +541,8 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
       "core::marker::Copy"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [].
+      []
+      [ T ].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -518,7 +554,8 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       "core::fmt::Debug"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("fmt", InstanceField.Method fmt [ T ]) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [ T ].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
@@ -530,7 +567,8 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       "core::convert::From"
       (* Self *) (Ty.apply (Ty.path "core::option::Option") [ T ])
       [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
-      [ ("from", InstanceField.Method from [ T ]) ].
+      [ ("from", InstanceField.Method from) ]
+      [ T ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -607,7 +645,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("conditional_select", InstanceField.Method conditional_select [ T ]) ].
+      [ ("conditional_select", InstanceField.Method conditional_select) ]
+      [ T ].
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -619,7 +658,8 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("ct_eq", InstanceField.Method ct_eq [ T ]) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [ T ].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 (* Trait *)
@@ -635,7 +675,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u8")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
@@ -646,7 +687,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u16")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
@@ -657,7 +699,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u32")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
@@ -668,7 +711,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u64")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
@@ -685,6 +729,7 @@ Module Impl_subtle_ConstantTimeLess_for_u8.
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u8")
       []
+      []
       [].
 End Impl_subtle_ConstantTimeLess_for_u8.
 
@@ -693,6 +738,7 @@ Module Impl_subtle_ConstantTimeLess_for_u16.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u16")
+      []
       []
       [].
 End Impl_subtle_ConstantTimeLess_for_u16.
@@ -703,6 +749,7 @@ Module Impl_subtle_ConstantTimeLess_for_u32.
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u32")
       []
+      []
       [].
 End Impl_subtle_ConstantTimeLess_for_u32.
 
@@ -711,6 +758,7 @@ Module Impl_subtle_ConstantTimeLess_for_u64.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u64")
+      []
       []
       [].
 End Impl_subtle_ConstantTimeLess_for_u64.

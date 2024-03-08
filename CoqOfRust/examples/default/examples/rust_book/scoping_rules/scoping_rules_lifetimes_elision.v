@@ -18,17 +18,12 @@ Definition elided_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow x ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ x ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -54,17 +49,12 @@ Definition annotated_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow x ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ x ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -117,11 +107,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_elision::elided_input" in
-      let* α1 := M.call α0 [ borrow x ] in
+      let* α1 := M.call α0 [ x ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_elision::annotated_input" in
-      let* α1 := M.call α0 [ borrow x ] in
+      let* α1 := M.call α0 [ x ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -131,20 +121,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 := M.var "scoping_rules_lifetimes_elision::elided_pass" in
-        let* α5 := M.call α4 [ borrow x ] in
+        let* α5 := M.call α4 [ x ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -156,20 +141,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 := M.var "scoping_rules_lifetimes_elision::annotated_pass" in
-        let* α5 := M.call α4 [ borrow x ] in
+        let* α5 := M.call α4 [ x ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

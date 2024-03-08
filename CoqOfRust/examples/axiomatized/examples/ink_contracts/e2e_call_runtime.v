@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
@@ -31,12 +33,13 @@ Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_e2e_call_runtime_Env.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Env".
@@ -57,7 +60,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
       "core::default::Default"
       (* Self *) (Ty.path "e2e_call_runtime::Contract")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_e2e_call_runtime_Contract.
 
 Module Impl_e2e_call_runtime_Contract.

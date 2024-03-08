@@ -16,10 +16,10 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       let* α1 := M.read (mk_str "Constructor") in
       let* α2 := M.var "constructor_as_function::Constructor::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
+      let* α4 := M.alloc (α2 α3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -28,7 +28,8 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructor_as_function::Constructor")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 (*
@@ -127,17 +128,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow v ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ v ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

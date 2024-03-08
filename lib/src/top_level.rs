@@ -1685,6 +1685,7 @@ impl TopLevelItem {
                     .iter()
                     .filter(|&current_name| current_name == name)
                     .count();
+
                 coq::TopLevel::new(
                     &[
                         optional_insert_vec(
@@ -1732,7 +1733,7 @@ impl TopLevelItem {
                 ty_params,
                 variants,
             } => text(format!("(* Enum {name} *)")),
-            TopLevelItem::TypeStructStruct(tss) => text(format!("(* Enum {} *)", tss.name)),
+            TopLevelItem::TypeStructStruct(tss) => text(format!("(* Struct {} *)", tss.name)),
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
@@ -1917,17 +1918,7 @@ impl TopLevelItem {
                                     }
                                     ImplItemKind::Definition { .. } => {
                                         coq::Expression::just_name("InstanceField.Method")
-                                            .apply_many(&[
-                                                coq::Expression::just_name(item.name.as_str()),
-                                                coq::Expression::List {
-                                                    exprs: generic_tys
-                                                        .iter()
-                                                        .map(|generic_ty| {
-                                                            coq::Expression::just_name(generic_ty)
-                                                        })
-                                                        .collect(),
-                                                },
-                                            ])
+                                            .apply(&coq::Expression::just_name(item.name.as_str()))
                                     }
                                     ImplItemKind::Type { .. } => coq::Expression::just_name("TODO"),
                                 },
@@ -2007,6 +1998,16 @@ impl TopLevelItem {
                                                             .collect(),
                                                     },
                                                     coq::Expression::List { exprs: items_coq },
+                                                    coq::Expression::List {
+                                                        exprs: generic_tys
+                                                            .iter()
+                                                            .map(|generic_ty| {
+                                                                coq::Expression::just_name(
+                                                                    generic_ty,
+                                                                )
+                                                            })
+                                                            .collect(),
+                                                    },
                                                 ]),
                                         ),
                                     },

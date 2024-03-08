@@ -13,7 +13,8 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       "core::fmt::Debug"
       (* Self *) (Ty.path "tuples::Matrix")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

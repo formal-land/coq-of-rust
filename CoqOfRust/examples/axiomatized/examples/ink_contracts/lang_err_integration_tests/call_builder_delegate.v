@@ -7,7 +7,7 @@ Axiom Hash :
 
 (* Enum LangError *)
 
-(* Enum CallBuilderDelegateTest *)
+(* Struct CallBuilderDelegateTest *)
 
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
       "core::default::Default"
       (* Self *) (Ty.path "call_builder_delegate::CallBuilderDelegateTest")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.

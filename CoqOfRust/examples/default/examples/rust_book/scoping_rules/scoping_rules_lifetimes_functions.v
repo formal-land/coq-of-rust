@@ -18,17 +18,12 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow x ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ x ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -47,9 +42,7 @@ Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ x ] =>
     let* x := M.alloc x in
     let* _ :=
-      let* β :=
-        let* α0 := M.read x in
-        M.pure (deref α0) in
+      let* β := M.read x in
       let* α0 := M.var "assign" in
       let* α1 := M.var "BinOp::Panic::add" in
       let* α2 := M.read β in
@@ -79,21 +72,14 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α4 := M.alloc [ α1; α2; α3 ] in
         let* α5 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow x ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ x ] in
         let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow y ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ y ] in
         let* α7 := M.alloc [ α5; α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α4);
-              pointer_coercion "Unsize" (borrow α7)
-            ] in
+            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α7 ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -140,15 +126,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* y := M.alloc ((Integer.of_Z 9) : Ty.path "i32") in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::print_one" in
-      let* α1 := M.call α0 [ borrow x ] in
+      let* α1 := M.call α0 [ x ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::print_multi" in
-      let* α1 := M.call α0 [ borrow x; borrow y ] in
+      let* α1 := M.call α0 [ x; y ] in
       M.alloc α1 in
     let* z :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::pass_x" in
-      let* α1 := M.call α0 [ borrow x; borrow y ] in
+      let* α1 := M.call α0 [ x; y ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::print_one" in
@@ -158,11 +144,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::add_one" in
-      let* α1 := M.call α0 [ borrow_mut t ] in
+      let* α1 := M.call α0 [ t ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::print_one" in
-      let* α1 := M.call α0 [ borrow t ] in
+      let* α1 := M.call α0 [ t ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

@@ -11,7 +11,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Food")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -24,7 +25,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Day")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Parameter have_ingredients : (list Ty.t) -> (list Value.t) -> M.

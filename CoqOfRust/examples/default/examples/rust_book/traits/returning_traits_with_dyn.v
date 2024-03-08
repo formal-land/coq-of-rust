@@ -29,7 +29,8 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
       []
-      [ ("noise", InstanceField.Method noise []) ].
+      [ ("noise", InstanceField.Method noise) ]
+      [].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
@@ -51,7 +52,8 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
       []
-      [ ("noise", InstanceField.Method noise []) ].
+      [ ("noise", InstanceField.Method noise) ]
+      [].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 (*
@@ -137,20 +139,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ]
             ] in
         let* α5 := M.read animal in
-        let* α6 := M.call α4 [ borrow (deref α5) ] in
+        let* α6 := M.call α4 [ α5 ] in
         let* α7 := M.alloc α6 in
         let* α8 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α7 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α7 ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α9)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in

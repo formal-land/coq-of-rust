@@ -53,9 +53,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α8 := M.call α6 [ α7 ] in
       let* α9 := M.alloc α8 in
       let* α10 :=
-        M.call
-          (Ty.path "core::fmt::rt::Argument")::["new_display"]
-          [ borrow α9 ] in
+        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α9 ] in
       let* α11 :=
         M.get_method
           "supertraits::Student"
@@ -66,9 +64,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α13 := M.call α11 [ α12 ] in
       let* α14 := M.alloc α13 in
       let* α15 :=
-        M.call
-          (Ty.path "core::fmt::rt::Argument")::["new_display"]
-          [ borrow α14 ] in
+        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α14 ] in
       let* α16 :=
         M.get_method
           "supertraits::Programmer"
@@ -79,9 +75,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α18 := M.call α16 [ α17 ] in
       let* α19 := M.alloc α18 in
       let* α20 :=
-        M.call
-          (Ty.path "core::fmt::rt::Argument")::["new_display"]
-          [ borrow α19 ] in
+        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α19 ] in
       let* α21 :=
         M.get_method
           "supertraits::CompSciStudent"
@@ -92,17 +86,12 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α23 := M.call α21 [ α22 ] in
       let* α24 := M.alloc α23 in
       let* α25 :=
-        M.call
-          (Ty.path "core::fmt::rt::Argument")::["new_display"]
-          [ borrow α24 ] in
+        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α24 ] in
       let* α26 := M.alloc [ α10; α15; α20; α25 ] in
       let* α27 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_v1"]
-          [
-            pointer_coercion "Unsize" (borrow α5);
-            pointer_coercion "Unsize" (borrow α26)
-          ] in
+          [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α26 ] in
       let* α28 := M.call α0 [ α27 ] in
       M.alloc α28 in
     M.read res

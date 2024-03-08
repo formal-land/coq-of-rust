@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-(* Enum Person *)
+(* Struct Person *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -16,5 +16,6 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
         (Ty.path
           "scoping_rules_ownership_and_rules_partial_moves::main::Person")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

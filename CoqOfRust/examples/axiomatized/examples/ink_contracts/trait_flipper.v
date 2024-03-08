@@ -6,7 +6,7 @@ Module Flip.
   
 End Flip.
 
-(* Enum Flipper *)
+(* Struct Flipper *)
 
 Module Impl_trait_flipper_Flipper.
   Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".
@@ -26,8 +26,6 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       "trait_flipper::Flip"
       (* Self *) (Ty.path "trait_flipper::Flipper")
       []
-      [
-        ("flip", InstanceField.Method flip []);
-        ("get", InstanceField.Method get [])
-      ].
+      [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ]
+      [].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

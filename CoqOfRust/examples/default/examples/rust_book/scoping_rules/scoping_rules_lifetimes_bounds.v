@@ -16,10 +16,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       let* α1 := M.read (mk_str "Ref") in
       let* α2 := M.var "scoping_rules_lifetimes_bounds::Ref::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
+      let* α4 := M.alloc (α2 α3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -30,7 +30,8 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       (* Self *)
         (Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ])
       []
-      [ ("fmt", InstanceField.Method fmt [ T ]) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [ T ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 (*
@@ -53,17 +54,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow t ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ t ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -92,17 +88,12 @@ Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow t ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ t ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -126,13 +117,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* x := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
     let* ref_x :=
-      M.alloc
-        (Value.StructTuple
-          "scoping_rules_lifetimes_bounds::Ref"
-          [ borrow x ]) in
+      M.alloc (Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ]) in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_bounds::print_ref" in
-      let* α1 := M.call α0 [ borrow ref_x ] in
+      let* α1 := M.call α0 [ ref_x ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_bounds::print" in

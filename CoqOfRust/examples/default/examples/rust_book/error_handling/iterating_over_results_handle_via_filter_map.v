@@ -114,9 +114,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "core::num::error::ParseIntError"
                           ])::["ok"]
                       [ α1 ]) :
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                    _
                 ]) :
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+              _
           ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in
@@ -130,15 +130,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow numbers ] in
+            [ numbers ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

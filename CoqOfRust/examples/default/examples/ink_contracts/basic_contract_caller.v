@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_basic_contract_caller_AccountId.
 
 Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
@@ -39,11 +40,7 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "basic_contract_caller::AccountId"
+          [ fun γ => (M.read self) : Ty.path "basic_contract_caller::AccountId"
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -54,7 +51,8 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
 
 Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
@@ -62,6 +60,7 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
@@ -72,7 +71,7 @@ Axiom Hash :
 
 (* Enum Error *)
 
-(* Enum OtherContract *)
+(* Struct OtherContract *)
 
 Module Impl_basic_contract_caller_OtherContract.
   Definition Self : Ty.t := Ty.path "basic_contract_caller::OtherContract".
@@ -111,8 +110,8 @@ Module Impl_basic_contract_caller_OtherContract.
         let* α2 := M.var "UnOp::not" in
         let* α3 := M.var "basic_contract_caller::OtherContract::Get_value" in
         let* α4 := M.read self in
-        let* α5 := M.read (α3 (deref α4)) in
-        assign (α0 (deref α1)) (α2 α5) in
+        let* α5 := M.read (α3 α4) in
+        assign (α0 α1) (α2 α5) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -131,14 +130,14 @@ Module Impl_basic_contract_caller_OtherContract.
       let* self := M.alloc self in
       let* α0 := M.var "basic_contract_caller::OtherContract::Get_value" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_basic_contract_caller_OtherContract.
 
-(* Enum BasicContractCaller *)
+(* Struct BasicContractCaller *)
 
 Module Impl_basic_contract_caller_BasicContractCaller.
   Definition Self : Ty.t :=
@@ -196,7 +195,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
         let* α2 :=
           M.call
             (Ty.path "basic_contract_caller::OtherContract")::["flip"]
-            [ borrow_mut (α0 (deref α1)) ] in
+            [ α0 α1 ] in
         M.alloc α2 in
       let* α0 :=
         M.var
@@ -205,7 +204,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       let* α2 :=
         M.call
           (Ty.path "basic_contract_caller::OtherContract")::["get"]
-          [ borrow (α0 (deref α1)) ] in
+          [ α0 α1 ] in
       let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible

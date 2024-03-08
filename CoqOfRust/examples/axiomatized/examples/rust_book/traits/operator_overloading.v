@@ -15,7 +15,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::FooBar")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 (* Struct BarFoo *)
@@ -28,7 +29,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::BarFoo")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
@@ -41,7 +43,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
       "core::ops::arith::Add"
       (* Self *) (Ty.path "operator_overloading::Foo")
       [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
-      [ ("Output", TODO); ("add", InstanceField.Method add []) ].
+      [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      [].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
@@ -54,7 +57,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       "core::ops::arith::Add"
       (* Self *) (Ty.path "operator_overloading::Bar")
       [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
-      [ ("Output", TODO); ("add", InstanceField.Method add []) ].
+      [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      [].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

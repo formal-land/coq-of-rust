@@ -11,10 +11,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_structs::Borrowed")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
-(* Enum NamedBorrowed *)
+(* Struct NamedBorrowed *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -24,7 +25,8 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 (* Enum Either *)
@@ -37,7 +39,8 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_structs::Either")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

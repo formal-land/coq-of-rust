@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_call_builder_AccountId.
 
 Module Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "call_builder::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
 
 Module Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "call_builder::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -62,7 +65,8 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
       "core::default::Default"
       (* Self *) (Ty.path "call_builder::CallBuilderTest")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
 
 Module Impl_call_builder_CallBuilderTest.

@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "call_runtime::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_call_runtime_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "call_runtime::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_call_runtime_AccountId.
@@ -31,12 +33,13 @@ Module Impl_core_marker_Copy_for_call_runtime_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "call_runtime::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 
-(* Enum Env *)
+(* Struct Env *)
 
 (* Enum MultiAddress *)
 
@@ -51,7 +54,8 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
           (Ty.path "call_runtime::MultiAddress")
           [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ])
       [ (* T *) Ty.path "call_runtime::AccountId" ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
 (* Enum BalancesCall *)
@@ -68,7 +72,8 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
       "core::default::Default"
       (* Self *) (Ty.path "call_runtime::RuntimeCaller")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
 (* Enum RuntimeError *)
@@ -81,7 +86,8 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
@@ -89,6 +95,7 @@ Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
+      []
       []
       [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
@@ -101,7 +108,8 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
       []
-      [ ("eq", InstanceField.Method eq []) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
@@ -109,6 +117,7 @@ Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
+      []
       []
       [].
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
@@ -123,8 +132,9 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [])
-      ].
+          InstanceField.Method assert_receiver_is_total_eq)
+      ]
+      [].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
 (* Enum EnvError *)
@@ -137,7 +147,8 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
       "core::convert::From"
       (* Self *) (Ty.path "call_runtime::RuntimeError")
       [ (* T *) Ty.path "call_runtime::EnvError" ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 
 Module Impl_call_runtime_Env.

@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_custom_environment_AccountId.
 
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
@@ -39,11 +40,7 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "custom_environment::AccountId"
+          [ fun γ => (M.read self) : Ty.path "custom_environment::AccountId"
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -54,7 +51,8 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "custom_environment::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
 
 Module Impl_core_marker_Copy_for_custom_environment_AccountId.
@@ -63,12 +61,13 @@ Module Impl_core_marker_Copy_for_custom_environment_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "custom_environment::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 
-(* Enum Env *)
+(* Struct Env *)
 
 (* Struct Topics *)
 
@@ -87,10 +86,11 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::Topics")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_custom_environment_Topics.
 
-(* Enum EventWithTopics *)
+(* Struct EventWithTopics *)
 
 Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   (*
@@ -147,7 +147,8 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::EventWithTopics")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)
@@ -166,7 +167,7 @@ Module Impl_custom_environment_Env.
       let* self := M.alloc self in
       let* α0 := M.var "custom_environment::Env::Get_caller" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -262,9 +263,7 @@ Module Impl_custom_environment_Topics.
       let* _ :=
         let* α0 := M.read self in
         let* α1 :=
-          M.call
-            (Ty.path "custom_environment::Topics")::["env"]
-            [ borrow (deref α0) ] in
+          M.call (Ty.path "custom_environment::Topics")::["env"] [ α0 ] in
         let* α2 := M.alloc α1 in
         let* α3 :=
           M.get_method
@@ -276,7 +275,7 @@ Module Impl_custom_environment_Topics.
           M.call
             (Ty.path "custom_environment::Env")::["emit_event"]
             [
-              borrow α2;
+              α2;
               Value.StructTuple
                 "custom_environment::Event::EventWithTopics"
                 [ α4 ]

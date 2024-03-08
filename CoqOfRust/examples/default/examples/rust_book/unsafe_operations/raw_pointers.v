@@ -16,12 +16,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* raw_p :=
       let* α0 := M.alloc ((Integer.of_Z 10) : Ty.path "u32") in
-      M.alloc (addr_of α0) in
+      M.alloc α0 in
     let* _ :=
       let* α0 := M.var "UnOp::not" in
       let* α1 := M.var "BinOp::Pure::eq" in
       let* α2 := M.read raw_p in
-      let* α3 := M.read (deref α2) in
+      let* α3 := M.read α2 in
       let* α4 := M.alloc (α0 (α1 α3 ((Integer.of_Z 10) : Ty.path "u32"))) in
       let* α5 := M.read (use α4) in
       if α5 then

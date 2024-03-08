@@ -11,7 +11,7 @@ Module AgeWidget.
   
 End AgeWidget.
 
-(* Enum Form *)
+(* Struct Form *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
@@ -21,7 +21,8 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
       "disambiguating_overlapping_traits::UsernameWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       []
-      [ ("get", InstanceField.Method get []) ].
+      [ ("get", InstanceField.Method get) ]
+      [].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -32,7 +33,8 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       "disambiguating_overlapping_traits::AgeWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       []
-      [ ("get", InstanceField.Method get []) ].
+      [ ("get", InstanceField.Method get) ]
+      [].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

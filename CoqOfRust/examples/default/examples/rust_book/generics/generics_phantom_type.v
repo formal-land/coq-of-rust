@@ -11,7 +11,8 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTup
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
       []
-      [].
+      []
+      [ A; B ].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -33,7 +34,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       let* α3 := M.read self in
       let* α4 := M.var "generics_phantom_type::PhantomTuple::Get_0" in
       let* α5 := M.read other in
-      let* α6 := M.call α1 [ borrow (α2 (deref α3)); borrow (α4 (deref α5)) ] in
+      let* α6 := M.call α1 [ α2 α3; α4 α5 ] in
       let* α7 :=
         M.get_method
           "core::cmp::PartialEq"
@@ -46,8 +47,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       let* α9 := M.read self in
       let* α10 := M.var "generics_phantom_type::PhantomTuple::Get_1" in
       let* α11 := M.read other in
-      let* α12 :=
-        M.call α7 [ borrow (α8 (deref α9)); borrow (α10 (deref α11)) ] in
+      let* α12 := M.call α7 [ α8 α9; α10 α11 ] in
       M.pure (α0 α6 α12)
     | _, _ => M.impossible
     end.
@@ -59,10 +59,11 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
       []
-      [ ("eq", InstanceField.Method eq [ A; B ]) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [ A; B ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
-(* Enum PhantomStruct *)
+(* Struct PhantomStruct *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Axiom Implements :
@@ -72,7 +73,8 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStr
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
       []
-      [].
+      []
+      [ A; B ].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -94,7 +96,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       let* α3 := M.read self in
       let* α4 := M.var "generics_phantom_type::PhantomStruct::Get_first" in
       let* α5 := M.read other in
-      let* α6 := M.call α1 [ borrow (α2 (deref α3)); borrow (α4 (deref α5)) ] in
+      let* α6 := M.call α1 [ α2 α3; α4 α5 ] in
       let* α7 :=
         M.get_method
           "core::cmp::PartialEq"
@@ -107,8 +109,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       let* α9 := M.read self in
       let* α10 := M.var "generics_phantom_type::PhantomStruct::Get_phantom" in
       let* α11 := M.read other in
-      let* α12 :=
-        M.call α7 [ borrow (α8 (deref α9)); borrow (α10 (deref α11)) ] in
+      let* α12 := M.call α7 [ α8 α9; α10 α11 ] in
       M.pure (α0 α6 α12)
     | _, _ => M.impossible
     end.
@@ -120,7 +121,8 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
       []
-      [ ("eq", InstanceField.Method eq [ A; B ]) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [ A; B ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (*

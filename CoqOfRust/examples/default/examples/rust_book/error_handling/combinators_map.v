@@ -64,7 +64,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Food")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
@@ -82,10 +83,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       let* α1 := M.read (mk_str "Peeled") in
       let* α2 := M.var "combinators_map::Peeled::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
+      let* α4 := M.alloc (α2 α3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -94,7 +95,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Peeled")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
@@ -112,10 +114,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       let* α1 := M.read (mk_str "Chopped") in
       let* α2 := M.var "combinators_map::Chopped::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
+      let* α4 := M.alloc (α2 α3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -124,7 +126,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Chopped")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
@@ -142,10 +145,10 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       let* α1 := M.read (mk_str "Cooked") in
       let* α2 := M.var "combinators_map::Cooked::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
+      let* α4 := M.alloc (α2 α3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -154,7 +157,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Cooked")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 (*
@@ -292,9 +296,9 @@ Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.read food in
                   M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
                 end) :
-                Ty.path "combinators_map::Cooked"
+                _
             ]) :
-          Ty.path "combinators_map::Cooked"
+          _
       ]
   | _, _ => M.impossible
   end.
@@ -327,9 +331,9 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (let* f := M.copy γ in
                   let* α0 := M.read f in
                   M.pure (Value.StructTuple "combinators_map::Peeled" [ α0 ])) :
-                  Ty.path "combinators_map::Peeled"
+                  _
               ]) :
-            Ty.path "combinators_map::Peeled"
+            _
         ] in
     let* α2 :=
       M.call
@@ -354,9 +358,9 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.read f in
                     M.pure (Value.StructTuple "combinators_map::Chopped" [ α0 ])
                   end) :
-                  Ty.path "combinators_map::Chopped"
+                  _
               ]) :
-            Ty.path "combinators_map::Chopped"
+            _
         ] in
     M.call
       (Ty.apply
@@ -380,9 +384,9 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.read f in
                   M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
                 end) :
-                Ty.path "combinators_map::Cooked"
+                _
             ]) :
-          Ty.path "combinators_map::Cooked"
+          _
       ]
   | _, _ => M.impossible
   end.
@@ -420,14 +424,12 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    [ borrow food ] in
+                    [ food ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -447,7 +449,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                    [ pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt

@@ -23,6 +23,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_
       "generics_bounds_test_case_empty_bounds::Red"
       (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::Cardinal")
       []
+      []
       [].
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
@@ -31,6 +32,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Blue"
       (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::BlueJay")
+      []
       []
       [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
@@ -93,20 +95,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 := M.var "generics_bounds_test_case_empty_bounds::red" in
-        let* α5 := M.call α4 [ borrow cardinal ] in
+        let* α5 := M.call α4 [ cardinal ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -118,20 +115,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 := M.var "generics_bounds_test_case_empty_bounds::blue" in
-        let* α5 := M.call α4 [ borrow blue_jay ] in
+        let* α5 := M.call α4 [ blue_jay ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

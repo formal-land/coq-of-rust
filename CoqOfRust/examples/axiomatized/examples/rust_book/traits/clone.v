@@ -11,7 +11,8 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_clone_Unit.
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_clone_Unit.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "clone::Unit")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_clone_Unit.
@@ -44,7 +47,8 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
@@ -55,7 +59,8 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

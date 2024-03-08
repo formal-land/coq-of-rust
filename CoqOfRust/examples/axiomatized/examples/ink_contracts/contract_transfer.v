@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_contract_transfer_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_contract_transfer_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
@@ -31,12 +33,13 @@ Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_contract_transfer_AccountId.
 
 Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_contract_transfer_Env.
   Definition Self : Ty.t := Ty.path "contract_transfer::Env".

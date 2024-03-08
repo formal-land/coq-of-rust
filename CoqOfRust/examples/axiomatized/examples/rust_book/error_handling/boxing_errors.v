@@ -26,7 +26,8 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
       "core::fmt::Debug"
       (* Self *) (Ty.path "boxing_errors::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
@@ -37,7 +38,8 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
       "core::clone::Clone"
       (* Self *) (Ty.path "boxing_errors::EmptyVec")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
@@ -48,7 +50,8 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
       "core::fmt::Display"
       (* Self *) (Ty.path "boxing_errors::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
@@ -56,6 +59,7 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     M.IsTraitInstance
       "core::error::Error"
       (* Self *) (Ty.path "boxing_errors::EmptyVec")
+      []
       []
       [].
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.

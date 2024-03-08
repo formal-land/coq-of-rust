@@ -38,7 +38,8 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Debug"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
@@ -58,7 +59,7 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       let* α3 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_const"]
-          [ pointer_coercion "Unsize" (borrow α2) ] in
+          [ pointer_coercion "Unsize" α2 ] in
       M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α3 ]
     | _, _ => M.impossible
     end.
@@ -68,7 +69,8 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Display"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
@@ -76,6 +78,7 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     M.IsTraitInstance
       "core::error::Error"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
+      []
       []
       [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
@@ -135,7 +138,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
-        let* α2 := M.call α1 [ borrow vec ] in
+        let* α2 := M.call α1 [ vec ] in
         let* α3 :=
           M.call
             (Ty.apply
@@ -234,7 +237,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
             ] in
         let* α1 := M.read first in
-        let* α2 := M.read (deref α1) in
+        let* α2 := M.read α1 in
         let* α3 := M.call (Ty.path "str")::["parse"] [ α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         let* α5 := M.alloc α4 in
@@ -344,14 +347,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow n ] in
+                    [ n ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -376,14 +377,12 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow e ] in
+                    [ e ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

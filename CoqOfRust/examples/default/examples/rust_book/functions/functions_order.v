@@ -85,9 +85,10 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       (* Self *) (Ty.path "functions_order::SomeType")
       []
       [
-        ("some_trait_bar", InstanceField.Method some_trait_bar []);
-        ("some_trait_foo", InstanceField.Method some_trait_foo [])
-      ].
+        ("some_trait_bar", InstanceField.Method some_trait_bar);
+        ("some_trait_foo", InstanceField.Method some_trait_foo)
+      ]
+      [].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -119,9 +120,10 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       (* Self *) (Ty.path "functions_order::OtherType")
       []
       [
-        ("some_trait_foo", InstanceField.Method some_trait_foo []);
-        ("some_trait_bar", InstanceField.Method some_trait_bar [])
-      ].
+        ("some_trait_foo", InstanceField.Method some_trait_foo);
+        ("some_trait_bar", InstanceField.Method some_trait_bar)
+      ]
+      [].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 (*
@@ -144,7 +146,7 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read b in
       let* α2 :=
         M.alloc (Value.StructTuple "functions_order::OtherType" [ α1 ]) in
-      let* α3 := M.call α0 [ borrow α2 ] in
+      let* α3 := M.call α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -155,7 +157,7 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read u in
       let* α2 :=
         M.alloc (Value.StructTuple "functions_order::SomeType" [ α1 ]) in
-      let* α3 := M.call α0 [ borrow α2 ] in
+      let* α3 := M.call α0 [ α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc tt in
     M.read α0

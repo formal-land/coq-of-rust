@@ -35,7 +35,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ((Integer.of_Z 4) : Ty.path "u64")
           ((Integer.of_Z 6) : Ty.path "u64") in
       let* α2 := M.alloc α1 in
-      let* α3 := M.alloc (borrow x, borrow α2) in
+      let* α3 := M.alloc (x, α2) in
       match_operator
         α3
         [
@@ -50,9 +50,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.var "UnOp::not" in
               let* α1 := M.var "BinOp::Pure::eq" in
               let* α2 := M.read left_val in
-              let* α3 := M.read (deref α2) in
+              let* α3 := M.read α2 in
               let* α4 := M.read right_val in
-              let* α5 := M.read (deref α4) in
+              let* α5 := M.read α4 in
               let* α6 := M.alloc (α0 (α1 α3 α5)) in
               let* α7 := M.read (use α6) in
               if α7 then

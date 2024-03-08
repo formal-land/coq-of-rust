@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_constructors_return_value_AccountId.
 
 Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
@@ -41,9 +42,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
           Value.DeclaredButUndefined
           [
             fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "constructors_return_value::AccountId"
+              (M.read self) : Ty.path "constructors_return_value::AccountId"
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -54,7 +53,8 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_constructors_return_value_AccountId.
 
 Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
@@ -62,6 +62,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
@@ -88,13 +89,14 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
       "core::convert::From"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance :
   (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
-(* Enum ConstructorsReturnValue *)
+(* Struct ConstructorsReturnValue *)
 
 (* Enum LangError *)
 
@@ -127,7 +129,8 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructors_return_value::ConstructorError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 
 (* Struct ReturnFlags *)
@@ -257,7 +260,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       let* α3 := M.call α2 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ] in
       let* α4 :=
         M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
-      let* α5 := M.call α0 [ α1; borrow α4 ] in
+      let* α5 := M.call α0 [ α1; α4 ] in
       never_to_any α5
     | _, _ => M.impossible
     end.
@@ -313,7 +316,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           (Ty.path
               "constructors_return_value::ReturnFlags")::["new_with_reverted"]
           [ true ] in
-      let* α2 := M.call α0 [ α1; borrow value ] in
+      let* α2 := M.call α0 [ α1; value ] in
       let* α3 := never_to_any α2 in
       let* α0 := M.alloc α3 in
       M.read α0
@@ -335,7 +338,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       let* α0 :=
         M.var "constructors_return_value::ConstructorsReturnValue::Get_value" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   

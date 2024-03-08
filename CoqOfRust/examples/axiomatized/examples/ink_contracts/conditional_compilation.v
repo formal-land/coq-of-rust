@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_conditional_compilation_AccountId.
 
 Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_conditional_compilation_AccountId.
 
 Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_conditional_compilation_AccountId.
@@ -39,16 +42,16 @@ Axiom Balance : (Ty.path "conditional_compilation::Balance") = (Ty.path "u128").
 Axiom BlockNumber :
   (Ty.path "conditional_compilation::BlockNumber") = (Ty.path "u32").
 
-(* Enum Env *)
+(* Struct Env *)
 
 (* Trait *)
 Module Flip.
   
 End Flip.
 
-(* Enum Changes *)
+(* Struct Changes *)
 
-(* Enum ChangesDated *)
+(* Struct ChangesDated *)
 
 (* Enum Event *)
 
@@ -71,7 +74,7 @@ Module Impl_conditional_compilation_Env.
     M.IsAssociatedFunction Self "block_number" block_number [].
 End Impl_conditional_compilation_Env.
 
-(* Enum ConditionalCompilation *)
+(* Struct ConditionalCompilation *)
 
 Module Impl_conditional_compilation_ConditionalCompilation.
   Definition Self : Ty.t :=
@@ -129,8 +132,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       (* Self *) (Ty.path "conditional_compilation::ConditionalCompilation")
       []
       [
-        ("flip", InstanceField.Method flip []);
-        ("get", InstanceField.Method get []);
-        ("push_foo", InstanceField.Method push_foo [])
-      ].
+        ("flip", InstanceField.Method flip);
+        ("get", InstanceField.Method get);
+        ("push_foo", InstanceField.Method push_foo)
+      ]
+      [].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

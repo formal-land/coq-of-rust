@@ -6,7 +6,7 @@ Module HasArea.
   
 End HasArea.
 
-(* Enum Rectangle *)
+(* Struct Rectangle *)
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   (*
@@ -25,16 +25,16 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       let* α5 := M.read (mk_str "height") in
       let* α6 := M.var "generics_bounds::Rectangle::Get_height" in
       let* α7 := M.read self in
-      let* α8 := M.alloc (borrow (α6 (deref α7))) in
+      let* α8 := M.alloc (α6 α7) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion "Unsize" (borrow (α3 (deref α4)));
+          pointer_coercion "Unsize" (α3 α4);
           α5;
-          pointer_coercion "Unsize" (borrow α8)
+          pointer_coercion "Unsize" α8
         ]
     | _, _ => M.impossible
     end.
@@ -44,10 +44,11 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       "core::fmt::Debug"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
-(* Enum Triangle *)
+(* Struct Triangle *)
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   (*
@@ -62,10 +63,10 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       let* α0 := M.var "BinOp::Panic::mul" in
       let* α1 := M.var "generics_bounds::Rectangle::Get_length" in
       let* α2 := M.read self in
-      let* α3 := M.read (α1 (deref α2)) in
+      let* α3 := M.read (α1 α2) in
       let* α4 := M.var "generics_bounds::Rectangle::Get_height" in
       let* α5 := M.read self in
-      let* α6 := M.read (α4 (deref α5)) in
+      let* α6 := M.read (α4 α5) in
       α0 α3 α6
     | _, _ => M.impossible
     end.
@@ -75,7 +76,8 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       "generics_bounds::HasArea"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       []
-      [ ("area", InstanceField.Method area []) ].
+      [ ("area", InstanceField.Method area) ]
+      [].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 (*
@@ -95,17 +97,12 @@ Definition print_debug (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow t ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ t ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -170,7 +167,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ ("length", α0); ("height", α1) ]) in
     let* _ :=
       let* α0 := M.var "generics_bounds::print_debug" in
-      let* α1 := M.call α0 [ borrow rectangle ] in
+      let* α1 := M.call α0 [ rectangle ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -184,20 +181,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "generics_bounds::HasArea"
             "area"
             [ (* Self *) Ty.path "generics_bounds::Rectangle" ] in
-        let* α5 := M.call α4 [ borrow rectangle ] in
+        let* α5 := M.call α4 [ rectangle ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

@@ -45,28 +45,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow nanoseconds ] in
+            [ nanoseconds ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow inches ] in
+            [ inches ] in
         let* α8 := M.var "BinOp::Panic::add" in
         let* α9 := M.read nanoseconds in
         let* α10 := M.read inches in
         let* α11 := α8 α9 α10 in
         let* α12 := M.alloc α11 in
         let* α13 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α12 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α12 ] in
         let* α14 := M.alloc [ α6; α7; α13 ] in
         let* α15 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α5);
-              pointer_coercion "Unsize" (borrow α14)
-            ] in
+            [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α14 ] in
         let* α16 := M.call α0 [ α15 ] in
         M.alloc α16 in
       M.alloc tt in

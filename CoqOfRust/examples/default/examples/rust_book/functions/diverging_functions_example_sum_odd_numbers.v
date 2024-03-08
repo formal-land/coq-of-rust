@@ -43,17 +43,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [ (Integer.of_Z 9) : Ty.path "u32" ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α7)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -123,7 +118,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "u32" ]
                       ] in
-                  let* α1 := M.call α0 [ borrow_mut iter ] in
+                  let* α1 := M.call α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2

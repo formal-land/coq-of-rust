@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_basic_contract_caller_AccountId.
 
 Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
 
 Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "basic_contract_caller::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
@@ -40,7 +43,7 @@ Axiom Hash :
 
 (* Enum Error *)
 
-(* Enum OtherContract *)
+(* Struct OtherContract *)
 
 Module Impl_basic_contract_caller_OtherContract.
   Definition Self : Ty.t := Ty.path "basic_contract_caller::OtherContract".
@@ -58,7 +61,7 @@ Module Impl_basic_contract_caller_OtherContract.
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
 End Impl_basic_contract_caller_OtherContract.
 
-(* Enum BasicContractCaller *)
+(* Struct BasicContractCaller *)
 
 Module Impl_basic_contract_caller_BasicContractCaller.
   Definition Self : Ty.t :=

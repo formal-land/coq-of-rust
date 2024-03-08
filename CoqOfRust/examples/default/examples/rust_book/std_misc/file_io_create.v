@@ -45,7 +45,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call (Ty.path "std::path::Path")::["display"] [ α0 ] in
       M.alloc α1 in
     let* file :=
-      let* α0 := M.call (Ty.path "std::fs::File")::["create"] [ borrow path ] in
+      let* α0 := M.call (Ty.path "std::fs::File")::["create"] [ path ] in
       let* α1 := M.alloc α0 in
       let* α2 :=
         match_operator
@@ -66,18 +66,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow display ] in
+                    [ display ] in
                 let* α5 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow why ] in
+                    [ why ] in
                 let* α6 := M.alloc [ α4; α5 ] in
                 let* α7 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α6)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6
                     ] in
                 let* α8 := M.call α0 [ α7 ] in
                 let* α9 := never_to_any α8 in
@@ -106,9 +104,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         [ (* Self *) Ty.path "std::fs::File" ] in
     let* α1 := M.var "file_io_create::LOREM_IPSUM" in
     let* α2 := M.read α1 in
-    let* α3 := M.read (deref α2) in
+    let* α3 := M.read α2 in
     let* α4 := M.call (Ty.path "str")::["as_bytes"] [ α3 ] in
-    let* α5 := M.call α0 [ borrow_mut file; α4 ] in
+    let* α5 := M.call α0 [ file; α4 ] in
     let* α6 := M.alloc α5 in
     let* α0 :=
       match_operator
@@ -129,18 +127,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                  [ borrow display ] in
+                  [ display ] in
               let* α5 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                  [ borrow why ] in
+                  [ why ] in
               let* α6 := M.alloc [ α4; α5 ] in
               let* α7 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [
-                    pointer_coercion "Unsize" (borrow α3);
-                    pointer_coercion "Unsize" (borrow α6)
+                  [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6
                   ] in
               let* α8 := M.call α0 [ α7 ] in
               let* α9 := never_to_any α8 in
@@ -164,14 +160,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow display ] in
+                    [ display ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

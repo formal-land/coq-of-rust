@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_updated_incrementer_AccountId.
 
 Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
@@ -39,11 +40,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "updated_incrementer::AccountId"
+          [ fun γ => (M.read self) : Ty.path "updated_incrementer::AccountId"
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -54,7 +51,8 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_updated_incrementer_AccountId.
 
 Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
@@ -62,6 +60,7 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
@@ -72,7 +71,7 @@ Axiom Hash :
 
 (* Enum Error *)
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_updated_incrementer_Env.
   Definition Self : Ty.t := Ty.path "updated_incrementer::Env".
@@ -98,7 +97,7 @@ Module Impl_updated_incrementer_Env.
     M.IsAssociatedFunction Self "set_code_hash" set_code_hash [].
 End Impl_updated_incrementer_Env.
 
-(* Enum Incrementer *)
+(* Struct Incrementer *)
 
 Module Impl_updated_incrementer_Incrementer.
   Definition Self : Ty.t := Ty.path "updated_incrementer::Incrementer".
@@ -149,9 +148,8 @@ Module Impl_updated_incrementer_Incrementer.
         M.call
           α0
           [
-            borrow
-              (mk_str
-                "Constructors are not called when upgrading using `set_code_hash`.")
+            mk_str
+              "Constructors are not called when upgrading using `set_code_hash`."
           ] in
       never_to_any α1
     | _, _ => M.impossible
@@ -176,7 +174,7 @@ Module Impl_updated_incrementer_Incrementer.
         let* β :=
           let* α0 := M.var "updated_incrementer::Incrementer::Get_count" in
           let* α1 := M.read self in
-          M.pure (α0 (deref α1)) in
+          M.pure (α0 α1) in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Panic::add" in
         let* α2 := M.read β in
@@ -197,15 +195,12 @@ Module Impl_updated_incrementer_Incrementer.
           let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow (α4 (deref α5)) ] in
+              [ α4 α5 ] in
           let* α7 := M.alloc [ α6 ] in
           let* α8 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α7)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in
         M.alloc tt in
@@ -227,7 +222,7 @@ Module Impl_updated_incrementer_Incrementer.
       let* self := M.alloc self in
       let* α0 := M.var "updated_incrementer::Incrementer::Get_count" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -249,14 +244,12 @@ Module Impl_updated_incrementer_Incrementer.
       let* _ :=
         let* α0 := M.read self in
         let* α1 :=
-          M.call
-            (Ty.path "updated_incrementer::Incrementer")::["env"]
-            [ borrow (deref α0) ] in
+          M.call (Ty.path "updated_incrementer::Incrementer")::["env"] [ α0 ] in
         let* α2 := M.alloc α1 in
         let* α3 :=
           M.call
             (Ty.path "updated_incrementer::Env")::["set_code_hash"]
-            [ borrow α2; borrow code_hash ] in
+            [ α2; code_hash ] in
         let* α4 :=
           M.call
             (Ty.apply
@@ -279,9 +272,9 @@ Module Impl_updated_incrementer_Incrementer.
                             "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
                       let* α2 := M.call α0 [ α1 ] in
                       never_to_any α2) :
-                      Ty.tuple []
+                      _
                   ]) :
-                Ty.tuple []
+                _
             ] in
         M.alloc α4 in
       let* _ :=
@@ -294,15 +287,12 @@ Module Impl_updated_incrementer_Incrementer.
           let* α4 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              [ borrow code_hash ] in
+              [ code_hash ] in
           let* α5 := M.alloc [ α4 ] in
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α5)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in

@@ -54,7 +54,7 @@ Module tests.
             ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
-        let* α4 := M.alloc (borrow α2, borrow α3) in
+        let* α4 := M.alloc (α2, α3) in
         match_operator
           α4
           [
@@ -69,9 +69,9 @@ Module tests.
                 let* α0 := M.var "UnOp::not" in
                 let* α1 := M.var "BinOp::Pure::eq" in
                 let* α2 := M.read left_val in
-                let* α3 := M.read (deref α2) in
+                let* α3 := M.read α2 in
                 let* α4 := M.read right_val in
-                let* α5 := M.read (deref α4) in
+                let* α5 := M.read α4 in
                 let* α6 := M.alloc (α0 (α1 α3 α5)) in
                 let* α7 := M.read (use α6) in
                 if α7 then
@@ -115,7 +115,7 @@ Module tests.
             ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
-        let* α4 := M.alloc (borrow α2, borrow α3) in
+        let* α4 := M.alloc (α2, α3) in
         match_operator
           α4
           [
@@ -130,9 +130,9 @@ Module tests.
                 let* α0 := M.var "UnOp::not" in
                 let* α1 := M.var "BinOp::Pure::eq" in
                 let* α2 := M.read left_val in
-                let* α3 := M.read (deref α2) in
+                let* α3 := M.read α2 in
                 let* α4 := M.read right_val in
-                let* α5 := M.read (deref α4) in
+                let* α5 := M.read α4 in
                 let* α6 := M.alloc (α0 (α1 α3 α5)) in
                 let* α7 := M.read (use α6) in
                 if α7 then

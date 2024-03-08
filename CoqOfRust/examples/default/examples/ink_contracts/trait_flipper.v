@@ -6,7 +6,7 @@ Module Flip.
   
 End Flip.
 
-(* Enum Flipper *)
+(* Struct Flipper *)
 
 Module Impl_trait_flipper_Flipper.
   Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".
@@ -50,8 +50,8 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
         let* α2 := M.var "UnOp::not" in
         let* α3 := M.var "trait_flipper::Flipper::Get_value" in
         let* α4 := M.read self in
-        let* α5 := M.read (α3 (deref α4)) in
-        assign (α0 (deref α1)) (α2 α5) in
+        let* α5 := M.read (α3 α4) in
+        assign (α0 α1) (α2 α5) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -68,7 +68,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       let* self := M.alloc self in
       let* α0 := M.var "trait_flipper::Flipper::Get_value" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -77,8 +77,6 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       "trait_flipper::Flip"
       (* Self *) (Ty.path "trait_flipper::Flipper")
       []
-      [
-        ("flip", InstanceField.Method flip []);
-        ("get", InstanceField.Method get [])
-      ].
+      [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ]
+      [].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

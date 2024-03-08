@@ -141,7 +141,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ borrow_mut a; (Integer.of_Z 4) : Ty.path "i32" ] in
+          [ a; (Integer.of_Z 4) : Ty.path "i32" ] in
       let* α2 := M.alloc (α0 α1) in
       let* α3 := M.read (use α2) in
       if α3 then
@@ -161,7 +161,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["contains"]
-          [ borrow a; borrow α1 ] in
+          [ a; α1 ] in
       let* α3 := M.alloc (α0 α2) in
       let* α4 := M.read (use α3) in
       if α4 then
@@ -179,7 +179,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ borrow_mut b; (Integer.of_Z 5) : Ty.path "i32" ] in
+          [ b; (Integer.of_Z 5) : Ty.path "i32" ] in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -189,17 +189,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow a ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ a ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -211,17 +206,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow b ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ b ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -255,21 +245,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["union"]
-            [ borrow a; borrow b ] in
+            [ a; b ] in
         let* α6 := M.call α4 [ α5 ] in
         let* α7 := M.alloc α6 in
         let* α8 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α7 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α7 ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α9)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -303,21 +288,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["difference"]
-            [ borrow a; borrow b ] in
+            [ a; b ] in
         let* α6 := M.call α4 [ α5 ] in
         let* α7 := M.alloc α6 in
         let* α8 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α7 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α7 ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α9)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -351,21 +331,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["intersection"]
-            [ borrow a; borrow b ] in
+            [ a; b ] in
         let* α6 := M.call α4 [ α5 ] in
         let* α7 := M.alloc α6 in
         let* α8 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α7 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α7 ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α9)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -399,21 +374,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "std::collections::hash::set::HashSet")
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                 ])::["symmetric_difference"]
-            [ borrow a; borrow b ] in
+            [ a; b ] in
         let* α6 := M.call α4 [ α5 ] in
         let* α7 := M.alloc α6 in
         let* α8 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow α7 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α7 ] in
         let* α9 := M.alloc [ α8 ] in
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α9)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in

@@ -60,7 +60,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α2) ] in
+            [ pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -89,20 +89,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::string::String";
                   Ty.path "alloc::alloc::Global"
                 ])::["strong_count"]
-            [ borrow rc_a ] in
+            [ rc_a ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α7)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -116,7 +111,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α2) ] in
+              [ pointer_coercion "Unsize" α2 ] in
           let* α4 := M.call α0 [ α3 ] in
           M.alloc α4 in
         M.alloc tt in
@@ -134,7 +129,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
-        let* α1 := M.call α0 [ borrow rc_a ] in
+        let* α1 := M.call α0 [ rc_a ] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
@@ -151,20 +146,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::string::String";
                     Ty.path "alloc::alloc::Global"
                   ])::["strong_count"]
-              [ borrow rc_b ] in
+              [ rc_b ] in
           let* α5 := M.alloc α4 in
           let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α5 ] in
+              [ α5 ] in
           let* α7 := M.alloc [ α6 ] in
           let* α8 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α7)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in
         M.alloc tt in
@@ -183,20 +175,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::string::String";
                     Ty.path "alloc::alloc::Global"
                   ])::["strong_count"]
-              [ borrow rc_a ] in
+              [ rc_a ] in
           let* α5 := M.alloc α4 in
           let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α5 ] in
+              [ α5 ] in
           let* α7 := M.alloc [ α6 ] in
           let* α8 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α7)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in
         M.alloc tt in
@@ -227,20 +216,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "alloc::alloc::Global"
                     ]
               ] in
-          let* α5 := M.call α4 [ borrow rc_a; borrow rc_b ] in
+          let* α5 := M.call α4 [ rc_a; rc_b ] in
           let* α6 := M.alloc α5 in
           let* α7 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α6 ] in
+              [ α6 ] in
           let* α8 := M.alloc [ α7 ] in
           let* α9 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α8)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in
         M.alloc tt in
@@ -264,21 +250,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "alloc::alloc::Global"
                     ]
               ] in
-          let* α5 := M.call α4 [ borrow rc_a ] in
+          let* α5 := M.call α4 [ rc_a ] in
           let* α6 := M.call (Ty.path "alloc::string::String")::["len"] [ α5 ] in
           let* α7 := M.alloc α6 in
           let* α8 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow α7 ] in
+              [ α7 ] in
           let* α9 := M.alloc [ α8 ] in
           let* α10 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α9)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
           let* α11 := M.call α0 [ α10 ] in
           M.alloc α11 in
         M.alloc tt in
@@ -292,15 +275,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α4 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow rc_b ] in
+              [ rc_b ] in
           let* α5 := M.alloc [ α4 ] in
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α5)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
@@ -313,7 +293,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" (borrow α2) ] in
+              [ pointer_coercion "Unsize" α2 ] in
           let* α4 := M.call α0 [ α3 ] in
           M.alloc α4 in
         M.alloc tt in
@@ -333,20 +313,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::string::String";
                   Ty.path "alloc::alloc::Global"
                 ])::["strong_count"]
-            [ borrow rc_a ] in
+            [ rc_a ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α5 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α7)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -359,7 +334,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α2) ] in
+            [ pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in

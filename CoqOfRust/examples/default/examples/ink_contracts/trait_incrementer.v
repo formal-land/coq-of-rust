@@ -11,7 +11,7 @@ Module Reset.
   
 End Reset.
 
-(* Enum Incrementer *)
+(* Struct Incrementer *)
 
 Module Impl_trait_incrementer_Incrementer.
   Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
@@ -47,7 +47,7 @@ Module Impl_trait_incrementer_Incrementer.
         let* β :=
           let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
           let* α1 := M.read self in
-          M.pure (α0 (deref α1)) in
+          M.pure (α0 α1) in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Panic::add" in
         let* α2 := M.read β in
@@ -91,7 +91,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       let* self := M.alloc self in
       let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -100,10 +100,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       "trait_incrementer::Increment"
       (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
-      [
-        ("inc", InstanceField.Method inc []);
-        ("get", InstanceField.Method get [])
-      ].
+      [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ]
+      [].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
@@ -119,7 +117,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       let* _ :=
         let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
         let* α1 := M.read self in
-        assign (α0 (deref α1)) ((Integer.of_Z 0) : Ty.path "u64") in
+        assign (α0 α1) ((Integer.of_Z 0) : Ty.path "u64") in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -130,5 +128,6 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       "trait_incrementer::Reset"
       (* Self *) (Ty.path "trait_incrementer::Incrementer")
       []
-      [ ("reset", InstanceField.Method reset []) ].
+      [ ("reset", InstanceField.Method reset) ]
+      [].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

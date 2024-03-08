@@ -11,7 +11,8 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructor_as_function::Constructor")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

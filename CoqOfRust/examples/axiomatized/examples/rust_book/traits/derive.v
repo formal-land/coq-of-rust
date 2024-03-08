@@ -9,6 +9,7 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "derive::Centimeters")
       []
+      []
       [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
@@ -20,7 +21,8 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "derive::Centimeters")
       []
-      [ ("eq", InstanceField.Method eq []) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -31,7 +33,8 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       "core::cmp::PartialOrd"
       (* Self *) (Ty.path "derive::Centimeters")
       []
-      [ ("partial_cmp", InstanceField.Method partial_cmp []) ].
+      [ ("partial_cmp", InstanceField.Method partial_cmp) ]
+      [].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct Inches *)
@@ -44,7 +47,8 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       "core::fmt::Debug"
       (* Self *) (Ty.path "derive::Inches")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.

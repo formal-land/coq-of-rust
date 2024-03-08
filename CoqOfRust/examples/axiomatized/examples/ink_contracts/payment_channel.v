@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "payment_channel::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_payment_channel_AccountId.
 
 Module Impl_core_clone_Clone_for_payment_channel_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "payment_channel::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
 
 Module Impl_core_marker_Copy_for_payment_channel_AccountId.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "payment_channel::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_payment_channel_AccountId.
@@ -39,6 +42,7 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
+      []
       []
       [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
@@ -51,7 +55,8 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
       []
-      [ ("eq", InstanceField.Method eq []) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
@@ -59,6 +64,7 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "payment_channel::AccountId")
+      []
       []
       [].
 End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
@@ -73,8 +79,9 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [])
-      ].
+          InstanceField.Method assert_receiver_is_total_eq)
+      ]
+      [].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
@@ -85,16 +92,17 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
       "core::convert::From"
       (* Self *) (Ty.path "payment_channel::AccountId")
       [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
 
 Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 
-(* Enum Env *)
+(* Struct Env *)
 
-(* Enum PaymentChannel *)
+(* Struct PaymentChannel *)
 
 (* Enum Error *)
 
@@ -103,6 +111,7 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "payment_channel::Error")
+      []
       []
       [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
@@ -115,7 +124,8 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "payment_channel::Error")
       []
-      [ ("eq", InstanceField.Method eq []) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
 
 Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
@@ -123,6 +133,7 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "payment_channel::Error")
+      []
       []
       [].
 End Impl_core_marker_StructuralEq_for_payment_channel_Error.
@@ -137,8 +148,9 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
       []
       [
         ("assert_receiver_is_total_eq",
-          InstanceField.Method assert_receiver_is_total_eq [])
-      ].
+          InstanceField.Method assert_receiver_is_total_eq)
+      ]
+      [].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
@@ -148,7 +160,7 @@ Axiom Result :
       (Ty.path "core::result::Result")
       [ T; Ty.path "payment_channel::Error" ]).
 
-(* Enum SenderCloseStarted *)
+(* Struct SenderCloseStarted *)
 
 (* Enum Event *)
 
@@ -221,7 +233,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Sha2x256")
       []
-      [ ("Type_", TODO) ].
+      [ ("Type_", TODO) ]
+      [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
@@ -232,7 +245,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Keccak256")
       []
-      [ ("Type_", TODO) ].
+      [ ("Type_", TODO) ]
+      [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
@@ -243,7 +257,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Blake2x256")
       []
-      [ ("Type_", TODO) ].
+      [ ("Type_", TODO) ]
+      [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
@@ -254,7 +269,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
       "payment_channel::HashOutput"
       (* Self *) (Ty.path "payment_channel::Blake2x128")
       []
-      [ ("Type_", TODO) ].
+      [ ("Type_", TODO) ]
+      [].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
@@ -265,7 +281,8 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Sha2x256")
       []
-      [ ("hash", InstanceField.Method hash []) ].
+      [ ("hash", InstanceField.Method hash) ]
+      [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
@@ -276,7 +293,8 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Keccak256")
       []
-      [ ("hash", InstanceField.Method hash []) ].
+      [ ("hash", InstanceField.Method hash) ]
+      [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
@@ -287,7 +305,8 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Blake2x256")
       []
-      [ ("hash", InstanceField.Method hash []) ].
+      [ ("hash", InstanceField.Method hash) ]
+      [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
@@ -298,7 +317,8 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
       "payment_channel::CryptoHash"
       (* Self *) (Ty.path "payment_channel::Blake2x128")
       []
-      [ ("hash", InstanceField.Method hash []) ].
+      [ ("hash", InstanceField.Method hash) ]
+      [].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_PaymentChannel.

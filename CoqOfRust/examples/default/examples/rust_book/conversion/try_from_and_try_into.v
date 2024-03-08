@@ -16,10 +16,10 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       let* α1 := M.read (mk_str "EvenNumber") in
       let* α2 := M.var "try_from_and_try_into::EvenNumber::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
+      let* α4 := M.alloc (α2 α3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -28,7 +28,8 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       "core::fmt::Debug"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
@@ -36,6 +37,7 @@ Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
+      []
       []
       [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
@@ -52,10 +54,10 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       let* α0 := M.var "BinOp::Pure::eq" in
       let* α1 := M.var "try_from_and_try_into::EvenNumber::Get_0" in
       let* α2 := M.read self in
-      let* α3 := M.read (α1 (deref α2)) in
+      let* α3 := M.read (α1 α2) in
       let* α4 := M.var "try_from_and_try_into::EvenNumber::Get_0" in
       let* α5 := M.read other in
-      let* α6 := M.read (α4 (deref α5)) in
+      let* α6 := M.read (α4 α5) in
       M.pure (α0 α3 α6)
     | _, _ => M.impossible
     end.
@@ -65,7 +67,8 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       []
-      [ ("eq", InstanceField.Method eq []) ].
+      [ ("eq", InstanceField.Method eq) ]
+      [].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
@@ -111,7 +114,8 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
       "core::convert::TryFrom"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       [ (* T *) Ty.path "i32" ]
-      [ ("Error", TODO); ("try_from", InstanceField.Method try_from []) ].
+      [ ("Error", TODO); ("try_from", InstanceField.Method try_from) ]
+      [].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (*
@@ -153,7 +157,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "try_from_and_try_into::EvenNumber"
                 [ (Integer.of_Z 8) : Ty.path "i32" ]
             ]) in
-      let* α4 := M.alloc (borrow α2, borrow α3) in
+      let* α4 := M.alloc (α2, α3) in
       match_operator
         α4
         [
@@ -220,7 +224,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc α1 in
       let* α3 :=
         M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
-      let* α4 := M.alloc (borrow α2, borrow α3) in
+      let* α4 := M.alloc (α2, α3) in
       match_operator
         α4
         [
@@ -295,7 +299,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "try_from_and_try_into::EvenNumber"
                 [ (Integer.of_Z 8) : Ty.path "i32" ]
             ]) in
-      let* α1 := M.alloc (borrow result, borrow α0) in
+      let* α1 := M.alloc (result, α0) in
       match_operator
         α1
         [
@@ -363,7 +367,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
-      let* α1 := M.alloc (borrow result, borrow α0) in
+      let* α1 := M.alloc (result, α0) in
       match_operator
         α1
         [

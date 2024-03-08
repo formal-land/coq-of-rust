@@ -64,7 +64,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Food")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -130,7 +131,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Day")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 (*
@@ -349,18 +351,16 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    [ borrow day ] in
+                    [ day ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    [ borrow food ] in
+                    [ food ] in
                 let* α7 := M.alloc [ α5; α6 ] in
                 let* α8 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α4);
-                      pointer_coercion "Unsize" (borrow α7)
+                    [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α7
                     ] in
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
@@ -381,14 +381,12 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    [ borrow day ] in
+                    [ day ] in
                 let* α5 := M.alloc [ α4 ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α5)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

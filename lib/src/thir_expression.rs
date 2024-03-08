@@ -12,6 +12,24 @@ use rustc_middle::ty::TyKind;
 use std::rc::Rc;
 
 impl ExprKind {
+    fn match_simple_call(self: &Rc<Self>, name_in: &[&str]) -> Option<Rc<Expr>> {
+        if let ExprKind::Call {
+            func,
+            args,
+            purity: _,
+            from_user: _,
+        } = self.as_ref()
+        {
+            if let ExprKind::LocalVar(func) = func.kind.as_ref() {
+                if name_in.contains(&func.as_str()) && args.len() == 1 {
+                    return Some(args.first().unwrap().clone());
+                }
+            }
+        }
+
+        None
+    }
+
     pub(crate) fn alloc(self: Rc<Self>, ty: Option<Rc<CoqType>>) -> Rc<Self> {
         Rc::new(ExprKind::Call {
             func: Rc::new(Expr {
@@ -19,6 +37,26 @@ impl ExprKind {
                 ty: None,
             }),
             args: vec![Rc::new(Expr { kind: self, ty })],
+            purity: Purity::Effectful,
+            from_user: false,
+        })
+    }
+
+    pub(crate) fn read(self: &Rc<Self>) -> Rc<Self> {
+        // If we read an allocated expression, we just return the expression.
+        if let Some(expr) = self.clone().match_simple_call(&["M.alloc"]) {
+            return expr.kind.clone();
+        }
+
+        Rc::new(ExprKind::Call {
+            func: Rc::new(Expr {
+                kind: Rc::new(ExprKind::LocalVar("M.read".to_string())),
+                ty: None,
+            }),
+            args: vec![Rc::new(Expr {
+                kind: self.clone(),
+                ty: None,
+            })],
             purity: Purity::Effectful,
             from_user: false,
         })
@@ -77,75 +115,19 @@ pub(crate) fn compile_expr<'a>(
 }
 
 impl Expr {
-    fn match_simple_call(self: Rc<Self>, name_in: &[&str]) -> Option<Rc<Self>> {
-        if let ExprKind::Call {
-            func,
-            args,
-            purity: _,
-            from_user: _,
-        } = self.kind.as_ref()
-        {
-            if let ExprKind::LocalVar(func) = func.kind.as_ref() {
-                if name_in.contains(&func.as_str()) && args.len() == 1 {
-                    return Some(args.first().unwrap().clone());
-                }
-            }
-        }
-
-        None
-    }
-
-    /// Return the borrowed expression if the expression is a borrow.
-    fn match_borrow(self: Rc<Self>) -> Option<Rc<Self>> {
-        self.match_simple_call(&["borrow", "borrow_mut"])
-    }
-
-    fn match_deref(self: Rc<Self>) -> Option<Rc<Self>> {
-        self.match_simple_call(&["deref"])
+    fn match_simple_call(self: &Rc<Self>, name_in: &[&str]) -> Option<Rc<Self>> {
+        self.kind.match_simple_call(name_in)
     }
 
     pub(crate) fn read(self: Rc<Self>) -> Rc<Self> {
-        // If we read an allocated expression, we just return the expression.
-        if let Some(expr) = self.clone().match_simple_call(&["M.alloc"]) {
-            return expr;
-        }
-
         Rc::new(Expr {
-            ty: match self.ty.clone() {
-                None => None,
-                Some(ty) => {
-                    let ty = ty.unval();
-                    let is_never = match &ty {
-                        Some(ty) => match &**ty {
-                            CoqType::Path { path } => path.segments == ["never", "t"],
-                            _ => false,
-                        },
-                        None => false,
-                    };
-                    if is_never {
-                        // This is a special case to prevent errors with the never type
-                        // returned by the panic function, that is used as `unit` after.
-                        // Is it a bug from the Rust AST?
-                        None
-                    } else {
-                        ty
-                    }
-                }
-            },
-            kind: Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar("M.read".to_string())),
-                    ty: None,
-                }),
-                args: vec![self],
-                purity: Purity::Effectful,
-                from_user: false,
-            }),
+            kind: self.kind.read(),
+            ty: None,
         })
     }
 
     fn copy(self: Rc<Self>) -> Rc<Self> {
-        if self.clone().match_simple_call(&["M.alloc"]).is_some() {
+        if self.match_simple_call(&["M.alloc"]).is_some() {
             return self;
         }
 
@@ -170,36 +152,6 @@ pub(crate) fn is_mutable_borrow_kind(borrow_kind: &BorrowKind) -> bool {
         BorrowKind::Mut { .. } => true,
         BorrowKind::Fake => todo!(),
     }
-}
-
-fn compile_borrow(borrow_kind: &BorrowKind, arg: Rc<Expr>) -> Rc<ExprKind> {
-    let func = if is_mutable_borrow_kind(borrow_kind) {
-        "borrow_mut".to_string()
-    } else {
-        "borrow".to_string()
-    };
-
-    if let Some(derefed) = arg.clone().match_deref() {
-        if let Some(ty) = derefed.ty.clone() {
-            if let Some((ref_name, _, _)) = ty.match_ref() {
-                if (func == "borrow" && ref_name == "ref")
-                    || (func == "borrow_mut" && ref_name == "mut_ref")
-                {
-                    return derefed.kind.clone();
-                }
-            }
-        }
-    }
-
-    Rc::new(ExprKind::Call {
-        func: Rc::new(Expr {
-            kind: Rc::new(ExprKind::LocalVar(func)),
-            ty: None,
-        }),
-        args: vec![arg],
-        purity: Purity::Pure,
-        from_user: false,
-    })
 }
 
 pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr> {
@@ -763,7 +715,7 @@ fn compile_expr_kind<'a>(
             let (purity, from_user) = {
                 let default = (Purity::Effectful, true);
 
-                match func.clone().match_simple_call(&["M.alloc"]).as_ref() {
+                match func.match_simple_call(&["M.alloc"]).as_ref() {
                     Some(expr) => match expr.kind.as_ref() {
                         ExprKind::Constructor(_) => (Purity::Pure, false),
                         _ => default,
@@ -781,23 +733,7 @@ fn compile_expr_kind<'a>(
             })
             .alloc(Some(ty))
         }
-        thir::ExprKind::Deref { arg } => {
-            let arg = compile_expr(env, thir, arg).read();
-
-            if let Some(borrowed) = Expr::match_borrow(arg.clone()) {
-                return borrowed.kind.clone();
-            }
-
-            Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar("deref".to_string())),
-                    ty: None,
-                }),
-                args: vec![arg],
-                purity: Purity::Pure,
-                from_user: false,
-            })
-        }
+        thir::ExprKind::Deref { arg } => compile_expr_kind(env, thir, arg).read(),
         thir::ExprKind::Binary { op, lhs, rhs } => {
             let left_ty = compile_type(env, &thir.exprs.get(*lhs).unwrap().ty);
             let right_ty = compile_type(env, &thir.exprs.get(*rhs).unwrap().ty);
@@ -1029,24 +965,12 @@ fn compile_expr_kind<'a>(
             let name = to_valid_coq_name(env.tcx.hir().opt_name(var_hir_id.0).unwrap().as_str());
             Rc::new(ExprKind::LocalVar(name))
         }
-        thir::ExprKind::Borrow { borrow_kind, arg } => {
-            let arg = compile_expr(env, thir, arg);
-
-            compile_borrow(borrow_kind, arg).alloc(Some(ty))
+        thir::ExprKind::Borrow {
+            borrow_kind: _,
+            arg,
         }
-        thir::ExprKind::AddressOf { mutability, arg } => {
-            let func = match mutability {
-                rustc_middle::mir::Mutability::Not => "addr_of",
-                rustc_middle::mir::Mutability::Mut => "addr_of_mut",
-            };
-            let arg = compile_expr(env, thir, arg);
-            Rc::new(ExprKind::Call {
-                func: Expr::local_var(func),
-                args: vec![arg],
-                purity: Purity::Pure,
-                from_user: false,
-            })
-            .alloc(Some(ty))
+        | thir::ExprKind::AddressOf { mutability: _, arg } => {
+            compile_expr_kind(env, thir, arg).alloc(Some(ty))
         }
         thir::ExprKind::Break { .. } => Rc::new(ExprKind::ControlFlow(LoopControlFlow::Break)),
         thir::ExprKind::Continue { .. } => {

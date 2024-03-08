@@ -23,7 +23,8 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
@@ -35,7 +36,7 @@ Module Impl_core_clone_Clone_for_clone_Unit.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (deref α0)
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -44,7 +45,8 @@ Module Impl_core_clone_Clone_for_clone_Unit.
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Unit")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
@@ -52,6 +54,7 @@ Module Impl_core_marker_Copy_for_clone_Unit.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "clone::Unit")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_clone_Unit.
@@ -78,7 +81,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
           ] in
       let* α1 := M.var "clone::Pair::Get_0" in
       let* α2 := M.read self in
-      let* α3 := M.call α0 [ borrow (α1 (deref α2)) ] in
+      let* α3 := M.call α0 [ α1 α2 ] in
       let* α4 :=
         M.get_method
           "core::clone::Clone"
@@ -91,7 +94,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
           ] in
       let* α5 := M.var "clone::Pair::Get_1" in
       let* α6 := M.read self in
-      let* α7 := M.call α4 [ borrow (α5 (deref α6)) ] in
+      let* α7 := M.call α4 [ α5 α6 ] in
       M.pure (Value.StructTuple "clone::Pair" [ α3; α7 ])
     | _, _ => M.impossible
     end.
@@ -101,7 +104,8 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
@@ -119,14 +123,14 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       let* α3 := M.read self in
       let* α4 := M.var "clone::Pair::Get_1" in
       let* α5 := M.read self in
-      let* α6 := M.alloc (borrow (α4 (deref α5))) in
+      let* α6 := M.alloc (α4 α5) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field2_finish"]
         [
           α0;
           α1;
-          pointer_coercion "Unsize" (borrow (α2 (deref α3)));
-          pointer_coercion "Unsize" (borrow α6)
+          pointer_coercion "Unsize" (α2 α3);
+          pointer_coercion "Unsize" α6
         ]
     | _, _ => M.impossible
     end.
@@ -136,7 +140,8 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Pair")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (*
@@ -189,17 +194,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow unit_ ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ unit_ ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -213,15 +213,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow copied_unit ] in
+            [ copied_unit ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -247,17 +244,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow pair ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ pair ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -272,15 +264,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow moved_pair ] in
+            [ moved_pair ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -290,7 +279,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "clone::Pair" ] in
-      let* α1 := M.call α0 [ borrow moved_pair ] in
+      let* α1 := M.call α0 [ moved_pair ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "core::mem::drop" in
@@ -307,15 +296,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow cloned_pair ] in
+            [ cloned_pair ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

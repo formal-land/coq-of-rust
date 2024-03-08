@@ -75,7 +75,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "u32" ]
                       ] in
-                  let* α1 := M.call α0 [ borrow_mut iter ] in
+                  let* α1 := M.call α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -128,7 +128,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                 M.call
                                                   (Ty.path
                                                       "core::fmt::rt::Argument")::["new_display"]
-                                                  [ borrow i ] in
+                                                  [ i ] in
                                               let* α5 := M.alloc [ α4 ] in
                                               let* α6 :=
                                                 M.call
@@ -137,19 +137,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   [
                                                     pointer_coercion
                                                       "Unsize"
-                                                      (borrow α3);
-                                                    pointer_coercion
-                                                      "Unsize"
-                                                      (borrow α5)
+                                                      α3;
+                                                    pointer_coercion "Unsize" α5
                                                   ] in
                                               let* α7 := M.call α0 [ α6 ] in
                                               M.alloc α7 in
                                             M.alloc tt in
                                           let* α0 := M.alloc tt in
                                           M.read α0) :
-                                          Ty.tuple []
+                                          _
                                       ]) :
-                                    Ty.tuple []
+                                    _
                                 ] in
                             let* α2 :=
                               M.call
@@ -161,7 +159,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                         [ Ty.tuple [] ];
                                       Ty.path "alloc::alloc::Global"
                                     ])::["push"]
-                                [ borrow_mut children; α1 ] in
+                                [ children; α1 ] in
                             M.alloc α2 in
                           M.alloc tt
                         | _ => M.break_match 
@@ -211,7 +209,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "alloc::alloc::Global"
                           ]
                     ] in
-                let* α1 := M.call α0 [ borrow_mut iter ] in
+                let* α1 := M.call α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2

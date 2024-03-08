@@ -19,7 +19,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
         let* β :=
           let* α0 := M.var "scoping_rules_lifetimes_methods::Owner::Get_0" in
           let* α1 := M.read self in
-          M.pure (α0 (deref α1)) in
+          M.pure (α0 α1) in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Panic::add" in
         let* α2 := M.read β in
@@ -54,15 +54,12 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow (α4 (deref α5)) ] in
+              [ α4 α5 ] in
           let* α7 := M.alloc [ α6 ] in
           let* α8 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α7)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in
         M.alloc tt in
@@ -95,13 +92,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.call
           (Ty.path "scoping_rules_lifetimes_methods::Owner")::["add_one"]
-          [ borrow_mut owner ] in
+          [ owner ] in
       M.alloc α0 in
     let* _ :=
       let* α0 :=
         M.call
           (Ty.path "scoping_rules_lifetimes_methods::Owner")::["print"]
-          [ borrow owner ] in
+          [ owner ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

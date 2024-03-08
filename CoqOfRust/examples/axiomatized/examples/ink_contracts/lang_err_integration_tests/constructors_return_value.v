@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_constructors_return_value_AccountId.
 
 Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_constructors_return_value_AccountId.
 
 Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
@@ -30,6 +32,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
@@ -42,13 +45,14 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
       "core::convert::From"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance :
   (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
-(* Enum ConstructorsReturnValue *)
+(* Struct ConstructorsReturnValue *)
 
 (* Enum LangError *)
 
@@ -69,7 +73,8 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructors_return_value::ConstructorError")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 
 (* Struct ReturnFlags *)

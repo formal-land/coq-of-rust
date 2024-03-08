@@ -9,6 +9,7 @@ Module Impl_core_marker_Copy_for_subtle_Choice.
       "core::marker::Copy"
       (* Self *) (Ty.path "subtle::Choice")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_subtle_Choice.
 
@@ -23,12 +24,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "subtle::Choice"
-          ] in
+          [ fun γ => (M.read self) : Ty.path "subtle::Choice" ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -38,7 +34,8 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       "core::clone::Clone"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
@@ -54,10 +51,10 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       let* α1 := M.read (mk_str "Choice") in
       let* α2 := M.var "subtle::Choice::Get_0" in
       let* α3 := M.read self in
-      let* α4 := M.alloc (borrow (α2 (deref α3))) in
+      let* α4 := M.alloc (α2 α3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" (borrow α4) ]
+        [ α0; α1; pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -66,7 +63,8 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       "core::fmt::Debug"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice.
@@ -83,7 +81,7 @@ Module Impl_subtle_Choice.
       let* self := M.alloc self in
       let* α0 := M.var "subtle::Choice::Get_0" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -149,7 +147,8 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
       "core::convert::From"
       (* Self *) (Ty.path "bool")
       [ (* T *) Ty.path "subtle::Choice" ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -187,7 +186,8 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       "core::ops::bit::BitAnd"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("bitand", InstanceField.Method bitand []) ].
+      [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ]
+      [].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -212,10 +212,10 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
               (* Rhs *) Ty.path "subtle::Choice"
             ] in
         let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
+        let* α3 := M.read α2 in
         let* α4 := M.read rhs in
         let* α5 := M.call α1 [ α3; α4 ] in
-        assign (deref α0) α5 in
+        assign α0 α5 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -226,7 +226,8 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       "core::ops::bit::BitAndAssign"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("bitand_assign", InstanceField.Method bitand_assign []) ].
+      [ ("bitand_assign", InstanceField.Method bitand_assign) ]
+      [].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -264,7 +265,8 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       "core::ops::bit::BitOr"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("bitor", InstanceField.Method bitor []) ].
+      [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ]
+      [].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -289,10 +291,10 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
               (* Rhs *) Ty.path "subtle::Choice"
             ] in
         let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
+        let* α3 := M.read α2 in
         let* α4 := M.read rhs in
         let* α5 := M.call α1 [ α3; α4 ] in
-        assign (deref α0) α5 in
+        assign α0 α5 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -303,7 +305,8 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       "core::ops::bit::BitOrAssign"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("bitor_assign", InstanceField.Method bitor_assign []) ].
+      [ ("bitor_assign", InstanceField.Method bitor_assign) ]
+      [].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -341,7 +344,8 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       "core::ops::bit::BitXor"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor []) ].
+      [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ]
+      [].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -366,10 +370,10 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
               (* Rhs *) Ty.path "subtle::Choice"
             ] in
         let* α2 := M.read self in
-        let* α3 := M.read (deref α2) in
+        let* α3 := M.read α2 in
         let* α4 := M.read rhs in
         let* α5 := M.call α1 [ α3; α4 ] in
-        assign (deref α0) α5 in
+        assign α0 α5 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -380,7 +384,8 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       "core::ops::bit::BitXorAssign"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("bitxor_assign", InstanceField.Method bitxor_assign []) ].
+      [ ("bitxor_assign", InstanceField.Method bitxor_assign) ]
+      [].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
@@ -416,7 +421,8 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       "core::ops::bit::Not"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("Output", TODO); ("not", InstanceField.Method not []) ].
+      [ ("Output", TODO); ("not", InstanceField.Method not) ]
+      [].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 (*
@@ -472,7 +478,7 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
       else
         M.alloc tt in
     let* α0 := M.var "core::ptr::read_volatile" in
-    let* α1 := M.alloc (addr_of input) in
+    let* α1 := M.alloc input in
     let* α2 := M.read (use α1) in
     let* α3 := M.call α0 [ α2 ] in
     let* α0 := M.alloc α3 in
@@ -504,7 +510,8 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
       "core::convert::From"
       (* Self *) (Ty.path "subtle::Choice")
       [ (* T *) Ty.path "u8" ]
-      [ ("from", InstanceField.Method from []) ].
+      [ ("from", InstanceField.Method from) ]
+      [].
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
@@ -644,7 +651,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                     [ T ]
                                 ]
                           ] in
-                      let* α1 := M.call α0 [ borrow_mut iter ] in
+                      let* α1 := M.call α0 [ iter ] in
                       let* α2 := M.alloc α1 in
                       match_operator
                         α2
@@ -692,7 +699,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                   let* α8 :=
                                     M.call
                                       (Ty.path "subtle::Choice")::["unwrap_u8"]
-                                      [ borrow α7 ] in
+                                      [ α7 ] in
                                   α0 β (α1 α2 α8) in
                                 M.alloc tt
                               end
@@ -722,7 +729,8 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "slice") [ T ])
       []
-      [ ("ct_eq", InstanceField.Method ct_eq [ T ]) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [ T ].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -750,9 +758,9 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
             (* Rhs *) Ty.path "subtle::Choice"
           ] in
       let* α2 := M.read self in
-      let* α3 := M.read (deref α2) in
+      let* α3 := M.read α2 in
       let* α4 := M.read rhs in
-      let* α5 := M.read (deref α4) in
+      let* α5 := M.read α4 in
       let* α6 := M.call α1 [ α3; α5 ] in
       M.call α0 [ α6 ]
     | _, _ => M.impossible
@@ -763,7 +771,8 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
@@ -833,7 +842,8 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u8")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
@@ -854,12 +864,12 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
           "ct_eq"
           [ (* Self *) Ty.path "u8" ] in
       let* α1 := M.read self in
-      let* α2 := M.read (deref α1) in
+      let* α2 := M.read α1 in
       let* α3 := M.alloc (rust_cast α2) in
       let* α4 := M.read other in
-      let* α5 := M.read (deref α4) in
+      let* α5 := M.read α4 in
       let* α6 := M.alloc (rust_cast α5) in
-      M.call α0 [ borrow α3; borrow α6 ]
+      M.call α0 [ α3; α6 ]
     | _, _ => M.impossible
     end.
   
@@ -868,7 +878,8 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i8")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
@@ -936,7 +947,8 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u16")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
@@ -957,12 +969,12 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
           "ct_eq"
           [ (* Self *) Ty.path "u16" ] in
       let* α1 := M.read self in
-      let* α2 := M.read (deref α1) in
+      let* α2 := M.read α1 in
       let* α3 := M.alloc (rust_cast α2) in
       let* α4 := M.read other in
-      let* α5 := M.read (deref α4) in
+      let* α5 := M.read α4 in
       let* α6 := M.alloc (rust_cast α5) in
-      M.call α0 [ borrow α3; borrow α6 ]
+      M.call α0 [ α3; α6 ]
     | _, _ => M.impossible
     end.
   
@@ -971,7 +983,8 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i16")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
@@ -1039,7 +1052,8 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u32")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
@@ -1060,12 +1074,12 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
           "ct_eq"
           [ (* Self *) Ty.path "u32" ] in
       let* α1 := M.read self in
-      let* α2 := M.read (deref α1) in
+      let* α2 := M.read α1 in
       let* α3 := M.alloc (rust_cast α2) in
       let* α4 := M.read other in
-      let* α5 := M.read (deref α4) in
+      let* α5 := M.read α4 in
       let* α6 := M.alloc (rust_cast α5) in
-      M.call α0 [ borrow α3; borrow α6 ]
+      M.call α0 [ α3; α6 ]
     | _, _ => M.impossible
     end.
   
@@ -1074,7 +1088,8 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i32")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
@@ -1142,7 +1157,8 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u64")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
@@ -1163,12 +1179,12 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
           "ct_eq"
           [ (* Self *) Ty.path "u64" ] in
       let* α1 := M.read self in
-      let* α2 := M.read (deref α1) in
+      let* α2 := M.read α1 in
       let* α3 := M.alloc (rust_cast α2) in
       let* α4 := M.read other in
-      let* α5 := M.read (deref α4) in
+      let* α5 := M.read α4 in
       let* α6 := M.alloc (rust_cast α5) in
-      M.call α0 [ borrow α3; borrow α6 ]
+      M.call α0 [ α3; α6 ]
     | _, _ => M.impossible
     end.
   
@@ -1177,7 +1193,8 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i64")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
@@ -1246,7 +1263,8 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "usize")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
@@ -1267,12 +1285,12 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
           "ct_eq"
           [ (* Self *) Ty.path "usize" ] in
       let* α1 := M.read self in
-      let* α2 := M.read (deref α1) in
+      let* α2 := M.read α1 in
       let* α3 := M.alloc (rust_cast α2) in
       let* α4 := M.read other in
-      let* α5 := M.read (deref α4) in
+      let* α5 := M.read α4 in
       let* α6 := M.alloc (rust_cast α5) in
-      M.call α0 [ borrow α3; borrow α6 ]
+      M.call α0 [ α3; α6 ]
     | _, _ => M.impossible
     end.
   
@@ -1281,7 +1299,8 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "isize")
       []
-      [ ("ct_eq", InstanceField.Method ct_eq []) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [].
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
@@ -1302,8 +1321,8 @@ Module ConditionallySelectable.
         let* α2 := M.read self in
         let* α3 := M.read other in
         let* α4 := M.read choice in
-        let* α5 := M.call α1 [ borrow (deref α2); α3; α4 ] in
-        assign (deref α0) α5 in
+        let* α5 := M.call α1 [ α2; α3; α4 ] in
+        assign α0 α5 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -1319,7 +1338,7 @@ Module ConditionallySelectable.
       let* choice := M.alloc choice in
       let* t :=
         let* α0 := M.read a in
-        M.copy (deref α0) in
+        M.copy α0 in
       let* _ :=
         let* α0 :=
           M.get_method
@@ -1329,7 +1348,7 @@ Module ConditionallySelectable.
         let* α1 := M.read a in
         let* α2 := M.read b in
         let* α3 := M.read choice in
-        let* α4 := M.call α0 [ α1; borrow (deref α2); α3 ] in
+        let* α4 := M.call α0 [ α1; α2; α3 ] in
         M.alloc α4 in
       let* _ :=
         let* α0 :=
@@ -1339,7 +1358,7 @@ Module ConditionallySelectable.
             [ (* Self *) Self ] in
         let* α1 := M.read b in
         let* α2 := M.read choice in
-        let* α3 := M.call α0 [ α1; borrow t; α2 ] in
+        let* α3 := M.call α0 [ α1; t; α2 ] in
         M.alloc α3 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -1368,7 +1387,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* α0 :=
@@ -1416,13 +1435,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1430,9 +1447,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -1458,7 +1475,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* t :=
@@ -1466,23 +1483,19 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1499,10 +1512,11 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       (* Self *) (Ty.path "u8")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
@@ -1523,7 +1537,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -1572,14 +1586,12 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1587,9 +1599,9 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -1615,7 +1627,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -1624,23 +1636,19 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1657,10 +1665,11 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       (* Self *) (Ty.path "i8")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
@@ -1681,7 +1690,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* α0 :=
@@ -1729,13 +1738,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1743,9 +1750,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -1771,7 +1778,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* t :=
@@ -1779,23 +1786,19 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1812,10 +1815,11 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       (* Self *) (Ty.path "u16")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
@@ -1836,7 +1840,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -1885,14 +1889,12 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1900,9 +1902,9 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -1928,7 +1930,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -1937,23 +1939,19 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -1970,10 +1968,11 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       (* Self *) (Ty.path "i16")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
@@ -1994,7 +1993,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* α0 :=
@@ -2042,13 +2041,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2056,9 +2053,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -2084,7 +2081,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* t :=
@@ -2092,23 +2089,19 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2125,10 +2118,11 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       (* Self *) (Ty.path "u32")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
@@ -2149,7 +2143,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -2198,14 +2192,12 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2213,9 +2205,9 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -2241,7 +2233,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -2250,23 +2242,19 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2283,10 +2271,11 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       (* Self *) (Ty.path "i32")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
@@ -2307,7 +2296,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* α0 :=
@@ -2355,13 +2344,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2369,9 +2356,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -2397,7 +2384,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         M.alloc (rust_cast α2) in
       let* t :=
@@ -2405,23 +2392,19 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2438,10 +2421,11 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       (* Self *) (Ty.path "u64")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
@@ -2462,7 +2446,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -2511,14 +2495,12 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read self in
-          M.pure (deref α0) in
+        let* β := M.read self in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2526,9 +2508,9 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let* α4 := M.read mask in
         let* α5 := M.var "BinOp::Pure::bit_xor" in
         let* α6 := M.read self in
-        let* α7 := M.read (deref α6) in
+        let* α7 := M.read α6 in
         let* α8 := M.read other in
-        let* α9 := M.read (deref α8) in
+        let* α9 := M.read α8 in
         α0 β (α1 α2 (α3 α4 (α5 α7 α9))) in
       let* α0 := M.alloc tt in
       M.read α0
@@ -2554,7 +2536,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* mask :=
         let* α0 := M.var "UnOp::neg" in
         let* α1 :=
-          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow choice ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ choice ] in
         let* α2 := α0 (rust_cast α1) in
         let* α3 := M.alloc α2 in
         M.copy (use α3) in
@@ -2563,23 +2545,19 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let* α1 := M.read mask in
         let* α2 := M.var "BinOp::Pure::bit_xor" in
         let* α3 := M.read a in
-        let* α4 := M.read (deref α3) in
+        let* α4 := M.read α3 in
         let* α5 := M.read b in
-        let* α6 := M.read (deref α5) in
+        let* α6 := M.read α5 in
         M.alloc (α0 α1 (α2 α4 α6)) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read a in
-          M.pure (deref α0) in
+        let* β := M.read a in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
         let* α3 := M.read t in
         α0 β (α1 α2 α3) in
       let* _ :=
-        let* β :=
-          let* α0 := M.read b in
-          M.pure (deref α0) in
+        let* β := M.read b in
         let* α0 := M.var "assign" in
         let* α1 := M.var "BinOp::Pure::bit_xor" in
         let* α2 := M.read β in
@@ -2596,10 +2574,11 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       (* Self *) (Ty.path "i64")
       []
       [
-        ("conditional_select", InstanceField.Method conditional_select []);
-        ("conditional_assign", InstanceField.Method conditional_assign []);
-        ("conditional_swap", InstanceField.Method conditional_swap [])
-      ].
+        ("conditional_select", InstanceField.Method conditional_select);
+        ("conditional_assign", InstanceField.Method conditional_assign);
+        ("conditional_swap", InstanceField.Method conditional_swap)
+      ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
@@ -2624,8 +2603,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       let* α3 := M.var "subtle::Choice::Get_0" in
       let* α4 := M.read b in
       let* α5 := M.read choice in
-      let* α6 :=
-        M.call α0 [ borrow (α1 (deref α2)); borrow (α3 (deref α4)); α5 ] in
+      let* α6 := M.call α0 [ α1 α2; α3 α4; α5 ] in
       M.pure (Value.StructTuple "subtle::Choice" [ α6 ])
     | _, _ => M.impossible
     end.
@@ -2635,7 +2613,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.path "subtle::Choice")
       []
-      [ ("conditional_select", InstanceField.Method conditional_select []) ].
+      [ ("conditional_select", InstanceField.Method conditional_select) ]
+      [].
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 (* Trait *)
@@ -2663,7 +2642,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
             "neg"
             [ (* Self *) Ty.apply (Ty.path "ref") [ T ] ] in
         let* α1 := M.read self in
-        let* α2 := M.alloc (borrow (deref α1)) in
+        let* α2 := M.alloc α1 in
         let* α3 := M.read (use α2) in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
@@ -2675,7 +2654,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
             [ (* Self *) T ] in
         let* α1 := M.read self in
         let* α2 := M.read choice in
-        let* α3 := M.call α0 [ α1; borrow self_neg; α2 ] in
+        let* α3 := M.call α0 [ α1; self_neg; α2 ] in
         M.alloc α3 in
       let* α0 := M.alloc tt in
       M.read α0
@@ -2688,10 +2667,11 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
       "subtle::ConditionallyNegatable"
       (* Self *) T
       []
-      [ ("conditional_negate", InstanceField.Method conditional_negate [ T ]) ].
+      [ ("conditional_negate", InstanceField.Method conditional_negate) ]
+      [ T ].
 End Impl_subtle_ConditionallyNegatable_for_T.
 
-(* Enum CtOption *)
+(* Struct CtOption *)
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   (*
@@ -2704,7 +2684,7 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       let* α0 := M.get_method "core::clone::Clone" "clone" [ (* Self *) T ] in
       let* α1 := M.var "subtle::CtOption::Get_value" in
       let* α2 := M.read self in
-      let* α3 := M.call α0 [ borrow (α1 (deref α2)) ] in
+      let* α3 := M.call α0 [ α1 α2 ] in
       let* α4 :=
         M.get_method
           "core::clone::Clone"
@@ -2712,7 +2692,7 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
           [ (* Self *) Ty.path "subtle::Choice" ] in
       let* α5 := M.var "subtle::CtOption::Get_is_some" in
       let* α6 := M.read self in
-      let* α7 := M.call α4 [ borrow (α5 (deref α6)) ] in
+      let* α7 := M.call α4 [ α5 α6 ] in
       M.pure
         (Value.StructRecord
           "subtle::CtOption"
@@ -2726,7 +2706,8 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       "core::clone::Clone"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("clone", InstanceField.Method clone [ T ]) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [ T ].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -2736,7 +2717,8 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
       "core::marker::Copy"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [].
+      []
+      [ T ].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -2756,16 +2738,16 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       let* α5 := M.read (mk_str "is_some") in
       let* α6 := M.var "subtle::CtOption::Get_is_some" in
       let* α7 := M.read self in
-      let* α8 := M.alloc (borrow (α6 (deref α7))) in
+      let* α8 := M.alloc (α6 α7) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion "Unsize" (borrow (α3 (deref α4)));
+          pointer_coercion "Unsize" (α3 α4);
           α5;
-          pointer_coercion "Unsize" (borrow α8)
+          pointer_coercion "Unsize" α8
         ]
     | _, _ => M.impossible
     end.
@@ -2776,7 +2758,8 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       "core::fmt::Debug"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("fmt", InstanceField.Method fmt [ T ]) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [ T ].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
@@ -2797,10 +2780,9 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       let* α1 :=
         M.call
           (Ty.apply (Ty.path "subtle::CtOption") [ T ])::["is_some"]
-          [ borrow source ] in
+          [ source ] in
       let* α2 := M.alloc α1 in
-      let* α3 :=
-        M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ borrow α2 ] in
+      let* α3 := M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ α2 ] in
       let* α4 := M.alloc (α0 α3 ((Integer.of_Z 1) : Ty.path "u8")) in
       let* α5 := M.read (use α4) in
       let* α6 :=
@@ -2820,7 +2802,8 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       "core::convert::From"
       (* Self *) (Ty.apply (Ty.path "core::option::Option") [ T ])
       [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
-      [ ("from", InstanceField.Method from [ T ]) ].
+      [ ("from", InstanceField.Method from) ]
+      [ T ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -2868,12 +2851,10 @@ Module Impl_subtle_CtOption_T.
       let* _ :=
         let* α0 := M.var "subtle::CtOption::Get_is_some" in
         let* α1 :=
-          M.call
-            (Ty.path "subtle::Choice")::["unwrap_u8"]
-            [ borrow (α0 self) ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ α0 self ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
-        let* α4 := M.alloc (borrow α2, borrow α3) in
+        let* α4 := M.alloc (α2, α3) in
         match_operator
           α4
           [
@@ -2888,9 +2869,9 @@ Module Impl_subtle_CtOption_T.
                 let* α0 := M.var "UnOp::not" in
                 let* α1 := M.var "BinOp::Pure::eq" in
                 let* α2 := M.read left_val in
-                let* α3 := M.read (deref α2) in
+                let* α3 := M.read α2 in
                 let* α4 := M.read right_val in
-                let* α5 := M.read (deref α4) in
+                let* α5 := M.read α4 in
                 let* α6 := M.alloc (α0 (α1 α3 α5)) in
                 let* α7 := M.read (use α6) in
                 if α7 then
@@ -2904,14 +2885,14 @@ Module Impl_subtle_CtOption_T.
                   let* α6 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ borrow msg ] in
+                      [ msg ] in
                   let* α7 := M.alloc [ α6 ] in
                   let* α8 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α5);
-                        pointer_coercion "Unsize" (borrow α7)
+                        pointer_coercion "Unsize" α5;
+                        pointer_coercion "Unsize" α7
                       ] in
                   let* α9 :=
                     M.call
@@ -2954,12 +2935,10 @@ Module Impl_subtle_CtOption_T.
       let* _ :=
         let* α0 := M.var "subtle::CtOption::Get_is_some" in
         let* α1 :=
-          M.call
-            (Ty.path "subtle::Choice")::["unwrap_u8"]
-            [ borrow (α0 self) ] in
+          M.call (Ty.path "subtle::Choice")::["unwrap_u8"] [ α0 self ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
-        let* α4 := M.alloc (borrow α2, borrow α3) in
+        let* α4 := M.alloc (α2, α3) in
         match_operator
           α4
           [
@@ -2974,9 +2953,9 @@ Module Impl_subtle_CtOption_T.
                 let* α0 := M.var "UnOp::not" in
                 let* α1 := M.var "BinOp::Pure::eq" in
                 let* α2 := M.read left_val in
-                let* α3 := M.read (deref α2) in
+                let* α3 := M.read α2 in
                 let* α4 := M.read right_val in
-                let* α5 := M.read (deref α4) in
+                let* α5 := M.read α4 in
                 let* α6 := M.alloc (α0 (α1 α3 α5)) in
                 let* α7 := M.read (use α6) in
                 if α7 then
@@ -3026,7 +3005,7 @@ Module Impl_subtle_CtOption_T.
       let* α1 := M.var "subtle::CtOption::Get_value" in
       let* α2 := M.var "subtle::CtOption::Get_is_some" in
       let* α3 := M.read (α2 self) in
-      M.call α0 [ borrow def; borrow (α1 self); α3 ]
+      M.call α0 [ def; α1 self; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -3064,7 +3043,7 @@ Module Impl_subtle_CtOption_T.
       let* α5 := M.var "subtle::CtOption::Get_value" in
       let* α6 := M.var "subtle::CtOption::Get_is_some" in
       let* α7 := M.read (α6 self) in
-      M.call α0 [ borrow α4; borrow (α5 self); α7 ]
+      M.call α0 [ α4; α5 self; α7 ]
     | _, _ => M.impossible
     end.
   
@@ -3083,7 +3062,7 @@ Module Impl_subtle_CtOption_T.
       let* self := M.alloc self in
       let* α0 := M.var "subtle::CtOption::Get_is_some" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -3107,7 +3086,7 @@ Module Impl_subtle_CtOption_T.
           [ (* Self *) Ty.path "subtle::Choice" ] in
       let* α1 := M.var "subtle::CtOption::Get_is_some" in
       let* α2 := M.read self in
-      let* α3 := M.read (α1 (deref α2)) in
+      let* α3 := M.read (α1 α2) in
       M.call α0 [ α3 ]
     | _, _ => M.impossible
     end.
@@ -3155,7 +3134,7 @@ Module Impl_subtle_CtOption_T.
       let* α6 := M.var "subtle::CtOption::Get_value" in
       let* α7 := M.var "subtle::CtOption::Get_is_some" in
       let* α8 := M.read (α7 self) in
-      let* α9 := M.call α2 [ borrow α5; borrow (α6 self); α8 ] in
+      let* α9 := M.call α2 [ α5; α6 self; α8 ] in
       let* α10 := M.call α0 [ α1; (α9) ] in
       let* α11 := M.var "subtle::CtOption::Get_is_some" in
       let* α12 := M.read (α11 self) in
@@ -3207,7 +3186,7 @@ Module Impl_subtle_CtOption_T.
         let* α6 := M.var "subtle::CtOption::Get_value" in
         let* α7 := M.var "subtle::CtOption::Get_is_some" in
         let* α8 := M.read (α7 self) in
-        let* α9 := M.call α2 [ borrow α5; borrow (α6 self); α8 ] in
+        let* α9 := M.call α2 [ α5; α6 self; α8 ] in
         let* α10 := M.call α0 [ α1; (α9) ] in
         M.alloc α10 in
       let* _ :=
@@ -3222,7 +3201,7 @@ Module Impl_subtle_CtOption_T.
         let* α1 := M.var "subtle::CtOption::Get_is_some" in
         let* α2 := M.var "subtle::CtOption::Get_is_some" in
         let* α3 := M.read (α2 self) in
-        let* α4 := M.call α0 [ borrow_mut (α1 tmp); α3 ] in
+        let* α4 := M.call α0 [ α1 tmp; α3 ] in
         M.alloc α4 in
       M.read tmp
     | _, _ => M.impossible
@@ -3253,7 +3232,7 @@ Module Impl_subtle_CtOption_T.
         let* α0 :=
           M.call
             (Ty.apply (Ty.path "subtle::CtOption") [ T ])::["is_none"]
-            [ borrow self ] in
+            [ self ] in
         M.alloc α0 in
       let* f :=
         let* α0 :=
@@ -3270,7 +3249,7 @@ Module Impl_subtle_CtOption_T.
           "conditional_select"
           [ (* Self *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ] in
       let* α1 := M.read is_none in
-      let* α2 := M.call α0 [ borrow self; borrow f; α1 ] in
+      let* α2 := M.call α0 [ self; f; α1 ] in
       let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
@@ -3306,8 +3285,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       let* α3 := M.var "subtle::CtOption::Get_value" in
       let* α4 := M.read b in
       let* α5 := M.read choice in
-      let* α6 :=
-        M.call α0 [ borrow (α1 (deref α2)); borrow (α3 (deref α4)); α5 ] in
+      let* α6 := M.call α0 [ α1 α2; α3 α4; α5 ] in
       let* α7 :=
         M.get_method
           "subtle::ConditionallySelectable"
@@ -3318,8 +3296,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       let* α10 := M.var "subtle::CtOption::Get_is_some" in
       let* α11 := M.read b in
       let* α12 := M.read choice in
-      let* α13 :=
-        M.call α7 [ borrow (α8 (deref α9)); borrow (α10 (deref α11)); α12 ] in
+      let* α13 := M.call α7 [ α8 α9; α10 α11; α12 ] in
       M.call (Ty.apply (Ty.path "subtle::CtOption") [ T ])::["new"] [ α6; α13 ]
     | _, _ => M.impossible
     end.
@@ -3330,7 +3307,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       "subtle::ConditionallySelectable"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("conditional_select", InstanceField.Method conditional_select [ T ]) ].
+      [ ("conditional_select", InstanceField.Method conditional_select) ]
+      [ T ].
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -3394,8 +3372,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       let* α8 := M.read self in
       let* α9 := M.var "subtle::CtOption::Get_value" in
       let* α10 := M.read rhs in
-      let* α11 :=
-        M.call α6 [ borrow (α7 (deref α8)); borrow (α9 (deref α10)) ] in
+      let* α11 := M.call α6 [ α7 α8; α9 α10 ] in
       let* α12 := M.call α1 [ α5; α11 ] in
       let* α13 :=
         M.get_method
@@ -3432,7 +3409,8 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       []
-      [ ("ct_eq", InstanceField.Method ct_eq [ T ]) ].
+      [ ("ct_eq", InstanceField.Method ct_eq) ]
+      [ T ].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 (* Trait *)
@@ -3607,7 +3585,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u8")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
@@ -3776,7 +3755,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u16")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
@@ -3945,7 +3925,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u32")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
@@ -4114,7 +4095,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u64")
       []
-      [ ("ct_gt", InstanceField.Method ct_gt []) ].
+      [ ("ct_gt", InstanceField.Method ct_gt) ]
+      [].
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
@@ -4171,6 +4153,7 @@ Module Impl_subtle_ConstantTimeLess_for_u8.
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u8")
       []
+      []
       [].
 End Impl_subtle_ConstantTimeLess_for_u8.
 
@@ -4179,6 +4162,7 @@ Module Impl_subtle_ConstantTimeLess_for_u16.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u16")
+      []
       []
       [].
 End Impl_subtle_ConstantTimeLess_for_u16.
@@ -4189,6 +4173,7 @@ Module Impl_subtle_ConstantTimeLess_for_u32.
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u32")
       []
+      []
       [].
 End Impl_subtle_ConstantTimeLess_for_u32.
 
@@ -4197,6 +4182,7 @@ Module Impl_subtle_ConstantTimeLess_for_u64.
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u64")
+      []
       []
       [].
 End Impl_subtle_ConstantTimeLess_for_u64.

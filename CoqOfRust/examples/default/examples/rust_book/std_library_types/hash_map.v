@@ -110,7 +110,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ borrow_mut contacts; α0; α1 ] in
+          [ contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read (mk_str "Ashley") in
@@ -124,7 +124,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ borrow_mut contacts; α0; α1 ] in
+          [ contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read (mk_str "Katie") in
@@ -138,7 +138,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ borrow_mut contacts; α0; α1 ] in
+          [ contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.read (mk_str "Robert") in
@@ -152,7 +152,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ borrow_mut contacts; α0; α1 ] in
+          [ contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
@@ -164,7 +164,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["get"]
-          [ borrow contacts; borrow (mk_str "Daniel") ] in
+          [ contacts; mk_str "Daniel" ] in
       let* α1 := M.alloc α0 in
       match_operator
         α1
@@ -193,14 +193,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow α7 ] in
+                    [ α7 ] in
                 let* α9 := M.alloc [ α8 ] in
                 let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α9)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9
                     ] in
                 let* α11 := M.call α0 [ α10 ] in
                 M.alloc α11 in
@@ -217,7 +215,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α2) ] in
+                  [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt) :
@@ -235,7 +233,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ borrow_mut contacts; α0; α1 ] in
+          [ contacts; α0; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
@@ -247,7 +245,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["get"]
-          [ borrow contacts; borrow (mk_str "Ashley") ] in
+          [ contacts; mk_str "Ashley" ] in
       let* α1 := M.alloc α0 in
       match_operator
         α1
@@ -276,14 +274,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ borrow α7 ] in
+                    [ α7 ] in
                 let* α9 := M.alloc [ α8 ] in
                 let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [
-                      pointer_coercion "Unsize" (borrow α3);
-                      pointer_coercion "Unsize" (borrow α9)
+                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9
                     ] in
                 let* α11 := M.call α0 [ α10 ] in
                 M.alloc α11 in
@@ -300,7 +296,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α2) ] in
+                  [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt) :
@@ -316,7 +312,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply (Ty.path "ref") [ Ty.path "str" ];
                 Ty.path "std::hash::random::RandomState"
               ])::["remove"]
-          [ borrow_mut contacts; borrow (mk_str "Ashley") ] in
+          [ contacts; mk_str "Ashley" ] in
       M.alloc α0 in
     let* α0 :=
       M.get_method
@@ -340,7 +336,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "ref") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])::["iter"]
-        [ borrow contacts ] in
+        [ contacts ] in
     let* α2 := M.call α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
@@ -364,7 +360,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.apply (Ty.path "ref") [ Ty.path "str" ]
                           ]
                     ] in
-                let* α1 := M.call α0 [ borrow_mut iter ] in
+                let* α1 := M.call α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -409,7 +405,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.call
                                   (Ty.path
                                       "core::fmt::rt::Argument")::["new_display"]
-                                  [ borrow contact ] in
+                                  [ contact ] in
                               let* α6 := M.var "hash_map::call" in
                               let* α7 := M.read number in
                               let* α8 := M.call α6 [ α7 ] in
@@ -418,14 +414,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.call
                                   (Ty.path
                                       "core::fmt::rt::Argument")::["new_display"]
-                                  [ borrow α9 ] in
+                                  [ α9 ] in
                               let* α11 := M.alloc [ α5; α10 ] in
                               let* α12 :=
                                 M.call
                                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                                   [
-                                    pointer_coercion "Unsize" (borrow α4);
-                                    pointer_coercion "Unsize" (borrow α11)
+                                    pointer_coercion "Unsize" α4;
+                                    pointer_coercion "Unsize" α11
                                   ] in
                               let* α13 := M.call α0 [ α12 ] in
                               M.alloc α13 in

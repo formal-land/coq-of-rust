@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_custom_environment_AccountId.
 
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "custom_environment::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
 
 Module Impl_core_marker_Copy_for_custom_environment_AccountId.
@@ -31,12 +33,13 @@ Module Impl_core_marker_Copy_for_custom_environment_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "custom_environment::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 
-(* Enum Env *)
+(* Struct Env *)
 
 (* Struct Topics *)
 
@@ -48,10 +51,11 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::Topics")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_custom_environment_Topics.
 
-(* Enum EventWithTopics *)
+(* Struct EventWithTopics *)
 
 Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
@@ -61,7 +65,8 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::EventWithTopics")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)

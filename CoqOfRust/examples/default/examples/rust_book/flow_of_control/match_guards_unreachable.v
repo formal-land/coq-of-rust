@@ -32,7 +32,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α2) ] in
+                  [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt) :
@@ -47,14 +47,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" (borrow α2) ] in
+                  [ pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt) :
             Ty.tuple [];
           fun γ =>
             (let* α0 := M.var "core::panicking::unreachable_display" in
-            let* α1 := M.call α0 [ borrow (mk_str "Should never happen.") ] in
+            let* α1 := M.call α0 [ mk_str "Should never happen." ] in
             let* α2 := never_to_any α1 in
             M.alloc α2) :
             Ty.tuple []

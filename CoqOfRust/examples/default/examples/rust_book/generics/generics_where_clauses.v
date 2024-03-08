@@ -27,17 +27,12 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α5 :=
             M.alloc (Value.StructTuple "core::option::Option::Some" [ α4 ]) in
           let* α6 :=
-            M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              [ borrow α5 ] in
+            M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α5 ] in
           let* α7 := M.alloc [ α6 ] in
           let* α8 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α7)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in
         M.alloc tt in
@@ -52,7 +47,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       "generics_where_clauses::PrintInOption"
       (* Self *) T
       []
-      [ ("print_in_option", InstanceField.Method print_in_option [ T ]) ].
+      [ ("print_in_option", InstanceField.Method print_in_option) ]
+      [ T ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (*

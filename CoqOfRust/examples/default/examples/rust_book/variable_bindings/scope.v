@@ -39,15 +39,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α4 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ borrow short_lived_binding ] in
+              [ short_lived_binding ] in
           let* α5 := M.alloc [ α4 ] in
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [
-                pointer_coercion "Unsize" (borrow α3);
-                pointer_coercion "Unsize" (borrow α5)
-              ] in
+              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
@@ -62,15 +59,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow long_lived_binding ] in
+            [ long_lived_binding ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

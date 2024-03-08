@@ -65,7 +65,8 @@ Module checked.
         "core::fmt::Debug"
         (* Self *) (Ty.path "result::checked::MathError")
         []
-        [ ("fmt", InstanceField.Method fmt []) ].
+        [ ("fmt", InstanceField.Method fmt) ]
+        [].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :
@@ -220,14 +221,12 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                  [ borrow why ] in
+                  [ why ] in
               let* α4 := M.alloc [ α3 ] in
               let* α5 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [
-                    pointer_coercion "Unsize" (borrow α2);
-                    pointer_coercion "Unsize" (borrow α4)
+                  [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
                   ] in
               let* α6 := M.call α0 [ α5 ] in
               let* α7 := never_to_any α6 in
@@ -264,14 +263,14 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α3 :=
                         M.call
                           (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                          [ borrow why ] in
+                          [ why ] in
                       let* α4 := M.alloc [ α3 ] in
                       let* α5 :=
                         M.call
                           (Ty.path "core::fmt::Arguments")::["new_v1"]
                           [
-                            pointer_coercion "Unsize" (borrow α2);
-                            pointer_coercion "Unsize" (borrow α4)
+                            pointer_coercion "Unsize" α2;
+                            pointer_coercion "Unsize" α4
                           ] in
                       let* α6 := M.call α0 [ α5 ] in
                       let* α7 := never_to_any α6 in
@@ -310,14 +309,14 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.call
                                   (Ty.path
                                       "core::fmt::rt::Argument")::["new_debug"]
-                                  [ borrow why ] in
+                                  [ why ] in
                               let* α4 := M.alloc [ α3 ] in
                               let* α5 :=
                                 M.call
                                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                                   [
-                                    pointer_coercion "Unsize" (borrow α2);
-                                    pointer_coercion "Unsize" (borrow α4)
+                                    pointer_coercion "Unsize" α2;
+                                    pointer_coercion "Unsize" α4
                                   ] in
                               let* α6 := M.call α0 [ α5 ] in
                               let* α7 := never_to_any α6 in
@@ -374,17 +373,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.call α4 [ α5; α6 ] in
         let* α8 := M.alloc α7 in
         let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α8 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α8 ] in
         let* α10 := M.alloc [ α9 ] in
         let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α10)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
       M.alloc tt in

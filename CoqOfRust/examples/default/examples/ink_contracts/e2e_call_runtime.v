@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
@@ -39,12 +40,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "e2e_call_runtime::AccountId"
-          ] in
+          [ fun γ => (M.read self) : Ty.path "e2e_call_runtime::AccountId" ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -54,7 +50,8 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
 
 Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
@@ -63,12 +60,13 @@ Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "e2e_call_runtime::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_e2e_call_runtime_Env.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Env".
@@ -110,7 +108,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
       "core::default::Default"
       (* Self *) (Ty.path "e2e_call_runtime::Contract")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_e2e_call_runtime_Contract.
 
 Module Impl_e2e_call_runtime_Contract.
@@ -175,7 +174,7 @@ Module Impl_e2e_call_runtime_Contract.
       let* α1 :=
         M.call (Ty.path "e2e_call_runtime::Contract")::["env"] [ α0 ] in
       let* α2 := M.alloc α1 in
-      M.call (Ty.path "e2e_call_runtime::Env")::["balance"] [ borrow α2 ]
+      M.call (Ty.path "e2e_call_runtime::Env")::["balance"] [ α2 ]
     | _, _ => M.impossible
     end.
   

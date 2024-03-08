@@ -66,7 +66,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α2) ] in
+            [ pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -108,7 +108,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::ops::range::RangeFrom")
                             [ Ty.path "u32" ]
                       ] in
-                  let* α1 := M.call α0 [ borrow_mut iter ] in
+                  let* α1 := M.call α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -183,17 +183,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow acc ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ acc ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -308,9 +303,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α1 := M.read n in
                     let* α2 := M.read n in
                     α0 α1 α2) :
-                    Ty.path "u32"
+                    _
                 ]) :
-              Ty.path "u32"
+              _
           ] in
       let* α5 :=
         M.call
@@ -331,9 +326,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α1 := M.read n_squared in
                     let* α2 := M.read upper in
                     M.pure (α0 α1 α2)) :
-                    Ty.path "bool"
+                    _
                 ]) :
-              Ty.path "bool"
+              _
           ] in
       let* α6 :=
         M.call
@@ -353,9 +348,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.var "higher_order_functions::is_odd" in
                     let* α1 := M.read n_squared in
                     M.call α0 [ α1 ]) :
-                    Ty.path "bool"
+                    _
                 ]) :
-              Ty.path "bool"
+              _
           ] in
       let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in
@@ -369,15 +364,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow sum_of_squared_odd_numbers ] in
+            [ sum_of_squared_odd_numbers ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

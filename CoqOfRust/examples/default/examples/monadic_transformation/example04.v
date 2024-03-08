@@ -12,7 +12,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* x :=
       let* α0 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
-      M.alloc (borrow α0) in
+      M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

@@ -12,7 +12,8 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -24,7 +25,8 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -33,6 +35,7 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -48,7 +51,8 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -60,7 +64,8 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -69,6 +74,7 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -87,7 +93,8 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [ ("fmt", InstanceField.Method fmt [ Unit ]) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [ Unit ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -102,7 +109,8 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [ ("clone", InstanceField.Method clone [ Unit ]) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [ Unit ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -115,7 +123,8 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [].
+      []
+      [ Unit ].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -135,7 +144,8 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [ ("Output", TODO); ("add", InstanceField.Method add [ Unit ]) ].
+      [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      [ Unit ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

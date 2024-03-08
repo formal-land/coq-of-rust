@@ -18,10 +18,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call (Ty.path "std::process::Command")::["new"] [ α0 ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.read (mk_str "5") in
-      let* α4 :=
-        M.call
-          (Ty.path "std::process::Command")::["arg"]
-          [ borrow_mut α2; α3 ] in
+      let* α4 := M.call (Ty.path "std::process::Command")::["arg"] [ α2; α3 ] in
       let* α5 := M.call (Ty.path "std::process::Command")::["spawn"] [ α4 ] in
       let* α6 :=
         M.call
@@ -32,8 +29,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ α5 ] in
       M.alloc α6 in
     let* _result :=
-      let* α0 :=
-        M.call (Ty.path "std::process::Child")::["wait"] [ borrow_mut child ] in
+      let* α0 := M.call (Ty.path "std::process::Child")::["wait"] [ child ] in
       let* α1 :=
         M.call
           (Ty.apply
@@ -53,7 +49,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" (borrow α2) ] in
+            [ pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in

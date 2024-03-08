@@ -72,7 +72,8 @@ Module checked.
         (* Self *)
           (Ty.path "result_chaining_with_question_mark::checked::MathError")
         []
-        [ ("fmt", InstanceField.Method fmt []) ].
+        [ ("fmt", InstanceField.Method fmt) ]
+        [].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :
@@ -462,7 +463,7 @@ Module checked.
                         end) :
                         Ty.apply (Ty.path "ref") [ Ty.path "str" ]
                     ] in
-                let* α2 := M.call α0 [ borrow α1 ] in
+                let* α2 := M.call α0 [ α1 ] in
                 let* α3 := never_to_any α2 in
                 M.alloc α3
               | _ => M.break_match 
@@ -485,14 +486,14 @@ Module checked.
                   let* α4 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ borrow value ] in
+                      [ value ] in
                   let* α5 := M.alloc [ α4 ] in
                   let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" (borrow α3);
-                        pointer_coercion "Unsize" (borrow α5)
+                        pointer_coercion "Unsize" α3;
+                        pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in

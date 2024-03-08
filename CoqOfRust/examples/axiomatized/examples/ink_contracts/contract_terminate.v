@@ -11,7 +11,8 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_terminate::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_contract_terminate_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
@@ -22,7 +23,8 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_terminate::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_contract_terminate_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
@@ -31,10 +33,11 @@ Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_terminate::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_contract_terminate_Env.
   Definition Self : Ty.t := Ty.path "contract_terminate::Env".

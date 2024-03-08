@@ -13,7 +13,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := match_operator (deref α0) [] in
+      let* α1 := match_operator α0 [] in
       let* α2 := M.read α1 in
       never_to_any α2
     | _, _ => M.impossible
@@ -25,7 +25,8 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -37,7 +38,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (deref α0)
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -47,7 +48,8 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -56,6 +58,7 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -72,7 +75,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := match_operator (deref α0) [] in
+      let* α1 := match_operator α0 [] in
       let* α2 := M.read α1 in
       never_to_any α2
     | _, _ => M.impossible
@@ -84,7 +87,8 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -96,7 +100,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (deref α0)
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -106,7 +110,8 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -115,6 +120,7 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
+      []
       []
       [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -140,14 +146,14 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         M.var
           "generics_phantom_type_test_case_unit_clarification::Length::Get_1" in
       let* α5 := M.read self in
-      let* α6 := M.alloc (borrow (α4 (deref α5))) in
+      let* α6 := M.alloc (α4 α5) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field2_finish"]
         [
           α0;
           α1;
-          pointer_coercion "Unsize" (borrow (α2 (deref α3)));
-          pointer_coercion "Unsize" (borrow α6)
+          pointer_coercion "Unsize" (α2 α3);
+          pointer_coercion "Unsize" α6
         ]
     | _, _ => M.impossible
     end.
@@ -161,7 +167,8 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [ ("fmt", InstanceField.Method fmt [ Unit ]) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [ Unit ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -181,7 +188,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
         M.var
           "generics_phantom_type_test_case_unit_clarification::Length::Get_0" in
       let* α2 := M.read self in
-      let* α3 := M.call α0 [ borrow (α1 (deref α2)) ] in
+      let* α3 := M.call α0 [ α1 α2 ] in
       let* α4 :=
         M.get_method
           "core::clone::Clone"
@@ -192,7 +199,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
         M.var
           "generics_phantom_type_test_case_unit_clarification::Length::Get_1" in
       let* α6 := M.read self in
-      let* α7 := M.call α4 [ borrow (α5 (deref α6)) ] in
+      let* α7 := M.call α4 [ α5 α6 ] in
       M.pure
         (Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
@@ -209,7 +216,8 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [ ("clone", InstanceField.Method clone [ Unit ]) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [ Unit ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -222,7 +230,8 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [].
+      []
+      [ Unit ].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
@@ -271,7 +280,8 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       []
-      [ ("Output", TODO); ("add", InstanceField.Method add [ Unit ]) ].
+      [ ("Output", TODO); ("add", InstanceField.Method add) ]
+      [ Unit ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (*
@@ -380,15 +390,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow (α4 two_feet) ] in
+            [ α4 two_feet ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α6)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -405,15 +412,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ borrow (α4 two_meters) ] in
+            [ α4 two_meters ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α6)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in

@@ -25,7 +25,8 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_terminate::AccountId")
       []
-      [ ("default", InstanceField.Method default []) ].
+      [ ("default", InstanceField.Method default) ]
+      [].
 End Impl_core_default_Default_for_contract_terminate_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
@@ -39,11 +40,7 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (let* α0 := M.read self in
-              M.pure (deref α0)) :
-              Ty.path "contract_terminate::AccountId"
+          [ fun γ => (M.read self) : Ty.path "contract_terminate::AccountId"
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -54,7 +51,8 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_terminate::AccountId")
       []
-      [ ("clone", InstanceField.Method clone []) ].
+      [ ("clone", InstanceField.Method clone) ]
+      [].
 End Impl_core_clone_Clone_for_contract_terminate_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
@@ -63,10 +61,11 @@ Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_terminate::AccountId")
       []
+      []
       [].
 End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 
-(* Enum Env *)
+(* Struct Env *)
 
 Module Impl_contract_terminate_Env.
   Definition Self : Ty.t := Ty.path "contract_terminate::Env".
@@ -82,7 +81,7 @@ Module Impl_contract_terminate_Env.
       let* self := M.alloc self in
       let* α0 := M.var "contract_terminate::Env::Get_caller" in
       let* α1 := M.read self in
-      M.read (α0 (deref α1))
+      M.read (α0 α1)
     | _, _ => M.impossible
     end.
   
@@ -175,22 +174,20 @@ Module Impl_contract_terminate_JustTerminate.
         let* α1 :=
           M.call
             (Ty.path "contract_terminate::JustTerminate")::["env"]
-            [ borrow (deref α0) ] in
+            [ α0 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.read self in
         let* α4 :=
           M.call
             (Ty.path "contract_terminate::JustTerminate")::["env"]
-            [ borrow (deref α3) ] in
+            [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          M.call
-            (Ty.path "contract_terminate::Env")::["caller"]
-            [ borrow α5 ] in
+          M.call (Ty.path "contract_terminate::Env")::["caller"] [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "contract_terminate::Env")::["terminate_contract"]
-            [ borrow α2; α6 ] in
+            [ α2; α6 ] in
         M.alloc α7 in
       let* α0 := M.alloc tt in
       M.read α0

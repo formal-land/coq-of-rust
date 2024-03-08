@@ -11,7 +11,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Food")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct Peeled *)
@@ -24,7 +25,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Peeled")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct Chopped *)
@@ -37,7 +39,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Chopped")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct Cooked *)
@@ -50,7 +53,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Cooked")
       []
-      [ ("fmt", InstanceField.Method fmt []) ].
+      [ ("fmt", InstanceField.Method fmt) ]
+      [].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel : (list Ty.t) -> (list Value.t) -> M.

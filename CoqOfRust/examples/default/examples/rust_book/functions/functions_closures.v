@@ -48,9 +48,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.read i in
                 let* α2 := M.read outer_var in
                 α0 α1 α2) :
-                Ty.path "i32"
+                _
             ]) :
-          Ty.path "i32") in
+          _) in
     let* closure_inferred :=
       M.alloc
         (fun (α0 : Ty.path "i32") =>
@@ -64,9 +64,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 := M.read i in
                 let* α2 := M.read outer_var in
                 α0 α1 α2) :
-                Ty.path "i32"
+                _
             ]) :
-          Ty.path "i32") in
+          _) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -84,22 +84,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
         let* α5 :=
-          M.call
-            α4
-            [ borrow closure_annotated; ((Integer.of_Z 1) : Ty.path "i32") ] in
+          M.call α4 [ closure_annotated; ((Integer.of_Z 1) : Ty.path "i32") ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -120,22 +113,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
         let* α5 :=
-          M.call
-            α4
-            [ borrow closure_inferred; ((Integer.of_Z 1) : Ty.path "i32") ] in
+          M.call α4 [ closure_inferred; ((Integer.of_Z 1) : Ty.path "i32") ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -145,11 +131,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            [
-              fun γ =>
-                (M.pure ((Integer.of_Z 1) : Ty.path "i32")) : Ty.path "i32"
-            ]) :
-          Ty.path "i32") in
+            [ fun γ => (M.pure ((Integer.of_Z 1) : Ty.path "i32")) : _ ]) :
+          _) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -165,20 +148,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *) Ty.function [ Ty.tuple [] ] (Ty.path "i32");
               (* Args *) Ty.tuple []
             ] in
-        let* α5 := M.call α4 [ borrow one; tt ] in
+        let* α5 := M.call α4 [ one; tt ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow α6 ] in
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α8)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

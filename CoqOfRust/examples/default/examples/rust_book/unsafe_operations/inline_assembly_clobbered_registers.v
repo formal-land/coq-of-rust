@@ -46,7 +46,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc tt in
     let* name :=
       let* α0 := M.var "core::str::converts::from_utf8" in
-      let* α1 := M.call α0 [ pointer_coercion "Unsize" (borrow name_buf) ] in
+      let* α1 := M.call α0 [ pointer_coercion "Unsize" name_buf ] in
       let* α2 :=
         M.call
           (Ty.apply
@@ -67,15 +67,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ borrow name ] in
+            [ name ] in
         let* α5 := M.alloc [ α4 ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [
-              pointer_coercion "Unsize" (borrow α3);
-              pointer_coercion "Unsize" (borrow α5)
-            ] in
+            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

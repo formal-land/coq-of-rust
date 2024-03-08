@@ -15,7 +15,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       "generics_where_clauses::PrintInOption"
       (* Self *) T
       []
-      [ ("print_in_option", InstanceField.Method print_in_option [ T ]) ].
+      [ ("print_in_option", InstanceField.Method print_in_option) ]
+      [ T ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

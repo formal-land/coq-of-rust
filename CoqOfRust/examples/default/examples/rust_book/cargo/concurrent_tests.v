@@ -33,7 +33,7 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                    [ pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -52,7 +52,7 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" (borrow α2) ] in
+                    [ pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -88,16 +88,12 @@ Module tests.
         let* α0 := M.call (Ty.path "std::fs::OpenOptions")::["new"] [] in
         let* α1 := M.alloc α0 in
         let* α2 :=
-          M.call
-            (Ty.path "std::fs::OpenOptions")::["append"]
-            [ borrow_mut α1; true ] in
+          M.call (Ty.path "std::fs::OpenOptions")::["append"] [ α1; true ] in
         let* α3 :=
           M.call (Ty.path "std::fs::OpenOptions")::["create"] [ α2; true ] in
         let* α4 := M.read (mk_str "ferris.txt") in
         let* α5 :=
-          M.call
-            (Ty.path "std::fs::OpenOptions")::["open"]
-            [ borrow (deref α3); α4 ] in
+          M.call (Ty.path "std::fs::OpenOptions")::["open"] [ α3; α4 ] in
         let* α6 := M.read (mk_str "Failed to open ferris.txt") in
         let* α7 :=
           M.call
@@ -145,7 +141,7 @@ Module tests.
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "i32" ]
                       ] in
-                  let* α1 := M.call α0 [ borrow_mut iter ] in
+                  let* α1 := M.call α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -179,7 +175,7 @@ Module tests.
 ") in
                             let* α2 :=
                               M.call (Ty.path "str")::["as_bytes"] [ α1 ] in
-                            let* α3 := M.call α0 [ borrow_mut file; α2 ] in
+                            let* α3 := M.call α0 [ file; α2 ] in
                             let* α4 :=
                               M.read (mk_str "Could not write to ferris.txt") in
                             let* α5 :=
@@ -227,16 +223,12 @@ Module tests.
         let* α0 := M.call (Ty.path "std::fs::OpenOptions")::["new"] [] in
         let* α1 := M.alloc α0 in
         let* α2 :=
-          M.call
-            (Ty.path "std::fs::OpenOptions")::["append"]
-            [ borrow_mut α1; true ] in
+          M.call (Ty.path "std::fs::OpenOptions")::["append"] [ α1; true ] in
         let* α3 :=
           M.call (Ty.path "std::fs::OpenOptions")::["create"] [ α2; true ] in
         let* α4 := M.read (mk_str "ferris.txt") in
         let* α5 :=
-          M.call
-            (Ty.path "std::fs::OpenOptions")::["open"]
-            [ borrow (deref α3); α4 ] in
+          M.call (Ty.path "std::fs::OpenOptions")::["open"] [ α3; α4 ] in
         let* α6 := M.read (mk_str "Failed to open ferris.txt") in
         let* α7 :=
           M.call
@@ -284,7 +276,7 @@ Module tests.
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "i32" ]
                       ] in
-                  let* α1 := M.call α0 [ borrow_mut iter ] in
+                  let* α1 := M.call α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -318,7 +310,7 @@ Module tests.
 ") in
                             let* α2 :=
                               M.call (Ty.path "str")::["as_bytes"] [ α1 ] in
-                            let* α3 := M.call α0 [ borrow_mut file; α2 ] in
+                            let* α3 := M.call α0 [ file; α2 ] in
                             let* α4 :=
                               M.read (mk_str "Could not write to ferris.txt") in
                             let* α5 :=
