@@ -55,7 +55,7 @@ Section Impl_erc721_Mapping_t_K_V.
     Notations.double_colon := get;
   }.
   
-  Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
+  Parameter insert : (mut_ref Self) -> K -> V -> M unit.
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {

@@ -99,15 +99,11 @@ Section Impl_erc721_Mapping_t_K_V.
   }.
   
   (*
-      fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
+      fn insert(&mut self, _key: K, _value: V) {
           unimplemented!()
       }
   *)
-  Definition insert
-      (self : mut_ref Self)
-      (_key : K)
-      (_value : V)
-      : M (core.option.Option.t u32.t) :=
+  Definition insert (self : mut_ref Self) (_key : K) (_value : V) : M unit :=
     let* self := M.alloc self in
     let* _key := M.alloc _key in
     let* _value := M.alloc _value in
@@ -1071,11 +1067,11 @@ Section Impl_erc721_Erc721_t.
       let* _ : M.Val unit :=
         let* α0 : bool.t := M.read (use approved) in
         if α0 then
-          let* _ : M.Val (core.option.Option.t u32.t) :=
+          let* _ : M.Val unit :=
             let* α0 : mut_ref erc721.Erc721.t := M.read self in
             let* α1 : erc721.AccountId.t := M.read caller in
             let* α2 : erc721.AccountId.t := M.read to in
-            let* α3 : core.option.Option.t u32.t :=
+            let* α3 : unit :=
               M.call
                 ((erc721.Mapping.t
                       (erc721.AccountId.t * erc721.AccountId.t)
@@ -1338,12 +1334,12 @@ Section Impl_erc721_Erc721_t.
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
         else
-          let* _ : M.Val (core.option.Option.t u32.t) :=
+          let* _ : M.Val unit :=
             let* α0 : mut_ref erc721.Erc721.t := M.read self in
             let* α1 : u32.t := M.read id in
             let* α2 : ref erc721.AccountId.t := M.read to in
             let* α3 : erc721.AccountId.t := M.read (deref α2) in
-            let* α4 : core.option.Option.t u32.t :=
+            let* α4 : unit :=
               M.call
                 ((erc721.Mapping.t u32.t erc721.AccountId.t)::["insert"]
                   (borrow_mut (erc721.Erc721.Get_token_approvals (deref α0)))
@@ -1663,14 +1659,14 @@ Section Impl_erc721_Erc721_t.
                           M (M.Val u32.t)
                       ] in
                   M.copy α8 in
-                let* _ : M.Val (core.option.Option.t u32.t) :=
+                let* _ : M.Val unit :=
                   let* α0 :
                       mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
                     M.read owned_tokens_count in
                   let* α1 : ref erc721.AccountId.t := M.read from in
                   let* α2 : erc721.AccountId.t := M.read (deref α1) in
                   let* α3 : u32.t := M.read count in
-                  let* α4 : core.option.Option.t u32.t :=
+                  let* α4 : unit :=
                     M.call
                       ((erc721.Mapping.t erc721.AccountId.t u32.t)::["insert"]
                         α0
