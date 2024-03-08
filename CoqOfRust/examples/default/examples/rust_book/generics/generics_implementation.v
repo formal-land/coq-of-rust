@@ -17,9 +17,8 @@ Module Impl_generics_implementation_Val.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "generics_implementation::Val::Get_val" in
-      let* α1 := M.read self in
-      M.pure (α0 α1)
+      let* α0 := M.read self in
+      M.pure (M.get_struct_record α0 "val")
     | _, _ => M.impossible
     end.
   
@@ -39,9 +38,8 @@ Module Impl_generics_implementation_GenVal_T.
     match 𝜏, α with
     | [ Self; T ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "generics_implementation::GenVal::Get_gen_val" in
-      let* α1 := M.read self in
-      M.pure (α0 α1)
+      let* α0 := M.read self in
+      M.pure (M.get_struct_record α0 "gen_val")
     | _, _ => M.impossible
     end.
   
@@ -63,14 +61,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* x :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α0 := M.read UnsupportedLiteral in
       M.alloc
         (Value.StructRecord "generics_implementation::Val" [ ("val", α0) ]) in
     let* y :=
       M.alloc
         (Value.StructRecord
           "generics_implementation::GenVal"
-          [ ("gen_val", (Integer.of_Z 3) : Ty.path "i32") ]) in
+          [ ("gen_val", Value.Integer Integer.I32 3) ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -97,7 +95,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α11 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α11
+            ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in
       M.alloc tt in

@@ -72,33 +72,29 @@ impl Expr {
     }
 }
 
-fn path_of_bin_op(bin_op: &BinOp, ty_left: &Rc<CoqType>, ty_right: &Rc<CoqType>) -> (Path, Purity) {
+fn path_of_bin_op(
+    bin_op: &BinOp,
+    ty_left: &Rc<CoqType>,
+    ty_right: &Rc<CoqType>,
+) -> (&'static str, Purity) {
     match bin_op {
-        BinOp::Add => (Path::new(&["BinOp", "Panic", "add"]), Purity::Effectful),
-        BinOp::Sub => (Path::new(&["BinOp", "Panic", "sub"]), Purity::Effectful),
-        BinOp::Mul => (Path::new(&["BinOp", "Panic", "mul"]), Purity::Effectful),
-        BinOp::Div => (Path::new(&["BinOp", "Panic", "div"]), Purity::Effectful),
-        BinOp::Rem => (Path::new(&["BinOp", "Panic", "rem"]), Purity::Effectful),
-        BinOp::BitXor => (Path::new(&["BinOp", "Pure", "bit_xor"]), Purity::Pure),
-        BinOp::BitAnd => (Path::new(&["BinOp", "Pure", "bit_and"]), Purity::Pure),
-        BinOp::BitOr => (Path::new(&["BinOp", "Pure", "bit_or"]), Purity::Pure),
-        BinOp::Shl => (Path::new(&["BinOp", "Panic", "shl"]), Purity::Effectful),
-        BinOp::Shr => (Path::new(&["BinOp", "Panic", "shr"]), Purity::Effectful),
-        BinOp::Eq => {
-            if matches!(ty_left.as_ref(), CoqType::Path { path } if path.segments == ["bool", "t"])
-                && matches!(ty_right.as_ref(), CoqType::Path { path } if path.segments == ["bool", "t"])
-            {
-                (Path::new(&["Bool", "eqb"]), Purity::Pure)
-            } else {
-                (Path::new(&["BinOp", "Pure", "eq"]), Purity::Pure)
-            }
-        }
-        BinOp::Ne => (Path::new(&["BinOp", "Pure", "ne"]), Purity::Pure),
-        BinOp::Lt => (Path::new(&["BinOp", "Pure", "lt"]), Purity::Pure),
-        BinOp::Le => (Path::new(&["BinOp", "Pure", "le"]), Purity::Pure),
-        BinOp::Ge => (Path::new(&["BinOp", "Pure", "ge"]), Purity::Pure),
-        BinOp::Gt => (Path::new(&["BinOp", "Pure", "gt"]), Purity::Pure),
-        BinOp::Offset => (Path::new(&["BinOp", "Pure", "offset"]), Purity::Pure),
+        BinOp::Add => ("BinOp.Panic.add", Purity::Effectful),
+        BinOp::Sub => ("BinOp.Panic.sub", Purity::Effectful),
+        BinOp::Mul => ("BinOp.Panic.mul", Purity::Effectful),
+        BinOp::Div => ("BinOp.Panic.div", Purity::Effectful),
+        BinOp::Rem => ("BinOp.Panic.rem", Purity::Effectful),
+        BinOp::BitXor => ("BinOp.Pure.bit_xor", Purity::Pure),
+        BinOp::BitAnd => ("BinOp.Pure.bit_and", Purity::Pure),
+        BinOp::BitOr => ("BinOp.Pure.bit_or", Purity::Pure),
+        BinOp::Shl => ("BinOp.Panic.shl", Purity::Effectful),
+        BinOp::Shr => ("BinOp.Panic.shr", Purity::Effectful),
+        BinOp::Eq => ("BinOp.Pure.eq", Purity::Pure),
+        BinOp::Ne => ("BinOp.Pure.ne", Purity::Pure),
+        BinOp::Lt => ("BinOp.Pure.lt", Purity::Pure),
+        BinOp::Le => ("BinOp.Pure.le", Purity::Pure),
+        BinOp::Ge => ("BinOp.Pure.ge", Purity::Pure),
+        BinOp::Gt => ("BinOp.Pure.gt", Purity::Pure),
+        BinOp::Offset => ("BinOp.Pure.offset", Purity::Pure),
         _ => todo!(),
     }
 }
@@ -644,6 +640,42 @@ fn get_let_if<'a>(
     }
 }
 
+fn compile_literal_integer(
+    env: &Env,
+    span: &rustc_span::Span,
+    ty: &rustc_middle::ty::Ty,
+    negative_sign: bool,
+    integer: u128,
+) -> LiteralInteger {
+    let uncapitalized_name = match ty.kind() {
+        TyKind::Int(int_ty) => format!("{int_ty:?}"),
+        TyKind::Uint(uint_ty) => format!("{uint_ty:?}"),
+        _ => {
+            emit_warning_with_note(
+                env,
+                span,
+                "Unknown integer type",
+                "Please report the error!",
+            );
+
+            "unknown_kind_of_integer".to_string()
+        }
+    };
+    let name = uncapitalized_name
+        .chars()
+        .next()
+        .unwrap()
+        .to_uppercase()
+        .collect::<String>()
+        + &uncapitalized_name[1..];
+
+    LiteralInteger {
+        name,
+        negative_sign,
+        value: integer,
+    }
+}
+
 fn compile_expr_kind<'a>(
     env: &Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
@@ -740,9 +772,10 @@ fn compile_expr_kind<'a>(
             let (path, purity) = path_of_bin_op(op, &left_ty, &right_ty);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
+
             Rc::new(ExprKind::Call {
                 func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::Var(path)),
+                    kind: Rc::new(ExprKind::LocalVar(path.to_string())),
                     ty: None,
                 }),
                 args: vec![lhs.read(), rhs.read()],
@@ -753,14 +786,15 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::LogicalOp { op, lhs, rhs } => {
             let path = match op {
-                LogicalOp::And => Path::new(&["BinOp", "Pure", "and"]),
-                LogicalOp::Or => Path::new(&["BinOp", "Pure", "or"]),
+                LogicalOp::And => "BinOp.Pure.and",
+                LogicalOp::Or => "BinOp.Pure.or",
             };
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
+
             Rc::new(ExprKind::Call {
                 func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::Var(path)),
+                    kind: Rc::new(ExprKind::LocalVar(path.to_string())),
                     ty: None,
                 }),
                 args: vec![lhs.read(), rhs.read()],
@@ -771,13 +805,14 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::Unary { op, arg } => {
             let (path, purity) = match op {
-                UnOp::Not => (Path::new(&["UnOp", "not"]), Purity::Pure),
-                UnOp::Neg => (Path::new(&["UnOp", "neg"]), Purity::Effectful),
+                UnOp::Not => ("UnOp.not", Purity::Pure),
+                UnOp::Neg => ("UnOp.neg", Purity::Effectful),
             };
             let arg = compile_expr(env, thir, arg);
+
             Rc::new(ExprKind::Call {
                 func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::Var(path)),
+                    kind: Rc::new(ExprKind::LocalVar(path.to_string())),
                     ty: None,
                 }),
                 args: vec![arg.read()],
@@ -787,7 +822,7 @@ fn compile_expr_kind<'a>(
             .alloc(Some(ty))
         }
         thir::ExprKind::Cast { source } => {
-            let func = Expr::local_var("rust_cast");
+            let func = Expr::local_var("M.rust_cast");
             let source = compile_expr(env, thir, source);
 
             Rc::new(ExprKind::Call {
@@ -805,7 +840,7 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::NeverToAny { source } => {
             let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("never_to_any".to_string())),
+                kind: Rc::new(ExprKind::LocalVar("M.never_to_any".to_string())),
                 ty: None,
             });
             let source = compile_expr(env, thir, source);
@@ -819,7 +854,7 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::PointerCoercion { source, cast } => {
             let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("pointer_coercion".to_string())),
+                kind: Rc::new(ExprKind::LocalVar("M.pointer_coercion".to_string())),
                 ty: None,
             });
             let source = compile_expr(env, thir, source).read();
@@ -862,7 +897,7 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::Assign { lhs, rhs } => {
             let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("assign".to_string())),
+                kind: Rc::new(ExprKind::LocalVar("M.assign".to_string())),
                 ty: None,
             });
             let args = vec![
@@ -890,7 +925,7 @@ fn compile_expr_kind<'a>(
                 body: Rc::new(Expr {
                     kind: Rc::new(ExprKind::Call {
                         func: Rc::new(Expr {
-                            kind: Rc::new(ExprKind::Var(Path::new(&["assign"]))),
+                            kind: Rc::new(ExprKind::LocalVar("M.assign".to_string())),
                             ty: None,
                         }),
                         args: vec![
@@ -901,7 +936,7 @@ fn compile_expr_kind<'a>(
                             Rc::new(Expr {
                                 kind: Rc::new(ExprKind::Call {
                                     func: Rc::new(Expr {
-                                        kind: Rc::new(ExprKind::Var(path)),
+                                        kind: Rc::new(ExprKind::LocalVar(path.to_string())),
                                         ty: None,
                                     }),
                                     args: vec![
@@ -932,37 +967,63 @@ fn compile_expr_kind<'a>(
         } => {
             let base = compile_expr(env, thir, lhs);
             let ty = thir.exprs.get(*lhs).unwrap().ty;
+
             match ty.ty_adt_def() {
                 Some(adt_def) => {
                     let variant = adt_def.variant(*variant_index);
                     let name = variant.fields.get(*name).unwrap().name.to_string();
+                    let is_name_a_number = name.chars().all(|c| c.is_ascii_digit());
+                    let getter_name = if is_name_a_number {
+                        "M.get_struct_tuple"
+                    } else {
+                        "M.get_struct_record"
+                    };
+                    let name_as_index = if is_name_a_number {
+                        name
+                    } else {
+                        format!("\"{name}\"")
+                    };
+                    let index = Rc::new(Expr {
+                        kind: Rc::new(ExprKind::LocalVar(name_as_index)),
+                        ty: None,
+                    });
+
                     Rc::new(ExprKind::Call {
                         func: Rc::new(Expr {
-                            kind: Rc::new(ExprKind::Var(Path::concat(&[
-                                compile_def_id(env, adt_def.did()),
-                                Path::new(&[format!("Get_{name}",)]),
-                            ]))),
+                            kind: Rc::new(ExprKind::LocalVar(getter_name.to_string())),
                             ty: None,
                         }),
-                        args: vec![base],
+                        args: vec![base, index],
                         purity: Purity::Pure,
                         from_user: false,
                     })
                 }
-                None => Rc::new(ExprKind::Message("Unknown Field".to_string())),
+                None => {
+                    emit_warning_with_note(
+                        env,
+                        &expr.span,
+                        "Unknown Field",
+                        "Please report the error!",
+                    );
+
+                    Rc::new(ExprKind::Message("Unknown Field".to_string()))
+                }
             }
         }
         thir::ExprKind::Index { lhs, index } => {
             let base = compile_expr(env, thir, lhs);
             let index = compile_expr(env, thir, index);
+
             Rc::new(ExprKind::Index { base, index })
         }
         thir::ExprKind::VarRef { id } => {
             let name = to_valid_coq_name(env.tcx.hir().opt_name(id.0).unwrap().as_str());
+
             Rc::new(ExprKind::LocalVar(name))
         }
         thir::ExprKind::UpvarRef { var_hir_id, .. } => {
             let name = to_valid_coq_name(env.tcx.hir().opt_name(var_hir_id.0).unwrap().as_str());
+
             Rc::new(ExprKind::LocalVar(name))
         }
         thir::ExprKind::Borrow {
@@ -1157,31 +1218,29 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
-                Rc::new(ExprKind::Literal(Literal::String(symbol.to_string()), None))
+                Rc::new(ExprKind::Literal(Literal::String(symbol.to_string())))
             }
             rustc_ast::LitKind::Char(c) => {
-                Rc::new(ExprKind::Literal(Literal::Char(c), None)).alloc(Some(ty))
+                Rc::new(ExprKind::Literal(Literal::Char(c))).alloc(Some(ty))
             }
-            rustc_ast::LitKind::Int(i, _) => Rc::new(ExprKind::Literal(
-                Literal::Integer {
-                    value: i,
-                    neg: *neg,
-                },
-                Some(ty.clone()),
-            ))
+            rustc_ast::LitKind::Int(i, _) => Rc::new(ExprKind::Literal(Literal::Integer(
+                compile_literal_integer(env, &expr.span, &expr.ty, *neg, i),
+            )))
             .alloc(Some(ty)),
             rustc_ast::LitKind::Bool(c) => {
-                Rc::new(ExprKind::Literal(Literal::Bool(c), None)).alloc(Some(ty))
+                Rc::new(ExprKind::Literal(Literal::Bool(c))).alloc(Some(ty))
             }
-            _ => Rc::new(ExprKind::Literal(Literal::Error, Some(ty.val()))),
+            _ => Rc::new(ExprKind::Literal(Literal::Error)),
         },
-        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::Literal(
-            Literal::Integer {
-                value: lit.try_to_uint(lit.size()).unwrap(),
-                neg: false,
-            },
-            Some(ty.clone()),
-        ))
+        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::Literal(Literal::Integer(
+            compile_literal_integer(
+                env,
+                &expr.span,
+                &expr.ty,
+                false,
+                lit.try_to_uint(lit.size()).unwrap(),
+            ),
+        )))
         .alloc(Some(ty)),
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
             TyKind::FnDef(def_id, generic_args) => {

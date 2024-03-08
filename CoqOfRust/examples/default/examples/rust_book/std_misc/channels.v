@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NTHREADS : Ty.apply (Ty.path "ref") [ Ty.path "i32" ] :=
   M.run
-    (let* α0 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+    (let* α0 := M.alloc (Value.Integer Integer.I32 3) in
     M.alloc α0).
 
 (*
@@ -83,7 +83,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α0 in
               let* _ :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::collect::IntoIterator"
                     "into_iter"
                     [
@@ -101,10 +101,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [
-                          ("start", (Integer.of_Z 0) : Ty.path "i32");
-                          ("end_", α3)
-                        ]
+                        [ ("start", Value.Integer Integer.I32 0); ("end_", α3) ]
                     ] in
                 let* α5 := M.alloc α4 in
                 let* α6 :=
@@ -116,7 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.loop
                           (let* _ :=
                             let* α0 :=
-                              M.get_method
+                              M.get_trait_method
                                 "core::iter::traits::iterator::Iterator"
                                 "next"
                                 [
@@ -136,7 +133,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   | core.option.Option.None =>
                                     let* α0 := M.break in
                                     let* α1 := M.read α0 in
-                                    let* α2 := never_to_any α1 in
+                                    let* α2 := M.never_to_any α1 in
                                     M.alloc α2
                                   | _ => M.break_match 
                                   end);
@@ -152,7 +149,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     let* id := M.copy γ0_0 in
                                     let* thread_tx :=
                                       let* α0 :=
-                                        M.get_method
+                                        M.get_trait_method
                                           "core::clone::Clone"
                                           "clone"
                                           [
@@ -231,10 +228,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                             (Ty.path
                                                                 "core::fmt::Arguments")::["new_v1"]
                                                             [
-                                                              pointer_coercion
+                                                              M.pointer_coercion
                                                                 "Unsize"
                                                                 α3;
-                                                              pointer_coercion
+                                                              M.pointer_coercion
                                                                 "Unsize"
                                                                 α5
                                                             ] in
@@ -268,7 +265,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               ] in
                           M.alloc tt))
                     ] in
-                M.pure (use α6) in
+                M.pure (M.use α6) in
               let* ids :=
                 let* α0 := M.var "channels::NTHREADS" in
                 let* α1 := M.read α0 in
@@ -286,11 +283,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             ];
                           Ty.path "alloc::alloc::Global"
                         ])::["with_capacity"]
-                    [ rust_cast α2 ] in
+                    [ M.rust_cast α2 ] in
                 M.alloc α3 in
               let* _ :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::collect::IntoIterator"
                     "into_iter"
                     [
@@ -308,10 +305,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [
-                          ("start", (Integer.of_Z 0) : Ty.path "i32");
-                          ("end_", α3)
-                        ]
+                        [ ("start", Value.Integer Integer.I32 0); ("end_", α3) ]
                     ] in
                 let* α5 := M.alloc α4 in
                 let* α6 :=
@@ -323,7 +317,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.loop
                           (let* _ :=
                             let* α0 :=
-                              M.get_method
+                              M.get_trait_method
                                 "core::iter::traits::iterator::Iterator"
                                 "next"
                                 [
@@ -343,7 +337,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   | core.option.Option.None =>
                                     let* α0 := M.break in
                                     let* α1 := M.read α0 in
-                                    let* α2 := never_to_any α1 in
+                                    let* α2 := M.never_to_any α1 in
                                     M.alloc α2
                                   | _ => M.break_match 
                                   end);
@@ -387,10 +381,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               ] in
                           M.alloc tt))
                     ] in
-                M.pure (use α6) in
+                M.pure (M.use α6) in
               let* _ :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::collect::IntoIterator"
                     "into_iter"
                     [
@@ -416,7 +410,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.loop
                           (let* _ :=
                             let* α0 :=
-                              M.get_method
+                              M.get_trait_method
                                 "core::iter::traits::iterator::Iterator"
                                 "next"
                                 [
@@ -442,7 +436,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   | core.option.Option.None =>
                                     let* α0 := M.break in
                                     let* α1 := M.read α0 in
-                                    let* α2 := never_to_any α1 in
+                                    let* α2 := M.never_to_any α1 in
                                     M.alloc α2
                                   | _ => M.break_match 
                                   end);
@@ -495,7 +489,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               ] in
                           M.alloc tt))
                     ] in
-                M.pure (use α4) in
+                M.pure (M.use α4) in
               let* _ :=
                 let* _ :=
                   let* α0 := M.var "std::io::stdio::_print" in
@@ -512,8 +506,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in

@@ -7,15 +7,14 @@ Module ProvidedAndRequired.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "BinOp::Panic::add" in
-      let* α1 :=
-        M.get_method
+      let* α0 :=
+        M.get_trait_method
           "provided_method::ProvidedAndRequired"
           "required"
           [ (* Self *) Self ] in
-      let* α2 := M.read self in
-      let* α3 := M.call α1 [ α2 ] in
-      α0 ((Integer.of_Z 42) : Ty.path "i32") α3
+      let* α1 := M.read self in
+      let* α2 := M.call α0 [ α1 ] in
+      BinOp.Panic.add (Value.Integer Integer.I32 42) α2
     | _, _ => M.impossible
     end.
   
@@ -59,7 +58,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 := M.read α0 in
-      M.pure (rust_cast α1)
+      M.pure (M.rust_cast α1)
     | _, _ => M.impossible
     end.
   
@@ -72,7 +71,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.pure ((Integer.of_Z 0) : Ty.path "i32")
+      M.pure (Value.Integer Integer.I32 0)
     | _, _ => M.impossible
     end.
   
@@ -101,16 +100,16 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
+    let* x := M.alloc (Value.Integer Integer.I32 5) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "provided_method::ProvidedAndRequired"
           "provided"
           [ (* Self *) Ty.path "i32" ] in
       let* α1 := M.call α0 [ x ] in
       let* α2 := M.alloc α1 in
-      let* α3 := M.alloc ((Integer.of_Z 47) : Ty.path "i32") in
+      let* α3 := M.alloc (Value.Integer Integer.I32 47) in
       let* α4 := M.alloc (α2, α3) in
       match_operator
         α4
@@ -123,15 +122,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 := M.var "BinOp::Pure::eq" in
-              let* α2 := M.read left_val in
+              let* α0 := M.read left_val in
+              let* α1 := M.read α0 in
+              let* α2 := M.read right_val in
               let* α3 := M.read α2 in
-              let* α4 := M.read right_val in
-              let* α5 := M.read α4 in
-              let* α6 := M.alloc (α0 (α1 α3 α5)) in
-              let* α7 := M.read (use α6) in
-              if α7 then
+              let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -140,22 +137,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
             end)
         ] in
-    let* y := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
+    let* y := M.alloc (Value.Integer Integer.U32 5) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "provided_method::ProvidedAndRequired"
           "provided"
           [ (* Self *) Ty.path "u32" ] in
       let* α1 := M.call α0 [ y ] in
       let* α2 := M.alloc α1 in
-      let* α3 := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
+      let* α3 := M.alloc (Value.Integer Integer.I32 0) in
       let* α4 := M.alloc (α2, α3) in
       match_operator
         α4
@@ -168,15 +165,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 := M.var "BinOp::Pure::eq" in
-              let* α2 := M.read left_val in
+              let* α0 := M.read left_val in
+              let* α1 := M.read α0 in
+              let* α2 := M.read right_val in
               let* α3 := M.read α2 in
-              let* α4 := M.read right_val in
-              let* α5 := M.read α4 in
-              let* α6 := M.alloc (α0 (α1 α3 α5)) in
-              let* α7 := M.read (use α6) in
-              if α7 then
+              let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -185,7 +180,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt

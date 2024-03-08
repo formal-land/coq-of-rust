@@ -37,7 +37,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "generics::SingleGen"
-          [ (Integer.of_Z 6) : Ty.path "i32" ]) in
+          [ Value.Integer Integer.I32 6 ]) in
     let* _char :=
       M.alloc (Value.StructTuple "generics::SingleGen" [ "a"%char ]) in
     let* α0 := M.alloc tt in

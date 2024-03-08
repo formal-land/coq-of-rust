@@ -66,10 +66,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α7 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α6
                     ] in
                 let* α8 := M.call α0 [ α7 ] in
-                let* α9 := never_to_any α8 in
+                let* α9 := M.never_to_any α8 in
                 M.alloc α9
               | _ => M.break_match 
               end);
@@ -90,7 +92,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.call (Ty.path "alloc::string::String")::["new"] [] in
       M.alloc α0 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "std::io::Read"
         "read_to_string"
         [ (* Self *) Ty.path "std::fs::File" ] in
@@ -124,10 +126,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α7 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6
+                  [
+                    M.pointer_coercion "Unsize" α3;
+                    M.pointer_coercion "Unsize" α6
                   ] in
               let* α8 := M.call α0 [ α7 ] in
-              let* α9 := never_to_any α8 in
+              let* α9 := M.never_to_any α8 in
               M.alloc α9
             | _ => M.break_match 
             end);
@@ -156,7 +160,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α7 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α6
                     ] in
                 let* α8 := M.call α0 [ α7 ] in
                 M.alloc α8 in

@@ -22,7 +22,7 @@ Module Impl_trait_flipper_Flipper.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
@@ -45,13 +45,10 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.var "trait_flipper::Flipper::Get_value" in
+        let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.var "UnOp::not" in
-        let* α3 := M.var "trait_flipper::Flipper::Get_value" in
-        let* α4 := M.read self in
-        let* α5 := M.read (α3 α4) in
-        assign (α0 α1) (α2 α5) in
+        let* α2 := M.read (M.get_struct_record α1 "value") in
+        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -66,9 +63,8 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "trait_flipper::Flipper::Get_value" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   

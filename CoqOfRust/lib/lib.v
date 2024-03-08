@@ -35,12 +35,6 @@ Definition assign (target : Value.t) (source : Value.t) : M :=
 
 (** ** Integer types *)
 
-Definition never_to_any (x : Value.t) : M :=
-  M.impossible.
-
-Definition use (x : Value.t) : Value.t :=
-  x.
-
 (** A value with an address of type `ref str`. *)
 Definition mk_str (s : string) : Value.t :=
   Value.Pointer (Pointer.Immediate (

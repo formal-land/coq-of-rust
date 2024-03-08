@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -76,9 +76,8 @@ Module Impl_contract_terminate_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "contract_terminate::Env::Get_caller" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
@@ -98,7 +97,7 @@ Module Impl_contract_terminate_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -122,7 +121,7 @@ Module Impl_contract_terminate_JustTerminate.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   

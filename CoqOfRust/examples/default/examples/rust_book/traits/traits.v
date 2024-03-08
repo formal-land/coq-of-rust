@@ -17,7 +17,8 @@ Module Animal.
           let* α3 := M.read (mk_str "
 ") in
           let* α4 := M.alloc [ α1; α2; α3 ] in
-          let* α5 := M.get_method "traits::Animal" "name" [ (* Self *) Self ] in
+          let* α5 :=
+            M.get_trait_method "traits::Animal" "name" [ (* Self *) Self ] in
           let* α6 := M.read self in
           let* α7 := M.call α5 [ α6 ] in
           let* α8 := M.alloc α7 in
@@ -26,7 +27,7 @@ Module Animal.
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
               [ α8 ] in
           let* α10 :=
-            M.get_method "traits::Animal" "noise" [ (* Self *) Self ] in
+            M.get_trait_method "traits::Animal" "noise" [ (* Self *) Self ] in
           let* α11 := M.read self in
           let* α12 := M.call α10 [ α11 ] in
           let* α13 := M.alloc α12 in
@@ -38,7 +39,8 @@ Module Animal.
           let* α16 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α15 ] in
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α15
+              ] in
           let* α17 := M.call α0 [ α16 ] in
           M.alloc α17 in
         M.alloc tt in
@@ -62,9 +64,8 @@ Module Impl_traits_Sheep.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "traits::Sheep::Get_naked" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "naked")
     | _, _ => M.impossible
     end.
   
@@ -100,9 +101,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "traits::Sheep::Get_name" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "name")
     | _, _ => M.impossible
     end.
   
@@ -122,7 +122,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
       let* α0 := M.read self in
       let* α1 := M.call (Ty.path "traits::Sheep")::["is_naked"] [ α0 ] in
       let* α2 := M.alloc α1 in
-      let* α3 := M.read (use α2) in
+      let* α3 := M.read (M.use α2) in
       let* α4 :=
         if α3 then
           M.pure (mk_str "baaaaah?")
@@ -150,31 +150,31 @@ Module Impl_traits_Animal_for_traits_Sheep.
           let* α3 := M.read (mk_str "
 ") in
           let* α4 := M.alloc [ α1; α2; α3 ] in
-          let* α5 := M.var "traits::Sheep::Get_name" in
-          let* α6 := M.read self in
-          let* α7 :=
+          let* α5 := M.read self in
+          let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α5 α6 ] in
-          let* α8 :=
-            M.get_method
+              [ M.get_struct_record α5 "name" ] in
+          let* α7 :=
+            M.get_trait_method
               "traits::Animal"
               "noise"
               [ (* Self *) Ty.path "traits::Sheep" ] in
-          let* α9 := M.read self in
-          let* α10 := M.call α8 [ α9 ] in
-          let* α11 := M.alloc α10 in
-          let* α12 :=
+          let* α8 := M.read self in
+          let* α9 := M.call α7 [ α8 ] in
+          let* α10 := M.alloc α9 in
+          let* α11 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α11 ] in
-          let* α13 := M.alloc [ α7; α12 ] in
-          let* α14 :=
+              [ α10 ] in
+          let* α12 := M.alloc [ α6; α11 ] in
+          let* α13 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α13 ] in
-          let* α15 := M.call α0 [ α14 ] in
-          M.alloc α15 in
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α12
+              ] in
+          let* α14 := M.call α0 [ α13 ] in
+          M.alloc α14 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0
@@ -218,7 +218,7 @@ Module Impl_traits_Sheep_2.
       let* α0 := M.read self in
       let* α1 := M.call (Ty.path "traits::Sheep")::["is_naked"] [ α0 ] in
       let* α2 := M.alloc α1 in
-      let* α3 := M.read (use α2) in
+      let* α3 := M.read (M.use α2) in
       let* α4 :=
         if α3 then
           let* _ :=
@@ -229,7 +229,7 @@ Module Impl_traits_Sheep_2.
 ") in
               let* α3 := M.alloc [ α1; α2 ] in
               let* α4 :=
-                M.get_method
+                M.get_trait_method
                   "traits::Animal"
                   "name"
                   [ (* Self *) Ty.path "traits::Sheep" ] in
@@ -244,7 +244,9 @@ Module Impl_traits_Sheep_2.
               let* α10 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9
+                  [
+                    M.pointer_coercion "Unsize" α3;
+                    M.pointer_coercion "Unsize" α9
                   ] in
               let* α11 := M.call α0 [ α10 ] in
               M.alloc α11 in
@@ -258,25 +260,25 @@ Module Impl_traits_Sheep_2.
               let* α2 := M.read (mk_str " gets a haircut!
 ") in
               let* α3 := M.alloc [ α1; α2 ] in
-              let* α4 := M.var "traits::Sheep::Get_name" in
-              let* α5 := M.read self in
-              let* α6 :=
+              let* α4 := M.read self in
+              let* α5 :=
                 M.call
                   (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                  [ α4 α5 ] in
-              let* α7 := M.alloc [ α6 ] in
-              let* α8 :=
+                  [ M.get_struct_record α4 "name" ] in
+              let* α6 := M.alloc [ α5 ] in
+              let* α7 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7
+                  [
+                    M.pointer_coercion "Unsize" α3;
+                    M.pointer_coercion "Unsize" α6
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
-              M.alloc α9 in
+              let* α8 := M.call α0 [ α7 ] in
+              M.alloc α8 in
             M.alloc tt in
           let* _ :=
-            let* α0 := M.var "traits::Sheep::Get_naked" in
-            let* α1 := M.read self in
-            assign (α0 α1) true in
+            let* α0 := M.read self in
+            M.assign (M.get_struct_record α0 "naked") true in
           M.alloc tt in
       M.read α4
     | _, _ => M.impossible
@@ -302,7 +304,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* dolly :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "traits::Animal"
           "new"
           [ (* Self *) Ty.path "traits::Sheep" ] in
@@ -311,7 +313,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α2 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "traits::Animal"
           "talk"
           [ (* Self *) Ty.path "traits::Sheep" ] in
@@ -322,7 +324,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α0 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "traits::Animal"
           "talk"
           [ (* Self *) Ty.path "traits::Sheep" ] in

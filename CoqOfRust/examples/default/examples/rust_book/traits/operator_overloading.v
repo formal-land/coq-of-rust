@@ -84,7 +84,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
           let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" α2 ] in
+              [ M.pointer_coercion "Unsize" α2 ] in
           let* α4 := M.call α0 [ α3 ] in
           M.alloc α4 in
         M.alloc tt in
@@ -130,7 +130,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
           let* α3 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ pointer_coercion "Unsize" α2 ] in
+              [ M.pointer_coercion "Unsize" α2 ] in
           let* α4 := M.call α0 [ α3 ] in
           M.alloc α4 in
         M.alloc tt in
@@ -167,7 +167,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::arith::Add"
             "add"
             [
@@ -186,7 +186,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -198,7 +199,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::arith::Add"
             "add"
             [
@@ -217,7 +218,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

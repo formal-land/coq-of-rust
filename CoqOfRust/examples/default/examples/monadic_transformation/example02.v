@@ -28,7 +28,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+      let* α0 := M.alloc (Value.Integer Integer.I32 1) in
       match_operator
         α0
         [
@@ -42,28 +42,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* α0 := M.alloc true in
-      let* α1 := M.read (use α0) in
+      let* α1 := M.read (M.use α0) in
       if α1 then
-        M.alloc ((Integer.of_Z 0) : Ty.path "i32")
+        M.alloc (Value.Integer Integer.I32 0)
       else
-        M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+        M.alloc (Value.Integer Integer.I32 1) in
     let* _ :=
       let* α0 := M.alloc false in
-      let* α1 := M.read (use α0) in
+      let* α1 := M.read (M.use α0) in
       if α1 then
-        M.alloc ((Integer.of_Z 2) : Ty.path "i32")
+        M.alloc (Value.Integer Integer.I32 2)
       else
         let* α0 := M.alloc false in
-        let* α1 := M.read (use α0) in
+        let* α1 := M.read (M.use α0) in
         if α1 then
-          M.alloc ((Integer.of_Z 3) : Ty.path "i32")
+          M.alloc (Value.Integer Integer.I32 3)
         else
           let* α0 := M.alloc false in
-          let* α1 := M.read (use α0) in
+          let* α1 := M.read (M.use α0) in
           if α1 then
-            M.alloc ((Integer.of_Z 4) : Ty.path "i32")
+            M.alloc (Value.Integer Integer.I32 4)
           else
-            M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
+            M.alloc (Value.Integer Integer.I32 5) in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

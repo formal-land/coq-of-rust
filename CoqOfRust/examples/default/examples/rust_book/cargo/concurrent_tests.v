@@ -33,7 +33,7 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -51,7 +51,7 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -102,7 +102,7 @@ Module tests.
             [ α5; α6 ] in
         M.alloc α7 in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -116,8 +116,8 @@ Module tests.
             Value.StructRecord
               "core::ops::range::Range"
               [
-                ("start", (Integer.of_Z 0) : Ty.path "i32");
-                ("end_", (Integer.of_Z 5) : Ty.path "i32")
+                ("start", Value.Integer Integer.I32 0);
+                ("end_", Value.Integer Integer.I32 5)
               ]
           ] in
       let* α2 := M.alloc α1 in
@@ -130,7 +130,7 @@ Module tests.
               M.loop
                 (let* _ :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
                       "next"
                       [
@@ -150,7 +150,7 @@ Module tests.
                         | core.option.Option.None =>
                           let* α0 := M.break in
                           let* α1 := M.read α0 in
-                          let* α2 := never_to_any α1 in
+                          let* α2 := M.never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
                         end);
@@ -164,7 +164,7 @@ Module tests.
                             M.pure (α0 γ) in
                           let* _ :=
                             let* α0 :=
-                              M.get_method
+                              M.get_trait_method
                                 "std::io::Write"
                                 "write_all"
                                 [ (* Self *) Ty.path "std::fs::File" ] in
@@ -191,7 +191,7 @@ Module tests.
                     ] in
                 M.alloc tt))
           ] in
-      M.read (use α3)
+      M.read (M.use α3)
     | _, _ => M.impossible
     end.
   
@@ -234,7 +234,7 @@ Module tests.
             [ α5; α6 ] in
         M.alloc α7 in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -248,8 +248,8 @@ Module tests.
             Value.StructRecord
               "core::ops::range::Range"
               [
-                ("start", (Integer.of_Z 0) : Ty.path "i32");
-                ("end_", (Integer.of_Z 5) : Ty.path "i32")
+                ("start", Value.Integer Integer.I32 0);
+                ("end_", Value.Integer Integer.I32 5)
               ]
           ] in
       let* α2 := M.alloc α1 in
@@ -262,7 +262,7 @@ Module tests.
               M.loop
                 (let* _ :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
                       "next"
                       [
@@ -282,7 +282,7 @@ Module tests.
                         | core.option.Option.None =>
                           let* α0 := M.break in
                           let* α1 := M.read α0 in
-                          let* α2 := never_to_any α1 in
+                          let* α2 := M.never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
                         end);
@@ -296,7 +296,7 @@ Module tests.
                             M.pure (α0 γ) in
                           let* _ :=
                             let* α0 :=
-                              M.get_method
+                              M.get_trait_method
                                 "std::io::Write"
                                 "write_all"
                                 [ (* Self *) Ty.path "std::fs::File" ] in
@@ -323,7 +323,7 @@ Module tests.
                     ] in
                 M.alloc tt))
           ] in
-      M.read (use α3)
+      M.read (M.use α3)
     | _, _ => M.impossible
     end.
 End tests.

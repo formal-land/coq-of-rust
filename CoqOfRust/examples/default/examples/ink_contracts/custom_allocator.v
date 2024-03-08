@@ -27,7 +27,7 @@ Module Impl_custom_allocator_CustomAllocator.
       let* α4 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "bool" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α3 ] in
+          [ M.pointer_coercion "Unsize" α3 ] in
       M.pure
         (Value.StructRecord
           "custom_allocator::CustomAllocator"
@@ -46,7 +46,7 @@ Module Impl_custom_allocator_CustomAllocator.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
@@ -69,7 +69,7 @@ Module Impl_custom_allocator_CustomAllocator.
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::index::IndexMut"
             "index_mut"
             [
@@ -79,12 +79,13 @@ Module Impl_custom_allocator_CustomAllocator.
                   [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
               (* Idx *) Ty.path "usize"
             ] in
-        let* α1 := M.var "custom_allocator::CustomAllocator::Get_value" in
-        let* α2 := M.read self in
-        let* α3 := M.call α0 [ α1 α2; (Integer.of_Z 0) : Ty.path "usize" ] in
-        let* α4 := M.var "UnOp::not" in
-        let* α5 :=
-          M.get_method
+        let* α1 := M.read self in
+        let* α2 :=
+          M.call
+            α0
+            [ M.get_struct_record α1 "value"; Value.Integer Integer.Usize 0 ] in
+        let* α3 :=
+          M.get_trait_method
             "core::ops::index::Index"
             "index"
             [
@@ -94,11 +95,13 @@ Module Impl_custom_allocator_CustomAllocator.
                   [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
               (* Idx *) Ty.path "usize"
             ] in
-        let* α6 := M.var "custom_allocator::CustomAllocator::Get_value" in
-        let* α7 := M.read self in
-        let* α8 := M.call α5 [ α6 α7; (Integer.of_Z 0) : Ty.path "usize" ] in
-        let* α9 := M.read α8 in
-        assign α3 (α4 α9) in
+        let* α4 := M.read self in
+        let* α5 :=
+          M.call
+            α3
+            [ M.get_struct_record α4 "value"; Value.Integer Integer.Usize 0 ] in
+        let* α6 := M.read α5 in
+        M.assign α2 (UnOp.not α6) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -116,7 +119,7 @@ Module Impl_custom_allocator_CustomAllocator.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::index::Index"
           "index"
           [
@@ -126,10 +129,12 @@ Module Impl_custom_allocator_CustomAllocator.
                 [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ];
             (* Idx *) Ty.path "usize"
           ] in
-      let* α1 := M.var "custom_allocator::CustomAllocator::Get_value" in
-      let* α2 := M.read self in
-      let* α3 := M.call α0 [ α1 α2; (Integer.of_Z 0) : Ty.path "usize" ] in
-      M.read α3
+      let* α1 := M.read self in
+      let* α2 :=
+        M.call
+          α0
+          [ M.get_struct_record α1 "value"; Value.Integer Integer.Usize 0 ] in
+      M.read α2
     | _, _ => M.impossible
     end.
   

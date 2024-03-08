@@ -42,19 +42,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.var "example01::id" in
-      let* α1 := M.call α0 [ (Integer.of_Z 0) : Ty.path "u64" ] in
+      let* α1 := M.call α0 [ Value.Integer Integer.U64 0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "example01::id" in
       let* α1 := M.var "example01::id" in
-      let* α2 := M.call α1 [ (Integer.of_Z 0) : Ty.path "u64" ] in
+      let* α2 := M.call α1 [ Value.Integer Integer.U64 0 ] in
       let* α3 := M.call α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 := M.var "example01::id" in
       let* α1 := M.var "example01::id" in
       let* α2 := M.var "example01::id" in
-      let* α3 := M.call α2 [ (Integer.of_Z 0) : Ty.path "u64" ] in
+      let* α3 := M.call α2 [ Value.Integer Integer.U64 0 ] in
       let* α4 := M.call α1 [ α3 ] in
       let* α5 := M.call α0 [ α4 ] in
       M.alloc α5 in
@@ -63,7 +63,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.var "example01::id" in
       let* α2 := M.var "example01::id" in
       let* α3 := M.var "example01::id" in
-      let* α4 := M.call α3 [ (Integer.of_Z 0) : Ty.path "u64" ] in
+      let* α4 := M.call α3 [ Value.Integer Integer.U64 0 ] in
       let* α5 := M.call α2 [ α4 ] in
       let* α6 := M.call α1 [ α5 ] in
       let* α7 := M.call α0 [ α6 ] in
@@ -71,10 +71,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.var "example01::tri" in
       let* α1 := M.var "example01::id" in
-      let* α2 := M.call α1 [ (Integer.of_Z 1) : Ty.path "u64" ] in
+      let* α2 := M.call α1 [ Value.Integer Integer.U64 1 ] in
       let* α3 := M.var "example01::id" in
-      let* α4 := M.call α3 [ (Integer.of_Z 2) : Ty.path "u64" ] in
-      let* α5 := M.call α0 [ α2; α4; (Integer.of_Z 3) : Ty.path "u64" ] in
+      let* α4 := M.call α3 [ Value.Integer Integer.U64 2 ] in
+      let* α5 := M.call α0 [ α2; α4; Value.Integer Integer.U64 3 ] in
       M.alloc α5 in
     let* α0 := M.alloc tt in
     M.read α0

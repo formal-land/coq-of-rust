@@ -14,7 +14,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* vec := M.alloc vec in
     let* opt :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::deref::Deref"
           "deref"
           [
@@ -74,9 +74,10 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             [
                               fun γ =>
                                 (let* n := M.copy γ in
-                                let* α0 := M.var "BinOp::Panic::mul" in
-                                let* α1 := M.read n in
-                                α0 ((Integer.of_Z 2) : Ty.path "i32") α1)
+                                let* α0 := M.read n in
+                                BinOp.Panic.mul
+                                  (Value.Integer Integer.I32 2)
+                                  α0)
                             ])
                       ])
                 ])
@@ -155,7 +156,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* empty :=
       let* α0 :=
@@ -183,7 +184,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* _ :=
       let* _ :=
@@ -204,7 +205,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -227,7 +229,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -250,7 +253,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in

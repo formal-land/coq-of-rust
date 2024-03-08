@@ -75,18 +75,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "struct_visibility::my::OpenBox::Get_contents" in
-        let* α5 :=
+        let* α4 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α4 open_box ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
+            [ M.get_struct_record open_box "contents" ] in
+        let* α5 := M.alloc [ α4 ] in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
-        let* α8 := M.call α0 [ α7 ] in
-        M.alloc α8 in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
+        let* α7 := M.call α0 [ α6 ] in
+        M.alloc α7 in
       M.alloc tt in
     let* _closed_box :=
       let* α0 := M.read (mk_str "classified information") in

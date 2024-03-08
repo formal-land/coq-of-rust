@@ -18,7 +18,7 @@ Definition create_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ (Integer.of_Z 3) : Ty.path "i32" ] in
+          [ Value.Integer Integer.I32 3 ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0
@@ -57,7 +57,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ (Integer.of_Z 5) : Ty.path "i32" ] in
+          [ Value.Integer Integer.I32 5 ] in
       M.alloc α0 in
     let* _ :=
       let* _box3 :=
@@ -66,11 +66,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-            [ (Integer.of_Z 4) : Ty.path "i32" ] in
+            [ Value.Integer Integer.I32 4 ] in
         M.alloc α0 in
       M.alloc tt in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -84,8 +84,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           Value.StructRecord
             "core::ops::range::Range"
             [
-              ("start", (Integer.of_Z 0) : Ty.path "u32");
-              ("end_", (Integer.of_Z 1000) : Ty.path "u32")
+              ("start", Value.Integer Integer.U32 0);
+              ("end_", Value.Integer Integer.U32 1000)
             ]
         ] in
     let* α2 := M.alloc α1 in
@@ -98,7 +98,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.loop
               (let* _ :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "next"
                     [
@@ -118,7 +118,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       | core.option.Option.None =>
                         let* α0 := M.break in
                         let* α1 := M.read α0 in
-                        let* α2 := never_to_any α1 in
+                        let* α2 := M.never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
                       end);
@@ -139,6 +139,6 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               M.alloc tt))
         ] in
-    M.read (use α3)
+    M.read (M.use α3)
   | _, _ => M.impossible
   end.

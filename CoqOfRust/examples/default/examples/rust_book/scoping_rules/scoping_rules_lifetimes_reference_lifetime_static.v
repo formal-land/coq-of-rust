@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM : Ty.apply (Ty.path "ref") [ Ty.path "i32" ] :=
   M.run
-    (let* α0 := M.alloc ((Integer.of_Z 18) : Ty.path "i32") in
+    (let* α0 := M.alloc (Value.Integer Integer.I32 18) in
     M.alloc α0).
 
 (*
@@ -65,13 +65,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
       M.alloc tt in
     let* _ :=
-      let* lifetime_num := M.alloc ((Integer.of_Z 9) : Ty.path "i32") in
+      let* lifetime_num := M.alloc (Value.Integer Integer.I32 9) in
       let* coerced_static :=
         let* α0 :=
           M.var
@@ -93,7 +94,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
@@ -114,7 +116,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in

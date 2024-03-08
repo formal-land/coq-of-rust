@@ -27,35 +27,30 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
+    let* x := M.alloc (Value.Integer Integer.U32 5) in
     let* y :=
       let* x_squared :=
-        let* α0 := M.var "BinOp::Panic::mul" in
+        let* α0 := M.read x in
         let* α1 := M.read x in
-        let* α2 := M.read x in
-        let* α3 := α0 α1 α2 in
-        M.alloc α3 in
+        let* α2 := BinOp.Panic.mul α0 α1 in
+        M.alloc α2 in
       let* x_cube :=
-        let* α0 := M.var "BinOp::Panic::mul" in
-        let* α1 := M.read x_squared in
-        let* α2 := M.read x in
-        let* α3 := α0 α1 α2 in
-        M.alloc α3 in
-      let* α0 := M.var "BinOp::Panic::add" in
-      let* α1 := M.var "BinOp::Panic::add" in
-      let* α2 := M.read x_cube in
-      let* α3 := M.read x_squared in
-      let* α4 := α1 α2 α3 in
-      let* α5 := M.read x in
-      let* α6 := α0 α4 α5 in
-      let* α0 := M.alloc α6 in
+        let* α0 := M.read x_squared in
+        let* α1 := M.read x in
+        let* α2 := BinOp.Panic.mul α0 α1 in
+        M.alloc α2 in
+      let* α0 := M.read x_cube in
+      let* α1 := M.read x_squared in
+      let* α2 := BinOp.Panic.add α0 α1 in
+      let* α3 := M.read x in
+      let* α4 := BinOp.Panic.add α2 α3 in
+      let* α0 := M.alloc α4 in
       M.copy α0 in
     let* z :=
       let* _ :=
-        let* α0 := M.var "BinOp::Panic::mul" in
-        let* α1 := M.read x in
-        let* α2 := α0 ((Integer.of_Z 2) : Ty.path "u32") α1 in
-        M.alloc α2 in
+        let* α0 := M.read x in
+        let* α1 := BinOp.Panic.mul (Value.Integer Integer.U32 2) α0 in
+        M.alloc α1 in
       let* α0 := M.alloc tt in
       M.copy α0 in
     let* _ :=
@@ -71,7 +66,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -88,7 +84,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -105,7 +102,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

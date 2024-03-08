@@ -24,11 +24,11 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
-    let* y := M.alloc ((Integer.of_Z 2) : Ty.path "u32") in
-    let* z := M.copy (UnsupportedLiteral : Ty.path "f32") in
-    let* i := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
-    let* f := M.copy (UnsupportedLiteral : Ty.path "f64") in
+    let* x := M.alloc (Value.Integer Integer.U8 1) in
+    let* y := M.alloc (Value.Integer Integer.U32 2) in
+    let* z := M.copy UnsupportedLiteral in
+    let* i := M.alloc (Value.Integer Integer.I32 1) in
+    let* f := M.copy UnsupportedLiteral in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -45,7 +45,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -65,7 +66,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -85,7 +87,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -105,7 +108,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -125,7 +129,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

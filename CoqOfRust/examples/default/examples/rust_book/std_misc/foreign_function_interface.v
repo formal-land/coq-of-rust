@@ -37,8 +37,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* z :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α0 := M.read UnsupportedLiteral in
+      let* α1 := M.read UnsupportedLiteral in
       M.alloc
         (Value.StructRecord
           "foreign_function_interface::Complex"
@@ -66,7 +66,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -90,7 +91,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α11 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α11
+            ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in
       M.alloc tt in
@@ -149,75 +151,70 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.var "BinOp::Pure::lt" in
-      let* α1 := M.var "foreign_function_interface::Complex::Get_im" in
-      let* α2 := M.read self in
-      let* α3 := M.read (α1 α2) in
-      let* α4 := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α5 := M.alloc (α0 α3 α4) in
-      let* α6 := M.read (use α5) in
-      let* α7 :=
-        if α6 then
+      let* α0 := M.read self in
+      let* α1 := M.read (M.get_struct_record α0 "im") in
+      let* α2 := M.read UnsupportedLiteral in
+      let* α3 := M.alloc (BinOp.Pure.lt α1 α2) in
+      let* α4 := M.read (M.use α3) in
+      let* α5 :=
+        if α4 then
           let* α0 := M.read f in
           let* α1 := M.read (mk_str "") in
           let* α2 := M.read (mk_str "-") in
           let* α3 := M.read (mk_str "i") in
           let* α4 := M.alloc [ α1; α2; α3 ] in
-          let* α5 := M.var "foreign_function_interface::Complex::Get_re" in
-          let* α6 := M.read self in
-          let* α7 :=
+          let* α5 := M.read self in
+          let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α5 α6 ] in
-          let* α8 := M.var "UnOp::neg" in
-          let* α9 := M.var "foreign_function_interface::Complex::Get_im" in
-          let* α10 := M.read self in
-          let* α11 := M.read (α9 α10) in
-          let* α12 := α8 α11 in
-          let* α13 := M.alloc α12 in
-          let* α14 :=
+              [ M.get_struct_record α5 "re" ] in
+          let* α7 := M.read self in
+          let* α8 := M.read (M.get_struct_record α7 "im") in
+          let* α9 := UnOp.neg α8 in
+          let* α10 := M.alloc α9 in
+          let* α11 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α13 ] in
-          let* α15 := M.alloc [ α7; α14 ] in
-          let* α16 :=
+              [ α10 ] in
+          let* α12 := M.alloc [ α6; α11 ] in
+          let* α13 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α15 ] in
-          let* α17 :=
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α12
+              ] in
+          let* α14 :=
             M.call
               (Ty.path "core::fmt::Formatter")::["write_fmt"]
-              [ α0; α16 ] in
-          M.alloc α17
+              [ α0; α13 ] in
+          M.alloc α14
         else
           let* α0 := M.read f in
           let* α1 := M.read (mk_str "") in
           let* α2 := M.read (mk_str "+") in
           let* α3 := M.read (mk_str "i") in
           let* α4 := M.alloc [ α1; α2; α3 ] in
-          let* α5 := M.var "foreign_function_interface::Complex::Get_re" in
-          let* α6 := M.read self in
-          let* α7 :=
+          let* α5 := M.read self in
+          let* α6 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α5 α6 ] in
-          let* α8 := M.var "foreign_function_interface::Complex::Get_im" in
-          let* α9 := M.read self in
+              [ M.get_struct_record α5 "re" ] in
+          let* α7 := M.read self in
+          let* α8 :=
+            M.call
+              (Ty.path "core::fmt::rt::Argument")::["new_display"]
+              [ M.get_struct_record α7 "im" ] in
+          let* α9 := M.alloc [ α6; α8 ] in
           let* α10 :=
             M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α8 α9 ] in
-          let* α11 := M.alloc [ α7; α10 ] in
-          let* α12 :=
-            M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α11 ] in
-          let* α13 :=
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
+              ] in
+          let* α11 :=
             M.call
               (Ty.path "core::fmt::Formatter")::["write_fmt"]
-              [ α0; α12 ] in
-          M.alloc α13 in
-      M.read α7
+              [ α0; α10 ] in
+          M.alloc α11 in
+      M.read α5
     | _, _ => M.impossible
     end.
   

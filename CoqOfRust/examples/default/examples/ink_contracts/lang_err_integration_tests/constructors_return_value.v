@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -75,7 +75,7 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -146,7 +146,7 @@ Module Impl_constructors_return_value_ReturnFlags.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -206,7 +206,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match 𝜏, α with
     | [ Self ], [ succeed ] =>
       let* succeed := M.alloc succeed in
-      let* α0 := M.read (use succeed) in
+      let* α0 := M.read (M.use succeed) in
       let* α1 :=
         if α0 then
           let* α0 :=
@@ -246,18 +246,18 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               "constructors_return_value::ReturnFlags")::["new_with_reverted"]
           [ true ] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::From"
           "from"
           [
             (* Self *) Ty.path "constructors_return_value::AccountId";
             (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
           ] in
-      let* α3 := M.call α2 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ] in
+      let* α3 := M.call α2 [ repeat (Value.Integer Integer.U8 0) 32 ] in
       let* α4 :=
         M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
       let* α5 := M.call α0 [ α1; α4 ] in
-      never_to_any α5
+      M.never_to_any α5
     | _, _ => M.impossible
     end.
   
@@ -283,19 +283,18 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* value :=
-        let* α0 := M.read (use init_value) in
+        let* α0 := M.read (M.use init_value) in
         let* α1 :=
           if α0 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::From"
                 "from"
                 [
                   (* Self *) Ty.path "constructors_return_value::AccountId";
                   (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
                 ] in
-            let* α1 :=
-              M.call α0 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ] in
+            let* α1 := M.call α0 [ repeat (Value.Integer Integer.U8 0) 32 ] in
             M.alloc
               (Value.StructTuple
                 "core::result::Result::Ok"
@@ -313,7 +312,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               "constructors_return_value::ReturnFlags")::["new_with_reverted"]
           [ true ] in
       let* α2 := M.call α0 [ α1; value ] in
-      let* α3 := never_to_any α2 in
+      let* α3 := M.never_to_any α2 in
       let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
@@ -331,10 +330,8 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.var "constructors_return_value::ConstructorsReturnValue::Get_value" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   

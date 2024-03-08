@@ -10,11 +10,9 @@ Definition is_odd (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ n ] =>
     let* n := M.alloc n in
-    let* α0 := M.var "BinOp::Pure::eq" in
-    let* α1 := M.var "BinOp::Panic::rem" in
-    let* α2 := M.read n in
-    let* α3 := α1 α2 ((Integer.of_Z 2) : Ty.path "u32") in
-    M.pure (α0 α3 ((Integer.of_Z 1) : Ty.path "u32"))
+    let* α0 := M.read n in
+    let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.U32 2) in
+    M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.U32 1))
   | _, _ => M.impossible
   end.
 
@@ -66,15 +64,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
-    let* upper := M.alloc ((Integer.of_Z 1000) : Ty.path "u32") in
-    let* acc := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
+    let* upper := M.alloc (Value.Integer Integer.U32 1000) in
+    let* acc := M.alloc (Value.Integer Integer.U32 0) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -87,7 +85,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructRecord
               "core::ops::range::RangeFrom"
-              [ ("start", (Integer.of_Z 0) : Ty.path "u32") ]
+              [ ("start", Value.Integer Integer.U32 0) ]
           ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -99,7 +97,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.loop
                 (let* _ :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
                       "next"
                       [
@@ -119,7 +117,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         | core.option.Option.None =>
                           let* α0 := M.break in
                           let* α1 := M.read α0 in
-                          let* α2 := never_to_any α1 in
+                          let* α2 := M.never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
                         end);
@@ -133,36 +131,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.pure (α0 γ) in
                           let* n := M.copy γ0_0 in
                           let* n_squared :=
-                            let* α0 := M.var "BinOp::Panic::mul" in
+                            let* α0 := M.read n in
                             let* α1 := M.read n in
-                            let* α2 := M.read n in
-                            let* α3 := α0 α1 α2 in
-                            M.alloc α3 in
-                          let* α0 := M.var "BinOp::Pure::ge" in
-                          let* α1 := M.read n_squared in
-                          let* α2 := M.read upper in
-                          let* α3 := M.alloc (α0 α1 α2) in
-                          let* α4 := M.read (use α3) in
-                          if α4 then
+                            let* α2 := BinOp.Panic.mul α0 α1 in
+                            M.alloc α2 in
+                          let* α0 := M.read n_squared in
+                          let* α1 := M.read upper in
+                          let* α2 := M.alloc (BinOp.Pure.ge α0 α1) in
+                          let* α3 := M.read (M.use α2) in
+                          if α3 then
                             let* α0 := M.break in
                             let* α1 := M.read α0 in
-                            let* α2 := never_to_any α1 in
+                            let* α2 := M.never_to_any α1 in
                             M.alloc α2
                           else
                             let* α0 := M.var "higher_order_functions::is_odd" in
                             let* α1 := M.read n_squared in
                             let* α2 := M.call α0 [ α1 ] in
                             let* α3 := M.alloc α2 in
-                            let* α4 := M.read (use α3) in
+                            let* α4 := M.read (M.use α3) in
                             if α4 then
                               let* _ :=
                                 let β := acc in
-                                let* α0 := M.var "assign" in
-                                let* α1 := M.var "BinOp::Panic::add" in
-                                let* α2 := M.read β in
-                                let* α3 := M.read n_squared in
-                                let* α4 := α1 α2 α3 in
-                                α0 β α4 in
+                                let* α0 := M.read β in
+                                let* α1 := M.read n_squared in
+                                let* α2 := BinOp.Panic.add α0 α1 in
+                                M.assign β α2 in
                               M.alloc tt
                             else
                               M.alloc tt
@@ -171,7 +165,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ] in
                 M.alloc tt))
           ] in
-      M.pure (use α3) in
+      M.pure (M.use α3) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -185,13 +179,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* sum_of_squared_odd_numbers :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "sum"
           [
@@ -226,7 +221,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* S *) Ty.path "u32"
           ] in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "filter"
           [
@@ -252,7 +247,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "bool")
           ] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "take_while"
           [
@@ -271,7 +266,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "bool")
           ] in
       let* α3 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "map"
           [
@@ -288,7 +283,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructRecord
               "core::ops::range::RangeFrom"
-              [ ("start", (Integer.of_Z 0) : Ty.path "u32") ];
+              [ ("start", Value.Integer Integer.U32 0) ];
             fun (α0 : Ty.path "u32") =>
               (let* α0 := M.alloc α0 in
               match_operator
@@ -296,10 +291,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     (let* n := M.copy γ in
-                    let* α0 := M.var "BinOp::Panic::mul" in
+                    let* α0 := M.read n in
                     let* α1 := M.read n in
-                    let* α2 := M.read n in
-                    α0 α1 α2)
+                    BinOp.Panic.mul α0 α1)
                 ])
           ] in
       let* α5 :=
@@ -317,10 +311,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α0 := M.read γ in
                       M.pure (deref α0) in
                     let* n_squared := M.copy γ in
-                    let* α0 := M.var "BinOp::Pure::lt" in
-                    let* α1 := M.read n_squared in
-                    let* α2 := M.read upper in
-                    M.pure (α0 α1 α2))
+                    let* α0 := M.read n_squared in
+                    let* α1 := M.read upper in
+                    M.pure (BinOp.Pure.lt α0 α1))
                 ])
           ] in
       let* α6 :=
@@ -360,7 +353,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

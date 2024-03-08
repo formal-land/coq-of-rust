@@ -96,13 +96,12 @@ Module checked.
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 := M.var "BinOp::Pure::eq" in
-      let* α1 := M.read y in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.alloc (α0 α1 α2) in
-      let* α4 := M.read (use α3) in
-      let* α5 :=
-        if α4 then
+      let* α0 := M.read y in
+      let* α1 := M.read UnsupportedLiteral in
+      let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
+      let* α3 := M.read (M.use α2) in
+      let* α4 :=
+        if α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
@@ -110,12 +109,11 @@ Module checked.
                 result_chaining_with_question_mark.checked.MathError.DivisionByZero
               ])
         else
-          let* α0 := M.var "BinOp::Panic::div" in
-          let* α1 := M.read x in
-          let* α2 := M.read y in
-          let* α3 := α0 α1 α2 in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
-      M.read α5
+          let* α0 := M.read x in
+          let* α1 := M.read y in
+          let* α2 := BinOp.Panic.div α0 α1 in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
+      M.read α4
     | _, _ => M.impossible
     end.
   
@@ -132,13 +130,12 @@ Module checked.
     match 𝜏, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.var "BinOp::Pure::lt" in
-      let* α1 := M.read x in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.alloc (α0 α1 α2) in
-      let* α4 := M.read (use α3) in
-      let* α5 :=
-        if α4 then
+      let* α0 := M.read x in
+      let* α1 := M.read UnsupportedLiteral in
+      let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+      let* α3 := M.read (M.use α2) in
+      let* α4 :=
+        if α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
@@ -149,7 +146,7 @@ Module checked.
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["sqrt"] [ α0 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
-      M.read α5
+      M.read α4
     | _, _ => M.impossible
     end.
   
@@ -166,13 +163,12 @@ Module checked.
     match 𝜏, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.var "BinOp::Pure::le" in
-      let* α1 := M.read x in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.alloc (α0 α1 α2) in
-      let* α4 := M.read (use α3) in
-      let* α5 :=
-        if α4 then
+      let* α0 := M.read x in
+      let* α1 := M.read UnsupportedLiteral in
+      let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
+      let* α3 := M.read (M.use α2) in
+      let* α4 :=
+        if α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
@@ -183,7 +179,7 @@ Module checked.
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["ln"] [ α0 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
-      M.read α5
+      M.read α4
     | _, _ => M.impossible
     end.
   
@@ -215,7 +211,7 @@ Module checked.
       M.catch_return
         (let* ratio :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::try_trait::Try"
               "branch"
               [
@@ -249,7 +245,7 @@ Module checked.
                       M.pure (α0 γ) in
                     let* residual := M.copy γ0_0 in
                     let* α0 :=
-                      M.get_method
+                      M.get_trait_method
                         "core::ops::try_trait::FromResidual"
                         "from_residual"
                         [
@@ -274,7 +270,7 @@ Module checked.
                     let* α2 := M.call α0 [ α1 ] in
                     let* α3 := return_ α2 in
                     let* α4 := M.read α3 in
-                    let* α5 := never_to_any α4 in
+                    let* α5 := M.never_to_any α4 in
                     M.alloc α5
                   | _ => M.break_match 
                   end);
@@ -295,7 +291,7 @@ Module checked.
           M.copy α7 in
         let* ln :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::try_trait::Try"
               "branch"
               [
@@ -328,7 +324,7 @@ Module checked.
                       M.pure (α0 γ) in
                     let* residual := M.copy γ0_0 in
                     let* α0 :=
-                      M.get_method
+                      M.get_trait_method
                         "core::ops::try_trait::FromResidual"
                         "from_residual"
                         [
@@ -353,7 +349,7 @@ Module checked.
                     let* α2 := M.call α0 [ α1 ] in
                     let* α3 := return_ α2 in
                     let* α4 := M.read α3 in
-                    let* α5 := never_to_any α4 in
+                    let* α5 := M.never_to_any α4 in
                     M.alloc α5
                   | _ => M.break_match 
                   end);
@@ -454,7 +450,7 @@ Module checked.
                         end)
                     ] in
                 let* α2 := M.call α0 [ α1 ] in
-                let* α3 := never_to_any α2 in
+                let* α3 := M.never_to_any α2 in
                 M.alloc α3
               | _ => M.break_match 
               end);
@@ -481,8 +477,8 @@ Module checked.
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -506,8 +502,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.var "result_chaining_with_question_mark::checked::op" in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α1 := M.read UnsupportedLiteral in
+      let* α2 := M.read UnsupportedLiteral in
       let* α3 := M.call α0 [ α1; α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc tt in

@@ -38,9 +38,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc
           [
-            (Integer.of_Z 1) : Ty.path "i32";
-            (Integer.of_Z 2) : Ty.path "i32";
-            (Integer.of_Z 3) : Ty.path "i32"
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
           ] in
       let* α1 :=
         M.call
@@ -50,15 +50,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* vec2 :=
       let* α0 :=
         M.alloc
           [
-            (Integer.of_Z 4) : Ty.path "i32";
-            (Integer.of_Z 5) : Ty.path "i32";
-            (Integer.of_Z 6) : Ty.path "i32"
+            Value.Integer Integer.I32 4;
+            Value.Integer Integer.I32 5;
+            Value.Integer Integer.I32 6
           ] in
       let* α1 :=
         M.call
@@ -68,11 +68,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* iter :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::deref::Deref"
           "deref"
           [
@@ -89,7 +89,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α2 in
     let* into_iter :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -109,7 +109,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "find"
             [
@@ -149,9 +149,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.var "BinOp::Pure::eq" in
-                      let* α1 := M.read x in
-                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32")))
+                      let* α0 := M.read x in
+                      M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
                   ])
             ] in
         let* α6 := M.alloc α5 in
@@ -161,7 +160,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -173,7 +173,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "find"
             [
@@ -201,9 +201,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.var "BinOp::Pure::eq" in
-                      let* α1 := M.read x in
-                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32")))
+                      let* α0 := M.read x in
+                      M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
                   ])
             ] in
         let* α6 := M.alloc α5 in
@@ -213,23 +212,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
     let* array1 :=
       M.alloc
         [
-          (Integer.of_Z 1) : Ty.path "i32";
-          (Integer.of_Z 2) : Ty.path "i32";
-          (Integer.of_Z 3) : Ty.path "i32"
+          Value.Integer Integer.I32 1;
+          Value.Integer Integer.I32 2;
+          Value.Integer Integer.I32 3
         ] in
     let* array2 :=
       M.alloc
         [
-          (Integer.of_Z 4) : Ty.path "i32";
-          (Integer.of_Z 5) : Ty.path "i32";
-          (Integer.of_Z 6) : Ty.path "i32"
+          Value.Integer Integer.I32 4;
+          Value.Integer Integer.I32 5;
+          Value.Integer Integer.I32 6
         ] in
     let* _ :=
       let* _ :=
@@ -239,7 +239,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "find"
             [
@@ -260,7 +260,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.call
             (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["iter"]
-            [ pointer_coercion "Unsize" array1 ] in
+            [ M.pointer_coercion "Unsize" array1 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call
@@ -284,9 +284,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.var "BinOp::Pure::eq" in
-                      let* α1 := M.read x in
-                      M.pure (α0 α1 ((Integer.of_Z 2) : Ty.path "i32")))
+                      let* α0 := M.read x in
+                      M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
                   ])
             ] in
         let* α8 := M.alloc α7 in
@@ -296,7 +295,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+            ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
       M.alloc tt in
@@ -308,7 +308,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "find"
             [
@@ -327,7 +327,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "bool")
             ] in
         let* α5 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::collect::IntoIterator"
             "into_iter"
             [
@@ -357,10 +357,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.read γ in
                         M.pure (deref α0) in
                       let* x := M.copy γ in
-                      let* α0 := M.var "BinOp::Pure::eq" in
-                      let* α1 := M.read x in
-                      let* α2 := M.read α1 in
-                      M.pure (α0 α2 ((Integer.of_Z 2) : Ty.path "i32")))
+                      let* α0 := M.read x in
+                      let* α1 := M.read α0 in
+                      M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.I32 2)))
                   ])
             ] in
         let* α9 := M.alloc α8 in
@@ -370,7 +369,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α11 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α11
+            ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in
       M.alloc tt in

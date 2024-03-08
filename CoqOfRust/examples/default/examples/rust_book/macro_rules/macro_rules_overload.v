@@ -28,33 +28,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ mk_str "2i32 * 2 == 4i32" ] in
-        let* α8 := M.var "BinOp::Pure::and" in
-        let* α9 := M.var "BinOp::Pure::eq" in
-        let* α10 := M.var "BinOp::Panic::add" in
-        let* α11 :=
-          α10
-            ((Integer.of_Z 1) : Ty.path "i32")
-            ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α12 := M.var "BinOp::Pure::eq" in
-        let* α13 := M.var "BinOp::Panic::mul" in
-        let* α14 :=
-          α13
-            ((Integer.of_Z 2) : Ty.path "i32")
-            ((Integer.of_Z 2) : Ty.path "i32") in
-        let* α15 :=
+        let* α8 :=
+          BinOp.Panic.add
+            (Value.Integer Integer.I32 1)
+            (Value.Integer Integer.I32 1) in
+        let* α9 :=
+          BinOp.Panic.mul
+            (Value.Integer Integer.I32 2)
+            (Value.Integer Integer.I32 2) in
+        let* α10 :=
           M.alloc
-            (α8
-              (α9 α11 ((Integer.of_Z 2) : Ty.path "i32"))
-              (α12 α14 ((Integer.of_Z 4) : Ty.path "i32"))) in
-        let* α16 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α15 ] in
-        let* α17 := M.alloc [ α6; α7; α16 ] in
-        let* α18 :=
+            (BinOp.Pure.and
+              (BinOp.Pure.eq α8 (Value.Integer Integer.I32 2))
+              (BinOp.Pure.eq α9 (Value.Integer Integer.I32 4))) in
+        let* α11 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α10 ] in
+        let* α12 := M.alloc [ α6; α7; α11 ] in
+        let* α13 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α17 ] in
-        let* α19 := M.call α0 [ α18 ] in
-        M.alloc α19 in
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α12
+            ] in
+        let* α14 := M.call α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc tt in
     let* _ :=
       let* _ :=
@@ -73,17 +69,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ mk_str "false" ] in
-        let* α8 := M.var "BinOp::Pure::or" in
-        let* α9 := M.alloc (α8 true false) in
-        let* α10 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α9 ] in
-        let* α11 := M.alloc [ α6; α7; α10 ] in
-        let* α12 :=
+        let* α8 := M.alloc (BinOp.Pure.or true false) in
+        let* α9 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α8 ] in
+        let* α10 := M.alloc [ α6; α7; α9 ] in
+        let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α11 ] in
-        let* α13 := M.call α0 [ α12 ] in
-        M.alloc α13 in
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            ] in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

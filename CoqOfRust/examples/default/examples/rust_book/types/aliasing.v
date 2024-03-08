@@ -28,11 +28,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* nanoseconds :=
-      let* α0 := M.alloc ((Integer.of_Z 5) : Ty.path "u64") in
-      M.copy (use α0) in
+      let* α0 := M.alloc (Value.Integer Integer.U64 5) in
+      M.copy (M.use α0) in
     let* inches :=
-      let* α0 := M.alloc ((Integer.of_Z 2) : Ty.path "u64") in
-      M.copy (use α0) in
+      let* α0 := M.alloc (Value.Integer Integer.U64 2) in
+      M.copy (M.use α0) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -50,20 +50,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
             [ inches ] in
-        let* α8 := M.var "BinOp::Panic::add" in
-        let* α9 := M.read nanoseconds in
-        let* α10 := M.read inches in
-        let* α11 := α8 α9 α10 in
-        let* α12 := M.alloc α11 in
-        let* α13 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α12 ] in
-        let* α14 := M.alloc [ α6; α7; α13 ] in
-        let* α15 :=
+        let* α8 := M.read nanoseconds in
+        let* α9 := M.read inches in
+        let* α10 := BinOp.Panic.add α8 α9 in
+        let* α11 := M.alloc α10 in
+        let* α12 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α11 ] in
+        let* α13 := M.alloc [ α6; α7; α12 ] in
+        let* α14 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α14 ] in
-        let* α16 := M.call α0 [ α15 ] in
-        M.alloc α16 in
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α13
+            ] in
+        let* α15 := M.call α0 [ α14 ] in
+        M.alloc α15 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

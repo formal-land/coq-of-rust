@@ -112,34 +112,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read (mk_str "
 ") in
                 let* α3 := M.alloc [ α1; α2 ] in
-                let* α4 := M.var "BinOp::Pure::eq" in
-                let* α5 := M.read ref_c1 in
-                let* α6 := M.read α5 in
-                let* α7 := M.read ref_c2 in
-                let* α8 := M.read α7 in
-                let* α9 := M.alloc (α4 α6 α8) in
-                let* α10 :=
+                let* α4 := M.read ref_c1 in
+                let* α5 := M.read α4 in
+                let* α6 := M.read ref_c2 in
+                let* α7 := M.read α6 in
+                let* α8 := M.alloc (BinOp.Pure.eq α5 α7) in
+                let* α9 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ α9 ] in
-                let* α11 := M.alloc [ α10 ] in
-                let* α12 :=
+                    [ α8 ] in
+                let* α10 := M.alloc [ α9 ] in
+                let* α11 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
                     [
-                      pointer_coercion "Unsize" α3;
-                      pointer_coercion "Unsize" α11
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α10
                     ] in
-                let* α13 := M.call α0 [ α12 ] in
-                M.alloc α13 in
+                let* α12 := M.call α0 [ α11 ] in
+                M.alloc α12 in
               M.alloc tt in
             let* point :=
               M.alloc
                 (Value.StructRecord
                   "scoping_rules_borrowing_the_ref_pattern::Point"
                   [
-                    ("x", (Integer.of_Z 0) : Ty.path "i32");
-                    ("y", (Integer.of_Z 0) : Ty.path "i32")
+                    ("x", Value.Integer Integer.I32 0);
+                    ("y", Value.Integer Integer.I32 0)
                   ]) in
             let* _copy_of_x :=
               let* α0 :=
@@ -201,7 +200,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* mut_ref_to_y := M.alloc (borrow_mut γ0_1) in
                       let* _ :=
                         let* α0 := M.read mut_ref_to_y in
-                        assign α0 ((Integer.of_Z 1) : Ty.path "i32") in
+                        M.assign α0 (Value.Integer Integer.I32 1) in
                       M.alloc tt
                     end)
                 ] in
@@ -214,27 +213,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
                 let* α4 := M.alloc [ α1; α2; α3 ] in
                 let* α5 :=
-                  M.var
-                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ M.get_struct_record point "x" ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ α5 point ] in
-                let* α7 :=
-                  M.var
-                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
+                    [ M.get_struct_record point "y" ] in
+                let* α7 := M.alloc [ α5; α6 ] in
                 let* α8 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ α7 point ] in
-                let* α9 := M.alloc [ α6; α8 ] in
-                let* α10 :=
-                  M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α9
+                    [
+                      M.pointer_coercion "Unsize" α4;
+                      M.pointer_coercion "Unsize" α7
                     ] in
-                let* α11 := M.call α0 [ α10 ] in
-                M.alloc α11 in
+                let* α9 := M.call α0 [ α8 ] in
+                M.alloc α9 in
               M.alloc tt in
             let* _ :=
               let* _ :=
@@ -245,27 +240,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
                 let* α4 := M.alloc [ α1; α2; α3 ] in
                 let* α5 :=
-                  M.var
-                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
+                  M.call
+                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
+                    [ M.get_struct_record mutable_point "x" ] in
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ α5 mutable_point ] in
-                let* α7 :=
-                  M.var
-                    "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
+                    [ M.get_struct_record mutable_point "y" ] in
+                let* α7 := M.alloc [ α5; α6 ] in
                 let* α8 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ α7 mutable_point ] in
-                let* α9 := M.alloc [ α6; α8 ] in
-                let* α10 :=
-                  M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α9
+                    [
+                      M.pointer_coercion "Unsize" α4;
+                      M.pointer_coercion "Unsize" α7
                     ] in
-                let* α11 := M.call α0 [ α10 ] in
-                M.alloc α11 in
+                let* α9 := M.call α0 [ α8 ] in
+                M.alloc α9 in
               M.alloc tt in
             let* mutable_tuple :=
               let* α0 :=
@@ -274,8 +265,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Ty.path "alloc::boxed::Box")
                       [ Ty.path "u32"; Ty.path "alloc::alloc::Global"
                       ])::["new"]
-                  [ (Integer.of_Z 5) : Ty.path "u32" ] in
-              M.alloc (α0, (Integer.of_Z 3) : Ty.path "u32") in
+                  [ Value.Integer Integer.U32 5 ] in
+              M.alloc (α0, Value.Integer Integer.U32 3) in
             let* _ :=
               match_operator
                 mutable_tuple
@@ -289,7 +280,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* last := M.alloc (borrow_mut γ0_1) in
                       let* _ :=
                         let* α0 := M.read last in
-                        assign α0 ((Integer.of_Z 2) : Ty.path "u32") in
+                        M.assign α0 (Value.Integer Integer.U32 2) in
                       M.alloc tt
                     end)
                 ] in
@@ -308,7 +299,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

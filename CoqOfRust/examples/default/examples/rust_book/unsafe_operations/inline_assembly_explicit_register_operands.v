@@ -15,7 +15,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* cmd := M.alloc ((Integer.of_Z 209) : Ty.path "i32") in
+    let* cmd := M.alloc (Value.Integer Integer.I32 209) in
     let _ := InlineAssembly in
     let* α0 := M.alloc tt in
     M.read α0

@@ -17,7 +17,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "i32" ] in
@@ -111,7 +111,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
-      M.pure ((Integer.of_Z 0) : Ty.path "i32")
+      M.pure (Value.Integer Integer.I32 0)
     | _, _ => M.impossible
     end.
   

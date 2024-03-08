@@ -13,18 +13,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       M.alloc
-        ((Integer.of_Z 1) : Ty.path "i32",
-          (Integer.of_Z 2) : Ty.path "i32",
-          (Integer.of_Z 3) : Ty.path "i32",
-          (Integer.of_Z 4) : Ty.path "i32") in
+        (Value.Integer Integer.I32 1,
+          Value.Integer Integer.I32 2,
+          Value.Integer Integer.I32 3,
+          Value.Integer Integer.I32 4) in
     let* _ :=
       let* α0 :=
         M.alloc
           [
-            (Integer.of_Z 5) : Ty.path "i32";
-            (Integer.of_Z 6) : Ty.path "i32";
-            (Integer.of_Z 7) : Ty.path "i32";
-            (Integer.of_Z 8) : Ty.path "i32"
+            Value.Integer Integer.I32 5;
+            Value.Integer Integer.I32 6;
+            Value.Integer Integer.I32 7;
+            Value.Integer Integer.I32 8
           ] in
       let* α1 :=
         M.call
@@ -34,7 +34,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc tt in
     M.read α0

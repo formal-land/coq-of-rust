@@ -24,14 +24,12 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "alloc::string::String" ] in
-      let* α1 :=
-        M.var "disambiguating_overlapping_traits::Form::Get_username" in
-      let* α2 := M.read self in
-      M.call α0 [ α1 α2 ]
+      let* α1 := M.read self in
+      M.call α0 [ M.get_struct_record α1 "username" ]
     | _, _ => M.impossible
     end.
   
@@ -54,9 +52,8 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "disambiguating_overlapping_traits::Form::Get_age" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "age")
     | _, _ => M.impossible
     end.
   
@@ -93,7 +90,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* form :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::borrow::ToOwned"
           "to_owned"
           [ (* Self *) Ty.path "str" ] in
@@ -102,10 +99,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructRecord
           "disambiguating_overlapping_traits::Form"
-          [ ("username", α2); ("age", (Integer.of_Z 28) : Ty.path "u8") ]) in
+          [ ("username", α2); ("age", Value.Integer Integer.U8 28) ]) in
     let* username :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "disambiguating_overlapping_traits::UsernameWidget"
           "get"
           [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
@@ -113,7 +110,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::string::ToString"
           "to_string"
           [ (* Self *) Ty.path "str" ] in
@@ -132,21 +129,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
                     (* Self *) Ty.path "alloc::string::String";
                     (* Rhs *) Ty.path "alloc::string::String"
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -155,7 +151,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -163,14 +159,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* age :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "disambiguating_overlapping_traits::AgeWidget"
           "get"
           [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
       let* α1 := M.call α0 [ form ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.alloc ((Integer.of_Z 28) : Ty.path "u8") in
+      let* α0 := M.alloc (Value.Integer Integer.U8 28) in
       let* α1 := M.alloc (α0, age) in
       match_operator
         α1
@@ -183,15 +179,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 := M.var "BinOp::Pure::eq" in
-              let* α2 := M.read left_val in
+              let* α0 := M.read left_val in
+              let* α1 := M.read α0 in
+              let* α2 := M.read right_val in
               let* α3 := M.read α2 in
-              let* α4 := M.read right_val in
-              let* α5 := M.read α4 in
-              let* α6 := M.alloc (α0 (α1 α3 α5)) in
-              let* α7 := M.read (use α6) in
-              if α7 then
+              let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -200,7 +194,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt

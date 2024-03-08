@@ -33,15 +33,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* logical := M.alloc true in
-    let* a_float := M.copy (UnsupportedLiteral : Ty.path "f64") in
-    let* an_integer := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
-    let* default_float := M.copy (UnsupportedLiteral : Ty.path "f64") in
-    let* default_integer := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
-    let* inferred_type := M.alloc ((Integer.of_Z 12) : Ty.path "i64") in
-    let* _ :=
-      assign inferred_type ((Integer.of_Z 4294967296) : Ty.path "i64") in
-    let* mutable := M.alloc ((Integer.of_Z 12) : Ty.path "i32") in
-    let* _ := assign mutable ((Integer.of_Z 21) : Ty.path "i32") in
+    let* a_float := M.copy UnsupportedLiteral in
+    let* an_integer := M.alloc (Value.Integer Integer.I32 5) in
+    let* default_float := M.copy UnsupportedLiteral in
+    let* default_integer := M.alloc (Value.Integer Integer.I32 7) in
+    let* inferred_type := M.alloc (Value.Integer Integer.I64 12) in
+    let* _ := M.assign inferred_type (Value.Integer Integer.I64 4294967296) in
+    let* mutable := M.alloc (Value.Integer Integer.I32 12) in
+    let* _ := M.assign mutable (Value.Integer Integer.I32 21) in
     let* mutable := M.alloc true in
     let* α0 := M.alloc tt in
     M.read α0

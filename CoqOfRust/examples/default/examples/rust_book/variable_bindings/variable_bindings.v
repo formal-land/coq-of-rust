@@ -27,7 +27,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* an_integer := M.alloc ((Integer.of_Z 1) : Ty.path "u32") in
+    let* an_integer := M.alloc (Value.Integer Integer.U32 1) in
     let* a_boolean := M.alloc true in
     let* unit_ := M.alloc tt in
     let* copied_integer := M.copy an_integer in
@@ -46,7 +46,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -65,7 +66,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -82,12 +84,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
-    let* _unused_variable := M.alloc ((Integer.of_Z 3) : Ty.path "u32") in
-    let* _noisy_unused_variable := M.alloc ((Integer.of_Z 2) : Ty.path "u32") in
+    let* _unused_variable := M.alloc (Value.Integer Integer.U32 3) in
+    let* _noisy_unused_variable := M.alloc (Value.Integer Integer.U32 2) in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible

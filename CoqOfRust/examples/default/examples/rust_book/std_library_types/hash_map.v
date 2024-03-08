@@ -195,7 +195,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α9
                     ] in
                 let* α11 := M.call α0 [ α10 ] in
                 M.alloc α11 in
@@ -211,7 +213,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" α2 ] in
+                  [ M.pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt)
@@ -274,7 +276,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α9
                     ] in
                 let* α11 := M.call α0 [ α10 ] in
                 M.alloc α11 in
@@ -290,7 +294,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" α2 ] in
+                  [ M.pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt)
@@ -308,7 +312,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ contacts; mk_str "Ashley" ] in
       M.alloc α0 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -341,7 +345,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.loop
               (let* _ :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "next"
                     [
@@ -364,7 +368,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       | core.option.Option.None =>
                         let* α0 := M.break in
                         let* α1 := M.read α0 in
-                        let* α2 := never_to_any α1 in
+                        let* α2 := M.never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
                       end);
@@ -412,8 +416,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.call
                                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                                   [
-                                    pointer_coercion "Unsize" α4;
-                                    pointer_coercion "Unsize" α11
+                                    M.pointer_coercion "Unsize" α4;
+                                    M.pointer_coercion "Unsize" α11
                                   ] in
                               let* α13 := M.call α0 [ α12 ] in
                               M.alloc α13 in
@@ -425,6 +429,6 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               M.alloc tt))
         ] in
-    M.read (use α4)
+    M.read (M.use α4)
   | _, _ => M.impossible
   end.

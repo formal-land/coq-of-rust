@@ -12,7 +12,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* first := M.alloc first in
     let* second := M.alloc second in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::ops::arith::Mul"
         "mul"
         [
@@ -55,9 +55,9 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* first := M.alloc ((Integer.of_Z 2) : Ty.path "i32") in
+    let* first := M.alloc (Value.Integer Integer.I32 2) in
     let* _ :=
-      let* second := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+      let* second := M.alloc (Value.Integer Integer.I32 3) in
       let* _ :=
         let* _ :=
           let* α0 := M.var "std::io::stdio::_print" in
@@ -76,7 +76,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α9 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+              ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in
         M.alloc tt in
@@ -98,7 +99,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α9 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+              ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in
         M.alloc tt in

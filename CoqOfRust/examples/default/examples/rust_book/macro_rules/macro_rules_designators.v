@@ -25,7 +25,8 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -58,7 +59,8 @@ Definition bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -106,21 +108,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ mk_str "1u32 + 1" ] in
-        let* α6 := M.var "BinOp::Panic::add" in
-        let* α7 :=
-          α6
-            ((Integer.of_Z 1) : Ty.path "u32")
-            ((Integer.of_Z 1) : Ty.path "u32") in
-        let* α8 := M.alloc α7 in
-        let* α9 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α8 ] in
-        let* α10 := M.alloc [ α5; α9 ] in
-        let* α11 :=
+        let* α6 :=
+          BinOp.Panic.add
+            (Value.Integer Integer.U32 1)
+            (Value.Integer Integer.U32 1) in
+        let* α7 := M.alloc α6 in
+        let* α8 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α7 ] in
+        let* α9 := M.alloc [ α5; α8 ] in
+        let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α10 ] in
-        let* α12 := M.call α0 [ α11 ] in
-        M.alloc α12 in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
+            ] in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* _ :=
       let* _ :=
@@ -134,26 +136,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_debug"]
             [ mk_str "{ let x = 1u32; x * x + 2 * x - 1 }" ] in
-        let* x := M.alloc ((Integer.of_Z 1) : Ty.path "u32") in
-        let* α0 := M.var "BinOp::Panic::sub" in
-        let* α1 := M.var "BinOp::Panic::add" in
-        let* α2 := M.var "BinOp::Panic::mul" in
+        let* x := M.alloc (Value.Integer Integer.U32 1) in
+        let* α0 := M.read x in
+        let* α1 := M.read x in
+        let* α2 := BinOp.Panic.mul α0 α1 in
         let* α3 := M.read x in
-        let* α4 := M.read x in
-        let* α5 := α2 α3 α4 in
-        let* α6 := M.var "BinOp::Panic::mul" in
-        let* α7 := M.read x in
-        let* α8 := α6 ((Integer.of_Z 2) : Ty.path "u32") α7 in
-        let* α9 := α1 α5 α8 in
-        let* α10 := α0 α9 ((Integer.of_Z 1) : Ty.path "u32") in
-        let* α6 := M.alloc α10 in
+        let* α4 := BinOp.Panic.mul (Value.Integer Integer.U32 2) α3 in
+        let* α5 := BinOp.Panic.add α2 α4 in
+        let* α6 := BinOp.Panic.sub α5 (Value.Integer Integer.U32 1) in
+        let* α6 := M.alloc α6 in
         let* α7 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α6 ] in
         let* α8 := M.alloc [ α5; α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

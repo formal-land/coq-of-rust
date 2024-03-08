@@ -34,11 +34,10 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
               |
                   enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add
                   =>
-                let* α0 := M.var "BinOp::Panic::add" in
-                let* α1 := M.read x in
-                let* α2 := M.read y in
-                let* α3 := α0 α1 α2 in
-                M.alloc α3
+                let* α0 := M.read x in
+                let* α1 := M.read y in
+                let* α2 := BinOp.Panic.add α0 α1 in
+                M.alloc α2
               | _ => M.break_match 
               end);
             fun γ =>
@@ -50,11 +49,10 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
               |
                   enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract
                   =>
-                let* α0 := M.var "BinOp::Panic::sub" in
-                let* α1 := M.read x in
-                let* α2 := M.read y in
-                let* α3 := α0 α1 α2 in
-                M.alloc α3
+                let* α0 := M.read x in
+                let* α1 := M.read y in
+                let* α2 := BinOp.Panic.sub α0 α1 in
+                M.alloc α2
               | _ => M.break_match 
               end)
           ] in

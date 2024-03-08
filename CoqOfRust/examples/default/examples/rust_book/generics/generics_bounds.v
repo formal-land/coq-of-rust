@@ -20,21 +20,19 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Rectangle") in
       let* α2 := M.read (mk_str "length") in
-      let* α3 := M.var "generics_bounds::Rectangle::Get_length" in
-      let* α4 := M.read self in
-      let* α5 := M.read (mk_str "height") in
-      let* α6 := M.var "generics_bounds::Rectangle::Get_height" in
-      let* α7 := M.read self in
-      let* α8 := M.alloc (α6 α7) in
+      let* α3 := M.read self in
+      let* α4 := M.read (mk_str "height") in
+      let* α5 := M.read self in
+      let* α6 := M.alloc (M.get_struct_record α5 "height") in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion "Unsize" (α3 α4);
-          α5;
-          pointer_coercion "Unsize" α8
+          M.pointer_coercion "Unsize" (M.get_struct_record α3 "length");
+          α4;
+          M.pointer_coercion "Unsize" α6
         ]
     | _, _ => M.impossible
     end.
@@ -60,14 +58,11 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "BinOp::Panic::mul" in
-      let* α1 := M.var "generics_bounds::Rectangle::Get_length" in
+      let* α0 := M.read self in
+      let* α1 := M.read (M.get_struct_record α0 "length") in
       let* α2 := M.read self in
-      let* α3 := M.read (α1 α2) in
-      let* α4 := M.var "generics_bounds::Rectangle::Get_height" in
-      let* α5 := M.read self in
-      let* α6 := M.read (α4 α5) in
-      α0 α3 α6
+      let* α3 := M.read (M.get_struct_record α2 "height") in
+      BinOp.Panic.mul α1 α3
     | _, _ => M.impossible
     end.
   
@@ -102,7 +97,8 @@ Definition print_debug (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -121,7 +117,7 @@ Definition area (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* α0 :=
-      M.get_method "generics_bounds::HasArea" "area" [ (* Self *) T ] in
+      M.get_trait_method "generics_bounds::HasArea" "area" [ (* Self *) T ] in
     let* α1 := M.read t in
     M.call α0 [ α1 ]
   | _, _ => M.impossible
@@ -152,15 +148,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* rectangle :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α0 := M.read UnsupportedLiteral in
+      let* α1 := M.read UnsupportedLiteral in
       M.alloc
         (Value.StructRecord
           "generics_bounds::Rectangle"
           [ ("length", α0); ("height", α1) ]) in
     let* _triangle :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α0 := M.read UnsupportedLiteral in
+      let* α1 := M.read UnsupportedLiteral in
       M.alloc
         (Value.StructRecord
           "generics_bounds::Triangle"
@@ -177,7 +173,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "generics_bounds::HasArea"
             "area"
             [ (* Self *) Ty.path "generics_bounds::Rectangle" ] in
@@ -189,7 +185,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

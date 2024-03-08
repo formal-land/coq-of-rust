@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -81,7 +81,7 @@ Module Impl_e2e_call_runtime_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -124,7 +124,7 @@ Module Impl_e2e_call_runtime_Contract.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   

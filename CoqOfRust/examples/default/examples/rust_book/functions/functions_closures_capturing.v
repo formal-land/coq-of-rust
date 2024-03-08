@@ -75,7 +75,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* color :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::From"
           "from"
           [
@@ -108,8 +108,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -118,7 +118,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ])) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::Fn"
           "call"
           [
@@ -130,7 +130,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _reborrow := M.alloc color in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::Fn"
           "call"
           [
@@ -140,7 +140,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call α0 [ print; tt ] in
       M.alloc α1 in
     let* _color_moved := M.copy color in
-    let* count := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
+    let* count := M.alloc (Value.Integer Integer.I32 0) in
     let* inc :=
       M.alloc
         (fun (α0 : Ty.path "unit") =>
@@ -151,11 +151,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 (let* _ :=
                   let β := count in
-                  let* α0 := M.var "assign" in
-                  let* α1 := M.var "BinOp::Panic::add" in
-                  let* α2 := M.read β in
-                  let* α3 := α1 α2 ((Integer.of_Z 1) : Ty.path "i32") in
-                  α0 β α3 in
+                  let* α0 := M.read β in
+                  let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
+                  M.assign β α1 in
                 let* _ :=
                   let* _ :=
                     let* α0 := M.var "std::io::stdio::_print" in
@@ -172,8 +170,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" α3;
-                          pointer_coercion "Unsize" α5
+                          M.pointer_coercion "Unsize" α3;
+                          M.pointer_coercion "Unsize" α5
                         ] in
                     let* α7 := M.call α0 [ α6 ] in
                     M.alloc α7 in
@@ -183,7 +181,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ])) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::FnMut"
           "call_mut"
           [
@@ -194,7 +192,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::FnMut"
           "call_mut"
           [
@@ -210,7 +208,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ (Integer.of_Z 3) : Ty.path "i32" ] in
+          [ Value.Integer Integer.I32 3 ] in
       M.alloc α0 in
     let* consume :=
       M.alloc
@@ -236,8 +234,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" α3;
-                          pointer_coercion "Unsize" α5
+                          M.pointer_coercion "Unsize" α3;
+                          M.pointer_coercion "Unsize" α5
                         ] in
                     let* α7 := M.call α0 [ α6 ] in
                     M.alloc α7 in
@@ -252,7 +250,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ])) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::FnOnce"
           "call_once"
           [

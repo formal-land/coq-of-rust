@@ -11,13 +11,13 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
     match 𝜏, α with
     | [ Self; K; V ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ K ] ] in
       let* α1 := M.call α0 [] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ V ] ] in
@@ -54,7 +54,7 @@ Module Impl_erc1155_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -75,7 +75,7 @@ Module Impl_erc1155_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -97,7 +97,7 @@ Module Impl_erc1155_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -118,7 +118,7 @@ Module Impl_erc1155_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -139,7 +139,7 @@ Module Impl_erc1155_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -160,7 +160,7 @@ Module Impl_erc1155_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -179,7 +179,7 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -249,14 +249,11 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
     | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.var "BinOp::Pure::eq" in
-      let* α1 := M.var "erc1155::AccountId::Get_0" in
-      let* α2 := M.read self in
-      let* α3 := M.read (α1 α2) in
-      let* α4 := M.var "erc1155::AccountId::Get_0" in
-      let* α5 := M.read other in
-      let* α6 := M.read (α4 α5) in
-      M.pure (α0 α3 α6)
+      let* α0 := M.read self in
+      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α2 := M.read other in
+      let* α3 := M.read (M.get_struct_tuple α2 0) in
+      M.pure (BinOp.Pure.eq α1 α3)
     | _, _ => M.impossible
     end.
   
@@ -282,7 +279,7 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -309,14 +306,14 @@ Definition zero_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::convert::Into"
         "into"
         [
           (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
           (* T *) Ty.path "erc1155::AccountId"
         ] in
-    M.call α0 [ repeat ((Integer.of_Z 0) : Ty.path "u8") 32 ]
+    M.call α0 [ repeat (Value.Integer Integer.U8 0) 32 ]
   | _, _ => M.impossible
   end.
 
@@ -325,10 +322,10 @@ Definition ON_ERC_1155_RECEIVED_SELECTOR
   M.run
     (M.alloc
       [
-        (Integer.of_Z 242) : Ty.path "u8";
-        (Integer.of_Z 58) : Ty.path "u8";
-        (Integer.of_Z 110) : Ty.path "u8";
-        (Integer.of_Z 97) : Ty.path "u8"
+        Value.Integer Integer.U8 242;
+        Value.Integer Integer.U8 58;
+        Value.Integer Integer.U8 110;
+        Value.Integer Integer.U8 97
       ]).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR
@@ -336,10 +333,10 @@ Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR
   M.run
     (M.alloc
       [
-        (Integer.of_Z 188) : Ty.path "u8";
-        (Integer.of_Z 25) : Ty.path "u8";
-        (Integer.of_Z 124) : Ty.path "u8";
-        (Integer.of_Z 129) : Ty.path "u8"
+        Value.Integer Integer.U8 188;
+        Value.Integer Integer.U8 25;
+        Value.Integer Integer.U8 124;
+        Value.Integer Integer.U8 129
       ]).
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
@@ -375,10 +372,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
-      let* α0 := M.var "BinOp::Pure::eq" in
-      let* α1 := M.read __self_tag in
-      let* α2 := M.read __arg1_tag in
-      let* α0 := M.alloc (α0 α1 α2) in
+      let* α0 := M.read __self_tag in
+      let* α1 := M.read __arg1_tag in
+      let* α0 := M.alloc (BinOp.Pure.eq α0 α1) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -469,9 +465,8 @@ Module Impl_erc1155_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "erc1155::Env::Get_caller" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
@@ -491,7 +486,7 @@ Module Impl_erc1155_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -509,7 +504,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [
@@ -523,7 +518,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
           ] in
       let* α1 := M.call α0 [] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [
@@ -539,7 +534,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
           ] in
       let* α3 := M.call α2 [] in
       let* α4 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -574,7 +569,7 @@ Module Impl_erc1155_Contract.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -605,7 +600,7 @@ Module Impl_erc1155_Contract.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "erc1155::Contract" ] in
@@ -649,23 +644,18 @@ Module Impl_erc1155_Contract.
         M.alloc α3 in
       let* _ :=
         let* β :=
-          let* α0 := M.var "erc1155::Contract::Get_token_id_nonce" in
-          let* α1 := M.read self in
-          M.pure (α0 α1) in
-        let* α0 := M.var "assign" in
-        let* α1 := M.var "BinOp::Panic::add" in
-        let* α2 := M.read β in
-        let* α3 := α1 α2 ((Integer.of_Z 1) : Ty.path "u128") in
-        α0 β α3 in
+          let* α0 := M.read self in
+          M.pure (M.get_struct_record α0 "token_id_nonce") in
+        let* α0 := M.read β in
+        let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U128 1) in
+        M.assign β α1 in
       let* _ :=
-        let* α0 := M.var "erc1155::Contract::Get_balances" in
-        let* α1 := M.read self in
-        let* α2 := M.read caller in
-        let* α3 := M.var "erc1155::Contract::Get_token_id_nonce" in
-        let* α4 := M.read self in
-        let* α5 := M.read (α3 α4) in
-        let* α6 := M.read value in
-        let* α7 :=
+        let* α0 := M.read self in
+        let* α1 := M.read caller in
+        let* α2 := M.read self in
+        let* α3 := M.read (M.get_struct_record α2 "token_id_nonce") in
+        let* α4 := M.read value in
+        let* α5 :=
           M.call
             (Ty.apply
                 (Ty.path "erc1155::Mapping")
@@ -673,29 +663,27 @@ Module Impl_erc1155_Contract.
                   Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ];
                   Ty.path "u128"
                 ])::["insert"]
-            [ α0 α1; (α2, α5); α6 ] in
-        M.alloc α7 in
+            [ M.get_struct_record α0 "balances"; (α1, α3); α4 ] in
+        M.alloc α5 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.call (Ty.path "erc1155::Contract")::["env"] [ α0 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.read caller in
-        let* α4 := M.var "BinOp::Pure::eq" in
-        let* α5 := M.read value in
-        let* α6 := M.alloc (α4 α5 ((Integer.of_Z 0) : Ty.path "u128")) in
-        let* α7 := M.read (use α6) in
-        let* α8 :=
-          if α7 then
+        let* α4 := M.read value in
+        let* α5 := M.alloc (BinOp.Pure.eq α4 (Value.Integer Integer.U128 0)) in
+        let* α6 := M.read (M.use α5) in
+        let* α7 :=
+          if α6 then
             M.alloc core.option.Option.None
           else
             let* α0 := M.read caller in
             M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
-        let* α9 := M.read α8 in
-        let* α10 := M.var "erc1155::Contract::Get_token_id_nonce" in
-        let* α11 := M.read self in
-        let* α12 := M.read (α10 α11) in
-        let* α13 := M.read value in
-        let* α14 :=
+        let* α8 := M.read α7 in
+        let* α9 := M.read self in
+        let* α10 := M.read (M.get_struct_record α9 "token_id_nonce") in
+        let* α11 := M.read value in
+        let* α12 :=
           M.call
             (Ty.path "erc1155::Env")::["emit_event"]
             [
@@ -709,16 +697,15 @@ Module Impl_erc1155_Contract.
                       ("operator",
                         Value.StructTuple "core::option::Option::Some" [ α3 ]);
                       ("from", core.option.Option.None);
-                      ("to", α9);
-                      ("token_id", α12);
-                      ("value", α13)
+                      ("to", α8);
+                      ("token_id", α10);
+                      ("value", α11)
                     ]
                 ]
             ] in
-        M.alloc α14 in
-      let* α0 := M.var "erc1155::Contract::Get_token_id_nonce" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+        M.alloc α12 in
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "token_id_nonce")
     | _, _ => M.impossible
     end.
   
@@ -758,17 +745,14 @@ Module Impl_erc1155_Contract.
               [ Ty.tuple []; Ty.path "erc1155::Error" ]) in
       M.catch_return
         (let* _ :=
-          let* α0 := M.var "UnOp::not" in
-          let* α1 := M.var "BinOp::Pure::le" in
-          let* α2 := M.read token_id in
-          let* α3 := M.var "erc1155::Contract::Get_token_id_nonce" in
-          let* α4 := M.read self in
-          let* α5 := M.read (α3 α4) in
-          let* α6 := M.alloc (α0 (α1 α2 α5)) in
-          let* α7 := M.read (use α6) in
-          if α7 then
+          let* α0 := M.read token_id in
+          let* α1 := M.read self in
+          let* α2 := M.read (M.get_struct_record α1 "token_id_nonce") in
+          let* α3 := M.alloc (UnOp.not (BinOp.Pure.le α0 α2)) in
+          let* α4 := M.read (M.use α3) in
+          if α4 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::Into"
                 "into"
                 [
@@ -779,7 +763,7 @@ Module Impl_erc1155_Contract.
             let* α2 :=
               return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
-            let* α4 := never_to_any α3 in
+            let* α4 := M.never_to_any α3 in
             M.alloc α4
           else
             M.alloc tt in
@@ -790,12 +774,11 @@ Module Impl_erc1155_Contract.
           let* α3 := M.call (Ty.path "erc1155::Env")::["caller"] [ α2 ] in
           M.alloc α3 in
         let* _ :=
-          let* α0 := M.var "erc1155::Contract::Get_balances" in
-          let* α1 := M.read self in
-          let* α2 := M.read caller in
-          let* α3 := M.read token_id in
-          let* α4 := M.read value in
-          let* α5 :=
+          let* α0 := M.read self in
+          let* α1 := M.read caller in
+          let* α2 := M.read token_id in
+          let* α3 := M.read value in
+          let* α4 :=
             M.call
               (Ty.apply
                   (Ty.path "erc1155::Mapping")
@@ -803,8 +786,8 @@ Module Impl_erc1155_Contract.
                     Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ];
                     Ty.path "u128"
                   ])::["insert"]
-              [ α0 α1; (α2, α3); α4 ] in
-          M.alloc α5 in
+              [ M.get_struct_record α0 "balances"; (α1, α2); α3 ] in
+          M.alloc α4 in
         let* _ :=
           let* α0 := M.read self in
           let* α1 := M.call (Ty.path "erc1155::Contract")::["env"] [ α0 ] in
@@ -885,12 +868,11 @@ Module Impl_erc1155_Contract.
       let* token_id := M.alloc token_id in
       let* value := M.alloc value in
       let* sender_balance :=
-        let* α0 := M.var "erc1155::Contract::Get_balances" in
-        let* α1 := M.read self in
-        let* α2 := M.read from in
-        let* α3 := M.read token_id in
-        let* α4 := M.alloc (α2, α3) in
-        let* α5 :=
+        let* α0 := M.read self in
+        let* α1 := M.read from in
+        let* α2 := M.read token_id in
+        let* α3 := M.alloc (α1, α2) in
+        let* α4 :=
           M.call
             (Ty.apply
                 (Ty.path "erc1155::Mapping")
@@ -898,33 +880,30 @@ Module Impl_erc1155_Contract.
                   Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ];
                   Ty.path "u128"
                 ])::["get"]
-            [ α0 α1; α4 ] in
-        let* α6 :=
+            [ M.get_struct_record α0 "balances"; α3 ] in
+        let* α5 :=
           M.read
             (mk_str
               "Caller should have ensured that `from` holds `token_id`.") in
-        let* α7 :=
+        let* α6 :=
           M.call
             (Ty.apply
                 (Ty.path "core::option::Option")
                 [ Ty.path "u128" ])::["expect"]
-            [ α5; α6 ] in
-        M.alloc α7 in
+            [ α4; α5 ] in
+        M.alloc α6 in
       let* _ :=
         let β := sender_balance in
-        let* α0 := M.var "assign" in
-        let* α1 := M.var "BinOp::Panic::sub" in
-        let* α2 := M.read β in
-        let* α3 := M.read value in
-        let* α4 := α1 α2 α3 in
-        α0 β α4 in
+        let* α0 := M.read β in
+        let* α1 := M.read value in
+        let* α2 := BinOp.Panic.sub α0 α1 in
+        M.assign β α2 in
       let* _ :=
-        let* α0 := M.var "erc1155::Contract::Get_balances" in
-        let* α1 := M.read self in
-        let* α2 := M.read from in
-        let* α3 := M.read token_id in
-        let* α4 := M.read sender_balance in
-        let* α5 :=
+        let* α0 := M.read self in
+        let* α1 := M.read from in
+        let* α2 := M.read token_id in
+        let* α3 := M.read sender_balance in
+        let* α4 :=
           M.call
             (Ty.apply
                 (Ty.path "erc1155::Mapping")
@@ -932,15 +911,14 @@ Module Impl_erc1155_Contract.
                   Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ];
                   Ty.path "u128"
                 ])::["insert"]
-            [ α0 α1; (α2, α3); α4 ] in
-        M.alloc α5 in
+            [ M.get_struct_record α0 "balances"; (α1, α2); α3 ] in
+        M.alloc α4 in
       let* recipient_balance :=
-        let* α0 := M.var "erc1155::Contract::Get_balances" in
-        let* α1 := M.read self in
-        let* α2 := M.read to in
-        let* α3 := M.read token_id in
-        let* α4 := M.alloc (α2, α3) in
-        let* α5 :=
+        let* α0 := M.read self in
+        let* α1 := M.read to in
+        let* α2 := M.read token_id in
+        let* α3 := M.alloc (α1, α2) in
+        let* α4 :=
           M.call
             (Ty.apply
                 (Ty.path "erc1155::Mapping")
@@ -948,31 +926,28 @@ Module Impl_erc1155_Contract.
                   Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ];
                   Ty.path "u128"
                 ])::["get"]
-            [ α0 α1; α4 ] in
-        let* α6 := M.alloc ((Integer.of_Z 0) : Ty.path "u128") in
-        let* α7 := M.read (use α6) in
-        let* α8 :=
+            [ M.get_struct_record α0 "balances"; α3 ] in
+        let* α5 := M.alloc (Value.Integer Integer.U128 0) in
+        let* α6 := M.read (M.use α5) in
+        let* α7 :=
           M.call
             (Ty.apply
                 (Ty.path "core::option::Option")
                 [ Ty.path "u128" ])::["unwrap_or"]
-            [ α5; α7 ] in
-        M.alloc α8 in
+            [ α4; α6 ] in
+        M.alloc α7 in
       let* _ :=
         let β := recipient_balance in
-        let* α0 := M.var "assign" in
-        let* α1 := M.var "BinOp::Panic::add" in
-        let* α2 := M.read β in
-        let* α3 := M.read value in
-        let* α4 := α1 α2 α3 in
-        α0 β α4 in
+        let* α0 := M.read β in
+        let* α1 := M.read value in
+        let* α2 := BinOp.Panic.add α0 α1 in
+        M.assign β α2 in
       let* _ :=
-        let* α0 := M.var "erc1155::Contract::Get_balances" in
-        let* α1 := M.read self in
-        let* α2 := M.read to in
-        let* α3 := M.read token_id in
-        let* α4 := M.read recipient_balance in
-        let* α5 :=
+        let* α0 := M.read self in
+        let* α1 := M.read to in
+        let* α2 := M.read token_id in
+        let* α3 := M.read recipient_balance in
+        let* α4 :=
           M.call
             (Ty.apply
                 (Ty.path "erc1155::Mapping")
@@ -980,8 +955,8 @@ Module Impl_erc1155_Contract.
                   Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ];
                   Ty.path "u128"
                 ])::["insert"]
-            [ α0 α1; (α2, α3); α4 ] in
-        M.alloc α5 in
+            [ M.get_struct_record α0 "balances"; (α1, α2); α3 ] in
+        M.alloc α4 in
       let* caller :=
         let* α0 := M.read self in
         let* α1 := M.call (Ty.path "erc1155::Contract")::["env"] [ α0 ] in
@@ -1135,11 +1110,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* operator := M.alloc operator in
-      let* α0 := M.var "erc1155::Contract::Get_approvals" in
-      let* α1 := M.read self in
-      let* α2 := M.read owner in
-      let* α3 := M.read operator in
-      let* α4 := M.alloc (α2, α3) in
+      let* α0 := M.read self in
+      let* α1 := M.read owner in
+      let* α2 := M.read operator in
+      let* α3 := M.alloc (α1, α2) in
       M.call
         (Ty.apply
             (Ty.path "erc1155::Mapping")
@@ -1148,7 +1122,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ];
               Ty.tuple []
             ])::["contains"]
-        [ α0 α1; α4 ]
+        [ M.get_struct_record α0 "approvals"; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -1163,12 +1137,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* token_id := M.alloc token_id in
-      let* α0 := M.var "erc1155::Contract::Get_balances" in
-      let* α1 := M.read self in
-      let* α2 := M.read owner in
-      let* α3 := M.read token_id in
-      let* α4 := M.alloc (α2, α3) in
-      let* α5 :=
+      let* α0 := M.read self in
+      let* α1 := M.read owner in
+      let* α2 := M.read token_id in
+      let* α3 := M.alloc (α1, α2) in
+      let* α4 :=
         M.call
           (Ty.apply
               (Ty.path "erc1155::Mapping")
@@ -1176,14 +1149,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ];
                 Ty.path "u128"
               ])::["get"]
-          [ α0 α1; α4 ] in
-      let* α6 := M.alloc ((Integer.of_Z 0) : Ty.path "u128") in
-      let* α7 := M.read (use α6) in
+          [ M.get_struct_record α0 "balances"; α3 ] in
+      let* α5 := M.alloc (Value.Integer Integer.U128 0) in
+      let* α6 := M.read (M.use α5) in
       M.call
         (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "u128" ])::["unwrap_or"]
-        [ α5; α7 ]
+        [ α4; α6 ]
     | _, _ => M.impossible
     end.
   
@@ -1236,7 +1209,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           M.alloc α3 in
         let* _ :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::cmp::PartialEq"
               "ne"
               [
@@ -1245,24 +1218,23 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               ] in
           let* α1 := M.call α0 [ caller; from ] in
           let* α2 := M.alloc α1 in
-          let* α3 := M.read (use α2) in
+          let* α3 := M.read (M.use α2) in
           if α3 then
             let* _ :=
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "erc1155::Erc1155"
                   "is_approved_for_all"
                   [ (* Self *) Ty.path "erc1155::Contract" ] in
-              let* α2 := M.read self in
-              let* α3 := M.read from in
-              let* α4 := M.read caller in
-              let* α5 := M.call α1 [ α2; α3; α4 ] in
-              let* α6 := M.alloc (α0 α5) in
-              let* α7 := M.read (use α6) in
-              if α7 then
+              let* α1 := M.read self in
+              let* α2 := M.read from in
+              let* α3 := M.read caller in
+              let* α4 := M.call α0 [ α1; α2; α3 ] in
+              let* α5 := M.alloc (UnOp.not α4) in
+              let* α6 := M.read (M.use α5) in
+              if α6 then
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::convert::Into"
                     "into"
                     [
@@ -1274,7 +1246,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   return_
                     (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
                 let* α3 := M.read α2 in
-                let* α4 := never_to_any α3 in
+                let* α4 := M.never_to_any α3 in
                 M.alloc α4
               else
                 M.alloc tt in
@@ -1282,24 +1254,23 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           else
             M.alloc tt in
         let* _ :=
-          let* α0 := M.var "UnOp::not" in
-          let* α1 :=
-            M.get_method
+          let* α0 :=
+            M.get_trait_method
               "core::cmp::PartialEq"
               "ne"
               [
                 (* Self *) Ty.path "erc1155::AccountId";
                 (* Rhs *) Ty.path "erc1155::AccountId"
               ] in
-          let* α2 := M.var "erc1155::zero_address" in
-          let* α3 := M.call α2 [] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.call α1 [ to; α4 ] in
-          let* α6 := M.alloc (α0 α5) in
-          let* α7 := M.read (use α6) in
-          if α7 then
+          let* α1 := M.var "erc1155::zero_address" in
+          let* α2 := M.call α1 [] in
+          let* α3 := M.alloc α2 in
+          let* α4 := M.call α0 [ to; α3 ] in
+          let* α5 := M.alloc (UnOp.not α4) in
+          let* α6 := M.read (M.use α5) in
+          if α6 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::Into"
                 "into"
                 [
@@ -1310,13 +1281,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 :=
               return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
-            let* α4 := never_to_any α3 in
+            let* α4 := M.never_to_any α3 in
             M.alloc α4
           else
             M.alloc tt in
         let* balance :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "erc1155::Erc1155"
               "balance_of"
               [ (* Self *) Ty.path "erc1155::Contract" ] in
@@ -1326,15 +1297,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           let* α4 := M.call α0 [ α1; α2; α3 ] in
           M.alloc α4 in
         let* _ :=
-          let* α0 := M.var "UnOp::not" in
-          let* α1 := M.var "BinOp::Pure::ge" in
-          let* α2 := M.read balance in
-          let* α3 := M.read value in
-          let* α4 := M.alloc (α0 (α1 α2 α3)) in
-          let* α5 := M.read (use α4) in
-          if α5 then
+          let* α0 := M.read balance in
+          let* α1 := M.read value in
+          let* α2 := M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
+          let* α3 := M.read (M.use α2) in
+          if α3 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::Into"
                 "into"
                 [
@@ -1345,7 +1314,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 :=
               return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
-            let* α4 := never_to_any α3 in
+            let* α4 := M.never_to_any α3 in
             M.alloc α4
           else
             M.alloc tt in
@@ -1441,7 +1410,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           M.alloc α3 in
         let* _ :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::cmp::PartialEq"
               "ne"
               [
@@ -1450,24 +1419,23 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               ] in
           let* α1 := M.call α0 [ caller; from ] in
           let* α2 := M.alloc α1 in
-          let* α3 := M.read (use α2) in
+          let* α3 := M.read (M.use α2) in
           if α3 then
             let* _ :=
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "erc1155::Erc1155"
                   "is_approved_for_all"
                   [ (* Self *) Ty.path "erc1155::Contract" ] in
-              let* α2 := M.read self in
-              let* α3 := M.read from in
-              let* α4 := M.read caller in
-              let* α5 := M.call α1 [ α2; α3; α4 ] in
-              let* α6 := M.alloc (α0 α5) in
-              let* α7 := M.read (use α6) in
-              if α7 then
+              let* α1 := M.read self in
+              let* α2 := M.read from in
+              let* α3 := M.read caller in
+              let* α4 := M.call α0 [ α1; α2; α3 ] in
+              let* α5 := M.alloc (UnOp.not α4) in
+              let* α6 := M.read (M.use α5) in
+              if α6 then
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::convert::Into"
                     "into"
                     [
@@ -1479,7 +1447,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   return_
                     (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
                 let* α3 := M.read α2 in
-                let* α4 := never_to_any α3 in
+                let* α4 := M.never_to_any α3 in
                 M.alloc α4
               else
                 M.alloc tt in
@@ -1487,24 +1455,23 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           else
             M.alloc tt in
         let* _ :=
-          let* α0 := M.var "UnOp::not" in
-          let* α1 :=
-            M.get_method
+          let* α0 :=
+            M.get_trait_method
               "core::cmp::PartialEq"
               "ne"
               [
                 (* Self *) Ty.path "erc1155::AccountId";
                 (* Rhs *) Ty.path "erc1155::AccountId"
               ] in
-          let* α2 := M.var "erc1155::zero_address" in
-          let* α3 := M.call α2 [] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.call α1 [ to; α4 ] in
-          let* α6 := M.alloc (α0 α5) in
-          let* α7 := M.read (use α6) in
-          if α7 then
+          let* α1 := M.var "erc1155::zero_address" in
+          let* α2 := M.call α1 [] in
+          let* α3 := M.alloc α2 in
+          let* α4 := M.call α0 [ to; α3 ] in
+          let* α5 := M.alloc (UnOp.not α4) in
+          let* α6 := M.read (M.use α5) in
+          if α6 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::Into"
                 "into"
                 [
@@ -1515,25 +1482,23 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 :=
               return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
-            let* α4 := never_to_any α3 in
+            let* α4 := M.never_to_any α3 in
             M.alloc α4
           else
             M.alloc tt in
         let* _ :=
-          let* α0 := M.var "UnOp::not" in
-          let* α1 := M.var "UnOp::not" in
-          let* α2 :=
+          let* α0 :=
             M.call
               (Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [ Ty.path "u128"; Ty.path "alloc::alloc::Global"
                   ])::["is_empty"]
               [ token_ids ] in
-          let* α3 := M.alloc (α0 (α1 α2)) in
-          let* α4 := M.read (use α3) in
-          if α4 then
+          let* α1 := M.alloc (UnOp.not (UnOp.not α0)) in
+          let* α2 := M.read (M.use α1) in
+          if α2 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::Into"
                 "into"
                 [
@@ -1544,30 +1509,28 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 :=
               return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
-            let* α4 := never_to_any α3 in
+            let* α4 := M.never_to_any α3 in
             M.alloc α4
           else
             M.alloc tt in
         let* _ :=
-          let* α0 := M.var "UnOp::not" in
-          let* α1 := M.var "BinOp::Pure::eq" in
-          let* α2 :=
+          let* α0 :=
             M.call
               (Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ])::["len"]
               [ token_ids ] in
-          let* α3 :=
+          let* α1 :=
             M.call
               (Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ])::["len"]
               [ values ] in
-          let* α4 := M.alloc (α0 (α1 α2 α3)) in
-          let* α5 := M.read (use α4) in
-          if α5 then
+          let* α2 := M.alloc (UnOp.not (BinOp.Pure.eq α0 α1)) in
+          let* α3 := M.read (M.use α2) in
+          if α3 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::Into"
                 "into"
                 [
@@ -1578,13 +1541,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 :=
               return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
-            let* α4 := never_to_any α3 in
+            let* α4 := M.never_to_any α3 in
             M.alloc α4
           else
             M.alloc tt in
         let* transfers :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::iter::traits::iterator::Iterator"
               "zip"
               [
@@ -1598,7 +1561,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     [ Ty.path "u128" ]
               ] in
           let* α1 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::deref::Deref"
               "deref"
               [
@@ -1613,7 +1576,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               (Ty.apply (Ty.path "slice") [ Ty.path "u128" ])::["iter"]
               [ α2 ] in
           let* α4 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::deref::Deref"
               "deref"
               [
@@ -1631,7 +1594,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           M.alloc α7 in
         let* _ :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::iter::traits::collect::IntoIterator"
               "into_iter"
               [
@@ -1648,7 +1611,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
               ] in
           let* α1 :=
-            M.get_method
+            M.get_trait_method
               "core::clone::Clone"
               "clone"
               [
@@ -1676,7 +1639,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   M.loop
                     (let* _ :=
                       let* α0 :=
-                        M.get_method
+                        M.get_trait_method
                           "core::iter::traits::iterator::Iterator"
                           "next"
                           [
@@ -1703,7 +1666,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             | core.option.Option.None =>
                               let* α0 := M.break in
                               let* α1 := M.read α0 in
-                              let* α2 := never_to_any α1 in
+                              let* α2 := M.never_to_any α1 in
                               M.alloc α2
                             | _ => M.break_match 
                             end);
@@ -1730,7 +1693,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 let* v := M.copy γ1_1 in
                                 let* balance :=
                                   let* α0 :=
-                                    M.get_method
+                                    M.get_trait_method
                                       "erc1155::Erc1155"
                                       "balance_of"
                                       [ (* Self *) Ty.path "erc1155::Contract"
@@ -1741,15 +1704,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   let* α4 := M.call α0 [ α1; α2; α3 ] in
                                   M.alloc α4 in
                                 let* _ :=
-                                  let* α0 := M.var "UnOp::not" in
-                                  let* α1 := M.var "BinOp::Pure::ge" in
-                                  let* α2 := M.read balance in
-                                  let* α3 := M.read v in
-                                  let* α4 := M.alloc (α0 (α1 α2 α3)) in
-                                  let* α5 := M.read (use α4) in
-                                  if α5 then
+                                  let* α0 := M.read balance in
+                                  let* α1 := M.read v in
+                                  let* α2 :=
+                                    M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
+                                  let* α3 := M.read (M.use α2) in
+                                  if α3 then
                                     let* α0 :=
-                                      M.get_method
+                                      M.get_trait_method
                                         "core::convert::Into"
                                         "into"
                                         [
@@ -1766,7 +1728,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                           "core::result::Result::Err"
                                           [ α1 ]) in
                                     let* α3 := M.read α2 in
-                                    let* α4 := never_to_any α3 in
+                                    let* α4 := M.never_to_any α3 in
                                     M.alloc α4
                                   else
                                     M.alloc tt in
@@ -1777,10 +1739,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         ] in
                     M.alloc tt))
               ] in
-          M.pure (use α5) in
+          M.pure (M.use α5) in
         let* _ :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::iter::traits::collect::IntoIterator"
               "into_iter"
               [
@@ -1808,7 +1770,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   M.loop
                     (let* _ :=
                       let* α0 :=
-                        M.get_method
+                        M.get_trait_method
                           "core::iter::traits::iterator::Iterator"
                           "next"
                           [
@@ -1835,7 +1797,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             | core.option.Option.None =>
                               let* α0 := M.break in
                               let* α1 := M.read α0 in
-                              let* α2 := never_to_any α1 in
+                              let* α2 := M.never_to_any α1 in
                               M.alloc α2
                             | _ => M.break_match 
                             end);
@@ -1879,14 +1841,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         ] in
                     M.alloc tt))
               ] in
-          M.pure (use α4) in
+          M.pure (M.use α4) in
         let* _ :=
           let* α0 := M.read self in
           let* α1 := M.read caller in
           let* α2 := M.read from in
           let* α3 := M.read to in
           let* α4 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::index::Index"
               "index"
               [
@@ -1896,11 +1858,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ];
                 (* Idx *) Ty.path "usize"
               ] in
-          let* α5 :=
-            M.call α4 [ token_ids; (Integer.of_Z 0) : Ty.path "usize" ] in
+          let* α5 := M.call α4 [ token_ids; Value.Integer Integer.Usize 0 ] in
           let* α6 := M.read α5 in
           let* α7 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::index::Index"
               "index"
               [
@@ -1910,7 +1871,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ];
                 (* Idx *) Ty.path "usize"
               ] in
-          let* α8 := M.call α7 [ values; (Integer.of_Z 0) : Ty.path "usize" ] in
+          let* α8 := M.call α7 [ values; Value.Integer Integer.Usize 0 ] in
           let* α9 := M.read α8 in
           let* α10 := M.read data in
           let* α11 :=
@@ -1952,7 +1913,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         M.alloc α0 in
       let* _ :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::collect::IntoIterator"
             "into_iter"
             [
@@ -1979,7 +1940,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 M.loop
                   (let* _ :=
                     let* α0 :=
-                      M.get_method
+                      M.get_trait_method
                         "core::iter::traits::iterator::Iterator"
                         "next"
                         [
@@ -1999,7 +1960,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           | core.option.Option.None =>
                             let* α0 := M.break in
                             let* α1 := M.read α0 in
-                            let* α2 := never_to_any α1 in
+                            let* α2 := M.never_to_any α1 in
                             M.alloc α2
                           | _ => M.break_match 
                           end);
@@ -2013,7 +1974,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.pure (α0 γ) in
                             let* o := M.copy γ0_0 in
                             let* α0 :=
-                              M.get_method
+                              M.get_trait_method
                                 "core::iter::traits::collect::IntoIterator"
                                 "into_iter"
                                 [
@@ -2040,7 +2001,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     M.loop
                                       (let* _ :=
                                         let* α0 :=
-                                          M.get_method
+                                          M.get_trait_method
                                             "core::iter::traits::iterator::Iterator"
                                             "next"
                                             [
@@ -2061,7 +2022,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               | core.option.Option.None =>
                                                 let* α0 := M.break in
                                                 let* α1 := M.read α0 in
-                                                let* α2 := never_to_any α1 in
+                                                let* α2 := M.never_to_any α1 in
                                                 M.alloc α2
                                               | _ => M.break_match 
                                               end);
@@ -2077,7 +2038,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 let* t := M.copy γ0_0 in
                                                 let* amount :=
                                                   let* α0 :=
-                                                    M.get_method
+                                                    M.get_trait_method
                                                       "erc1155::Erc1155"
                                                       "balance_of"
                                                       [
@@ -2113,13 +2074,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                           ] in
                                       M.alloc tt))
                                 ] in
-                            M.pure (use α3)
+                            M.pure (M.use α3)
                           | _ => M.break_match 
                           end)
                       ] in
                   M.alloc tt))
             ] in
-        M.pure (use α3) in
+        M.pure (M.use α3) in
       M.read output
     | _, _ => M.impossible
     end.
@@ -2164,21 +2125,20 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           let* α3 := M.call (Ty.path "erc1155::Env")::["caller"] [ α2 ] in
           M.alloc α3 in
         let* _ :=
-          let* α0 := M.var "UnOp::not" in
-          let* α1 :=
-            M.get_method
+          let* α0 :=
+            M.get_trait_method
               "core::cmp::PartialEq"
               "ne"
               [
                 (* Self *) Ty.path "erc1155::AccountId";
                 (* Rhs *) Ty.path "erc1155::AccountId"
               ] in
-          let* α2 := M.call α1 [ operator; caller ] in
-          let* α3 := M.alloc (α0 α2) in
-          let* α4 := M.read (use α3) in
-          if α4 then
+          let* α1 := M.call α0 [ operator; caller ] in
+          let* α2 := M.alloc (UnOp.not α1) in
+          let* α3 := M.read (M.use α2) in
+          if α3 then
             let* α0 :=
-              M.get_method
+              M.get_trait_method
                 "core::convert::Into"
                 "into"
                 [
@@ -2189,19 +2149,18 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 :=
               return_ (Value.StructTuple "core::result::Result::Err" [ α1 ]) in
             let* α3 := M.read α2 in
-            let* α4 := never_to_any α3 in
+            let* α4 := M.never_to_any α3 in
             M.alloc α4
           else
             M.alloc tt in
         let* _ :=
-          let* α0 := M.read (use approved) in
+          let* α0 := M.read (M.use approved) in
           if α0 then
             let* _ :=
-              let* α0 := M.var "erc1155::Contract::Get_approvals" in
-              let* α1 := M.read self in
-              let* α2 := M.read caller in
-              let* α3 := M.read operator in
-              let* α4 :=
+              let* α0 := M.read self in
+              let* α1 := M.read caller in
+              let* α2 := M.read operator in
+              let* α3 :=
                 M.call
                   (Ty.apply
                       (Ty.path "erc1155::Mapping")
@@ -2213,16 +2172,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           ];
                         Ty.tuple []
                       ])::["insert"]
-                  [ α0 α1; (α2, α3); tt ] in
-              M.alloc α4 in
+                  [ M.get_struct_record α0 "approvals"; (α1, α2); tt ] in
+              M.alloc α3 in
             M.alloc tt
           else
             let* _ :=
-              let* α0 := M.var "erc1155::Contract::Get_approvals" in
-              let* α1 := M.read self in
-              let* α2 := M.read caller in
-              let* α3 := M.read operator in
-              let* α4 :=
+              let* α0 := M.read self in
+              let* α1 := M.read caller in
+              let* α2 := M.read operator in
+              let* α3 :=
                 M.call
                   (Ty.apply
                       (Ty.path "erc1155::Mapping")
@@ -2234,8 +2192,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           ];
                         Ty.tuple []
                       ])::["remove"]
-                  [ α0 α1; (α2, α3) ] in
-              M.alloc α4 in
+                  [ M.get_struct_record α0 "approvals"; (α1, α2) ] in
+              M.alloc α3 in
             M.alloc tt in
         let* _ :=
           let* α0 := M.read self in
@@ -2326,9 +2284,9 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
       let* α5 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_v1"]
-          [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4 ] in
+          [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α4 ] in
       let* α6 := M.call α0 [ α5 ] in
-      never_to_any α6
+      M.never_to_any α6
     | _, _ => M.impossible
     end.
   
@@ -2375,9 +2333,9 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
       let* α5 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_v1"]
-          [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4 ] in
+          [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α4 ] in
       let* α6 := M.call α0 [ α5 ] in
-      never_to_any α6
+      M.never_to_any α6
     | _, _ => M.impossible
     end.
   

@@ -57,24 +57,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" α2;
-                          pointer_coercion "Unsize" α4
+                          M.pointer_coercion "Unsize" α2;
+                          M.pointer_coercion "Unsize" α4
                         ] in
                     let* α6 := M.call α0 [ α5 ] in
-                    never_to_any α6)
+                    M.never_to_any α6)
                 ])
           ] in
       M.alloc α6 in
-    let* α0 := M.var "std::process::Output::Get_status" in
-    let* α1 :=
-      M.call (Ty.path "std::process::ExitStatus")::["success"] [ α0 output ] in
-    let* α2 := M.alloc α1 in
-    let* α3 := M.read (use α2) in
     let* α0 :=
-      if α3 then
+      M.call
+        (Ty.path "std::process::ExitStatus")::["success"]
+        [ M.get_struct_record output "status" ] in
+    let* α1 := M.alloc α0 in
+    let* α2 := M.read (M.use α1) in
+    let* α0 :=
+      if α2 then
         let* s :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::deref::Deref"
               "deref"
               [
@@ -83,13 +84,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ] in
-          let* α1 := M.var "std::process::Output::Get_stdout" in
-          let* α2 := M.call α0 [ α1 output ] in
-          let* α3 :=
+          let* α1 := M.call α0 [ M.get_struct_record output "stdout" ] in
+          let* α2 :=
             M.call
               (Ty.path "alloc::string::String")::["from_utf8_lossy"]
-              [ α2 ] in
-          M.alloc α3 in
+              [ α1 ] in
+          M.alloc α2 in
         let* _ :=
           let* _ :=
             let* α0 := M.var "std::io::stdio::_print" in
@@ -104,7 +104,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α5 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_v1"]
-                [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α4
                 ] in
             let* α6 := M.call α0 [ α5 ] in
             M.alloc α6 in
@@ -113,7 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       else
         let* s :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::deref::Deref"
               "deref"
               [
@@ -122,13 +122,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ] in
-          let* α1 := M.var "std::process::Output::Get_stderr" in
-          let* α2 := M.call α0 [ α1 output ] in
-          let* α3 :=
+          let* α1 := M.call α0 [ M.get_struct_record output "stderr" ] in
+          let* α2 :=
             M.call
               (Ty.path "alloc::string::String")::["from_utf8_lossy"]
-              [ α2 ] in
-          M.alloc α3 in
+              [ α1 ] in
+          M.alloc α2 in
         let* _ :=
           let* _ :=
             let* α0 := M.var "std::io::stdio::_print" in
@@ -143,7 +142,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α5 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_v1"]
-                [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α4
                 ] in
             let* α6 := M.call α0 [ α5 ] in
             M.alloc α6 in

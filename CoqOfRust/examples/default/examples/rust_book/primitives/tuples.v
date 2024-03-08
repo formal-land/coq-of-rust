@@ -47,24 +47,20 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Matrix") in
-      let* α2 := M.var "tuples::Matrix::Get_0" in
+      let* α2 := M.read self in
       let* α3 := M.read self in
-      let* α4 := M.var "tuples::Matrix::Get_1" in
+      let* α4 := M.read self in
       let* α5 := M.read self in
-      let* α6 := M.var "tuples::Matrix::Get_2" in
-      let* α7 := M.read self in
-      let* α8 := M.var "tuples::Matrix::Get_3" in
-      let* α9 := M.read self in
-      let* α10 := M.alloc (α8 α9) in
+      let* α6 := M.alloc (M.get_struct_tuple α5 3) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field4_finish"]
         [
           α0;
           α1;
-          pointer_coercion "Unsize" (α2 α3);
-          pointer_coercion "Unsize" (α4 α5);
-          pointer_coercion "Unsize" (α6 α7);
-          pointer_coercion "Unsize" α10
+          M.pointer_coercion "Unsize" (M.get_struct_tuple α2 0);
+          M.pointer_coercion "Unsize" (M.get_struct_tuple α3 1);
+          M.pointer_coercion "Unsize" (M.get_struct_tuple α4 2);
+          M.pointer_coercion "Unsize" α6
         ]
     | _, _ => M.impossible
     end.
@@ -127,17 +123,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* long_tuple :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α0 := M.read UnsupportedLiteral in
+      let* α1 := M.read UnsupportedLiteral in
       M.alloc
-        ((Integer.of_Z 1) : Ty.path "u8",
-          (Integer.of_Z 2) : Ty.path "u16",
-          (Integer.of_Z 3) : Ty.path "u32",
-          (Integer.of_Z 4) : Ty.path "u64",
-          (Integer.of_Z (-1)) : Ty.path "i8",
-          (Integer.of_Z (-2)) : Ty.path "i16",
-          (Integer.of_Z (-3)) : Ty.path "i32",
-          (Integer.of_Z (-4)) : Ty.path "i64",
+        (Value.Integer Integer.U8 1,
+          Value.Integer Integer.U16 2,
+          Value.Integer Integer.U32 3,
+          Value.Integer Integer.U64 4,
+          Value.Integer Integer.I8 (-1),
+          Value.Integer Integer.I16 (-2),
+          Value.Integer Integer.I32 (-3),
+          Value.Integer Integer.I64 (-4),
           α0,
           α1,
           "a"%char,
@@ -157,7 +153,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -176,18 +173,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* tuple_of_tuples :=
       M.alloc
-        (((Integer.of_Z 1) : Ty.path "u8",
-            (Integer.of_Z 2) : Ty.path "u16",
-            (Integer.of_Z 2) : Ty.path "u32"),
-          ((Integer.of_Z 4) : Ty.path "u64",
-            (Integer.of_Z (-1)) : Ty.path "i8"),
-          (Integer.of_Z (-2)) : Ty.path "i16") in
+        ((Value.Integer Integer.U8 1,
+            Value.Integer Integer.U16 2,
+            Value.Integer Integer.U32 2),
+          (Value.Integer Integer.U64 4, Value.Integer Integer.I8 (-1)),
+          Value.Integer Integer.I16 (-2)) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -203,11 +200,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
-    let* pair := M.alloc ((Integer.of_Z 1) : Ty.path "i32", true) in
+    let* pair := M.alloc (Value.Integer Integer.I32 1, true) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -221,7 +219,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -242,7 +241,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -253,14 +253,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
+        let* α4 := M.alloc (Value.Integer Integer.U32 5) in
         let* α5 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -271,21 +272,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
+        let* α4 := M.alloc (Value.Integer Integer.U32 5) in
         let* α5 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
     let* tuple :=
       let* α0 := M.read (mk_str "hello") in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      M.alloc ((Integer.of_Z 1) : Ty.path "i32", α0, α1, true) in
+      let* α1 := M.read UnsupportedLiteral in
+      M.alloc (Value.Integer Integer.I32 1, α0, α1, true) in
     let* α0 :=
       match_operator
         tuple
@@ -335,17 +337,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α6;
-                        pointer_coercion "Unsize" α11
+                        M.pointer_coercion "Unsize" α6;
+                        M.pointer_coercion "Unsize" α11
                       ] in
                   let* α13 := M.call α0 [ α12 ] in
                   M.alloc α13 in
                 M.alloc tt in
               let* matrix :=
-                let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
-                let* α1 := M.read (UnsupportedLiteral : Ty.path "f32") in
-                let* α2 := M.read (UnsupportedLiteral : Ty.path "f32") in
-                let* α3 := M.read (UnsupportedLiteral : Ty.path "f32") in
+                let* α0 := M.read UnsupportedLiteral in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := M.read UnsupportedLiteral in
+                let* α3 := M.read UnsupportedLiteral in
                 M.alloc
                   (Value.StructTuple "tuples::Matrix" [ α0; α1; α2; α3 ]) in
               let* _ :=
@@ -364,8 +366,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in

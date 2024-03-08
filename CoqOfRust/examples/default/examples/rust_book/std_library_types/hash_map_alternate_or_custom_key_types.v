@@ -22,38 +22,37 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
     | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.var "BinOp::Pure::and" in
-      let* α1 :=
-        M.get_method
+      let* α0 :=
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
           ] in
-      let* α2 :=
-        M.var "hash_map_alternate_or_custom_key_types::Account::Get_username" in
-      let* α3 := M.read self in
+      let* α1 := M.read self in
+      let* α2 := M.read other in
+      let* α3 :=
+        M.call
+          α0
+          [ M.get_struct_record α1 "username"; M.get_struct_record α2 "username"
+          ] in
       let* α4 :=
-        M.var "hash_map_alternate_or_custom_key_types::Account::Get_username" in
-      let* α5 := M.read other in
-      let* α6 := M.call α1 [ α2 α3; α4 α5 ] in
-      let* α7 :=
-        M.get_method
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
           ] in
-      let* α8 :=
-        M.var "hash_map_alternate_or_custom_key_types::Account::Get_password" in
-      let* α9 := M.read self in
-      let* α10 :=
-        M.var "hash_map_alternate_or_custom_key_types::Account::Get_password" in
-      let* α11 := M.read other in
-      let* α12 := M.call α7 [ α8 α9; α10 α11 ] in
-      M.pure (α0 α6 α12)
+      let* α5 := M.read self in
+      let* α6 := M.read other in
+      let* α7 :=
+        M.call
+          α4
+          [ M.get_struct_record α5 "password"; M.get_struct_record α6 "password"
+          ] in
+      M.pure (BinOp.Pure.and α3 α7)
     | _, _ => M.impossible
     end.
   
@@ -124,30 +123,25 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       let* state := M.alloc state in
       let* _ :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::hash::Hash"
             "hash"
             [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]; (* H *) __H
             ] in
-        let* α1 :=
-          M.var
-            "hash_map_alternate_or_custom_key_types::Account::Get_username" in
-        let* α2 := M.read self in
-        let* α3 := M.read state in
-        let* α4 := M.call α0 [ α1 α2; α3 ] in
-        M.alloc α4 in
+        let* α1 := M.read self in
+        let* α2 := M.read state in
+        let* α3 := M.call α0 [ M.get_struct_record α1 "username"; α2 ] in
+        M.alloc α3 in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::hash::Hash"
           "hash"
           [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]; (* H *) __H
           ] in
-      let* α1 :=
-        M.var "hash_map_alternate_or_custom_key_types::Account::Get_password" in
-      let* α2 := M.read self in
-      let* α3 := M.read state in
-      let* α4 := M.call α0 [ α1 α2; α3 ] in
-      let* α0 := M.alloc α4 in
+      let* α1 := M.read self in
+      let* α2 := M.read state in
+      let* α3 := M.call α0 [ M.get_struct_record α1 "password"; α2 ] in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -212,7 +206,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -231,7 +226,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -244,7 +240,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -288,7 +284,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" α2 ] in
+                      [ M.pointer_coercion "Unsize" α2 ] in
                   let* α4 := M.call α0 [ α3 ] in
                   M.alloc α4 in
                 M.alloc tt in
@@ -299,24 +295,21 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "
 ") in
                   let* α3 := M.alloc [ α1; α2 ] in
-                  let* α4 :=
-                    M.var
-                      "hash_map_alternate_or_custom_key_types::AccountInfo::Get_name" in
-                  let* α5 := M.read account_info in
-                  let* α6 :=
+                  let* α4 := M.read account_info in
+                  let* α5 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ α4 α5 ] in
-                  let* α7 := M.alloc [ α6 ] in
-                  let* α8 :=
+                      [ M.get_struct_record α4 "name" ] in
+                  let* α6 := M.alloc [ α5 ] in
+                  let* α7 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α7
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α6
                       ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
+                  let* α8 := M.call α0 [ α7 ] in
+                  M.alloc α8 in
                 M.alloc tt in
               let* _ :=
                 let* _ :=
@@ -325,24 +318,21 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "
 ") in
                   let* α3 := M.alloc [ α1; α2 ] in
-                  let* α4 :=
-                    M.var
-                      "hash_map_alternate_or_custom_key_types::AccountInfo::Get_email" in
-                  let* α5 := M.read account_info in
-                  let* α6 :=
+                  let* α4 := M.read account_info in
+                  let* α5 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ α4 α5 ] in
-                  let* α7 := M.alloc [ α6 ] in
-                  let* α8 :=
+                      [ M.get_struct_record α4 "email" ] in
+                  let* α6 := M.alloc [ α5 ] in
+                  let* α7 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α7
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α6
                       ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
+                  let* α8 := M.call α0 [ α7 ] in
+                  M.alloc α8 in
                 M.alloc tt in
               M.alloc tt
             | _ => M.break_match 
@@ -356,7 +346,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" α2 ] in
+                  [ M.pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt)

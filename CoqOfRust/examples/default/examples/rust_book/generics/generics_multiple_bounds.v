@@ -24,7 +24,8 @@ Definition compare_prints (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -41,7 +42,8 @@ Definition compare_prints (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -74,7 +76,8 @@ Definition compare_types (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -91,7 +94,8 @@ Definition compare_types (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -121,17 +125,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* array_ :=
       M.alloc
         [
-          (Integer.of_Z 1) : Ty.path "i32";
-          (Integer.of_Z 2) : Ty.path "i32";
-          (Integer.of_Z 3) : Ty.path "i32"
+          Value.Integer Integer.I32 1;
+          Value.Integer Integer.I32 2;
+          Value.Integer Integer.I32 3
         ] in
     let* vec :=
       let* α0 :=
         M.alloc
           [
-            (Integer.of_Z 1) : Ty.path "i32";
-            (Integer.of_Z 2) : Ty.path "i32";
-            (Integer.of_Z 3) : Ty.path "i32"
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
           ] in
       let* α1 :=
         M.call
@@ -141,7 +145,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 := M.var "generics_multiple_bounds::compare_prints" in

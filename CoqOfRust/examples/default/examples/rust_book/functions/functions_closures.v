@@ -34,7 +34,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* outer_var := M.alloc ((Integer.of_Z 42) : Ty.path "i32") in
+    let* outer_var := M.alloc (Value.Integer Integer.I32 42) in
     let* closure_annotated :=
       M.alloc
         (fun (α0 : Ty.path "i32") =>
@@ -44,10 +44,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 (let* i := M.copy γ in
-                let* α0 := M.var "BinOp::Panic::add" in
-                let* α1 := M.read i in
-                let* α2 := M.read outer_var in
-                α0 α1 α2)
+                let* α0 := M.read i in
+                let* α1 := M.read outer_var in
+                BinOp.Panic.add α0 α1)
             ])) in
     let* closure_inferred :=
       M.alloc
@@ -58,10 +57,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 (let* i := M.copy γ in
-                let* α0 := M.var "BinOp::Panic::add" in
-                let* α1 := M.read i in
-                let* α2 := M.read outer_var in
-                α0 α1 α2)
+                let* α0 := M.read i in
+                let* α1 := M.read outer_var in
+                BinOp.Panic.add α0 α1)
             ])) in
     let* _ :=
       let* _ :=
@@ -71,7 +69,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::function::Fn"
             "call"
             [
@@ -80,7 +78,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
         let* α5 :=
-          M.call α4 [ closure_annotated; ((Integer.of_Z 1) : Ty.path "i32") ] in
+          M.call α4 [ closure_annotated; (Value.Integer Integer.I32 1) ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
@@ -88,7 +86,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -100,7 +99,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::function::Fn"
             "call"
             [
@@ -109,7 +108,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
         let* α5 :=
-          M.call α4 [ closure_inferred; ((Integer.of_Z 1) : Ty.path "i32") ] in
+          M.call α4 [ closure_inferred; (Value.Integer Integer.I32 1) ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
@@ -117,7 +116,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -127,7 +127,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            [ fun γ => (M.pure ((Integer.of_Z 1) : Ty.path "i32")) ])) in
+            [ fun γ => (M.pure (Value.Integer Integer.I32 1)) ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -136,7 +136,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::function::Fn"
             "call"
             [
@@ -151,7 +151,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

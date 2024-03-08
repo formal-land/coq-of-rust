@@ -23,7 +23,8 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -43,11 +44,9 @@ Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc x in
     let* _ :=
       let* β := M.read x in
-      let* α0 := M.var "assign" in
-      let* α1 := M.var "BinOp::Panic::add" in
-      let* α2 := M.read β in
-      let* α3 := α1 α2 ((Integer.of_Z 1) : Ty.path "i32") in
-      α0 β α3 in
+      let* α0 := M.read β in
+      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
+      M.assign β α1 in
     let* α0 := M.alloc tt in
     M.read α0
   | _, _ => M.impossible
@@ -79,7 +78,8 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -122,8 +122,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
-    let* y := M.alloc ((Integer.of_Z 9) : Ty.path "i32") in
+    let* x := M.alloc (Value.Integer Integer.I32 7) in
+    let* y := M.alloc (Value.Integer Integer.I32 9) in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::print_one" in
       let* α1 := M.call α0 [ x ] in
@@ -141,7 +141,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read z in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
-    let* t := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+    let* t := M.alloc (Value.Integer Integer.I32 3) in
     let* _ :=
       let* α0 := M.var "scoping_rules_lifetimes_functions::add_one" in
       let* α1 := M.call α0 [ t ] in

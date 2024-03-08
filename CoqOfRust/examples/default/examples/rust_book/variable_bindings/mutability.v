@@ -22,8 +22,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* _immutable_binding := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
-    let* mutable_binding := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+    let* _immutable_binding := M.alloc (Value.Integer Integer.I32 1) in
+    let* mutable_binding := M.alloc (Value.Integer Integer.I32 1) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -39,17 +39,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let β := mutable_binding in
-      let* α0 := M.var "assign" in
-      let* α1 := M.var "BinOp::Panic::add" in
-      let* α2 := M.read β in
-      let* α3 := α1 α2 ((Integer.of_Z 1) : Ty.path "i32") in
-      α0 β α3 in
+      let* α0 := M.read β in
+      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
+      M.assign β α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -65,7 +64,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

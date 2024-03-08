@@ -18,7 +18,7 @@ Definition combine_vecs_explicit_return_type
     let* v := M.alloc v in
     let* u := M.alloc u in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         "cycle"
         [
@@ -35,7 +35,7 @@ Definition combine_vecs_explicit_return_type
               ]
         ] in
     let* α1 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         "chain"
         [
@@ -49,7 +49,7 @@ Definition combine_vecs_explicit_return_type
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
         ] in
     let* α2 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -61,7 +61,7 @@ Definition combine_vecs_explicit_return_type
     let* α3 := M.read v in
     let* α4 := M.call α2 [ α3 ] in
     let* α5 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -88,7 +88,7 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* v := M.alloc v in
     let* u := M.alloc u in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         "cycle"
         [
@@ -105,7 +105,7 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ]
         ] in
     let* α1 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         "chain"
         [
@@ -119,7 +119,7 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
         ] in
     let* α2 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -131,7 +131,7 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α3 := M.read v in
     let* α4 := M.call α2 [ α3 ] in
     let* α5 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -170,9 +170,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc
           [
-            (Integer.of_Z 1) : Ty.path "i32";
-            (Integer.of_Z 2) : Ty.path "i32";
-            (Integer.of_Z 3) : Ty.path "i32"
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
           ] in
       let* α1 :=
         M.call
@@ -182,13 +182,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* v2 :=
       let* α0 :=
-        M.alloc
-          [ (Integer.of_Z 4) : Ty.path "i32"; (Integer.of_Z 5) : Ty.path "i32"
-          ] in
+        M.alloc [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 5 ] in
       let* α1 :=
         M.call
           (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
@@ -197,7 +195,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* v3 :=
       let* α0 := M.var "impl_trait_as_return_type::combine_vecs" in
@@ -210,9 +208,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.StructTuple
             "core::option::Option::Some"
-            [ (Integer.of_Z 1) : Ty.path "i32" ]) in
+            [ Value.Integer Integer.I32 1 ]) in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
@@ -230,9 +228,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -245,12 +242,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::option::Option")
                         [ Ty.path "i32" ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -259,7 +256,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -270,9 +267,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.StructTuple
             "core::option::Option::Some"
-            [ (Integer.of_Z 2) : Ty.path "i32" ]) in
+            [ Value.Integer Integer.I32 2 ]) in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
@@ -290,9 +287,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -305,12 +301,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::option::Option")
                         [ Ty.path "i32" ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -319,7 +315,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -330,9 +326,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.StructTuple
             "core::option::Option::Some"
-            [ (Integer.of_Z 3) : Ty.path "i32" ]) in
+            [ Value.Integer Integer.I32 3 ]) in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
@@ -350,9 +346,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -365,12 +360,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::option::Option")
                         [ Ty.path "i32" ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -379,7 +374,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -390,9 +385,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.StructTuple
             "core::option::Option::Some"
-            [ (Integer.of_Z 4) : Ty.path "i32" ]) in
+            [ Value.Integer Integer.I32 4 ]) in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
@@ -410,9 +405,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -425,12 +419,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::option::Option")
                         [ Ty.path "i32" ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -439,7 +433,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -450,9 +444,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.StructTuple
             "core::option::Option::Some"
-            [ (Integer.of_Z 5) : Ty.path "i32" ]) in
+            [ Value.Integer Integer.I32 5 ]) in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
@@ -470,9 +464,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -485,12 +478,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::option::Option")
                         [ Ty.path "i32" ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -499,7 +492,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -514,7 +507,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in

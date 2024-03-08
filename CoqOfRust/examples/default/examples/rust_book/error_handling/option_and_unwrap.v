@@ -34,7 +34,7 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -62,7 +62,9 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -81,7 +83,7 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -118,7 +120,7 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [
@@ -127,12 +129,12 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 := M.call α0 [ inside; mk_str "lemonade" ] in
       let* α2 := M.alloc α1 in
-      let* α3 := M.read (use α2) in
+      let* α3 := M.read (M.use α2) in
       if α3 then
         let* α0 := M.var "std::panicking::begin_panic" in
         let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
         let* α2 := M.call α0 [ α1 ] in
-        let* α3 := never_to_any α2 in
+        let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
         M.alloc tt in
@@ -151,7 +153,8 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

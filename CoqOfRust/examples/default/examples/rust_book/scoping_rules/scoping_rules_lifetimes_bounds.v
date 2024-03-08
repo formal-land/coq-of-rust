@@ -14,12 +14,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Ref") in
-      let* α2 := M.var "scoping_rules_lifetimes_bounds::Ref::Get_0" in
-      let* α3 := M.read self in
-      let* α4 := M.alloc (α2 α3) in
+      let* α2 := M.read self in
+      let* α3 := M.alloc (M.get_struct_tuple α2 0) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" α4 ]
+        [ α0; α1; M.pointer_coercion "Unsize" α3 ]
     | _, _ => M.impossible
     end.
   
@@ -59,7 +58,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -93,7 +93,8 @@ Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -115,7 +116,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x := M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
+    let* x := M.alloc (Value.Integer Integer.I32 7) in
     let* ref_x :=
       M.alloc (Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ]) in
     let* _ :=

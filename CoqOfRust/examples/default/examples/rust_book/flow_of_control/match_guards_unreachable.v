@@ -17,7 +17,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* number := M.alloc ((Integer.of_Z 4) : Ty.path "u8") in
+    let* number := M.alloc (Value.Integer Integer.U8 4) in
     let* α0 :=
       match_operator
         number
@@ -32,7 +32,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" α2 ] in
+                  [ M.pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt);
@@ -46,14 +46,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" α2 ] in
+                  [ M.pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt);
           fun γ =>
             (let* α0 := M.var "core::panicking::unreachable_display" in
             let* α1 := M.call α0 [ mk_str "Should never happen." ] in
-            let* α2 := never_to_any α1 in
+            let* α2 := M.never_to_any α1 in
             M.alloc α2)
         ] in
     M.read α0

@@ -34,7 +34,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* person :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::From"
           "from"
           [
@@ -48,7 +48,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ (Integer.of_Z 20) : Ty.path "u8" ] in
+          [ Value.Integer Integer.U8 20 ] in
       M.alloc
         (Value.StructRecord
           "scoping_rules_ownership_and_rules_partial_moves::main::Person"
@@ -98,8 +98,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -120,8 +120,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -135,22 +135,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
                   let* α3 := M.alloc [ α1; α2 ] in
                   let* α4 :=
-                    M.var
-                      "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_age" in
-                  let* α5 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ α4 person ] in
-                  let* α6 := M.alloc [ α5 ] in
-                  let* α7 :=
+                      [ M.get_struct_record person "age" ] in
+                  let* α5 := M.alloc [ α4 ] in
+                  let* α6 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α6
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
-                  let* α8 := M.call α0 [ α7 ] in
-                  M.alloc α8 in
+                  let* α7 := M.call α0 [ α6 ] in
+                  M.alloc α7 in
                 M.alloc tt in
               M.alloc tt
             end)
@@ -173,25 +170,19 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Person") in
       let* α2 := M.read (mk_str "name") in
-      let* α3 :=
-        M.var
-          "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_name" in
-      let* α4 := M.read self in
-      let* α5 := M.read (mk_str "age") in
-      let* α6 :=
-        M.var
-          "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_age" in
-      let* α7 := M.read self in
-      let* α8 := M.alloc (α6 α7) in
+      let* α3 := M.read self in
+      let* α4 := M.read (mk_str "age") in
+      let* α5 := M.read self in
+      let* α6 := M.alloc (M.get_struct_record α5 "age") in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion "Unsize" (α3 α4);
-          α5;
-          pointer_coercion "Unsize" α8
+          M.pointer_coercion "Unsize" (M.get_struct_record α3 "name");
+          α4;
+          M.pointer_coercion "Unsize" α6
         ]
     | _, _ => M.impossible
     end.

@@ -15,20 +15,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* raw_p :=
-      let* α0 := M.alloc ((Integer.of_Z 10) : Ty.path "u32") in
+      let* α0 := M.alloc (Value.Integer Integer.U32 10) in
       M.alloc α0 in
     let* _ :=
-      let* α0 := M.var "UnOp::not" in
-      let* α1 := M.var "BinOp::Pure::eq" in
-      let* α2 := M.read raw_p in
-      let* α3 := M.read α2 in
-      let* α4 := M.alloc (α0 (α1 α3 ((Integer.of_Z 10) : Ty.path "u32"))) in
-      let* α5 := M.read (use α4) in
-      if α5 then
+      let* α0 := M.read raw_p in
+      let* α1 := M.read α0 in
+      let* α2 :=
+        M.alloc (UnOp.not (BinOp.Pure.eq α1 (Value.Integer Integer.U32 10))) in
+      let* α3 := M.read (M.use α2) in
+      if α3 then
         let* α0 := M.var "core::panicking::panic" in
         let* α1 := M.read (mk_str "assertion failed: *raw_p == 10") in
         let* α2 := M.call α0 [ α1 ] in
-        let* α3 := never_to_any α2 in
+        let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
         M.alloc tt in

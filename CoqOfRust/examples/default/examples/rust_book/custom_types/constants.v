@@ -6,7 +6,7 @@ Definition LANGUAGE
   M.run (M.alloc (mk_str "Rust")).
 
 Definition THRESHOLD : Ty.path "i32" :=
-  M.run (M.alloc ((Integer.of_Z 10) : Ty.path "i32")).
+  M.run (M.alloc (Value.Integer Integer.I32 10)).
 
 (*
 fn is_big(n: i32) -> bool {
@@ -18,11 +18,10 @@ Definition is_big (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ n ] =>
     let* n := M.alloc n in
-    let* α0 := M.var "BinOp::Pure::gt" in
-    let* α1 := M.read n in
-    let* α2 := M.var "constants::THRESHOLD" in
-    let* α3 := M.read α2 in
-    M.pure (α0 α1 α3)
+    let* α0 := M.read n in
+    let* α1 := M.var "constants::THRESHOLD" in
+    let* α2 := M.read α1 in
+    M.pure (BinOp.Pure.gt α0 α2)
   | _, _ => M.impossible
   end.
 
@@ -44,7 +43,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* n := M.alloc ((Integer.of_Z 16) : Ty.path "i32") in
+    let* n := M.alloc (Value.Integer Integer.I32 16) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -60,7 +59,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -78,7 +78,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -96,7 +97,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.read n in
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.read (use α9) in
+        let* α10 := M.read (M.use α9) in
         let* α11 :=
           if α10 then
             M.pure (mk_str "big")
@@ -109,7 +110,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α14 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α13 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α13
+            ] in
         let* α15 := M.call α0 [ α14 ] in
         M.alloc α15 in
       M.alloc tt in

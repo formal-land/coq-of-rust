@@ -11,10 +11,9 @@ Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
-    let* α0 := M.var "BinOp::Panic::add" in
-    let* α1 := M.read a in
-    let* α2 := M.read b in
-    α0 α1 α2
+    let* α0 := M.read a in
+    let* α1 := M.read b in
+    BinOp.Panic.add α0 α1
   | _, _ => M.impossible
   end.
 
@@ -29,10 +28,9 @@ Definition bad_add (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
-    let* α0 := M.var "BinOp::Panic::sub" in
-    let* α1 := M.read a in
-    let* α2 := M.read b in
-    α0 α1 α2
+    let* α0 := M.read a in
+    let* α1 := M.read b in
+    BinOp.Panic.sub α0 α1
   | _, _ => M.impossible
   end.
 
@@ -50,10 +48,9 @@ Module tests.
         let* α1 :=
           M.call
             α0
-            [ (Integer.of_Z 1) : Ty.path "i32"; (Integer.of_Z 2) : Ty.path "i32"
-            ] in
+            [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
-        let* α3 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+        let* α3 := M.alloc (Value.Integer Integer.I32 3) in
         let* α4 := M.alloc (α2, α3) in
         match_operator
           α4
@@ -66,15 +63,13 @@ Module tests.
                 let γ0_1 := Tuple.Access.right γ in
                 let* left_val := M.copy γ0_0 in
                 let* right_val := M.copy γ0_1 in
-                let* α0 := M.var "UnOp::not" in
-                let* α1 := M.var "BinOp::Pure::eq" in
-                let* α2 := M.read left_val in
+                let* α0 := M.read left_val in
+                let* α1 := M.read α0 in
+                let* α2 := M.read right_val in
                 let* α3 := M.read α2 in
-                let* α4 := M.read right_val in
-                let* α5 := M.read α4 in
-                let* α6 := M.alloc (α0 (α1 α3 α5)) in
-                let* α7 := M.read (use α6) in
-                if α7 then
+                let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+                let* α5 := M.read (M.use α4) in
+                if α5 then
                   let* kind := M.alloc core.panicking.AssertKind.Eq in
                   let* α0 := M.var "core::panicking::assert_failed" in
                   let* α1 := M.read kind in
@@ -84,7 +79,7 @@ Module tests.
                     M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                   let* α0 := M.alloc α4 in
                   let* α1 := M.read α0 in
-                  let* α2 := never_to_any α1 in
+                  let* α2 := M.never_to_any α1 in
                   M.alloc α2
                 else
                   M.alloc tt
@@ -110,10 +105,9 @@ Module tests.
         let* α1 :=
           M.call
             α0
-            [ (Integer.of_Z 1) : Ty.path "i32"; (Integer.of_Z 2) : Ty.path "i32"
-            ] in
+            [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
-        let* α3 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+        let* α3 := M.alloc (Value.Integer Integer.I32 3) in
         let* α4 := M.alloc (α2, α3) in
         match_operator
           α4
@@ -126,15 +120,13 @@ Module tests.
                 let γ0_1 := Tuple.Access.right γ in
                 let* left_val := M.copy γ0_0 in
                 let* right_val := M.copy γ0_1 in
-                let* α0 := M.var "UnOp::not" in
-                let* α1 := M.var "BinOp::Pure::eq" in
-                let* α2 := M.read left_val in
+                let* α0 := M.read left_val in
+                let* α1 := M.read α0 in
+                let* α2 := M.read right_val in
                 let* α3 := M.read α2 in
-                let* α4 := M.read right_val in
-                let* α5 := M.read α4 in
-                let* α6 := M.alloc (α0 (α1 α3 α5)) in
-                let* α7 := M.read (use α6) in
-                if α7 then
+                let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+                let* α5 := M.read (M.use α4) in
+                if α5 then
                   let* kind := M.alloc core.panicking.AssertKind.Eq in
                   let* α0 := M.var "core::panicking::assert_failed" in
                   let* α1 := M.read kind in
@@ -144,7 +136,7 @@ Module tests.
                     M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                   let* α0 := M.alloc α4 in
                   let* α1 := M.read α0 in
-                  let* α2 := never_to_any α1 in
+                  let* α2 := M.never_to_any α1 in
                   M.alloc α2
                 else
                   M.alloc tt

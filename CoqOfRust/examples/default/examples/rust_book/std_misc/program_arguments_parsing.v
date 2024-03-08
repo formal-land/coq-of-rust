@@ -17,19 +17,19 @@ Definition increase (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "BinOp::Panic::add" in
-        let* α5 := M.read number in
-        let* α6 := α4 α5 ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α7 := M.alloc α6 in
-        let* α8 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α7 ] in
-        let* α9 := M.alloc [ α8 ] in
-        let* α10 :=
+        let* α4 := M.read number in
+        let* α5 := BinOp.Panic.add α4 (Value.Integer Integer.I32 1) in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
-        let* α11 := M.call α0 [ α10 ] in
-        M.alloc α11 in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -52,19 +52,19 @@ Definition decrease (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "BinOp::Panic::sub" in
-        let* α5 := M.read number in
-        let* α6 := α4 α5 ((Integer.of_Z 1) : Ty.path "i32") in
-        let* α7 := M.alloc α6 in
-        let* α8 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α7 ] in
-        let* α9 := M.alloc [ α8 ] in
-        let* α10 :=
+        let* α4 := M.read number in
+        let* α5 := BinOp.Panic.sub α4 (Value.Integer Integer.I32 1) in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
-        let* α11 := M.call α0 [ α10 ] in
-        M.alloc α11 in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -101,7 +101,7 @@ match_args {increase|decrease} <integer>
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -163,7 +163,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     M.catch_return
       (let* args :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "collect"
             [
@@ -208,7 +208,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α3 :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_const"]
-                        [ pointer_coercion "Unsize" α2 ] in
+                        [ M.pointer_coercion "Unsize" α2 ] in
                     let* α4 := M.call α0 [ α3 ] in
                     M.alloc α4 in
                   M.alloc tt in
@@ -220,12 +220,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | usize.Make 2 =>
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::ops::deref::Deref"
                     "deref"
                     [ (* Self *) Ty.path "alloc::string::String" ] in
                 let* α1 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::ops::index::Index"
                     "index"
                     [
@@ -238,8 +238,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           ];
                       (* Idx *) Ty.path "usize"
                     ] in
-                let* α2 :=
-                  M.call α1 [ args; (Integer.of_Z 1) : Ty.path "usize" ] in
+                let* α2 := M.call α1 [ args; Value.Integer Integer.Usize 1 ] in
                 let* α3 := M.call α0 [ α2 ] in
                 let* α4 := M.call (Ty.path "str")::["parse"] [ α3 ] in
                 let* α5 := M.alloc α4 in
@@ -264,7 +263,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α3 :=
                               M.call
                                 (Ty.path "core::fmt::Arguments")::["new_const"]
-                                [ pointer_coercion "Unsize" α2 ] in
+                                [ M.pointer_coercion "Unsize" α2 ] in
                             let* α4 := M.call α0 [ α3 ] in
                             M.alloc α4 in
                           M.alloc tt
@@ -281,7 +280,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α3 :=
                           M.call
                             (Ty.path "core::fmt::Arguments")::["new_const"]
-                            [ pointer_coercion "Unsize" α2 ] in
+                            [ M.pointer_coercion "Unsize" α2 ] in
                         let* α4 := M.call α0 [ α3 ] in
                         M.alloc α4 in
                       M.alloc tt)
@@ -294,7 +293,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               | usize.Make 3 =>
                 let* cmd :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::index::Index"
                       "index"
                       [
@@ -308,11 +307,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (* Idx *) Ty.path "usize"
                       ] in
                   let* α1 :=
-                    M.call α0 [ args; (Integer.of_Z 1) : Ty.path "usize" ] in
+                    M.call α0 [ args; Value.Integer Integer.Usize 1 ] in
                   M.alloc α1 in
                 let* num :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::index::Index"
                       "index"
                       [
@@ -326,11 +325,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (* Idx *) Ty.path "usize"
                       ] in
                   let* α1 :=
-                    M.call α0 [ args; (Integer.of_Z 2) : Ty.path "usize" ] in
+                    M.call α0 [ args; Value.Integer Integer.Usize 2 ] in
                   M.alloc α1 in
                 let* number :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::deref::Deref"
                       "deref"
                       [ (* Self *) Ty.path "alloc::string::String" ] in
@@ -375,7 +374,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   M.call
                                     (Ty.path
                                         "core::fmt::Arguments")::["new_const"]
-                                    [ pointer_coercion "Unsize" α2 ] in
+                                    [ M.pointer_coercion "Unsize" α2 ] in
                                 let* α4 := M.call α0 [ α3 ] in
                                 M.alloc α4 in
                               M.alloc tt in
@@ -386,14 +385,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.alloc α1 in
                             let* α0 := return_ tt in
                             let* α1 := M.read α0 in
-                            let* α2 := never_to_any α1 in
+                            let* α2 := M.never_to_any α1 in
                             M.alloc α2
                           | _ => M.break_match 
                           end)
                       ] in
                   M.copy α5 in
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::ops::index::Index"
                     "index"
                     [
@@ -427,7 +426,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α3 :=
                             M.call
                               (Ty.path "core::fmt::Arguments")::["new_const"]
-                              [ pointer_coercion "Unsize" α2 ] in
+                              [ M.pointer_coercion "Unsize" α2 ] in
                           let* α4 := M.call α0 [ α3 ] in
                           M.alloc α4 in
                         M.alloc tt in

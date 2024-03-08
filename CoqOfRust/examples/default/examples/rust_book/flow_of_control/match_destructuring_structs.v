@@ -31,10 +31,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Value.StructRecord
           "match_destructuring_structs::Foo"
           [
-            ("x",
-              ((Integer.of_Z 1) : Ty.path "u32",
-                (Integer.of_Z 2) : Ty.path "u32"));
-            ("y", (Integer.of_Z 3) : Ty.path "u32")
+            ("x", (Value.Integer Integer.U32 1, Value.Integer Integer.U32 2));
+            ("y", Value.Integer Integer.U32 3)
           ]) in
     let* α0 :=
       match_operator
@@ -85,8 +83,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" α4;
-                          pointer_coercion "Unsize" α7
+                          M.pointer_coercion "Unsize" α4;
+                          M.pointer_coercion "Unsize" α7
                         ] in
                     let* α9 := M.call α0 [ α8 ] in
                     M.alloc α9 in
@@ -129,8 +127,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -160,7 +158,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

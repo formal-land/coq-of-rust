@@ -33,7 +33,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* count := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
+    let* count := M.alloc (Value.Integer Integer.U32 0) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -43,7 +43,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -51,17 +51,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.loop
         (let* _ :=
           let β := count in
-          let* α0 := M.var "assign" in
-          let* α1 := M.var "BinOp::Panic::add" in
-          let* α2 := M.read β in
-          let* α3 := α1 α2 ((Integer.of_Z 1) : Ty.path "u32") in
-          α0 β α3 in
+          let* α0 := M.read β in
+          let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
+          M.assign β α1 in
         let* _ :=
-          let* α0 := M.var "BinOp::Pure::eq" in
-          let* α1 := M.read count in
-          let* α2 := M.alloc (α0 α1 ((Integer.of_Z 3) : Ty.path "u32")) in
-          let* α3 := M.read (use α2) in
-          if α3 then
+          let* α0 := M.read count in
+          let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 3)) in
+          let* α2 := M.read (M.use α1) in
+          if α2 then
             let* _ :=
               let* _ :=
                 let* α0 := M.var "std::io::stdio::_print" in
@@ -71,13 +68,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt in
             let* α0 := M.continue in
             let* α1 := M.read α0 in
-            let* α2 := never_to_any α1 in
+            let* α2 := M.never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
@@ -96,16 +93,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α6 :=
               M.call
                 (Ty.path "core::fmt::Arguments")::["new_v1"]
-                [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
                 ] in
             let* α7 := M.call α0 [ α6 ] in
             M.alloc α7 in
           M.alloc tt in
-        let* α0 := M.var "BinOp::Pure::eq" in
-        let* α1 := M.read count in
-        let* α2 := M.alloc (α0 α1 ((Integer.of_Z 5) : Ty.path "u32")) in
-        let* α3 := M.read (use α2) in
-        if α3 then
+        let* α0 := M.read count in
+        let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 5)) in
+        let* α2 := M.read (M.use α1) in
+        if α2 then
           let* _ :=
             let* _ :=
               let* α0 := M.var "std::io::stdio::_print" in
@@ -115,13 +111,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ pointer_coercion "Unsize" α2 ] in
+                  [ M.pointer_coercion "Unsize" α2 ] in
               let* α4 := M.call α0 [ α3 ] in
               M.alloc α4 in
             M.alloc tt in
           let* α0 := M.break in
           let* α1 := M.read α0 in
-          let* α2 := never_to_any α1 in
+          let* α2 := M.never_to_any α1 in
           M.alloc α2
         else
           M.alloc tt) in

@@ -24,31 +24,28 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     | [ Self; A; B ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.var "BinOp::Pure::and" in
-      let* α1 :=
-        M.get_method
+      let* α0 :=
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [ (* Self *) A; (* Rhs *) A ] in
-      let* α2 := M.var "generics_phantom_type::PhantomTuple::Get_0" in
-      let* α3 := M.read self in
-      let* α4 := M.var "generics_phantom_type::PhantomTuple::Get_0" in
-      let* α5 := M.read other in
-      let* α6 := M.call α1 [ α2 α3; α4 α5 ] in
-      let* α7 :=
-        M.get_method
+      let* α1 := M.read self in
+      let* α2 := M.read other in
+      let* α3 :=
+        M.call α0 [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ] in
+      let* α4 :=
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [
             (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
             (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
           ] in
-      let* α8 := M.var "generics_phantom_type::PhantomTuple::Get_1" in
-      let* α9 := M.read self in
-      let* α10 := M.var "generics_phantom_type::PhantomTuple::Get_1" in
-      let* α11 := M.read other in
-      let* α12 := M.call α7 [ α8 α9; α10 α11 ] in
-      M.pure (α0 α6 α12)
+      let* α5 := M.read self in
+      let* α6 := M.read other in
+      let* α7 :=
+        M.call α4 [ M.get_struct_tuple α5 1; M.get_struct_tuple α6 1 ] in
+      M.pure (BinOp.Pure.and α3 α7)
     | _, _ => M.impossible
     end.
   
@@ -86,31 +83,33 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     | [ Self; A; B ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.var "BinOp::Pure::and" in
-      let* α1 :=
-        M.get_method
+      let* α0 :=
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [ (* Self *) A; (* Rhs *) A ] in
-      let* α2 := M.var "generics_phantom_type::PhantomStruct::Get_first" in
-      let* α3 := M.read self in
-      let* α4 := M.var "generics_phantom_type::PhantomStruct::Get_first" in
-      let* α5 := M.read other in
-      let* α6 := M.call α1 [ α2 α3; α4 α5 ] in
-      let* α7 :=
-        M.get_method
+      let* α1 := M.read self in
+      let* α2 := M.read other in
+      let* α3 :=
+        M.call
+          α0
+          [ M.get_struct_record α1 "first"; M.get_struct_record α2 "first" ] in
+      let* α4 :=
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [
             (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
             (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
           ] in
-      let* α8 := M.var "generics_phantom_type::PhantomStruct::Get_phantom" in
-      let* α9 := M.read self in
-      let* α10 := M.var "generics_phantom_type::PhantomStruct::Get_phantom" in
-      let* α11 := M.read other in
-      let* α12 := M.call α7 [ α8 α9; α10 α11 ] in
-      M.pure (α0 α6 α12)
+      let* α5 := M.read self in
+      let* α6 := M.read other in
+      let* α7 :=
+        M.call
+          α4
+          [ M.get_struct_record α5 "phantom"; M.get_struct_record α6 "phantom"
+          ] in
+      M.pure (BinOp.Pure.and α3 α7)
     | _, _ => M.impossible
     end.
   

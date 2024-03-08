@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -97,31 +97,31 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α3 := M.call α2 [] in
       let* α4 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α5 := M.call α4 [] in
       let* α6 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α7 := M.call α6 [] in
       let* α8 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -162,9 +162,8 @@ Module Impl_custom_environment_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "custom_environment::Env::Get_caller" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
@@ -184,7 +183,7 @@ Module Impl_custom_environment_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -206,7 +205,7 @@ Module Impl_custom_environment_Topics.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -237,7 +236,7 @@ Module Impl_custom_environment_Topics.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "custom_environment::Topics" ] in
@@ -263,7 +262,7 @@ Module Impl_custom_environment_Topics.
           M.call (Ty.path "custom_environment::Topics")::["env"] [ α0 ] in
         let* α2 := M.alloc α1 in
         let* α3 :=
-          M.get_method
+          M.get_trait_method
             "core::default::Default"
             "default"
             [ (* Self *) Ty.path "custom_environment::EventWithTopics" ] in

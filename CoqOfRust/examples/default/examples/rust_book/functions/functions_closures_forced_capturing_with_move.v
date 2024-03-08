@@ -29,9 +29,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.alloc
           [
-            (Integer.of_Z 1) : Ty.path "i32";
-            (Integer.of_Z 2) : Ty.path "i32";
-            (Integer.of_Z 3) : Ty.path "i32"
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
           ] in
       let* α1 :=
         M.call
@@ -41,7 +41,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.alloc α3 in
     let* contains :=
       M.alloc
@@ -53,7 +53,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 (let* needle := M.copy γ in
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::ops::deref::Deref"
                     "deref"
                     [
@@ -76,7 +76,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::function::Fn"
             "call"
             [
@@ -86,7 +86,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "bool");
               (* Args *) Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]
             ] in
-        let* α5 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+        let* α5 := M.alloc (Value.Integer Integer.I32 1) in
         let* α6 := M.call α4 [ contains; (α5) ] in
         let* α7 := M.alloc α6 in
         let* α8 :=
@@ -95,7 +95,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -107,7 +108,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::function::Fn"
             "call"
             [
@@ -117,7 +118,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "bool");
               (* Args *) Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]
             ] in
-        let* α5 := M.alloc ((Integer.of_Z 4) : Ty.path "i32") in
+        let* α5 := M.alloc (Value.Integer Integer.I32 4) in
         let* α6 := M.call α4 [ contains; (α5) ] in
         let* α7 := M.alloc α6 in
         let* α8 :=
@@ -126,7 +127,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in

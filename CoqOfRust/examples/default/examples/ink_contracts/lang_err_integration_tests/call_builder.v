@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -87,7 +87,7 @@ Module Impl_call_builder_Selector.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -127,7 +127,7 @@ Module Impl_call_builder_CallBuilderTest.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "call_builder::CallBuilderTest" ] in
@@ -166,7 +166,7 @@ Module Impl_call_builder_CallBuilderTest.
         let* α0 := M.var "core::panicking::panic" in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call α0 [ α1 ] in
-        let* α3 := never_to_any α2 in
+        let* α3 := M.never_to_any α2 in
         M.alloc α3 in
       let* α0 :=
         match_operator
@@ -219,10 +219,12 @@ Module Impl_call_builder_CallBuilderTest.
                 let* α5 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                    [
+                      M.pointer_coercion "Unsize" α2;
+                      M.pointer_coercion "Unsize" α4
                     ] in
                 let* α6 := M.call α0 [ α5 ] in
-                let* α7 := never_to_any α6 in
+                let* α7 := M.never_to_any α6 in
                 M.alloc α7
               | _ => M.break_match 
               end)

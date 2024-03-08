@@ -14,12 +14,11 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Constructor") in
-      let* α2 := M.var "constructor_as_function::Constructor::Get_0" in
-      let* α3 := M.read self in
-      let* α4 := M.alloc (α2 α3) in
+      let* α2 := M.read self in
+      let* α3 := M.alloc (M.get_struct_tuple α2 0) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" α4 ]
+        [ α0; α1; M.pointer_coercion "Unsize" α3 ]
     | _, _ => M.impossible
     end.
   
@@ -45,7 +44,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* v :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "collect"
           [
@@ -69,7 +68,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ]
           ] in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "map"
           [
@@ -84,7 +83,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "constructor_as_function::Constructor")
           ] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -96,9 +95,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.alloc
           [
-            (Integer.of_Z 1) : Ty.path "i32";
-            (Integer.of_Z 2) : Ty.path "i32";
-            (Integer.of_Z 3) : Ty.path "i32"
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
           ] in
       let* α4 :=
         M.call
@@ -108,7 +107,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α6 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       let* α7 := M.call α2 [ α6 ] in
       let* α8 :=
         M.call
@@ -132,7 +131,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

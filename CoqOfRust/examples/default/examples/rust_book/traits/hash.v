@@ -14,36 +14,33 @@ Module Impl_core_hash_Hash_for_hash_Person.
       let* state := M.alloc state in
       let* _ :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::hash::Hash"
             "hash"
             [ (* Self *) Ty.path "u32"; (* H *) __H ] in
-        let* α1 := M.var "hash::Person::Get_id" in
-        let* α2 := M.read self in
-        let* α3 := M.read state in
-        let* α4 := M.call α0 [ α1 α2; α3 ] in
-        M.alloc α4 in
+        let* α1 := M.read self in
+        let* α2 := M.read state in
+        let* α3 := M.call α0 [ M.get_struct_record α1 "id"; α2 ] in
+        M.alloc α3 in
       let* _ :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::hash::Hash"
             "hash"
             [ (* Self *) Ty.path "alloc::string::String"; (* H *) __H ] in
-        let* α1 := M.var "hash::Person::Get_name" in
-        let* α2 := M.read self in
-        let* α3 := M.read state in
-        let* α4 := M.call α0 [ α1 α2; α3 ] in
-        M.alloc α4 in
+        let* α1 := M.read self in
+        let* α2 := M.read state in
+        let* α3 := M.call α0 [ M.get_struct_record α1 "name"; α2 ] in
+        M.alloc α3 in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::hash::Hash"
           "hash"
           [ (* Self *) Ty.path "u64"; (* H *) __H ] in
-      let* α1 := M.var "hash::Person::Get_phone" in
-      let* α2 := M.read self in
-      let* α3 := M.read state in
-      let* α4 := M.call α0 [ α1 α2; α3 ] in
-      let* α0 := M.alloc α4 in
+      let* α1 := M.read self in
+      let* α2 := M.read state in
+      let* α3 := M.call α0 [ M.get_struct_record α1 "phone"; α2 ] in
+      let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -74,7 +71,7 @@ Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α0 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::hash::Hash"
           "hash"
           [ (* Self *) T; (* H *) Ty.path "std::hash::random::DefaultHasher"
@@ -83,7 +80,7 @@ Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.call α0 [ α1; s ] in
       M.alloc α2 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::hash::Hasher"
         "finish"
         [ (* Self *) Ty.path "std::hash::random::DefaultHasher" ] in
@@ -115,7 +112,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* person1 :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::string::ToString"
           "to_string"
           [ (* Self *) Ty.path "str" ] in
@@ -125,13 +122,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Value.StructRecord
           "hash::Person"
           [
-            ("id", (Integer.of_Z 5) : Ty.path "u32");
+            ("id", Value.Integer Integer.U32 5);
             ("name", α2);
-            ("phone", (Integer.of_Z 5556667777) : Ty.path "u64")
+            ("phone", Value.Integer Integer.U64 5556667777)
           ]) in
     let* person2 :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::string::ToString"
           "to_string"
           [ (* Self *) Ty.path "str" ] in
@@ -141,27 +138,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Value.StructRecord
           "hash::Person"
           [
-            ("id", (Integer.of_Z 5) : Ty.path "u32");
+            ("id", Value.Integer Integer.U32 5);
             ("name", α2);
-            ("phone", (Integer.of_Z 5556667777) : Ty.path "u64")
+            ("phone", Value.Integer Integer.U64 5556667777)
           ]) in
     let* _ :=
-      let* α0 := M.var "UnOp::not" in
-      let* α1 := M.var "BinOp::Pure::ne" in
+      let* α0 := M.var "hash::calculate_hash" in
+      let* α1 := M.call α0 [ person1 ] in
       let* α2 := M.var "hash::calculate_hash" in
-      let* α3 := M.call α2 [ person1 ] in
-      let* α4 := M.var "hash::calculate_hash" in
-      let* α5 := M.call α4 [ person2 ] in
-      let* α6 := M.alloc (α0 (α1 α3 α5)) in
-      let* α7 := M.read (use α6) in
-      if α7 then
+      let* α3 := M.call α2 [ person2 ] in
+      let* α4 := M.alloc (UnOp.not (BinOp.Pure.ne α1 α3)) in
+      let* α5 := M.read (M.use α4) in
+      if α5 then
         let* α0 := M.var "core::panicking::panic" in
         let* α1 :=
           M.read
             (mk_str
               "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
         let* α2 := M.call α0 [ α1 ] in
-        let* α3 := never_to_any α2 in
+        let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
         M.alloc tt in

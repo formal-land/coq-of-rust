@@ -38,9 +38,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.call
-            "unimplemented parent_kind"
-            [ (Integer.of_Z 9) : Ty.path "u32" ] in
+          M.call "unimplemented parent_kind" [ Value.Integer Integer.U32 9 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
@@ -48,7 +46,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -80,10 +79,10 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ up_to ] =>
     let* up_to := M.alloc up_to in
-    let* acc := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
+    let* acc := M.alloc (Value.Integer Integer.U32 0) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -97,7 +96,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructRecord
               "core::ops::range::Range"
-              [ ("start", (Integer.of_Z 0) : Ty.path "u32"); ("end_", α1) ]
+              [ ("start", Value.Integer Integer.U32 0); ("end_", α1) ]
           ] in
       let* α3 := M.alloc α2 in
       let* α4 :=
@@ -109,7 +108,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.loop
                 (let* _ :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
                       "next"
                       [
@@ -129,7 +128,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         | core.option.Option.None =>
                           let* α0 := M.break in
                           let* α1 := M.read α0 in
-                          let* α2 := never_to_any α1 in
+                          let* α2 := M.never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
                         end);
@@ -143,41 +142,41 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.pure (α0 γ) in
                           let* i := M.copy γ0_0 in
                           let* addition :=
-                            let* α0 := M.var "BinOp::Pure::eq" in
-                            let* α1 := M.var "BinOp::Panic::rem" in
-                            let* α2 := M.read i in
-                            let* α3 :=
-                              α1 α2 ((Integer.of_Z 2) : Ty.path "u32") in
-                            let* α4 :=
+                            let* α0 := M.read i in
+                            let* α1 :=
+                              BinOp.Panic.rem
+                                α0
+                                (Value.Integer Integer.U32 2) in
+                            let* α2 :=
                               M.alloc
-                                (α0 α3 ((Integer.of_Z 1) : Ty.path "u32")) in
-                            let* α5 :=
+                                (BinOp.Pure.eq
+                                  α1
+                                  (Value.Integer Integer.U32 1)) in
+                            let* α3 :=
                               match_operator
-                                α4
+                                α2
                                 [
                                   fun γ => (M.pure i);
                                   fun γ =>
                                     (let* α0 := M.continue in
                                     let* α1 := M.read α0 in
-                                    let* α2 := never_to_any α1 in
+                                    let* α2 := M.never_to_any α1 in
                                     M.alloc α2)
                                 ] in
-                            M.copy α5 in
+                            M.copy α3 in
                           let* _ :=
                             let β := acc in
-                            let* α0 := M.var "assign" in
-                            let* α1 := M.var "BinOp::Panic::add" in
-                            let* α2 := M.read β in
-                            let* α3 := M.read addition in
-                            let* α4 := α1 α2 α3 in
-                            α0 β α4 in
+                            let* α0 := M.read β in
+                            let* α1 := M.read addition in
+                            let* α2 := BinOp.Panic.add α0 α1 in
+                            M.assign β α2 in
                           M.alloc tt
                         | _ => M.break_match 
                         end)
                     ] in
                 M.alloc tt))
           ] in
-      M.pure (use α4) in
+      M.pure (M.use α4) in
     M.read acc
   | _, _ => M.impossible
   end.

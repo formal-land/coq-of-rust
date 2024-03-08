@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -92,9 +92,8 @@ Module Impl_conditional_compilation_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "conditional_compilation::Env::Get_caller" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
@@ -114,7 +113,7 @@ Module Impl_conditional_compilation_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -133,7 +132,7 @@ Module Impl_conditional_compilation_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -158,7 +157,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -194,7 +193,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
@@ -283,15 +282,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
+        let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.var "UnOp::not" in
-        let* α3 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
-        let* α4 := M.read self in
-        let* α5 := M.read (α3 α4) in
-        assign (α0 α1) (α2 α5) in
+        let* α2 := M.read (M.get_struct_record α1 "value") in
+        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* caller :=
         let* α0 :=
           M.call
@@ -309,12 +303,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation")::["init_env"]
             [] in
         let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
-        let* α3 := M.read self in
-        let* α4 := M.read (α2 α3) in
-        let* α5 := M.read caller in
-        let* α6 :=
+        let* α2 := M.read self in
+        let* α3 := M.read (M.get_struct_record α2 "value") in
+        let* α4 := M.read caller in
+        let* α5 :=
           M.call
             (Ty.path "conditional_compilation::Env")::["emit_event"]
             [
@@ -324,10 +316,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 [
                   Value.StructRecord
                     "conditional_compilation::Changes"
-                    [ ("new_value", α4); ("by_", α5) ]
+                    [ ("new_value", α3); ("by_", α4) ]
                 ]
             ] in
-        M.alloc α6 in
+        M.alloc α5 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -375,15 +367,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             [ α1 ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
+        let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.var "UnOp::not" in
-        let* α3 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
-        let* α4 := M.read self in
-        let* α5 := M.read (α3 α4) in
-        assign (α0 α1) (α2 α5) in
+        let* α2 := M.read (M.get_struct_record α1 "value") in
+        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* _ :=
         let* α0 :=
           M.call
@@ -391,13 +378,11 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation")::["init_env"]
             [] in
         let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
-        let* α3 := M.read self in
-        let* α4 := M.read (α2 α3) in
-        let* α5 := M.read caller in
-        let* α6 := M.read block_number in
-        let* α7 :=
+        let* α2 := M.read self in
+        let* α3 := M.read (M.get_struct_record α2 "value") in
+        let* α4 := M.read caller in
+        let* α5 := M.read block_number in
+        let* α6 :=
           M.call
             (Ty.path "conditional_compilation::Env")::["emit_event"]
             [
@@ -407,10 +392,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 [
                   Value.StructRecord
                     "conditional_compilation::ChangesDated"
-                    [ ("new_value", α4); ("by_", α5); ("when", α6) ]
+                    [ ("new_value", α3); ("by_", α4); ("when", α5) ]
                 ]
             ] in
-        M.alloc α7 in
+        M.alloc α6 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -431,15 +416,10 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
+        let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.var "UnOp::not" in
-        let* α3 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
-        let* α4 := M.read self in
-        let* α5 := M.read (α3 α4) in
-        assign (α0 α1) (α2 α5) in
+        let* α2 := M.read (M.get_struct_record α1 "value") in
+        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -454,10 +434,8 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.var "conditional_compilation::ConditionalCompilation::Get_value" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   
@@ -510,11 +488,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             ] in
         M.alloc α4 in
       let* _ :=
-        let* α0 :=
-          M.var "conditional_compilation::ConditionalCompilation::Get_value" in
-        let* α1 := M.read self in
-        let* α2 := M.read value in
-        assign (α0 α1) α2 in
+        let* α0 := M.read self in
+        let* α1 := M.read value in
+        M.assign (M.get_struct_record α0 "value") α1 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible

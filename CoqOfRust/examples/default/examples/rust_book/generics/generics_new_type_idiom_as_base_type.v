@@ -18,10 +18,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "generics_new_type_idiom_as_base_type::Years"
-          [ (Integer.of_Z 42) : Ty.path "i64" ]) in
-    let* years_as_primitive_1 :=
-      let* α0 := M.var "generics_new_type_idiom_as_base_type::Years::Get_0" in
-      M.copy (α0 years) in
+          [ Value.Integer Integer.I64 42 ]) in
+    let* years_as_primitive_1 := M.copy (M.get_struct_tuple years 0) in
     let* α0 :=
       match_operator
         years

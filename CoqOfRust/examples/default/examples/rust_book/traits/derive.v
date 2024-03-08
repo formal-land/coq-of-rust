@@ -22,14 +22,11 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
     | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.var "BinOp::Pure::eq" in
-      let* α1 := M.var "derive::Centimeters::Get_0" in
-      let* α2 := M.read self in
-      let* α3 := M.read (α1 α2) in
-      let* α4 := M.var "derive::Centimeters::Get_0" in
-      let* α5 := M.read other in
-      let* α6 := M.read (α4 α5) in
-      M.pure (α0 α3 α6)
+      let* α0 := M.read self in
+      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α2 := M.read other in
+      let* α3 := M.read (M.get_struct_tuple α2 0) in
+      M.pure (BinOp.Pure.eq α1 α3)
     | _, _ => M.impossible
     end.
   
@@ -52,15 +49,13 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::cmp::PartialOrd"
           "partial_cmp"
           [ (* Self *) Ty.path "f64"; (* Rhs *) Ty.path "f64" ] in
-      let* α1 := M.var "derive::Centimeters::Get_0" in
-      let* α2 := M.read self in
-      let* α3 := M.var "derive::Centimeters::Get_0" in
-      let* α4 := M.read other in
-      M.call α0 [ α1 α2; α3 α4 ]
+      let* α1 := M.read self in
+      let* α2 := M.read other in
+      M.call α0 [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ]
     | _, _ => M.impossible
     end.
   
@@ -86,12 +81,11 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Inches") in
-      let* α2 := M.var "derive::Inches::Get_0" in
-      let* α3 := M.read self in
-      let* α4 := M.alloc (α2 α3) in
+      let* α2 := M.read self in
+      let* α3 := M.alloc (M.get_struct_tuple α2 0) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" α4 ]
+        [ α0; α1; M.pointer_coercion "Unsize" α3 ]
     | _, _ => M.impossible
     end.
   
@@ -133,11 +127,10 @@ Module Impl_derive_Inches.
                   let* α0 := M.var "derive::Inches::Get_0" in
                   M.pure (α0 γ) in
                 let* inches := M.copy γ1_0 in
-                let* α0 := M.var "BinOp::Panic::mul" in
-                let* α1 := M.read inches in
-                let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-                let* α3 := α0 (rust_cast α1) α2 in
-                M.alloc (Value.StructTuple "derive::Centimeters" [ α3 ])
+                let* α0 := M.read inches in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := BinOp.Panic.mul (M.rust_cast α0) α1 in
+                M.alloc (Value.StructTuple "derive::Centimeters" [ α2 ])
               end)
           ] in
       M.read α0
@@ -183,14 +176,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _one_second :=
       M.alloc
-        (Value.StructTuple
-          "derive::Seconds"
-          [ (Integer.of_Z 1) : Ty.path "i32" ]) in
+        (Value.StructTuple "derive::Seconds" [ Value.Integer Integer.I32 1 ]) in
     let* foot :=
       M.alloc
-        (Value.StructTuple
-          "derive::Inches"
-          [ (Integer.of_Z 12) : Ty.path "i32" ]) in
+        (Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ]) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -204,16 +193,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* meter :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α0 := M.read UnsupportedLiteral in
       M.alloc (Value.StructTuple "derive::Centimeters" [ α0 ]) in
     let* cmp :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::cmp::PartialOrd"
           "lt"
           [
@@ -225,7 +215,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc α1 in
       let* α3 := M.call α0 [ α2; meter ] in
       let* α4 := M.alloc α3 in
-      let* α5 := M.read (use α4) in
+      let* α5 := M.read (M.use α4) in
       let* α6 :=
         if α5 then
           M.pure (mk_str "smaller")
@@ -246,7 +236,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

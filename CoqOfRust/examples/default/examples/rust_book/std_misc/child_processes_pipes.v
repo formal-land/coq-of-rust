@@ -80,10 +80,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                    [
+                      M.pointer_coercion "Unsize" α2;
+                      M.pointer_coercion "Unsize" α4
                     ] in
                 let* α6 := M.call α0 [ α5 ] in
-                let* α7 := never_to_any α6 in
+                let* α7 := M.never_to_any α6 in
                 M.alloc α7
               | _ => M.break_match 
               end);
@@ -102,27 +104,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.copy α9 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "std::io::Write"
           "write_all"
           [ (* Self *) Ty.path "std::process::ChildStdin" ] in
-      let* α1 := M.var "std::process::Child::Get_stdin" in
-      let* α2 := M.read (α1 process) in
-      let* α3 :=
+      let* α1 := M.read (M.get_struct_record process "stdin") in
+      let* α2 :=
         M.call
           (Ty.apply
               (Ty.path "core::option::Option")
               [ Ty.path "std::process::ChildStdin" ])::["unwrap"]
-          [ α2 ] in
-      let* α4 := M.alloc α3 in
-      let* α5 := M.var "child_processes_pipes::PANGRAM" in
+          [ α1 ] in
+      let* α3 := M.alloc α2 in
+      let* α4 := M.var "child_processes_pipes::PANGRAM" in
+      let* α5 := M.read α4 in
       let* α6 := M.read α5 in
-      let* α7 := M.read α6 in
-      let* α8 := M.call (Ty.path "str")::["as_bytes"] [ α7 ] in
-      let* α9 := M.call α0 [ α4; α8 ] in
-      let* α10 := M.alloc α9 in
+      let* α7 := M.call (Ty.path "str")::["as_bytes"] [ α6 ] in
+      let* α8 := M.call α0 [ α3; α7 ] in
+      let* α9 := M.alloc α8 in
       match_operator
-        α10
+        α9
         [
           fun γ =>
             (let* α0 := M.read γ in
@@ -143,10 +144,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                  [
+                    M.pointer_coercion "Unsize" α2;
+                    M.pointer_coercion "Unsize" α4
                   ] in
               let* α6 := M.call α0 [ α5 ] in
-              let* α7 := never_to_any α6 in
+              let* α7 := M.never_to_any α6 in
               M.alloc α7
             | _ => M.break_match 
             end);
@@ -165,7 +168,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -176,24 +179,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.call (Ty.path "alloc::string::String")::["new"] [] in
       M.alloc α0 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "std::io::Read"
         "read_to_string"
         [ (* Self *) Ty.path "std::process::ChildStdout" ] in
-    let* α1 := M.var "std::process::Child::Get_stdout" in
-    let* α2 := M.read (α1 process) in
-    let* α3 :=
+    let* α1 := M.read (M.get_struct_record process "stdout") in
+    let* α2 :=
       M.call
         (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "std::process::ChildStdout" ])::["unwrap"]
-        [ α2 ] in
-    let* α4 := M.alloc α3 in
-    let* α5 := M.call α0 [ α4; s ] in
-    let* α6 := M.alloc α5 in
+        [ α1 ] in
+    let* α3 := M.alloc α2 in
+    let* α4 := M.call α0 [ α3; s ] in
+    let* α5 := M.alloc α4 in
     let* α0 :=
       match_operator
-        α6
+        α5
         [
           fun γ =>
             (let* α0 := M.read γ in
@@ -214,10 +216,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                  [
+                    M.pointer_coercion "Unsize" α2;
+                    M.pointer_coercion "Unsize" α4
                   ] in
               let* α6 := M.call α0 [ α5 ] in
-              let* α7 := never_to_any α6 in
+              let* α7 := M.never_to_any α6 in
               M.alloc α7
             | _ => M.break_match 
             end);
@@ -241,7 +245,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                    [
+                      M.pointer_coercion "Unsize" α2;
+                      M.pointer_coercion "Unsize" α4
                     ] in
                 let* α6 := M.call α0 [ α5 ] in
                 M.alloc α6 in

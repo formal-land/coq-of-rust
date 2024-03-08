@@ -26,14 +26,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc (rust_cast ((Integer.of_Z 0) : Ty.path "isize")) in
+        let* α4 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 0)) in
         let* α5 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -44,14 +45,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc (rust_cast ((Integer.of_Z 1) : Ty.path "isize")) in
+        let* α4 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 1)) in
         let* α5 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -62,41 +64,40 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "BinOp::Panic::add" in
-        let* α5 := M.var "enums_c_like::Color::Red_discriminant" in
-        let* α6 := α4 α5 ((Integer.of_Z 0) : Ty.path "isize") in
-        let* α7 := M.alloc (rust_cast α6) in
-        let* α8 :=
+        let* α4 := M.var "enums_c_like::Color::Red_discriminant" in
+        let* α5 := BinOp.Panic.add α4 (Value.Integer Integer.Isize 0) in
+        let* α6 := M.alloc (M.rust_cast α5) in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_lower_hex"]
-            [ α7 ] in
-        let* α9 := M.alloc [ α8 ] in
-        let* α10 :=
+            [ α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::rt::Placeholder")::["new"]
             [
-              (Integer.of_Z 0) : Ty.path "usize";
+              Value.Integer Integer.Usize 0;
               " "%char;
               core.fmt.rt.Alignment.Unknown;
-              (Integer.of_Z 8) : Ty.path "u32";
+              Value.Integer Integer.U32 8;
               core.fmt.rt.Count.Implied;
               Value.StructTuple
                 "core::fmt::rt::Count::Is"
-                [ (Integer.of_Z 6) : Ty.path "usize" ]
+                [ Value.Integer Integer.Usize 6 ]
             ] in
-        let* α11 := M.alloc [ α10 ] in
-        let* α12 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α13 :=
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
+        let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
             [
-              pointer_coercion "Unsize" α3;
-              pointer_coercion "Unsize" α9;
-              pointer_coercion "Unsize" α11;
-              α12
+              M.pointer_coercion "Unsize" α3;
+              M.pointer_coercion "Unsize" α8;
+              M.pointer_coercion "Unsize" α10;
+              α11
             ] in
-        let* α14 := M.call α0 [ α13 ] in
-        M.alloc α14 in
+        let* α13 := M.call α0 [ α12 ] in
+        M.alloc α13 in
       M.alloc tt in
     let* _ :=
       let* _ :=
@@ -105,41 +106,40 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "BinOp::Panic::add" in
-        let* α5 := M.var "enums_c_like::Color::Blue_discriminant" in
-        let* α6 := α4 α5 ((Integer.of_Z 0) : Ty.path "isize") in
-        let* α7 := M.alloc (rust_cast α6) in
-        let* α8 :=
+        let* α4 := M.var "enums_c_like::Color::Blue_discriminant" in
+        let* α5 := BinOp.Panic.add α4 (Value.Integer Integer.Isize 0) in
+        let* α6 := M.alloc (M.rust_cast α5) in
+        let* α7 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_lower_hex"]
-            [ α7 ] in
-        let* α9 := M.alloc [ α8 ] in
-        let* α10 :=
+            [ α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
           M.call
             (Ty.path "core::fmt::rt::Placeholder")::["new"]
             [
-              (Integer.of_Z 0) : Ty.path "usize";
+              Value.Integer Integer.Usize 0;
               " "%char;
               core.fmt.rt.Alignment.Unknown;
-              (Integer.of_Z 8) : Ty.path "u32";
+              Value.Integer Integer.U32 8;
               core.fmt.rt.Count.Implied;
               Value.StructTuple
                 "core::fmt::rt::Count::Is"
-                [ (Integer.of_Z 6) : Ty.path "usize" ]
+                [ Value.Integer Integer.Usize 6 ]
             ] in
-        let* α11 := M.alloc [ α10 ] in
-        let* α12 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α13 :=
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
+        let* α12 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
             [
-              pointer_coercion "Unsize" α3;
-              pointer_coercion "Unsize" α9;
-              pointer_coercion "Unsize" α11;
-              α12
+              M.pointer_coercion "Unsize" α3;
+              M.pointer_coercion "Unsize" α8;
+              M.pointer_coercion "Unsize" α10;
+              α11
             ] in
-        let* α14 := M.call α0 [ α13 ] in
-        M.alloc α14 in
+        let* α13 := M.call α0 [ α12 ] in
+        M.alloc α13 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0

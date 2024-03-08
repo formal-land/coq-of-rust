@@ -80,7 +80,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
       let* α3 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_const"]
-          [ pointer_coercion "Unsize" α2 ] in
+          [ M.pointer_coercion "Unsize" α2 ] in
       M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α3 ]
     | _, _ => M.impossible
     end.
@@ -120,7 +120,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::ops::deref::Deref"
         "deref"
         [
@@ -157,7 +157,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   (let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::convert::Into"
                       "into"
                       [
@@ -221,7 +221,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               (let* e := M.copy γ in
                               let* α0 :=
-                                M.get_method
+                                M.get_trait_method
                                   "core::convert::Into"
                                   "into"
                                   [
@@ -262,9 +262,8 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         [
                           fun γ =>
                             (let* i := M.copy γ in
-                            let* α0 := M.var "BinOp::Panic::mul" in
-                            let* α1 := M.read i in
-                            α0 ((Integer.of_Z 2) : Ty.path "i32") α1)
+                            let* α0 := M.read i in
+                            BinOp.Panic.mul (Value.Integer Integer.I32 2) α0)
                         ])
                   ])
             ])
@@ -310,7 +309,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -339,7 +340,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -381,7 +384,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* empty :=
       let* α0 :=
@@ -409,7 +412,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* _ :=
       let* α0 := M.var "boxing_errors::print" in

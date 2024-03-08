@@ -50,7 +50,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                   M.call
                     (Ty.path
                         "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-                    [ α0; α1; pointer_coercion "Unsize" __self_0 ] in
+                    [ α0; α1; M.pointer_coercion "Unsize" __self_0 ] in
                 M.alloc α2
               | _ => M.break_match 
               end)
@@ -108,7 +108,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::Formatter")::["write_fmt"]
@@ -128,7 +128,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 :=
                   M.call
                     (Ty.path "core::fmt::Formatter")::["write_fmt"]
@@ -191,7 +191,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                 M.alloc
                   (Value.StructTuple
                     "core::option::Option::Some"
-                    [ pointer_coercion "Unsize" α0 ])
+                    [ M.pointer_coercion "Unsize" α0 ])
               | _ => M.break_match 
               end)
           ] in
@@ -256,7 +256,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
     M.catch_return
       (let* first :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::try_trait::Try"
             "branch"
             [
@@ -271,7 +271,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ]
             ] in
         let* α1 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::deref::Deref"
             "deref"
             [
@@ -317,7 +317,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::try_trait::FromResidual"
                       "from_residual"
                       [
@@ -340,7 +340,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
-                  let* α5 := never_to_any α4 in
+                  let* α5 := M.never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
                 end);
@@ -361,7 +361,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.copy α7 in
       let* parsed :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::try_trait::Try"
             "branch"
             [
@@ -390,7 +390,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::try_trait::FromResidual"
                       "from_residual"
                       [
@@ -413,7 +413,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
-                  let* α5 := never_to_any α4 in
+                  let* α5 := M.never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
                 end);
@@ -432,11 +432,10 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 end)
             ] in
         M.copy α6 in
-      let* α0 := M.var "BinOp::Panic::mul" in
-      let* α1 := M.read parsed in
-      let* α2 := α0 ((Integer.of_Z 2) : Ty.path "i32") α1 in
+      let* α0 := M.read parsed in
+      let* α1 := BinOp.Panic.mul (Value.Integer Integer.I32 2) α0 in
       let* α0 :=
-        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
       M.read α0)
   | _, _ => M.impossible
   end.
@@ -484,7 +483,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -515,14 +516,14 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
                 M.alloc tt in
               let* α0 :=
-                M.get_method
+                M.get_trait_method
                   "core::error::Error"
                   "source"
                   [ (* Self *) Ty.path "wrapping_errors::DoubleError" ] in
@@ -556,8 +557,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.call
                               (Ty.path "core::fmt::Arguments")::["new_v1"]
                               [
-                                pointer_coercion "Unsize" α3;
-                                pointer_coercion "Unsize" α5
+                                M.pointer_coercion "Unsize" α3;
+                                M.pointer_coercion "Unsize" α5
                               ] in
                           let* α7 := M.call α0 [ α6 ] in
                           M.alloc α7 in
@@ -604,7 +605,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* empty :=
       let* α0 :=
@@ -632,7 +633,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* _ :=
       let* α0 := M.var "wrapping_errors::print" in

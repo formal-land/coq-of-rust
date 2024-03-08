@@ -90,22 +90,21 @@ Module Impl_enums_testcase_linked_list_List.
                     M.var "enums_testcase_linked_list::List::Get_Cons_1" in
                   M.pure (α0 γ) in
                 let* tail := M.alloc (borrow γ0_1) in
-                let* α0 := M.var "BinOp::Panic::add" in
-                let* α1 := M.read tail in
-                let* α2 := M.read α1 in
-                let* α3 :=
+                let* α0 := M.read tail in
+                let* α1 := M.read α0 in
+                let* α2 :=
                   M.call
                     (Ty.path "enums_testcase_linked_list::List")::["len"]
-                    [ α2 ] in
-                let* α4 := α0 ((Integer.of_Z 1) : Ty.path "u32") α3 in
-                M.alloc α4
+                    [ α1 ] in
+                let* α3 := BinOp.Panic.add (Value.Integer Integer.U32 1) α2 in
+                M.alloc α3
               | _ => M.break_match 
               end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
               | enums_testcase_linked_list.List.Nil =>
-                M.alloc ((Integer.of_Z 0) : Ty.path "u32")
+                M.alloc (Value.Integer Integer.U32 0)
               | _ => M.break_match 
               end)
           ] in
@@ -178,8 +177,8 @@ Module Impl_enums_testcase_linked_list_List.
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α10
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α10
                       ] in
                   let* α12 := M.call α0 [ α11 ] in
                   M.alloc α12 in
@@ -197,7 +196,7 @@ Module Impl_enums_testcase_linked_list_List.
                   let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" α2 ] in
+                      [ M.pointer_coercion "Unsize" α2 ] in
                   let* α4 := M.call α0 [ α3 ] in
                   M.alloc α4 in
                 M.pure res
@@ -240,22 +239,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.call
           (Ty.path "enums_testcase_linked_list::List")::["prepend"]
-          [ α0; (Integer.of_Z 1) : Ty.path "u32" ] in
-      assign list α1 in
+          [ α0; Value.Integer Integer.U32 1 ] in
+      M.assign list α1 in
     let* _ :=
       let* α0 := M.read list in
       let* α1 :=
         M.call
           (Ty.path "enums_testcase_linked_list::List")::["prepend"]
-          [ α0; (Integer.of_Z 2) : Ty.path "u32" ] in
-      assign list α1 in
+          [ α0; Value.Integer Integer.U32 2 ] in
+      M.assign list α1 in
     let* _ :=
       let* α0 := M.read list in
       let* α1 :=
         M.call
           (Ty.path "enums_testcase_linked_list::List")::["prepend"]
-          [ α0; (Integer.of_Z 3) : Ty.path "u32" ] in
-      assign list α1 in
+          [ α0; Value.Integer Integer.U32 3 ] in
+      M.assign list α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -274,7 +273,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -296,7 +296,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in

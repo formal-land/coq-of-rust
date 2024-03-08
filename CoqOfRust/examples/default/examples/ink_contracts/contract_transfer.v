@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -78,9 +78,8 @@ Module Impl_contract_transfer_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "contract_transfer::Env::Get_caller" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
@@ -99,7 +98,7 @@ Module Impl_contract_transfer_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -120,7 +119,7 @@ Module Impl_contract_transfer_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -139,7 +138,7 @@ Module Impl_contract_transfer_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -163,7 +162,7 @@ Module Impl_contract_transfer_GiveMe.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -234,7 +233,8 @@ Module Impl_contract_transfer_GiveMe.
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
@@ -260,27 +260,26 @@ Module Impl_contract_transfer_GiveMe.
           let* α11 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+              ] in
           let* α12 := M.call α0 [ α11 ] in
           M.alloc α12 in
         M.alloc tt in
       let* _ :=
-        let* α0 := M.var "UnOp::not" in
-        let* α1 := M.var "BinOp::Pure::le" in
-        let* α2 := M.read value in
-        let* α3 := M.read self in
+        let* α0 := M.read value in
+        let* α1 := M.read self in
+        let* α2 :=
+          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α1 ] in
+        let* α3 := M.alloc α2 in
         let* α4 :=
-          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
-          M.call (Ty.path "contract_transfer::Env")::["balance"] [ α5 ] in
-        let* α7 := M.alloc (α0 (α1 α2 α6)) in
-        let* α8 := M.read (use α7) in
-        if α8 then
+          M.call (Ty.path "contract_transfer::Env")::["balance"] [ α3 ] in
+        let* α5 := M.alloc (UnOp.not (BinOp.Pure.le α0 α4)) in
+        let* α6 := M.read (M.use α5) in
+        if α6 then
           let* α0 := M.var "std::panicking::begin_panic" in
           let* α1 := M.read (mk_str "insufficient funds!") in
           let* α2 := M.call α0 [ α1 ] in
-          let* α3 := never_to_any α2 in
+          let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
           M.alloc tt in
@@ -304,7 +303,7 @@ Module Impl_contract_transfer_GiveMe.
               [ Ty.tuple []; Ty.tuple [] ])::["is_err"]
           [ α9 ] in
       let* α11 := M.alloc α10 in
-      let* α12 := M.read (use α11) in
+      let* α12 := M.read (M.use α11) in
       let* α0 :=
         if α12 then
           let* α0 := M.var "std::panicking::begin_panic" in
@@ -313,7 +312,7 @@ Module Impl_contract_transfer_GiveMe.
               (mk_str
                 "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.") in
           let* α2 := M.call α0 [ α1 ] in
-          let* α3 := never_to_any α2 in
+          let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
           M.alloc tt in
@@ -358,28 +357,29 @@ Module Impl_contract_transfer_GiveMe.
           let* α11 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+              ] in
           let* α12 := M.call α0 [ α11 ] in
           M.alloc α12 in
         M.alloc tt in
       let* _ :=
-        let* α0 := M.var "UnOp::not" in
-        let* α1 := M.var "BinOp::Pure::eq" in
-        let* α2 := M.read self in
+        let* α0 := M.read self in
+        let* α1 :=
+          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α0 ] in
+        let* α2 := M.alloc α1 in
         let* α3 :=
-          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α2 ] in
-        let* α4 := M.alloc α3 in
-        let* α5 :=
           M.call
             (Ty.path "contract_transfer::Env")::["transferred_value"]
-            [ α4 ] in
-        let* α6 := M.alloc (α0 (α1 α5 ((Integer.of_Z 10) : Ty.path "u128"))) in
-        let* α7 := M.read (use α6) in
-        if α7 then
+            [ α2 ] in
+        let* α4 :=
+          M.alloc
+            (UnOp.not (BinOp.Pure.eq α3 (Value.Integer Integer.U128 10))) in
+        let* α5 := M.read (M.use α4) in
+        if α5 then
           let* α0 := M.var "std::panicking::begin_panic" in
           let* α1 := M.read (mk_str "payment was not ten") in
           let* α2 := M.call α0 [ α1 ] in
-          let* α3 := never_to_any α2 in
+          let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
           M.alloc tt in

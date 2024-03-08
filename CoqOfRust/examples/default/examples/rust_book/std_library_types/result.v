@@ -89,24 +89,22 @@ Module checked.
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 := M.var "BinOp::Pure::eq" in
-      let* α1 := M.read y in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.alloc (α0 α1 α2) in
-      let* α4 := M.read (use α3) in
-      let* α5 :=
-        if α4 then
+      let* α0 := M.read y in
+      let* α1 := M.read UnsupportedLiteral in
+      let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
+      let* α3 := M.read (M.use α2) in
+      let* α4 :=
+        if α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
               [ result.checked.MathError.DivisionByZero ])
         else
-          let* α0 := M.var "BinOp::Panic::div" in
-          let* α1 := M.read x in
-          let* α2 := M.read y in
-          let* α3 := α0 α1 α2 in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
-      M.read α5
+          let* α0 := M.read x in
+          let* α1 := M.read y in
+          let* α2 := BinOp.Panic.div α0 α1 in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
+      M.read α4
     | _, _ => M.impossible
     end.
   
@@ -123,13 +121,12 @@ Module checked.
     match 𝜏, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.var "BinOp::Pure::lt" in
-      let* α1 := M.read x in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.alloc (α0 α1 α2) in
-      let* α4 := M.read (use α3) in
-      let* α5 :=
-        if α4 then
+      let* α0 := M.read x in
+      let* α1 := M.read UnsupportedLiteral in
+      let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+      let* α3 := M.read (M.use α2) in
+      let* α4 :=
+        if α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
@@ -138,7 +135,7 @@ Module checked.
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["sqrt"] [ α0 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
-      M.read α5
+      M.read α4
     | _, _ => M.impossible
     end.
   
@@ -155,13 +152,12 @@ Module checked.
     match 𝜏, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.var "BinOp::Pure::le" in
-      let* α1 := M.read x in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.alloc (α0 α1 α2) in
-      let* α4 := M.read (use α3) in
-      let* α5 :=
-        if α4 then
+      let* α0 := M.read x in
+      let* α1 := M.read UnsupportedLiteral in
+      let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
+      let* α3 := M.read (M.use α2) in
+      let* α4 :=
+        if α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
@@ -170,7 +166,7 @@ Module checked.
           let* α0 := M.read x in
           let* α1 := M.call (Ty.path "f64")::["ln"] [ α0 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
-      M.read α5
+      M.read α4
     | _, _ => M.impossible
     end.
 End checked.
@@ -223,10 +219,12 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α4
+                  [
+                    M.pointer_coercion "Unsize" α2;
+                    M.pointer_coercion "Unsize" α4
                   ] in
               let* α6 := M.call α0 [ α5 ] in
-              let* α7 := never_to_any α6 in
+              let* α7 := M.never_to_any α6 in
               M.alloc α7
             | _ => M.break_match 
             end);
@@ -265,11 +263,11 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.call
                           (Ty.path "core::fmt::Arguments")::["new_v1"]
                           [
-                            pointer_coercion "Unsize" α2;
-                            pointer_coercion "Unsize" α4
+                            M.pointer_coercion "Unsize" α2;
+                            M.pointer_coercion "Unsize" α4
                           ] in
                       let* α6 := M.call α0 [ α5 ] in
-                      let* α7 := never_to_any α6 in
+                      let* α7 := M.never_to_any α6 in
                       M.alloc α7
                     | _ => M.break_match 
                     end);
@@ -310,11 +308,11 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.call
                                   (Ty.path "core::fmt::Arguments")::["new_v1"]
                                   [
-                                    pointer_coercion "Unsize" α2;
-                                    pointer_coercion "Unsize" α4
+                                    M.pointer_coercion "Unsize" α2;
+                                    M.pointer_coercion "Unsize" α4
                                   ] in
                               let* α6 := M.call α0 [ α5 ] in
-                              let* α7 := never_to_any α6 in
+                              let* α7 := M.never_to_any α6 in
                               M.alloc α7
                             | _ => M.break_match 
                             end);
@@ -359,8 +357,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 := M.var "result::op" in
-        let* α5 := M.read (UnsupportedLiteral : Ty.path "f64") in
-        let* α6 := M.read (UnsupportedLiteral : Ty.path "f64") in
+        let* α5 := M.read UnsupportedLiteral in
+        let* α6 := M.read UnsupportedLiteral in
         let* α7 := M.call α4 [ α5; α6 ] in
         let* α8 := M.alloc α7 in
         let* α9 :=
@@ -369,7 +367,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+            ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
       M.alloc tt in

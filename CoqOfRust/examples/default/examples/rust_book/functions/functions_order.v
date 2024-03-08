@@ -70,7 +70,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "functions_order::SomeTrait"
           "some_trait_bar"
           [ (* Self *) Ty.path "functions_order::SomeType" ] in
@@ -141,7 +141,7 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* b := M.alloc b in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "functions_order::SomeTrait"
           "some_trait_foo"
           [ (* Self *) Ty.path "functions_order::OtherType" ] in
@@ -152,7 +152,7 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α3 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "functions_order::SomeTrait"
           "some_trait_foo"
           [ (* Self *) Ty.path "functions_order::SomeType" ] in
@@ -250,7 +250,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructTuple
               "functions_order::SomeType"
-              [ (Integer.of_Z 0) : Ty.path "u32" ]
+              [ Value.Integer Integer.U32 0 ]
           ] in
       M.alloc α0 in
     let* α0 := M.alloc tt in

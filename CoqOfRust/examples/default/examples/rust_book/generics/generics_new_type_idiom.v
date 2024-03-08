@@ -17,12 +17,10 @@ Module Impl_generics_new_type_idiom_Years.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "BinOp::Panic::mul" in
-      let* α1 := M.var "generics_new_type_idiom::Years::Get_0" in
-      let* α2 := M.read self in
-      let* α3 := M.read (α1 α2) in
-      let* α4 := α0 α3 ((Integer.of_Z 365) : Ty.path "i64") in
-      M.pure (Value.StructTuple "generics_new_type_idiom::Days" [ α4 ])
+      let* α0 := M.read self in
+      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α2 := BinOp.Panic.mul α1 (Value.Integer Integer.I64 365) in
+      M.pure (Value.StructTuple "generics_new_type_idiom::Days" [ α2 ])
     | _, _ => M.impossible
     end.
   
@@ -42,12 +40,10 @@ Module Impl_generics_new_type_idiom_Days.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "BinOp::Panic::div" in
-      let* α1 := M.var "generics_new_type_idiom::Days::Get_0" in
-      let* α2 := M.read self in
-      let* α3 := M.read (α1 α2) in
-      let* α4 := α0 α3 ((Integer.of_Z 365) : Ty.path "i64") in
-      M.pure (Value.StructTuple "generics_new_type_idiom::Years" [ α4 ])
+      let* α0 := M.read self in
+      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α2 := BinOp.Panic.div α1 (Value.Integer Integer.I64 365) in
+      M.pure (Value.StructTuple "generics_new_type_idiom::Years" [ α2 ])
     | _, _ => M.impossible
     end.
   
@@ -64,11 +60,9 @@ Definition old_enough (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ age ] =>
     let* age := M.alloc age in
-    let* α0 := M.var "BinOp::Pure::ge" in
-    let* α1 := M.var "generics_new_type_idiom::Years::Get_0" in
-    let* α2 := M.read age in
-    let* α3 := M.read (α1 α2) in
-    M.pure (α0 α3 ((Integer.of_Z 18) : Ty.path "i64"))
+    let* α0 := M.read age in
+    let* α1 := M.read (M.get_struct_tuple α0 0) in
+    M.pure (BinOp.Pure.ge α1 (Value.Integer Integer.I64 18))
   | _, _ => M.impossible
   end.
 
@@ -89,7 +83,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "generics_new_type_idiom::Years"
-          [ (Integer.of_Z 5) : Ty.path "i64" ]) in
+          [ Value.Integer Integer.I64 5 ]) in
     let* age_days :=
       let* α0 :=
         M.call
@@ -112,7 +106,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -137,7 +132,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α10 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+            ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
       M.alloc tt in

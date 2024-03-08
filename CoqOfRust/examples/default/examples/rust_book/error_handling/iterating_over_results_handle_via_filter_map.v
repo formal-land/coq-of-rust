@@ -30,11 +30,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* numbers :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "collect"
           [
@@ -60,7 +60,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "filter_map"
           [
@@ -78,7 +78,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
           ] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -133,7 +133,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

@@ -546,4 +546,16 @@ Fixpoint match_operator
       )
   end.
 
-Parameter get_method : string -> string -> list Ty.t -> M.
+Parameter get_trait_method : string -> string -> list Ty.t -> M.
+
+Parameter get_function : string -> list Ty.t -> M.
+
+Definition never_to_any (x : Value.t) : M :=
+  M.impossible.
+
+Definition use (x : Value.t) : Value.t :=
+  x.
+
+Parameter get_struct_tuple : Value.t -> Z -> Value.t.
+
+Parameter get_struct_record : Value.t -> string -> Value.t.

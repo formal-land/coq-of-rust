@@ -11,13 +11,13 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
     match 𝜏, α with
     | [ Self; K; V ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ K ] ] in
       let* α1 := M.call α0 [] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ V ] ] in
@@ -54,7 +54,7 @@ Module Impl_erc20_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -76,7 +76,7 @@ Module Impl_erc20_Mapping_K_V.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -95,7 +95,7 @@ Module Impl_core_default_Default_for_erc20_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -160,13 +160,13 @@ Module Impl_core_default_Default_for_erc20_Erc20.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
       let* α1 := M.call α0 [] in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [
@@ -177,7 +177,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
           ] in
       let* α3 := M.call α2 [] in
       let* α4 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [
@@ -232,9 +232,8 @@ Module Impl_erc20_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "erc20::Env::Get_caller" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
@@ -254,7 +253,7 @@ Module Impl_erc20_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -276,7 +275,7 @@ Module Impl_erc20_Erc20.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -325,7 +324,7 @@ Module Impl_erc20_Erc20_2.
       let* total_supply := M.alloc total_supply in
       let* balances :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::default::Default"
             "default"
             [
@@ -378,7 +377,7 @@ Module Impl_erc20_Erc20_2.
       let* α0 := M.read total_supply in
       let* α1 := M.read balances in
       let* α2 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [
@@ -412,9 +411,8 @@ Module Impl_erc20_Erc20_2.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "erc20::Erc20::Get_total_supply" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "total_supply")
     | _, _ => M.impossible
     end.
   
@@ -431,20 +429,19 @@ Module Impl_erc20_Erc20_2.
     | [ Self ], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
-      let* α0 := M.var "erc20::Erc20::Get_balances" in
-      let* α1 := M.read self in
-      let* α2 := M.read owner in
-      let* α3 :=
+      let* α0 := M.read self in
+      let* α1 := M.read owner in
+      let* α2 :=
         M.call
           (Ty.apply
               (Ty.path "erc20::Mapping")
               [ Ty.path "erc20::AccountId"; Ty.path "u128" ])::["get"]
-          [ α0 α1; α2 ] in
+          [ M.get_struct_record α0 "balances"; α1 ] in
       M.call
         (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "u128" ])::["unwrap_or_default"]
-        [ α3 ]
+        [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -480,14 +477,13 @@ Module Impl_erc20_Erc20_2.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
-      let* α0 := M.var "erc20::Erc20::Get_allowances" in
-      let* α1 := M.read self in
-      let* α2 := M.read owner in
-      let* α3 := M.read α2 in
-      let* α4 := M.read spender in
-      let* α5 := M.read α4 in
-      let* α6 := M.alloc (α3, α5) in
-      let* α7 :=
+      let* α0 := M.read self in
+      let* α1 := M.read owner in
+      let* α2 := M.read α1 in
+      let* α3 := M.read spender in
+      let* α4 := M.read α3 in
+      let* α5 := M.alloc (α2, α4) in
+      let* α6 :=
         M.call
           (Ty.apply
               (Ty.path "erc20::Mapping")
@@ -496,12 +492,12 @@ Module Impl_erc20_Erc20_2.
                   [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                 Ty.path "u128"
               ])::["get"]
-          [ α0 α1; α6 ] in
+          [ M.get_struct_record α0 "allowances"; α5 ] in
       M.call
         (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "u128" ])::["unwrap_or_default"]
-        [ α7 ]
+        [ α6 ]
     | _, _ => M.impossible
     end.
   
@@ -566,38 +562,35 @@ Module Impl_erc20_Erc20_2.
             M.call (Ty.path "erc20::Erc20")::["balance_of_impl"] [ α0; α1 ] in
           M.alloc α2 in
         let* _ :=
-          let* α0 := M.var "BinOp::Pure::lt" in
-          let* α1 := M.read from_balance in
-          let* α2 := M.read value in
-          let* α3 := M.alloc (α0 α1 α2) in
-          let* α4 := M.read (use α3) in
-          if α4 then
+          let* α0 := M.read from_balance in
+          let* α1 := M.read value in
+          let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+          let* α3 := M.read (M.use α2) in
+          if α3 then
             let* α0 :=
               return_
                 (Value.StructTuple
                   "core::result::Result::Err"
                   [ erc20.Error.InsufficientBalance ]) in
             let* α1 := M.read α0 in
-            let* α2 := never_to_any α1 in
+            let* α2 := M.never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
         let* _ :=
-          let* α0 := M.var "erc20::Erc20::Get_balances" in
-          let* α1 := M.read self in
-          let* α2 := M.read from in
-          let* α3 := M.read α2 in
-          let* α4 := M.var "BinOp::Panic::sub" in
-          let* α5 := M.read from_balance in
-          let* α6 := M.read value in
-          let* α7 := α4 α5 α6 in
-          let* α8 :=
+          let* α0 := M.read self in
+          let* α1 := M.read from in
+          let* α2 := M.read α1 in
+          let* α3 := M.read from_balance in
+          let* α4 := M.read value in
+          let* α5 := BinOp.Panic.sub α3 α4 in
+          let* α6 :=
             M.call
               (Ty.apply
                   (Ty.path "erc20::Mapping")
                   [ Ty.path "erc20::AccountId"; Ty.path "u128" ])::["insert"]
-              [ α0 α1; α3; α7 ] in
-          M.alloc α8 in
+              [ M.get_struct_record α0 "balances"; α2; α5 ] in
+          M.alloc α6 in
         let* to_balance :=
           let* α0 := M.read self in
           let* α1 := M.read to in
@@ -605,21 +598,19 @@ Module Impl_erc20_Erc20_2.
             M.call (Ty.path "erc20::Erc20")::["balance_of_impl"] [ α0; α1 ] in
           M.alloc α2 in
         let* _ :=
-          let* α0 := M.var "erc20::Erc20::Get_balances" in
-          let* α1 := M.read self in
-          let* α2 := M.read to in
-          let* α3 := M.read α2 in
-          let* α4 := M.var "BinOp::Panic::add" in
-          let* α5 := M.read to_balance in
-          let* α6 := M.read value in
-          let* α7 := α4 α5 α6 in
-          let* α8 :=
+          let* α0 := M.read self in
+          let* α1 := M.read to in
+          let* α2 := M.read α1 in
+          let* α3 := M.read to_balance in
+          let* α4 := M.read value in
+          let* α5 := BinOp.Panic.add α3 α4 in
+          let* α6 :=
             M.call
               (Ty.apply
                   (Ty.path "erc20::Mapping")
                   [ Ty.path "erc20::AccountId"; Ty.path "u128" ])::["insert"]
-              [ α0 α1; α3; α7 ] in
-          M.alloc α8 in
+              [ M.get_struct_record α0 "balances"; α2; α5 ] in
+          M.alloc α6 in
         let* _ :=
           let* α0 := M.read self in
           let* α1 := M.call (Ty.path "erc20::Erc20")::["env"] [ α0 ] in
@@ -719,12 +710,11 @@ Module Impl_erc20_Erc20_2.
         let* α3 := M.call (Ty.path "erc20::Env")::["caller"] [ α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 := M.var "erc20::Erc20::Get_allowances" in
-        let* α1 := M.read self in
-        let* α2 := M.read owner in
-        let* α3 := M.read spender in
-        let* α4 := M.read value in
-        let* α5 :=
+        let* α0 := M.read self in
+        let* α1 := M.read owner in
+        let* α2 := M.read spender in
+        let* α3 := M.read value in
+        let* α4 :=
           M.call
             (Ty.apply
                 (Ty.path "erc20::Mapping")
@@ -733,8 +723,8 @@ Module Impl_erc20_Erc20_2.
                     [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                   Ty.path "u128"
                 ])::["insert"]
-            [ α0 α1; (α2, α3); α4 ] in
-        M.alloc α5 in
+            [ M.get_struct_record α0 "allowances"; (α1, α2); α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.call (Ty.path "erc20::Erc20")::["env"] [ α0 ] in
@@ -805,25 +795,24 @@ Module Impl_erc20_Erc20_2.
               [ α0; from; caller ] in
           M.alloc α1 in
         let* _ :=
-          let* α0 := M.var "BinOp::Pure::lt" in
-          let* α1 := M.read allowance in
-          let* α2 := M.read value in
-          let* α3 := M.alloc (α0 α1 α2) in
-          let* α4 := M.read (use α3) in
-          if α4 then
+          let* α0 := M.read allowance in
+          let* α1 := M.read value in
+          let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+          let* α3 := M.read (M.use α2) in
+          if α3 then
             let* α0 :=
               return_
                 (Value.StructTuple
                   "core::result::Result::Err"
                   [ erc20.Error.InsufficientAllowance ]) in
             let* α1 := M.read α0 in
-            let* α2 := never_to_any α1 in
+            let* α2 := M.never_to_any α1 in
             M.alloc α2
           else
             M.alloc tt in
         let* _ :=
           let* α0 :=
-            M.get_method
+            M.get_trait_method
               "core::ops::try_trait::Try"
               "branch"
               [
@@ -854,7 +843,7 @@ Module Impl_erc20_Erc20_2.
                     M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::try_trait::FromResidual"
                       "from_residual"
                       [
@@ -874,7 +863,7 @@ Module Impl_erc20_Erc20_2.
                   let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
-                  let* α5 := never_to_any α4 in
+                  let* α5 := M.never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
                 end);
@@ -893,15 +882,13 @@ Module Impl_erc20_Erc20_2.
                 end)
             ] in
         let* _ :=
-          let* α0 := M.var "erc20::Erc20::Get_allowances" in
-          let* α1 := M.read self in
-          let* α2 := M.read from in
-          let* α3 := M.read caller in
-          let* α4 := M.var "BinOp::Panic::sub" in
-          let* α5 := M.read allowance in
-          let* α6 := M.read value in
-          let* α7 := α4 α5 α6 in
-          let* α8 :=
+          let* α0 := M.read self in
+          let* α1 := M.read from in
+          let* α2 := M.read caller in
+          let* α3 := M.read allowance in
+          let* α4 := M.read value in
+          let* α5 := BinOp.Panic.sub α3 α4 in
+          let* α6 :=
             M.call
               (Ty.apply
                   (Ty.path "erc20::Mapping")
@@ -911,8 +898,8 @@ Module Impl_erc20_Erc20_2.
                       ];
                     Ty.path "u128"
                   ])::["insert"]
-              [ α0 α1; (α2, α3); α7 ] in
-          M.alloc α8 in
+              [ M.get_struct_record α0 "allowances"; (α1, α2); α5 ] in
+          M.alloc α6 in
         let* α0 :=
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ]) in
         M.read α0)

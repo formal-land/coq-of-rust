@@ -57,14 +57,14 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
-    let* α0 := M.var "BinOp::Panic::mul" in
-    let* α1 := M.read arg in
-    let* α2 := α0 α1 ((Integer.of_Z 2) : Ty.path "i32") in
-    let* α0 := M.alloc α2 in
+    let* α0 := M.read arg in
+    let* α1 := BinOp.Panic.mul α0 (Value.Integer Integer.I32 2) in
+    let* α0 := M.alloc α1 in
     M.read α0
   | _, _ => M.impossible
   end.

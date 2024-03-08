@@ -46,12 +46,11 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.var "core::result::Result::Get_Ok_0" in
                         M.pure (α0 γ) in
                       let* second_number := M.copy γ0_0 in
-                      let* α0 := M.var "BinOp::Panic::mul" in
-                      let* α1 := M.read first_number in
-                      let* α2 := M.read second_number in
-                      let* α3 := α0 α1 α2 in
+                      let* α0 := M.read first_number in
+                      let* α1 := M.read second_number in
+                      let* α2 := BinOp.Panic.mul α0 α1 in
                       M.alloc
-                        (Value.StructTuple "core::result::Result::Ok" [ α3 ])
+                        (Value.StructTuple "core::result::Result::Ok" [ α2 ])
                     | _ => M.break_match 
                     end);
                   fun γ =>
@@ -125,7 +124,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -154,7 +155,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

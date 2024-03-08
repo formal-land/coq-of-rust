@@ -12,7 +12,7 @@ Definition decode_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 := M.var "core::panicking::panic" in
     let* α1 := M.read (mk_str "not implemented") in
     let* α2 := M.call α0 [ α1 ] in
-    never_to_any α2
+    M.never_to_any α2
   | _, _ => M.impossible
   end.
 
@@ -93,8 +93,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                       M.call
                         (Ty.path "core::fmt::Arguments")::["new_v1"]
                         [
-                          pointer_coercion "Unsize" α4;
-                          pointer_coercion "Unsize" α7
+                          M.pointer_coercion "Unsize" α4;
+                          M.pointer_coercion "Unsize" α7
                         ] in
                     let* α9 := M.call α0 [ α8 ] in
                     M.alloc α9 in
@@ -134,7 +134,8 @@ Module Impl_wildcard_selector_WildcardSelector.
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in

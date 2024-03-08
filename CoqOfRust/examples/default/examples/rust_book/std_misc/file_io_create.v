@@ -75,10 +75,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α7 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α6
                     ] in
                 let* α8 := M.call α0 [ α7 ] in
-                let* α9 := never_to_any α8 in
+                let* α9 := M.never_to_any α8 in
                 M.alloc α9
               | _ => M.break_match 
               end);
@@ -96,7 +98,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.copy α2 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "std::io::Write"
         "write_all"
         [ (* Self *) Ty.path "std::fs::File" ] in
@@ -134,10 +136,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α7 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6
+                  [
+                    M.pointer_coercion "Unsize" α3;
+                    M.pointer_coercion "Unsize" α6
                   ] in
               let* α8 := M.call α0 [ α7 ] in
-              let* α9 := never_to_any α8 in
+              let* α9 := M.never_to_any α8 in
               M.alloc α9
             | _ => M.break_match 
             end);
@@ -162,7 +166,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

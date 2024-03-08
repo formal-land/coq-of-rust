@@ -12,7 +12,7 @@ Definition some_number (𝜏 : list Ty.t) (α : list Value.t) : M :=
     M.pure
       (Value.StructTuple
         "core::option::Option::Some"
-        [ (Integer.of_Z 42) : Ty.path "u32" ])
+        [ Value.Integer Integer.U32 42 ])
   | _, _ => M.impossible
   end.
 
@@ -66,8 +66,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -98,7 +98,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

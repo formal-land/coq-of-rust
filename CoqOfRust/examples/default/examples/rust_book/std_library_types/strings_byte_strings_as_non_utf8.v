@@ -42,12 +42,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* bytestring :=
-      let* α0 :=
-        M.read
-          (UnsupportedLiteral :
-            Ty.apply
-              (Ty.path "ref")
-              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
+      let* α0 := M.read UnsupportedLiteral in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -64,16 +59,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
-    let* escaped :=
-      M.copy
-        (UnsupportedLiteral :
-          Ty.apply
-            (Ty.path "ref")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
+    let* escaped := M.copy UnsupportedLiteral in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -89,16 +80,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
-    let* raw_bytestring :=
-      M.copy
-        (UnsupportedLiteral :
-          Ty.apply
-            (Ty.path "ref")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
+    let* raw_bytestring := M.copy UnsupportedLiteral in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -114,14 +101,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* _ :=
       let* α0 := M.var "core::str::converts::from_utf8" in
       let* α1 := M.read raw_bytestring in
-      let* α2 := M.call α0 [ pointer_coercion "Unsize" α1 ] in
+      let* α2 := M.call α0 [ M.pointer_coercion "Unsize" α1 ] in
       let* α3 := M.alloc α2 in
       match_operator
         α3
@@ -150,8 +138,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -161,22 +149,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             end);
           fun γ => (M.alloc tt)
         ] in
-    let* _quotes :=
-      M.copy
-        (UnsupportedLiteral :
-          Ty.apply
-            (Ty.path "ref")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
-    let* shift_jis :=
-      M.copy
-        (UnsupportedLiteral :
-          Ty.apply
-            (Ty.path "ref")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]) in
+    let* _quotes := M.copy UnsupportedLiteral in
+    let* shift_jis := M.copy UnsupportedLiteral in
     let* _ :=
       let* α0 := M.var "core::str::converts::from_utf8" in
       let* α1 := M.read shift_jis in
-      let* α2 := M.call α0 [ pointer_coercion "Unsize" α1 ] in
+      let* α2 := M.call α0 [ M.pointer_coercion "Unsize" α1 ] in
       let* α3 := M.alloc α2 in
       match_operator
         α3
@@ -203,7 +181,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -232,7 +212,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

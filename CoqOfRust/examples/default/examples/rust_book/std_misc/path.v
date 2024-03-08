@@ -41,7 +41,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* new_path :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::deref::Deref"
           "deref"
           [ (* Self *) Ty.path "std::path::PathBuf" ] in
@@ -71,7 +71,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ new_path; α0 ] in
       M.alloc α1 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::ops::deref::Deref"
         "deref"
         [ (* Self *) Ty.path "std::path::PathBuf" ] in
@@ -90,7 +90,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.read (mk_str "new path is not a valid UTF-8 sequence") in
               let* α2 := M.call α0 [ α1 ] in
-              let* α3 := never_to_any α2 in
+              let* α3 := M.never_to_any α2 in
               M.alloc α3
             | _ => M.break_match 
             end);
@@ -116,7 +116,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in

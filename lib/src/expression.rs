@@ -45,9 +45,16 @@ pub(crate) enum Purity {
 }
 
 #[derive(Debug, Eq, Hash, PartialEq)]
+pub(crate) struct LiteralInteger {
+    pub(crate) name: String,
+    pub(crate) negative_sign: bool,
+    pub(crate) value: u128,
+}
+
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Literal {
     Bool(bool),
-    Integer { value: u128, neg: bool },
+    Integer(LiteralInteger),
     Char(char),
     String(String),
     Error,
@@ -65,6 +72,7 @@ pub(crate) enum ExprKind {
     Pure(Rc<Expr>),
     LocalVar(String),
     Var(Path),
+    GetFunction(Path),
     Constructor(Path),
     VarWithTy {
         path: Path,
@@ -80,7 +88,7 @@ pub(crate) enum ExprKind {
         ty: Rc<CoqType>,
         func: String,
     },
-    Literal(Literal, Option<Rc<CoqType>>),
+    Literal(Literal),
     Call {
         func: Rc<Expr>,
         args: Vec<Rc<Expr>>,
@@ -176,6 +184,7 @@ impl Expr {
             ExprKind::Pure(expr) => expr.has_return(),
             ExprKind::LocalVar(_) => false,
             ExprKind::Var(_) => false,
+            ExprKind::GetFunction(_) => false,
             ExprKind::Constructor(_) => false,
             ExprKind::VarWithTy {
                 path: _,
@@ -184,7 +193,7 @@ impl Expr {
             } => false,
             ExprKind::TraitMethod { .. } => false,
             ExprKind::AssociatedFunction { ty: _, func: _ } => false,
-            ExprKind::Literal(_, _) => false,
+            ExprKind::Literal(_) => false,
             ExprKind::Call {
                 func,
                 args,
@@ -352,6 +361,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         ExprKind::Pure(_) => panic!("Expressions should not be monadic yet."),
         ExprKind::LocalVar(_) => (pure(expr), fresh_vars),
         ExprKind::Var(_) => (expr, fresh_vars),
+        ExprKind::GetFunction(_) => (expr, fresh_vars),
         ExprKind::Constructor(_) => (pure(expr), fresh_vars),
         ExprKind::VarWithTy {
             path,
@@ -773,21 +783,24 @@ impl Literal {
     fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
             Literal::Bool(b) => text(format!("{b}")),
-            Literal::Integer { value, neg } => {
-                paren(
-                    with_paren,
-                    nest([
-                        text("Integer.of_Z"),
-                        line(),
-                        if *neg {
-                            // We always put parenthesis.
-                            text(format!("(-{value})"))
-                        } else {
-                            text(format!("{}", value))
-                        },
-                    ]),
-                )
-            }
+            Literal::Integer(LiteralInteger {
+                name,
+                negative_sign,
+                value,
+            }) => paren(
+                with_paren,
+                nest([
+                    text("Value.Integer"),
+                    line(),
+                    text(format!("Integer.{name}")),
+                    line(),
+                    if *negative_sign {
+                        text(format!("(-{value})"))
+                    } else {
+                        text(value.to_string())
+                    },
+                ]),
+            ),
             Literal::Char(c) => text(format!("\"{c}\"%char")),
             Literal::String(s) => string_to_doc(with_paren, s.as_str()),
             Literal::Error => text("UnsupportedLiteral"),
@@ -813,6 +826,10 @@ impl ExprKind {
                 with_paren,
                 nest([text("M.var"), line(), text(format!("\"{path}\""))]),
             ),
+            ExprKind::GetFunction(path) => paren(
+                with_paren,
+                nest([text("M.get_function"), line(), text(format!("\"{path}\""))]),
+            ),
             ExprKind::Constructor(path) => path.to_doc(),
             ExprKind::VarWithTy { path, ty_name, ty } => paren(
                 with_paren,
@@ -834,7 +851,7 @@ impl ExprKind {
             } => paren(
                 with_paren,
                 nest([
-                    text("M.get_method"),
+                    text("M.get_trait_method"),
                     line(),
                     text(format!("\"{trait_name}\"")),
                     line(),
@@ -860,18 +877,7 @@ impl ExprKind {
                 text(format!("\"{func}\"")),
                 text("]"),
             ]),
-            ExprKind::Literal(literal, ty) => match ty {
-                None => literal.to_doc(with_paren),
-                Some(ty) => paren(
-                    with_paren,
-                    nest([
-                        literal.to_doc(true),
-                        text(" :"),
-                        line(),
-                        ty.to_coq().to_doc(false),
-                    ]),
-                ),
-            },
+            ExprKind::Literal(literal) => literal.to_doc(with_paren),
             ExprKind::Call {
                 func,
                 args,
@@ -1092,7 +1098,7 @@ impl ExprKind {
                 },
             ]),
             ExprKind::Use(expr) => {
-                paren(with_paren, nest([text("use"), line(), expr.to_doc(true)]))
+                paren(with_paren, nest([text("M.use"), line(), expr.to_doc(true)]))
             }
             ExprKind::Return(value) => paren(
                 with_paren,

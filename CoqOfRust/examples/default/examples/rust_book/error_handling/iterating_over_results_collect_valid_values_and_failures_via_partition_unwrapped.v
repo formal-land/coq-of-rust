@@ -33,10 +33,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "slice")
               [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])::["into_vec"]
-          [ pointer_coercion "Unsize" α5 ] in
+          [ M.pointer_coercion "Unsize" α5 ] in
       M.alloc α6 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         "partition"
         [
@@ -81,7 +81,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "bool")
         ] in
     let* α1 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::iterator::Iterator"
         "map"
         [
@@ -104,7 +104,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
         ] in
     let* α2 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -159,7 +159,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* errors := M.copy γ0_1 in
               let* numbers :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "collect"
                     [
@@ -195,7 +195,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                     ] in
                 let* α1 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "map"
                     [
@@ -225,7 +225,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "i32")
                     ] in
                 let* α2 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::collect::IntoIterator"
                     "into_iter"
                     [
@@ -260,7 +260,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α6 in
               let* errors :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "collect"
                     [
@@ -299,7 +299,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           ]
                     ] in
                 let* α1 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "map"
                     [
@@ -329,7 +329,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::num::error::ParseIntError")
                     ] in
                 let* α2 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::collect::IntoIterator"
                     "into_iter"
                     [
@@ -378,8 +378,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -400,8 +400,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in

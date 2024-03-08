@@ -12,7 +12,7 @@ Definition call_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* f := M.alloc f in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::Fn"
           "call"
           [ (* Self *) F; (* Args *) Ty.tuple [] ] in
@@ -40,7 +40,7 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -78,7 +78,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α3 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ pointer_coercion "Unsize" α2 ] in
+                      [ M.pointer_coercion "Unsize" α2 ] in
                   let* α4 := M.call α0 [ α3 ] in
                   M.alloc α4 in
                 let* α0 := M.alloc tt in

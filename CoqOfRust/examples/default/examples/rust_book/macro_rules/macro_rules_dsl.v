@@ -18,12 +18,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* val :=
-        let* α0 := M.var "BinOp::Panic::add" in
-        let* α1 :=
-          α0
-            ((Integer.of_Z 1) : Ty.path "usize")
-            ((Integer.of_Z 2) : Ty.path "usize") in
-        M.alloc α1 in
+        let* α0 :=
+          BinOp.Panic.add
+            (Value.Integer Integer.Usize 1)
+            (Value.Integer Integer.Usize 2) in
+        M.alloc α0 in
       let* _ :=
         let* _ :=
           let* α0 := M.var "std::io::stdio::_print" in
@@ -39,25 +38,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in
       M.alloc tt in
     let* val :=
-      let* α0 := M.var "BinOp::Panic::mul" in
-      let* α1 := M.var "BinOp::Panic::add" in
-      let* α2 :=
-        α1
-          ((Integer.of_Z 1) : Ty.path "usize")
-          ((Integer.of_Z 2) : Ty.path "usize") in
-      let* α3 := M.var "BinOp::Panic::div" in
-      let* α4 :=
-        α3
-          ((Integer.of_Z 3) : Ty.path "usize")
-          ((Integer.of_Z 4) : Ty.path "usize") in
-      let* α5 := α0 α2 α4 in
-      M.alloc α5 in
+      let* α0 :=
+        BinOp.Panic.add
+          (Value.Integer Integer.Usize 1)
+          (Value.Integer Integer.Usize 2) in
+      let* α1 :=
+        BinOp.Panic.div
+          (Value.Integer Integer.Usize 3)
+          (Value.Integer Integer.Usize 4) in
+      let* α2 := BinOp.Panic.mul α0 α1 in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -71,7 +68,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

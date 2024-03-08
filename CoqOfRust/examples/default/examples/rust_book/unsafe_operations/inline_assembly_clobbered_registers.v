@@ -40,13 +40,13 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* name_buf := M.alloc (repeat ((Integer.of_Z 0) : Ty.path "u8") 12) in
+    let* name_buf := M.alloc (repeat (Value.Integer Integer.U8 0) 12) in
     let* _ :=
       let _ := InlineAssembly in
       M.alloc tt in
     let* name :=
       let* α0 := M.var "core::str::converts::from_utf8" in
-      let* α1 := M.call α0 [ pointer_coercion "Unsize" name_buf ] in
+      let* α1 := M.call α0 [ M.pointer_coercion "Unsize" name_buf ] in
       let* α2 :=
         M.call
           (Ty.apply
@@ -72,7 +72,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

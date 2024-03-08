@@ -44,7 +44,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α4 := M.read (mk_str ". My Git username is ") in
       let* α5 := M.alloc [ α1; α2; α3; α4 ] in
       let* α6 :=
-        M.get_method
+        M.get_trait_method
           "supertraits::Person"
           "name"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
@@ -55,7 +55,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α10 :=
         M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α9 ] in
       let* α11 :=
-        M.get_method
+        M.get_trait_method
           "supertraits::Student"
           "university"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
@@ -66,7 +66,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α15 :=
         M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α14 ] in
       let* α16 :=
-        M.get_method
+        M.get_trait_method
           "supertraits::Programmer"
           "fav_language"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
@@ -77,7 +77,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α20 :=
         M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α19 ] in
       let* α21 :=
-        M.get_method
+        M.get_trait_method
           "supertraits::CompSciStudent"
           "git_username"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
@@ -91,7 +91,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α27 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_v1"]
-          [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α26 ] in
+          [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α26 ] in
       let* α28 := M.call α0 [ α27 ] in
       M.alloc α28 in
     M.read res

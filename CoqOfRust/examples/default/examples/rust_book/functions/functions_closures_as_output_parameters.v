@@ -13,7 +13,7 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* text :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::borrow::ToOwned"
           "to_owned"
           [ (* Self *) Ty.path "str" ] in
@@ -43,8 +43,8 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -69,7 +69,7 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* text :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::borrow::ToOwned"
           "to_owned"
           [ (* Self *) Ty.path "str" ] in
@@ -99,8 +99,8 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -125,7 +125,7 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* text :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::borrow::ToOwned"
           "to_owned"
           [ (* Self *) Ty.path "str" ] in
@@ -155,8 +155,8 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α3;
-                        pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α3;
+                        M.pointer_coercion "Unsize" α5
                       ] in
                   let* α7 := M.call α0 [ α6 ] in
                   M.alloc α7 in
@@ -200,7 +200,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::Fn"
           "call"
           [ (* Self *) _; (* Args *) Ty.tuple [] ] in
@@ -208,7 +208,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::FnMut"
           "call_mut"
           [ (* Self *) _; (* Args *) Ty.tuple [] ] in
@@ -216,7 +216,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::FnOnce"
           "call_once"
           [ (* Self *) _; (* Args *) Ty.tuple [] ] in

@@ -14,12 +14,11 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "EvenNumber") in
-      let* α2 := M.var "try_from_and_try_into::EvenNumber::Get_0" in
-      let* α3 := M.read self in
-      let* α4 := M.alloc (α2 α3) in
+      let* α2 := M.read self in
+      let* α3 := M.alloc (M.get_struct_tuple α2 0) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; pointer_coercion "Unsize" α4 ]
+        [ α0; α1; M.pointer_coercion "Unsize" α3 ]
     | _, _ => M.impossible
     end.
   
@@ -51,14 +50,11 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
     | [ Self ], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.var "BinOp::Pure::eq" in
-      let* α1 := M.var "try_from_and_try_into::EvenNumber::Get_0" in
-      let* α2 := M.read self in
-      let* α3 := M.read (α1 α2) in
-      let* α4 := M.var "try_from_and_try_into::EvenNumber::Get_0" in
-      let* α5 := M.read other in
-      let* α6 := M.read (α4 α5) in
-      M.pure (α0 α3 α6)
+      let* α0 := M.read self in
+      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α2 := M.read other in
+      let* α3 := M.read (M.get_struct_tuple α2 0) in
+      M.pure (BinOp.Pure.eq α1 α3)
     | _, _ => M.impossible
     end.
   
@@ -90,14 +86,12 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
     match 𝜏, α with
     | [ Self ], [ value ] =>
       let* value := M.alloc value in
-      let* α0 := M.var "BinOp::Pure::eq" in
-      let* α1 := M.var "BinOp::Panic::rem" in
-      let* α2 := M.read value in
-      let* α3 := α1 α2 ((Integer.of_Z 2) : Ty.path "i32") in
-      let* α4 := M.alloc (α0 α3 ((Integer.of_Z 0) : Ty.path "i32")) in
-      let* α5 := M.read (use α4) in
-      let* α6 :=
-        if α5 then
+      let* α0 := M.read value in
+      let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.I32 2) in
+      let* α2 := M.alloc (BinOp.Pure.eq α1 (Value.Integer Integer.I32 0)) in
+      let* α3 := M.read (M.use α2) in
+      let* α4 :=
+        if α3 then
           let* α0 := M.read value in
           M.alloc
             (Value.StructTuple
@@ -105,7 +99,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
               [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ α0 ] ])
         else
           M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
-      M.read α6
+      M.read α4
     | _, _ => M.impossible
     end.
   
@@ -140,14 +134,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::TryFrom"
           "try_from"
           [
             (* Self *) Ty.path "try_from_and_try_into::EvenNumber";
             (* T *) Ty.path "i32"
           ] in
-      let* α1 := M.call α0 [ (Integer.of_Z 8) : Ty.path "i32" ] in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 8 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         M.alloc
@@ -156,7 +150,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               Value.StructTuple
                 "try_from_and_try_into::EvenNumber"
-                [ (Integer.of_Z 8) : Ty.path "i32" ]
+                [ Value.Integer Integer.I32 8 ]
             ]) in
       let* α4 := M.alloc (α2, α3) in
       match_operator
@@ -170,9 +164,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -191,12 +184,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           Ty.tuple []
                         ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -205,7 +198,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -213,14 +206,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::TryFrom"
           "try_from"
           [
             (* Self *) Ty.path "try_from_and_try_into::EvenNumber";
             (* T *) Ty.path "i32"
           ] in
-      let* α1 := M.call α0 [ (Integer.of_Z 5) : Ty.path "i32" ] in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
@@ -236,9 +229,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -257,12 +249,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           Ty.tuple []
                         ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -271,7 +263,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -279,14 +271,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* result :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::TryInto"
           "try_into"
           [
             (* Self *) Ty.path "i32";
             (* T *) Ty.path "try_from_and_try_into::EvenNumber"
           ] in
-      let* α1 := M.call α0 [ (Integer.of_Z 8) : Ty.path "i32" ] in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 8 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -296,7 +288,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               Value.StructTuple
                 "try_from_and_try_into::EvenNumber"
-                [ (Integer.of_Z 8) : Ty.path "i32" ]
+                [ Value.Integer Integer.I32 8 ]
             ]) in
       let* α1 := M.alloc (result, α0) in
       match_operator
@@ -310,9 +302,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -331,12 +322,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           Ty.tuple []
                         ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -345,7 +336,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt
@@ -353,14 +344,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* result :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::TryInto"
           "try_into"
           [
             (* Self *) Ty.path "i32";
             (* T *) Ty.path "try_from_and_try_into::EvenNumber"
           ] in
-      let* α1 := M.call α0 [ (Integer.of_Z 5) : Ty.path "i32" ] in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -377,9 +368,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 := M.var "UnOp::not" in
-              let* α1 :=
-                M.get_method
+              let* α0 :=
+                M.get_trait_method
                   "core::cmp::PartialEq"
                   "eq"
                   [
@@ -398,12 +388,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           Ty.tuple []
                         ]
                   ] in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 := M.call α1 [ α2; α3 ] in
-              let* α5 := M.alloc (α0 α4) in
-              let* α6 := M.read (use α5) in
-              if α6 then
+              let* α1 := M.read left_val in
+              let* α2 := M.read right_val in
+              let* α3 := M.call α0 [ α1; α2 ] in
+              let* α4 := M.alloc (UnOp.not α3) in
+              let* α5 := M.read (M.use α4) in
+              if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
                 let* α0 := M.var "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
@@ -412,7 +402,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
                 let* α0 := M.alloc α4 in
                 let* α1 := M.read α0 in
-                let* α2 := never_to_any α1 in
+                let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
                 M.alloc tt

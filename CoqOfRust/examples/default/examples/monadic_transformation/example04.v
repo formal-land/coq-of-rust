@@ -11,7 +11,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* x :=
-      let* α0 := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+      let* α0 := M.alloc (Value.Integer Integer.I32 1) in
       M.alloc α0 in
     let* α0 := M.alloc tt in
     M.read α0

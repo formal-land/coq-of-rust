@@ -15,21 +15,19 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Person") in
       let* α2 := M.read (mk_str "name") in
-      let* α3 := M.var "structures::Person::Get_name" in
-      let* α4 := M.read self in
-      let* α5 := M.read (mk_str "age") in
-      let* α6 := M.var "structures::Person::Get_age" in
-      let* α7 := M.read self in
-      let* α8 := M.alloc (α6 α7) in
+      let* α3 := M.read self in
+      let* α4 := M.read (mk_str "age") in
+      let* α5 := M.read self in
+      let* α6 := M.alloc (M.get_struct_record α5 "age") in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion "Unsize" (α3 α4);
-          α5;
-          pointer_coercion "Unsize" α8
+          M.pointer_coercion "Unsize" (M.get_struct_record α3 "name");
+          α4;
+          M.pointer_coercion "Unsize" α6
         ]
     | _, _ => M.impossible
     end.
@@ -111,7 +109,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* name :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::From"
           "from"
           [
@@ -121,7 +119,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (mk_str "Peter") in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
-    let* age := M.alloc ((Integer.of_Z 27) : Ty.path "u8") in
+    let* age := M.alloc (Value.Integer Integer.U8 27) in
     let* peter :=
       let* α0 := M.read name in
       let* α1 := M.read age in
@@ -142,13 +140,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* point :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
-      let* α1 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α0 := M.read UnsupportedLiteral in
+      let* α1 := M.read UnsupportedLiteral in
       M.alloc
         (Value.StructRecord "structures::Point" [ ("x", α0); ("y", α1) ]) in
     let* _ :=
@@ -159,26 +158,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str ")
 ") in
         let* α4 := M.alloc [ α1; α2; α3 ] in
-        let* α5 := M.var "structures::Point::Get_x" in
+        let* α5 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ M.get_struct_record point "x" ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α5 point ] in
-        let* α7 := M.var "structures::Point::Get_y" in
+            [ M.get_struct_record point "y" ] in
+        let* α7 := M.alloc [ α5; α6 ] in
         let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α7 point ] in
-        let* α9 := M.alloc [ α6; α8 ] in
-        let* α10 :=
-          M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α9 ] in
-        let* α11 := M.call α0 [ α10 ] in
-        M.alloc α11 in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            ] in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* bottom_right :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read point in
       M.alloc (α1 <| structures.Point.x := α0 |>) in
     let* _ :=
@@ -189,23 +187,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str ")
 ") in
         let* α4 := M.alloc [ α1; α2; α3 ] in
-        let* α5 := M.var "structures::Point::Get_x" in
+        let* α5 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ M.get_struct_record bottom_right "x" ] in
         let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α5 bottom_right ] in
-        let* α7 := M.var "structures::Point::Get_y" in
+            [ M.get_struct_record bottom_right "y" ] in
+        let* α7 := M.alloc [ α5; α6 ] in
         let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α7 bottom_right ] in
-        let* α9 := M.alloc [ α6; α8 ] in
-        let* α10 :=
-          M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α9 ] in
-        let* α11 := M.call α0 [ α10 ] in
-        M.alloc α11 in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            ] in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* α0 :=
       match_operator
@@ -239,11 +236,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ]) in
               let* _unit := M.alloc structures.Unit.Build in
               let* pair :=
-                let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
+                let* α0 := M.read UnsupportedLiteral in
                 M.alloc
                   (Value.StructTuple
                     "structures::Pair"
-                    [ (Integer.of_Z 1) : Ty.path "i32"; α0 ]) in
+                    [ Value.Integer Integer.I32 1; α0 ]) in
               let* _ :=
                 let* _ :=
                   let* α0 := M.var "std::io::stdio::_print" in
@@ -252,26 +249,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α3 := M.read (mk_str "
 ") in
                   let* α4 := M.alloc [ α1; α2; α3 ] in
-                  let* α5 := M.var "structures::Pair::Get_0" in
+                  let* α5 :=
+                    M.call
+                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
+                      [ M.get_struct_tuple pair 0 ] in
                   let* α6 :=
                     M.call
                       (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                      [ α5 pair ] in
-                  let* α7 := M.var "structures::Pair::Get_1" in
+                      [ M.get_struct_tuple pair 1 ] in
+                  let* α7 := M.alloc [ α5; α6 ] in
                   let* α8 :=
-                    M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                      [ α7 pair ] in
-                  let* α9 := M.alloc [ α6; α8 ] in
-                  let* α10 :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α4;
-                        pointer_coercion "Unsize" α9
+                        M.pointer_coercion "Unsize" α4;
+                        M.pointer_coercion "Unsize" α7
                       ] in
-                  let* α11 := M.call α0 [ α10 ] in
-                  M.alloc α11 in
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
                 M.alloc tt in
               match_operator
                 pair
@@ -309,8 +304,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.call
                               (Ty.path "core::fmt::Arguments")::["new_v1"]
                               [
-                                pointer_coercion "Unsize" α4;
-                                pointer_coercion "Unsize" α7
+                                M.pointer_coercion "Unsize" α4;
+                                M.pointer_coercion "Unsize" α7
                               ] in
                           let* α9 := M.call α0 [ α8 ] in
                           M.alloc α9 in

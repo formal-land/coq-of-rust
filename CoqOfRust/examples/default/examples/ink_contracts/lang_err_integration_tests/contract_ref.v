@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -112,7 +112,7 @@ Module Impl_contract_ref_FlipperRef.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -159,7 +159,7 @@ Module Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
@@ -184,7 +184,7 @@ Module Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [ Self ], [ succeed ] =>
       let* succeed := M.alloc succeed in
-      let* α0 := M.read (use succeed) in
+      let* α0 := M.read (M.use succeed) in
       let* α1 :=
         if α0 then
           let* α0 :=
@@ -212,13 +212,10 @@ Module Impl_contract_ref_FlipperRef.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.var "contract_ref::FlipperRef::Get_value" in
+        let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.var "UnOp::not" in
-        let* α3 := M.var "contract_ref::FlipperRef::Get_value" in
-        let* α4 := M.read self in
-        let* α5 := M.read (α3 α4) in
-        assign (α0 α1) (α2 α5) in
+        let* α2 := M.read (M.get_struct_record α1 "value") in
+        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -235,9 +232,8 @@ Module Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "contract_ref::FlipperRef::Get_value" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   
@@ -351,11 +347,12 @@ Module Impl_contract_ref_ContractRef.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.call (Ty.path "contract_ref::FlipperRef")::["flip"] [ α0 α1 ] in
-        M.alloc α2 in
+        let* α0 := M.read self in
+        let* α1 :=
+          M.call
+            (Ty.path "contract_ref::FlipperRef")::["flip"]
+            [ M.get_struct_record α0 "flipper" ] in
+        M.alloc α1 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -372,9 +369,10 @@ Module Impl_contract_ref_ContractRef.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "contract_ref::ContractRef::Get_flipper" in
-      let* α1 := M.read self in
-      M.call (Ty.path "contract_ref::FlipperRef")::["get"] [ α0 α1 ]
+      let* α0 := M.read self in
+      M.call
+        (Ty.path "contract_ref::FlipperRef")::["get"]
+        [ M.get_struct_record α0 "flipper" ]
     | _, _ => M.impossible
     end.
   

@@ -47,7 +47,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* a :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "collect"
           [
@@ -61,7 +61,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
           ] in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -73,9 +73,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 :=
         M.alloc
           [
-            (Integer.of_Z 1) : Ty.path "i32";
-            (Integer.of_Z 2) : Ty.path "i32";
-            (Integer.of_Z 3) : Ty.path "i32"
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
           ] in
       let* α3 :=
         M.call
@@ -85,13 +85,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α5 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α4 ] in
+          [ M.pointer_coercion "Unsize" α4 ] in
       let* α6 := M.call α1 [ α5 ] in
       let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in
     let* b :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::iterator::Iterator"
           "collect"
           [
@@ -105,7 +105,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
           ] in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -117,9 +117,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 :=
         M.alloc
           [
-            (Integer.of_Z 2) : Ty.path "i32";
-            (Integer.of_Z 3) : Ty.path "i32";
-            (Integer.of_Z 4) : Ty.path "i32"
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3;
+            Value.Integer Integer.I32 4
           ] in
       let* α3 :=
         M.call
@@ -129,46 +129,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α5 :=
         M.call
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ pointer_coercion "Unsize" α4 ] in
+          [ M.pointer_coercion "Unsize" α4 ] in
       let* α6 := M.call α1 [ α5 ] in
       let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in
     let* _ :=
-      let* α0 := M.var "UnOp::not" in
-      let* α1 :=
+      let* α0 :=
         M.call
           (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ a; (Integer.of_Z 4) : Ty.path "i32" ] in
-      let* α2 := M.alloc (α0 α1) in
-      let* α3 := M.read (use α2) in
-      if α3 then
+          [ a; Value.Integer Integer.I32 4 ] in
+      let* α1 := M.alloc (UnOp.not α0) in
+      let* α2 := M.read (M.use α1) in
+      if α2 then
         let* α0 := M.var "core::panicking::panic" in
         let* α1 := M.read (mk_str "assertion failed: a.insert(4)") in
         let* α2 := M.call α0 [ α1 ] in
-        let* α3 := never_to_any α2 in
+        let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
         M.alloc tt in
     let* _ :=
-      let* α0 := M.var "UnOp::not" in
-      let* α1 := M.alloc ((Integer.of_Z 4) : Ty.path "i32") in
-      let* α2 :=
+      let* α0 := M.alloc (Value.Integer Integer.I32 4) in
+      let* α1 :=
         M.call
           (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["contains"]
-          [ a; α1 ] in
-      let* α3 := M.alloc (α0 α2) in
-      let* α4 := M.read (use α3) in
-      if α4 then
+          [ a; α0 ] in
+      let* α2 := M.alloc (UnOp.not α1) in
+      let* α3 := M.read (M.use α2) in
+      if α3 then
         let* α0 := M.var "core::panicking::panic" in
         let* α1 := M.read (mk_str "assertion failed: a.contains(&4)") in
         let* α2 := M.call α0 [ α1 ] in
-        let* α3 := never_to_any α2 in
+        let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
         M.alloc tt in
@@ -179,7 +177,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
               ])::["insert"]
-          [ b; (Integer.of_Z 5) : Ty.path "i32" ] in
+          [ b; Value.Integer Integer.I32 5 ] in
       M.alloc α0 in
     let* _ :=
       let* _ :=
@@ -194,7 +192,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -211,7 +210,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -223,7 +223,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "collect"
             [
@@ -254,7 +254,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -266,7 +267,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "collect"
             [
@@ -297,7 +298,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -309,7 +311,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "collect"
             [
@@ -340,7 +342,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -352,7 +355,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "core::iter::traits::iterator::Iterator"
             "collect"
             [
@@ -383,7 +386,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in

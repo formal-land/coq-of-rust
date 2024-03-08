@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition NTHREADS : Ty.path "u32" :=
-  M.run (M.alloc ((Integer.of_Z 10) : Ty.path "u32")).
+  M.run (M.alloc (Value.Integer Integer.U32 10)).
 
 (*
 fn main() {
@@ -39,7 +39,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α0 in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
           "into_iter"
           [
@@ -54,7 +54,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructRecord
               "core::ops::range::Range"
-              [ ("start", (Integer.of_Z 0) : Ty.path "u32"); ("end_", α2) ]
+              [ ("start", Value.Integer Integer.U32 0); ("end_", α2) ]
           ] in
       let* α4 := M.alloc α3 in
       let* α5 :=
@@ -66,7 +66,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.loop
                 (let* _ :=
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
                       "next"
                       [
@@ -86,7 +86,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         | core.option.Option.None =>
                           let* α0 := M.break in
                           let* α1 := M.read α0 in
-                          let* α2 := never_to_any α1 in
+                          let* α2 := M.never_to_any α1 in
                           M.alloc α2
                         | _ => M.break_match 
                         end);
@@ -134,10 +134,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   (Ty.path
                                                       "core::fmt::Arguments")::["new_v1"]
                                                   [
-                                                    pointer_coercion
+                                                    M.pointer_coercion
                                                       "Unsize"
                                                       α3;
-                                                    pointer_coercion "Unsize" α5
+                                                    M.pointer_coercion
+                                                      "Unsize"
+                                                      α5
                                                   ] in
                                               let* α7 := M.call α0 [ α6 ] in
                                               M.alloc α7 in
@@ -164,9 +166,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ] in
                 M.alloc tt))
           ] in
-      M.pure (use α5) in
+      M.pure (M.use α5) in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -190,7 +192,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.loop
               (let* _ :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "next"
                     [
@@ -215,7 +217,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       | core.option.Option.None =>
                         let* α0 := M.break in
                         let* α1 := M.read α0 in
-                        let* α2 := never_to_any α1 in
+                        let* α2 := M.never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
                       end);
@@ -241,6 +243,6 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               M.alloc tt))
         ] in
-    M.read (use α4)
+    M.read (M.use α4)
   | _, _ => M.impossible
   end.

@@ -54,7 +54,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* null := M.alloc generics_traits.Null.Build in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "generics_traits::DoubleDrop"
           "double_drop"
           [

@@ -45,15 +45,12 @@ Module Impl_trait_incrementer_Incrementer.
       let* delta := M.alloc delta in
       let* _ :=
         let* β :=
-          let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
-          let* α1 := M.read self in
-          M.pure (α0 α1) in
-        let* α0 := M.var "assign" in
-        let* α1 := M.var "BinOp::Panic::add" in
-        let* α2 := M.read β in
-        let* α3 := M.read delta in
-        let* α4 := α1 α2 α3 in
-        α0 β α4 in
+          let* α0 := M.read self in
+          M.pure (M.get_struct_record α0 "value") in
+        let* α0 := M.read β in
+        let* α1 := M.read delta in
+        let* α2 := BinOp.Panic.add α0 α1 in
+        M.assign β α2 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -76,7 +73,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       let* α0 := M.read self in
       M.call
         (Ty.path "trait_incrementer::Incrementer")::["inc_by"]
-        [ α0; (Integer.of_Z 1) : Ty.path "u64" ]
+        [ α0; Value.Integer Integer.U64 1 ]
     | _, _ => M.impossible
     end.
   
@@ -89,9 +86,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   
@@ -116,9 +112,10 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.var "trait_incrementer::Incrementer::Get_value" in
-        let* α1 := M.read self in
-        assign (α0 α1) ((Integer.of_Z 0) : Ty.path "u64") in
+        let* α0 := M.read self in
+        M.assign
+          (M.get_struct_record α0 "value")
+          (Value.Integer Integer.U64 0) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible

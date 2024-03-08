@@ -17,14 +17,11 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       let* self := M.alloc self in
       let* _ :=
         let* β :=
-          let* α0 := M.var "scoping_rules_lifetimes_methods::Owner::Get_0" in
-          let* α1 := M.read self in
-          M.pure (α0 α1) in
-        let* α0 := M.var "assign" in
-        let* α1 := M.var "BinOp::Panic::add" in
-        let* α2 := M.read β in
-        let* α3 := α1 α2 ((Integer.of_Z 1) : Ty.path "i32") in
-        α0 β α3 in
+          let* α0 := M.read self in
+          M.pure (M.get_struct_tuple α0 0) in
+        let* α0 := M.read β in
+        let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
+        M.assign β α1 in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -49,19 +46,19 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let* α2 := M.read (mk_str "
 ") in
           let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 := M.var "scoping_rules_lifetimes_methods::Owner::Get_0" in
-          let* α5 := M.read self in
-          let* α6 :=
+          let* α4 := M.read self in
+          let* α5 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α4 α5 ] in
-          let* α7 := M.alloc [ α6 ] in
-          let* α8 :=
+              [ M.get_struct_tuple α4 0 ] in
+          let* α6 := M.alloc [ α5 ] in
+          let* α7 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
-          let* α9 := M.call α0 [ α8 ] in
-          M.alloc α9 in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+              ] in
+          let* α8 := M.call α0 [ α7 ] in
+          M.alloc α8 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0
@@ -87,7 +84,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "scoping_rules_lifetimes_methods::Owner"
-          [ (Integer.of_Z 18) : Ty.path "i32" ]) in
+          [ Value.Integer Integer.I32 18 ]) in
     let* _ :=
       let* α0 :=
         M.call

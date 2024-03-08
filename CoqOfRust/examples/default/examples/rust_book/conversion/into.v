@@ -38,11 +38,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::Into"
           "into"
           [ (* Self *) Ty.path "i32"; (* T *) Ty.path "into::Number" ] in
-      let* α1 := M.call α0 [ (Integer.of_Z 5) : Ty.path "i32" ] in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* α0 := M.alloc tt in
     M.read α0

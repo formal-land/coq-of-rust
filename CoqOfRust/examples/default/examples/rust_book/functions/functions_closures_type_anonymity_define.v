@@ -30,7 +30,7 @@ Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* f := M.alloc f in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::ops::function::FnOnce"
           "call_once"
           [ (* Self *) F; (* Args *) Ty.tuple [] ] in

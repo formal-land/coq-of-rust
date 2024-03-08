@@ -85,13 +85,13 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* decimal := M.copy (UnsupportedLiteral : Ty.path "f32") in
+    let* decimal := M.copy UnsupportedLiteral in
     let* integer :=
       let* α0 := M.read decimal in
-      M.alloc (rust_cast α0) in
+      M.alloc (M.rust_cast α0) in
     let* character :=
       let* α0 := M.read integer in
-      M.alloc (rust_cast α0) in
+      M.alloc (M.rust_cast α0) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -117,7 +117,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in
@@ -128,16 +129,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 1000) : Ty.path "u16") in
+        let* α4 := M.alloc (Value.Integer Integer.U16 1000) in
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ use α4 ] in
+            [ M.use α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -148,16 +150,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 1000) : Ty.path "u8") in
+        let* α4 := M.alloc (Value.Integer Integer.U8 1000) in
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ use α4 ] in
+            [ M.use α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -168,14 +171,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc (rust_cast ((Integer.of_Z (-1)) : Ty.path "i8")) in
+        let* α4 := M.alloc (M.rust_cast (Value.Integer Integer.I8 (-1))) in
         let* α5 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -186,21 +190,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "BinOp::Panic::rem" in
-        let* α5 :=
-          α4
-            ((Integer.of_Z 1000) : Ty.path "i32")
-            ((Integer.of_Z 256) : Ty.path "i32") in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+        let* α4 :=
+          BinOp.Panic.rem
+            (Value.Integer Integer.I32 1000)
+            (Value.Integer Integer.I32 256) in
+        let* α5 := M.alloc α4 in
+        let* α6 :=
+          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
-        let* α10 := M.call α0 [ α9 ] in
-        M.alloc α10 in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
       M.alloc tt in
     let* _ :=
       let* _ :=
@@ -209,16 +213,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 128) : Ty.path "i16") in
+        let* α4 := M.alloc (Value.Integer Integer.I16 128) in
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ use α4 ] in
+            [ M.use α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -229,16 +234,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 128) : Ty.path "i8") in
+        let* α4 := M.alloc (Value.Integer Integer.I8 128) in
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ use α4 ] in
+            [ M.use α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -249,16 +255,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 1000) : Ty.path "u8") in
+        let* α4 := M.alloc (Value.Integer Integer.U8 1000) in
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ use α4 ] in
+            [ M.use α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -269,16 +276,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc ((Integer.of_Z 232) : Ty.path "i8") in
+        let* α4 := M.alloc (Value.Integer Integer.I8 232) in
         let* α5 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ use α4 ] in
+            [ M.use α4 ] in
         let* α6 := M.alloc [ α5 ] in
         let* α7 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α6 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+            ] in
         let* α8 := M.call α0 [ α7 ] in
         M.alloc α8 in
       M.alloc tt in
@@ -289,15 +297,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.read (UnsupportedLiteral : Ty.path "f32") in
-        let* α5 := M.alloc (rust_cast α4) in
+        let* α4 := M.read UnsupportedLiteral in
+        let* α5 := M.alloc (M.rust_cast α4) in
         let* α6 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -308,15 +317,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.read (UnsupportedLiteral : Ty.path "f32") in
-        let* α5 := M.alloc (rust_cast α4) in
+        let* α4 := M.read UnsupportedLiteral in
+        let* α5 := M.alloc (M.rust_cast α4) in
         let* α6 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
       M.alloc tt in
@@ -329,14 +339,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 := M.var "core::f32::NAN" in
         let* α5 := M.read α4 in
-        let* α6 := M.alloc (rust_cast α5) in
+        let* α6 := M.alloc (M.rust_cast α5) in
         let* α7 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -347,7 +358,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.read (UnsupportedLiteral : Ty.path "f32") in
+        let* α4 := M.read UnsupportedLiteral in
         let* α5 := M.call (Ty.path "f32")::["to_int_unchecked"] [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -356,7 +367,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -367,7 +379,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.read (UnsupportedLiteral : Ty.path "f32") in
+        let* α4 := M.read UnsupportedLiteral in
         let* α5 := M.call (Ty.path "f32")::["to_int_unchecked"] [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -376,7 +388,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -397,7 +410,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in

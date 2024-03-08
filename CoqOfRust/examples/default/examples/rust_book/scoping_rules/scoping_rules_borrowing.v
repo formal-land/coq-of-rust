@@ -25,7 +25,8 @@ Definition eat_box_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -58,7 +59,8 @@ Definition borrow_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -106,9 +108,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ (Integer.of_Z 5) : Ty.path "i32" ] in
+          [ Value.Integer Integer.I32 5 ] in
       M.alloc α0 in
-    let* stacked_i32 := M.alloc ((Integer.of_Z 6) : Ty.path "i32") in
+    let* stacked_i32 := M.alloc (Value.Integer Integer.I32 6) in
     let* _ :=
       let* α0 := M.var "scoping_rules_borrowing::borrow_i32" in
       let* α1 := M.read boxed_i32 in

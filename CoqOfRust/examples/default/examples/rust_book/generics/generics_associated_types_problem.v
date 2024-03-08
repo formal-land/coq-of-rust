@@ -20,32 +20,29 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
       let* self := M.alloc self in
       let* number_1 := M.alloc number_1 in
       let* number_2 := M.alloc number_2 in
-      let* α0 := M.var "BinOp::Pure::and" in
-      let* α1 :=
-        M.get_method
+      let* α0 :=
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
           ] in
-      let* α2 := M.var "generics_associated_types_problem::Container::Get_0" in
-      let* α3 := M.read self in
-      let* α4 := M.alloc (α2 α3) in
-      let* α5 := M.call α1 [ α4; number_1 ] in
-      let* α6 :=
-        M.get_method
+      let* α1 := M.read self in
+      let* α2 := M.alloc (M.get_struct_tuple α1 0) in
+      let* α3 := M.call α0 [ α2; number_1 ] in
+      let* α4 :=
+        M.get_trait_method
           "core::cmp::PartialEq"
           "eq"
           [
             (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
             (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
           ] in
-      let* α7 := M.var "generics_associated_types_problem::Container::Get_1" in
-      let* α8 := M.read self in
-      let* α9 := M.alloc (α7 α8) in
-      let* α10 := M.call α6 [ α9; number_2 ] in
-      M.pure (α0 α5 α10)
+      let* α5 := M.read self in
+      let* α6 := M.alloc (M.get_struct_tuple α5 1) in
+      let* α7 := M.call α4 [ α6; number_2 ] in
+      M.pure (BinOp.Pure.and α3 α7)
     | _, _ => M.impossible
     end.
   
@@ -58,9 +55,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "generics_associated_types_problem::Container::Get_0" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_tuple α0 0)
     | _, _ => M.impossible
     end.
   
@@ -73,9 +69,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "generics_associated_types_problem::Container::Get_1" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_tuple α0 1)
     | _, _ => M.impossible
     end.
   
@@ -106,22 +101,21 @@ Definition difference (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [ A; B; C ], [ container ] =>
     let* container := M.alloc container in
-    let* α0 := M.var "BinOp::Panic::sub" in
-    let* α1 :=
-      M.get_method
+    let* α0 :=
+      M.get_trait_method
         "generics_associated_types_problem::Contains"
         "last"
         [ (* Self *) C; (* A *) A; (* B *) B ] in
-    let* α2 := M.read container in
-    let* α3 := M.call α1 [ α2 ] in
-    let* α4 :=
-      M.get_method
+    let* α1 := M.read container in
+    let* α2 := M.call α0 [ α1 ] in
+    let* α3 :=
+      M.get_trait_method
         "generics_associated_types_problem::Contains"
         "first"
         [ (* Self *) C; (* A *) A; (* B *) B ] in
-    let* α5 := M.read container in
-    let* α6 := M.call α4 [ α5 ] in
-    α0 α3 α6
+    let* α4 := M.read container in
+    let* α5 := M.call α3 [ α4 ] in
+    BinOp.Panic.sub α2 α5
   | _, _ => M.impossible
   end.
 
@@ -148,8 +142,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* number_1 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
-    let* number_2 := M.alloc ((Integer.of_Z 10) : Ty.path "i32") in
+    let* number_1 := M.alloc (Value.Integer Integer.I32 3) in
+    let* number_2 := M.alloc (Value.Integer Integer.I32 10) in
     let* container :=
       let* α0 := M.read number_1 in
       let* α1 := M.read number_2 in
@@ -173,7 +167,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α8 ] in
         let* α10 :=
-          M.get_method
+          M.get_trait_method
             "generics_associated_types_problem::Contains"
             "contains"
             [
@@ -189,7 +183,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α15 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α14 ] in
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α14
+            ] in
         let* α16 := M.call α0 [ α15 ] in
         M.alloc α16 in
       M.alloc tt in
@@ -201,7 +196,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "generics_associated_types_problem::Contains"
             "first"
             [
@@ -217,7 +212,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -229,7 +225,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "generics_associated_types_problem::Contains"
             "last"
             [
@@ -245,7 +241,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -265,7 +262,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

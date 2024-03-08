@@ -16,21 +16,19 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Point") in
       let* α2 := M.read (mk_str "x") in
-      let* α3 := M.var "box_stack_heap::Point::Get_x" in
-      let* α4 := M.read self in
-      let* α5 := M.read (mk_str "y") in
-      let* α6 := M.var "box_stack_heap::Point::Get_y" in
-      let* α7 := M.read self in
-      let* α8 := M.alloc (α6 α7) in
+      let* α3 := M.read self in
+      let* α4 := M.read (mk_str "y") in
+      let* α5 := M.read self in
+      let* α6 := M.alloc (M.get_struct_record α5 "y") in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
         [
           α0;
           α1;
           α2;
-          pointer_coercion "Unsize" (α3 α4);
-          α5;
-          pointer_coercion "Unsize" α8
+          M.pointer_coercion "Unsize" (M.get_struct_record α3 "x");
+          α4;
+          M.pointer_coercion "Unsize" α6
         ]
     | _, _ => M.impossible
     end.
@@ -88,8 +86,8 @@ fn origin() -> Point {
 Definition origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
-    let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α0 := M.read UnsupportedLiteral in
+    let* α1 := M.read UnsupportedLiteral in
     M.pure (Value.StructRecord "box_stack_heap::Point" [ ("x", α0); ("y", α1) ])
   | _, _ => M.impossible
   end.
@@ -103,8 +101,8 @@ fn boxed_origin() -> Box<Point> {
 Definition boxed_origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 := M.read (UnsupportedLiteral : Ty.path "f64") in
-    let* α1 := M.read (UnsupportedLiteral : Ty.path "f64") in
+    let* α0 := M.read UnsupportedLiteral in
+    let* α1 := M.read UnsupportedLiteral in
     M.call
       (Ty.apply
           (Ty.path "alloc::boxed::Box")
@@ -178,8 +176,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* rectangle :=
       let* α0 := M.var "box_stack_heap::origin" in
       let* α1 := M.call α0 [] in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.read UnsupportedLiteral in
+      let* α3 := M.read UnsupportedLiteral in
       M.alloc
         (Value.StructRecord
           "box_stack_heap::Rectangle"
@@ -193,8 +191,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* boxed_rectangle :=
       let* α0 := M.var "box_stack_heap::origin" in
       let* α1 := M.call α0 [] in
-      let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-      let* α3 := M.read (UnsupportedLiteral : Ty.path "f64") in
+      let* α2 := M.read UnsupportedLiteral in
+      let* α3 := M.read UnsupportedLiteral in
       let* α4 :=
         M.call
           (Ty.apply
@@ -260,7 +258,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -280,7 +279,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -300,7 +300,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -320,7 +321,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -340,7 +342,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in
@@ -363,7 +366,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α8 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            ] in
         let* α10 := M.call α0 [ α9 ] in
         M.alloc α10 in
       M.alloc tt in

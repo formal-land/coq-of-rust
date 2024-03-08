@@ -36,7 +36,7 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [ α1 ] in
         M.alloc α2 in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "std::io::BufRead"
           "lines"
           [
@@ -55,7 +55,7 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.call α0 [ α2 ] in
       let* α0 := return_ α3 in
       let* α1 := M.read α0 in
-      never_to_any α1)
+      M.never_to_any α1)
   | _, _ => M.impossible
   end.
 
@@ -76,7 +76,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* lines :=
       let* α0 := M.var "file_io_read_lines::read_lines" in
       let* α1 :=
-        M.get_method
+        M.get_trait_method
           "alloc::string::ToString"
           "to_string"
           [ (* Self *) Ty.path "str" ] in
@@ -85,7 +85,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α4 := M.call α0 [ α3 ] in
       M.alloc α4 in
     let* α0 :=
-      M.get_method
+      M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
         "into_iter"
         [
@@ -110,7 +110,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.loop
               (let* _ :=
                 let* α0 :=
-                  M.get_method
+                  M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
                     "next"
                     [
@@ -135,7 +135,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       | core.option.Option.None =>
                         let* α0 := M.break in
                         let* α1 := M.read α0 in
-                        let* α2 := never_to_any α1 in
+                        let* α2 := M.never_to_any α1 in
                         M.alloc α2
                       | _ => M.break_match 
                       end);
@@ -175,8 +175,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.call
                                 (Ty.path "core::fmt::Arguments")::["new_v1"]
                                 [
-                                  pointer_coercion "Unsize" α3;
-                                  pointer_coercion "Unsize" α8
+                                  M.pointer_coercion "Unsize" α3;
+                                  M.pointer_coercion "Unsize" α8
                                 ] in
                             let* α10 := M.call α0 [ α9 ] in
                             M.alloc α10 in
@@ -187,6 +187,6 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               M.alloc tt))
         ] in
-    M.read (use α4)
+    M.read (M.use α4)
   | _, _ => M.impossible
   end.

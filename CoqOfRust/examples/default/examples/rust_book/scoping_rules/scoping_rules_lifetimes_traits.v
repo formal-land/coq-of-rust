@@ -15,12 +15,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Borrowed") in
       let* α2 := M.read (mk_str "x") in
-      let* α3 := M.var "scoping_rules_lifetimes_traits::Borrowed::Get_x" in
-      let* α4 := M.read self in
-      let* α5 := M.alloc (α3 α4) in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (M.get_struct_record α3 "x") in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_struct_field1_finish"]
-        [ α0; α1; α2; pointer_coercion "Unsize" α5 ]
+        [ α0; α1; α2; M.pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -42,7 +41,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.alloc ((Integer.of_Z 10) : Ty.path "i32") in
+      let* α0 := M.alloc (Value.Integer Integer.I32 10) in
       M.pure
         (Value.StructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
@@ -71,7 +70,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* b :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "scoping_rules_lifetimes_traits::Borrowed" ] in
@@ -90,7 +89,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

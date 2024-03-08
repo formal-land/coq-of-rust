@@ -17,16 +17,17 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Circle of radius ") in
       let* α2 := M.alloc [ α1 ] in
-      let* α3 := M.var "converting_to_string::Circle::Get_radius" in
-      let* α4 := M.read self in
-      let* α5 :=
-        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α3 α4 ] in
-      let* α6 := M.alloc [ α5 ] in
-      let* α7 :=
+      let* α3 := M.read self in
+      let* α4 :=
+        M.call
+          (Ty.path "core::fmt::rt::Argument")::["new_display"]
+          [ M.get_struct_record α3 "radius" ] in
+      let* α5 := M.alloc [ α4 ] in
+      let* α6 :=
         M.call
           (Ty.path "core::fmt::Arguments")::["new_v1"]
-          [ pointer_coercion "Unsize" α2; pointer_coercion "Unsize" α6 ] in
-      M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α7 ]
+          [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α5 ] in
+      M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α6 ]
     | _, _ => M.impossible
     end.
   
@@ -53,10 +54,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructRecord
           "converting_to_string::Circle"
-          [ ("radius", (Integer.of_Z 6) : Ty.path "i32") ]) in
+          [ ("radius", Value.Integer Integer.I32 6) ]) in
     let* _ :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::string::ToString"
           "to_string"
           [ (* Self *) Ty.path "converting_to_string::Circle" ] in

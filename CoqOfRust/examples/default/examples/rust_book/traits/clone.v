@@ -70,7 +70,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::clone::Clone"
           "clone"
           [
@@ -79,11 +79,10 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 (Ty.path "alloc::boxed::Box")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α1 := M.var "clone::Pair::Get_0" in
-      let* α2 := M.read self in
-      let* α3 := M.call α0 [ α1 α2 ] in
-      let* α4 :=
-        M.get_method
+      let* α1 := M.read self in
+      let* α2 := M.call α0 [ M.get_struct_tuple α1 0 ] in
+      let* α3 :=
+        M.get_trait_method
           "core::clone::Clone"
           "clone"
           [
@@ -92,10 +91,9 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 (Ty.path "alloc::boxed::Box")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α5 := M.var "clone::Pair::Get_1" in
-      let* α6 := M.read self in
-      let* α7 := M.call α4 [ α5 α6 ] in
-      M.pure (Value.StructTuple "clone::Pair" [ α3; α7 ])
+      let* α4 := M.read self in
+      let* α5 := M.call α3 [ M.get_struct_tuple α4 1 ] in
+      M.pure (Value.StructTuple "clone::Pair" [ α2; α5 ])
     | _, _ => M.impossible
     end.
   
@@ -119,18 +117,16 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       let* f := M.alloc f in
       let* α0 := M.read f in
       let* α1 := M.read (mk_str "Pair") in
-      let* α2 := M.var "clone::Pair::Get_0" in
+      let* α2 := M.read self in
       let* α3 := M.read self in
-      let* α4 := M.var "clone::Pair::Get_1" in
-      let* α5 := M.read self in
-      let* α6 := M.alloc (α4 α5) in
+      let* α4 := M.alloc (M.get_struct_tuple α3 1) in
       M.call
         (Ty.path "core::fmt::Formatter")::["debug_tuple_field2_finish"]
         [
           α0;
           α1;
-          pointer_coercion "Unsize" (α2 α3);
-          pointer_coercion "Unsize" α6
+          M.pointer_coercion "Unsize" (M.get_struct_tuple α2 0);
+          M.pointer_coercion "Unsize" α4
         ]
     | _, _ => M.impossible
     end.
@@ -199,7 +195,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -218,7 +215,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -228,13 +226,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ (Integer.of_Z 1) : Ty.path "i32" ] in
+          [ Value.Integer Integer.I32 1 ] in
       let* α1 :=
         M.call
           (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ (Integer.of_Z 2) : Ty.path "i32" ] in
+          [ Value.Integer Integer.I32 2 ] in
       M.alloc (Value.StructTuple "clone::Pair" [ α0; α1 ]) in
     let* _ :=
       let* _ :=
@@ -249,7 +247,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
@@ -269,13 +268,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in
     let* cloned_pair :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::clone::Clone"
           "clone"
           [ (* Self *) Ty.path "clone::Pair" ] in
@@ -301,7 +301,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            ] in
         let* α7 := M.call α0 [ α6 ] in
         M.alloc α7 in
       M.alloc tt in

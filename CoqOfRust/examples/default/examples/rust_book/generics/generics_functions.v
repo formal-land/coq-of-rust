@@ -99,7 +99,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructTuple
               "generics_functions::SGen"
-              [ (Integer.of_Z 6) : Ty.path "i32" ]
+              [ Value.Integer Integer.I32 6 ]
           ] in
       M.alloc α1 in
     let* _ :=

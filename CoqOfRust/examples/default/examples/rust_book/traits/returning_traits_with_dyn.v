@@ -69,13 +69,12 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ random_number ] =>
     let* random_number := M.alloc random_number in
-    let* α0 := M.var "BinOp::Pure::lt" in
-    let* α1 := M.read random_number in
-    let* α2 := M.read (UnsupportedLiteral : Ty.path "f64") in
-    let* α3 := M.alloc (α0 α1 α2) in
-    let* α4 := M.read (use α3) in
-    let* α5 :=
-      if α4 then
+    let* α0 := M.read random_number in
+    let* α1 := M.read UnsupportedLiteral in
+    let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+    let* α3 := M.read (M.use α2) in
+    let* α4 :=
+      if α3 then
         let* α0 :=
           M.call
             (Ty.apply
@@ -85,7 +84,7 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::alloc::Global"
                 ])::["new"]
             [ returning_traits_with_dyn.Sheep.Build ] in
-        M.alloc (pointer_coercion "Unsize" (pointer_coercion "Unsize" α0))
+        M.alloc (M.pointer_coercion "Unsize" (M.pointer_coercion "Unsize" α0))
       else
         let* α0 :=
           M.call
@@ -96,9 +95,9 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::alloc::Global"
                 ])::["new"]
             [ returning_traits_with_dyn.Cow.Build ] in
-        M.alloc (pointer_coercion "Unsize" α0) in
-    let* α6 := M.read α5 in
-    M.pure (pointer_coercion "Unsize" (pointer_coercion "Unsize" α6))
+        M.alloc (M.pointer_coercion "Unsize" α0) in
+    let* α5 := M.read α4 in
+    M.pure (M.pointer_coercion "Unsize" (M.pointer_coercion "Unsize" α5))
   | _, _ => M.impossible
   end.
 
@@ -116,7 +115,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* random_number := M.copy (UnsupportedLiteral : Ty.path "f64") in
+    let* random_number := M.copy UnsupportedLiteral in
     let* animal :=
       let* α0 := M.var "returning_traits_with_dyn::random_animal" in
       let* α1 := M.read random_number in
@@ -131,7 +130,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 ") in
         let* α3 := M.alloc [ α1; α2 ] in
         let* α4 :=
-          M.get_method
+          M.get_trait_method
             "returning_traits_with_dyn::Animal"
             "noise"
             [
@@ -147,7 +146,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α10 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α9 ] in
+            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
       M.alloc tt in

@@ -69,25 +69,24 @@ Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str " edition
 ") in
         let* α4 := M.alloc [ α1; α2; α3 ] in
-        let* α5 := M.var "scoping_rules_borrowing_mutablity::Book::Get_title" in
-        let* α6 := M.read book in
-        let* α7 :=
+        let* α5 := M.read book in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α5 α6 ] in
-        let* α8 := M.var "scoping_rules_borrowing_mutablity::Book::Get_year" in
-        let* α9 := M.read book in
+            [ M.get_struct_record α5 "title" ] in
+        let* α7 := M.read book in
+        let* α8 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ M.get_struct_record α7 "year" ] in
+        let* α9 := M.alloc [ α6; α8 ] in
         let* α10 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α8 α9 ] in
-        let* α11 := M.alloc [ α7; α10 ] in
-        let* α12 :=
-          M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α11 ] in
-        let* α13 := M.call α0 [ α12 ] in
-        M.alloc α13 in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
+            ] in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -105,9 +104,10 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ book ] =>
     let* book := M.alloc book in
     let* _ :=
-      let* α0 := M.var "scoping_rules_borrowing_mutablity::Book::Get_year" in
-      let* α1 := M.read book in
-      assign (α0 α1) ((Integer.of_Z 2014) : Ty.path "u32") in
+      let* α0 := M.read book in
+      M.assign
+        (M.get_struct_record α0 "year")
+        (Value.Integer Integer.U32 2014) in
     let* _ :=
       let* _ :=
         let* α0 := M.var "std::io::stdio::_print" in
@@ -116,25 +116,24 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str " edition
 ") in
         let* α4 := M.alloc [ α1; α2; α3 ] in
-        let* α5 := M.var "scoping_rules_borrowing_mutablity::Book::Get_title" in
-        let* α6 := M.read book in
-        let* α7 :=
+        let* α5 := M.read book in
+        let* α6 :=
           M.call
             (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α5 α6 ] in
-        let* α8 := M.var "scoping_rules_borrowing_mutablity::Book::Get_year" in
-        let* α9 := M.read book in
+            [ M.get_struct_record α5 "title" ] in
+        let* α7 := M.read book in
+        let* α8 :=
+          M.call
+            (Ty.path "core::fmt::rt::Argument")::["new_display"]
+            [ M.get_struct_record α7 "year" ] in
+        let* α9 := M.alloc [ α6; α8 ] in
         let* α10 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ α8 α9 ] in
-        let* α11 := M.alloc [ α7; α10 ] in
-        let* α12 :=
-          M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α11 ] in
-        let* α13 := M.call α0 [ α12 ] in
-        M.alloc α13 in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
+            ] in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc tt in
     let* α0 := M.alloc tt in
     M.read α0
@@ -182,7 +181,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             ("author", α0);
             ("title", α1);
-            ("year", (Integer.of_Z 1979) : Ty.path "u32")
+            ("year", Value.Integer Integer.U32 1979)
           ]) in
     let* mutabook := M.copy immutabook in
     let* _ :=

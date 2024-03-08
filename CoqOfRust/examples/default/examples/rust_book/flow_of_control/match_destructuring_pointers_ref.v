@@ -58,7 +58,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* reference :=
-      let* α0 := M.alloc ((Integer.of_Z 4) : Ty.path "i32") in
+      let* α0 := M.alloc (Value.Integer Integer.I32 4) in
       M.alloc α0 in
     let* _ :=
       match_operator
@@ -83,7 +83,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α6 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                  [
+                    M.pointer_coercion "Unsize" α3;
+                    M.pointer_coercion "Unsize" α5
                   ] in
               let* α7 := M.call α0 [ α6 ] in
               M.alloc α7 in
@@ -110,22 +112,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α6 :=
                 M.call
                   (Ty.path "core::fmt::Arguments")::["new_v1"]
-                  [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                  [
+                    M.pointer_coercion "Unsize" α3;
+                    M.pointer_coercion "Unsize" α5
                   ] in
               let* α7 := M.call α0 [ α6 ] in
               M.alloc α7 in
             M.alloc tt)
         ] in
-    let* _not_a_reference := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
-    let* α0 := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+    let* _not_a_reference := M.alloc (Value.Integer Integer.I32 3) in
+    let* α0 := M.alloc (Value.Integer Integer.I32 3) in
     let* α0 :=
       match_operator
         α0
         [
           fun γ =>
             (let* _is_a_reference := M.alloc (borrow γ) in
-            let* value := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
-            let* mut_value := M.alloc ((Integer.of_Z 6) : Ty.path "i32") in
+            let* value := M.alloc (Value.Integer Integer.I32 5) in
+            let* mut_value := M.alloc (Value.Integer Integer.I32 6) in
             let* _ :=
               match_operator
                 value
@@ -148,8 +152,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.call
                           (Ty.path "core::fmt::Arguments")::["new_v1"]
                           [
-                            pointer_coercion "Unsize" α3;
-                            pointer_coercion "Unsize" α5
+                            M.pointer_coercion "Unsize" α3;
+                            M.pointer_coercion "Unsize" α5
                           ] in
                       let* α7 := M.call α0 [ α6 ] in
                       M.alloc α7 in
@@ -162,11 +166,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (let* m := M.alloc (borrow_mut γ) in
                   let* _ :=
                     let* β := M.read m in
-                    let* α0 := M.var "assign" in
-                    let* α1 := M.var "BinOp::Panic::add" in
-                    let* α2 := M.read β in
-                    let* α3 := α1 α2 ((Integer.of_Z 10) : Ty.path "i32") in
-                    α0 β α3 in
+                    let* α0 := M.read β in
+                    let* α1 :=
+                      BinOp.Panic.add α0 (Value.Integer Integer.I32 10) in
+                    M.assign β α1 in
                   let* _ :=
                     let* _ :=
                       let* α0 := M.var "std::io::stdio::_print" in
@@ -183,8 +186,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.call
                           (Ty.path "core::fmt::Arguments")::["new_v1"]
                           [
-                            pointer_coercion "Unsize" α3;
-                            pointer_coercion "Unsize" α5
+                            M.pointer_coercion "Unsize" α3;
+                            M.pointer_coercion "Unsize" α5
                           ] in
                       let* α7 := M.call α0 [ α6 ] in
                       M.alloc α7 in

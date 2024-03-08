@@ -23,3 +23,17 @@ pub(crate) struct Env<'a> {
     /// the current trait that we are implementing, with its Self type
     pub(crate) current_trait_impl: Option<(Path, Rc<CoqType>)>,
 }
+
+/// emits a warning with the given messages
+pub(crate) fn emit_warning_with_note(
+    env: &Env,
+    span: &rustc_span::Span,
+    warning_msg: &str,
+    note_msg: &str,
+) {
+    env.tcx
+        .sess
+        .struct_span_warn(*span, warning_msg.to_string())
+        .note(note_msg.to_string())
+        .emit();
+}

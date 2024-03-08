@@ -44,7 +44,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -62,7 +62,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α3 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ pointer_coercion "Unsize" α2 ] in
+                    [ M.pointer_coercion "Unsize" α2 ] in
                 let* α4 := M.call α0 [ α3 ] in
                 M.alloc α4 in
               M.alloc tt
@@ -90,7 +90,9 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -119,7 +121,9 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -163,8 +167,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.call
                       (Ty.path "core::fmt::Arguments")::["new_v1"]
                       [
-                        pointer_coercion "Unsize" α4;
-                        pointer_coercion "Unsize" α7
+                        M.pointer_coercion "Unsize" α4;
+                        M.pointer_coercion "Unsize" α7
                       ] in
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
@@ -201,7 +205,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructTuple "enums::WebEvent::KeyPress" [ "x"%char ]) in
     let* pasted :=
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "alloc::borrow::ToOwned"
           "to_owned"
           [ (* Self *) Ty.path "str" ] in
@@ -213,8 +217,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Value.StructRecord
           "enums::WebEvent::Click"
           [
-            ("x", (Integer.of_Z 20) : Ty.path "i64");
-            ("y", (Integer.of_Z 80) : Ty.path "i64")
+            ("x", Value.Integer Integer.I64 20);
+            ("y", Value.Integer Integer.I64 80)
           ]) in
     let* load := M.alloc enums.WebEvent.PageLoad in
     let* unload := M.alloc enums.WebEvent.PageUnload in

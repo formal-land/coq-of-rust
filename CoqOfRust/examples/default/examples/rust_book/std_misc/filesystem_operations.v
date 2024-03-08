@@ -25,7 +25,7 @@ Definition cat (𝜏 : list Ty.t) (α : list Value.t) : M :=
     M.catch_return
       (let* f :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::try_trait::Try"
             "branch"
             [
@@ -53,7 +53,7 @@ Definition cat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::try_trait::FromResidual"
                       "from_residual"
                       [
@@ -76,7 +76,7 @@ Definition cat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
-                  let* α5 := never_to_any α4 in
+                  let* α5 := M.never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
                 end);
@@ -99,7 +99,7 @@ Definition cat (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α0 := M.call (Ty.path "alloc::string::String")::["new"] [] in
         M.alloc α0 in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "std::io::Read"
           "read_to_string"
           [ (* Self *) Ty.path "std::fs::File" ] in
@@ -158,7 +158,7 @@ Definition echo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     M.catch_return
       (let* f :=
         let* α0 :=
-          M.get_method
+          M.get_trait_method
             "core::ops::try_trait::Try"
             "branch"
             [
@@ -186,7 +186,7 @@ Definition echo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* residual := M.copy γ0_0 in
                   let* α0 :=
-                    M.get_method
+                    M.get_trait_method
                       "core::ops::try_trait::FromResidual"
                       "from_residual"
                       [
@@ -206,7 +206,7 @@ Definition echo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.call α0 [ α1 ] in
                   let* α3 := return_ α2 in
                   let* α4 := M.read α3 in
-                  let* α5 := never_to_any α4 in
+                  let* α5 := M.never_to_any α4 in
                   M.alloc α5
                 | _ => M.break_match 
                 end);
@@ -226,7 +226,7 @@ Definition echo (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ] in
         M.copy α5 in
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "std::io::Write"
           "write_all"
           [ (* Self *) Ty.path "std::fs::File" ] in
@@ -367,7 +367,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -404,7 +404,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α7
                     ] in
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
@@ -431,7 +433,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -477,8 +479,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.call
                             (Ty.path "core::fmt::Arguments")::["new_v1"]
                             [
-                              pointer_coercion "Unsize" α3;
-                              pointer_coercion "Unsize" α7
+                              M.pointer_coercion "Unsize" α3;
+                              M.pointer_coercion "Unsize" α7
                             ] in
                         let* α9 := M.call α0 [ α8 ] in
                         M.alloc α9 in
@@ -497,7 +499,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -541,8 +543,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.call
                             (Ty.path "core::fmt::Arguments")::["new_v1"]
                             [
-                              pointer_coercion "Unsize" α3;
-                              pointer_coercion "Unsize" α7
+                              M.pointer_coercion "Unsize" α3;
+                              M.pointer_coercion "Unsize" α7
                             ] in
                         let* α9 := M.call α0 [ α8 ] in
                         M.alloc α9 in
@@ -561,7 +563,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -606,8 +608,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.call
                             (Ty.path "core::fmt::Arguments")::["new_v1"]
                             [
-                              pointer_coercion "Unsize" α3;
-                              pointer_coercion "Unsize" α7
+                              M.pointer_coercion "Unsize" α3;
+                              M.pointer_coercion "Unsize" α7
                             ] in
                         let* α9 := M.call α0 [ α8 ] in
                         M.alloc α9 in
@@ -626,13 +628,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
     let* _ :=
       let* α0 := M.alloc true in
-      let* α1 := M.read (use α0) in
+      let* α1 := M.read (M.use α0) in
       if α1 then
         let* _ :=
           let* α0 := M.var "std::os::unix::fs::symlink" in
@@ -676,8 +678,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.call
                                 (Ty.path "core::fmt::Arguments")::["new_v1"]
                                 [
-                                  pointer_coercion "Unsize" α3;
-                                  pointer_coercion "Unsize" α7
+                                  M.pointer_coercion "Unsize" α3;
+                                  M.pointer_coercion "Unsize" α7
                                 ] in
                             let* α9 := M.call α0 [ α8 ] in
                             M.alloc α9 in
@@ -699,7 +701,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -737,7 +739,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α7
                     ] in
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
@@ -766,7 +770,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α5
                     ] in
                 let* α7 := M.call α0 [ α6 ] in
                 M.alloc α7 in
@@ -783,7 +789,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -820,7 +826,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7
+                    [
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α7
                     ] in
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
@@ -836,7 +844,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (α0 γ) in
               let* paths := M.copy γ0_0 in
               let* α0 :=
-                M.get_method
+                M.get_trait_method
                   "core::iter::traits::collect::IntoIterator"
                   "into_iter"
                   [ (* Self *) Ty.path "std::fs::ReadDir" ] in
@@ -852,7 +860,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.loop
                         (let* _ :=
                           let* α0 :=
-                            M.get_method
+                            M.get_trait_method
                               "core::iter::traits::iterator::Iterator"
                               "next"
                               [ (* Self *) Ty.path "std::fs::ReadDir" ] in
@@ -867,7 +875,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 | core.option.Option.None =>
                                   let* α0 := M.break in
                                   let* α1 := M.read α0 in
-                                  let* α2 := never_to_any α1 in
+                                  let* α2 := M.never_to_any α1 in
                                   M.alloc α2
                                 | _ => M.break_match 
                                 end);
@@ -917,8 +925,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                           (Ty.path
                                               "core::fmt::Arguments")::["new_v1"]
                                           [
-                                            pointer_coercion "Unsize" α3;
-                                            pointer_coercion "Unsize" α10
+                                            M.pointer_coercion "Unsize" α3;
+                                            M.pointer_coercion "Unsize" α10
                                           ] in
                                       let* α12 := M.call α0 [ α11 ] in
                                       M.alloc α12 in
@@ -929,7 +937,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             ] in
                         M.alloc tt))
                   ] in
-              M.pure (use α4)
+              M.pure (M.use α4)
             | _ => M.break_match 
             end)
         ] in
@@ -942,7 +950,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -986,8 +994,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.call
                             (Ty.path "core::fmt::Arguments")::["new_v1"]
                             [
-                              pointer_coercion "Unsize" α3;
-                              pointer_coercion "Unsize" α7
+                              M.pointer_coercion "Unsize" α3;
+                              M.pointer_coercion "Unsize" α7
                             ] in
                         let* α9 := M.call α0 [ α8 ] in
                         M.alloc α9 in
@@ -1006,7 +1014,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ pointer_coercion "Unsize" α2 ] in
+            [ M.pointer_coercion "Unsize" α2 ] in
         let* α4 := M.call α0 [ α3 ] in
         M.alloc α4 in
       M.alloc tt in
@@ -1050,8 +1058,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.call
                             (Ty.path "core::fmt::Arguments")::["new_v1"]
                             [
-                              pointer_coercion "Unsize" α3;
-                              pointer_coercion "Unsize" α7
+                              M.pointer_coercion "Unsize" α3;
+                              M.pointer_coercion "Unsize" α7
                             ] in
                         let* α9 := M.call α0 [ α8 ] in
                         M.alloc α9 in

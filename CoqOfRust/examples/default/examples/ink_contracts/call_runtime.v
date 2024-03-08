@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -81,7 +81,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -250,7 +250,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
               let* α1 :=
                 M.read (mk_str "Unexpected error from `pallet-contracts`.") in
               let* α2 := M.call α0 [ α1 ] in
-              let* α3 := never_to_any α2 in
+              let* α3 := M.never_to_any α2 in
               M.alloc α3)
           ] in
       M.read α0
@@ -282,7 +282,7 @@ Module Impl_call_runtime_Env.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -304,7 +304,7 @@ Module Impl_call_runtime_RuntimeCaller.
       let* α0 := M.var "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
-      never_to_any α2
+      M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -335,7 +335,7 @@ Module Impl_call_runtime_RuntimeCaller.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "call_runtime::RuntimeCaller" ] in
@@ -370,7 +370,7 @@ Module Impl_call_runtime_RuntimeCaller.
         M.call (Ty.path "call_runtime::RuntimeCaller")::["env"] [ α0 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::Into"
           "into"
           [
@@ -395,7 +395,7 @@ Module Impl_call_runtime_RuntimeCaller.
       let* α8 :=
         M.call (Ty.path "call_runtime::Env")::["call_runtime"] [ α2; α7 ] in
       let* α9 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::Into"
           "into"
           [
@@ -437,7 +437,7 @@ Module Impl_call_runtime_RuntimeCaller.
       let* α4 :=
         M.call (Ty.path "call_runtime::Env")::["call_runtime"] [ α2; α3 ] in
       let* α5 :=
-        M.get_method
+        M.get_trait_method
           "core::convert::Into"
           "into"
           [

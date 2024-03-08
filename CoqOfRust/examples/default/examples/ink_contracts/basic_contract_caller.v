@@ -11,7 +11,7 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
@@ -102,13 +102,10 @@ Module Impl_basic_contract_caller_OtherContract.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.var "basic_contract_caller::OtherContract::Get_value" in
+        let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.var "UnOp::not" in
-        let* α3 := M.var "basic_contract_caller::OtherContract::Get_value" in
-        let* α4 := M.read self in
-        let* α5 := M.read (α3 α4) in
-        assign (α0 α1) (α2 α5) in
+        let* α2 := M.read (M.get_struct_record α1 "value") in
+        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* α0 := M.alloc tt in
       M.read α0
     | _, _ => M.impossible
@@ -125,9 +122,8 @@ Module Impl_basic_contract_caller_OtherContract.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "basic_contract_caller::OtherContract::Get_value" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   
@@ -160,7 +156,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
         let* α0 := M.var "core::panicking::panic" in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call α0 [ α1 ] in
-        let* α3 := never_to_any α2 in
+        let* α3 := M.never_to_any α2 in
         M.alloc α3 in
       let* α0 := M.read other_contract in
       let* α0 :=
@@ -185,24 +181,18 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 :=
-          M.var
-            "basic_contract_caller::BasicContractCaller::Get_other_contract" in
-        let* α1 := M.read self in
-        let* α2 :=
+        let* α0 := M.read self in
+        let* α1 :=
           M.call
             (Ty.path "basic_contract_caller::OtherContract")::["flip"]
-            [ α0 α1 ] in
-        M.alloc α2 in
-      let* α0 :=
-        M.var
-          "basic_contract_caller::BasicContractCaller::Get_other_contract" in
-      let* α1 := M.read self in
-      let* α2 :=
+            [ M.get_struct_record α0 "other_contract" ] in
+        M.alloc α1 in
+      let* α0 := M.read self in
+      let* α1 :=
         M.call
           (Ty.path "basic_contract_caller::OtherContract")::["get"]
-          [ α0 α1 ] in
-      let* α0 := M.alloc α2 in
+          [ M.get_struct_record α0 "other_contract" ] in
+      let* α0 := M.alloc α1 in
       M.read α0
     | _, _ => M.impossible
     end.

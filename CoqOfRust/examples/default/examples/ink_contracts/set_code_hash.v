@@ -15,7 +15,7 @@ Definition set_code_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 := M.var "core::panicking::panic" in
     let* α1 := M.read (mk_str "not implemented") in
     let* α2 := M.call α0 [ α1 ] in
-    never_to_any α2
+    M.never_to_any α2
   | _, _ => M.impossible
   end.
 
@@ -29,7 +29,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u32" ] in
@@ -59,7 +59,7 @@ Module Impl_set_code_hash_Incrementer.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
-        M.get_method
+        M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "set_code_hash::Incrementer" ] in
@@ -84,14 +84,11 @@ Module Impl_set_code_hash_Incrementer.
       let* self := M.alloc self in
       let* _ :=
         let* β :=
-          let* α0 := M.var "set_code_hash::Incrementer::Get_count" in
-          let* α1 := M.read self in
-          M.pure (α0 α1) in
-        let* α0 := M.var "assign" in
-        let* α1 := M.var "BinOp::Panic::add" in
-        let* α2 := M.read β in
-        let* α3 := α1 α2 ((Integer.of_Z 1) : Ty.path "u32") in
-        α0 β α3 in
+          let* α0 := M.read self in
+          M.pure (M.get_struct_record α0 "count") in
+        let* α0 := M.read β in
+        let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
+        M.assign β α1 in
       let* _ :=
         let* _ :=
           let* α0 := M.var "std::io::stdio::_print" in
@@ -101,19 +98,19 @@ Module Impl_set_code_hash_Incrementer.
               (mk_str ", it was modified using the original contract code.
 ") in
           let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 := M.var "set_code_hash::Incrementer::Get_count" in
-          let* α5 := M.read self in
-          let* α6 :=
+          let* α4 := M.read self in
+          let* α5 :=
             M.call
               (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α4 α5 ] in
-          let* α7 := M.alloc [ α6 ] in
-          let* α8 :=
+              [ M.get_struct_record α4 "count" ] in
+          let* α6 := M.alloc [ α5 ] in
+          let* α7 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α7 ] in
-          let* α9 := M.call α0 [ α8 ] in
-          M.alloc α9 in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+              ] in
+          let* α8 := M.call α0 [ α7 ] in
+          M.alloc α8 in
         M.alloc tt in
       let* α0 := M.alloc tt in
       M.read α0
@@ -131,9 +128,8 @@ Module Impl_set_code_hash_Incrementer.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "set_code_hash::Incrementer::Get_count" in
-      let* α1 := M.read self in
-      M.read (α0 α1)
+      let* α0 := M.read self in
+      M.read (M.get_struct_record α0 "count")
     | _, _ => M.impossible
     end.
   
@@ -176,7 +172,7 @@ Module Impl_set_code_hash_Incrementer.
                           (mk_str
                             "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
                       let* α2 := M.call α0 [ α1 ] in
-                      never_to_any α2)
+                      M.never_to_any α2)
                   ])
             ] in
         M.alloc α2 in
@@ -195,7 +191,8 @@ Module Impl_set_code_hash_Incrementer.
           let* α6 :=
             M.call
               (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ pointer_coercion "Unsize" α3; pointer_coercion "Unsize" α5 ] in
+              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              ] in
           let* α7 := M.call α0 [ α6 ] in
           M.alloc α7 in
         M.alloc tt in

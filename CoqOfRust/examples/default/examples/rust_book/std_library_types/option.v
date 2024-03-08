@@ -17,20 +17,18 @@ Definition checked_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
-    let* α0 := M.var "BinOp::Pure::eq" in
-    let* α1 := M.read divisor in
-    let* α2 := M.alloc (α0 α1 ((Integer.of_Z 0) : Ty.path "i32")) in
-    let* α3 := M.read (use α2) in
-    let* α4 :=
-      if α3 then
+    let* α0 := M.read divisor in
+    let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
+    let* α2 := M.read (M.use α1) in
+    let* α3 :=
+      if α2 then
         M.alloc core.option.Option.None
       else
-        let* α0 := M.var "BinOp::Panic::div" in
-        let* α1 := M.read dividend in
-        let* α2 := M.read divisor in
-        let* α3 := α0 α1 α2 in
-        M.alloc (Value.StructTuple "core::option::Option::Some" [ α3 ]) in
-    M.read α4
+        let* α0 := M.read dividend in
+        let* α1 := M.read divisor in
+        let* α2 := BinOp.Panic.div α0 α1 in
+        M.alloc (Value.StructTuple "core::option::Option::Some" [ α2 ]) in
+    M.read α3
   | _, _ => M.impossible
   end.
 
@@ -82,7 +80,9 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α7
+                    [
+                      M.pointer_coercion "Unsize" α4;
+                      M.pointer_coercion "Unsize" α7
                     ] in
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
@@ -121,7 +121,9 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α10 :=
                   M.call
                     (Ty.path "core::fmt::Arguments")::["new_v1"]
-                    [ pointer_coercion "Unsize" α5; pointer_coercion "Unsize" α9
+                    [
+                      M.pointer_coercion "Unsize" α5;
+                      M.pointer_coercion "Unsize" α9
                     ] in
                 let* α11 := M.call α0 [ α10 ] in
                 M.alloc α11 in
@@ -164,21 +166,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.call
           α0
-          [ (Integer.of_Z 4) : Ty.path "i32"; (Integer.of_Z 2) : Ty.path "i32"
-          ] in
+          [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.var "option::try_division" in
       let* α1 :=
         M.call
           α0
-          [ (Integer.of_Z 1) : Ty.path "i32"; (Integer.of_Z 0) : Ty.path "i32"
-          ] in
+          [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 0 ] in
       M.alloc α1 in
     let* none := M.alloc core.option.Option.None in
     let* _equivalent_none := M.alloc core.option.Option.None in
     let* optional_float :=
-      let* α0 := M.read (UnsupportedLiteral : Ty.path "f32") in
+      let* α0 := M.read UnsupportedLiteral in
       M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* _ :=
       let* _ :=
@@ -206,7 +206,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α10 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
       M.alloc tt in
@@ -234,7 +235,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 :=
           M.call
             (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ pointer_coercion "Unsize" α4; pointer_coercion "Unsize" α10 ] in
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
       M.alloc tt in
