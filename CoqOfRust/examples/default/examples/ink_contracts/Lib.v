@@ -10,6 +10,7 @@ Section Mapping.
   Parameter get : K -> t K V -> option.Option.t V.
   Parameter insert : K -> V -> t K V -> t K V.
   Parameter sum : (V -> Z) -> t K V -> Z.
+  Parameter remove : K -> t K V -> t K V.
 End Mapping.
 End Mapping.
 
@@ -56,6 +57,24 @@ Section Impl_Mapping_t_K_V.
     Notations.double_colon := get;
   }.
   
+  Definition contains
+      (self : ref Self)
+      (key : ref K)
+      : M bool.t :=
+    let* self : Self := M.read self in
+    let* key : K := M.read key in
+    M.pure (
+      match Mapping.get key self with
+      | option.Option.Some _ => true
+      | option.Option.None => false
+      end
+    ).
+
+  Global Instance AssociatedFunction_contains :
+    Notations.DoubleColon Self "contains" := {
+    Notations.double_colon := contains;
+  }.
+
   Definition insert
       (self : mut_ref Self)
       (key : K)
@@ -69,6 +88,20 @@ Section Impl_Mapping_t_K_V.
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
+  }.
+
+  Definition remove
+      (self : ref Self)
+      (key : K)
+      : M unit :=
+    let* self_content : Self := M.read self in
+    let new_self := Mapping.remove key self_content in
+    let* _ := assign self new_self in
+    M.pure tt.
+  
+  Global Instance AssociatedFunction_remove :
+    Notations.DoubleColon Self "remove" := {
+    Notations.double_colon := remove;
   }.
 End Impl_Mapping_t_K_V.
 End Impl_Mapping_t_K_V.
