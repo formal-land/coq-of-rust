@@ -99,8 +99,14 @@ Section Mapping.
   Proof.
     unfold Forall.
     intros.
-    destruct (K_eq_neq k0 k);
-      hauto q: on use: get_insert_eq, get_insert_neq.
+    destruct (K_eq_neq k0 k).
+    { subst.
+      rewrite get_insert_eq in H1.
+      congruence.
+    }
+    { rewrite get_insert_neq in H1 by congruence.
+      now apply H.
+    }
   Qed.
 End Mapping.
 End Mapping.
