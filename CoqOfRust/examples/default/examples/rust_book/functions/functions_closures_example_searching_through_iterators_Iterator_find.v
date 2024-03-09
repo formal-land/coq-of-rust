@@ -144,8 +144,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.tuple
                       [
                         Ty.apply
-                          (Ty.path "ref")
-                          [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
                       ]
                   ]
                   (Ty.path "bool")
@@ -158,8 +158,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun
                   (α0 :
                     Ty.apply
-                      (Ty.path "ref")
-                      [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]) =>
+                      (Ty.path "&")
+                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
@@ -214,7 +214,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
               (* P *)
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ] ]
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
                   (Ty.path "bool")
             ] in
         let* α7 :=
@@ -222,7 +222,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α6
             [
               into_iter;
-              fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "i32" ]) =>
+              fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "i32" ]) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
@@ -292,8 +292,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.tuple
                       [
                         Ty.apply
-                          (Ty.path "ref")
-                          [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
                       ]
                   ]
                   (Ty.path "bool")
@@ -312,8 +312,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun
                   (α0 :
                     Ty.apply
-                      (Ty.path "ref")
-                      [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]) =>
+                      (Ty.path "&")
+                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
@@ -370,8 +370,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.tuple
                       [
                         Ty.apply
-                          (Ty.path "ref")
-                          [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
                       ]
                   ]
                   (Ty.path "bool")
@@ -383,7 +383,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               (* Self *)
                 Ty.apply
-                  (Ty.path "ref")
+                  (Ty.path "&")
                   [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
             ] in
         let* α8 := M.call α7 [ array2 ] in
@@ -396,8 +396,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun
                   (α0 :
                     Ty.apply
-                      (Ty.path "ref")
-                      [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]) =>
+                      (Ty.path "&")
+                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0

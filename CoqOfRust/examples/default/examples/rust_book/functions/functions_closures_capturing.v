@@ -80,7 +80,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "from"
           [
             (* Self *) Ty.path "alloc::string::String";
-            (* T *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+            (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α1 := M.read (mk_str "green") in
       let* α2 := M.call α0 [ α1 ] in

@@ -1996,7 +1996,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             [
               (* Self *)
                 Ty.apply
-                  (Ty.path "ref")
+                  (Ty.path "&")
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2059,7 +2059,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     [
                                       (* Self *)
                                         Ty.apply
-                                          (Ty.path "ref")
+                                          (Ty.path "&")
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")

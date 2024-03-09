@@ -25,7 +25,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "slice")
-            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec" in
       let* α1 :=
         M.get_associated_function
@@ -34,7 +34,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               Ty.apply
                 (Ty.path "array")
-                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
@@ -55,13 +55,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *)
               Ty.apply
                 (Ty.path "core::slice::iter::Iter")
-                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "slice")
-            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "iter" in
       let* α2 :=
         M.get_trait_method
@@ -72,7 +72,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
                 [
-                  Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
                   Ty.path "alloc::alloc::Global"
                 ]
           ] in
@@ -97,7 +97,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (* Self *)
                             Ty.apply
                               (Ty.path "core::slice::iter::Iter")
-                              [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]
+                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         ] in
                     let* α1 := M.call α0 [ iter ] in
                     let* α2 := M.alloc α1 in

@@ -32,7 +32,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
@@ -114,7 +114,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                           (Ty.path "alloc::sync::Arc")
                                           [
                                             Ty.apply
-                                              (Ty.path "ref")
+                                              (Ty.path "&")
                                               [ Ty.path "str" ];
                                             Ty.path "alloc::alloc::Global"
                                           ]

@@ -90,8 +90,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "new" in
@@ -103,8 +103,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "insert" in
@@ -118,8 +118,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "insert" in
@@ -133,8 +133,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "insert" in
@@ -148,8 +148,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "insert" in
@@ -163,8 +163,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "get" in
@@ -238,8 +238,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "insert" in
@@ -253,8 +253,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "get" in
@@ -328,8 +328,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
           "remove" in
@@ -344,8 +344,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.apply
               (Ty.path "std::collections::hash::map::Iter")
               [
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+                Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                Ty.apply (Ty.path "&") [ Ty.path "str" ]
               ]
         ] in
     let* α1 :=
@@ -353,8 +353,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply
           (Ty.path "std::collections::hash::map::HashMap")
           [
-            Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-            Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+            Ty.apply (Ty.path "&") [ Ty.path "str" ];
+            Ty.apply (Ty.path "&") [ Ty.path "str" ];
             Ty.path "std::hash::random::RandomState"
           ])
         "iter" in
@@ -379,8 +379,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           Ty.apply
                             (Ty.path "std::collections::hash::map::Iter")
                             [
-                              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-                              Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+                              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                              Ty.apply (Ty.path "&") [ Ty.path "str" ]
                             ]
                       ] in
                   let* α1 := M.call α0 [ iter ] in

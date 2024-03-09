@@ -21,8 +21,8 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::cmp::PartialEq"
           "eq"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α1 := M.call α0 [ beverage; mk_str "lemonade" ] in
       let* α2 := M.alloc α1 in

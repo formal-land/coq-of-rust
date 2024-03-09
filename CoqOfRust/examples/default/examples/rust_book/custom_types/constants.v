@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition LANGUAGE
-    : Ty.apply (Ty.path "ref") [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ] :=
+    : Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] :=
   M.run (M.alloc (mk_str "Rust")).
 
 Definition THRESHOLD : Ty.path "i32" :=

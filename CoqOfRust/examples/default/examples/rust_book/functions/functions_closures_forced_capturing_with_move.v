@@ -53,7 +53,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α5 in
     let* contains :=
       M.alloc
-        (fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "i32" ]) =>
+        (fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "i32" ]) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
@@ -99,9 +99,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               (* Self *)
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ] ]
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
                   (Ty.path "bool");
-              (* Args *) Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]
+              (* Args *) Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
             ] in
         let* α7 := M.alloc (Value.Integer Integer.I32 1) in
         let* α8 := M.call α6 [ contains; Value.Tuple [ α7 ] ] in
@@ -138,9 +138,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               (* Self *)
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ] ]
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
                   (Ty.path "bool");
-              (* Args *) Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ]
+              (* Args *) Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
             ] in
         let* α7 := M.alloc (Value.Integer Integer.I32 4) in
         let* α8 := M.call α6 [ contains; Value.Tuple [ α7 ] ] in

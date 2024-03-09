@@ -53,9 +53,10 @@ impl CoqType {
 
     pub(crate) fn make_ref(mutbl: &rustc_hir::Mutability, ty: Rc<CoqType>) -> Rc<CoqType> {
         let ptr_name = match mutbl {
-            rustc_hir::Mutability::Mut => "mut_ref",
-            rustc_hir::Mutability::Not => "ref",
+            rustc_hir::Mutability::Mut => "&mut",
+            rustc_hir::Mutability::Not => "&",
         };
+
         Rc::new(CoqType::Application {
             func: CoqType::path(&[ptr_name]),
             args: vec![ty],
@@ -68,7 +69,7 @@ impl CoqType {
                 let Path { segments } = path.as_ref();
                 if segments.len() == 1 && args.len() == 1 {
                     let name = segments.first().unwrap();
-                    if name == "ref" || name == "mut_ref" {
+                    if name == "&" || name == "&mut" {
                         return Some((name.clone(), args.first().unwrap().clone()));
                     }
                 }

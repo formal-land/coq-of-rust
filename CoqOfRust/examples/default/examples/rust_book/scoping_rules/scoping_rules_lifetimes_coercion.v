@@ -16,8 +16,8 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
         "core::ops::arith::Mul"
         "mul"
         [
-          (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
-          (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
+          (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+          (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
         ] in
     let* α1 := M.read first in
     let* α2 := M.read second in

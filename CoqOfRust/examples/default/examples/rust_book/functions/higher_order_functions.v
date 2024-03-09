@@ -220,14 +220,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "u32")
                         ];
                       Ty.function
-                        [
-                          Ty.tuple
-                            [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ]
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
                         ]
                         (Ty.path "bool")
                     ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                     (Ty.path "bool")
                 ];
             (* S *) Ty.path "u32"
@@ -250,12 +248,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                     ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                     (Ty.path "bool")
                 ];
             (* P *)
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                 (Ty.path "bool")
           ] in
       let* α2 :=
@@ -274,7 +272,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ];
             (* P *)
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] ]
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                 (Ty.path "bool")
           ] in
       let* α3 :=
@@ -314,7 +312,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α2
           [
             α4;
-            fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "u32" ]) =>
+            fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "u32" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
@@ -335,7 +333,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α1
           [
             α5;
-            fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "u32" ]) =>
+            fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "u32" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0

@@ -133,9 +133,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply
           (Ty.path "core::result::Result")
           [
-            Ty.apply
-              (Ty.path "ref")
-              [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
             Ty.apply
               (Ty.path "alloc::boxed::Box")
               [
@@ -148,17 +146,14 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "core::option::Option")
-          [
-            Ty.apply
-              (Ty.path "ref")
-              [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]
+          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           ])
         "ok_or_else" in
     let* α2 :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "slice")
-          [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
         "first" in
     let* α3 :=
       M.get_trait_method
@@ -169,7 +164,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               [
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                Ty.apply (Ty.path "&") [ Ty.path "str" ];
                 Ty.path "alloc::alloc::Global"
               ]
         ] in
@@ -213,8 +208,8 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
         fun
             (α0 :
               Ty.apply
-                (Ty.path "ref")
-                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ]) =>
+                (Ty.path "&")
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
@@ -424,7 +419,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "slice")
-            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec" in
       let* α1 :=
         M.get_associated_function
@@ -433,7 +428,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               Ty.apply
                 (Ty.path "array")
-                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
@@ -451,7 +446,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
@@ -462,7 +457,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "slice")
-            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec" in
       let* α1 :=
         M.get_associated_function
@@ -471,7 +466,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               Ty.apply
                 (Ty.path "array")
-                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
           "new" in

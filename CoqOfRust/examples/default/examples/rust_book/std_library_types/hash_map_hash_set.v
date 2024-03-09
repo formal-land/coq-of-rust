@@ -271,7 +271,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [
-                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
@@ -322,7 +322,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [
-                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
@@ -373,7 +373,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [
-                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
@@ -424,7 +424,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [
-                    Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in

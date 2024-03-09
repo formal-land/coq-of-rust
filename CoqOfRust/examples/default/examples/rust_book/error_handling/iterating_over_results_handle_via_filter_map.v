@@ -20,7 +20,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "slice")
-            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec" in
       let* α1 :=
         M.get_associated_function
@@ -29,7 +29,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               Ty.apply
                 (Ty.path "array")
-                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
@@ -54,11 +54,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply
                     (Ty.path "alloc::vec::into_iter::IntoIter")
                     [
-                      Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
                       Ty.path "alloc::alloc::Global"
                     ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       [ Ty.path "i32" ])
@@ -77,13 +77,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
                 [
-                  Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
                   Ty.path "alloc::alloc::Global"
                 ];
             (* B *) Ty.path "i32";
             (* F *)
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ] ]
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
                 (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
           ] in
       let* α2 :=
@@ -95,7 +95,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
                 [
-                  Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
                   Ty.path "alloc::alloc::Global"
                 ]
           ] in
@@ -106,7 +106,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α1
           [
             α4;
-            fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "str" ]) =>
+            fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "str" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0

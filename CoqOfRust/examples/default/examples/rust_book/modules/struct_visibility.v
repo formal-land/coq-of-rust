@@ -98,7 +98,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "struct_visibility::my::ClosedBox")
-            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "new" in
       let* α1 := M.read (mk_str "classified information") in
       let* α2 := M.call α0 [ α1 ] in

@@ -409,7 +409,7 @@ Definition MAX_OWNERS : Ty.path "u32" :=
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
-Definition WRONG_TRANSACTION_ID : Ty.apply (Ty.path "ref") [ Ty.path "str" ] :=
+Definition WRONG_TRANSACTION_ID : Ty.apply (Ty.path "&") [ Ty.path "str" ] :=
   M.run
     (M.pure (mk_str "The user specified an invalid transaction id. Abort.")).
 
@@ -1032,7 +1032,7 @@ Module Impl_multisig_Multisig.
             [
               (* Self *)
                 Ty.apply
-                  (Ty.path "ref")
+                  (Ty.path "&")
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -1572,8 +1572,7 @@ Module Impl_multisig_Multisig.
               Ty.function
                 [
                   Ty.tuple
-                    [ Ty.apply (Ty.path "ref") [ Ty.path "multisig::AccountId" ]
-                    ]
+                    [ Ty.apply (Ty.path "&") [ Ty.path "multisig::AccountId" ] ]
                 ]
                 (Ty.path "bool")
           ] in
@@ -1603,7 +1602,7 @@ Module Impl_multisig_Multisig.
             α7;
             fun
                 (α0 :
-                  Ty.apply (Ty.path "ref") [ Ty.path "multisig::AccountId" ]) =>
+                  Ty.apply (Ty.path "&") [ Ty.path "multisig::AccountId" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
@@ -1662,7 +1661,7 @@ Module Impl_multisig_Multisig.
           [
             (* Self *)
               Ty.apply
-                (Ty.path "ref")
+                (Ty.path "&")
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -2607,8 +2606,7 @@ Module Impl_multisig_Multisig.
                       [ Ty.path "u32" ];
                   (* P *)
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ]
-                      ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                       (Ty.path "bool")
                 ] in
             let* α2 :=
@@ -2641,7 +2639,7 @@ Module Impl_multisig_Multisig.
                 α1
                 [
                   α7;
-                  fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "u32" ]) =>
+                  fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "u32" ]) =>
                     (let* α0 := M.alloc α0 in
                     match_operator
                       α0
@@ -2655,9 +2653,9 @@ Module Impl_multisig_Multisig.
                                 "eq"
                                 [
                                   (* Self *)
-                                    Ty.apply (Ty.path "ref") [ Ty.path "u32" ];
+                                    Ty.apply (Ty.path "&") [ Ty.path "u32" ];
                                   (* Rhs *)
-                                    Ty.apply (Ty.path "ref") [ Ty.path "u32" ]
+                                    Ty.apply (Ty.path "&") [ Ty.path "u32" ]
                                 ] in
                             let* α1 := M.alloc trans_id in
                             M.call α0 [ t; α1 ])

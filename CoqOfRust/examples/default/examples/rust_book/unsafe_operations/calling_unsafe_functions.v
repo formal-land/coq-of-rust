@@ -99,11 +99,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [
                       (* Self *)
                         Ty.apply
-                          (Ty.path "ref")
+                          (Ty.path "&")
                           [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
                       (* Rhs *)
                         Ty.apply
-                          (Ty.path "ref")
+                          (Ty.path "&")
                           [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
                     ] in
                 let* α1 := M.read left_val in

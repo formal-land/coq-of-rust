@@ -50,7 +50,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "core::result::Result")
             [
-              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "core::str::error::Utf8Error"
             ])
           "unwrap" in

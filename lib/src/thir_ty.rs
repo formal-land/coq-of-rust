@@ -48,9 +48,18 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
             func: CoqType::path(&["slice"]),
             args: vec![compile_type(env, ty)],
         }),
-        TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) | TyKind::Ref(_, ty, mutbl) => {
-            CoqType::make_ref(mutbl, compile_type(env, ty))
+        TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) => {
+            let ptr_name = match mutbl {
+                rustc_hir::Mutability::Mut => "*mut",
+                rustc_hir::Mutability::Not => "*const",
+            };
+
+            Rc::new(CoqType::Application {
+                func: CoqType::path(&[ptr_name]),
+                args: vec![compile_type(env, ty)],
+            })
         }
+        TyKind::Ref(_, ty, mutbl) => CoqType::make_ref(mutbl, compile_type(env, ty)),
         TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, fn_sig),
         TyKind::Dynamic(existential_predicates, _, _) => {
             let traits = existential_predicates

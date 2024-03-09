@@ -122,7 +122,7 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "unwrap" in
       let* α1 := M.read drink in
       let* α2 := M.call α0 [ α1 ] in
@@ -133,8 +133,8 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::cmp::PartialEq"
           "eq"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α1 := M.call α0 [ inside; mk_str "lemonade" ] in
       let* α2 := M.alloc α1 in

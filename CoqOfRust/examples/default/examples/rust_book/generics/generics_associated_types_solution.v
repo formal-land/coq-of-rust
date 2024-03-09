@@ -35,8 +35,8 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           "core::cmp::PartialEq"
           "eq"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
           ] in
       let* α1 := M.read self in
       let* α2 := M.alloc (M.get_struct_tuple α1 0) in
@@ -46,8 +46,8 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           "core::cmp::PartialEq"
           "eq"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
           ] in
       let* α5 := M.read self in
       let* α6 := M.alloc (M.get_struct_tuple α5 1) in

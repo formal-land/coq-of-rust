@@ -59,7 +59,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ];
             (* P *)
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "ref") [ Ty.path "i32" ] ] ]
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
                 (Ty.path "bool")
           ] in
       let* α1 :=
@@ -84,7 +84,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α0
           [
             α5;
-            fun (α0 : Ty.apply (Ty.path "ref") [ Ty.path "i32" ]) =>
+            fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "i32" ]) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0

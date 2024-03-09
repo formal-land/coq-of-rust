@@ -27,8 +27,8 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
           "core::cmp::PartialEq"
           "eq"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α1 := M.read self in
       let* α2 := M.read other in
@@ -42,8 +42,8 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
           "core::cmp::PartialEq"
           "eq"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α5 := M.read self in
       let* α6 := M.read other in
@@ -127,7 +127,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
           M.get_trait_method
             "core::hash::Hash"
             "hash"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]; (* H *) __H
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ]; (* H *) __H
             ] in
         let* α1 := M.read self in
         let* α2 := M.read state in
@@ -137,7 +137,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         M.get_trait_method
           "core::hash::Hash"
           "hash"
-          [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "str" ]; (* H *) __H
+          [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ]; (* H *) __H
           ] in
       let* α1 := M.read self in
       let* α2 := M.read state in

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition LOREM_IPSUM
-    : Ty.apply (Ty.path "ref") [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ] :=
+    : Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] :=
   M.run
     (M.alloc
       (mk_str

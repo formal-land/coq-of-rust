@@ -782,8 +782,8 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
             "core::ops::bit::BitXor"
             "bitxor"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ];
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ]
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u8" ]
             ] in
         let* α1 := M.read self in
         let* α2 := M.read other in
@@ -886,8 +886,8 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
             "core::ops::bit::BitXor"
             "bitxor"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ];
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ]
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u16" ]
             ] in
         let* α1 := M.read self in
         let* α2 := M.read other in
@@ -988,8 +988,8 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
             "core::ops::bit::BitXor"
             "bitxor"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ];
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ]
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u32" ]
             ] in
         let* α1 := M.read self in
         let* α2 := M.read other in
@@ -1090,8 +1090,8 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
             "core::ops::bit::BitXor"
             "bitxor"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ];
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ]
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u64" ]
             ] in
         let* α1 := M.read self in
         let* α2 := M.read other in
@@ -1192,8 +1192,8 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
             "core::ops::bit::BitXor"
             "bitxor"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "usize" ];
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "usize" ]
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "usize" ];
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "usize" ]
             ] in
         let* α1 := M.read self in
         let* α2 := M.read other in
@@ -1361,7 +1361,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
             (* Rhs *) Ty.path "u8"
           ] in
       let* α1 := M.read a in
@@ -1371,8 +1371,8 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u8" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -1506,7 +1506,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i8" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i8" ];
             (* Rhs *) Ty.path "i8"
           ] in
       let* α1 := M.read a in
@@ -1516,8 +1516,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i8" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i8" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i8" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i8" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -1652,7 +1652,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
             (* Rhs *) Ty.path "u16"
           ] in
       let* α1 := M.read a in
@@ -1662,8 +1662,8 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u16" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -1797,7 +1797,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i16" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i16" ];
             (* Rhs *) Ty.path "i16"
           ] in
       let* α1 := M.read a in
@@ -1807,8 +1807,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i16" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i16" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i16" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i16" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -1943,7 +1943,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
             (* Rhs *) Ty.path "u32"
           ] in
       let* α1 := M.read a in
@@ -1953,8 +1953,8 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u32" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -2088,7 +2088,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
             (* Rhs *) Ty.path "i32"
           ] in
       let* α1 := M.read a in
@@ -2098,8 +2098,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i32" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -2234,7 +2234,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
             (* Rhs *) Ty.path "u64"
           ] in
       let* α1 := M.read a in
@@ -2244,8 +2244,8 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u64" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -2379,7 +2379,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i64" ];
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i64" ];
             (* Rhs *) Ty.path "i64"
           ] in
       let* α1 := M.read a in
@@ -2389,8 +2389,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
           "core::ops::bit::BitXor"
           "bitxor"
           [
-            (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "i64" ];
-            (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "i64" ]
+            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i64" ];
+            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i64" ]
           ] in
       let* α4 := M.read a in
       let* α5 := M.read b in
@@ -2558,7 +2558,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
           M.get_trait_method
             "core::ops::arith::Neg"
             "neg"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ T ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ T ] ] in
         let* α1 := M.read self in
         let* α2 := M.alloc α1 in
         let* α3 := M.read (M.use α2) in
@@ -3404,7 +3404,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             "core::ops::bit::BitAnd"
             "bitand"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ];
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
               (* Rhs *) Ty.path "u8"
             ] in
         let* α1 := M.read self in
@@ -3412,7 +3412,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] in
         let* α3 := M.read other in
         let* α4 := M.call α2 [ α3 ] in
         let* α5 := M.call α0 [ α1; α4 ] in
@@ -3424,13 +3424,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             "bitand"
             [
               (* Self *) Ty.path "u8";
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ]
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u8" ]
             ] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u8" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] in
         let* α2 := M.read self in
         let* α3 := M.call α1 [ α2 ] in
         let* α4 := M.read other in
@@ -3560,7 +3560,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             "core::ops::bit::BitAnd"
             "bitand"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ];
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
               (* Rhs *) Ty.path "u16"
             ] in
         let* α1 := M.read self in
@@ -3568,7 +3568,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] in
         let* α3 := M.read other in
         let* α4 := M.call α2 [ α3 ] in
         let* α5 := M.call α0 [ α1; α4 ] in
@@ -3580,13 +3580,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             "bitand"
             [
               (* Self *) Ty.path "u16";
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ]
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u16" ]
             ] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u16" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] in
         let* α2 := M.read self in
         let* α3 := M.call α1 [ α2 ] in
         let* α4 := M.read other in
@@ -3720,7 +3720,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             "core::ops::bit::BitAnd"
             "bitand"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ];
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
               (* Rhs *) Ty.path "u32"
             ] in
         let* α1 := M.read self in
@@ -3728,7 +3728,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] in
         let* α3 := M.read other in
         let* α4 := M.call α2 [ α3 ] in
         let* α5 := M.call α0 [ α1; α4 ] in
@@ -3740,13 +3740,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             "bitand"
             [
               (* Self *) Ty.path "u32";
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ]
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u32" ]
             ] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u32" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] in
         let* α2 := M.read self in
         let* α3 := M.call α1 [ α2 ] in
         let* α4 := M.read other in
@@ -3880,7 +3880,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             "core::ops::bit::BitAnd"
             "bitand"
             [
-              (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ];
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
               (* Rhs *) Ty.path "u64"
             ] in
         let* α1 := M.read self in
@@ -3888,7 +3888,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ] ] in
         let* α3 := M.read other in
         let* α4 := M.call α2 [ α3 ] in
         let* α5 := M.call α0 [ α1; α4 ] in
@@ -3900,13 +3900,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             "bitand"
             [
               (* Self *) Ty.path "u64";
-              (* Rhs *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ]
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u64" ]
             ] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
             "not"
-            [ (* Self *) Ty.apply (Ty.path "ref") [ Ty.path "u64" ] ] in
+            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ] ] in
         let* α2 := M.read self in
         let* α3 := M.call α1 [ α2 ] in
         let* α4 := M.read other in
