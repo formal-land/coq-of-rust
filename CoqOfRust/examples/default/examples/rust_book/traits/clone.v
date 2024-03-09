@@ -133,8 +133,8 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
         [
           α1;
           α2;
-          M.pointer_coercion "Unsize" (M.get_struct_tuple α3 0);
-          M.pointer_coercion "Unsize" α5
+          M.pointer_coercion (* Unsize *) (M.get_struct_tuple α3 0);
+          M.pointer_coercion (* Unsize *) α5
         ]
     | _, _ => M.impossible
     end.
@@ -188,7 +188,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* unit_ := M.alloc clone.Unit.Build in
+    let* unit_ := M.alloc (Value.StructTuple "clone::Unit" []) in
     let* copied_unit := M.copy unit_ in
     let* _ :=
       let* _ :=
@@ -198,17 +198,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "original: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ unit_ ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -221,17 +223,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "copy: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ copied_unit ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -260,17 +264,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "original: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ pair ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -284,17 +290,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "moved: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ moved_pair ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -320,17 +328,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "clone: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ cloned_pair ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

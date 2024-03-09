@@ -20,7 +20,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       let* α2 := M.read (mk_str "Ref") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion "Unsize" α4 ]
+      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -55,17 +55,19 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "`print`: t is ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ t ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -95,17 +97,19 @@ Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "`print_ref`: t is ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ t ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

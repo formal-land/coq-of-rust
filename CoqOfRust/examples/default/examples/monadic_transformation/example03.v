@@ -26,20 +26,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
           "into_vec" in
       let* α1 :=
-        M.alloc
-          [
-            Value.Integer Integer.I32 5;
-            Value.Integer Integer.I32 6;
-            Value.Integer Integer.I32 7;
-            Value.Integer Integer.I32 8
-          ] in
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
       let* α2 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α1 ] in
-      let* α3 := M.read α2 in
-      let* α4 := M.call α0 [ M.pointer_coercion "Unsize" α3 ] in
-      M.alloc α4 in
+        M.alloc
+          (Value.Array
+            [
+              Value.Integer Integer.I32 5;
+              Value.Integer Integer.I32 6;
+              Value.Integer Integer.I32 7;
+              Value.Integer Integer.I32 8
+            ]) in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      M.alloc α5 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible

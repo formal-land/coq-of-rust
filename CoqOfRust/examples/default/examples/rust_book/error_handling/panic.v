@@ -27,7 +27,7 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call α0 [ beverage; mk_str "lemonade" ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.read (M.use α2) in
-      if α3 then
+      if Value.is_true α3 then
         let* α0 := M.get_function "std::panicking::begin_panic" in
         let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
         let* α2 := M.call α0 [ α1 ] in
@@ -43,17 +43,19 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Some refreshing ") in
         let* α3 := M.read (mk_str " is all I need.
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.call α5 [ beverage ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

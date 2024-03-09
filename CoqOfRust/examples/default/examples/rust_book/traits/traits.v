@@ -20,7 +20,7 @@ Module Animal.
           let* α3 := M.read (mk_str " says ") in
           let* α4 := M.read (mk_str "
 ") in
-          let* α5 := M.alloc [ α2; α3; α4 ] in
+          let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
           let* α6 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -41,11 +41,13 @@ Module Animal.
           let* α15 := M.call α13 [ α14 ] in
           let* α16 := M.alloc α15 in
           let* α17 := M.call α12 [ α16 ] in
-          let* α18 := M.alloc [ α11; α17 ] in
+          let* α18 := M.alloc (Value.Array [ α11; α17 ]) in
           let* α19 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α18
+              [
+                M.pointer_coercion (* Unsize *) α5;
+                M.pointer_coercion (* Unsize *) α18
               ] in
           let* α20 := M.call α0 [ α19 ] in
           M.alloc α20 in
@@ -94,7 +96,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
       let* name := M.alloc name in
       let* α0 := M.read name in
       M.pure
-        (Value.StructRecord "traits::Sheep" [ ("name", α0); ("naked", false) ])
+        (Value.StructRecord
+          "traits::Sheep"
+          [ ("name", α0); ("naked", Value.Bool false) ])
     | _, _ => M.impossible
     end.
   
@@ -132,7 +136,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
       let* α3 := M.alloc α2 in
       let* α4 := M.read (M.use α3) in
       let* α5 :=
-        if α4 then
+        if Value.is_true α4 then
           M.pure (mk_str "baaaaah?")
         else
           M.pure (mk_str "baaaaah!") in
@@ -161,7 +165,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
           let* α3 := M.read (mk_str " pauses briefly... ") in
           let* α4 := M.read (mk_str "
 ") in
-          let* α5 := M.alloc [ α2; α3; α4 ] in
+          let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
           let* α6 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -181,11 +185,13 @@ Module Impl_traits_Animal_for_traits_Sheep.
           let* α12 := M.call α10 [ α11 ] in
           let* α13 := M.alloc α12 in
           let* α14 := M.call α9 [ α13 ] in
-          let* α15 := M.alloc [ α8; α14 ] in
+          let* α15 := M.alloc (Value.Array [ α8; α14 ]) in
           let* α16 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α15
+              [
+                M.pointer_coercion (* Unsize *) α5;
+                M.pointer_coercion (* Unsize *) α15
               ] in
           let* α17 := M.call α0 [ α16 ] in
           M.alloc α17 in
@@ -236,7 +242,7 @@ Module Impl_traits_Sheep_2.
       let* α3 := M.alloc α2 in
       let* α4 := M.read (M.use α3) in
       let* α5 :=
-        if α4 then
+        if Value.is_true α4 then
           let* _ :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" in
@@ -247,7 +253,7 @@ Module Impl_traits_Sheep_2.
               let* α2 := M.read (mk_str "") in
               let* α3 := M.read (mk_str " is already naked...
 ") in
-              let* α4 := M.alloc [ α2; α3 ] in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
@@ -261,13 +267,13 @@ Module Impl_traits_Sheep_2.
               let* α8 := M.call α6 [ α7 ] in
               let* α9 := M.alloc α8 in
               let* α10 := M.call α5 [ α9 ] in
-              let* α11 := M.alloc [ α10 ] in
+              let* α11 := M.alloc (Value.Array [ α10 ]) in
               let* α12 :=
                 M.call
                   α1
                   [
-                    M.pointer_coercion "Unsize" α4;
-                    M.pointer_coercion "Unsize" α11
+                    M.pointer_coercion (* Unsize *) α4;
+                    M.pointer_coercion (* Unsize *) α11
                   ] in
               let* α13 := M.call α0 [ α12 ] in
               M.alloc α13 in
@@ -284,27 +290,27 @@ Module Impl_traits_Sheep_2.
               let* α2 := M.read (mk_str "") in
               let* α3 := M.read (mk_str " gets a haircut!
 ") in
-              let* α4 := M.alloc [ α2; α3 ] in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
               let* α6 := M.read self in
               let* α7 := M.call α5 [ M.get_struct_record α6 "name" ] in
-              let* α8 := M.alloc [ α7 ] in
+              let* α8 := M.alloc (Value.Array [ α7 ]) in
               let* α9 :=
                 M.call
                   α1
                   [
-                    M.pointer_coercion "Unsize" α4;
-                    M.pointer_coercion "Unsize" α8
+                    M.pointer_coercion (* Unsize *) α4;
+                    M.pointer_coercion (* Unsize *) α8
                   ] in
               let* α10 := M.call α0 [ α9 ] in
               M.alloc α10 in
             M.alloc (Value.Tuple []) in
           let* _ :=
             let* α0 := M.read self in
-            M.assign (M.get_struct_record α0 "naked") true in
+            M.assign (M.get_struct_record α0 "naked") (Value.Bool true) in
           M.alloc (Value.Tuple []) in
       M.read α5
     | _, _ => M.impossible

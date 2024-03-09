@@ -38,7 +38,9 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -154,7 +156,8 @@ Module Impl_contract_terminate_JustTerminate.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] => M.pure contract_terminate.JustTerminate.Build
+    | [ Self ], [] =>
+      M.pure (Value.StructTuple "contract_terminate::JustTerminate" [])
     | _, _ => M.impossible
     end.
   

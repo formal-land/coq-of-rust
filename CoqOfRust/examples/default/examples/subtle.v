@@ -22,7 +22,9 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -53,7 +55,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       let* α2 := M.read (mk_str "Choice") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion "Unsize" α4 ]
+      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -99,9 +101,9 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
     | [ Self ], [ source ] =>
       let* source := M.alloc source in
       let* _ :=
-        let* α0 := M.alloc true in
+        let* α0 := M.alloc (Value.Bool true) in
         let* α1 := M.read (M.use α0) in
-        if α1 then
+        if Value.is_true α1 then
           let* _ :=
             let* α0 := M.read (M.get_struct_tuple source 0) in
             let* α1 := M.read (M.get_struct_tuple source 0) in
@@ -112,7 +114,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                     (BinOp.Pure.eq α0 (Value.Integer Integer.U8 0))
                     (BinOp.Pure.eq α1 (Value.Integer Integer.U8 1)))) in
             let* α3 := M.read (M.use α2) in
-            if α3 then
+            if Value.is_true α3 then
               let* α0 := M.get_function "core::panicking::panic" in
               let* α1 :=
                 M.read
@@ -429,9 +431,9 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ input ] =>
     let* input := M.alloc input in
     let* _ :=
-      let* α0 := M.alloc true in
+      let* α0 := M.alloc (Value.Bool true) in
       let* α1 := M.read (M.use α0) in
-      if α1 then
+      if Value.is_true α1 then
         let* _ :=
           let* α0 := M.read input in
           let* α1 := M.read input in
@@ -442,7 +444,7 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (BinOp.Pure.eq α0 (Value.Integer Integer.U8 0))
                   (BinOp.Pure.eq α1 (Value.Integer Integer.U8 1)))) in
           let* α3 := M.read (M.use α2) in
-          if α3 then
+          if Value.is_true α3 then
             let* α0 := M.get_function "core::panicking::panic" in
             let* α1 :=
               M.read
@@ -547,80 +549,71 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
     | [ Self; T ], [ self; _rhs ] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
-      let return_ := M.return_ (R := Ty.path "subtle::Choice") in
-      M.catch_return
-        (let* len :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply (Ty.path "slice") [ T ])
-              "len" in
-          let* α1 := M.read self in
-          let* α2 := M.call α0 [ α1 ] in
-          M.alloc α2 in
-        let* _ :=
-          let* α0 := M.read len in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.apply (Ty.path "slice") [ T ])
-              "len" in
-          let* α2 := M.read _rhs in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc (BinOp.Pure.ne α0 α3) in
-          let* α5 := M.read (M.use α4) in
-          if α5 then
-            let* α0 :=
-              M.get_trait_method
-                "core::convert::From"
-                "from"
-                [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
-            let* α1 := M.call α0 [ Value.Integer Integer.U8 0 ] in
-            let* α2 := return_ α1 in
-            let* α3 := M.read α2 in
-            let* α4 := M.never_to_any α3 in
-            M.alloc α4
-          else
-            M.alloc (Value.Tuple []) in
-        let* x := M.alloc (Value.Integer Integer.U8 1) in
-        let* _ :=
+      let* len :=
+        let* α0 :=
+          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "len" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
+      let* _ :=
+        let* α0 := M.read len in
+        let* α1 :=
+          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "len" in
+        let* α2 := M.read _rhs in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc (BinOp.Pure.ne α0 α3) in
+        let* α5 := M.read (M.use α4) in
+        if Value.is_true α5 then
           let* α0 :=
             M.get_trait_method
-              "core::iter::traits::collect::IntoIterator"
-              "into_iter"
-              [
-                (* Self *)
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::zip::Zip")
-                    [
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-                    ]
-              ] in
-          let* α1 :=
-            M.get_trait_method
-              "core::iter::traits::iterator::Iterator"
-              "zip"
-              [
-                (* Self *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                (* U *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-              ] in
-          let* α2 :=
-            M.get_associated_function
-              (Ty.apply (Ty.path "slice") [ T ])
-              "iter" in
-          let* α3 := M.read self in
-          let* α4 := M.call α2 [ α3 ] in
-          let* α5 :=
-            M.get_associated_function
-              (Ty.apply (Ty.path "slice") [ T ])
-              "iter" in
-          let* α6 := M.read _rhs in
-          let* α7 := M.call α5 [ α6 ] in
-          let* α8 := M.call α1 [ α4; α7 ] in
-          let* α9 := M.call α0 [ α8 ] in
-          let* α10 := M.alloc α9 in
-          let* α11 :=
-            match_operator
-              α10
+              "core::convert::From"
+              "from"
+              [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
+          let* α1 := M.call α0 [ Value.Integer Integer.U8 0 ] in
+          let* α2 := M.return_ α1 in
+          let* α3 := M.read α2 in
+          let* α4 := M.never_to_any α3 in
+          M.alloc α4
+        else
+          M.alloc (Value.Tuple []) in
+      let* x := M.alloc (Value.Integer Integer.U8 1) in
+      let* _ :=
+        let* α0 :=
+          M.get_trait_method
+            "core::iter::traits::collect::IntoIterator"
+            "into_iter"
+            [
+              (* Self *)
+                Ty.apply
+                  (Ty.path "core::iter::adapters::zip::Zip")
+                  [
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+                  ]
+            ] in
+        let* α1 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            "zip"
+            [
+              (* Self *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+              (* U *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+            ] in
+        let* α2 :=
+          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "iter" in
+        let* α3 := M.read self in
+        let* α4 := M.call α2 [ α3 ] in
+        let* α5 :=
+          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "iter" in
+        let* α6 := M.read _rhs in
+        let* α7 := M.call α5 [ α6 ] in
+        let* α8 := M.call α1 [ α4; α7 ] in
+        let* α9 := M.call α0 [ α8 ] in
+        let* α10 := M.alloc α9 in
+        let* α11 :=
+          match_operator
+            α10
+            (Value.Array
               [
                 fun γ =>
                   (let* iter := M.copy γ in
@@ -647,67 +640,68 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                       let* α2 := M.alloc α1 in
                       match_operator
                         α2
-                        [
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.None =>
-                              let* α0 := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 := M.never_to_any α1 in
-                              M.alloc α2
-                            | _ => M.break_match 
-                            end);
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.Some _ =>
-                              let* γ0_0 :=
-                                let* α0 :=
-                                  M.var "core::option::Option::Get_Some_0" in
-                                M.pure (α0 γ) in
-                              let* α0 := M.read γ0_0 in
+                        (Value.Array
+                          [
+                            fun γ =>
+                              (let* α0 := M.read γ in
                               match α0 with
-                              | (_, _) =>
-                                let γ1_0 := Tuple.Access.left γ0_0 in
-                                let γ1_1 := Tuple.Access.right γ0_0 in
-                                let* ai := M.copy γ1_0 in
-                                let* bi := M.copy γ1_1 in
-                                let* _ :=
-                                  let β := x in
-                                  let* α0 := M.read β in
-                                  let* α1 :=
-                                    M.get_associated_function
-                                      (Ty.path "subtle::Choice")
-                                      "unwrap_u8" in
-                                  let* α2 :=
-                                    M.get_trait_method
-                                      "subtle::ConstantTimeEq"
-                                      "ct_eq"
-                                      [ (* Self *) T ] in
-                                  let* α3 := M.read ai in
-                                  let* α4 := M.read bi in
-                                  let* α5 := M.call α2 [ α3; α4 ] in
-                                  let* α6 := M.alloc α5 in
-                                  let* α7 := M.call α1 [ α6 ] in
-                                  M.assign β (BinOp.Pure.bit_and α0 α7) in
-                                M.alloc (Value.Tuple [])
-                              end
-                            | _ => M.break_match 
-                            end)
-                        ] in
+                              | core.option.Option.None =>
+                                let* α0 := M.break in
+                                let* α1 := M.read α0 in
+                                let* α2 := M.never_to_any α1 in
+                                M.alloc α2
+                              | _ => M.break_match 
+                              end);
+                            fun γ =>
+                              (let* α0 := M.read γ in
+                              match α0 with
+                              | core.option.Option.Some _ =>
+                                let* γ0_0 :=
+                                  let* α0 :=
+                                    M.var "core::option::Option::Get_Some_0" in
+                                  M.pure (α0 γ) in
+                                let* α0 := M.read γ0_0 in
+                                match α0 with
+                                | (_, _) =>
+                                  let γ1_0 := Tuple.Access.left γ0_0 in
+                                  let γ1_1 := Tuple.Access.right γ0_0 in
+                                  let* ai := M.copy γ1_0 in
+                                  let* bi := M.copy γ1_1 in
+                                  let* _ :=
+                                    let β := x in
+                                    let* α0 := M.read β in
+                                    let* α1 :=
+                                      M.get_associated_function
+                                        (Ty.path "subtle::Choice")
+                                        "unwrap_u8" in
+                                    let* α2 :=
+                                      M.get_trait_method
+                                        "subtle::ConstantTimeEq"
+                                        "ct_eq"
+                                        [ (* Self *) T ] in
+                                    let* α3 := M.read ai in
+                                    let* α4 := M.read bi in
+                                    let* α5 := M.call α2 [ α3; α4 ] in
+                                    let* α6 := M.alloc α5 in
+                                    let* α7 := M.call α1 [ α6 ] in
+                                    M.assign β (BinOp.Pure.bit_and α0 α7) in
+                                  M.alloc (Value.Tuple [])
+                                end
+                              | _ => M.break_match 
+                              end)
+                          ]) in
                     M.alloc (Value.Tuple [])))
-              ] in
-          M.pure (M.use α11) in
-        let* α0 :=
-          M.get_trait_method
-            "core::convert::Into"
-            "into"
-            [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-        let* α1 := M.read x in
-        let* α2 := M.call α0 [ α1 ] in
-        let* α0 := M.alloc α2 in
-        M.read α0)
+              ]) in
+        M.pure (M.use α11) in
+      let* α0 :=
+        M.get_trait_method
+          "core::convert::Into"
+          "into"
+          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
+      let* α1 := M.read x in
+      let* α2 := M.call α0 [ α1 ] in
+      let* α0 := M.alloc α2 in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -2671,9 +2665,9 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
           α1;
           α2;
           α3;
-          M.pointer_coercion "Unsize" (M.get_struct_record α4 "value");
+          M.pointer_coercion (* Unsize *) (M.get_struct_record α4 "value");
           α5;
-          M.pointer_coercion "Unsize" α7
+          M.pointer_coercion (* Unsize *) α7
         ]
     | _, _ => M.impossible
     end.
@@ -2714,11 +2708,11 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       let* α5 := M.alloc (BinOp.Pure.eq α4 (Value.Integer Integer.U8 1)) in
       let* α6 := M.read (M.use α5) in
       let* α7 :=
-        if α6 then
+        if Value.is_true α6 then
           let* α0 := M.read (M.get_struct_record source "value") in
           M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
         else
-          M.alloc core.option.Option.None in
+          M.alloc (Value.StructTuple "core::option::Option::None" []) in
       M.read α7
     | _, _ => M.impossible
     end.
@@ -2785,63 +2779,69 @@ Module Impl_subtle_CtOption_T.
         let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
         match_operator
           α4
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | (_, _) =>
-                let γ0_0 := Tuple.Access.left γ in
-                let γ0_1 := Tuple.Access.right γ in
-                let* left_val := M.copy γ0_0 in
-                let* right_val := M.copy γ0_1 in
-                let* α0 := M.read left_val in
-                let* α1 := M.read α0 in
-                let* α2 := M.read right_val in
-                let* α3 := M.read α2 in
-                let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-                let* α5 := M.read (M.use α4) in
-                if α5 then
-                  let* kind := M.alloc core.panicking.AssertKind.Eq in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
-                  let* α1 := M.read kind in
-                  let* α2 := M.read left_val in
-                  let* α3 := M.read right_val in
-                  let* α4 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α5 := M.read (mk_str "") in
-                  let* α6 := M.alloc [ α5 ] in
-                  let* α7 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α8 := M.call α7 [ msg ] in
-                  let* α9 := M.alloc [ α8 ] in
-                  let* α10 :=
-                    M.call
-                      α4
-                      [
-                        M.pointer_coercion "Unsize" α6;
-                        M.pointer_coercion "Unsize" α9
-                      ] in
-                  let* α11 :=
-                    M.call
-                      α0
-                      [
-                        α1;
-                        α2;
-                        α3;
-                        Value.StructTuple "core::option::Option::Some" [ α10 ]
-                      ] in
-                  let* α0 := M.alloc α11 in
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let* left_val := M.copy γ0_0 in
+                  let* right_val := M.copy γ0_1 in
+                  let* α0 := M.read left_val in
                   let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2
-                else
-                  M.alloc (Value.Tuple [])
-              end)
-          ] in
+                  let* α2 := M.read right_val in
+                  let* α3 := M.read α2 in
+                  let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+                  let* α5 := M.read (M.use α4) in
+                  if Value.is_true α5 then
+                    let* kind :=
+                      M.alloc
+                        (Value.StructTuple
+                          "core::panicking::AssertKind::Eq"
+                          []) in
+                    let* α0 :=
+                      M.get_function "core::panicking::assert_failed" in
+                    let* α1 := M.read kind in
+                    let* α2 := M.read left_val in
+                    let* α3 := M.read right_val in
+                    let* α4 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α5 := M.read (mk_str "") in
+                    let* α6 := M.alloc (Value.Array [ α5 ]) in
+                    let* α7 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α8 := M.call α7 [ msg ] in
+                    let* α9 := M.alloc (Value.Array [ α8 ]) in
+                    let* α10 :=
+                      M.call
+                        α4
+                        [
+                          M.pointer_coercion (* Unsize *) α6;
+                          M.pointer_coercion (* Unsize *) α9
+                        ] in
+                    let* α11 :=
+                      M.call
+                        α0
+                        [
+                          α1;
+                          α2;
+                          α3;
+                          Value.StructTuple "core::option::Option::Some" [ α10 ]
+                        ] in
+                    let* α0 := M.alloc α11 in
+                    let* α1 := M.read α0 in
+                    let* α2 := M.never_to_any α1 in
+                    M.alloc α2
+                  else
+                    M.alloc (Value.Tuple [])
+                end)
+            ]) in
       M.read (M.get_struct_record self "value")
     | _, _ => M.impossible
     end.
@@ -2870,37 +2870,50 @@ Module Impl_subtle_CtOption_T.
         let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
         match_operator
           α4
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | (_, _) =>
-                let γ0_0 := Tuple.Access.left γ in
-                let γ0_1 := Tuple.Access.right γ in
-                let* left_val := M.copy γ0_0 in
-                let* right_val := M.copy γ0_1 in
-                let* α0 := M.read left_val in
-                let* α1 := M.read α0 in
-                let* α2 := M.read right_val in
-                let* α3 := M.read α2 in
-                let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-                let* α5 := M.read (M.use α4) in
-                if α5 then
-                  let* kind := M.alloc core.panicking.AssertKind.Eq in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
-                  let* α1 := M.read kind in
-                  let* α2 := M.read left_val in
-                  let* α3 := M.read right_val in
-                  let* α4 :=
-                    M.call α0 [ α1; α2; α3; core.option.Option.None ] in
-                  let* α0 := M.alloc α4 in
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let* left_val := M.copy γ0_0 in
+                  let* right_val := M.copy γ0_1 in
+                  let* α0 := M.read left_val in
                   let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2
-                else
-                  M.alloc (Value.Tuple [])
-              end)
-          ] in
+                  let* α2 := M.read right_val in
+                  let* α3 := M.read α2 in
+                  let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+                  let* α5 := M.read (M.use α4) in
+                  if Value.is_true α5 then
+                    let* kind :=
+                      M.alloc
+                        (Value.StructTuple
+                          "core::panicking::AssertKind::Eq"
+                          []) in
+                    let* α0 :=
+                      M.get_function "core::panicking::assert_failed" in
+                    let* α1 := M.read kind in
+                    let* α2 := M.read left_val in
+                    let* α3 := M.read right_val in
+                    let* α4 :=
+                      M.call
+                        α0
+                        [
+                          α1;
+                          α2;
+                          α3;
+                          Value.StructTuple "core::option::Option::None" []
+                        ] in
+                    let* α0 := M.alloc α4 in
+                    let* α1 := M.read α0 in
+                    let* α2 := M.never_to_any α1 in
+                    M.alloc α2
+                  else
+                    M.alloc (Value.Tuple [])
+                end)
+            ]) in
       M.read (M.get_struct_record self "value")
     | _, _ => M.impossible
     end.
@@ -3429,7 +3442,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           (let* α0 := M.read pow in
           let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 8)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := ltb in
               let* α0 := M.read β in
@@ -3464,7 +3477,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           (let* α0 := M.read pow in
           let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 8)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := bit in
               let* α0 := M.read β in
@@ -3586,7 +3599,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let* α1 :=
             M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 16)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := ltb in
               let* α0 := M.read β in
@@ -3622,7 +3635,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let* α1 :=
             M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 16)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := bit in
               let* α0 := M.read β in
@@ -3746,7 +3759,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let* α1 :=
             M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 32)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := ltb in
               let* α0 := M.read β in
@@ -3782,7 +3795,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let* α1 :=
             M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 32)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := bit in
               let* α0 := M.read β in
@@ -3906,7 +3919,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let* α1 :=
             M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 64)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := ltb in
               let* α0 := M.read β in
@@ -3942,7 +3955,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let* α1 :=
             M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 64)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let β := bit in
               let* α0 := M.read β in

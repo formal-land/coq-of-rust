@@ -85,7 +85,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str ", ") in
         let* α5 := M.read (mk_str ")
 ") in
-        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+        let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -103,11 +103,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α14 := M.call α13 [ M.get_struct_record point "z" ] in
-        let* α15 := M.alloc [ α9; α12; α14 ] in
+        let* α15 := M.alloc (Value.Array [ α9; α12; α14 ]) in
         let* α16 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α15
+            [
+              M.pointer_coercion (* Unsize *) α6;
+              M.pointer_coercion (* Unsize *) α15
             ] in
         let* α17 := M.call α0 [ α16 ] in
         M.alloc α17 in
@@ -122,7 +124,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str ", ") in
         let* α5 := M.read (mk_str ")
 ") in
-        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+        let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -140,11 +142,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α14 := M.call α13 [ M.get_struct_record point "z" ] in
-        let* α15 := M.alloc [ α9; α12; α14 ] in
+        let* α15 := M.alloc (Value.Array [ α9; α12; α14 ]) in
         let* α16 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α15
+            [
+              M.pointer_coercion (* Unsize *) α6;
+              M.pointer_coercion (* Unsize *) α15
             ] in
         let* α17 := M.call α0 [ α16 ] in
         M.alloc α17 in
@@ -169,7 +173,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str ", ") in
         let* α5 := M.read (mk_str ")
 ") in
-        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+        let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -188,11 +192,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α14 := M.read mutable_borrow in
         let* α15 := M.call α13 [ M.get_struct_record α14 "z" ] in
-        let* α16 := M.alloc [ α9; α12; α15 ] in
+        let* α16 := M.alloc (Value.Array [ α9; α12; α15 ]) in
         let* α17 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α16
+            [
+              M.pointer_coercion (* Unsize *) α6;
+              M.pointer_coercion (* Unsize *) α16
             ] in
         let* α18 := M.call α0 [ α17 ] in
         M.alloc α18 in
@@ -208,7 +214,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str ", ") in
         let* α5 := M.read (mk_str ")
 ") in
-        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+        let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -227,11 +233,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α14 := M.read new_borrowed_point in
         let* α15 := M.call α13 [ M.get_struct_record α14 "z" ] in
-        let* α16 := M.alloc [ α9; α12; α15 ] in
+        let* α16 := M.alloc (Value.Array [ α9; α12; α15 ]) in
         let* α17 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α16
+            [
+              M.pointer_coercion (* Unsize *) α6;
+              M.pointer_coercion (* Unsize *) α16
             ] in
         let* α18 := M.call α0 [ α17 ] in
         M.alloc α18 in

@@ -28,7 +28,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* an_integer := M.alloc (Value.Integer Integer.U32 1) in
-    let* a_boolean := M.alloc true in
+    let* a_boolean := M.alloc (Value.Bool true) in
     let* unit_ := M.alloc (Value.Tuple []) in
     let* copied_integer := M.copy an_integer in
     let* _ :=
@@ -39,17 +39,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "An integer: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ copied_integer ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -62,17 +64,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "A boolean: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ a_boolean ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -85,17 +89,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Meet the unit value: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ unit_ ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

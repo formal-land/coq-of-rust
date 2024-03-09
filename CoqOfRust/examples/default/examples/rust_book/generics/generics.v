@@ -28,11 +28,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _s :=
-      M.alloc (Value.StructTuple "generics::Single" [ generics.A.Build ]) in
+      M.alloc
+        (Value.StructTuple
+          "generics::Single"
+          [ Value.StructTuple "generics::A" [] ]) in
     let* _char :=
       M.alloc (Value.StructTuple "generics::SingleGen" [ "a"%char ]) in
     let* _t :=
-      M.alloc (Value.StructTuple "generics::SingleGen" [ generics.A.Build ]) in
+      M.alloc
+        (Value.StructTuple
+          "generics::SingleGen"
+          [ Value.StructTuple "generics::A" [] ]) in
     let* _i32 :=
       M.alloc
         (Value.StructTuple

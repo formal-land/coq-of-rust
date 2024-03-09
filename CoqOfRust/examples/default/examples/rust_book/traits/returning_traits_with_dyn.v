@@ -74,7 +74,7 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
     let* α3 := M.read (M.use α2) in
     let* α4 :=
-      if α3 then
+      if Value.is_true α3 then
         let* α0 :=
           M.get_associated_function
             (Ty.apply
@@ -84,8 +84,12 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "alloc::alloc::Global"
               ])
             "new" in
-        let* α1 := M.call α0 [ returning_traits_with_dyn.Sheep.Build ] in
-        M.alloc (M.pointer_coercion "Unsize" (M.pointer_coercion "Unsize" α1))
+        let* α1 :=
+          M.call
+            α0
+            [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ] in
+        M.alloc
+          (M.pointer_coercion (* Unsize *) (M.pointer_coercion (* Unsize *) α1))
       else
         let* α0 :=
           M.get_associated_function
@@ -96,10 +100,12 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "alloc::alloc::Global"
               ])
             "new" in
-        let* α1 := M.call α0 [ returning_traits_with_dyn.Cow.Build ] in
-        M.alloc (M.pointer_coercion "Unsize" α1) in
+        let* α1 :=
+          M.call α0 [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ] in
+        M.alloc (M.pointer_coercion (* Unsize *) α1) in
     let* α5 := M.read α4 in
-    M.pure (M.pointer_coercion "Unsize" (M.pointer_coercion "Unsize" α5))
+    M.pure
+      (M.pointer_coercion (* Unsize *) (M.pointer_coercion (* Unsize *) α5))
   | _, _ => M.impossible
   end.
 
@@ -132,7 +138,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.read (mk_str "You've randomly chosen an animal, and it says ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -149,11 +155,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call α5 [ α9 ] in
-        let* α11 := M.alloc [ α10 ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α11
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α11
             ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in

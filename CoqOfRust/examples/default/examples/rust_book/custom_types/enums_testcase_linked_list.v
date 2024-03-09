@@ -14,7 +14,8 @@ Module Impl_enums_testcase_linked_list_List.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] => M.pure enums_testcase_linked_list.List.Nil
+    | [ Self ], [] =>
+      M.pure (Value.StructTuple "enums_testcase_linked_list::List::Nil" [])
     | _, _ => M.impossible
     end.
   
@@ -77,39 +78,40 @@ Module Impl_enums_testcase_linked_list_List.
       let* α1 :=
         match_operator
           α0
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | enums_testcase_linked_list.List.Cons _ _ =>
-                let* γ0_0 :=
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | enums_testcase_linked_list.List.Cons _ _ =>
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var "enums_testcase_linked_list::List::Get_Cons_0" in
+                    M.pure (α0 γ) in
+                  let* γ0_1 :=
+                    let* α0 :=
+                      M.var "enums_testcase_linked_list::List::Get_Cons_1" in
+                    M.pure (α0 γ) in
+                  let* tail := M.alloc (borrow γ0_1) in
                   let* α0 :=
-                    M.var "enums_testcase_linked_list::List::Get_Cons_0" in
-                  M.pure (α0 γ) in
-                let* γ0_1 :=
-                  let* α0 :=
-                    M.var "enums_testcase_linked_list::List::Get_Cons_1" in
-                  M.pure (α0 γ) in
-                let* tail := M.alloc (borrow γ0_1) in
-                let* α0 :=
-                  M.get_associated_function
-                    (Ty.path "enums_testcase_linked_list::List")
-                    "len" in
-                let* α1 := M.read tail in
-                let* α2 := M.read α1 in
-                let* α3 := M.call α0 [ α2 ] in
-                let* α4 := BinOp.Panic.add (Value.Integer Integer.U32 1) α3 in
-                M.alloc α4
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | enums_testcase_linked_list.List.Nil =>
-                M.alloc (Value.Integer Integer.U32 0)
-              | _ => M.break_match 
-              end)
-          ] in
+                    M.get_associated_function
+                      (Ty.path "enums_testcase_linked_list::List")
+                      "len" in
+                  let* α1 := M.read tail in
+                  let* α2 := M.read α1 in
+                  let* α3 := M.call α0 [ α2 ] in
+                  let* α4 := BinOp.Panic.add (Value.Integer Integer.U32 1) α3 in
+                  M.alloc α4
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | enums_testcase_linked_list.List.Nil =>
+                  M.alloc (Value.Integer Integer.U32 0)
+                | _ => M.break_match 
+                end)
+            ]) in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -138,80 +140,82 @@ Module Impl_enums_testcase_linked_list_List.
       let* α1 :=
         match_operator
           α0
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | enums_testcase_linked_list.List.Cons _ _ =>
-                let* γ0_0 :=
-                  let* α0 :=
-                    M.var "enums_testcase_linked_list::List::Get_Cons_0" in
-                  M.pure (α0 γ) in
-                let* γ0_1 :=
-                  let* α0 :=
-                    M.var "enums_testcase_linked_list::List::Get_Cons_1" in
-                  M.pure (α0 γ) in
-                let* head := M.copy γ0_0 in
-                let* tail := M.alloc (borrow γ0_1) in
-                let* res :=
-                  let* α0 := M.get_function "alloc::fmt::format" in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "") in
-                  let* α3 := M.read (mk_str ", ") in
-                  let* α4 := M.alloc [ α2; α3 ] in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α6 := M.call α5 [ head ] in
-                  let* α7 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α8 :=
-                    M.get_associated_function
-                      (Ty.path "enums_testcase_linked_list::List")
-                      "stringify" in
-                  let* α9 := M.read tail in
-                  let* α10 := M.read α9 in
-                  let* α11 := M.call α8 [ α10 ] in
-                  let* α12 := M.alloc α11 in
-                  let* α13 := M.call α7 [ α12 ] in
-                  let* α14 := M.alloc [ α6; α13 ] in
-                  let* α15 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion "Unsize" α4;
-                        M.pointer_coercion "Unsize" α14
-                      ] in
-                  let* α16 := M.call α0 [ α15 ] in
-                  M.alloc α16 in
-                M.pure res
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | enums_testcase_linked_list.List.Nil =>
-                let* res :=
-                  let* α0 := M.get_function "alloc::fmt::format" in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const" in
-                  let* α2 := M.read (mk_str "Nil") in
-                  let* α3 := M.alloc [ α2 ] in
-                  let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
-                  let* α5 := M.call α0 [ α4 ] in
-                  M.alloc α5 in
-                M.pure res
-              | _ => M.break_match 
-              end)
-          ] in
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | enums_testcase_linked_list.List.Cons _ _ =>
+                  let* γ0_0 :=
+                    let* α0 :=
+                      M.var "enums_testcase_linked_list::List::Get_Cons_0" in
+                    M.pure (α0 γ) in
+                  let* γ0_1 :=
+                    let* α0 :=
+                      M.var "enums_testcase_linked_list::List::Get_Cons_1" in
+                    M.pure (α0 γ) in
+                  let* head := M.copy γ0_0 in
+                  let* tail := M.alloc (borrow γ0_1) in
+                  let* res :=
+                    let* α0 := M.get_function "alloc::fmt::format" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "") in
+                    let* α3 := M.read (mk_str ", ") in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    let* α5 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α6 := M.call α5 [ head ] in
+                    let* α7 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α8 :=
+                      M.get_associated_function
+                        (Ty.path "enums_testcase_linked_list::List")
+                        "stringify" in
+                    let* α9 := M.read tail in
+                    let* α10 := M.read α9 in
+                    let* α11 := M.call α8 [ α10 ] in
+                    let* α12 := M.alloc α11 in
+                    let* α13 := M.call α7 [ α12 ] in
+                    let* α14 := M.alloc (Value.Array [ α6; α13 ]) in
+                    let* α15 :=
+                      M.call
+                        α1
+                        [
+                          M.pointer_coercion (* Unsize *) α4;
+                          M.pointer_coercion (* Unsize *) α14
+                        ] in
+                    let* α16 := M.call α0 [ α15 ] in
+                    M.alloc α16 in
+                  M.pure res
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | enums_testcase_linked_list.List.Nil =>
+                  let* res :=
+                    let* α0 := M.get_function "alloc::fmt::format" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_const" in
+                    let* α2 := M.read (mk_str "Nil") in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    let* α4 :=
+                      M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                    let* α5 := M.call α0 [ α4 ] in
+                    M.alloc α5 in
+                  M.pure res
+                | _ => M.break_match 
+                end)
+            ]) in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -278,7 +282,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "linked list has length: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -290,11 +294,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.call α6 [ list ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
-        let* α10 := M.alloc [ α9 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
@@ -307,7 +313,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -319,11 +325,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.call α6 [ list ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
-        let* α10 := M.alloc [ α9 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in

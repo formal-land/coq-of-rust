@@ -29,9 +29,9 @@ Module Impl_core_fmt_Debug_for_structures_Person.
           α1;
           α2;
           α3;
-          M.pointer_coercion "Unsize" (M.get_struct_record α4 "name");
+          M.pointer_coercion (* Unsize *) (M.get_struct_record α4 "name");
           α5;
-          M.pointer_coercion "Unsize" α7
+          M.pointer_coercion (* Unsize *) α7
         ]
     | _, _ => M.impossible
     end.
@@ -139,17 +139,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ peter ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -168,7 +170,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str ", ") in
         let* α4 := M.read (mk_str ")
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -179,11 +181,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α9 := M.call α8 [ M.get_struct_record point "y" ] in
-        let* α10 := M.alloc [ α7; α9 ] in
+        let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
@@ -201,7 +205,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str ", ") in
         let* α4 := M.read (mk_str ")
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -212,11 +216,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α9 := M.call α8 [ M.get_struct_record bottom_right "y" ] in
-        let* α10 := M.alloc [ α7; α9 ] in
+        let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
@@ -224,126 +230,130 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       match_operator
         point
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | {| structures.Point.x := _; structures.Point.y := _; |} =>
-              let* γ0_0 :=
-                let* α0 := M.var "structures::Point::Get_x" in
-                M.pure (α0 γ) in
-              let* γ0_1 :=
-                let* α0 := M.var "structures::Point::Get_y" in
-                M.pure (α0 γ) in
-              let* left_edge := M.copy γ0_0 in
-              let* top_edge := M.copy γ0_1 in
-              let* _rectangle :=
-                let* α0 := M.read left_edge in
-                let* α1 := M.read top_edge in
-                let* α2 := M.read bottom_right in
-                M.alloc
-                  (Value.StructRecord
-                    "structures::Rectangle"
-                    [
-                      ("top_left",
-                        Value.StructRecord
-                          "structures::Point"
-                          [ ("x", α0); ("y", α1) ]);
-                      ("bottom_right", α2)
-                    ]) in
-              let* _unit := M.alloc structures.Unit.Build in
-              let* pair :=
-                let* α0 := M.read UnsupportedLiteral in
-                M.alloc
-                  (Value.StructTuple
-                    "structures::Pair"
-                    [ Value.Integer Integer.I32 1; α0 ]) in
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "pair contains ") in
-                  let* α3 := M.read (mk_str " and ") in
-                  let* α4 := M.read (mk_str "
-") in
-                  let* α5 := M.alloc [ α2; α3; α4 ] in
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_debug" in
-                  let* α7 := M.call α6 [ M.get_struct_tuple pair 0 ] in
-                  let* α8 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_debug" in
-                  let* α9 := M.call α8 [ M.get_struct_tuple pair 1 ] in
-                  let* α10 := M.alloc [ α7; α9 ] in
-                  let* α11 :=
-                    M.call
-                      α1
+        (Value.Array
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | {| structures.Point.x := _; structures.Point.y := _; |} =>
+                let* γ0_0 :=
+                  let* α0 := M.var "structures::Point::Get_x" in
+                  M.pure (α0 γ) in
+                let* γ0_1 :=
+                  let* α0 := M.var "structures::Point::Get_y" in
+                  M.pure (α0 γ) in
+                let* left_edge := M.copy γ0_0 in
+                let* top_edge := M.copy γ0_1 in
+                let* _rectangle :=
+                  let* α0 := M.read left_edge in
+                  let* α1 := M.read top_edge in
+                  let* α2 := M.read bottom_right in
+                  M.alloc
+                    (Value.StructRecord
+                      "structures::Rectangle"
                       [
-                        M.pointer_coercion "Unsize" α5;
-                        M.pointer_coercion "Unsize" α10
-                      ] in
-                  let* α12 := M.call α0 [ α11 ] in
-                  M.alloc α12 in
-                M.alloc (Value.Tuple []) in
-              match_operator
-                pair
-                [
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    | structures.Pair.Build_t _ _ =>
-                      let* γ0_0 :=
-                        let* α0 := M.var "structures::Pair::Get_0" in
-                        M.pure (α0 γ) in
-                      let* γ0_1 :=
-                        let* α0 := M.var "structures::Pair::Get_1" in
-                        M.pure (α0 γ) in
-                      let* integer := M.copy γ0_0 in
-                      let* decimal := M.copy γ0_1 in
-                      let* _ :=
-                        let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
-                          let* α1 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::Arguments")
-                              "new_v1" in
-                          let* α2 := M.read (mk_str "pair contains ") in
-                          let* α3 := M.read (mk_str " and ") in
-                          let* α4 := M.read (mk_str "
+                        ("top_left",
+                          Value.StructRecord
+                            "structures::Point"
+                            [ ("x", α0); ("y", α1) ]);
+                        ("bottom_right", α2)
+                      ]) in
+                let* _unit :=
+                  M.alloc (Value.StructTuple "structures::Unit" []) in
+                let* pair :=
+                  let* α0 := M.read UnsupportedLiteral in
+                  M.alloc
+                    (Value.StructTuple
+                      "structures::Pair"
+                      [ Value.Integer Integer.I32 1; α0 ]) in
+                let* _ :=
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "pair contains ") in
+                    let* α3 := M.read (mk_str " and ") in
+                    let* α4 := M.read (mk_str "
 ") in
-                          let* α5 := M.alloc [ α2; α3; α4 ] in
-                          let* α6 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_debug" in
-                          let* α7 := M.call α6 [ integer ] in
-                          let* α8 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_debug" in
-                          let* α9 := M.call α8 [ decimal ] in
-                          let* α10 := M.alloc [ α7; α9 ] in
-                          let* α11 :=
-                            M.call
-                              α1
-                              [
-                                M.pointer_coercion "Unsize" α5;
-                                M.pointer_coercion "Unsize" α10
-                              ] in
-                          let* α12 := M.call α0 [ α11 ] in
-                          M.alloc α12 in
-                        M.alloc (Value.Tuple []) in
-                      M.alloc (Value.Tuple [])
-                    end)
-                ]
-            end)
-        ] in
+                    let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                    let* α6 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_debug" in
+                    let* α7 := M.call α6 [ M.get_struct_tuple pair 0 ] in
+                    let* α8 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_debug" in
+                    let* α9 := M.call α8 [ M.get_struct_tuple pair 1 ] in
+                    let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                    let* α11 :=
+                      M.call
+                        α1
+                        [
+                          M.pointer_coercion (* Unsize *) α5;
+                          M.pointer_coercion (* Unsize *) α10
+                        ] in
+                    let* α12 := M.call α0 [ α11 ] in
+                    M.alloc α12 in
+                  M.alloc (Value.Tuple []) in
+                match_operator
+                  pair
+                  (Value.Array
+                    [
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | structures.Pair.Build_t _ _ =>
+                          let* γ0_0 :=
+                            let* α0 := M.var "structures::Pair::Get_0" in
+                            M.pure (α0 γ) in
+                          let* γ0_1 :=
+                            let* α0 := M.var "structures::Pair::Get_1" in
+                            M.pure (α0 γ) in
+                          let* integer := M.copy γ0_0 in
+                          let* decimal := M.copy γ0_1 in
+                          let* _ :=
+                            let* _ :=
+                              let* α0 :=
+                                M.get_function "std::io::stdio::_print" in
+                              let* α1 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::Arguments")
+                                  "new_v1" in
+                              let* α2 := M.read (mk_str "pair contains ") in
+                              let* α3 := M.read (mk_str " and ") in
+                              let* α4 := M.read (mk_str "
+") in
+                              let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                              let* α6 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::rt::Argument")
+                                  "new_debug" in
+                              let* α7 := M.call α6 [ integer ] in
+                              let* α8 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::rt::Argument")
+                                  "new_debug" in
+                              let* α9 := M.call α8 [ decimal ] in
+                              let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                              let* α11 :=
+                                M.call
+                                  α1
+                                  [
+                                    M.pointer_coercion (* Unsize *) α5;
+                                    M.pointer_coercion (* Unsize *) α10
+                                  ] in
+                              let* α12 := M.call α0 [ α11 ] in
+                              M.alloc α12 in
+                            M.alloc (Value.Tuple []) in
+                          M.alloc (Value.Tuple [])
+                        end)
+                    ])
+              end)
+          ]) in
     M.read α0
   | _, _ => M.impossible
   end.

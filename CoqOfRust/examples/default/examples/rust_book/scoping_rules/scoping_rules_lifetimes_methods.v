@@ -49,18 +49,20 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let* α2 := M.read (mk_str "`print`: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.read self in
           let* α7 := M.call α5 [ M.get_struct_tuple α6 0 ] in
-          let* α8 := M.alloc [ α7 ] in
+          let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α8
               ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in

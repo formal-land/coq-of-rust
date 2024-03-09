@@ -14,12 +14,13 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (match_operator
-                Value.DeclaredButUndefined
-                [ fun γ => (M.read self) ])
-          ] in
+          (Value.Array
+            [
+              fun γ =>
+                (match_operator
+                  Value.DeclaredButUndefined
+                  (Value.Array [ fun γ => (M.read self) ]))
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -54,7 +55,9 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -96,37 +99,34 @@ Module Impl_unpacking_options_via_question_mark_Person.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let return_ :=
-        M.return_
-          (R := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]) in
-      M.catch_return
-        (let* α0 :=
-          M.get_trait_method
-            "core::ops::try_trait::Try"
-            "branch"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
-            ] in
-        let* α1 :=
-          M.get_trait_method
-            "core::ops::try_trait::Try"
-            "branch"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  [ Ty.path "unpacking_options_via_question_mark::Job" ]
-            ] in
-        let* α2 := M.read self in
-        let* α3 := M.read (M.get_struct_record α2 "job") in
-        let* α4 := M.call α1 [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
-          match_operator
-            α5
+      let* α0 :=
+        M.get_trait_method
+          "core::ops::try_trait::Try"
+          "branch"
+          [
+            (* Self *)
+              Ty.apply
+                (Ty.path "core::option::Option")
+                [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
+          ] in
+      let* α1 :=
+        M.get_trait_method
+          "core::ops::try_trait::Try"
+          "branch"
+          [
+            (* Self *)
+              Ty.apply
+                (Ty.path "core::option::Option")
+                [ Ty.path "unpacking_options_via_question_mark::Job" ]
+          ] in
+      let* α2 := M.read self in
+      let* α3 := M.read (M.get_struct_record α2 "job") in
+      let* α4 := M.call α1 [ α3 ] in
+      let* α5 := M.alloc α4 in
+      let* α6 :=
+        match_operator
+          α5
+          (Value.Array
             [
               fun γ =>
                 (let* α0 := M.read γ in
@@ -154,7 +154,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                       ] in
                   let* α1 := M.read residual in
                   let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := return_ α2 in
+                  let* α3 := M.return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
@@ -173,13 +173,14 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   M.pure val
                 | _ => M.break_match 
                 end)
-            ] in
-        let* α7 := M.read (M.get_struct_record α6 "phone_number") in
-        let* α8 := M.call α0 [ α7 ] in
-        let* α9 := M.alloc α8 in
-        let* α10 :=
-          match_operator
-            α9
+            ]) in
+      let* α7 := M.read (M.get_struct_record α6 "phone_number") in
+      let* α8 := M.call α0 [ α7 ] in
+      let* α9 := M.alloc α8 in
+      let* α10 :=
+        match_operator
+          α9
+          (Value.Array
             [
               fun γ =>
                 (let* α0 := M.read γ in
@@ -207,7 +208,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                       ] in
                   let* α1 := M.read residual in
                   let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := return_ α2 in
+                  let* α3 := M.return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
@@ -226,8 +227,8 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   M.pure val
                 | _ => M.break_match 
                 end)
-            ] in
-        M.read (M.get_struct_record α10 "area_code"))
+            ]) in
+      M.read (M.get_struct_record α10 "area_code")
     | _, _ => M.impossible
     end.
   
@@ -297,47 +298,62 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
       match_operator
         α4
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | (_, _) =>
-              let γ0_0 := Tuple.Access.left γ in
-              let γ0_1 := Tuple.Access.right γ in
-              let* left_val := M.copy γ0_0 in
-              let* right_val := M.copy γ0_1 in
-              let* α0 :=
-                M.get_trait_method
-                  "core::cmp::PartialEq"
-                  "eq"
-                  [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [ Ty.path "u8" ];
-                    (* Rhs *)
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
-                  ] in
-              let* α1 := M.read left_val in
-              let* α2 := M.read right_val in
-              let* α3 := M.call α0 [ α1; α2 ] in
-              let* α4 := M.alloc (UnOp.not α3) in
-              let* α5 := M.read (M.use α4) in
-              if α5 then
-                let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.get_function "core::panicking::assert_failed" in
-                let* α1 := M.read kind in
-                let* α2 := M.read left_val in
-                let* α3 := M.read right_val in
-                let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
-                let* α0 := M.alloc α4 in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-              else
-                M.alloc (Value.Tuple [])
-            end)
-        ] in
+        (Value.Array
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | (_, _) =>
+                let γ0_0 := Tuple.Access.left γ in
+                let γ0_1 := Tuple.Access.right γ in
+                let* left_val := M.copy γ0_0 in
+                let* right_val := M.copy γ0_1 in
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    "eq"
+                    [
+                      (* Self *)
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "u8" ];
+                      (* Rhs *)
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "u8" ]
+                    ] in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 := M.call α0 [ α1; α2 ] in
+                let* α4 := M.alloc (UnOp.not α3) in
+                let* α5 := M.read (M.use α4) in
+                if Value.is_true α5 then
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2
+                else
+                  M.alloc (Value.Tuple [])
+              end)
+          ]) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible

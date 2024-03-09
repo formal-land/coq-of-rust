@@ -20,7 +20,7 @@ Definition division (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
     let* α2 := M.read (M.use α1) in
     let* α3 :=
-      if α2 then
+      if Value.is_true α2 then
         let* α0 := M.get_function "std::panicking::begin_panic" in
         let* α1 := M.read (mk_str "division by zero") in
         let* α2 := M.call α0 [ α1 ] in
@@ -77,8 +77,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "This point won't be reached!
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in

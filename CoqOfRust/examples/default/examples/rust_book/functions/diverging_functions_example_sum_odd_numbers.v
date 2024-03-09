@@ -38,20 +38,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 :=
-          M.call "unimplemented parent_kind" [ Value.Integer Integer.U32 9 ] in
+          M.call
+            (* unimplemented parent_kind *)
+            [ Value.Integer Integer.U32 9 ] in
         let* α7 := M.alloc α6 in
         let* α8 := M.call α5 [ α7 ] in
-        let* α9 := M.alloc [ α8 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
             ] in
         let* α11 := M.call α0 [ α10 ] in
         M.alloc α11 in
@@ -107,80 +111,83 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α4 :=
         match_operator
           α3
-          [
-            fun γ =>
-              (let* iter := M.copy γ in
-              M.loop
-                (let* _ :=
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::iter::traits::iterator::Iterator"
-                      "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::ops::range::Range")
-                            [ Ty.path "u32" ]
-                      ] in
-                  let* α1 := M.call α0 [ iter ] in
-                  let* α2 := M.alloc α1 in
-                  match_operator
-                    α2
-                    [
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        | core.option.Option.None =>
-                          let* α0 := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 := M.never_to_any α1 in
-                          M.alloc α2
-                        | _ => M.break_match 
-                        end);
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        | core.option.Option.Some _ =>
-                          let* γ0_0 :=
-                            let* α0 :=
-                              M.var "core::option::Option::Get_Some_0" in
-                            M.pure (α0 γ) in
-                          let* i := M.copy γ0_0 in
-                          let* addition :=
-                            let* α0 := M.read i in
-                            let* α1 :=
-                              BinOp.Panic.rem
-                                α0
-                                (Value.Integer Integer.U32 2) in
-                            let* α2 :=
-                              M.alloc
-                                (BinOp.Pure.eq
-                                  α1
-                                  (Value.Integer Integer.U32 1)) in
-                            let* α3 :=
-                              match_operator
-                                α2
-                                [
-                                  fun γ => (M.pure i);
-                                  fun γ =>
-                                    (let* α0 := M.continue in
-                                    let* α1 := M.read α0 in
-                                    let* α2 := M.never_to_any α1 in
-                                    M.alloc α2)
-                                ] in
-                            M.copy α3 in
-                          let* _ :=
-                            let β := acc in
-                            let* α0 := M.read β in
-                            let* α1 := M.read addition in
-                            let* α2 := BinOp.Panic.add α0 α1 in
-                            M.assign β α2 in
-                          M.alloc (Value.Tuple [])
-                        | _ => M.break_match 
-                        end)
-                    ] in
-                M.alloc (Value.Tuple [])))
-          ] in
+          (Value.Array
+            [
+              fun γ =>
+                (let* iter := M.copy γ in
+                M.loop
+                  (let* _ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::iter::traits::iterator::Iterator"
+                        "next"
+                        [
+                          (* Self *)
+                            Ty.apply
+                              (Ty.path "core::ops::range::Range")
+                              [ Ty.path "u32" ]
+                        ] in
+                    let* α1 := M.call α0 [ iter ] in
+                    let* α2 := M.alloc α1 in
+                    match_operator
+                      α2
+                      (Value.Array
+                        [
+                          fun γ =>
+                            (let* α0 := M.read γ in
+                            match α0 with
+                            | core.option.Option.None =>
+                              let* α0 := M.break in
+                              let* α1 := M.read α0 in
+                              let* α2 := M.never_to_any α1 in
+                              M.alloc α2
+                            | _ => M.break_match 
+                            end);
+                          fun γ =>
+                            (let* α0 := M.read γ in
+                            match α0 with
+                            | core.option.Option.Some _ =>
+                              let* γ0_0 :=
+                                let* α0 :=
+                                  M.var "core::option::Option::Get_Some_0" in
+                                M.pure (α0 γ) in
+                              let* i := M.copy γ0_0 in
+                              let* addition :=
+                                let* α0 := M.read i in
+                                let* α1 :=
+                                  BinOp.Panic.rem
+                                    α0
+                                    (Value.Integer Integer.U32 2) in
+                                let* α2 :=
+                                  M.alloc
+                                    (BinOp.Pure.eq
+                                      α1
+                                      (Value.Integer Integer.U32 1)) in
+                                let* α3 :=
+                                  match_operator
+                                    α2
+                                    (Value.Array
+                                      [
+                                        fun γ => (M.pure i);
+                                        fun γ =>
+                                          (let* α0 := M.continue in
+                                          let* α1 := M.read α0 in
+                                          let* α2 := M.never_to_any α1 in
+                                          M.alloc α2)
+                                      ]) in
+                                M.copy α3 in
+                              let* _ :=
+                                let β := acc in
+                                let* α0 := M.read β in
+                                let* α1 := M.read addition in
+                                let* α2 := BinOp.Panic.add α0 α1 in
+                                M.assign β α2 in
+                              M.alloc (Value.Tuple [])
+                            | _ => M.break_match 
+                            end)
+                        ]) in
+                  M.alloc (Value.Tuple [])))
+            ]) in
       M.pure (M.use α4) in
     M.read acc
   | _, _ => M.impossible

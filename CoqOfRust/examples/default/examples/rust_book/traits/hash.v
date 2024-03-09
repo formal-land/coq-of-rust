@@ -152,7 +152,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.call α2 [ person2 ] in
       let* α4 := M.alloc (UnOp.not (BinOp.Pure.ne α1 α3)) in
       let* α5 := M.read (M.use α4) in
-      if α5 then
+      if Value.is_true α5 then
         let* α0 := M.get_function "core::panicking::panic" in
         let* α1 :=
           M.read

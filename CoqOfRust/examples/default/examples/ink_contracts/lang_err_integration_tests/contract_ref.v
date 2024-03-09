@@ -38,7 +38,9 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -196,18 +198,18 @@ Module Impl_contract_ref_FlipperRef.
       let* succeed := M.alloc succeed in
       let* α0 := M.read (M.use succeed) in
       let* α1 :=
-        if α0 then
+        if Value.is_true α0 then
           let* α0 :=
             M.get_associated_function
               (Ty.path "contract_ref::FlipperRef")
               "new" in
-          let* α1 := M.call α0 [ true ] in
+          let* α1 := M.call α0 [ Value.Bool true ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
-              [ contract_ref.FlipperError.Build ]) in
+              [ Value.StructTuple "contract_ref::FlipperError" [] ]) in
       M.read α1
     | _, _ => M.impossible
     end.

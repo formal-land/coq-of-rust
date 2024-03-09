@@ -21,18 +21,24 @@ Module Impl_custom_allocator_CustomAllocator.
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "bool" ])
           "into_vec" in
-      let* α1 := M.read init_value in
-      let* α2 := M.alloc [ α1 ] in
-      let* α3 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α2 ] in
-      let* α4 := M.read α3 in
-      let* α5 := M.call α0 [ M.pointer_coercion "Unsize" α4 ] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "bool" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
+      let* α2 := M.read init_value in
+      let* α3 := M.alloc (Value.Array [ α2 ]) in
+      let* α4 := M.call α1 [ α3 ] in
+      let* α5 := M.read α4 in
+      let* α6 := M.call α0 [ M.pointer_coercion (* Unsize *) α5 ] in
       M.pure
         (Value.StructRecord
           "custom_allocator::CustomAllocator"
-          [ ("value", α5) ])
+          [ ("value", α6) ])
     | _, _ => M.impossible
     end.
   

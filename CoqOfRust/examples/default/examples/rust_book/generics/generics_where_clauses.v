@@ -26,7 +26,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α2 := M.read (mk_str "") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -35,11 +35,13 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α7 :=
             M.alloc (Value.StructTuple "core::option::Option::Some" [ α6 ]) in
           let* α8 := M.call α5 [ α7 ] in
-          let* α9 := M.alloc [ α8 ] in
+          let* α9 := M.alloc (Value.Array [ α8 ]) in
           let* α10 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α9
               ] in
           let* α11 := M.call α0 [ α10 ] in
           M.alloc α11 in
@@ -77,19 +79,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
           "into_vec" in
       let* α1 :=
-        M.alloc
-          [
-            Value.Integer Integer.I32 1;
-            Value.Integer Integer.I32 2;
-            Value.Integer Integer.I32 3
-          ] in
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
       let* α2 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α1 ] in
-      let* α3 := M.read α2 in
-      let* α4 := M.call α0 [ M.pointer_coercion "Unsize" α3 ] in
-      M.alloc α4 in
+        M.alloc
+          (Value.Array
+            [
+              Value.Integer Integer.I32 1;
+              Value.Integer Integer.I32 2;
+              Value.Integer Integer.I32 3
+            ]) in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      M.alloc α5 in
     let* _ :=
       let* α0 :=
         M.get_trait_method

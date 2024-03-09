@@ -13,7 +13,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := match_operator α0 [] in
+      let* α1 := match_operator α0 (Value.Array []) in
       let* α2 := M.read α1 in
       M.never_to_any α2
     | _, _ => M.impossible
@@ -75,7 +75,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := match_operator α0 [] in
+      let* α1 := match_operator α0 (Value.Array []) in
       let* α2 := M.read α1 in
       M.never_to_any α2
     | _, _ => M.impossible
@@ -150,8 +150,8 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         [
           α1;
           α2;
-          M.pointer_coercion "Unsize" (M.get_struct_tuple α3 0);
-          M.pointer_coercion "Unsize" α5
+          M.pointer_coercion (* Unsize *) (M.get_struct_tuple α3 0);
+          M.pointer_coercion (* Unsize *) α5
         ]
     | _, _ => M.impossible
     end.
@@ -252,7 +252,7 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
       M.pure
         (Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
-          [ α2; core.marker.PhantomData.Build ])
+          [ α2; Value.StructTuple "core::marker::PhantomData" [] ])
     | _, _ => M.impossible
     end.
   
@@ -301,13 +301,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
-          [ α0; core.marker.PhantomData.Build ]) in
+          [ α0; Value.StructTuple "core::marker::PhantomData" [] ]) in
     let* one_meter :=
       let* α0 := M.read UnsupportedLiteral in
       M.alloc
         (Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
-          [ α0; core.marker.PhantomData.Build ]) in
+          [ α0; Value.StructTuple "core::marker::PhantomData" [] ]) in
     let* two_feet :=
       let* α0 :=
         M.get_trait_method
@@ -370,17 +370,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "one foot + one_foot = ") in
         let* α3 := M.read (mk_str " in
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ M.get_struct_tuple two_feet 0 ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -393,17 +395,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "one meter + one_meter = ") in
         let* α3 := M.read (mk_str " mm
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ M.get_struct_tuple two_meters 0 ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

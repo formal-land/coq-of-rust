@@ -43,8 +43,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "Let's count until infinity!
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
@@ -59,7 +59,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α0 := M.read count in
           let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 3)) in
           let* α2 := M.read (M.use α1) in
-          if α2 then
+          if Value.is_true α2 then
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" in
@@ -69,8 +69,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     "new_const" in
                 let* α2 := M.read (mk_str "three
 ") in
-                let* α3 := M.alloc [ α2 ] in
-                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                 let* α5 := M.call α0 [ α4 ] in
                 M.alloc α5 in
               M.alloc (Value.Tuple []) in
@@ -90,17 +90,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc [ α2; α3 ] in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
             let* α5 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
             let* α6 := M.call α5 [ count ] in
-            let* α7 := M.alloc [ α6 ] in
+            let* α7 := M.alloc (Value.Array [ α6 ]) in
             let* α8 :=
               M.call
                 α1
-                [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+                [
+                  M.pointer_coercion (* Unsize *) α4;
+                  M.pointer_coercion (* Unsize *) α7
                 ] in
             let* α9 := M.call α0 [ α8 ] in
             M.alloc α9 in
@@ -108,7 +110,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α0 := M.read count in
         let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 5)) in
         let* α2 := M.read (M.use α1) in
-        if α2 then
+        if Value.is_true α2 then
           let* _ :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" in
@@ -118,8 +120,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "new_const" in
               let* α2 := M.read (mk_str "OK, that's enough
 ") in
-              let* α3 := M.alloc [ α2 ] in
-              let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []) in

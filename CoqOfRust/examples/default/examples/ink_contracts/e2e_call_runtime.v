@@ -38,7 +38,9 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -97,7 +99,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] => M.pure e2e_call_runtime.Contract.Build
+    | [ Self ], [] => M.pure (Value.StructTuple "e2e_call_runtime::Contract" [])
     | _, _ => M.impossible
     end.
   
@@ -157,7 +159,7 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] => M.pure e2e_call_runtime.Contract.Build
+    | [ Self ], [] => M.pure (Value.StructTuple "e2e_call_runtime::Contract" [])
     | _, _ => M.impossible
     end.
   

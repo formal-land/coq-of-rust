@@ -22,8 +22,8 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
               "new_const" in
           let* α2 := M.read (mk_str "ToDrop is being dropped
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -51,7 +51,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* x := M.alloc scoping_rules_raii_desctructor.ToDrop.Build in
+    let* x :=
+      M.alloc (Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" []) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" in
@@ -61,8 +62,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "Made a ToDrop!
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in

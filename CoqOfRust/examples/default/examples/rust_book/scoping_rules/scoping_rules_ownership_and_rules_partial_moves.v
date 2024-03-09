@@ -57,117 +57,119 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       match_operator
         person
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            |
-                {|
-                  scoping_rules_ownership_and_rules_partial_moves.main.Person.name
-                    :=
-                    _;
-                  scoping_rules_ownership_and_rules_partial_moves.main.Person.age
-                    :=
-                    _;
-                |}
-                =>
-              let* γ0_0 :=
-                let* α0 :=
-                  M.var
-                    "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_name" in
-                M.pure (α0 γ) in
-              let* γ0_1 :=
-                let* α0 :=
-                  M.var
-                    "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_age" in
-                M.pure (α0 γ) in
-              let* name := M.copy γ0_0 in
-              let* age := M.alloc (borrow γ0_1) in
-              let* _ :=
+        (Value.Array
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              |
+                  {|
+                    scoping_rules_ownership_and_rules_partial_moves.main.Person.name
+                      :=
+                      _;
+                    scoping_rules_ownership_and_rules_partial_moves.main.Person.age
+                      :=
+                      _;
+                  |}
+                  =>
+                let* γ0_0 :=
+                  let* α0 :=
+                    M.var
+                      "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_name" in
+                  M.pure (α0 γ) in
+                let* γ0_1 :=
+                  let* α0 :=
+                    M.var
+                      "scoping_rules_ownership_and_rules_partial_moves::main::Person::Get_age" in
+                  M.pure (α0 γ) in
+                let* name := M.copy γ0_0 in
+                let* age := M.alloc (borrow γ0_1) in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "The person's age is ") in
-                  let* α3 := M.read (mk_str "
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "The person's age is ") in
+                    let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc [ α2; α3 ] in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α6 := M.call α5 [ age ] in
-                  let* α7 := M.alloc [ α6 ] in
-                  let* α8 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion "Unsize" α4;
-                        M.pointer_coercion "Unsize" α7
-                      ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
-                M.alloc (Value.Tuple []) in
-              let* _ :=
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    let* α5 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α6 := M.call α5 [ age ] in
+                    let* α7 := M.alloc (Value.Array [ α6 ]) in
+                    let* α8 :=
+                      M.call
+                        α1
+                        [
+                          M.pointer_coercion (* Unsize *) α4;
+                          M.pointer_coercion (* Unsize *) α7
+                        ] in
+                    let* α9 := M.call α0 [ α8 ] in
+                    M.alloc α9 in
+                  M.alloc (Value.Tuple []) in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "The person's name is ") in
-                  let* α3 := M.read (mk_str "
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "The person's name is ") in
+                    let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc [ α2; α3 ] in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α6 := M.call α5 [ name ] in
-                  let* α7 := M.alloc [ α6 ] in
-                  let* α8 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion "Unsize" α4;
-                        M.pointer_coercion "Unsize" α7
-                      ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
-                M.alloc (Value.Tuple []) in
-              let* _ :=
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    let* α5 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α6 := M.call α5 [ name ] in
+                    let* α7 := M.alloc (Value.Array [ α6 ]) in
+                    let* α8 :=
+                      M.call
+                        α1
+                        [
+                          M.pointer_coercion (* Unsize *) α4;
+                          M.pointer_coercion (* Unsize *) α7
+                        ] in
+                    let* α9 := M.call α0 [ α8 ] in
+                    M.alloc α9 in
+                  M.alloc (Value.Tuple []) in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 :=
-                    M.read (mk_str "The person's age from person struct is ") in
-                  let* α3 := M.read (mk_str "
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 :=
+                      M.read
+                        (mk_str "The person's age from person struct is ") in
+                    let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc [ α2; α3 ] in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α6 := M.call α5 [ M.get_struct_record person "age" ] in
-                  let* α7 := M.alloc [ α6 ] in
-                  let* α8 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion "Unsize" α4;
-                        M.pointer_coercion "Unsize" α7
-                      ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
-                M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple [])
-            end)
-        ] in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    let* α5 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α6 := M.call α5 [ M.get_struct_record person "age" ] in
+                    let* α7 := M.alloc (Value.Array [ α6 ]) in
+                    let* α8 :=
+                      M.call
+                        α1
+                        [
+                          M.pointer_coercion (* Unsize *) α4;
+                          M.pointer_coercion (* Unsize *) α7
+                        ] in
+                    let* α9 := M.call α0 [ α8 ] in
+                    M.alloc α9 in
+                  M.alloc (Value.Tuple []) in
+                M.alloc (Value.Tuple [])
+              end)
+          ]) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -200,9 +202,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
           α1;
           α2;
           α3;
-          M.pointer_coercion "Unsize" (M.get_struct_record α4 "name");
+          M.pointer_coercion (* Unsize *) (M.get_struct_record α4 "name");
           α5;
-          M.pointer_coercion "Unsize" α7
+          M.pointer_coercion (* Unsize *) α7
         ]
     | _, _ => M.impossible
     end.

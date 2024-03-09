@@ -39,7 +39,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.read n in
       let* α1 := M.alloc (BinOp.Pure.lt α0 (Value.Integer Integer.I32 0)) in
       let* α2 := M.read (M.use α1) in
-      if α2 then
+      if Value.is_true α2 then
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" in
@@ -49,17 +49,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "new_v1" in
             let* α2 := M.read (mk_str "") in
             let* α3 := M.read (mk_str " is negative") in
-            let* α4 := M.alloc [ α2; α3 ] in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
             let* α5 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
             let* α6 := M.call α5 [ n ] in
-            let* α7 := M.alloc [ α6 ] in
+            let* α7 := M.alloc (Value.Array [ α6 ]) in
             let* α8 :=
               M.call
                 α1
-                [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+                [
+                  M.pointer_coercion (* Unsize *) α4;
+                  M.pointer_coercion (* Unsize *) α7
                 ] in
             let* α9 := M.call α0 [ α8 ] in
             M.alloc α9 in
@@ -69,7 +71,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α0 := M.read n in
         let* α1 := M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 0)) in
         let* α2 := M.read (M.use α1) in
-        if α2 then
+        if Value.is_true α2 then
           let* _ :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" in
@@ -79,19 +81,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "new_v1" in
               let* α2 := M.read (mk_str "") in
               let* α3 := M.read (mk_str " is positive") in
-              let* α4 := M.alloc [ α2; α3 ] in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
               let* α6 := M.call α5 [ n ] in
-              let* α7 := M.alloc [ α6 ] in
+              let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
                 M.call
                   α1
                   [
-                    M.pointer_coercion "Unsize" α4;
-                    M.pointer_coercion "Unsize" α7
+                    M.pointer_coercion (* Unsize *) α4;
+                    M.pointer_coercion (* Unsize *) α7
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
@@ -107,19 +109,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "new_v1" in
               let* α2 := M.read (mk_str "") in
               let* α3 := M.read (mk_str " is zero") in
-              let* α4 := M.alloc [ α2; α3 ] in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
               let* α6 := M.call α5 [ n ] in
-              let* α7 := M.alloc [ α6 ] in
+              let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
                 M.call
                   α1
                   [
-                    M.pointer_coercion "Unsize" α4;
-                    M.pointer_coercion "Unsize" α7
+                    M.pointer_coercion (* Unsize *) α4;
+                    M.pointer_coercion (* Unsize *) α7
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
@@ -135,7 +137,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (BinOp.Pure.gt α1 (Value.Integer Integer.I32 (-10)))) in
       let* α3 := M.read (M.use α2) in
       let* α4 :=
-        if α3 then
+        if Value.is_true α3 then
           let* _ :=
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" in
@@ -146,8 +148,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 :=
                 M.read (mk_str ", and is a small number, increase ten-fold
 ") in
-              let* α3 := M.alloc [ α2 ] in
-              let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []) in
@@ -165,8 +167,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 :=
                 M.read (mk_str ", and is a big number, halve the number
 ") in
-              let* α3 := M.alloc [ α2 ] in
-              let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []) in
@@ -183,7 +185,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str " -> ") in
         let* α4 := M.read (mk_str "
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -194,11 +196,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α9 := M.call α8 [ big_n ] in
-        let* α10 := M.alloc [ α7; α9 ] in
+        let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in

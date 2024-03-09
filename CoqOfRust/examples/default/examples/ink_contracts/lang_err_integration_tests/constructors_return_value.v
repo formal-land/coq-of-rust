@@ -38,7 +38,9 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -212,18 +214,22 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       let* succeed := M.alloc succeed in
       let* α0 := M.read (M.use succeed) in
       let* α1 :=
-        if α0 then
+        if Value.is_true α0 then
           let* α0 :=
             M.get_associated_function
               (Ty.path "constructors_return_value::ConstructorsReturnValue")
               "new" in
-          let* α1 := M.call α0 [ true ] in
+          let* α1 := M.call α0 [ Value.Bool true ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
-              [ constructors_return_value.ConstructorError.Build ]) in
+              [
+                Value.StructTuple
+                  "constructors_return_value::ConstructorError"
+                  []
+              ]) in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -248,7 +254,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         M.get_associated_function
           (Ty.path "constructors_return_value::ReturnFlags")
           "new_with_reverted" in
-      let* α2 := M.call α1 [ true ] in
+      let* α2 := M.call α1 [ Value.Bool true ] in
       let* α3 :=
         M.get_trait_method
           "core::convert::From"
@@ -289,7 +295,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       let* value :=
         let* α0 := M.read (M.use init_value) in
         let* α1 :=
-          if α0 then
+          if Value.is_true α0 then
             let* α0 :=
               M.get_trait_method
                 "core::convert::From"
@@ -307,14 +313,18 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             M.alloc
               (Value.StructTuple
                 "core::result::Result::Err"
-                [ constructors_return_value.LangError.CouldNotReadInput ]) in
+                [
+                  Value.StructTuple
+                    "constructors_return_value::LangError::CouldNotReadInput"
+                    []
+                ]) in
         M.copy α1 in
       let* α0 := M.get_function "constructors_return_value::return_value" in
       let* α1 :=
         M.get_associated_function
           (Ty.path "constructors_return_value::ReturnFlags")
           "new_with_reverted" in
-      let* α2 := M.call α1 [ true ] in
+      let* α2 := M.call α1 [ Value.Bool true ] in
       let* α3 := M.call α0 [ α2; value ] in
       let* α4 := M.never_to_any α3 in
       let* α0 := M.alloc α4 in

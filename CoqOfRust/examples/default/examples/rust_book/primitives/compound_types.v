@@ -32,7 +32,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* logical := M.alloc true in
+    let* logical := M.alloc (Value.Bool true) in
     let* a_float := M.copy UnsupportedLiteral in
     let* an_integer := M.alloc (Value.Integer Integer.I32 5) in
     let* default_float := M.copy UnsupportedLiteral in
@@ -41,7 +41,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ := M.assign inferred_type (Value.Integer Integer.I64 4294967296) in
     let* mutable := M.alloc (Value.Integer Integer.I32 12) in
     let* _ := M.assign mutable (Value.Integer Integer.I32 21) in
-    let* mutable := M.alloc true in
+    let* mutable := M.alloc (Value.Bool true) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible

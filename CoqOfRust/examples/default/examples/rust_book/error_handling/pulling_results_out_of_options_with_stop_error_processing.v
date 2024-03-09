@@ -57,41 +57,43 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                [
-                  fun γ =>
-                    (let* first := M.copy γ in
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "i32";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
-                        "map" in
-                    let* α1 :=
-                      M.get_associated_function (Ty.path "str") "parse" in
-                    let* α2 := M.read first in
-                    let* α3 := M.read α2 in
-                    let* α4 := M.call α1 [ α3 ] in
-                    M.call
-                      α0
-                      [
-                        α4;
-                        fun (α0 : Ty.path "i32") =>
-                          (let* α0 := M.alloc α0 in
-                          match_operator
-                            α0
+                (Value.Array
+                  [
+                    fun γ =>
+                      (let* first := M.copy γ in
+                      let* α0 :=
+                        M.get_associated_function
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
                             [
-                              fun γ =>
-                                (let* n := M.copy γ in
-                                let* α0 := M.read n in
-                                BinOp.Panic.mul
-                                  (Value.Integer Integer.I32 2)
-                                  α0)
+                              Ty.path "i32";
+                              Ty.path "core::num::error::ParseIntError"
                             ])
-                      ])
-                ])
+                          "map" in
+                      let* α1 :=
+                        M.get_associated_function (Ty.path "str") "parse" in
+                      let* α2 := M.read first in
+                      let* α3 := M.read α2 in
+                      let* α4 := M.call α1 [ α3 ] in
+                      M.call
+                        α0
+                        [
+                          α4;
+                          fun (α0 : Ty.path "i32") =>
+                            (let* α0 := M.alloc α0 in
+                            match_operator
+                              α0
+                              (Value.Array
+                                [
+                                  fun γ =>
+                                    (let* n := M.copy γ in
+                                    let* α0 := M.read n in
+                                    BinOp.Panic.mul
+                                      (Value.Integer Integer.I32 2)
+                                      α0)
+                                ]))
+                        ])
+                  ]))
           ] in
       M.alloc α5 in
     let* α0 :=
@@ -112,7 +114,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α1;
           Value.StructTuple
             "core::result::Result::Ok"
-            [ core.option.Option.None ];
+            [ Value.StructTuple "core::option::Option::None" [] ];
           fun
               (α0 :
                 Ty.apply
@@ -122,21 +124,22 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* α0 := M.alloc α0 in
             match_operator
               α0
-              [
-                fun γ =>
-                  (let* r := M.copy γ in
-                  let* α0 :=
-                    M.get_associated_function
-                      (Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "i32";
-                          Ty.path "core::num::error::ParseIntError"
-                        ])
-                      "map" in
-                  let* α1 := M.read r in
-                  M.call α0 [ α1; core.option.Option.Some ])
-              ])
+              (Value.Array
+                [
+                  fun γ =>
+                    (let* r := M.copy γ in
+                    let* α0 :=
+                      M.get_associated_function
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "i32";
+                            Ty.path "core::num::error::ParseIntError"
+                          ])
+                        "map" in
+                    let* α1 := M.read r in
+                    M.call α0 [ α1; core.option.Option.Some ])
+                ]))
         ] in
     let* α0 := M.alloc α2 in
     M.read α0
@@ -165,17 +168,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "slice")
             [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
           "into_vec" in
-      let* α1 := M.read (mk_str "42") in
-      let* α2 := M.read (mk_str "93") in
-      let* α3 := M.read (mk_str "18") in
-      let* α4 := M.alloc [ α1; α2; α3 ] in
-      let* α5 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α4 ] in
-      let* α6 := M.read α5 in
-      let* α7 := M.call α0 [ M.pointer_coercion "Unsize" α6 ] in
-      M.alloc α7 in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
+      let* α2 := M.read (mk_str "42") in
+      let* α3 := M.read (mk_str "93") in
+      let* α4 := M.read (mk_str "18") in
+      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+      let* α6 := M.call α1 [ α5 ] in
+      let* α7 := M.read α6 in
+      let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
+      M.alloc α8 in
     let* empty :=
       let* α0 :=
         M.get_associated_function
@@ -195,17 +206,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "slice")
             [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
           "into_vec" in
-      let* α1 := M.read (mk_str "tofu") in
-      let* α2 := M.read (mk_str "93") in
-      let* α3 := M.read (mk_str "18") in
-      let* α4 := M.alloc [ α1; α2; α3 ] in
-      let* α5 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α4 ] in
-      let* α6 := M.read α5 in
-      let* α7 := M.call α0 [ M.pointer_coercion "Unsize" α6 ] in
-      M.alloc α7 in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
+      let* α2 := M.read (mk_str "tofu") in
+      let* α3 := M.read (mk_str "93") in
+      let* α4 := M.read (mk_str "18") in
+      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+      let* α6 := M.call α1 [ α5 ] in
+      let* α7 := M.read α6 in
+      let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
+      M.alloc α8 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" in
@@ -214,7 +233,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "The first doubled is ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -226,11 +245,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call α5 [ α9 ] in
-        let* α11 := M.alloc [ α10 ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α11
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α11
             ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in
@@ -243,7 +264,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "The first doubled is ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -255,11 +276,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call α5 [ α9 ] in
-        let* α11 := M.alloc [ α10 ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α11
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α11
             ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in
@@ -272,7 +295,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "The first doubled is ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -284,11 +307,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call α5 [ α9 ] in
-        let* α11 := M.alloc [ α10 ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α11
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α11
             ] in
         let* α13 := M.call α0 [ α12 ] in
         M.alloc α13 in

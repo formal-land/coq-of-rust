@@ -86,7 +86,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
-      M.pure core.option.Option.None
+      M.pure (Value.StructTuple "core::option::Option::None" [])
     | _, _ => M.impossible
     end.
   

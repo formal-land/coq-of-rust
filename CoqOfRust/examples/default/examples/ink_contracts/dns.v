@@ -225,7 +225,9 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -666,96 +668,84 @@ Module Impl_dns_DomainNameService.
     | [ Self ], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
-      let return_ :=
-        M.return_
-          (R :=
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "dns::Error" ]) in
-      M.catch_return
-        (let* caller :=
-          let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.call α0 [ α4 ] in
-          M.alloc α5 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "dns::Mapping")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
-                ])
-              "contains" in
-          let* α1 := M.read self in
-          let* α2 :=
-            M.call α0 [ M.get_struct_record α1 "name_to_owner"; name ] in
-          let* α3 := M.alloc α2 in
-          let* α4 := M.read (M.use α3) in
-          if α4 then
-            let* α0 :=
-              return_
-                (Value.StructTuple
-                  "core::result::Result::Err"
-                  [ dns.Error.NameAlreadyExists ]) in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2
-          else
-            M.alloc (Value.Tuple []) in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "dns::Mapping")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
-                ])
-              "insert" in
-          let* α1 := M.read self in
-          let* α2 := M.read name in
-          let* α3 := M.read caller in
-          let* α4 :=
-            M.call α0 [ M.get_struct_record α1 "name_to_owner"; α2; α3 ] in
-          M.alloc α4 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function (Ty.path "dns::Env") "emit_event" in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.read name in
-          let* α6 := M.read caller in
-          let* α7 :=
-            M.call
-              α0
-              [
-                α4;
-                Value.StructTuple
-                  "dns::Event::Register"
-                  [
-                    Value.StructRecord
-                      "dns::Register"
-                      [ ("name", α5); ("from", α6) ]
-                  ]
-              ] in
-          M.alloc α7 in
+      let* caller :=
+        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      let* _ :=
         let* α0 :=
-          M.alloc
-            (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
-        M.read α0)
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])
+            "contains" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ M.get_struct_record α1 "name_to_owner"; name ] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.read (M.use α3) in
+        if Value.is_true α4 then
+          let* α0 :=
+            M.return_
+              (Value.StructTuple
+                "core::result::Result::Err"
+                [ Value.StructTuple "dns::Error::NameAlreadyExists" [] ]) in
+          let* α1 := M.read α0 in
+          let* α2 := M.never_to_any α1 in
+          M.alloc α2
+        else
+          M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])
+            "insert" in
+        let* α1 := M.read self in
+        let* α2 := M.read name in
+        let* α3 := M.read caller in
+        let* α4 :=
+          M.call α0 [ M.get_struct_record α1 "name_to_owner"; α2; α3 ] in
+        M.alloc α4 in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function (Ty.path "dns::Env") "emit_event" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.read name in
+        let* α6 := M.read caller in
+        let* α7 :=
+          M.call
+            α0
+            [
+              α4;
+              Value.StructTuple
+                "dns::Event::Register"
+                [
+                  Value.StructRecord
+                    "dns::Register"
+                    [ ("name", α5); ("from", α6) ]
+                ]
+            ] in
+        M.alloc α7 in
+      let* α0 :=
+        M.alloc
+          (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -826,123 +816,112 @@ Module Impl_dns_DomainNameService.
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* new_address := M.alloc new_address in
-      let return_ :=
-        M.return_
-          (R :=
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "dns::Error" ]) in
-      M.catch_return
-        (let* caller :=
-          let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.call α0 [ α4 ] in
-          M.alloc α5 in
-        let* owner :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "get_owner_or_default" in
-          let* α1 := M.read self in
-          let* α2 := M.read name in
-          let* α3 := M.call α0 [ α1; α2 ] in
-          M.alloc α3 in
-        let* _ :=
-          let* α0 :=
-            M.get_trait_method
-              "core::cmp::PartialEq"
-              "ne"
-              [
-                (* Self *) Ty.path "dns::AccountId";
-                (* Rhs *) Ty.path "dns::AccountId"
-              ] in
-          let* α1 := M.call α0 [ caller; owner ] in
-          let* α2 := M.alloc α1 in
-          let* α3 := M.read (M.use α2) in
-          if α3 then
-            let* α0 :=
-              return_
-                (Value.StructTuple
-                  "core::result::Result::Err"
-                  [ dns.Error.CallerIsNotOwner ]) in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2
-          else
-            M.alloc (Value.Tuple []) in
-        let* old_address :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "dns::Mapping")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
-                ])
-              "get" in
-          let* α1 := M.read self in
-          let* α2 :=
-            M.call α0 [ M.get_struct_record α1 "name_to_address"; name ] in
-          M.alloc α2 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "dns::Mapping")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
-                ])
-              "insert" in
-          let* α1 := M.read self in
-          let* α2 := M.read name in
-          let* α3 := M.read new_address in
-          let* α4 :=
-            M.call α0 [ M.get_struct_record α1 "name_to_address"; α2; α3 ] in
-          M.alloc α4 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function (Ty.path "dns::Env") "emit_event" in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.read name in
-          let* α6 := M.read caller in
-          let* α7 := M.read old_address in
-          let* α8 := M.read new_address in
-          let* α9 :=
-            M.call
-              α0
-              [
-                α4;
-                Value.StructTuple
-                  "dns::Event::SetAddress"
-                  [
-                    Value.StructRecord
-                      "dns::SetAddress"
-                      [
-                        ("name", α5);
-                        ("from", α6);
-                        ("old_address", α7);
-                        ("new_address", α8)
-                      ]
-                  ]
-              ] in
-          M.alloc α9 in
+      let* caller :=
+        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      let* owner :=
         let* α0 :=
-          M.alloc
-            (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
-        M.read α0)
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "get_owner_or_default" in
+        let* α1 := M.read self in
+        let* α2 := M.read name in
+        let* α3 := M.call α0 [ α1; α2 ] in
+        M.alloc α3 in
+      let* _ :=
+        let* α0 :=
+          M.get_trait_method
+            "core::cmp::PartialEq"
+            "ne"
+            [
+              (* Self *) Ty.path "dns::AccountId";
+              (* Rhs *) Ty.path "dns::AccountId"
+            ] in
+        let* α1 := M.call α0 [ caller; owner ] in
+        let* α2 := M.alloc α1 in
+        let* α3 := M.read (M.use α2) in
+        if Value.is_true α3 then
+          let* α0 :=
+            M.return_
+              (Value.StructTuple
+                "core::result::Result::Err"
+                [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
+          let* α1 := M.read α0 in
+          let* α2 := M.never_to_any α1 in
+          M.alloc α2
+        else
+          M.alloc (Value.Tuple []) in
+      let* old_address :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])
+            "get" in
+        let* α1 := M.read self in
+        let* α2 :=
+          M.call α0 [ M.get_struct_record α1 "name_to_address"; name ] in
+        M.alloc α2 in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])
+            "insert" in
+        let* α1 := M.read self in
+        let* α2 := M.read name in
+        let* α3 := M.read new_address in
+        let* α4 :=
+          M.call α0 [ M.get_struct_record α1 "name_to_address"; α2; α3 ] in
+        M.alloc α4 in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function (Ty.path "dns::Env") "emit_event" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.read name in
+        let* α6 := M.read caller in
+        let* α7 := M.read old_address in
+        let* α8 := M.read new_address in
+        let* α9 :=
+          M.call
+            α0
+            [
+              α4;
+              Value.StructTuple
+                "dns::Event::SetAddress"
+                [
+                  Value.StructRecord
+                    "dns::SetAddress"
+                    [
+                      ("name", α5);
+                      ("from", α6);
+                      ("old_address", α7);
+                      ("new_address", α8)
+                    ]
+                ]
+            ] in
+        M.alloc α9 in
+      let* α0 :=
+        M.alloc
+          (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -976,123 +955,111 @@ Module Impl_dns_DomainNameService.
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* to := M.alloc to in
-      let return_ :=
-        M.return_
-          (R :=
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "dns::Error" ]) in
-      M.catch_return
-        (let* caller :=
-          let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.call α0 [ α4 ] in
-          M.alloc α5 in
-        let* owner :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "get_owner_or_default" in
-          let* α1 := M.read self in
-          let* α2 := M.read name in
-          let* α3 := M.call α0 [ α1; α2 ] in
-          M.alloc α3 in
-        let* _ :=
-          let* α0 :=
-            M.get_trait_method
-              "core::cmp::PartialEq"
-              "ne"
-              [
-                (* Self *) Ty.path "dns::AccountId";
-                (* Rhs *) Ty.path "dns::AccountId"
-              ] in
-          let* α1 := M.call α0 [ caller; owner ] in
-          let* α2 := M.alloc α1 in
-          let* α3 := M.read (M.use α2) in
-          if α3 then
-            let* α0 :=
-              return_
-                (Value.StructTuple
-                  "core::result::Result::Err"
-                  [ dns.Error.CallerIsNotOwner ]) in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2
-          else
-            M.alloc (Value.Tuple []) in
-        let* old_owner :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "dns::Mapping")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
-                ])
-              "get" in
-          let* α1 := M.read self in
-          let* α2 :=
-            M.call α0 [ M.get_struct_record α1 "name_to_owner"; name ] in
-          M.alloc α2 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "dns::Mapping")
-                [
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                  Ty.path "dns::AccountId"
-                ])
-              "insert" in
-          let* α1 := M.read self in
-          let* α2 := M.read name in
-          let* α3 := M.read to in
-          let* α4 :=
-            M.call α0 [ M.get_struct_record α1 "name_to_owner"; α2; α3 ] in
-          M.alloc α4 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function (Ty.path "dns::Env") "emit_event" in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "dns::DomainNameService")
-              "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.read name in
-          let* α6 := M.read caller in
-          let* α7 := M.read old_owner in
-          let* α8 := M.read to in
-          let* α9 :=
-            M.call
-              α0
-              [
-                α4;
-                Value.StructTuple
-                  "dns::Event::Transfer"
-                  [
-                    Value.StructRecord
-                      "dns::Transfer"
-                      [
-                        ("name", α5);
-                        ("from", α6);
-                        ("old_owner", α7);
-                        ("new_owner", α8)
-                      ]
-                  ]
-              ] in
-          M.alloc α9 in
+      let* caller :=
+        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      let* owner :=
         let* α0 :=
-          M.alloc
-            (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
-        M.read α0)
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "get_owner_or_default" in
+        let* α1 := M.read self in
+        let* α2 := M.read name in
+        let* α3 := M.call α0 [ α1; α2 ] in
+        M.alloc α3 in
+      let* _ :=
+        let* α0 :=
+          M.get_trait_method
+            "core::cmp::PartialEq"
+            "ne"
+            [
+              (* Self *) Ty.path "dns::AccountId";
+              (* Rhs *) Ty.path "dns::AccountId"
+            ] in
+        let* α1 := M.call α0 [ caller; owner ] in
+        let* α2 := M.alloc α1 in
+        let* α3 := M.read (M.use α2) in
+        if Value.is_true α3 then
+          let* α0 :=
+            M.return_
+              (Value.StructTuple
+                "core::result::Result::Err"
+                [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
+          let* α1 := M.read α0 in
+          let* α2 := M.never_to_any α1 in
+          M.alloc α2
+        else
+          M.alloc (Value.Tuple []) in
+      let* old_owner :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])
+            "get" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ M.get_struct_record α1 "name_to_owner"; name ] in
+        M.alloc α2 in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "dns::Mapping")
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "dns::AccountId"
+              ])
+            "insert" in
+        let* α1 := M.read self in
+        let* α2 := M.read name in
+        let* α3 := M.read to in
+        let* α4 :=
+          M.call α0 [ M.get_struct_record α1 "name_to_owner"; α2; α3 ] in
+        M.alloc α4 in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function (Ty.path "dns::Env") "emit_event" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.read name in
+        let* α6 := M.read caller in
+        let* α7 := M.read old_owner in
+        let* α8 := M.read to in
+        let* α9 :=
+          M.call
+            α0
+            [
+              α4;
+              Value.StructTuple
+                "dns::Event::Transfer"
+                [
+                  Value.StructRecord
+                    "dns::Transfer"
+                    [
+                      ("name", α5);
+                      ("from", α6);
+                      ("old_owner", α7);
+                      ("new_owner", α8)
+                    ]
+                ]
+            ] in
+        M.alloc α9 in
+      let* α0 :=
+        M.alloc
+          (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
+      M.read α0
     | _, _ => M.impossible
     end.
   

@@ -23,18 +23,20 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
           let* α2 := M.read (mk_str "> Dropping ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.read self in
           let* α7 := M.call α5 [ M.get_struct_record α6 "name" ] in
-          let* α8 := M.alloc [ α7 ] in
+          let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α8
               ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in
@@ -111,8 +113,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "new_const" in
             let* α2 := M.read (mk_str "Exiting block B
 ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -126,8 +128,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               "new_const" in
           let* α2 := M.read (mk_str "Just exited block B
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -140,8 +142,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               "new_const" in
           let* α2 := M.read (mk_str "Exiting block A
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -155,8 +157,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "Just exited block A
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
@@ -174,8 +176,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "end of the main function
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in

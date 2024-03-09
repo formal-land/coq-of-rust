@@ -785,40 +785,13 @@ fn compile_function_body(
     if env.axiomatize || is_axiom {
         return None;
     }
-    let body = compile_hir_id(env, body.value.hir_id).read();
-    let has_return = body.has_return();
-    let body = if has_return {
-        Rc::new(Expr {
-            kind: Rc::new(ExprKind::Let {
-                is_monadic: false,
-                name: Some("return_".to_string()),
-                init: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::VarWithTy {
-                        path: Path::local("M.return_"),
-                        ty_name: "R".to_string(),
-                        ty: ret_ty,
-                    }),
-                    ty: None,
-                }),
-                body: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::MonadicOperator {
-                        name: "M.catch_return".to_string(),
-                        arg: body,
-                    }),
-                    ty: None,
-                }),
-            }),
-            ty: None,
-        })
-    } else {
-        body
-    };
+    let body_without_bindings = compile_hir_id(env, body.value.hir_id).read();
     let body = crate::thir_expression::allocate_bindings(
         &args
             .iter()
             .map(|(name, _)| name.clone())
             .collect::<Vec<_>>(),
-        body,
+        body_without_bindings,
     );
 
     Some(body)

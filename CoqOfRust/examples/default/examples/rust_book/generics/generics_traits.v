@@ -50,8 +50,8 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* empty := M.alloc generics_traits.Empty.Build in
-    let* null := M.alloc generics_traits.Null.Build in
+    let* empty := M.alloc (Value.StructTuple "generics_traits::Empty" []) in
+    let* null := M.alloc (Value.StructTuple "generics_traits::Null" []) in
     let* _ :=
       let* α0 :=
         M.get_trait_method

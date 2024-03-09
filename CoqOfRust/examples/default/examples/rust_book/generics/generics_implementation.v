@@ -78,7 +78,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str ", ") in
         let* α4 := M.read (mk_str "
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -103,11 +103,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α13 := M.call α12 [ y ] in
         let* α14 := M.alloc α13 in
         let* α15 := M.call α11 [ α14 ] in
-        let* α16 := M.alloc [ α10; α15 ] in
+        let* α16 := M.alloc (Value.Array [ α10; α15 ]) in
         let* α17 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α16
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α16
             ] in
         let* α18 := M.call α0 [ α17 ] in
         M.alloc α18 in

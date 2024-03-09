@@ -31,36 +31,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.alloc (Value.Integer Integer.I32 1) in
       match_operator
         α0
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | i32.Make 0 => M.alloc false
-            | _ => M.break_match 
-            end);
-          fun γ => (M.alloc true)
-        ] in
+        (Value.Array
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | i32.Make 0 => M.alloc (Value.Bool false)
+              | _ => M.break_match 
+              end);
+            fun γ => (M.alloc (Value.Bool true))
+          ]) in
     let* _ :=
-      let* α0 := M.alloc true in
+      let* α0 := M.alloc (Value.Bool true) in
       let* α1 := M.read (M.use α0) in
-      if α1 then
+      if Value.is_true α1 then
         M.alloc (Value.Integer Integer.I32 0)
       else
         M.alloc (Value.Integer Integer.I32 1) in
     let* _ :=
-      let* α0 := M.alloc false in
+      let* α0 := M.alloc (Value.Bool false) in
       let* α1 := M.read (M.use α0) in
-      if α1 then
+      if Value.is_true α1 then
         M.alloc (Value.Integer Integer.I32 2)
       else
-        let* α0 := M.alloc false in
+        let* α0 := M.alloc (Value.Bool false) in
         let* α1 := M.read (M.use α0) in
-        if α1 then
+        if Value.is_true α1 then
           M.alloc (Value.Integer Integer.I32 3)
         else
-          let* α0 := M.alloc false in
+          let* α0 := M.alloc (Value.Bool false) in
           let* α1 := M.read (M.use α0) in
-          if α1 then
+          if Value.is_true α1 then
             M.alloc (Value.Integer Integer.I32 4)
           else
             M.alloc (Value.Integer Integer.I32 5) in

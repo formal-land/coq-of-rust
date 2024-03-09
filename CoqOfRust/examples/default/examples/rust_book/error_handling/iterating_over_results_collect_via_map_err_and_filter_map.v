@@ -25,19 +25,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "slice")
             [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
           "into_vec" in
-      let* α1 := M.read (mk_str "42") in
-      let* α2 := M.read (mk_str "tofu") in
-      let* α3 := M.read (mk_str "93") in
-      let* α4 := M.read (mk_str "999") in
-      let* α5 := M.read (mk_str "18") in
-      let* α6 := M.alloc [ α1; α2; α3; α4; α5 ] in
-      let* α7 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α6 ] in
-      let* α8 := M.read α7 in
-      let* α9 := M.call α0 [ M.pointer_coercion "Unsize" α8 ] in
-      M.alloc α9 in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
+      let* α2 := M.read (mk_str "42") in
+      let* α3 := M.read (mk_str "tofu") in
+      let* α4 := M.read (mk_str "93") in
+      let* α5 := M.read (mk_str "999") in
+      let* α6 := M.read (mk_str "18") in
+      let* α7 := M.alloc (Value.Array [ α2; α3; α4; α5; α6 ]) in
+      let* α8 := M.call α1 [ α7 ] in
+      let* α9 := M.read α8 in
+      let* α10 := M.call α0 [ M.pointer_coercion (* Unsize *) α9 ] in
+      M.alloc α10 in
     let* errors :=
       let* α0 :=
         M.get_associated_function
@@ -185,14 +193,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                [
-                  fun γ =>
-                    (let* s := M.copy γ in
-                    let* α0 :=
-                      M.get_associated_function (Ty.path "str") "parse" in
-                    let* α1 := M.read s in
-                    M.call α0 [ α1 ])
-                ])
+                (Value.Array
+                  [
+                    fun γ =>
+                      (let* s := M.copy γ in
+                      let* α0 :=
+                        M.get_associated_function (Ty.path "str") "parse" in
+                      let* α1 := M.read s in
+                      M.call α0 [ α1 ])
+                  ]))
           ] in
       let* α7 :=
         M.call
@@ -208,55 +217,57 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                [
-                  fun γ =>
-                    (let* r := M.copy γ in
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [ Ty.path "u8"; Ty.tuple [] ])
-                        "ok" in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
+                (Value.Array
+                  [
+                    fun γ =>
+                      (let* r := M.copy γ in
+                      let* α0 :=
+                        M.get_associated_function
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            [ Ty.path "u8"; Ty.tuple [] ])
+                          "ok" in
+                      let* α1 :=
+                        M.get_associated_function
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "u8";
+                              Ty.path "core::num::error::ParseIntError"
+                            ])
+                          "map_err" in
+                      let* α2 := M.read r in
+                      let* α3 :=
+                        M.call
+                          α1
                           [
-                            Ty.path "u8";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
-                        "map_err" in
-                    let* α2 := M.read r in
-                    let* α3 :=
-                      M.call
-                        α1
-                        [
-                          α2;
-                          fun
-                              (α0 :
-                                Ty.path "core::num::error::ParseIntError") =>
-                            (let* α0 := M.alloc α0 in
-                            match_operator
-                              α0
-                              [
-                                fun γ =>
-                                  (let* e := M.copy γ in
-                                  let* α0 :=
-                                    M.get_associated_function
-                                      (Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        [
-                                          Ty.path
-                                            "core::num::error::ParseIntError";
-                                          Ty.path "alloc::alloc::Global"
-                                        ])
-                                      "push" in
-                                  let* α1 := M.read e in
-                                  M.call α0 [ errors; α1 ])
-                              ])
-                        ] in
-                    M.call α0 [ α3 ])
-                ])
+                            α2;
+                            fun
+                                (α0 :
+                                  Ty.path "core::num::error::ParseIntError") =>
+                              (let* α0 := M.alloc α0 in
+                              match_operator
+                                α0
+                                (Value.Array
+                                  [
+                                    fun γ =>
+                                      (let* e := M.copy γ in
+                                      let* α0 :=
+                                        M.get_associated_function
+                                          (Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            [
+                                              Ty.path
+                                                "core::num::error::ParseIntError";
+                                              Ty.path "alloc::alloc::Global"
+                                            ])
+                                          "push" in
+                                      let* α1 := M.read e in
+                                      M.call α0 [ errors; α1 ])
+                                  ]))
+                          ] in
+                      M.call α0 [ α3 ])
+                  ]))
           ] in
       let* α8 := M.call α0 [ α7 ] in
       M.alloc α8 in
@@ -268,17 +279,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Numbers: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ numbers ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -291,17 +304,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Errors: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ errors ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

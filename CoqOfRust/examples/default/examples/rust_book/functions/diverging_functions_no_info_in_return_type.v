@@ -36,8 +36,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 :=
         M.read (mk_str "This function returns and you can see this line.
 ") in
-      let* α3 := M.alloc [ α2 ] in
-      let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+      let* α3 := M.alloc (Value.Array [ α2 ]) in
+      let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
       let* α5 := M.call α0 [ α4 ] in
       M.alloc α5 in
     let* α0 := M.alloc (Value.Tuple []) in

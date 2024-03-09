@@ -21,47 +21,48 @@ Module checked.
         let* α2 :=
           match_operator
             self
-            [
-              fun γ =>
-                (let* γ :=
+            (Value.Array
+              [
+                fun γ =>
+                  (let* γ :=
+                    let* α0 := M.read γ in
+                    M.pure (deref α0) in
                   let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    result_chaining_with_question_mark.checked.MathError.DivisionByZero
-                    =>
-                  let* α0 := M.read (mk_str "DivisionByZero") in
-                  M.alloc α0
-                | _ => M.break_match 
-                end);
-              fun γ =>
-                (let* γ :=
+                  match α0 with
+                  |
+                      result_chaining_with_question_mark.checked.MathError.DivisionByZero
+                      =>
+                    let* α0 := M.read (mk_str "DivisionByZero") in
+                    M.alloc α0
+                  | _ => M.break_match 
+                  end);
+                fun γ =>
+                  (let* γ :=
+                    let* α0 := M.read γ in
+                    M.pure (deref α0) in
                   let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-                    =>
-                  let* α0 := M.read (mk_str "NonPositiveLogarithm") in
-                  M.alloc α0
-                | _ => M.break_match 
-                end);
-              fun γ =>
-                (let* γ :=
+                  match α0 with
+                  |
+                      result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+                      =>
+                    let* α0 := M.read (mk_str "NonPositiveLogarithm") in
+                    M.alloc α0
+                  | _ => M.break_match 
+                  end);
+                fun γ =>
+                  (let* γ :=
+                    let* α0 := M.read γ in
+                    M.pure (deref α0) in
                   let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-                    =>
-                  let* α0 := M.read (mk_str "NegativeSquareRoot") in
-                  M.alloc α0
-                | _ => M.break_match 
-                end)
-            ] in
+                  match α0 with
+                  |
+                      result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+                      =>
+                    let* α0 := M.read (mk_str "NegativeSquareRoot") in
+                    M.alloc α0
+                  | _ => M.break_match 
+                  end)
+              ]) in
         let* α3 := M.read α2 in
         M.call α0 [ α1; α3 ]
       | _, _ => M.impossible
@@ -105,12 +106,14 @@ Module checked.
       let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
       let* α3 := M.read (M.use α2) in
       let* α4 :=
-        if α3 then
+        if Value.is_true α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
               [
-                result_chaining_with_question_mark.checked.MathError.DivisionByZero
+                Value.StructTuple
+                  "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
+                  []
               ])
         else
           let* α0 := M.read x in
@@ -139,12 +142,14 @@ Module checked.
       let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
       let* α3 := M.read (M.use α2) in
       let* α4 :=
-        if α3 then
+        if Value.is_true α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
               [
-                result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+                Value.StructTuple
+                  "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
+                  []
               ])
         else
           let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" in
@@ -173,12 +178,14 @@ Module checked.
       let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
       let* α3 := M.read (M.use α2) in
       let* α4 :=
-        if α3 then
+        if Value.is_true α3 then
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
               [
-                result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+                Value.StructTuple
+                  "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
+                  []
               ])
         else
           let* α0 := M.get_associated_function (Ty.path "f64") "ln" in
@@ -205,183 +212,175 @@ Module checked.
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let return_ :=
-        M.return_
-          (R :=
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [
-                Ty.path "f64";
-                Ty.path "result_chaining_with_question_mark::checked::MathError"
-              ]) in
-      M.catch_return
-        (let* ratio :=
-          let* α0 :=
-            M.get_trait_method
-              "core::ops::try_trait::Try"
-              "branch"
-              [
-                (* Self *)
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [
-                      Ty.path "f64";
-                      Ty.path
-                        "result_chaining_with_question_mark::checked::MathError"
-                    ]
-              ] in
-          let* α1 :=
-            M.get_function "result_chaining_with_question_mark::checked::div" in
-          let* α2 := M.read x in
-          let* α3 := M.read y in
-          let* α4 := M.call α1 [ α2; α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
-          let* α6 := M.alloc α5 in
-          let* α7 :=
-            match_operator
-              α6
-              [
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.ops.control_flow.ControlFlow.Break _ =>
-                    let* γ0_0 :=
-                      let* α0 :=
-                        M.var
-                          "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                      M.pure (α0 γ) in
-                    let* residual := M.copy γ0_0 in
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::ops::try_trait::FromResidual"
-                        "from_residual"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              [
-                                Ty.path "f64";
-                                Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"
-                              ];
-                          (* R *)
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"
-                              ]
-                        ] in
-                    let* α1 := M.read residual in
-                    let* α2 := M.call α0 [ α1 ] in
-                    let* α3 := return_ α2 in
-                    let* α4 := M.read α3 in
-                    let* α5 := M.never_to_any α4 in
-                    M.alloc α5
-                  | _ => M.break_match 
-                  end);
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.ops.control_flow.ControlFlow.Continue _ =>
-                    let* γ0_0 :=
-                      let* α0 :=
-                        M.var
-                          "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                      M.pure (α0 γ) in
-                    let* val := M.copy γ0_0 in
-                    M.pure val
-                  | _ => M.break_match 
-                  end)
-              ] in
-          M.copy α7 in
-        let* ln :=
-          let* α0 :=
-            M.get_trait_method
-              "core::ops::try_trait::Try"
-              "branch"
-              [
-                (* Self *)
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [
-                      Ty.path "f64";
-                      Ty.path
-                        "result_chaining_with_question_mark::checked::MathError"
-                    ]
-              ] in
-          let* α1 :=
-            M.get_function "result_chaining_with_question_mark::checked::ln" in
-          let* α2 := M.read ratio in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          let* α5 := M.alloc α4 in
-          let* α6 :=
-            match_operator
-              α5
-              [
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.ops.control_flow.ControlFlow.Break _ =>
-                    let* γ0_0 :=
-                      let* α0 :=
-                        M.var
-                          "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                      M.pure (α0 γ) in
-                    let* residual := M.copy γ0_0 in
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::ops::try_trait::FromResidual"
-                        "from_residual"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              [
-                                Ty.path "f64";
-                                Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"
-                              ];
-                          (* R *)
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path
-                                  "result_chaining_with_question_mark::checked::MathError"
-                              ]
-                        ] in
-                    let* α1 := M.read residual in
-                    let* α2 := M.call α0 [ α1 ] in
-                    let* α3 := return_ α2 in
-                    let* α4 := M.read α3 in
-                    let* α5 := M.never_to_any α4 in
-                    M.alloc α5
-                  | _ => M.break_match 
-                  end);
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.ops.control_flow.ControlFlow.Continue _ =>
-                    let* γ0_0 :=
-                      let* α0 :=
-                        M.var
-                          "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                      M.pure (α0 γ) in
-                    let* val := M.copy γ0_0 in
-                    M.pure val
-                  | _ => M.break_match 
-                  end)
-              ] in
-          M.copy α6 in
+      let* ratio :=
         let* α0 :=
-          M.get_function "result_chaining_with_question_mark::checked::sqrt" in
-        let* α1 := M.read ln in
-        let* α2 := M.call α0 [ α1 ] in
-        let* α0 := M.alloc α2 in
-        M.read α0)
+          M.get_trait_method
+            "core::ops::try_trait::Try"
+            "branch"
+            [
+              (* Self *)
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [
+                    Ty.path "f64";
+                    Ty.path
+                      "result_chaining_with_question_mark::checked::MathError"
+                  ]
+            ] in
+        let* α1 :=
+          M.get_function "result_chaining_with_question_mark::checked::div" in
+        let* α2 := M.read x in
+        let* α3 := M.read y in
+        let* α4 := M.call α1 [ α2; α3 ] in
+        let* α5 := M.call α0 [ α4 ] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          match_operator
+            α6
+            (Value.Array
+              [
+                fun γ =>
+                  (let* α0 := M.read γ in
+                  match α0 with
+                  | core.ops.control_flow.ControlFlow.Break _ =>
+                    let* γ0_0 :=
+                      let* α0 :=
+                        M.var
+                          "core::ops::control_flow::ControlFlow::Get_Break_0" in
+                      M.pure (α0 γ) in
+                    let* residual := M.copy γ0_0 in
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::ops::try_trait::FromResidual"
+                        "from_residual"
+                        [
+                          (* Self *)
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              [
+                                Ty.path "f64";
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ];
+                          (* R *)
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ]
+                        ] in
+                    let* α1 := M.read residual in
+                    let* α2 := M.call α0 [ α1 ] in
+                    let* α3 := M.return_ α2 in
+                    let* α4 := M.read α3 in
+                    let* α5 := M.never_to_any α4 in
+                    M.alloc α5
+                  | _ => M.break_match 
+                  end);
+                fun γ =>
+                  (let* α0 := M.read γ in
+                  match α0 with
+                  | core.ops.control_flow.ControlFlow.Continue _ =>
+                    let* γ0_0 :=
+                      let* α0 :=
+                        M.var
+                          "core::ops::control_flow::ControlFlow::Get_Continue_0" in
+                      M.pure (α0 γ) in
+                    let* val := M.copy γ0_0 in
+                    M.pure val
+                  | _ => M.break_match 
+                  end)
+              ]) in
+        M.copy α7 in
+      let* ln :=
+        let* α0 :=
+          M.get_trait_method
+            "core::ops::try_trait::Try"
+            "branch"
+            [
+              (* Self *)
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [
+                    Ty.path "f64";
+                    Ty.path
+                      "result_chaining_with_question_mark::checked::MathError"
+                  ]
+            ] in
+        let* α1 :=
+          M.get_function "result_chaining_with_question_mark::checked::ln" in
+        let* α2 := M.read ratio in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.call α0 [ α3 ] in
+        let* α5 := M.alloc α4 in
+        let* α6 :=
+          match_operator
+            α5
+            (Value.Array
+              [
+                fun γ =>
+                  (let* α0 := M.read γ in
+                  match α0 with
+                  | core.ops.control_flow.ControlFlow.Break _ =>
+                    let* γ0_0 :=
+                      let* α0 :=
+                        M.var
+                          "core::ops::control_flow::ControlFlow::Get_Break_0" in
+                      M.pure (α0 γ) in
+                    let* residual := M.copy γ0_0 in
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::ops::try_trait::FromResidual"
+                        "from_residual"
+                        [
+                          (* Self *)
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              [
+                                Ty.path "f64";
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ];
+                          (* R *)
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path
+                                  "result_chaining_with_question_mark::checked::MathError"
+                              ]
+                        ] in
+                    let* α1 := M.read residual in
+                    let* α2 := M.call α0 [ α1 ] in
+                    let* α3 := M.return_ α2 in
+                    let* α4 := M.read α3 in
+                    let* α5 := M.never_to_any α4 in
+                    M.alloc α5
+                  | _ => M.break_match 
+                  end);
+                fun γ =>
+                  (let* α0 := M.read γ in
+                  match α0 with
+                  | core.ops.control_flow.ControlFlow.Continue _ =>
+                    let* γ0_0 :=
+                      let* α0 :=
+                        M.var
+                          "core::ops::control_flow::ControlFlow::Get_Continue_0" in
+                      M.pure (α0 γ) in
+                    let* val := M.copy γ0_0 in
+                    M.pure val
+                  | _ => M.break_match 
+                  end)
+              ]) in
+        M.copy α6 in
+      let* α0 :=
+        M.get_function "result_chaining_with_question_mark::checked::sqrt" in
+      let* α1 := M.read ln in
+      let* α2 := M.call α0 [ α1 ] in
+      let* α0 := M.alloc α2 in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -414,93 +413,96 @@ Module checked.
       let* α5 :=
         match_operator
           α4
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.result.Result.Err _ =>
-                let* γ0_0 :=
-                  let* α0 := M.var "core::result::Result::Get_Err_0" in
-                  M.pure (α0 γ) in
-                let* why := M.copy γ0_0 in
-                let* α0 := M.get_function "core::panicking::panic_display" in
-                let* α1 :=
-                  match_operator
-                    why
-                    [
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        |
-                            result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-                            =>
-                          M.pure (mk_str "logarithm of non-positive number")
-                        | _ => M.break_match 
-                        end);
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        |
-                            result_chaining_with_question_mark.checked.MathError.DivisionByZero
-                            =>
-                          let* α0 := M.read (mk_str "division by zero") in
-                          M.alloc α0
-                        | _ => M.break_match 
-                        end);
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        |
-                            result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-                            =>
-                          let* α0 :=
-                            M.read (mk_str "square root of negative number") in
-                          M.alloc α0
-                        | _ => M.break_match 
-                        end)
-                    ] in
-                let* α2 := M.call α0 [ α1 ] in
-                let* α3 := M.never_to_any α2 in
-                M.alloc α3
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.result.Result.Ok _ =>
-                let* γ0_0 :=
-                  let* α0 := M.var "core::result::Result::Get_Ok_0" in
-                  M.pure (α0 γ) in
-                let* value := M.copy γ0_0 in
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | core.result.Result.Err _ =>
+                  let* γ0_0 :=
+                    let* α0 := M.var "core::result::Result::Get_Err_0" in
+                    M.pure (α0 γ) in
+                  let* why := M.copy γ0_0 in
+                  let* α0 := M.get_function "core::panicking::panic_display" in
                   let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "") in
-                  let* α3 := M.read (mk_str "
+                    match_operator
+                      why
+                      (Value.Array
+                        [
+                          fun γ =>
+                            (let* α0 := M.read γ in
+                            match α0 with
+                            |
+                                result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
+                                =>
+                              M.pure (mk_str "logarithm of non-positive number")
+                            | _ => M.break_match 
+                            end);
+                          fun γ =>
+                            (let* α0 := M.read γ in
+                            match α0 with
+                            |
+                                result_chaining_with_question_mark.checked.MathError.DivisionByZero
+                                =>
+                              let* α0 := M.read (mk_str "division by zero") in
+                              M.alloc α0
+                            | _ => M.break_match 
+                            end);
+                          fun γ =>
+                            (let* α0 := M.read γ in
+                            match α0 with
+                            |
+                                result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
+                                =>
+                              let* α0 :=
+                                M.read
+                                  (mk_str "square root of negative number") in
+                              M.alloc α0
+                            | _ => M.break_match 
+                            end)
+                        ]) in
+                  let* α2 := M.call α0 [ α1 ] in
+                  let* α3 := M.never_to_any α2 in
+                  M.alloc α3
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | core.result.Result.Ok _ =>
+                  let* γ0_0 :=
+                    let* α0 := M.var "core::result::Result::Get_Ok_0" in
+                    M.pure (α0 γ) in
+                  let* value := M.copy γ0_0 in
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "") in
+                    let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc [ α2; α3 ] in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α6 := M.call α5 [ value ] in
-                  let* α7 := M.alloc [ α6 ] in
-                  let* α8 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion "Unsize" α4;
-                        M.pointer_coercion "Unsize" α7
-                      ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
-                M.alloc (Value.Tuple [])
-              | _ => M.break_match 
-              end)
-          ] in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    let* α5 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α6 := M.call α5 [ value ] in
+                    let* α7 := M.alloc (Value.Array [ α6 ]) in
+                    let* α8 :=
+                      M.call
+                        α1
+                        [
+                          M.pointer_coercion (* Unsize *) α4;
+                          M.pointer_coercion (* Unsize *) α7
+                        ] in
+                    let* α9 := M.call α0 [ α8 ] in
+                    M.alloc α9 in
+                  M.alloc (Value.Tuple [])
+                | _ => M.break_match 
+                end)
+            ]) in
       M.read α5
     | _, _ => M.impossible
     end.

@@ -122,7 +122,9 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -376,7 +378,8 @@ Module Impl_erc20_Erc20_2.
                   Value.StructRecord
                     "erc20::Transfer"
                     [
-                      ("from", core.option.Option.None);
+                      ("from",
+                        Value.StructTuple "core::option::Option::None" []);
                       ("to",
                         Value.StructTuple "core::option::Option::Some" [ α4 ]);
                       ("value", α5)
@@ -564,117 +567,106 @@ Module Impl_erc20_Erc20_2.
       let* from := M.alloc from in
       let* to := M.alloc to in
       let* value := M.alloc value in
-      let return_ :=
-        M.return_
-          (R :=
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "erc20::Error" ]) in
-      M.catch_return
-        (let* from_balance :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "erc20::Erc20")
-              "balance_of_impl" in
-          let* α1 := M.read self in
-          let* α2 := M.read from in
-          let* α3 := M.call α0 [ α1; α2 ] in
-          M.alloc α3 in
-        let* _ :=
-          let* α0 := M.read from_balance in
-          let* α1 := M.read value in
-          let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-          let* α3 := M.read (M.use α2) in
-          if α3 then
-            let* α0 :=
-              return_
-                (Value.StructTuple
-                  "core::result::Result::Err"
-                  [ erc20.Error.InsufficientBalance ]) in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2
-          else
-            M.alloc (Value.Tuple []) in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "erc20::Mapping")
-                [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
-              "insert" in
-          let* α1 := M.read self in
-          let* α2 := M.read from in
-          let* α3 := M.read α2 in
-          let* α4 := M.read from_balance in
-          let* α5 := M.read value in
-          let* α6 := BinOp.Panic.sub α4 α5 in
-          let* α7 := M.call α0 [ M.get_struct_record α1 "balances"; α3; α6 ] in
-          M.alloc α7 in
-        let* to_balance :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "erc20::Erc20")
-              "balance_of_impl" in
-          let* α1 := M.read self in
-          let* α2 := M.read to in
-          let* α3 := M.call α0 [ α1; α2 ] in
-          M.alloc α3 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "erc20::Mapping")
-                [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
-              "insert" in
-          let* α1 := M.read self in
-          let* α2 := M.read to in
-          let* α3 := M.read α2 in
-          let* α4 := M.read to_balance in
-          let* α5 := M.read value in
-          let* α6 := BinOp.Panic.add α4 α5 in
-          let* α7 := M.call α0 [ M.get_struct_record α1 "balances"; α3; α6 ] in
-          M.alloc α7 in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function (Ty.path "erc20::Env") "emit_event" in
-          let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.read from in
-          let* α6 := M.read α5 in
-          let* α7 := M.read to in
-          let* α8 := M.read α7 in
-          let* α9 := M.read value in
-          let* α10 :=
-            M.call
-              α0
-              [
-                α4;
-                Value.StructTuple
-                  "erc20::Event::Transfer"
-                  [
-                    Value.StructRecord
-                      "erc20::Transfer"
-                      [
-                        ("from",
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [ α6 ]);
-                        ("to",
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [ α8 ]);
-                        ("value", α9)
-                      ]
-                  ]
-              ] in
-          M.alloc α10 in
+      let* from_balance :=
         let* α0 :=
-          M.alloc
-            (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
-        M.read α0)
+          M.get_associated_function
+            (Ty.path "erc20::Erc20")
+            "balance_of_impl" in
+        let* α1 := M.read self in
+        let* α2 := M.read from in
+        let* α3 := M.call α0 [ α1; α2 ] in
+        M.alloc α3 in
+      let* _ :=
+        let* α0 := M.read from_balance in
+        let* α1 := M.read value in
+        let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+        let* α3 := M.read (M.use α2) in
+        if Value.is_true α3 then
+          let* α0 :=
+            M.return_
+              (Value.StructTuple
+                "core::result::Result::Err"
+                [ Value.StructTuple "erc20::Error::InsufficientBalance" [] ]) in
+          let* α1 := M.read α0 in
+          let* α2 := M.never_to_any α1 in
+          M.alloc α2
+        else
+          M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "erc20::Mapping")
+              [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+            "insert" in
+        let* α1 := M.read self in
+        let* α2 := M.read from in
+        let* α3 := M.read α2 in
+        let* α4 := M.read from_balance in
+        let* α5 := M.read value in
+        let* α6 := BinOp.Panic.sub α4 α5 in
+        let* α7 := M.call α0 [ M.get_struct_record α1 "balances"; α3; α6 ] in
+        M.alloc α7 in
+      let* to_balance :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "erc20::Erc20")
+            "balance_of_impl" in
+        let* α1 := M.read self in
+        let* α2 := M.read to in
+        let* α3 := M.call α0 [ α1; α2 ] in
+        M.alloc α3 in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "erc20::Mapping")
+              [ Ty.path "erc20::AccountId"; Ty.path "u128" ])
+            "insert" in
+        let* α1 := M.read self in
+        let* α2 := M.read to in
+        let* α3 := M.read α2 in
+        let* α4 := M.read to_balance in
+        let* α5 := M.read value in
+        let* α6 := BinOp.Panic.add α4 α5 in
+        let* α7 := M.call α0 [ M.get_struct_record α1 "balances"; α3; α6 ] in
+        M.alloc α7 in
+      let* _ :=
+        let* α0 :=
+          M.get_associated_function (Ty.path "erc20::Env") "emit_event" in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.read from in
+        let* α6 := M.read α5 in
+        let* α7 := M.read to in
+        let* α8 := M.read α7 in
+        let* α9 := M.read value in
+        let* α10 :=
+          M.call
+            α0
+            [
+              α4;
+              Value.StructTuple
+                "erc20::Event::Transfer"
+                [
+                  Value.StructRecord
+                    "erc20::Transfer"
+                    [
+                      ("from",
+                        Value.StructTuple "core::option::Option::Some" [ α6 ]);
+                      ("to",
+                        Value.StructTuple "core::option::Option::Some" [ α8 ]);
+                      ("value", α9)
+                    ]
+                ]
+            ] in
+        M.alloc α10 in
+      let* α0 :=
+        M.alloc
+          (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
+      M.read α0
     | _, _ => M.impossible
     end.
   
@@ -814,68 +806,60 @@ Module Impl_erc20_Erc20_2.
       let* from := M.alloc from in
       let* to := M.alloc to in
       let* value := M.alloc value in
-      let return_ :=
-        M.return_
-          (R :=
-            Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "erc20::Error" ]) in
-      M.catch_return
-        (let* caller :=
+      let* caller :=
+        let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" in
+        let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      let* allowance :=
+        let* α0 :=
+          M.get_associated_function (Ty.path "erc20::Erc20") "allowance_impl" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1; from; caller ] in
+        M.alloc α2 in
+      let* _ :=
+        let* α0 := M.read allowance in
+        let* α1 := M.read value in
+        let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+        let* α3 := M.read (M.use α2) in
+        if Value.is_true α3 then
           let* α0 :=
-            M.get_associated_function (Ty.path "erc20::Env") "caller" in
-          let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" in
-          let* α2 := M.read self in
-          let* α3 := M.call α1 [ α2 ] in
-          let* α4 := M.alloc α3 in
-          let* α5 := M.call α0 [ α4 ] in
-          M.alloc α5 in
-        let* allowance :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "erc20::Erc20")
-              "allowance_impl" in
-          let* α1 := M.read self in
-          let* α2 := M.call α0 [ α1; from; caller ] in
-          M.alloc α2 in
-        let* _ :=
-          let* α0 := M.read allowance in
-          let* α1 := M.read value in
-          let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-          let* α3 := M.read (M.use α2) in
-          if α3 then
-            let* α0 :=
-              return_
-                (Value.StructTuple
-                  "core::result::Result::Err"
-                  [ erc20.Error.InsufficientAllowance ]) in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2
-          else
-            M.alloc (Value.Tuple []) in
-        let* _ :=
-          let* α0 :=
-            M.get_trait_method
-              "core::ops::try_trait::Try"
-              "branch"
-              [
-                (* Self *)
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [ Ty.tuple []; Ty.path "erc20::Error" ]
-              ] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "erc20::Erc20")
-              "transfer_from_to" in
-          let* α2 := M.read self in
-          let* α3 := M.read value in
-          let* α4 := M.call α1 [ α2; from; to; α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
-          let* α6 := M.alloc α5 in
-          match_operator
-            α6
+            M.return_
+              (Value.StructTuple
+                "core::result::Result::Err"
+                [ Value.StructTuple "erc20::Error::InsufficientAllowance" []
+                ]) in
+          let* α1 := M.read α0 in
+          let* α2 := M.never_to_any α1 in
+          M.alloc α2
+        else
+          M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* α0 :=
+          M.get_trait_method
+            "core::ops::try_trait::Try"
+            "branch"
+            [
+              (* Self *)
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.tuple []; Ty.path "erc20::Error" ]
+            ] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "erc20::Erc20")
+            "transfer_from_to" in
+        let* α2 := M.read self in
+        let* α3 := M.read value in
+        let* α4 := M.call α1 [ α2; from; to; α3 ] in
+        let* α5 := M.call α0 [ α4 ] in
+        let* α6 := M.alloc α5 in
+        match_operator
+          α6
+          (Value.Array
             [
               fun γ =>
                 (let* α0 := M.read γ in
@@ -906,7 +890,7 @@ Module Impl_erc20_Erc20_2.
                       ] in
                   let* α1 := M.read residual in
                   let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := return_ α2 in
+                  let* α3 := M.return_ α2 in
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
@@ -925,34 +909,34 @@ Module Impl_erc20_Erc20_2.
                   M.pure val
                 | _ => M.break_match 
                 end)
-            ] in
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "erc20::Mapping")
-                [
-                  Ty.tuple
-                    [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
-                  Ty.path "u128"
-                ])
-              "insert" in
-          let* α1 := M.read self in
-          let* α2 := M.read from in
-          let* α3 := M.read caller in
-          let* α4 := M.read allowance in
-          let* α5 := M.read value in
-          let* α6 := BinOp.Panic.sub α4 α5 in
-          let* α7 :=
-            M.call
-              α0
-              [ M.get_struct_record α1 "allowances"; Value.Tuple [ α2; α3 ]; α6
-              ] in
-          M.alloc α7 in
+            ]) in
+      let* _ :=
         let* α0 :=
-          M.alloc
-            (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
-        M.read α0)
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "erc20::Mapping")
+              [
+                Ty.tuple
+                  [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
+                Ty.path "u128"
+              ])
+            "insert" in
+        let* α1 := M.read self in
+        let* α2 := M.read from in
+        let* α3 := M.read caller in
+        let* α4 := M.read allowance in
+        let* α5 := M.read value in
+        let* α6 := BinOp.Panic.sub α4 α5 in
+        let* α7 :=
+          M.call
+            α0
+            [ M.get_struct_record α1 "allowances"; Value.Tuple [ α2; α3 ]; α6
+            ] in
+        M.alloc α7 in
+      let* α0 :=
+        M.alloc
+          (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
+      M.read α0
     | _, _ => M.impossible
     end.
   

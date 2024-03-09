@@ -21,7 +21,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str " is ") in
         let* α5 := M.read (mk_str "
 ") in
-        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+        let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -50,11 +50,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (BinOp.Pure.eq α12 (Value.Integer Integer.I32 2))
               (BinOp.Pure.eq α13 (Value.Integer Integer.I32 4))) in
         let* α15 := M.call α11 [ α14 ] in
-        let* α16 := M.alloc [ α8; α10; α15 ] in
+        let* α16 := M.alloc (Value.Array [ α8; α10; α15 ]) in
         let* α17 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α16
+            [
+              M.pointer_coercion (* Unsize *) α6;
+              M.pointer_coercion (* Unsize *) α16
             ] in
         let* α18 := M.call α0 [ α17 ] in
         M.alloc α18 in
@@ -69,7 +71,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str " is ") in
         let* α5 := M.read (mk_str "
 ") in
-        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+        let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -84,13 +86,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α12 := M.alloc (BinOp.Pure.or true false) in
+        let* α12 :=
+          M.alloc (BinOp.Pure.or (Value.Bool true) (Value.Bool false)) in
         let* α13 := M.call α11 [ α12 ] in
-        let* α14 := M.alloc [ α8; α10; α13 ] in
+        let* α14 := M.alloc (Value.Array [ α8; α10; α13 ]) in
         let* α15 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α14
+            [
+              M.pointer_coercion (* Unsize *) α6;
+              M.pointer_coercion (* Unsize *) α14
             ] in
         let* α16 := M.call α0 [ α15 ] in
         M.alloc α16 in

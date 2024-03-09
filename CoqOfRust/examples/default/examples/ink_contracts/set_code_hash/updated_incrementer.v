@@ -38,7 +38,9 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -191,18 +193,20 @@ Module Impl_updated_incrementer_Incrementer.
               (mk_str
                 ", it was modified using the updated `new_incrementer` code.
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.read self in
           let* α7 := M.call α5 [ M.get_struct_record α6 "count" ] in
-          let* α8 := M.alloc [ α7 ] in
+          let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α8
               ] in
           let* α10 := M.call α0 [ α9 ] in
           M.alloc α10 in
@@ -271,17 +275,19 @@ Module Impl_updated_incrementer_Incrementer.
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  [
-                    fun γ =>
-                      (let* err := M.copy γ in
-                      let* α0 := M.get_function "std::panicking::begin_panic" in
-                      let* α1 :=
-                        M.read
-                          (mk_str
-                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                      let* α2 := M.call α0 [ α1 ] in
-                      M.never_to_any α2)
-                  ])
+                  (Value.Array
+                    [
+                      fun γ =>
+                        (let* err := M.copy γ in
+                        let* α0 :=
+                          M.get_function "std::panicking::begin_panic" in
+                        let* α1 :=
+                          M.read
+                            (mk_str
+                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
+                        let* α2 := M.call α0 [ α1 ] in
+                        M.never_to_any α2)
+                    ]))
             ] in
         M.alloc α7 in
       let* _ :=
@@ -294,17 +300,19 @@ Module Impl_updated_incrementer_Incrementer.
           let* α2 := M.read (mk_str "Switched code hash to ") in
           let* α3 := M.read (mk_str ".
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_debug" in
           let* α6 := M.call α5 [ code_hash ] in
-          let* α7 := M.alloc [ α6 ] in
+          let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α7
               ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in

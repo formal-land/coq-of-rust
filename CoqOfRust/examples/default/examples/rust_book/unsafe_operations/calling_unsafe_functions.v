@@ -25,20 +25,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
           "into_vec" in
       let* α1 :=
-        M.alloc
-          [
-            Value.Integer Integer.U32 1;
-            Value.Integer Integer.U32 2;
-            Value.Integer Integer.U32 3;
-            Value.Integer Integer.U32 4
-          ] in
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "u32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
       let* α2 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α1 ] in
-      let* α3 := M.read α2 in
-      let* α4 := M.call α0 [ M.pointer_coercion "Unsize" α3 ] in
-      M.alloc α4 in
+        M.alloc
+          (Value.Array
+            [
+              Value.Integer Integer.U32 1;
+              Value.Integer Integer.U32 2;
+              Value.Integer Integer.U32 3;
+              Value.Integer Integer.U32 4
+            ]) in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      M.alloc α5 in
     let* pointer :=
       let* α0 :=
         M.get_associated_function
@@ -75,49 +82,62 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.alloc (Value.Tuple [ α2; my_slice ]) in
       match_operator
         α3
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | (_, _) =>
-              let γ0_0 := Tuple.Access.left γ in
-              let γ0_1 := Tuple.Access.right γ in
-              let* left_val := M.copy γ0_0 in
-              let* right_val := M.copy γ0_1 in
-              let* α0 :=
-                M.get_trait_method
-                  "core::cmp::PartialEq"
-                  "eq"
-                  [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "ref")
-                        [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
-                    (* Rhs *)
-                      Ty.apply
-                        (Ty.path "ref")
-                        [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
-                  ] in
-              let* α1 := M.read left_val in
-              let* α2 := M.read right_val in
-              let* α3 := M.call α0 [ α1; α2 ] in
-              let* α4 := M.alloc (UnOp.not α3) in
-              let* α5 := M.read (M.use α4) in
-              if α5 then
-                let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.get_function "core::panicking::assert_failed" in
-                let* α1 := M.read kind in
-                let* α2 := M.read left_val in
-                let* α3 := M.read right_val in
-                let* α4 := M.call α0 [ α1; α2; α3; core.option.Option.None ] in
-                let* α0 := M.alloc α4 in
-                let* α1 := M.read α0 in
-                let* α2 := M.never_to_any α1 in
-                M.alloc α2
-              else
-                M.alloc (Value.Tuple [])
-            end)
-        ] in
+        (Value.Array
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | (_, _) =>
+                let γ0_0 := Tuple.Access.left γ in
+                let γ0_1 := Tuple.Access.right γ in
+                let* left_val := M.copy γ0_0 in
+                let* right_val := M.copy γ0_1 in
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    "eq"
+                    [
+                      (* Self *)
+                        Ty.apply
+                          (Ty.path "ref")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
+                      (* Rhs *)
+                        Ty.apply
+                          (Ty.path "ref")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                    ] in
+                let* α1 := M.read left_val in
+                let* α2 := M.read right_val in
+                let* α3 := M.call α0 [ α1; α2 ] in
+                let* α4 := M.alloc (UnOp.not α3) in
+                let* α5 := M.read (M.use α4) in
+                if Value.is_true α5 then
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2
+                else
+                  M.alloc (Value.Tuple [])
+              end)
+          ]) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible

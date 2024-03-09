@@ -259,6 +259,13 @@ Module Value.
       | _ => None
       end
     end.
+
+  (** Used to implement the `if` instruction. *)
+  Definition is_true (value : Value.t) : bool :=
+    match value with
+    | Bool true => true
+    | _ => false
+    end.
 End Value.
 
 Module Primitive.
@@ -557,3 +564,7 @@ Definition use (x : Value.t) : Value.t :=
 Parameter get_struct_tuple : Value.t -> Z -> Value.t.
 
 Parameter get_struct_record : Value.t -> string -> Value.t.
+
+Parameter pointer_coercion : Value.t -> Value.t.
+
+Parameter assign : Value.t -> Value.t -> M.

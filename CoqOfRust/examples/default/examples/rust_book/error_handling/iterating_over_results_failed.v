@@ -19,17 +19,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "slice")
             [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ])
           "into_vec" in
-      let* α1 := M.read (mk_str "tofu") in
-      let* α2 := M.read (mk_str "93") in
-      let* α3 := M.read (mk_str "18") in
-      let* α4 := M.alloc [ α1; α2; α3 ] in
-      let* α5 :=
-        M.call
-          (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α4 ] in
-      let* α6 := M.read α5 in
-      let* α7 := M.call α0 [ M.pointer_coercion "Unsize" α6 ] in
-      M.alloc α7 in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ Ty.apply (Ty.path "ref") [ Ty.path "str" ] ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
+      let* α2 := M.read (mk_str "tofu") in
+      let* α3 := M.read (mk_str "93") in
+      let* α4 := M.read (mk_str "18") in
+      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+      let* α6 := M.call α1 [ α5 ] in
+      let* α7 := M.read α6 in
+      let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
+      M.alloc α8 in
     let* numbers :=
       let* α0 :=
         M.get_trait_method
@@ -111,14 +119,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                [
-                  fun γ =>
-                    (let* s := M.copy γ in
-                    let* α0 :=
-                      M.get_associated_function (Ty.path "str") "parse" in
-                    let* α1 := M.read s in
-                    M.call α0 [ α1 ])
-                ])
+                (Value.Array
+                  [
+                    fun γ =>
+                      (let* s := M.copy γ in
+                      let* α0 :=
+                        M.get_associated_function (Ty.path "str") "parse" in
+                      let* α1 := M.read s in
+                      M.call α0 [ α1 ])
+                  ]))
           ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in
@@ -130,17 +139,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Results: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ numbers ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

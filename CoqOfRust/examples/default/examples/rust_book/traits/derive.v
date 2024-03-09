@@ -87,7 +87,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       let* α2 := M.read (mk_str "Inches") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion "Unsize" α4 ]
+      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -117,24 +117,25 @@ Module Impl_derive_Inches.
       let* α0 :=
         match_operator
           self
-          [
-            fun γ =>
-              (let* γ :=
+          (Value.Array
+            [
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | derive.Inches.Build_t _ =>
-                let* γ1_0 :=
-                  let* α0 := M.var "derive::Inches::Get_0" in
-                  M.pure (α0 γ) in
-                let* inches := M.copy γ1_0 in
-                let* α0 := M.read inches in
-                let* α1 := M.read UnsupportedLiteral in
-                let* α2 := BinOp.Panic.mul (M.rust_cast α0) α1 in
-                M.alloc (Value.StructTuple "derive::Centimeters" [ α2 ])
-              end)
-          ] in
+                match α0 with
+                | derive.Inches.Build_t _ =>
+                  let* γ1_0 :=
+                    let* α0 := M.var "derive::Inches::Get_0" in
+                    M.pure (α0 γ) in
+                  let* inches := M.copy γ1_0 in
+                  let* α0 := M.read inches in
+                  let* α1 := M.read UnsupportedLiteral in
+                  let* α2 := BinOp.Panic.mul (M.rust_cast α0) α1 in
+                  M.alloc (Value.StructTuple "derive::Centimeters" [ α2 ])
+                end)
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -190,17 +191,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "One foot equals ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α6 := M.call α5 [ foot ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
@@ -225,7 +228,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α5 := M.alloc α4 in
       let* α6 := M.read (M.use α5) in
       let* α7 :=
-        if α6 then
+        if Value.is_true α6 then
           M.pure (mk_str "smaller")
         else
           let* α0 := M.read (mk_str "bigger") in
@@ -239,17 +242,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "One foot is ") in
         let* α3 := M.read (mk_str " than one meter.
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.call α5 [ cmp ] in
-        let* α7 := M.alloc [ α6 ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in

@@ -178,76 +178,6 @@ impl Expr {
             ty: None,
         })
     }
-
-    pub(crate) fn has_return(&self) -> bool {
-        match self.kind.as_ref() {
-            ExprKind::Pure(expr) => expr.has_return(),
-            ExprKind::LocalVar(_) => false,
-            ExprKind::Var(_) => false,
-            ExprKind::GetFunction(_) => false,
-            ExprKind::Constructor(_) => false,
-            ExprKind::VarWithTy {
-                path: _,
-                ty_name: _,
-                ty: _,
-            } => false,
-            ExprKind::TraitMethod { .. } => false,
-            ExprKind::AssociatedFunction { ty: _, func: _ } => false,
-            ExprKind::Literal(_) => false,
-            ExprKind::Call {
-                func,
-                args,
-                purity: _,
-                from_user: _,
-            } => func.has_return() || args.iter().any(|arg| arg.has_return()),
-            ExprKind::MonadicOperator { name: _, arg } => arg.has_return(),
-            ExprKind::Lambda {
-                args: _,
-                body,
-                is_for_match,
-            } => *is_for_match && body.has_return(),
-            ExprKind::Array { elements } => elements.iter().any(|element| element.has_return()),
-            ExprKind::Tuple { elements } => elements.iter().any(|element| element.has_return()),
-            ExprKind::Let {
-                is_monadic: _,
-                name: _,
-                init,
-                body,
-            } => init.has_return() || body.has_return(),
-            ExprKind::If {
-                condition,
-                success,
-                failure,
-            } => condition.has_return() || success.has_return() || failure.has_return(),
-            ExprKind::Loop { body } => body.has_return(),
-            ExprKind::Match { scrutinee, arms } => {
-                scrutinee.has_return() || arms.iter().any(|arm| arm.body.has_return())
-            }
-            ExprKind::Index { base, index } => base.has_return() || index.has_return(),
-            ExprKind::ControlFlow(_) => false,
-            ExprKind::StructStruct {
-                path: _,
-                fields,
-                base,
-                struct_or_variant: _,
-            } => {
-                fields.iter().any(|(_, field)| field.has_return())
-                    || base.iter().any(|base| base.has_return())
-            }
-            ExprKind::StructTuple {
-                path: _,
-                fields,
-                struct_or_variant: _,
-            } => fields.iter().any(|field| field.has_return()),
-            ExprKind::StructUnit {
-                path: _,
-                struct_or_variant: _,
-            } => false,
-            ExprKind::Use(expr) => expr.has_return(),
-            ExprKind::Return(_) => true,
-            ExprKind::Message(_) => false,
-        }
-    }
 }
 
 fn pure(e: Rc<Expr>) -> Rc<Expr> {
@@ -782,7 +712,10 @@ impl LoopControlFlow {
 impl Literal {
     fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
-            Literal::Bool(b) => text(format!("{b}")),
+            Literal::Bool(b) => paren(
+                with_paren,
+                nest([text("Value.Bool"), line(), text(format!("{b}"))]),
+            ),
             Literal::Integer(LiteralInteger {
                 name,
                 negative_sign,
@@ -943,11 +876,18 @@ impl ExprKind {
                     )
                 }
             }
-            ExprKind::Array { elements } => list(
-                elements
-                    .iter()
-                    .map(|element| element.to_doc(false))
-                    .collect(),
+            ExprKind::Array { elements } => paren(
+                with_paren,
+                nest([
+                    text("Value.Array"),
+                    line(),
+                    list(
+                        elements
+                            .iter()
+                            .map(|element| element.to_doc(false))
+                            .collect(),
+                    ),
+                ]),
             ),
             ExprKind::Tuple { elements } => paren(
                 with_paren,
@@ -999,7 +939,11 @@ impl ExprKind {
                 with_paren,
                 group([
                     group([
-                        nest([text("if"), line(), condition.to_doc(false)]),
+                        nest([
+                            text("if"),
+                            line(),
+                            nest([text("Value.is_true"), line(), condition.to_doc(true)]),
+                        ]),
                         line(),
                         text("then"),
                     ]),
@@ -1100,21 +1044,20 @@ impl ExprKind {
             ExprKind::StructUnit {
                 path,
                 struct_or_variant,
-            } => concat([
-                path.to_doc(),
-                match struct_or_variant {
-                    StructOrVariant::Struct => text(".Build"),
-                    StructOrVariant::Variant { .. } => nil(),
-                },
-            ]),
+            } => coq::Expression::just_name("Value.StructTuple")
+                .apply_many(&[
+                    coq::Expression::String(path.to_string()),
+                    coq::Expression::List { exprs: vec![] },
+                ])
+                .to_doc(with_paren),
             ExprKind::Use(expr) => {
                 paren(with_paren, nest([text("M.use"), line(), expr.to_doc(true)]))
             }
             ExprKind::Return(value) => paren(
                 with_paren,
-                nest([text("return_"), line(), value.to_doc(true)]),
+                nest([text("M.return_"), line(), value.to_doc(true)]),
             ),
-            ExprKind::Message(message) => text(format!("\"{message}\"")),
+            ExprKind::Message(message) => text(format!("(* {message} *)")),
         }
     }
 }

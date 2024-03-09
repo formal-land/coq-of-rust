@@ -38,7 +38,9 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -195,7 +197,7 @@ Module Impl_contract_transfer_GiveMe.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] => M.pure contract_transfer.GiveMe.Build
+    | [ Self ], [] => M.pure (Value.StructTuple "contract_transfer::GiveMe" [])
     | _, _ => M.impossible
     end.
   
@@ -232,17 +234,19 @@ Module Impl_contract_transfer_GiveMe.
           let* α2 := M.read (mk_str "requested value: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.call α5 [ value ] in
-          let* α7 := M.alloc [ α6 ] in
+          let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α7
               ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in
@@ -257,7 +261,7 @@ Module Impl_contract_transfer_GiveMe.
           let* α2 := M.read (mk_str "contract balance: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -276,11 +280,13 @@ Module Impl_contract_transfer_GiveMe.
           let* α11 := M.call α6 [ α10 ] in
           let* α12 := M.alloc α11 in
           let* α13 := M.call α5 [ α12 ] in
-          let* α14 := M.alloc [ α13 ] in
+          let* α14 := M.alloc (Value.Array [ α13 ]) in
           let* α15 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α14
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α14
               ] in
           let* α16 := M.call α0 [ α15 ] in
           M.alloc α16 in
@@ -301,7 +307,7 @@ Module Impl_contract_transfer_GiveMe.
         let* α6 := M.call α1 [ α5 ] in
         let* α7 := M.alloc (UnOp.not (BinOp.Pure.le α0 α6)) in
         let* α8 := M.read (M.use α7) in
-        if α8 then
+        if Value.is_true α8 then
           let* α0 := M.get_function "std::panicking::begin_panic" in
           let* α1 := M.read (mk_str "insufficient funds!") in
           let* α2 := M.call α0 [ α1 ] in
@@ -339,7 +345,7 @@ Module Impl_contract_transfer_GiveMe.
       let* α16 := M.alloc α15 in
       let* α17 := M.read (M.use α16) in
       let* α0 :=
-        if α17 then
+        if Value.is_true α17 then
           let* α0 := M.get_function "std::panicking::begin_panic" in
           let* α1 :=
             M.read
@@ -377,7 +383,7 @@ Module Impl_contract_transfer_GiveMe.
           let* α2 := M.read (mk_str "received payment: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -396,11 +402,13 @@ Module Impl_contract_transfer_GiveMe.
           let* α11 := M.call α6 [ α10 ] in
           let* α12 := M.alloc α11 in
           let* α13 := M.call α5 [ α12 ] in
-          let* α14 := M.alloc [ α13 ] in
+          let* α14 := M.alloc (Value.Array [ α13 ]) in
           let* α15 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α14
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α14
               ] in
           let* α16 := M.call α0 [ α15 ] in
           M.alloc α16 in
@@ -422,7 +430,7 @@ Module Impl_contract_transfer_GiveMe.
           M.alloc
             (UnOp.not (BinOp.Pure.eq α5 (Value.Integer Integer.U128 10))) in
         let* α7 := M.read (M.use α6) in
-        if α7 then
+        if Value.is_true α7 then
           let* α0 := M.get_function "std::panicking::begin_panic" in
           let* α1 := M.read (mk_str "payment was not ten") in
           let* α2 := M.call α0 [ α1 ] in

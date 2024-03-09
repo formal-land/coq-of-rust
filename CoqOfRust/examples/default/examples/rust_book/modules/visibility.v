@@ -19,8 +19,8 @@ Module my_mod.
               "new_const" in
           let* α2 := M.read (mk_str "called `my_mod::private_function()`
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -46,8 +46,8 @@ Module my_mod.
               "new_const" in
           let* α2 := M.read (mk_str "called `my_mod::function()`
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -75,8 +75,8 @@ Module my_mod.
           let* α2 :=
             M.read (mk_str "called `my_mod::indirect_access()`, that
 > ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -107,8 +107,8 @@ Module my_mod.
                 "new_const" in
             let* α2 := M.read (mk_str "called `my_mod::nested::function()`
 ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -136,8 +136,8 @@ Module my_mod.
             let* α2 :=
               M.read (mk_str "called `my_mod::nested::private_function()`
 ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -170,8 +170,8 @@ Module my_mod.
                 (mk_str
                   "called `my_mod::nested::public_function_in_my_mod()`, that
 > ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -209,8 +209,8 @@ Module my_mod.
                 (mk_str
                   "called `my_mod::nested::public_function_in_nested()`
 ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -242,8 +242,8 @@ Module my_mod.
                 (mk_str
                   "called `my_mod::nested::public_function_in_super_mod()`
 ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -279,8 +279,8 @@ Module my_mod.
               (mk_str
                 "called `my_mod::call_public_function_in_my_mod()`, that
 > ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -298,8 +298,8 @@ Module my_mod.
               (Ty.path "core::fmt::Arguments")
               "new_const" in
           let* α2 := M.read (mk_str "> ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -332,8 +332,8 @@ Module my_mod.
           let* α2 :=
             M.read (mk_str "called `my_mod::public_function_in_crate()`
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -362,8 +362,8 @@ Module my_mod.
             let* α2 :=
               M.read (mk_str "called `my_mod::private_nested::function()`
 ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -393,8 +393,8 @@ Module my_mod.
                 (mk_str
                   "called `my_mod::private_nested::restricted_function()`
 ") in
-            let* α3 := M.alloc [ α2 ] in
-            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
             let* α5 := M.call α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
@@ -422,8 +422,8 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "called `function()`
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in

@@ -15,17 +15,19 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (match_operator
-                Value.DeclaredButUndefined
-                [
-                  fun γ =>
-                    (match_operator
-                      Value.DeclaredButUndefined
-                      [ fun γ => (M.read self) ])
-                ])
-          ] in
+          (Value.Array
+            [
+              fun γ =>
+                (match_operator
+                  Value.DeclaredButUndefined
+                  (Value.Array
+                    [
+                      fun γ =>
+                        (match_operator
+                          Value.DeclaredButUndefined
+                          (Value.Array [ fun γ => (M.read self) ]))
+                    ]))
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -70,7 +72,7 @@ Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str " - ") in
         let* α4 := M.read (mk_str " edition
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -83,11 +85,13 @@ Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α10 := M.read book in
         let* α11 := M.call α9 [ M.get_struct_record α10 "year" ] in
-        let* α12 := M.alloc [ α8; α11 ] in
+        let* α12 := M.alloc (Value.Array [ α8; α11 ]) in
         let* α13 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α12
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α12
             ] in
         let* α14 := M.call α0 [ α13 ] in
         M.alloc α14 in
@@ -121,7 +125,7 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str " - ") in
         let* α4 := M.read (mk_str " edition
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -134,11 +138,13 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α10 := M.read book in
         let* α11 := M.call α9 [ M.get_struct_record α10 "year" ] in
-        let* α12 := M.alloc [ α8; α11 ] in
+        let* α12 := M.alloc (Value.Array [ α8; α11 ]) in
         let* α13 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α12
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α12
             ] in
         let* α14 := M.call α0 [ α13 ] in
         M.alloc α14 in

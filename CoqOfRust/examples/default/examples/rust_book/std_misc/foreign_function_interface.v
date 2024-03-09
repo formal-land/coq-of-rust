@@ -57,7 +57,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str " is ") in
         let* α4 := M.read (mk_str "
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -68,11 +68,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α9 := M.call α8 [ z_sqrt ] in
-        let* α10 := M.alloc [ α7; α9 ] in
+        let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
@@ -86,7 +88,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.read (mk_str ") = ") in
         let* α4 := M.read (mk_str "
 ") in
-        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -101,11 +103,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 := M.call α9 [ α10 ] in
         let* α12 := M.alloc α11 in
         let* α13 := M.call α8 [ α12 ] in
-        let* α14 := M.alloc [ α7; α13 ] in
+        let* α14 := M.alloc (Value.Array [ α7; α13 ]) in
         let* α15 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α14
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α14
             ] in
         let* α16 := M.call α0 [ α15 ] in
         M.alloc α16 in
@@ -126,7 +130,9 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -171,7 +177,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       let* α3 := M.alloc (BinOp.Pure.lt α1 α2) in
       let* α4 := M.read (M.use α3) in
       let* α5 :=
-        if α4 then
+        if Value.is_true α4 then
           let* α0 :=
             M.get_associated_function
               (Ty.path "core::fmt::Formatter")
@@ -184,7 +190,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α3 := M.read (mk_str "") in
           let* α4 := M.read (mk_str "-") in
           let* α5 := M.read (mk_str "i") in
-          let* α6 := M.alloc [ α3; α4; α5 ] in
+          let* α6 := M.alloc (Value.Array [ α3; α4; α5 ]) in
           let* α7 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -200,11 +206,13 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α13 := UnOp.neg α12 in
           let* α14 := M.alloc α13 in
           let* α15 := M.call α10 [ α14 ] in
-          let* α16 := M.alloc [ α9; α15 ] in
+          let* α16 := M.alloc (Value.Array [ α9; α15 ]) in
           let* α17 :=
             M.call
               α2
-              [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α16
+              [
+                M.pointer_coercion (* Unsize *) α6;
+                M.pointer_coercion (* Unsize *) α16
               ] in
           let* α18 := M.call α0 [ α1; α17 ] in
           M.alloc α18
@@ -221,7 +229,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α3 := M.read (mk_str "") in
           let* α4 := M.read (mk_str "+") in
           let* α5 := M.read (mk_str "i") in
-          let* α6 := M.alloc [ α3; α4; α5 ] in
+          let* α6 := M.alloc (Value.Array [ α3; α4; α5 ]) in
           let* α7 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -234,11 +242,13 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
               "new_display" in
           let* α11 := M.read self in
           let* α12 := M.call α10 [ M.get_struct_record α11 "im" ] in
-          let* α13 := M.alloc [ α9; α12 ] in
+          let* α13 := M.alloc (Value.Array [ α9; α12 ]) in
           let* α14 :=
             M.call
               α2
-              [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α13
+              [
+                M.pointer_coercion (* Unsize *) α6;
+                M.pointer_coercion (* Unsize *) α13
               ] in
           let* α15 := M.call α0 [ α1; α14 ] in
           M.alloc α15 in

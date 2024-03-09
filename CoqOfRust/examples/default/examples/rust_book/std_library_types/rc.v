@@ -60,8 +60,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "--- rc_a is created ---
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
@@ -83,7 +83,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -98,11 +98,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.call α6 [ rc_a ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
-        let* α10 := M.alloc [ α9 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
@@ -117,8 +119,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               "new_const" in
           let* α2 := M.read (mk_str "--- rc_a is cloned to rc_b ---
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -148,7 +150,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "Reference Count of rc_b: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -165,11 +167,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α7 := M.call α6 [ rc_b ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call α5 [ α8 ] in
-          let* α10 := M.alloc [ α9 ] in
+          let* α10 := M.alloc (Value.Array [ α9 ]) in
           let* α11 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α10
               ] in
           let* α12 := M.call α0 [ α11 ] in
           M.alloc α12 in
@@ -184,7 +188,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -201,11 +205,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α7 := M.call α6 [ rc_a ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call α5 [ α8 ] in
-          let* α10 := M.alloc [ α9 ] in
+          let* α10 := M.alloc (Value.Array [ α9 ]) in
           let* α11 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α10
               ] in
           let* α12 := M.call α0 [ α11 ] in
           M.alloc α12 in
@@ -220,7 +226,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "rc_a and rc_b are equal: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -248,11 +254,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α7 := M.call α6 [ rc_a; rc_b ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call α5 [ α8 ] in
-          let* α10 := M.alloc [ α9 ] in
+          let* α10 := M.alloc (Value.Array [ α9 ]) in
           let* α11 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α10
               ] in
           let* α12 := M.call α0 [ α11 ] in
           M.alloc α12 in
@@ -267,7 +275,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "Length of the value inside rc_a: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -291,11 +299,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α9 := M.call α6 [ α8 ] in
           let* α10 := M.alloc α9 in
           let* α11 := M.call α5 [ α10 ] in
-          let* α12 := M.alloc [ α11 ] in
+          let* α12 := M.alloc (Value.Array [ α11 ]) in
           let* α13 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α12
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α12
               ] in
           let* α14 := M.call α0 [ α13 ] in
           M.alloc α14 in
@@ -310,17 +320,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "Value of rc_b: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.call α5 [ rc_b ] in
-          let* α7 := M.alloc [ α6 ] in
+          let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α7
               ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in
@@ -334,8 +346,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               "new_const" in
           let* α2 := M.read (mk_str "--- rc_b is dropped out of scope ---
 ") in
-          let* α3 := M.alloc [ α2 ] in
-          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
           let* α5 := M.call α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
@@ -348,7 +360,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α2; α3 ] in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -363,11 +375,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 := M.call α6 [ rc_a ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
-        let* α10 := M.alloc [ α9 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
             ] in
         let* α12 := M.call α0 [ α11 ] in
         M.alloc α12 in
@@ -381,8 +395,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_const" in
         let* α2 := M.read (mk_str "--- rc_a is dropped out of scope ---
 ") in
-        let* α3 := M.alloc [ α2 ] in
-        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in

@@ -77,7 +77,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructTuple
               "generics_functions::S"
-              [ generics_functions.A.Build ]
+              [ Value.StructTuple "generics_functions::A" [] ]
           ] in
       M.alloc α1 in
     let* _ :=
@@ -88,7 +88,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             Value.StructTuple
               "generics_functions::SGen"
-              [ generics_functions.A.Build ]
+              [ Value.StructTuple "generics_functions::A" [] ]
           ] in
       M.alloc α1 in
     let* _ :=

@@ -22,18 +22,21 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       let* α2 :=
         M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
       let* α3 := M.read (mk_str "Circle of radius ") in
-      let* α4 := M.alloc [ α3 ] in
+      let* α4 := M.alloc (Value.Array [ α3 ]) in
       let* α5 :=
         M.get_associated_function
           (Ty.path "core::fmt::rt::Argument")
           "new_display" in
       let* α6 := M.read self in
       let* α7 := M.call α5 [ M.get_struct_record α6 "radius" ] in
-      let* α8 := M.alloc [ α7 ] in
+      let* α8 := M.alloc (Value.Array [ α7 ]) in
       let* α9 :=
         M.call
           α2
-          [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8 ] in
+          [
+            M.pointer_coercion (* Unsize *) α4;
+            M.pointer_coercion (* Unsize *) α8
+          ] in
       M.call α0 [ α1; α9 ]
     | _, _ => M.impossible
     end.

@@ -44,7 +44,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α3 := M.read (mk_str " and I attend ") in
       let* α4 := M.read (mk_str ". My favorite language is ") in
       let* α5 := M.read (mk_str ". My Git username is ") in
-      let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+      let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
       let* α7 :=
         M.get_associated_function
           (Ty.path "core::fmt::rt::Argument")
@@ -101,11 +101,14 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
       let* α28 := M.call α26 [ α27 ] in
       let* α29 := M.alloc α28 in
       let* α30 := M.call α25 [ α29 ] in
-      let* α31 := M.alloc [ α12; α18; α24; α30 ] in
+      let* α31 := M.alloc (Value.Array [ α12; α18; α24; α30 ]) in
       let* α32 :=
         M.call
           α1
-          [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α31 ] in
+          [
+            M.pointer_coercion (* Unsize *) α6;
+            M.pointer_coercion (* Unsize *) α31
+          ] in
       let* α33 := M.call α0 [ α32 ] in
       M.alloc α33 in
     M.read res

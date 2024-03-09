@@ -122,7 +122,9 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          (Value.Array [ fun γ => (M.read self) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -206,7 +208,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          (Value.Array [ fun γ => (M.alloc (Value.Tuple [])) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -377,7 +379,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          (Value.Array [ fun γ => (M.alloc (Value.Tuple [])) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -537,37 +539,41 @@ Module Impl_core_clone_Clone_for_mother_Outline.
       let* α0 :=
         match_operator
           self
-          [
-            fun γ =>
-              (let* γ :=
+          (Value.Array
+            [
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* γ :=
+                match α0 with
+                | mother.Outline.NoWinner =>
+                  M.alloc (Value.StructTuple "mother::Outline::NoWinner" [])
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Outline.WinnerDetected =>
-                M.alloc mother.Outline.WinnerDetected
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* γ :=
+                match α0 with
+                | mother.Outline.WinnerDetected =>
+                  M.alloc
+                    (Value.StructTuple "mother::Outline::WinnerDetected" [])
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Outline.PayoutCompleted =>
-                M.alloc mother.Outline.PayoutCompleted
-              | _ => M.break_match 
-              end)
-          ] in
+                match α0 with
+                | mother.Outline.PayoutCompleted =>
+                  M.alloc
+                    (Value.StructTuple "mother::Outline::PayoutCompleted" [])
+                | _ => M.break_match 
+                end)
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -620,124 +626,125 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
       let* α5 :=
         match_operator
           α4
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | (_, _) =>
-                let γ0_0 := Tuple.Access.left γ in
-                let γ0_1 := Tuple.Access.right γ in
-                let* γ0_0 :=
-                  let* α0 := M.read γ0_0 in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ0_0 in
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
                 match α0 with
-                | mother.Status.EndingPeriod _ =>
-                  let* γ2_0 :=
-                    let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
-                    M.pure (α0 γ0_0) in
-                  let* __self_0 := M.alloc (borrow γ2_0) in
-                  let* γ0_1 :=
-                    let* α0 := M.read γ0_1 in
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let* γ0_0 :=
+                    let* α0 := M.read γ0_0 in
                     M.pure (deref α0) in
-                  let* α0 := M.read γ0_1 in
+                  let* α0 := M.read γ0_0 in
                   match α0 with
                   | mother.Status.EndingPeriod _ =>
                     let* γ2_0 :=
                       let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
-                      M.pure (α0 γ0_1) in
-                    let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 := M.read __self_0 in
-                    let* α1 := M.read α0 in
-                    let* α2 := M.read __arg1_0 in
-                    let* α3 := M.read α2 in
-                    M.alloc (BinOp.Pure.eq α1 α3)
+                      M.pure (α0 γ0_0) in
+                    let* __self_0 := M.alloc (borrow γ2_0) in
+                    let* γ0_1 :=
+                      let* α0 := M.read γ0_1 in
+                      M.pure (deref α0) in
+                    let* α0 := M.read γ0_1 in
+                    match α0 with
+                    | mother.Status.EndingPeriod _ =>
+                      let* γ2_0 :=
+                        let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
+                        M.pure (α0 γ0_1) in
+                      let* __arg1_0 := M.alloc (borrow γ2_0) in
+                      let* α0 := M.read __self_0 in
+                      let* α1 := M.read α0 in
+                      let* α2 := M.read __arg1_0 in
+                      let* α3 := M.read α2 in
+                      M.alloc (BinOp.Pure.eq α1 α3)
+                    | _ => M.break_match 
+                    end
                   | _ => M.break_match 
                   end
-                | _ => M.break_match 
-                end
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | (_, _) =>
-                let γ0_0 := Tuple.Access.left γ in
-                let γ0_1 := Tuple.Access.right γ in
-                let* γ0_0 :=
-                  let* α0 := M.read γ0_0 in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ0_0 in
+                end);
+              fun γ =>
+                (let* α0 := M.read γ in
                 match α0 with
-                | mother.Status.Ended _ =>
-                  let* γ2_0 :=
-                    let* α0 := M.var "mother::Status::Get_Ended_0" in
-                    M.pure (α0 γ0_0) in
-                  let* __self_0 := M.alloc (borrow γ2_0) in
-                  let* γ0_1 :=
-                    let* α0 := M.read γ0_1 in
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let* γ0_0 :=
+                    let* α0 := M.read γ0_0 in
                     M.pure (deref α0) in
-                  let* α0 := M.read γ0_1 in
+                  let* α0 := M.read γ0_0 in
                   match α0 with
                   | mother.Status.Ended _ =>
                     let* γ2_0 :=
                       let* α0 := M.var "mother::Status::Get_Ended_0" in
-                      M.pure (α0 γ0_1) in
-                    let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::cmp::PartialEq"
-                        "eq"
-                        [
-                          (* Self *) Ty.path "mother::Outline";
-                          (* Rhs *) Ty.path "mother::Outline"
-                        ] in
-                    let* α1 := M.read __self_0 in
-                    let* α2 := M.read __arg1_0 in
-                    let* α3 := M.call α0 [ α1; α2 ] in
-                    M.alloc α3
+                      M.pure (α0 γ0_0) in
+                    let* __self_0 := M.alloc (borrow γ2_0) in
+                    let* γ0_1 :=
+                      let* α0 := M.read γ0_1 in
+                      M.pure (deref α0) in
+                    let* α0 := M.read γ0_1 in
+                    match α0 with
+                    | mother.Status.Ended _ =>
+                      let* γ2_0 :=
+                        let* α0 := M.var "mother::Status::Get_Ended_0" in
+                        M.pure (α0 γ0_1) in
+                      let* __arg1_0 := M.alloc (borrow γ2_0) in
+                      let* α0 :=
+                        M.get_trait_method
+                          "core::cmp::PartialEq"
+                          "eq"
+                          [
+                            (* Self *) Ty.path "mother::Outline";
+                            (* Rhs *) Ty.path "mother::Outline"
+                          ] in
+                      let* α1 := M.read __self_0 in
+                      let* α2 := M.read __arg1_0 in
+                      let* α3 := M.call α0 [ α1; α2 ] in
+                      M.alloc α3
+                    | _ => M.break_match 
+                    end
                   | _ => M.break_match 
                   end
-                | _ => M.break_match 
-                end
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | (_, _) =>
-                let γ0_0 := Tuple.Access.left γ in
-                let γ0_1 := Tuple.Access.right γ in
-                let* γ0_0 :=
-                  let* α0 := M.read γ0_0 in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ0_0 in
+                end);
+              fun γ =>
+                (let* α0 := M.read γ in
                 match α0 with
-                | mother.Status.RfDelay _ =>
-                  let* γ2_0 :=
-                    let* α0 := M.var "mother::Status::Get_RfDelay_0" in
-                    M.pure (α0 γ0_0) in
-                  let* __self_0 := M.alloc (borrow γ2_0) in
-                  let* γ0_1 :=
-                    let* α0 := M.read γ0_1 in
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let* γ0_0 :=
+                    let* α0 := M.read γ0_0 in
                     M.pure (deref α0) in
-                  let* α0 := M.read γ0_1 in
+                  let* α0 := M.read γ0_0 in
                   match α0 with
                   | mother.Status.RfDelay _ =>
                     let* γ2_0 :=
                       let* α0 := M.var "mother::Status::Get_RfDelay_0" in
-                      M.pure (α0 γ0_1) in
-                    let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 := M.read __self_0 in
-                    let* α1 := M.read α0 in
-                    let* α2 := M.read __arg1_0 in
-                    let* α3 := M.read α2 in
-                    M.alloc (BinOp.Pure.eq α1 α3)
+                      M.pure (α0 γ0_0) in
+                    let* __self_0 := M.alloc (borrow γ2_0) in
+                    let* γ0_1 :=
+                      let* α0 := M.read γ0_1 in
+                      M.pure (deref α0) in
+                    let* α0 := M.read γ0_1 in
+                    match α0 with
+                    | mother.Status.RfDelay _ =>
+                      let* γ2_0 :=
+                        let* α0 := M.var "mother::Status::Get_RfDelay_0" in
+                        M.pure (α0 γ0_1) in
+                      let* __arg1_0 := M.alloc (borrow γ2_0) in
+                      let* α0 := M.read __self_0 in
+                      let* α1 := M.read α0 in
+                      let* α2 := M.read __arg1_0 in
+                      let* α3 := M.read α2 in
+                      M.alloc (BinOp.Pure.eq α1 α3)
+                    | _ => M.break_match 
+                    end
                   | _ => M.break_match 
                   end
-                | _ => M.break_match 
-                end
-              end);
-            fun γ => (M.alloc true)
-          ] in
+                end);
+              fun γ => (M.alloc (Value.Bool true))
+            ]) in
       let* α6 := M.read α5 in
       let* α0 := M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
       M.read α0
@@ -777,12 +784,13 @@ Module Impl_core_cmp_Eq_for_mother_Status.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (match_operator
-                Value.DeclaredButUndefined
-                [ fun γ => (M.alloc (Value.Tuple [])) ])
-          ] in
+          (Value.Array
+            [
+              fun γ =>
+                (match_operator
+                  Value.DeclaredButUndefined
+                  (Value.Array [ fun γ => (M.alloc (Value.Tuple [])) ]))
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -811,91 +819,93 @@ Module Impl_core_clone_Clone_for_mother_Status.
       let* α0 :=
         match_operator
           self
-          [
-            fun γ =>
-              (let* γ :=
+          (Value.Array
+            [
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Status.NotStarted => M.alloc mother.Status.NotStarted
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* γ :=
+                match α0 with
+                | mother.Status.NotStarted =>
+                  M.alloc (Value.StructTuple "mother::Status::NotStarted" [])
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Status.OpeningPeriod =>
-                M.alloc mother.Status.OpeningPeriod
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* γ :=
+                match α0 with
+                | mother.Status.OpeningPeriod =>
+                  M.alloc (Value.StructTuple "mother::Status::OpeningPeriod" [])
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Status.EndingPeriod _ =>
-                let* γ1_0 :=
-                  let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
-                  M.pure (α0 γ) in
-                let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :=
-                  M.get_trait_method
-                    "core::clone::Clone"
-                    "clone"
-                    [ (* Self *) Ty.path "u32" ] in
-                let* α1 := M.read __self_0 in
-                let* α2 := M.call α0 [ α1 ] in
-                M.alloc
-                  (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ])
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* γ :=
+                match α0 with
+                | mother.Status.EndingPeriod _ =>
+                  let* γ1_0 :=
+                    let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
+                    M.pure (α0 γ) in
+                  let* __self_0 := M.alloc (borrow γ1_0) in
+                  let* α0 :=
+                    M.get_trait_method
+                      "core::clone::Clone"
+                      "clone"
+                      [ (* Self *) Ty.path "u32" ] in
+                  let* α1 := M.read __self_0 in
+                  let* α2 := M.call α0 [ α1 ] in
+                  M.alloc
+                    (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ])
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Status.Ended _ =>
-                let* γ1_0 :=
-                  let* α0 := M.var "mother::Status::Get_Ended_0" in
-                  M.pure (α0 γ) in
-                let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :=
-                  M.get_trait_method
-                    "core::clone::Clone"
-                    "clone"
-                    [ (* Self *) Ty.path "mother::Outline" ] in
-                let* α1 := M.read __self_0 in
-                let* α2 := M.call α0 [ α1 ] in
-                M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ])
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* γ :=
+                match α0 with
+                | mother.Status.Ended _ =>
+                  let* γ1_0 :=
+                    let* α0 := M.var "mother::Status::Get_Ended_0" in
+                    M.pure (α0 γ) in
+                  let* __self_0 := M.alloc (borrow γ1_0) in
+                  let* α0 :=
+                    M.get_trait_method
+                      "core::clone::Clone"
+                      "clone"
+                      [ (* Self *) Ty.path "mother::Outline" ] in
+                  let* α1 := M.read __self_0 in
+                  let* α2 := M.call α0 [ α1 ] in
+                  M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ])
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* γ :=
+                  let* α0 := M.read γ in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | mother.Status.RfDelay _ =>
-                let* γ1_0 :=
-                  let* α0 := M.var "mother::Status::Get_RfDelay_0" in
-                  M.pure (α0 γ) in
-                let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 :=
-                  M.get_trait_method
-                    "core::clone::Clone"
-                    "clone"
-                    [ (* Self *) Ty.path "u32" ] in
-                let* α1 := M.read __self_0 in
-                let* α2 := M.call α0 [ α1 ] in
-                M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ])
-              | _ => M.break_match 
-              end)
-          ] in
+                match α0 with
+                | mother.Status.RfDelay _ =>
+                  let* γ1_0 :=
+                    let* α0 := M.var "mother::Status::Get_RfDelay_0" in
+                    M.pure (α0 γ) in
+                  let* __self_0 := M.alloc (borrow γ1_0) in
+                  let* α0 :=
+                    M.get_trait_method
+                      "core::clone::Clone"
+                      "clone"
+                      [ (* Self *) Ty.path "u32" ] in
+                  let* α1 := M.read __self_0 in
+                  let* α2 := M.call α0 [ α1 ] in
+                  M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ])
+                | _ => M.break_match 
+                end)
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1070,40 +1080,49 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [
-            fun γ =>
-              (match_operator
-                Value.DeclaredButUndefined
-                [
-                  fun γ =>
-                    (match_operator
-                      Value.DeclaredButUndefined
-                      [
-                        fun γ =>
-                          (match_operator
-                            Value.DeclaredButUndefined
+          (Value.Array
+            [
+              fun γ =>
+                (match_operator
+                  Value.DeclaredButUndefined
+                  (Value.Array
+                    [
+                      fun γ =>
+                        (match_operator
+                          Value.DeclaredButUndefined
+                          (Value.Array
                             [
                               fun γ =>
                                 (match_operator
                                   Value.DeclaredButUndefined
-                                  [
-                                    fun γ =>
-                                      (match_operator
-                                        Value.DeclaredButUndefined
-                                        [
-                                          fun γ =>
-                                            (match_operator
-                                              Value.DeclaredButUndefined
-                                              [
-                                                fun γ =>
-                                                  (M.alloc (Value.Tuple []))
-                                              ])
-                                        ])
-                                  ])
-                            ])
-                      ])
-                ])
-          ] in
+                                  (Value.Array
+                                    [
+                                      fun γ =>
+                                        (match_operator
+                                          Value.DeclaredButUndefined
+                                          (Value.Array
+                                            [
+                                              fun γ =>
+                                                (match_operator
+                                                  Value.DeclaredButUndefined
+                                                  (Value.Array
+                                                    [
+                                                      fun γ =>
+                                                        (match_operator
+                                                          Value.DeclaredButUndefined
+                                                          (Value.Array
+                                                            [
+                                                              fun γ =>
+                                                                (M.alloc
+                                                                  (Value.Tuple
+                                                                    []))
+                                                            ]))
+                                                    ]))
+                                            ]))
+                                    ]))
+                            ]))
+                    ]))
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1267,8 +1286,8 @@ Module Impl_core_default_Default_for_mother_Auction.
             ("subject", α3);
             ("bids", α5);
             ("terms", α7);
-            ("status", mother.Status.OpeningPeriod);
-            ("finalized", false);
+            ("status", Value.StructTuple "mother::Status::OpeningPeriod" []);
+            ("finalized", Value.Bool false);
             ("vector", α9)
           ])
     | _, _ => M.impossible
@@ -1322,52 +1341,53 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
       let* α5 :=
         match_operator
           α4
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | (_, _) =>
-                let γ0_0 := Tuple.Access.left γ in
-                let γ0_1 := Tuple.Access.right γ in
-                let* γ0_0 :=
-                  let* α0 := M.read γ0_0 in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ0_0 in
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
                 match α0 with
-                | mother.Failure.Revert _ =>
-                  let* γ2_0 :=
-                    let* α0 := M.var "mother::Failure::Get_Revert_0" in
-                    M.pure (α0 γ0_0) in
-                  let* __self_0 := M.alloc (borrow γ2_0) in
-                  let* γ0_1 :=
-                    let* α0 := M.read γ0_1 in
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let* γ0_0 :=
+                    let* α0 := M.read γ0_0 in
                     M.pure (deref α0) in
-                  let* α0 := M.read γ0_1 in
+                  let* α0 := M.read γ0_0 in
                   match α0 with
                   | mother.Failure.Revert _ =>
                     let* γ2_0 :=
                       let* α0 := M.var "mother::Failure::Get_Revert_0" in
-                      M.pure (α0 γ0_1) in
-                    let* __arg1_0 := M.alloc (borrow γ2_0) in
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::cmp::PartialEq"
-                        "eq"
-                        [
-                          (* Self *) Ty.path "alloc::string::String";
-                          (* Rhs *) Ty.path "alloc::string::String"
-                        ] in
-                    let* α1 := M.read __self_0 in
-                    let* α2 := M.read __arg1_0 in
-                    let* α3 := M.call α0 [ α1; α2 ] in
-                    M.alloc α3
+                      M.pure (α0 γ0_0) in
+                    let* __self_0 := M.alloc (borrow γ2_0) in
+                    let* γ0_1 :=
+                      let* α0 := M.read γ0_1 in
+                      M.pure (deref α0) in
+                    let* α0 := M.read γ0_1 in
+                    match α0 with
+                    | mother.Failure.Revert _ =>
+                      let* γ2_0 :=
+                        let* α0 := M.var "mother::Failure::Get_Revert_0" in
+                        M.pure (α0 γ0_1) in
+                      let* __arg1_0 := M.alloc (borrow γ2_0) in
+                      let* α0 :=
+                        M.get_trait_method
+                          "core::cmp::PartialEq"
+                          "eq"
+                          [
+                            (* Self *) Ty.path "alloc::string::String";
+                            (* Rhs *) Ty.path "alloc::string::String"
+                          ] in
+                      let* α1 := M.read __self_0 in
+                      let* α2 := M.read __arg1_0 in
+                      let* α3 := M.call α0 [ α1; α2 ] in
+                      M.alloc α3
+                    | _ => M.break_match 
+                    end
                   | _ => M.break_match 
                   end
-                | _ => M.break_match 
-                end
-              end);
-            fun γ => (M.alloc true)
-          ] in
+                end);
+              fun γ => (M.alloc (Value.Bool true))
+            ]) in
       let* α6 := M.read α5 in
       let* α0 := M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
       M.read α0
@@ -1407,7 +1427,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          (Value.Array [ fun γ => (M.alloc (Value.Tuple [])) ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1618,7 +1638,7 @@ Module Impl_mother_Mother.
       let* fail := M.alloc fail in
       let* α0 := M.read (M.use fail) in
       let* α1 :=
-        if α0 then
+        if Value.is_true α0 then
           let* α0 :=
             M.get_trait_method
               "alloc::string::ToString"
@@ -1710,65 +1730,66 @@ Module Impl_mother_Mother.
       let* α0 :=
         match_operator
           fail
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.option.Option.Some _ =>
-                let* γ0_0 :=
-                  let* α0 := M.var "core::option::Option::Get_Some_0" in
-                  M.pure (α0 γ) in
-                let* α0 := M.read γ0_0 in
+          (Value.Array
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
                 match α0 with
-                | mother.Failure.Revert _ =>
-                  let* γ1_0 :=
-                    let* α0 := M.var "mother::Failure::Get_Revert_0" in
-                    M.pure (α0 γ0_0) in
-                  let* α0 :=
-                    M.get_trait_method
-                      "alloc::string::ToString"
-                      "to_string"
-                      [ (* Self *) Ty.path "str" ] in
-                  let* α1 := M.read (mk_str "Reverting on user demand!") in
-                  let* α2 := M.call α0 [ α1 ] in
+                | core.option.Option.Some _ =>
+                  let* γ0_0 :=
+                    let* α0 := M.var "core::option::Option::Get_Some_0" in
+                    M.pure (α0 γ) in
+                  let* α0 := M.read γ0_0 in
+                  match α0 with
+                  | mother.Failure.Revert _ =>
+                    let* γ1_0 :=
+                      let* α0 := M.var "mother::Failure::Get_Revert_0" in
+                      M.pure (α0 γ0_0) in
+                    let* α0 :=
+                      M.get_trait_method
+                        "alloc::string::ToString"
+                        "to_string"
+                        [ (* Self *) Ty.path "str" ] in
+                    let* α1 := M.read (mk_str "Reverting on user demand!") in
+                    let* α2 := M.call α0 [ α1 ] in
+                    M.alloc
+                      (Value.StructTuple
+                        "core::result::Result::Err"
+                        [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ])
+                  | _ => M.break_match 
+                  end
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | core.option.Option.Some _ =>
+                  let* γ0_0 :=
+                    let* α0 := M.var "core::option::Option::Get_Some_0" in
+                    M.pure (α0 γ) in
+                  let* α0 := M.read γ0_0 in
+                  match α0 with
+                  | mother.Failure.Panic =>
+                    let* α0 := M.get_function "std::panicking::begin_panic" in
+                    let* α1 := M.read (mk_str "Trapping on user demand!") in
+                    let* α2 := M.call α0 [ α1 ] in
+                    let* α3 := M.never_to_any α2 in
+                    M.alloc α3
+                  | _ => M.break_match 
+                  end
+                | _ => M.break_match 
+                end);
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | core.option.Option.None =>
                   M.alloc
                     (Value.StructTuple
-                      "core::result::Result::Err"
-                      [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ])
+                      "core::result::Result::Ok"
+                      [ Value.Tuple [] ])
                 | _ => M.break_match 
-                end
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.option.Option.Some _ =>
-                let* γ0_0 :=
-                  let* α0 := M.var "core::option::Option::Get_Some_0" in
-                  M.pure (α0 γ) in
-                let* α0 := M.read γ0_0 in
-                match α0 with
-                | mother.Failure.Panic =>
-                  let* α0 := M.get_function "std::panicking::begin_panic" in
-                  let* α1 := M.read (mk_str "Trapping on user demand!") in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.never_to_any α2 in
-                  M.alloc α3
-                | _ => M.break_match 
-                end
-              | _ => M.break_match 
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.option.Option.None =>
-                M.alloc
-                  (Value.StructTuple
-                    "core::result::Result::Ok"
-                    [ Value.Tuple [] ])
-              | _ => M.break_match 
-              end)
-          ] in
+                end)
+            ]) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1796,17 +1817,19 @@ Module Impl_mother_Mother.
           let* α2 := M.read (mk_str "debug_log: ") in
           let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc [ α2; α3 ] in
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.call α5 [ _message ] in
-          let* α7 := M.alloc [ α6 ] in
+          let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
             M.call
               α1
-              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α7
               ] in
           let* α9 := M.call α0 [ α8 ] in
           M.alloc α9 in

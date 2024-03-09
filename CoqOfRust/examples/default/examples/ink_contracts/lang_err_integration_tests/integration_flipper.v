@@ -93,18 +93,18 @@ Module Impl_integration_flipper_Flipper.
       let* succeed := M.alloc succeed in
       let* α0 := M.read (M.use succeed) in
       let* α1 :=
-        if α0 then
+        if Value.is_true α0 then
           let* α0 :=
             M.get_associated_function
               (Ty.path "integration_flipper::Flipper")
               "new" in
-          let* α1 := M.call α0 [ true ] in
+          let* α1 := M.call α0 [ Value.Bool true ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
           M.alloc
             (Value.StructTuple
               "core::result::Result::Err"
-              [ integration_flipper.FlipperError.Build ]) in
+              [ Value.StructTuple "integration_flipper::FlipperError" [] ]) in
       M.read α1
     | _, _ => M.impossible
     end.

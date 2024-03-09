@@ -160,23 +160,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple
           "generics_phantom_type::PhantomTuple"
-          [ "Q"%char; core.marker.PhantomData.Build ]) in
+          [ "Q"%char; Value.StructTuple "core::marker::PhantomData" [] ]) in
     let* _tuple2 :=
       M.alloc
         (Value.StructTuple
           "generics_phantom_type::PhantomTuple"
-          [ "Q"%char; core.marker.PhantomData.Build ]) in
+          [ "Q"%char; Value.StructTuple "core::marker::PhantomData" [] ]) in
     let* _struct1 :=
       M.alloc
         (Value.StructRecord
           "generics_phantom_type::PhantomStruct"
-          [ ("first", "Q"%char); ("phantom", core.marker.PhantomData.Build)
+          [
+            ("first", "Q"%char);
+            ("phantom", Value.StructTuple "core::marker::PhantomData" [])
           ]) in
     let* _struct2 :=
       M.alloc
         (Value.StructRecord
           "generics_phantom_type::PhantomStruct"
-          [ ("first", "Q"%char); ("phantom", core.marker.PhantomData.Build)
+          [
+            ("first", "Q"%char);
+            ("phantom", Value.StructTuple "core::marker::PhantomData" [])
           ]) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

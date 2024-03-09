@@ -687,13 +687,26 @@ fn compile_expr_kind<'a>(
     match &expr.kind {
         thir::ExprKind::Scope { value, .. } => compile_expr_kind(env, thir, value),
         thir::ExprKind::Box { value } => {
+            let value_ty = compile_type(env, &thir.exprs.get(*value).unwrap().ty);
             let value = compile_expr(env, thir, value);
 
             Rc::new(ExprKind::Call {
                 func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar(
-                        "(alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::[\"new\"]".to_string(),
-                    )),
+                    kind: Rc::new(ExprKind::AssociatedFunction {
+                        ty: Rc::new(CoqType::Application {
+                            func: Rc::new(CoqType::Path {
+                                path: Rc::new(Path::new(&["alloc", "boxed", "Box"])),
+                            }),
+                            args: vec![
+                                value_ty,
+                                Rc::new(CoqType::Path {
+                                    path: Rc::new(Path::new(&["alloc", "alloc", "Global"])),
+                                }),
+                            ],
+                            is_alias: false,
+                        }),
+                        func: "new".to_string(),
+                    }),
                     ty: None,
                 }),
                 args: vec![value],

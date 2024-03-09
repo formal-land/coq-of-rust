@@ -43,7 +43,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 := M.read (mk_str " inches = ") in
         let* α5 := M.read (mk_str " unit?
 ") in
-        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+        let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -63,11 +63,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α14 := BinOp.Panic.add α12 α13 in
         let* α15 := M.alloc α14 in
         let* α16 := M.call α11 [ α15 ] in
-        let* α17 := M.alloc [ α8; α10; α16 ] in
+        let* α17 := M.alloc (Value.Array [ α8; α10; α16 ]) in
         let* α18 :=
           M.call
             α1
-            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α17
+            [
+              M.pointer_coercion (* Unsize *) α6;
+              M.pointer_coercion (* Unsize *) α17
             ] in
         let* α19 := M.call α0 [ α18 ] in
         M.alloc α19 in

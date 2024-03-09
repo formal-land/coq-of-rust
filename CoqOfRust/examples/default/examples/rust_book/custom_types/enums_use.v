@@ -29,94 +29,96 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* status := M.alloc enums_use.Status.Poor in
-    let* work := M.alloc enums_use.Work.Civilian in
+    let* status := M.alloc (Value.StructTuple "enums_use::Status::Poor" []) in
+    let* work := M.alloc (Value.StructTuple "enums_use::Work::Civilian" []) in
     let* _ :=
       match_operator
         status
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_use.Status.Rich =>
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const" in
-                let* α2 := M.read (mk_str "The rich have lots of money!
+        (Value.Array
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | enums_use.Status.Rich =>
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const" in
+                  let* α2 := M.read (mk_str "The rich have lots of money!
 ") in
-                let* α3 := M.alloc [ α2 ] in
-                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
-                M.alloc α5 in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match 
-            end);
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_use.Status.Poor =>
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const" in
-                let* α2 := M.read (mk_str "The poor have no money...
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                  let* α5 := M.call α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple [])
+              | _ => M.break_match 
+              end);
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | enums_use.Status.Poor =>
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const" in
+                  let* α2 := M.read (mk_str "The poor have no money...
 ") in
-                let* α3 := M.alloc [ α2 ] in
-                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
-                M.alloc α5 in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match 
-            end)
-        ] in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                  let* α5 := M.call α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple [])
+              | _ => M.break_match 
+              end)
+          ]) in
     let* α0 :=
       match_operator
         work
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_use.Work.Civilian =>
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const" in
-                let* α2 := M.read (mk_str "Civilians work!
+        (Value.Array
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | enums_use.Work.Civilian =>
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const" in
+                  let* α2 := M.read (mk_str "Civilians work!
 ") in
-                let* α3 := M.alloc [ α2 ] in
-                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
-                M.alloc α5 in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match 
-            end);
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_use.Work.Soldier =>
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const" in
-                let* α2 := M.read (mk_str "Soldiers fight!
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                  let* α5 := M.call α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple [])
+              | _ => M.break_match 
+              end);
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | enums_use.Work.Soldier =>
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const" in
+                  let* α2 := M.read (mk_str "Soldiers fight!
 ") in
-                let* α3 := M.alloc [ α2 ] in
-                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
-                M.alloc α5 in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match 
-            end)
-        ] in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                  let* α5 := M.call α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple [])
+              | _ => M.break_match 
+              end)
+          ]) in
     M.read α0
   | _, _ => M.impossible
   end.
