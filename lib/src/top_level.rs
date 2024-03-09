@@ -1261,12 +1261,11 @@ impl DynNameGen {
     }
 
     fn make_dyn_parm(&mut self, arg: Rc<CoqType>) -> Rc<CoqType> {
-        if let Some((name, arg, is_alias)) = arg.clone().match_ref() {
+        if let Some((name, arg)) = arg.clone().match_ref() {
             let ct = self.make_dyn_parm(arg);
             Rc::new(CoqType::Application {
                 func: CoqType::path(&[&name]),
                 args: vec![ct],
-                is_alias,
             })
         } else if let CoqType::Dyn(path) = arg.as_ref() {
             // We suppose `dyn` is only associated with one trait so we can directly extract the first element

@@ -20,7 +20,6 @@ pub(crate) enum CoqType {
     Application {
         func: Rc<CoqType>,
         args: Vec<Rc<CoqType>>,
-        is_alias: bool,
     },
     Function {
         /// We group together the arguments that are called together, as this
@@ -60,23 +59,17 @@ impl CoqType {
         Rc::new(CoqType::Application {
             func: CoqType::path(&[ptr_name]),
             args: vec![ty],
-            is_alias: false,
         })
     }
 
-    pub(crate) fn match_ref(self: Rc<CoqType>) -> Option<(String, Rc<CoqType>, bool)> {
-        if let CoqType::Application {
-            func,
-            args,
-            is_alias,
-        } = &*self
-        {
+    pub(crate) fn match_ref(self: Rc<CoqType>) -> Option<(String, Rc<CoqType>)> {
+        if let CoqType::Application { func, args } = &*self {
             if let CoqType::Path { path, .. } = &**func {
                 let Path { segments } = path.as_ref();
                 if segments.len() == 1 && args.len() == 1 {
                     let name = segments.first().unwrap();
                     if name == "ref" || name == "mut_ref" {
-                        return Some((name.clone(), args.first().unwrap().clone(), *is_alias));
+                        return Some((name.clone(), args.first().unwrap().clone()));
                     }
                 }
             }
@@ -99,14 +92,9 @@ impl CoqType {
 
 pub(crate) fn mt_ty(ty: Rc<CoqType>) -> Rc<CoqType> {
     match &*ty {
-        CoqType::Application {
-            func,
-            args,
-            is_alias,
-        } => Rc::new(CoqType::Application {
+        CoqType::Application { func, args } => Rc::new(CoqType::Application {
             func: func.clone(),
             args: args.iter().map(|ty| mt_ty(ty.clone())).collect(),
-            is_alias: *is_alias,
         }),
         CoqType::Var(..) | CoqType::Path { .. } => ty,
         CoqType::PathInTrait { path, self_ty } => Rc::new(CoqType::PathInTrait {
@@ -208,11 +196,7 @@ impl CoqType {
                     coq::Expression::Code(text("ltac:(refine _)")),
                 ),
             ]),
-            CoqType::Application {
-                func,
-                args,
-                is_alias: _,
-            } => {
+            CoqType::Application { func, args } => {
                 if args.is_empty() {
                     func.to_coq()
                 } else {
@@ -267,11 +251,7 @@ impl CoqType {
             CoqType::PathInTrait { path, self_ty } => {
                 format!("{}_{}", self_ty.to_name(), path.to_name())
             }
-            CoqType::Application {
-                func,
-                args,
-                is_alias: _,
-            } => {
+            CoqType::Application { func, args } => {
                 let mut name = func.to_name();
                 for arg in args {
                     name.push('_');

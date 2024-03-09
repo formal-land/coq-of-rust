@@ -498,7 +498,6 @@ pub(crate) fn compile_expr<'a>(
                                 path: Rc::new(Path::new(&["alloc", "alloc", "Global"])),
                             }),
                         ],
-                        is_alias: false,
                     }),
                     func: "new".to_string(),
                 }),

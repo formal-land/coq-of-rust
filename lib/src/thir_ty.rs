@@ -36,7 +36,6 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
                     path: Rc::new(path),
                 }),
                 args,
-                is_alias: false,
             })
         }
         // Foreign(DefId),
@@ -44,12 +43,10 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
             args: vec![compile_type(env, ty)],
-            is_alias: false,
         }),
         TyKind::Slice(ty) => Rc::new(CoqType::Application {
             func: CoqType::path(&["slice"]),
             args: vec![compile_type(env, ty)],
-            is_alias: false,
         }),
         TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) | TyKind::Ref(_, ty, mutbl) => {
             CoqType::make_ref(mutbl, compile_type(env, ty))
