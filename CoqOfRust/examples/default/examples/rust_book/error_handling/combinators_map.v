@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                 | combinators_map.Food.Apple =>
                   let* α0 := M.read (mk_str "Apple") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -42,7 +42,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                 | combinators_map.Food.Carrot =>
                   let* α0 := M.read (mk_str "Carrot") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -53,7 +53,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                 | combinators_map.Food.Potato =>
                   let* α0 := M.read (mk_str "Potato") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α3 := M.read α2 in
@@ -196,14 +196,14 @@ Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Value.StructTuple
                     "core::option::Option::Some"
                     [ Value.StructTuple "combinators_map::Peeled" [ α0 ] ])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.None =>
                 M.alloc (Value.StructTuple "core::option::Option::None" [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α0
@@ -247,14 +247,14 @@ Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       "core::option::Option::Some"
                       [ Value.StructTuple "combinators_map::Chopped" [ α0 ] ])
                 end
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.None =>
                 M.alloc (Value.StructTuple "core::option::Option::None" [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α0
@@ -452,7 +452,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -471,7 +471,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α0

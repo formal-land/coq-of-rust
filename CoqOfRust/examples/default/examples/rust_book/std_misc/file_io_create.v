@@ -93,7 +93,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α11 := M.call α0 [ α10 ] in
                   let* α12 := M.never_to_any α11 in
                   M.alloc α12
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -104,7 +104,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* file := M.copy γ0_0 in
                   M.pure file
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.copy α3 in
@@ -162,7 +162,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α11 := M.call α0 [ α10 ] in
                 let* α12 := M.never_to_any α11 in
                 M.alloc α12
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -197,7 +197,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α0

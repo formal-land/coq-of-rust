@@ -102,14 +102,14 @@ Module Impl_enums_testcase_linked_list_List.
                   let* α3 := M.call α0 [ α2 ] in
                   let* α4 := BinOp.Panic.add (Value.Integer Integer.U32 1) α3 in
                   M.alloc α4
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
                 match α0 with
                 | enums_testcase_linked_list.List.Nil =>
                   M.alloc (Value.Integer Integer.U32 0)
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α1
@@ -194,7 +194,7 @@ Module Impl_enums_testcase_linked_list_List.
                     let* α16 := M.call α0 [ α15 ] in
                     M.alloc α16 in
                   M.pure res
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -213,7 +213,7 @@ Module Impl_enums_testcase_linked_list_List.
                     let* α5 := M.call α0 [ α4 ] in
                     M.alloc α5 in
                   M.pure res
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α1

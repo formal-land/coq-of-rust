@@ -39,7 +39,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                   let* α1 := M.read y in
                   let* α2 := BinOp.Panic.add α0 α1 in
                   M.alloc α2
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -54,7 +54,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                   let* α1 := M.read y in
                   let* α2 := BinOp.Panic.sub α0 α1 in
                   M.alloc α2
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α0

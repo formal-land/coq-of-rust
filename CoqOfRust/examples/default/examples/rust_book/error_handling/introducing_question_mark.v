@@ -71,7 +71,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -84,7 +84,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.copy α6 in
@@ -145,7 +145,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -158,7 +158,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.copy α6 in
@@ -221,7 +221,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -257,7 +257,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α0

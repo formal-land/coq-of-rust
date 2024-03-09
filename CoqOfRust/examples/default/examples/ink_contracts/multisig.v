@@ -1078,7 +1078,7 @@ Module Impl_multisig_Multisig.
                                 let* α1 := M.read α0 in
                                 let* α2 := M.never_to_any α1 in
                                 M.alloc α2
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end);
                             fun γ =>
                               (let* α0 := M.read γ in
@@ -1111,7 +1111,7 @@ Module Impl_multisig_Multisig.
                                       ] in
                                   M.alloc α3 in
                                 M.alloc (Value.Tuple [])
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end)
                           ]) in
                     M.alloc (Value.Tuple [])))
@@ -1712,7 +1712,7 @@ Module Impl_multisig_Multisig.
                               let* α1 := M.read α0 in
                               let* α2 := M.never_to_any α1 in
                               M.alloc α2
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end);
                           fun γ =>
                             (let* α0 := M.read γ in
@@ -1837,7 +1837,7 @@ Module Impl_multisig_Multisig.
                                 M.alloc (Value.Tuple [])
                               else
                                 M.alloc (Value.Tuple [])
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end)
                         ]) in
                   M.alloc (Value.Tuple [])))
@@ -2753,7 +2753,7 @@ Module Impl_multisig_Multisig.
                                     let* α1 := M.read α0 in
                                     let* α2 := M.never_to_any α1 in
                                     M.alloc α2
-                                  | _ => M.break_match 
+                                  | _ => M.break_match
                                   end);
                                 fun γ =>
                                   (let* α0 := M.read γ in
@@ -2794,7 +2794,7 @@ Module Impl_multisig_Multisig.
                                           ] in
                                       M.alloc α5 in
                                     M.alloc (Value.Tuple [])
-                                  | _ => M.break_match 
+                                  | _ => M.break_match
                                   end)
                               ]) in
                         M.alloc (Value.Tuple [])))
@@ -3221,9 +3221,9 @@ Module Impl_multisig_Multisig.
                         (Value.StructTuple
                           "core::result::Result::Ok"
                           [ Value.Tuple [] ])
-                    | _ => M.break_match 
+                    | _ => M.break_match
                     end
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end);
                 fun γ =>
                   (M.alloc

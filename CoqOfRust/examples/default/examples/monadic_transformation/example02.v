@@ -37,7 +37,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.read γ in
               match α0 with
               | i32.Make 0 => M.alloc (Value.Bool false)
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ => (M.alloc (Value.Bool true))
           ]) in

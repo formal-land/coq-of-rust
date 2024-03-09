@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                 | combinators_and_then.Food.CordonBleu =>
                   let* α0 := M.read (mk_str "CordonBleu") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -42,7 +42,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                 | combinators_and_then.Food.Steak =>
                   let* α0 := M.read (mk_str "Steak") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -53,7 +53,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                 | combinators_and_then.Food.Sushi =>
                   let* α0 := M.read (mk_str "Sushi") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α3 := M.read α2 in
@@ -100,7 +100,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                 | combinators_and_then.Day.Monday =>
                   let* α0 := M.read (mk_str "Monday") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -111,7 +111,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                 | combinators_and_then.Day.Tuesday =>
                   let* α0 := M.read (mk_str "Tuesday") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -122,7 +122,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                 | combinators_and_then.Day.Wednesday =>
                   let* α0 := M.read (mk_str "Wednesday") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α3 := M.read α2 in
@@ -161,7 +161,7 @@ Definition have_ingredients (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | combinators_and_then.Food.Sushi =>
                 M.alloc (Value.StructTuple "core::option::Option::None" [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read food in
@@ -193,7 +193,7 @@ Definition have_recipe (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | combinators_and_then.Food.CordonBleu =>
                 M.alloc (Value.StructTuple "core::option::Option::None" [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read food in
@@ -232,7 +232,7 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | core.option.Option.None =>
                 M.alloc (Value.StructTuple "core::option::Option::None" [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -257,7 +257,7 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         | core.option.Option.None =>
                           M.alloc
                             (Value.StructTuple "core::option::Option::None" [])
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end);
                       fun γ =>
                         (let* α0 := M.read γ in
@@ -273,10 +273,10 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Value.StructTuple
                               "core::option::Option::Some"
                               [ α0 ])
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end)
                     ])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α4
@@ -368,7 +368,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α12 := M.call α0 [ α11 ] in
                   M.alloc α12 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -400,7 +400,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α4

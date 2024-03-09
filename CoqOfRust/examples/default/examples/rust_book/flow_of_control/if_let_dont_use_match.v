@@ -69,7 +69,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.alloc α9 in
                   M.alloc (Value.Tuple []) in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ => (M.alloc (Value.Tuple []))
           ]) in

@@ -254,7 +254,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                     (Value.StructTuple
                       "call_runtime::RuntimeError::CallRuntimeFailed"
                       [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.get_function "std::panicking::begin_panic" in

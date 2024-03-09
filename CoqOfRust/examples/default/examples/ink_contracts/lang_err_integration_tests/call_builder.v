@@ -184,7 +184,7 @@ Module Impl_call_builder_CallBuilderTest.
                     let* α0 := M.var "core::result::Result::Get_Ok_0" in
                     M.pure (α0 γ) in
                   M.alloc (Value.StructTuple "core::option::Option::None" [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -200,9 +200,9 @@ Module Impl_call_builder_CallBuilderTest.
                     let* α0 := M.read e in
                     M.alloc
                       (Value.StructTuple "core::option::Option::Some" [ α0 ])
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -237,7 +237,7 @@ Module Impl_call_builder_CallBuilderTest.
                   let* α8 := M.call α0 [ α7 ] in
                   let* α9 := M.never_to_any α8 in
                   M.alloc α9
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α0

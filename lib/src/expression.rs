@@ -39,9 +39,14 @@ pub(crate) enum LoopControlFlow {
 }
 
 #[derive(Clone, Copy, Debug)]
-pub(crate) enum Purity {
+pub(crate) enum CallKind {
+    /// Pure call of a function, written with a space following the syntax
+    /// of Coq.
     Pure,
+    /// Like [Pure] but with a result in the monad.
     Effectful,
+    /// Call of a Rust closure, using the monadic operator `M.call`.
+    Closure,
 }
 
 #[derive(Debug)]
@@ -86,8 +91,7 @@ pub(crate) enum Expr {
     Call {
         func: Rc<Expr>,
         args: Vec<Rc<Expr>>,
-        purity: Purity,
-        from_user: bool,
+        kind: CallKind,
     },
     /// The logical operators are lazily evaluated, so the second
     /// parameter [rhs] must be in monadic form.
@@ -164,8 +168,7 @@ impl Expr {
         if let Expr::Call {
             func,
             args,
-            purity: _,
-            from_user: _,
+            kind: _,
         } = self.as_ref()
         {
             if let Expr::LocalVar(func) = func.as_ref() {
@@ -182,8 +185,7 @@ impl Expr {
         Rc::new(Expr::Call {
             func: Expr::local_var("M.alloc"),
             args: vec![self],
-            purity: Purity::Effectful,
-            from_user: false,
+            kind: CallKind::Effectful,
         })
     }
 
@@ -196,8 +198,7 @@ impl Expr {
         Rc::new(Expr::Call {
             func: Expr::local_var("M.read"),
             args: vec![self.clone()],
-            purity: Purity::Effectful,
-            from_user: false,
+            kind: CallKind::Effectful,
         })
     }
 
@@ -209,8 +210,7 @@ impl Expr {
         Rc::new(Expr::Call {
             func: Expr::local_var("M.copy"),
             args: vec![self],
-            purity: Purity::Effectful,
-            from_user: false,
+            kind: CallKind::Effectful,
         })
     }
 }
@@ -340,14 +340,8 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         ),
         Expr::AssociatedFunction { .. } => (expr, fresh_vars),
         Expr::Literal { .. } => (pure(expr), fresh_vars),
-        Expr::Call {
-            func,
-            args,
-            purity,
-            from_user,
-        } => {
-            let purity = *purity;
-            let from_user = *from_user;
+        Expr::Call { func, args, kind } => {
+            let kind = *kind;
 
             monadic_let(fresh_vars, func.clone(), |fresh_vars, func| {
                 monadic_lets(
@@ -359,13 +353,12 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                                 let call = Rc::new(Expr::Call {
                                     func: func.clone(),
                                     args,
-                                    purity,
-                                    from_user,
+                                    kind,
                                 });
 
-                                match purity {
-                                    Purity::Pure => pure(call),
-                                    Purity::Effectful => call,
+                                match kind {
+                                    CallKind::Pure => pure(call),
+                                    CallKind::Effectful | CallKind::Closure => call,
                                 }
                             },
                             fresh_vars,
@@ -759,27 +752,21 @@ impl Expr {
                 ]),
             ),
             Expr::Literal(literal) => literal.to_doc(with_paren),
-            Expr::Call {
-                func,
-                args,
-                purity: _,
-                from_user,
-            } => paren(
+            Expr::Call { func, args, kind } => paren(
                 with_paren,
-                nest([
-                    if *from_user {
-                        concat([text("M.call"), line()])
-                    } else {
-                        nil()
-                    },
-                    func.to_doc(true),
-                    line(),
-                    if *from_user {
-                        list(args.iter().map(|arg| arg.to_doc(false)).collect())
-                    } else {
-                        intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()])
-                    },
-                ]),
+                match kind {
+                    CallKind::Pure | CallKind::Effectful => nest([
+                        func.to_doc(true),
+                        concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
+                    ]),
+                    CallKind::Closure => nest([
+                        text("M.call"),
+                        line(),
+                        func.to_doc(true),
+                        line(),
+                        list(args.iter().map(|arg| arg.to_doc(false)).collect()),
+                    ]),
+                },
             ),
             Expr::LogicalOperator { name, lhs, rhs } => paren(
                 with_paren,

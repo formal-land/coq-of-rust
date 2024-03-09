@@ -184,7 +184,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
                 | trait_erc20.Error.InsufficientBalance =>
                   let* α0 := M.read (mk_str "InsufficientBalance") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -195,7 +195,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
                 | trait_erc20.Error.InsufficientAllowance =>
                   let* α0 := M.read (mk_str "InsufficientAllowance") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α3 := M.read α2 in
@@ -1058,7 +1058,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -1071,7 +1071,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* _ :=

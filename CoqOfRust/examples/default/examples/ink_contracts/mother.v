@@ -549,7 +549,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
                 match α0 with
                 | mother.Outline.NoWinner =>
                   M.alloc (Value.StructTuple "mother::Outline::NoWinner" [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -560,7 +560,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
                 | mother.Outline.WinnerDetected =>
                   M.alloc
                     (Value.StructTuple "mother::Outline::WinnerDetected" [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -571,7 +571,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
                 | mother.Outline.PayoutCompleted =>
                   M.alloc
                     (Value.StructTuple "mother::Outline::PayoutCompleted" [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α0
@@ -664,9 +664,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           let* α2 := M.read __arg1_0 in
                           let* α3 := M.read α2 in
                           M.alloc (BinOp.Pure.eq α1 α3)
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end
-                      | _ => M.break_match 
+                      | _ => M.break_match
                       end
                     end);
                   fun γ =>
@@ -707,9 +707,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           let* α2 := M.read __arg1_0 in
                           let* α3 := M.call α0 [ α1; α2 ] in
                           M.alloc α3
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end
-                      | _ => M.break_match 
+                      | _ => M.break_match
                       end
                     end);
                   fun γ =>
@@ -743,9 +743,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           let* α2 := M.read __arg1_0 in
                           let* α3 := M.read α2 in
                           M.alloc (BinOp.Pure.eq α1 α3)
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end
-                      | _ => M.break_match 
+                      | _ => M.break_match
                       end
                     end);
                   fun γ => (M.alloc (Value.Bool true))
@@ -834,7 +834,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                 match α0 with
                 | mother.Status.NotStarted =>
                   M.alloc (Value.StructTuple "mother::Status::NotStarted" [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -844,7 +844,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                 match α0 with
                 | mother.Status.OpeningPeriod =>
                   M.alloc (Value.StructTuple "mother::Status::OpeningPeriod" [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -866,7 +866,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   let* α2 := M.call α0 [ α1 ] in
                   M.alloc
                     (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -887,7 +887,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   let* α1 := M.read __self_0 in
                   let* α2 := M.call α0 [ α1 ] in
                   M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -908,7 +908,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   let* α1 := M.read __self_0 in
                   let* α2 := M.call α0 [ α1 ] in
                   M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α0
@@ -1395,9 +1395,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                           let* α2 := M.read __arg1_0 in
                           let* α3 := M.call α0 [ α1; α2 ] in
                           M.alloc α3
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end
-                      | _ => M.break_match 
+                      | _ => M.break_match
                       end
                     end);
                   fun γ => (M.alloc (Value.Bool true))
@@ -1770,9 +1770,9 @@ Module Impl_mother_Mother.
                       (Value.StructTuple
                         "core::result::Result::Err"
                         [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ])
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -1789,9 +1789,9 @@ Module Impl_mother_Mother.
                     let* α2 := M.call α0 [ α1 ] in
                     let* α3 := M.never_to_any α2 in
                     M.alloc α3
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -1801,7 +1801,7 @@ Module Impl_mother_Mother.
                     (Value.StructTuple
                       "core::result::Result::Ok"
                       [ Value.Tuple [] ])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α0

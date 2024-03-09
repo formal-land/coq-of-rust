@@ -84,7 +84,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -103,7 +103,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -122,7 +122,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -141,7 +141,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -160,7 +160,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -179,7 +179,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* _ :=

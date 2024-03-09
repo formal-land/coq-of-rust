@@ -34,7 +34,7 @@ Module checked.
                       =>
                     let* α0 := M.read (mk_str "DivisionByZero") in
                     M.alloc α0
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end);
                 fun γ =>
                   (let* γ :=
@@ -47,7 +47,7 @@ Module checked.
                       =>
                     let* α0 := M.read (mk_str "NonPositiveLogarithm") in
                     M.alloc α0
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end);
                 fun γ =>
                   (let* γ :=
@@ -60,7 +60,7 @@ Module checked.
                       =>
                     let* α0 := M.read (mk_str "NegativeSquareRoot") in
                     M.alloc α0
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end)
               ]) in
         let* α3 := M.read α2 in
@@ -277,7 +277,7 @@ Module checked.
                     let* α4 := M.read α3 in
                     let* α5 := M.never_to_any α4 in
                     M.alloc α5
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end);
                 fun γ =>
                   (let* α0 := M.read γ in
@@ -290,7 +290,7 @@ Module checked.
                       M.pure (α0 γ) in
                     let* val := M.copy γ0_0 in
                     M.pure val
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end)
               ]) in
         M.copy α7 in
@@ -358,7 +358,7 @@ Module checked.
                     let* α4 := M.read α3 in
                     let* α5 := M.never_to_any α4 in
                     M.alloc α5
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end);
                 fun γ =>
                   (let* α0 := M.read γ in
@@ -371,7 +371,7 @@ Module checked.
                       M.pure (α0 γ) in
                     let* val := M.copy γ0_0 in
                     M.pure val
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end)
               ]) in
         M.copy α6 in
@@ -436,7 +436,7 @@ Module checked.
                                 result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
                                 =>
                               M.pure (mk_str "logarithm of non-positive number")
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end);
                           fun γ =>
                             (let* α0 := M.read γ in
@@ -446,7 +446,7 @@ Module checked.
                                 =>
                               let* α0 := M.read (mk_str "division by zero") in
                               M.alloc α0
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end);
                           fun γ =>
                             (let* α0 := M.read γ in
@@ -458,13 +458,13 @@ Module checked.
                                 M.read
                                   (mk_str "square root of negative number") in
                               M.alloc α0
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end)
                         ]) in
                   let* α2 := M.call α0 [ α1 ] in
                   let* α3 := M.never_to_any α2 in
                   M.alloc α3
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -500,7 +500,7 @@ Module checked.
                     let* α9 := M.call α0 [ α8 ] in
                     M.alloc α9 in
                   M.alloc (Value.Tuple [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α5

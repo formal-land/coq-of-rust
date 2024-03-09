@@ -11,25 +11,25 @@ use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::TyKind;
 use std::rc::Rc;
 
-fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, Purity) {
+fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, CallKind) {
     match bin_op {
-        BinOp::Add => ("BinOp.Panic.add", Purity::Effectful),
-        BinOp::Sub => ("BinOp.Panic.sub", Purity::Effectful),
-        BinOp::Mul => ("BinOp.Panic.mul", Purity::Effectful),
-        BinOp::Div => ("BinOp.Panic.div", Purity::Effectful),
-        BinOp::Rem => ("BinOp.Panic.rem", Purity::Effectful),
-        BinOp::BitXor => ("BinOp.Pure.bit_xor", Purity::Pure),
-        BinOp::BitAnd => ("BinOp.Pure.bit_and", Purity::Pure),
-        BinOp::BitOr => ("BinOp.Pure.bit_or", Purity::Pure),
-        BinOp::Shl => ("BinOp.Panic.shl", Purity::Effectful),
-        BinOp::Shr => ("BinOp.Panic.shr", Purity::Effectful),
-        BinOp::Eq => ("BinOp.Pure.eq", Purity::Pure),
-        BinOp::Ne => ("BinOp.Pure.ne", Purity::Pure),
-        BinOp::Lt => ("BinOp.Pure.lt", Purity::Pure),
-        BinOp::Le => ("BinOp.Pure.le", Purity::Pure),
-        BinOp::Ge => ("BinOp.Pure.ge", Purity::Pure),
-        BinOp::Gt => ("BinOp.Pure.gt", Purity::Pure),
-        BinOp::Offset => ("BinOp.Pure.offset", Purity::Pure),
+        BinOp::Add => ("BinOp.Panic.add", CallKind::Effectful),
+        BinOp::Sub => ("BinOp.Panic.sub", CallKind::Effectful),
+        BinOp::Mul => ("BinOp.Panic.mul", CallKind::Effectful),
+        BinOp::Div => ("BinOp.Panic.div", CallKind::Effectful),
+        BinOp::Rem => ("BinOp.Panic.rem", CallKind::Effectful),
+        BinOp::BitXor => ("BinOp.Pure.bit_xor", CallKind::Pure),
+        BinOp::BitAnd => ("BinOp.Pure.bit_and", CallKind::Pure),
+        BinOp::BitOr => ("BinOp.Pure.bit_or", CallKind::Pure),
+        BinOp::Shl => ("BinOp.Panic.shl", CallKind::Effectful),
+        BinOp::Shr => ("BinOp.Panic.shr", CallKind::Effectful),
+        BinOp::Eq => ("BinOp.Pure.eq", CallKind::Pure),
+        BinOp::Ne => ("BinOp.Pure.ne", CallKind::Pure),
+        BinOp::Lt => ("BinOp.Pure.lt", CallKind::Pure),
+        BinOp::Le => ("BinOp.Pure.le", CallKind::Pure),
+        BinOp::Ge => ("BinOp.Pure.ge", CallKind::Pure),
+        BinOp::Gt => ("BinOp.Pure.gt", CallKind::Pure),
+        BinOp::Offset => ("BinOp.Pure.offset", CallKind::Pure),
         _ => todo!(),
     }
 }
@@ -63,8 +63,7 @@ fn build_inner_match(
         body: Rc::new(Expr::Call {
             func: Expr::local_var("M.break_match"),
             args: vec![],
-            purity: Purity::Effectful,
-            from_user: false,
+            kind: CallKind::Effectful,
         }),
     });
 
@@ -87,8 +86,7 @@ fn build_inner_match(
                         Rc::new(Expr::Call {
                             func: Expr::local_var(func),
                             args: vec![Expr::local_var(&scrutinee)],
-                            purity: Purity::Pure,
-                            from_user: false,
+                            kind: CallKind::Pure,
                         })
                         .alloc()
                     }
@@ -148,8 +146,7 @@ fn build_inner_match(
                                         init: Rc::new(Expr::Call {
                                             func: Rc::new(Expr::Var(getter_path)),
                                             args: vec![Expr::local_var(&scrutinee)],
-                                            purity: Purity::Pure,
-                                            from_user: false,
+                                            kind: CallKind::Pure,
                                         }),
                                         body,
                                     })
@@ -209,8 +206,7 @@ fn build_inner_match(
                                     init: Rc::new(Expr::Call {
                                         func: Rc::new(Expr::Var(getter_path)),
                                         args: vec![Expr::local_var(&scrutinee)],
-                                        purity: Purity::Pure,
-                                        from_user: false,
+                                        kind: CallKind::Pure,
                                     }),
                                     body,
                                 })
@@ -232,8 +228,7 @@ fn build_inner_match(
                 init: Rc::new(Expr::Call {
                     func: Expr::local_var("deref"),
                     args: vec![Expr::local_var(&scrutinee).read()],
-                    purity: Purity::Pure,
-                    from_user: false,
+                    kind: CallKind::Pure,
                 }),
                 body: build_inner_match(
                     vec![(scrutinee.clone(), pattern.clone())],
@@ -272,8 +267,7 @@ fn build_inner_match(
                                             Rc::new(Expr::Call {
                                                 func: Expr::local_var("Tuple.Access.left"),
                                                 args: vec![init],
-                                                purity: Purity::Pure,
-                                                from_user: false,
+                                                kind: CallKind::Pure,
                                             })
                                         },
                                     );
@@ -284,8 +278,7 @@ fn build_inner_match(
                                         Rc::new(Expr::Call {
                                             func: Expr::local_var("Tuple.Access.right"),
                                             args: vec![init],
-                                            purity: Purity::Pure,
-                                            from_user: false,
+                                            kind: CallKind::Pure,
                                         })
                                     }
                                 },
@@ -352,8 +345,7 @@ fn build_inner_match(
                                             init_patterns.len()
                                         )),
                                         args: vec![Expr::local_var(&scrutinee)],
-                                        purity: Purity::Pure,
-                                        from_user: false,
+                                        kind: CallKind::Pure,
                                     }),
                                     body,
                                 }),
@@ -369,8 +361,7 @@ fn build_inner_match(
                                         init: Rc::new(Expr::Call {
                                             func: Expr::local_var(&format!("[{index}]")),
                                             args: vec![Expr::local_var(&scrutinee)],
-                                            purity: Purity::Pure,
-                                            from_user: false,
+                                            kind: CallKind::Pure,
                                         }),
                                         body,
                                     })
@@ -410,8 +401,7 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
                     .collect(),
             }),
         ],
-        purity: Purity::Effectful,
-        from_user: false,
+        kind: CallKind::Effectful,
     })
 }
 
@@ -497,8 +487,7 @@ pub(crate) fn compile_expr<'a>(
                     func: "new".to_string(),
                 }),
                 args: vec![value],
-                purity: Purity::Effectful,
-                from_user: true,
+                kind: CallKind::Closure,
             })
         }
         thir::ExprKind::If {
@@ -543,12 +532,12 @@ pub(crate) fn compile_expr<'a>(
                 .map(|arg| compile_expr(env, thir, arg).read())
                 .collect();
             let func = compile_expr(env, thir, fun);
-            let (purity, from_user) = {
-                let default = (Purity::Effectful, true);
+            let kind = {
+                let default = CallKind::Closure;
 
                 match func.match_simple_call(&["M.alloc"]).as_ref() {
                     Some(expr) => match expr.as_ref() {
-                        Expr::Constructor(_) => (Purity::Pure, false),
+                        Expr::Constructor(_) => CallKind::Pure,
                         _ => default,
                     },
                     _ => default,
@@ -556,25 +545,18 @@ pub(crate) fn compile_expr<'a>(
             };
             let func = func.read();
 
-            Rc::new(Expr::Call {
-                func,
-                args,
-                purity,
-                from_user,
-            })
-            .alloc()
+            Rc::new(Expr::Call { func, args, kind }).alloc()
         }
         thir::ExprKind::Deref { arg } => compile_expr(env, thir, arg).read(),
         thir::ExprKind::Binary { op, lhs, rhs } => {
-            let (path, purity) = path_of_bin_op(op);
+            let (path, kind) = path_of_bin_op(op);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
                 args: vec![lhs.read(), rhs.read()],
-                purity,
-                from_user: false,
+                kind,
             })
             .alloc()
         }
@@ -594,17 +576,16 @@ pub(crate) fn compile_expr<'a>(
             .alloc()
         }
         thir::ExprKind::Unary { op, arg } => {
-            let (path, purity) = match op {
-                UnOp::Not => ("UnOp.not", Purity::Pure),
-                UnOp::Neg => ("UnOp.neg", Purity::Effectful),
+            let (path, kind) = match op {
+                UnOp::Not => ("UnOp.not", CallKind::Pure),
+                UnOp::Neg => ("UnOp.neg", CallKind::Effectful),
             };
             let arg = compile_expr(env, thir, arg);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
                 args: vec![arg.read()],
-                purity,
-                from_user: false,
+                kind,
             })
             .alloc()
         }
@@ -615,8 +596,7 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Call {
                 func,
                 args: vec![source.read()],
-                purity: Purity::Pure,
-                from_user: false,
+                kind: CallKind::Pure,
             })
             .alloc()
         }
@@ -632,8 +612,7 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Call {
                 func,
                 args: vec![source.read()],
-                purity: Purity::Effectful,
-                from_user: false,
+                kind: CallKind::Effectful,
             })
             .alloc()
         }
@@ -645,8 +624,7 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Call {
                 func,
                 args: vec![cast, source],
-                purity: Purity::Pure,
-                from_user: false,
+                kind: CallKind::Pure,
             })
             .alloc()
         }
@@ -685,12 +663,11 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Call {
                 func,
                 args,
-                purity: Purity::Effectful,
-                from_user: false,
+                kind: CallKind::Effectful,
             })
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
-            let (path, purity) = path_of_bin_op(op);
+            let (path, kind) = path_of_bin_op(op);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 
@@ -705,12 +682,10 @@ pub(crate) fn compile_expr<'a>(
                         Rc::new(Expr::Call {
                             func: Expr::local_var(path),
                             args: vec![Expr::local_var("β").read(), rhs.read()],
-                            purity,
-                            from_user: false,
+                            kind,
                         }),
                     ],
-                    purity: Purity::Effectful,
-                    from_user: false,
+                    kind: CallKind::Effectful,
                 }),
             })
         }
@@ -742,8 +717,7 @@ pub(crate) fn compile_expr<'a>(
                     Rc::new(Expr::Call {
                         func: Expr::local_var(getter_name),
                         args: vec![base, index],
-                        purity: Purity::Pure,
-                        from_user: false,
+                        kind: CallKind::Pure,
                     })
                 }
                 None => {
@@ -805,8 +779,7 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Call {
                 func,
                 args,
-                purity: Purity::Pure,
-                from_user: false,
+                kind: CallKind::Pure,
             })
             .alloc()
         }
@@ -1031,8 +1004,7 @@ pub(crate) fn compile_expr<'a>(
                             body: Rc::new(Expr::Call {
                                 func: Rc::new(Expr::Constructor(Path { segments })),
                                 args: vec![Expr::local_var("α")],
-                                purity: Purity::Pure,
-                                from_user: false,
+                                kind: CallKind::Pure,
                             }),
                             is_for_match: false,
                         }
@@ -1082,8 +1054,7 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Call {
                 func,
                 args,
-                purity: Purity::Effectful,
-                from_user: false,
+                kind: CallKind::Effectful,
             })
         }
     }

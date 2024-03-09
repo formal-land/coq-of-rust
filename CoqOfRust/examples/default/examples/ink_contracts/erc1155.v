@@ -1734,7 +1734,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 let* α1 := M.read α0 in
                                 let* α2 := M.never_to_any α1 in
                                 M.alloc α2
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end);
                             fun γ =>
                               (let* α0 := M.read γ in
@@ -1805,7 +1805,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.alloc (Value.Tuple []) in
                                   M.alloc (Value.Tuple [])
                                 end
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end)
                           ]) in
                     M.alloc (Value.Tuple [])))
@@ -1872,7 +1872,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 let* α1 := M.read α0 in
                                 let* α2 := M.never_to_any α1 in
                                 M.alloc α2
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end);
                             fun γ =>
                               (let* α0 := M.read γ in
@@ -1910,7 +1910,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     M.alloc α6 in
                                   M.alloc (Value.Tuple [])
                                 end
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end)
                           ]) in
                     M.alloc (Value.Tuple [])))
@@ -2041,7 +2041,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 let* α1 := M.read α0 in
                                 let* α2 := M.never_to_any α1 in
                                 M.alloc α2
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end);
                             fun γ =>
                               (let* α0 := M.read γ in
@@ -2108,7 +2108,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                         let* α2 :=
                                                           M.never_to_any α1 in
                                                         M.alloc α2
-                                                      | _ => M.break_match 
+                                                      | _ => M.break_match
                                                       end);
                                                     fun γ =>
                                                       (let* α0 := M.read γ in
@@ -2167,13 +2167,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                               [ output; α1 ] in
                                                           M.alloc α2 in
                                                         M.alloc (Value.Tuple [])
-                                                      | _ => M.break_match 
+                                                      | _ => M.break_match
                                                       end)
                                                   ]) in
                                             M.alloc (Value.Tuple [])))
                                       ]) in
                                 M.pure (M.use α3)
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end)
                           ]) in
                     M.alloc (Value.Tuple [])))

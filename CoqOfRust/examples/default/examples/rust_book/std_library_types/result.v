@@ -32,7 +32,7 @@ Module checked.
                   | result.checked.MathError.DivisionByZero =>
                     let* α0 := M.read (mk_str "DivisionByZero") in
                     M.alloc α0
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end);
                 fun γ =>
                   (let* γ :=
@@ -43,7 +43,7 @@ Module checked.
                   | result.checked.MathError.NonPositiveLogarithm =>
                     let* α0 := M.read (mk_str "NonPositiveLogarithm") in
                     M.alloc α0
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end);
                 fun γ =>
                   (let* γ :=
@@ -54,7 +54,7 @@ Module checked.
                   | result.checked.MathError.NegativeSquareRoot =>
                     let* α0 := M.read (mk_str "NegativeSquareRoot") in
                     M.alloc α0
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end)
               ]) in
         let* α3 := M.read α2 in
@@ -251,7 +251,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 := M.call α0 [ α7 ] in
                 let* α9 := M.never_to_any α8 in
                 M.alloc α9
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -302,7 +302,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α8 := M.call α0 [ α7 ] in
                           let* α9 := M.never_to_any α8 in
                           M.alloc α9
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end);
                       fun γ =>
                         (let* α0 := M.read γ in
@@ -355,7 +355,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     let* α8 := M.call α0 [ α7 ] in
                                     let* α9 := M.never_to_any α8 in
                                     M.alloc α9
-                                  | _ => M.break_match 
+                                  | _ => M.break_match
                                   end);
                                 fun γ =>
                                   (let* α0 := M.read γ in
@@ -368,13 +368,13 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       M.pure (α0 γ) in
                                     let* sqrt := M.copy γ0_0 in
                                     M.pure sqrt
-                                  | _ => M.break_match 
+                                  | _ => M.break_match
                                   end)
                               ])
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end)
                     ])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α5

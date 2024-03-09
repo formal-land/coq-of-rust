@@ -383,7 +383,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* α1 := M.read α0 in
                               let* α2 := M.never_to_any α1 in
                               M.alloc α2
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end);
                           fun γ =>
                             (let* α0 := M.read γ in
@@ -423,7 +423,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc α9 in
                                 M.alloc (Value.Tuple []) in
                               M.alloc (Value.Tuple [])
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end)
                         ]) in
                   M.alloc (Value.Tuple [])))
@@ -506,7 +506,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* α1 := M.read α0 in
                               let* α2 := M.never_to_any α1 in
                               M.alloc α2
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end);
                           fun γ =>
                             (let* α0 := M.read γ in
@@ -562,7 +562,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (Value.Tuple []) in
                                 M.alloc (Value.Tuple [])
                               end
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end)
                         ]) in
                   M.alloc (Value.Tuple [])))
@@ -628,7 +628,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* α1 := M.read α0 in
                               let* α2 := M.never_to_any α1 in
                               M.alloc α2
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end);
                           fun γ =>
                             (let* α0 := M.read γ in
@@ -648,7 +648,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     (Value.Integer Integer.I32 3) in
                                 M.assign β α1 in
                               M.alloc (Value.Tuple [])
-                            | _ => M.break_match 
+                            | _ => M.break_match
                             end)
                         ]) in
                   M.alloc (Value.Tuple [])))

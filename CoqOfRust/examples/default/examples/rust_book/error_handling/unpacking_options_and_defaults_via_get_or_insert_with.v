@@ -33,7 +33,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                     =>
                   let* α0 := M.read (mk_str "Apple") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -46,7 +46,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                     =>
                   let* α0 := M.read (mk_str "Orange") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -59,7 +59,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                     =>
                   let* α0 := M.read (mk_str "Banana") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -72,7 +72,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                     =>
                   let* α0 := M.read (mk_str "Kiwi") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -85,7 +85,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                     =>
                   let* α0 := M.read (mk_str "Lemon") in
                   M.alloc α0
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α3 := M.read α2 in

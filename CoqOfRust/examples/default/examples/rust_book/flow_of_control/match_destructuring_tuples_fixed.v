@@ -106,7 +106,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α12 := M.call α0 [ α11 ] in
                     M.alloc α12 in
                   M.alloc (Value.Tuple [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end
               end);
             fun γ =>
@@ -135,7 +135,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α5 := M.call α0 [ α4 ] in
                     M.alloc α5 in
                   M.alloc (Value.Tuple [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end
               end);
             fun γ =>
@@ -164,7 +164,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α5 := M.call α0 [ α4 ] in
                     M.alloc α5 in
                   M.alloc (Value.Tuple [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end
               end);
             fun γ =>
@@ -197,9 +197,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α5 := M.call α0 [ α4 ] in
                       M.alloc α5 in
                     M.alloc (Value.Tuple [])
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end
-                | _ => M.break_match 
+                | _ => M.break_match
                 end
               end);
             fun γ =>

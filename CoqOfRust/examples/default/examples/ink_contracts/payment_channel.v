@@ -1049,7 +1049,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -1062,7 +1062,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α0 :=
@@ -1147,7 +1147,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -1160,7 +1160,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* _ :=
@@ -1408,7 +1408,7 @@ Module Impl_payment_channel_PaymentChannel.
                     (Value.StructTuple
                       "core::result::Result::Ok"
                       [ Value.Tuple [] ])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -1422,7 +1422,7 @@ Module Impl_payment_channel_PaymentChannel.
                           "payment_channel::Error::NotYetExpired"
                           []
                       ])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α1
@@ -1653,7 +1653,7 @@ Module Impl_payment_channel_PaymentChannel.
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -1666,7 +1666,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α0 :=

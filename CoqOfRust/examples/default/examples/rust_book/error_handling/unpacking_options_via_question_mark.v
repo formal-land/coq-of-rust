@@ -158,7 +158,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -171,7 +171,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       let* α7 := M.read (M.get_struct_record α6 "phone_number") in
@@ -212,7 +212,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -225,7 +225,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read (M.get_struct_record α10 "area_code")

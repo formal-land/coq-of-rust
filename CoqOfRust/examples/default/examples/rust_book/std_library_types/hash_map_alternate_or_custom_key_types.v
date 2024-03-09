@@ -361,7 +361,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.alloc α10 in
                   M.alloc (Value.Tuple []) in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* _ :=

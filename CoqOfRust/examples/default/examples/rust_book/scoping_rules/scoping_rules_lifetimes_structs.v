@@ -117,7 +117,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       α0
                       [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
                   M.alloc α3
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -143,7 +143,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       α0
                       [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
                   M.alloc α3
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α0

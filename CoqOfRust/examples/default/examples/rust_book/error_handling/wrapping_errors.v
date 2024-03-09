@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                   let* α2 := M.read (mk_str "EmptyVec") in
                   let* α3 := M.call α0 [ α1; α2 ] in
                   M.alloc α3
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* γ :=
@@ -57,7 +57,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       α0
                       [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
                   M.alloc α3
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α0
@@ -123,7 +123,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                   let* α5 := M.call α2 [ M.pointer_coercion (* Unsize *) α4 ] in
                   let* α6 := M.call α0 [ α1; α5 ] in
                   M.alloc α6
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -146,7 +146,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                   let* α5 := M.call α2 [ M.pointer_coercion (* Unsize *) α4 ] in
                   let* α6 := M.call α0 [ α1; α5 ] in
                   M.alloc α6
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α1
@@ -189,7 +189,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                 match α0 with
                 | wrapping_errors.DoubleError.EmptyVec =>
                   M.alloc (Value.StructTuple "core::option::Option::None" [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -205,7 +205,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                     (Value.StructTuple
                       "core::option::Option::Some"
                       [ M.pointer_coercion (* Unsize *) α0 ])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.read α1
@@ -355,7 +355,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -368,7 +368,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.copy α9 in
@@ -430,7 +430,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α4 := M.read α3 in
                   let* α5 := M.never_to_any α4 in
                   M.alloc α5
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.read γ in
@@ -443,7 +443,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.pure (α0 γ) in
                   let* val := M.copy γ0_0 in
                   M.pure val
-                | _ => M.break_match 
+                | _ => M.break_match
                 end)
             ]) in
       M.copy α7 in
@@ -510,7 +510,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -596,11 +596,11 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.alloc α9 in
                             M.alloc (Value.Tuple []) in
                           M.alloc (Value.Tuple [])
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end);
                       fun γ => (M.alloc (Value.Tuple []))
                     ])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α0

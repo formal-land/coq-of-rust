@@ -57,7 +57,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Value.StructTuple
                               "core::result::Result::Ok"
                               [ α2 ])
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end);
                       fun γ =>
                         (let* α0 := M.read γ in
@@ -73,10 +73,10 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Value.StructTuple
                               "core::result::Result::Err"
                               [ α0 ])
-                        | _ => M.break_match 
+                        | _ => M.break_match
                         end)
                     ])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -88,7 +88,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* e := M.copy γ0_0 in
                 let* α0 := M.read e in
                 M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α4
@@ -146,7 +146,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end);
             fun γ =>
               (let* α0 := M.read γ in
@@ -182,7 +182,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call α0 [ α8 ] in
                   M.alloc α9 in
                 M.alloc (Value.Tuple [])
-              | _ => M.break_match 
+              | _ => M.break_match
               end)
           ]) in
     M.read α0

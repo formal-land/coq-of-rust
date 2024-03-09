@@ -650,7 +650,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                 let* α1 := M.read α0 in
                                 let* α2 := M.never_to_any α1 in
                                 M.alloc α2
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end);
                             fun γ =>
                               (let* α0 := M.read γ in
@@ -687,7 +687,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                     M.assign β (BinOp.Pure.bit_and α0 α7) in
                                   M.alloc (Value.Tuple [])
                                 end
-                              | _ => M.break_match 
+                              | _ => M.break_match
                               end)
                           ]) in
                     M.alloc (Value.Tuple [])))

@@ -98,7 +98,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α12 := M.call α0 [ α11 ] in
                       M.alloc α12 in
                     M.alloc (Value.Tuple [])
-                  | _ => M.break_match 
+                  | _ => M.break_match
                   end
                 end
               end);
@@ -147,7 +147,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α9 := M.call α0 [ α8 ] in
                     M.alloc α9 in
                   M.alloc (Value.Tuple [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end
               end);
             fun γ =>

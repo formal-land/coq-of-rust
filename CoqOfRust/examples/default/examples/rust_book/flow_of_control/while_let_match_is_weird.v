@@ -114,7 +114,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           "core::option::Option::Some"
                           [ α1 ]) in
                     M.alloc (Value.Tuple [])
-                | _ => M.break_match 
+                | _ => M.break_match
                 end);
               fun γ =>
                 (let* α0 := M.break in
