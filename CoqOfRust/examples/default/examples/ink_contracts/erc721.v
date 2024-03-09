@@ -773,71 +773,78 @@ Module Impl_erc721_Erc721.
         M.alloc (Value.StructTuple "core::option::Option::Some" [ α2 ]) in
       let* α4 := M.call α0 [ from; α3 ] in
       let* α5 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "erc721::AccountId" ];
-            (* Rhs *)
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "erc721::AccountId" ]
-          ] in
-      let* α6 := M.call α5 [ from; owner ] in
-      let* α7 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "erc721::AccountId" ];
-            (* Rhs *)
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "erc721::AccountId" ]
-          ] in
-      let* α8 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "erc721::Mapping")
-            [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
-          "get" in
-      let* α9 := M.read self in
-      let* α10 := M.call α8 [ M.get_struct_record α9 "token_approvals"; id ] in
-      let* α11 := M.alloc α10 in
-      let* α12 := M.call α7 [ from; α11 ] in
-      let* α13 :=
-        M.get_associated_function
-          (Ty.path "erc721::Erc721")
-          "approved_for_all" in
-      let* α14 := M.read self in
-      let* α15 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "erc721::AccountId" ])
-          "expect" in
-      let* α16 := M.read owner in
-      let* α17 := M.read (mk_str "Error with AccountId") in
-      let* α18 := M.call α15 [ α16; α17 ] in
-      let* α19 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "core::option::Option")
-            [ Ty.path "erc721::AccountId" ])
-          "expect" in
-      let* α20 := M.read from in
-      let* α21 := M.read (mk_str "Error with AccountId") in
-      let* α22 := M.call α19 [ α20; α21 ] in
-      let* α23 := M.call α13 [ α14; α18; α22 ] in
-      let* α0 :=
-        M.alloc
-          (BinOp.Pure.and α4 (BinOp.Pure.or (BinOp.Pure.or α6 α12) α23)) in
+        LogicalOp.and
+          α4
+          (let* α0 :=
+            M.get_trait_method
+              "core::cmp::PartialEq"
+              "eq"
+              [
+                (* Self *)
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    [ Ty.path "erc721::AccountId" ];
+                (* Rhs *)
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    [ Ty.path "erc721::AccountId" ]
+              ] in
+          let* α1 := M.call α0 [ from; owner ] in
+          let* α2 :=
+            LogicalOp.or
+              α1
+              (let* α0 :=
+                M.get_trait_method
+                  "core::cmp::PartialEq"
+                  "eq"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [ Ty.path "erc721::AccountId" ];
+                    (* Rhs *)
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [ Ty.path "erc721::AccountId" ]
+                  ] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.apply
+                    (Ty.path "erc721::Mapping")
+                    [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
+                  "get" in
+              let* α2 := M.read self in
+              let* α3 :=
+                M.call α1 [ M.get_struct_record α2 "token_approvals"; id ] in
+              let* α4 := M.alloc α3 in
+              M.call α0 [ from; α4 ]) in
+          LogicalOp.or
+            α2
+            (let* α0 :=
+              M.get_associated_function
+                (Ty.path "erc721::Erc721")
+                "approved_for_all" in
+            let* α1 := M.read self in
+            let* α2 :=
+              M.get_associated_function
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  [ Ty.path "erc721::AccountId" ])
+                "expect" in
+            let* α3 := M.read owner in
+            let* α4 := M.read (mk_str "Error with AccountId") in
+            let* α5 := M.call α2 [ α3; α4 ] in
+            let* α6 :=
+              M.get_associated_function
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  [ Ty.path "erc721::AccountId" ])
+                "expect" in
+            let* α7 := M.read from in
+            let* α8 := M.read (mk_str "Error with AccountId") in
+            let* α9 := M.call α6 [ α7; α8 ] in
+            M.call α0 [ α1; α5; α9 ])) in
+      let* α0 := M.alloc α5 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1251,24 +1258,27 @@ Module Impl_erc721_Erc721.
           M.alloc (Value.StructTuple "core::option::Option::Some" [ α1 ]) in
         let* α3 := M.call α0 [ owner; α2 ] in
         let* α4 :=
-          M.get_associated_function
-            (Ty.path "erc721::Erc721")
-            "approved_for_all" in
-        let* α5 := M.read self in
-        let* α6 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "erc721::AccountId" ])
-            "expect" in
-        let* α7 := M.read owner in
-        let* α8 := M.read (mk_str "Error with AccountId") in
-        let* α9 := M.call α6 [ α7; α8 ] in
-        let* α10 := M.read caller in
-        let* α11 := M.call α4 [ α5; α9; α10 ] in
-        let* α12 := M.alloc (UnOp.not (BinOp.Pure.or α3 α11)) in
-        let* α13 := M.read (M.use α12) in
-        if Value.is_true α13 then
+          LogicalOp.or
+            α3
+            (let* α0 :=
+              M.get_associated_function
+                (Ty.path "erc721::Erc721")
+                "approved_for_all" in
+            let* α1 := M.read self in
+            let* α2 :=
+              M.get_associated_function
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  [ Ty.path "erc721::AccountId" ])
+                "expect" in
+            let* α3 := M.read owner in
+            let* α4 := M.read (mk_str "Error with AccountId") in
+            let* α5 := M.call α2 [ α3; α4 ] in
+            let* α6 := M.read caller in
+            M.call α0 [ α1; α5; α6 ]) in
+        let* α5 := M.alloc (UnOp.not α4) in
+        let* α6 := M.read (M.use α5) in
+        if Value.is_true α6 then
           let* α0 :=
             M.return_
               (Value.StructTuple

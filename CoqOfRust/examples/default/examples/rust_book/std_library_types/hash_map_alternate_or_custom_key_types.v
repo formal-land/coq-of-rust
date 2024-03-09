@@ -37,22 +37,22 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
           α0
           [ M.get_struct_record α1 "username"; M.get_struct_record α2 "username"
           ] in
-      let* α4 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
-          ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
+      LogicalOp.and
+        α3
+        (let* α0 :=
+          M.get_trait_method
+            "core::cmp::PartialEq"
+            "eq"
+            [
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
+            ] in
+        let* α1 := M.read self in
+        let* α2 := M.read other in
         M.call
-          α4
-          [ M.get_struct_record α5 "password"; M.get_struct_record α6 "password"
-          ] in
-      M.pure (BinOp.Pure.and α3 α7)
+          α0
+          [ M.get_struct_record α1 "password"; M.get_struct_record α2 "password"
+          ])
     | _, _ => M.impossible
     end.
   

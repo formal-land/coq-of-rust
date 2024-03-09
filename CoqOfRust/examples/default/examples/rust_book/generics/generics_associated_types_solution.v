@@ -41,18 +41,19 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       let* α1 := M.read self in
       let* α2 := M.alloc (M.get_struct_tuple α1 0) in
       let* α3 := M.call α0 [ α2; number_1 ] in
-      let* α4 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
-          ] in
-      let* α5 := M.read self in
-      let* α6 := M.alloc (M.get_struct_tuple α5 1) in
-      let* α7 := M.call α4 [ α6; number_2 ] in
-      M.pure (BinOp.Pure.and α3 α7)
+      LogicalOp.and
+        α3
+        (let* α0 :=
+          M.get_trait_method
+            "core::cmp::PartialEq"
+            "eq"
+            [
+              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
+            ] in
+        let* α1 := M.read self in
+        let* α2 := M.alloc (M.get_struct_tuple α1 1) in
+        M.call α0 [ α2; number_2 ])
     | _, _ => M.impossible
     end.
   

@@ -11,11 +11,7 @@ use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::TyKind;
 use std::rc::Rc;
 
-fn path_of_bin_op(
-    bin_op: &BinOp,
-    ty_left: &Rc<CoqType>,
-    ty_right: &Rc<CoqType>,
-) -> (&'static str, Purity) {
+fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, Purity) {
     match bin_op {
         BinOp::Add => ("BinOp.Panic.add", Purity::Effectful),
         BinOp::Sub => ("BinOp.Panic.sub", Purity::Effectful),
@@ -478,7 +474,6 @@ pub(crate) fn compile_expr<'a>(
     expr_id: &rustc_middle::thir::ExprId,
 ) -> Rc<Expr> {
     let expr = thir.exprs.get(*expr_id).unwrap();
-    let ty = compile_type(env, &expr.ty);
 
     match &expr.kind {
         thir::ExprKind::Scope { value, .. } => compile_expr(env, thir, value),
@@ -571,9 +566,7 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Deref { arg } => compile_expr(env, thir, arg).read(),
         thir::ExprKind::Binary { op, lhs, rhs } => {
-            let left_ty = compile_type(env, &thir.exprs.get(*lhs).unwrap().ty);
-            let right_ty = compile_type(env, &thir.exprs.get(*rhs).unwrap().ty);
-            let (path, purity) = path_of_bin_op(op, &left_ty, &right_ty);
+            let (path, purity) = path_of_bin_op(op);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 
@@ -587,17 +580,16 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::LogicalOp { op, lhs, rhs } => {
             let path = match op {
-                LogicalOp::And => "BinOp.Pure.and",
-                LogicalOp::Or => "BinOp.Pure.or",
+                LogicalOp::And => "LogicalOp.and",
+                LogicalOp::Or => "LogicalOp.or",
             };
-            let lhs = compile_expr(env, thir, lhs);
-            let rhs = compile_expr(env, thir, rhs);
+            let lhs = compile_expr(env, thir, lhs).read();
+            let rhs = compile_expr(env, thir, rhs).read();
 
-            Rc::new(Expr::Call {
-                func: Expr::local_var(path),
-                args: vec![lhs.read(), rhs.read()],
-                purity: Purity::Pure,
-                from_user: false,
+            Rc::new(Expr::LogicalOperator {
+                name: path.to_string(),
+                lhs,
+                rhs,
             })
             .alloc()
         }
@@ -698,9 +690,7 @@ pub(crate) fn compile_expr<'a>(
             })
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
-            let left_ty = compile_type(env, &thir.exprs.get(*lhs).unwrap().ty);
-            let right_ty = compile_type(env, &thir.exprs.get(*rhs).unwrap().ty);
-            let (path, purity) = path_of_bin_op(op, &left_ty, &right_ty);
+            let (path, purity) = path_of_bin_op(op);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 

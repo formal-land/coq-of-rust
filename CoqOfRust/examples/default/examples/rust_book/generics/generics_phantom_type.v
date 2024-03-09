@@ -33,19 +33,19 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       let* α2 := M.read other in
       let* α3 :=
         M.call α0 [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ] in
-      let* α4 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
-            (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
-          ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
-        M.call α4 [ M.get_struct_tuple α5 1; M.get_struct_tuple α6 1 ] in
-      M.pure (BinOp.Pure.and α3 α7)
+      LogicalOp.and
+        α3
+        (let* α0 :=
+          M.get_trait_method
+            "core::cmp::PartialEq"
+            "eq"
+            [
+              (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
+              (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
+            ] in
+        let* α1 := M.read self in
+        let* α2 := M.read other in
+        M.call α0 [ M.get_struct_tuple α1 1; M.get_struct_tuple α2 1 ])
     | _, _ => M.impossible
     end.
   
@@ -94,22 +94,22 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
         M.call
           α0
           [ M.get_struct_record α1 "first"; M.get_struct_record α2 "first" ] in
-      let* α4 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
-            (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
-          ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
+      LogicalOp.and
+        α3
+        (let* α0 :=
+          M.get_trait_method
+            "core::cmp::PartialEq"
+            "eq"
+            [
+              (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
+              (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
+            ] in
+        let* α1 := M.read self in
+        let* α2 := M.read other in
         M.call
-          α4
-          [ M.get_struct_record α5 "phantom"; M.get_struct_record α6 "phantom"
-          ] in
-      M.pure (BinOp.Pure.and α3 α7)
+          α0
+          [ M.get_struct_record α1 "phantom"; M.get_struct_record α2 "phantom"
+          ])
     | _, _ => M.impossible
     end.
   

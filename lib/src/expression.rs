@@ -9,7 +9,7 @@ use rustc_middle::query::plumbing::IntoQueryParam;
 use std::rc::Rc;
 
 /// Struct [FreshVars] represents a set of fresh variables
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub(crate) struct FreshVars(u64);
 
 impl FreshVars {
@@ -89,11 +89,12 @@ pub(crate) enum Expr {
         purity: Purity,
         from_user: bool,
     },
-    /// An operator that takes one argument that is supposed to be in monadic
-    /// form once the monadic translation is done.
-    MonadicOperator {
+    /// The logical operators are lazily evaluated, so the second
+    /// parameter [rhs] must be in monadic form.
+    LogicalOperator {
         name: String,
-        arg: Rc<Expr>,
+        lhs: Rc<Expr>,
+        rhs: Rc<Expr>,
     },
     Lambda {
         args: Vec<(String, Option<Rc<CoqType>>)>,
@@ -373,15 +374,22 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 )
             })
         }
-        Expr::MonadicOperator { name, arg } => {
-            let (arg, fresh_vars) = mt_expression(fresh_vars, arg.clone());
-            (
-                Rc::new(Expr::MonadicOperator {
-                    name: name.clone(),
-                    arg,
-                }),
-                fresh_vars,
-            )
+        Expr::LogicalOperator { name, lhs, rhs } => {
+            // We are discarding the [fresh_vars] here as it should not create
+            // collisions, and it helps to keep the counters for the generated
+            // names low.
+            let (rhs, _) = mt_expression(fresh_vars.clone(), rhs.clone());
+
+            monadic_let(fresh_vars, lhs.clone(), |fresh_vars, lhs| {
+                (
+                    Rc::new(Expr::LogicalOperator {
+                        name: name.clone(),
+                        lhs,
+                        rhs,
+                    }),
+                    fresh_vars,
+                )
+            })
         }
         Expr::Lambda {
             args,
@@ -773,9 +781,16 @@ impl Expr {
                     },
                 ]),
             ),
-            Expr::MonadicOperator { name, arg } => {
-                paren(with_paren, nest([text(name), line(), arg.to_doc(true)]))
-            }
+            Expr::LogicalOperator { name, lhs, rhs } => paren(
+                with_paren,
+                nest([
+                    text(name),
+                    line(),
+                    lhs.to_doc(true),
+                    line(),
+                    rhs.to_doc(true),
+                ]),
+            ),
             Expr::Lambda {
                 args,
                 body,

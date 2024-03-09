@@ -104,18 +104,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 :=
-          M.alloc (BinOp.Pure.and (Value.Bool true) (Value.Bool false)) in
-        let* α7 := M.call α5 [ α6 ] in
-        let* α8 := M.alloc (Value.Array [ α7 ]) in
-        let* α9 :=
+          LogicalOp.and (Value.Bool true) (M.pure (Value.Bool false)) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
           M.call
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α8
+              M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α10 := M.call α0 [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -130,19 +131,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 :=
-          M.alloc (BinOp.Pure.or (Value.Bool true) (Value.Bool false)) in
-        let* α7 := M.call α5 [ α6 ] in
-        let* α8 := M.alloc (Value.Array [ α7 ]) in
-        let* α9 :=
+        let* α6 := LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
           M.call
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α8
+              M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α10 := M.call α0 [ α9 ] in
-        M.alloc α10 in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=

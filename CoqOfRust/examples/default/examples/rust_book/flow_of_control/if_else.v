@@ -129,12 +129,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.alloc (Value.Tuple []) in
     let* big_n :=
       let* α0 := M.read n in
-      let* α1 := M.read n in
-      let* α2 :=
-        M.alloc
-          (BinOp.Pure.and
-            (BinOp.Pure.lt α0 (Value.Integer Integer.I32 10))
-            (BinOp.Pure.gt α1 (Value.Integer Integer.I32 (-10)))) in
+      let* α1 :=
+        LogicalOp.and
+          (BinOp.Pure.lt α0 (Value.Integer Integer.I32 10))
+          (let* α0 := M.read n in
+          M.pure (BinOp.Pure.gt α0 (Value.Integer Integer.I32 (-10)))) in
+      let* α2 := M.alloc α1 in
       let* α3 := M.read (M.use α2) in
       let* α4 :=
         if Value.is_true α3 then

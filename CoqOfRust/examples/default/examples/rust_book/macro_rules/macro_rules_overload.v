@@ -41,14 +41,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Value.Integer Integer.I32 1)
             (Value.Integer Integer.I32 1) in
         let* α13 :=
-          BinOp.Panic.mul
-            (Value.Integer Integer.I32 2)
-            (Value.Integer Integer.I32 2) in
-        let* α14 :=
-          M.alloc
-            (BinOp.Pure.and
-              (BinOp.Pure.eq α12 (Value.Integer Integer.I32 2))
-              (BinOp.Pure.eq α13 (Value.Integer Integer.I32 4))) in
+          LogicalOp.and
+            (BinOp.Pure.eq α12 (Value.Integer Integer.I32 2))
+            (let* α12 :=
+              BinOp.Panic.mul
+                (Value.Integer Integer.I32 2)
+                (Value.Integer Integer.I32 2) in
+            M.pure (BinOp.Pure.eq α12 (Value.Integer Integer.I32 4))) in
+        let* α14 := M.alloc α13 in
         let* α15 := M.call α11 [ α14 ] in
         let* α16 := M.alloc (Value.Array [ α8; α10; α15 ]) in
         let* α17 :=
@@ -87,18 +87,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α12 :=
-          M.alloc (BinOp.Pure.or (Value.Bool true) (Value.Bool false)) in
-        let* α13 := M.call α11 [ α12 ] in
-        let* α14 := M.alloc (Value.Array [ α8; α10; α13 ]) in
-        let* α15 :=
+          LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
+        let* α13 := M.alloc α12 in
+        let* α14 := M.call α11 [ α13 ] in
+        let* α15 := M.alloc (Value.Array [ α8; α10; α14 ]) in
+        let* α16 :=
           M.call
             α1
             [
               M.pointer_coercion (* Unsize *) α6;
-              M.pointer_coercion (* Unsize *) α14
+              M.pointer_coercion (* Unsize *) α15
             ] in
-        let* α16 := M.call α0 [ α15 ] in
-        M.alloc α16 in
+        let* α17 := M.call α0 [ α16 ] in
+        M.alloc α17 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

@@ -620,133 +620,138 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
         M.alloc α2 in
       let* α0 := M.read __self_tag in
       let* α1 := M.read __arg1_tag in
-      let* α2 := M.read self in
-      let* α3 := M.read other in
-      let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
-      let* α5 :=
-        match_operator
-          α4
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | (_, _) =>
-                  let γ0_0 := Tuple.Access.left γ in
-                  let γ0_1 := Tuple.Access.right γ in
-                  let* γ0_0 :=
-                    let* α0 := M.read γ0_0 in
-                    M.pure (deref α0) in
-                  let* α0 := M.read γ0_0 in
-                  match α0 with
-                  | mother.Status.EndingPeriod _ =>
-                    let* γ2_0 :=
-                      let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
-                      M.pure (α0 γ0_0) in
-                    let* __self_0 := M.alloc (borrow γ2_0) in
-                    let* γ0_1 :=
-                      let* α0 := M.read γ0_1 in
-                      M.pure (deref α0) in
-                    let* α0 := M.read γ0_1 in
+      let* α2 :=
+        LogicalOp.and
+          (BinOp.Pure.eq α0 α1)
+          (let* α0 := M.read self in
+          let* α1 := M.read other in
+          let* α2 := M.alloc (Value.Tuple [ α0; α1 ]) in
+          let* α3 :=
+            match_operator
+              α2
+              (Value.Array
+                [
+                  fun γ =>
+                    (let* α0 := M.read γ in
                     match α0 with
-                    | mother.Status.EndingPeriod _ =>
-                      let* γ2_0 :=
-                        let* α0 := M.var "mother::Status::Get_EndingPeriod_0" in
-                        M.pure (α0 γ0_1) in
-                      let* __arg1_0 := M.alloc (borrow γ2_0) in
-                      let* α0 := M.read __self_0 in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.read __arg1_0 in
-                      let* α3 := M.read α2 in
-                      M.alloc (BinOp.Pure.eq α1 α3)
-                    | _ => M.break_match 
-                    end
-                  | _ => M.break_match 
-                  end
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | (_, _) =>
-                  let γ0_0 := Tuple.Access.left γ in
-                  let γ0_1 := Tuple.Access.right γ in
-                  let* γ0_0 :=
-                    let* α0 := M.read γ0_0 in
-                    M.pure (deref α0) in
-                  let* α0 := M.read γ0_0 in
-                  match α0 with
-                  | mother.Status.Ended _ =>
-                    let* γ2_0 :=
-                      let* α0 := M.var "mother::Status::Get_Ended_0" in
-                      M.pure (α0 γ0_0) in
-                    let* __self_0 := M.alloc (borrow γ2_0) in
-                    let* γ0_1 :=
-                      let* α0 := M.read γ0_1 in
-                      M.pure (deref α0) in
-                    let* α0 := M.read γ0_1 in
+                    | (_, _) =>
+                      let γ0_0 := Tuple.Access.left γ in
+                      let γ0_1 := Tuple.Access.right γ in
+                      let* γ0_0 :=
+                        let* α0 := M.read γ0_0 in
+                        M.pure (deref α0) in
+                      let* α0 := M.read γ0_0 in
+                      match α0 with
+                      | mother.Status.EndingPeriod _ =>
+                        let* γ2_0 :=
+                          let* α0 :=
+                            M.var "mother::Status::Get_EndingPeriod_0" in
+                          M.pure (α0 γ0_0) in
+                        let* __self_0 := M.alloc (borrow γ2_0) in
+                        let* γ0_1 :=
+                          let* α0 := M.read γ0_1 in
+                          M.pure (deref α0) in
+                        let* α0 := M.read γ0_1 in
+                        match α0 with
+                        | mother.Status.EndingPeriod _ =>
+                          let* γ2_0 :=
+                            let* α0 :=
+                              M.var "mother::Status::Get_EndingPeriod_0" in
+                            M.pure (α0 γ0_1) in
+                          let* __arg1_0 := M.alloc (borrow γ2_0) in
+                          let* α0 := M.read __self_0 in
+                          let* α1 := M.read α0 in
+                          let* α2 := M.read __arg1_0 in
+                          let* α3 := M.read α2 in
+                          M.alloc (BinOp.Pure.eq α1 α3)
+                        | _ => M.break_match 
+                        end
+                      | _ => M.break_match 
+                      end
+                    end);
+                  fun γ =>
+                    (let* α0 := M.read γ in
                     match α0 with
-                    | mother.Status.Ended _ =>
-                      let* γ2_0 :=
-                        let* α0 := M.var "mother::Status::Get_Ended_0" in
-                        M.pure (α0 γ0_1) in
-                      let* __arg1_0 := M.alloc (borrow γ2_0) in
-                      let* α0 :=
-                        M.get_trait_method
-                          "core::cmp::PartialEq"
-                          "eq"
-                          [
-                            (* Self *) Ty.path "mother::Outline";
-                            (* Rhs *) Ty.path "mother::Outline"
-                          ] in
-                      let* α1 := M.read __self_0 in
-                      let* α2 := M.read __arg1_0 in
-                      let* α3 := M.call α0 [ α1; α2 ] in
-                      M.alloc α3
-                    | _ => M.break_match 
-                    end
-                  | _ => M.break_match 
-                  end
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | (_, _) =>
-                  let γ0_0 := Tuple.Access.left γ in
-                  let γ0_1 := Tuple.Access.right γ in
-                  let* γ0_0 :=
-                    let* α0 := M.read γ0_0 in
-                    M.pure (deref α0) in
-                  let* α0 := M.read γ0_0 in
-                  match α0 with
-                  | mother.Status.RfDelay _ =>
-                    let* γ2_0 :=
-                      let* α0 := M.var "mother::Status::Get_RfDelay_0" in
-                      M.pure (α0 γ0_0) in
-                    let* __self_0 := M.alloc (borrow γ2_0) in
-                    let* γ0_1 :=
-                      let* α0 := M.read γ0_1 in
-                      M.pure (deref α0) in
-                    let* α0 := M.read γ0_1 in
+                    | (_, _) =>
+                      let γ0_0 := Tuple.Access.left γ in
+                      let γ0_1 := Tuple.Access.right γ in
+                      let* γ0_0 :=
+                        let* α0 := M.read γ0_0 in
+                        M.pure (deref α0) in
+                      let* α0 := M.read γ0_0 in
+                      match α0 with
+                      | mother.Status.Ended _ =>
+                        let* γ2_0 :=
+                          let* α0 := M.var "mother::Status::Get_Ended_0" in
+                          M.pure (α0 γ0_0) in
+                        let* __self_0 := M.alloc (borrow γ2_0) in
+                        let* γ0_1 :=
+                          let* α0 := M.read γ0_1 in
+                          M.pure (deref α0) in
+                        let* α0 := M.read γ0_1 in
+                        match α0 with
+                        | mother.Status.Ended _ =>
+                          let* γ2_0 :=
+                            let* α0 := M.var "mother::Status::Get_Ended_0" in
+                            M.pure (α0 γ0_1) in
+                          let* __arg1_0 := M.alloc (borrow γ2_0) in
+                          let* α0 :=
+                            M.get_trait_method
+                              "core::cmp::PartialEq"
+                              "eq"
+                              [
+                                (* Self *) Ty.path "mother::Outline";
+                                (* Rhs *) Ty.path "mother::Outline"
+                              ] in
+                          let* α1 := M.read __self_0 in
+                          let* α2 := M.read __arg1_0 in
+                          let* α3 := M.call α0 [ α1; α2 ] in
+                          M.alloc α3
+                        | _ => M.break_match 
+                        end
+                      | _ => M.break_match 
+                      end
+                    end);
+                  fun γ =>
+                    (let* α0 := M.read γ in
                     match α0 with
-                    | mother.Status.RfDelay _ =>
-                      let* γ2_0 :=
-                        let* α0 := M.var "mother::Status::Get_RfDelay_0" in
-                        M.pure (α0 γ0_1) in
-                      let* __arg1_0 := M.alloc (borrow γ2_0) in
-                      let* α0 := M.read __self_0 in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.read __arg1_0 in
-                      let* α3 := M.read α2 in
-                      M.alloc (BinOp.Pure.eq α1 α3)
-                    | _ => M.break_match 
-                    end
-                  | _ => M.break_match 
-                  end
-                end);
-              fun γ => (M.alloc (Value.Bool true))
-            ]) in
-      let* α6 := M.read α5 in
-      let* α0 := M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
+                    | (_, _) =>
+                      let γ0_0 := Tuple.Access.left γ in
+                      let γ0_1 := Tuple.Access.right γ in
+                      let* γ0_0 :=
+                        let* α0 := M.read γ0_0 in
+                        M.pure (deref α0) in
+                      let* α0 := M.read γ0_0 in
+                      match α0 with
+                      | mother.Status.RfDelay _ =>
+                        let* γ2_0 :=
+                          let* α0 := M.var "mother::Status::Get_RfDelay_0" in
+                          M.pure (α0 γ0_0) in
+                        let* __self_0 := M.alloc (borrow γ2_0) in
+                        let* γ0_1 :=
+                          let* α0 := M.read γ0_1 in
+                          M.pure (deref α0) in
+                        let* α0 := M.read γ0_1 in
+                        match α0 with
+                        | mother.Status.RfDelay _ =>
+                          let* γ2_0 :=
+                            let* α0 := M.var "mother::Status::Get_RfDelay_0" in
+                            M.pure (α0 γ0_1) in
+                          let* __arg1_0 := M.alloc (borrow γ2_0) in
+                          let* α0 := M.read __self_0 in
+                          let* α1 := M.read α0 in
+                          let* α2 := M.read __arg1_0 in
+                          let* α3 := M.read α2 in
+                          M.alloc (BinOp.Pure.eq α1 α3)
+                        | _ => M.break_match 
+                        end
+                      | _ => M.break_match 
+                      end
+                    end);
+                  fun γ => (M.alloc (Value.Bool true))
+                ]) in
+          M.read α3) in
+      let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -955,95 +960,101 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
           α0
           [ M.get_struct_record α1 "name"; M.get_struct_record α2 "name" ] in
       let* α4 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-            (* Rhs *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
-          ] in
-      let* α5 := M.read self in
-      let* α6 := M.read other in
-      let* α7 :=
-        M.call
+        LogicalOp.and
+          α3
+          (let* α0 :=
+            M.get_trait_method
+              "core::cmp::PartialEq"
+              "eq"
+              [
+                (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                (* Rhs *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+              ] in
+          let* α1 := M.read self in
+          let* α2 := M.read other in
+          M.call
+            α0
+            [ M.get_struct_record α1 "subject"; M.get_struct_record α2 "subject"
+            ]) in
+      let* α5 :=
+        LogicalOp.and
           α4
-          [ M.get_struct_record α5 "subject"; M.get_struct_record α6 "subject"
-          ] in
+          (let* α0 :=
+            M.get_trait_method
+              "core::cmp::PartialEq"
+              "eq"
+              [
+                (* Self *) Ty.path "mother::Bids";
+                (* Rhs *) Ty.path "mother::Bids"
+              ] in
+          let* α1 := M.read self in
+          let* α2 := M.read other in
+          M.call
+            α0
+            [ M.get_struct_record α1 "bids"; M.get_struct_record α2 "bids" ]) in
+      let* α6 :=
+        LogicalOp.and
+          α5
+          (let* α0 :=
+            M.get_trait_method
+              "core::cmp::PartialEq"
+              "eq"
+              [
+                (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u32" ];
+                (* Rhs *) Ty.apply (Ty.path "array") [ Ty.path "u32" ]
+              ] in
+          let* α1 := M.read self in
+          let* α2 := M.read other in
+          M.call
+            α0
+            [ M.get_struct_record α1 "terms"; M.get_struct_record α2 "terms"
+            ]) in
+      let* α7 :=
+        LogicalOp.and
+          α6
+          (let* α0 :=
+            M.get_trait_method
+              "core::cmp::PartialEq"
+              "eq"
+              [
+                (* Self *) Ty.path "mother::Status";
+                (* Rhs *) Ty.path "mother::Status"
+              ] in
+          let* α1 := M.read self in
+          let* α2 := M.read other in
+          M.call
+            α0
+            [ M.get_struct_record α1 "status"; M.get_struct_record α2 "status"
+            ]) in
       let* α8 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [ (* Self *) Ty.path "mother::Bids"; (* Rhs *) Ty.path "mother::Bids"
-          ] in
-      let* α9 := M.read self in
-      let* α10 := M.read other in
-      let* α11 :=
+        LogicalOp.and
+          α7
+          (let* α0 := M.read self in
+          let* α1 := M.read (M.get_struct_record α0 "finalized") in
+          let* α2 := M.read other in
+          let* α3 := M.read (M.get_struct_record α2 "finalized") in
+          M.pure (BinOp.Pure.eq α1 α3)) in
+      LogicalOp.and
+        α8
+        (let* α0 :=
+          M.get_trait_method
+            "core::cmp::PartialEq"
+            "eq"
+            [
+              (* Self *)
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+              (* Rhs *)
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+            ] in
+        let* α1 := M.read self in
+        let* α2 := M.read other in
         M.call
-          α8
-          [ M.get_struct_record α9 "bids"; M.get_struct_record α10 "bids" ] in
-      let* α12 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u32" ];
-            (* Rhs *) Ty.apply (Ty.path "array") [ Ty.path "u32" ]
-          ] in
-      let* α13 := M.read self in
-      let* α14 := M.read other in
-      let* α15 :=
-        M.call
-          α12
-          [ M.get_struct_record α13 "terms"; M.get_struct_record α14 "terms"
-          ] in
-      let* α16 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *) Ty.path "mother::Status";
-            (* Rhs *) Ty.path "mother::Status"
-          ] in
-      let* α17 := M.read self in
-      let* α18 := M.read other in
-      let* α19 :=
-        M.call
-          α16
-          [ M.get_struct_record α17 "status"; M.get_struct_record α18 "status"
-          ] in
-      let* α20 := M.read self in
-      let* α21 := M.read (M.get_struct_record α20 "finalized") in
-      let* α22 := M.read other in
-      let* α23 := M.read (M.get_struct_record α22 "finalized") in
-      let* α24 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
-            (* Rhs *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-          ] in
-      let* α25 := M.read self in
-      let* α26 := M.read other in
-      let* α27 :=
-        M.call
-          α24
-          [ M.get_struct_record α25 "vector"; M.get_struct_record α26 "vector"
-          ] in
-      M.pure
-        (BinOp.Pure.and
-          (BinOp.Pure.and
-            (BinOp.Pure.and
-              (BinOp.Pure.and (BinOp.Pure.and (BinOp.Pure.and α3 α7) α11) α15)
-              α19)
-            (BinOp.Pure.eq α21 α23))
-          α27)
+          α0
+          [ M.get_struct_record α1 "vector"; M.get_struct_record α2 "vector" ])
     | _, _ => M.impossible
     end.
   
@@ -1335,61 +1346,64 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
         M.alloc α2 in
       let* α0 := M.read __self_tag in
       let* α1 := M.read __arg1_tag in
-      let* α2 := M.read self in
-      let* α3 := M.read other in
-      let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
-      let* α5 :=
-        match_operator
-          α4
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | (_, _) =>
-                  let γ0_0 := Tuple.Access.left γ in
-                  let γ0_1 := Tuple.Access.right γ in
-                  let* γ0_0 :=
-                    let* α0 := M.read γ0_0 in
-                    M.pure (deref α0) in
-                  let* α0 := M.read γ0_0 in
-                  match α0 with
-                  | mother.Failure.Revert _ =>
-                    let* γ2_0 :=
-                      let* α0 := M.var "mother::Failure::Get_Revert_0" in
-                      M.pure (α0 γ0_0) in
-                    let* __self_0 := M.alloc (borrow γ2_0) in
-                    let* γ0_1 :=
-                      let* α0 := M.read γ0_1 in
-                      M.pure (deref α0) in
-                    let* α0 := M.read γ0_1 in
+      let* α2 :=
+        LogicalOp.and
+          (BinOp.Pure.eq α0 α1)
+          (let* α0 := M.read self in
+          let* α1 := M.read other in
+          let* α2 := M.alloc (Value.Tuple [ α0; α1 ]) in
+          let* α3 :=
+            match_operator
+              α2
+              (Value.Array
+                [
+                  fun γ =>
+                    (let* α0 := M.read γ in
                     match α0 with
-                    | mother.Failure.Revert _ =>
-                      let* γ2_0 :=
-                        let* α0 := M.var "mother::Failure::Get_Revert_0" in
-                        M.pure (α0 γ0_1) in
-                      let* __arg1_0 := M.alloc (borrow γ2_0) in
-                      let* α0 :=
-                        M.get_trait_method
-                          "core::cmp::PartialEq"
-                          "eq"
-                          [
-                            (* Self *) Ty.path "alloc::string::String";
-                            (* Rhs *) Ty.path "alloc::string::String"
-                          ] in
-                      let* α1 := M.read __self_0 in
-                      let* α2 := M.read __arg1_0 in
-                      let* α3 := M.call α0 [ α1; α2 ] in
-                      M.alloc α3
-                    | _ => M.break_match 
-                    end
-                  | _ => M.break_match 
-                  end
-                end);
-              fun γ => (M.alloc (Value.Bool true))
-            ]) in
-      let* α6 := M.read α5 in
-      let* α0 := M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
+                    | (_, _) =>
+                      let γ0_0 := Tuple.Access.left γ in
+                      let γ0_1 := Tuple.Access.right γ in
+                      let* γ0_0 :=
+                        let* α0 := M.read γ0_0 in
+                        M.pure (deref α0) in
+                      let* α0 := M.read γ0_0 in
+                      match α0 with
+                      | mother.Failure.Revert _ =>
+                        let* γ2_0 :=
+                          let* α0 := M.var "mother::Failure::Get_Revert_0" in
+                          M.pure (α0 γ0_0) in
+                        let* __self_0 := M.alloc (borrow γ2_0) in
+                        let* γ0_1 :=
+                          let* α0 := M.read γ0_1 in
+                          M.pure (deref α0) in
+                        let* α0 := M.read γ0_1 in
+                        match α0 with
+                        | mother.Failure.Revert _ =>
+                          let* γ2_0 :=
+                            let* α0 := M.var "mother::Failure::Get_Revert_0" in
+                            M.pure (α0 γ0_1) in
+                          let* __arg1_0 := M.alloc (borrow γ2_0) in
+                          let* α0 :=
+                            M.get_trait_method
+                              "core::cmp::PartialEq"
+                              "eq"
+                              [
+                                (* Self *) Ty.path "alloc::string::String";
+                                (* Rhs *) Ty.path "alloc::string::String"
+                              ] in
+                          let* α1 := M.read __self_0 in
+                          let* α2 := M.read __arg1_0 in
+                          let* α3 := M.call α0 [ α1; α2 ] in
+                          M.alloc α3
+                        | _ => M.break_match 
+                        end
+                      | _ => M.break_match 
+                      end
+                    end);
+                  fun γ => (M.alloc (Value.Bool true))
+                ]) in
+          M.read α3) in
+      let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.

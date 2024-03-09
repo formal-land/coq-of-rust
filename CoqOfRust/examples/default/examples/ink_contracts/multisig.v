@@ -884,21 +884,22 @@ Definition ensure_requirement_is_valid (𝜏 : list Ty.t) (α : list Value.t) : 
     let* requirement := M.alloc requirement in
     let* _ :=
       let* α0 := M.read requirement in
-      let* α1 := M.read requirement in
-      let* α2 := M.read owners in
-      let* α3 := M.read owners in
-      let* α4 := M.var "multisig::MAX_OWNERS" in
-      let* α5 := M.read α4 in
-      let* α6 :=
-        M.alloc
-          (UnOp.not
-            (BinOp.Pure.and
-              (BinOp.Pure.and
-                (BinOp.Pure.lt (Value.Integer Integer.U32 0) α0)
-                (BinOp.Pure.le α1 α2))
-              (BinOp.Pure.le α3 α5))) in
-      let* α7 := M.read (M.use α6) in
-      if Value.is_true α7 then
+      let* α1 :=
+        LogicalOp.and
+          (BinOp.Pure.lt (Value.Integer Integer.U32 0) α0)
+          (let* α0 := M.read requirement in
+          let* α1 := M.read owners in
+          M.pure (BinOp.Pure.le α0 α1)) in
+      let* α2 :=
+        LogicalOp.and
+          α1
+          (let* α0 := M.read owners in
+          let* α1 := M.var "multisig::MAX_OWNERS" in
+          let* α2 := M.read α1 in
+          M.pure (BinOp.Pure.le α0 α2)) in
+      let* α3 := M.alloc (UnOp.not α2) in
+      let* α4 := M.read (M.use α3) in
+      if Value.is_true α4 then
         let* α0 := M.get_function "core::panicking::panic" in
         let* α1 :=
           M.read

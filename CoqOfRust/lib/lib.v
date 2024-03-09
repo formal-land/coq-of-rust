@@ -197,9 +197,6 @@ Module BinOp.
       | Value.Integer _ i1, Value.Integer _ i2 => Value.Bool (Z.gtb i1 i2)
       | _, _ => Value.Bool false
       end.
-
-    Parameter and : Value.t -> Value.t -> Value.t.
-    Parameter or : Value.t -> Value.t -> Value.t.
   End Pure.
 
   Module Error.
@@ -306,11 +303,34 @@ Module BinOp.
 
     Parameter div : Value.t -> Value.t -> Value.t.
     Parameter rem : Value.t -> Value.t -> Value.t.
-    
+
     Parameter shl : Value.t -> Value.t -> Value.t.
     Parameter shr : Value.t -> Value.t -> Value.t.
   End Optimistic.
 End BinOp.
+
+(** The evaluation of logical operators is lazy on the second parameter. *)
+Module LogicalOp.
+  Definition and (lhs : Value.t) (rhs : M) : M :=
+    match lhs with
+    | Value.Bool b =>
+      if b then
+        rhs
+      else
+        M.pure (Value.Bool false)
+    | _ => M.impossible
+    end.
+
+  Definition or (lhs : Value.t) (rhs : M) : M :=
+    match lhs with
+    | Value.Bool b =>
+      if b then
+        M.pure (Value.Bool true)
+      else
+        rhs
+    | _ => M.impossible
+    end.
+End LogicalOp.
 
 (** ** Integer notations *)
 
