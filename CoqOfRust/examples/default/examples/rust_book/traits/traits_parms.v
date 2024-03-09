@@ -63,7 +63,10 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
       fn some_fn() {}
   *)
   Definition some_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with | [ Self ], [] => M.pure tt | _, _ => M.impossible end.
+    match 𝜏, α with
+    | [ Self ], [] => M.pure (Value.Tuple [])
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance

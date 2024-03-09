@@ -76,26 +76,28 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α4 :=
       if α3 then
         let* α0 :=
-          M.call
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.path "returning_traits_with_dyn::Sheep";
-                  Ty.path "alloc::alloc::Global"
-                ])::["new"]
-            [ returning_traits_with_dyn.Sheep.Build ] in
-        M.alloc (M.pointer_coercion "Unsize" (M.pointer_coercion "Unsize" α0))
+              (Ty.path "alloc::boxed::Box")
+              [
+                Ty.path "returning_traits_with_dyn::Sheep";
+                Ty.path "alloc::alloc::Global"
+              ])
+            "new" in
+        let* α1 := M.call α0 [ returning_traits_with_dyn.Sheep.Build ] in
+        M.alloc (M.pointer_coercion "Unsize" (M.pointer_coercion "Unsize" α1))
       else
         let* α0 :=
-          M.call
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [
-                  Ty.path "returning_traits_with_dyn::Cow";
-                  Ty.path "alloc::alloc::Global"
-                ])::["new"]
-            [ returning_traits_with_dyn.Cow.Build ] in
-        M.alloc (M.pointer_coercion "Unsize" α0) in
+              (Ty.path "alloc::boxed::Box")
+              [
+                Ty.path "returning_traits_with_dyn::Cow";
+                Ty.path "alloc::alloc::Global"
+              ])
+            "new" in
+        let* α1 := M.call α0 [ returning_traits_with_dyn.Cow.Build ] in
+        M.alloc (M.pointer_coercion "Unsize" α1) in
     let* α5 := M.read α4 in
     M.pure (M.pointer_coercion "Unsize" (M.pointer_coercion "Unsize" α5))
   | _, _ => M.impossible
@@ -117,19 +119,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* random_number := M.copy UnsupportedLiteral in
     let* animal :=
-      let* α0 := M.var "returning_traits_with_dyn::random_animal" in
+      let* α0 := M.get_function "returning_traits_with_dyn::random_animal" in
       let* α1 := M.read random_number in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" in
         let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 :=
           M.read (mk_str "You've randomly chosen an animal, and it says ") in
-        let* α2 := M.read (mk_str "
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 :=
           M.get_trait_method
             "returning_traits_with_dyn::Animal"
             "noise"
@@ -137,21 +145,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *)
                 Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ]
             ] in
-        let* α5 := M.read animal in
-        let* α6 := M.call α4 [ α5 ] in
-        let* α7 := M.alloc α6 in
-        let* α8 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α7 ] in
-        let* α9 := M.alloc [ α8 ] in
-        let* α10 :=
+        let* α7 := M.read animal in
+        let* α8 := M.call α6 [ α7 ] in
+        let* α9 := M.alloc α8 in
+        let* α10 := M.call α5 [ α9 ] in
+        let* α11 := M.alloc [ α10 ] in
+        let* α12 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α9
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α11
             ] in
-        let* α11 := M.call α0 [ α10 ] in
-        M.alloc α11 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α13 := M.call α0 [ α12 ] in
+        M.alloc α13 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

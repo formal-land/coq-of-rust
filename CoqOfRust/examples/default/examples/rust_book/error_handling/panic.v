@@ -28,34 +28,37 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc α1 in
       let* α3 := M.read (M.use α2) in
       if α3 then
-        let* α0 := M.var "std::panicking::begin_panic" in
+        let* α0 := M.get_function "std::panicking::begin_panic" in
         let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
-        M.alloc tt in
+        M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Some refreshing ") in
-        let* α2 := M.read (mk_str " is all I need.
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Some refreshing ") in
+        let* α3 := M.read (mk_str " is all I need.
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.call α5 [ beverage ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ beverage ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -71,16 +74,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.var "panic::drink" in
+      let* α0 := M.get_function "panic::drink" in
       let* α1 := M.read (mk_str "water") in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.var "panic::drink" in
+      let* α0 := M.get_function "panic::drink" in
       let* α1 := M.read (mk_str "lemonade") in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

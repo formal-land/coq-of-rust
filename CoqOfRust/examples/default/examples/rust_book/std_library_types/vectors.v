@@ -84,132 +84,160 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Collected (0..10) into: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Collected (0..10) into: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ collected_iterator ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ collected_iterator ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* xs :=
       let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec" in
+      let* α1 :=
         M.alloc
           [
             Value.Integer Integer.I32 1;
             Value.Integer Integer.I32 2;
             Value.Integer Integer.I32 3
           ] in
-      let* α1 :=
+      let* α2 :=
         M.call
           (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α0 ] in
-      let* α2 := M.read α1 in
-      let* α3 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ M.pointer_coercion "Unsize" α2 ] in
-      M.alloc α3 in
+          [ α1 ] in
+      let* α3 := M.read α2 in
+      let* α4 := M.call α0 [ M.pointer_coercion "Unsize" α3 ] in
+      M.alloc α4 in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Initial vector: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Initial vector: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ xs ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
-            ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Push 4 into the vector
-") in
-        let* α2 := M.alloc [ α1 ] in
-        let* α3 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ M.pointer_coercion "Unsize" α2 ] in
-        let* α4 := M.call α0 [ α3 ] in
-        M.alloc α4 in
-      M.alloc tt in
-    let* _ :=
-      let* α0 :=
-        M.call
-          (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["push"]
-          [ xs; Value.Integer Integer.I32 4 ] in
-      M.alloc α0 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Vector: ") in
-        let* α2 := M.read (mk_str "
-") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ xs ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
-            ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Vector length: ") in
-        let* α2 := M.read (mk_str "
-") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call
-            (Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["len"]
-            [ xs ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ xs ] in
         let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
-      M.alloc tt in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Second element: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const" in
+        let* α2 := M.read (mk_str "Push 4 into the vector
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α3 := M.alloc [ α2 ] in
+        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          "push" in
+      let* α1 := M.call α0 [ xs; Value.Integer Integer.I32 4 ] in
+      M.alloc α1 in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Vector: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ xs ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
+          M.call
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
+            ] in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Vector length: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            "len" in
+        let* α7 := M.call α6 [ xs ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
+          M.call
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            ] in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Second element: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 :=
           M.get_trait_method
             "core::ops::index::Index"
             "index"
@@ -220,56 +248,62 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
               (* Idx *) Ty.path "usize"
             ] in
-        let* α5 := M.call α4 [ xs; Value.Integer Integer.Usize 1 ] in
-        let* α6 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+        let* α7 := M.call α6 [ xs; Value.Integer Integer.Usize 1 ] in
+        let* α8 := M.call α5 [ α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
             ] in
-        let* α9 := M.call α0 [ α8 ] in
-        M.alloc α9 in
-      M.alloc tt in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Pop last element: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Pop last element: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 :=
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["pop"]
-            [ xs ] in
-        let* α5 := M.alloc α4 in
-        let* α6 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            "pop" in
+        let* α7 := M.call α6 [ xs ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
             ] in
-        let* α9 := M.call α0 [ α8 ] in
-        M.alloc α9 in
-      M.alloc tt in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Contents of xs:
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const" in
+        let* α2 := M.read (mk_str "Contents of xs:
 ") in
-        let* α2 := M.alloc [ α1 ] in
-        let* α3 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ M.pointer_coercion "Unsize" α2 ] in
-        let* α4 := M.call α0 [ α3 ] in
-        M.alloc α4 in
-      M.alloc tt in
+        let* α3 := M.alloc [ α2 ] in
+        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -280,6 +314,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ]
           ] in
       let* α1 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "iter" in
+      let* α2 :=
         M.get_trait_method
           "core::ops::deref::Deref"
           "deref"
@@ -289,16 +327,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α2 := M.call α1 [ xs ] in
-      let* α3 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["iter"]
-          [ α2 ] in
-      let* α4 := M.call α0 [ α3 ] in
-      let* α5 := M.alloc α4 in
-      let* α6 :=
+      let* α3 := M.call α2 [ xs ] in
+      let* α4 := M.call α1 [ α3 ] in
+      let* α5 := M.call α0 [ α4 ] in
+      let* α6 := M.alloc α5 in
+      let* α7 :=
         match_operator
-          α5
+          α6
           [
             fun γ =>
               (let* iter := M.copy γ in
@@ -340,34 +375,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* x := M.copy γ0_0 in
                           let* _ :=
                             let* _ :=
-                              let* α0 := M.var "std::io::stdio::_print" in
-                              let* α1 := M.read (mk_str "> ") in
-                              let* α2 := M.read (mk_str "
+                              let* α0 :=
+                                M.get_function "std::io::stdio::_print" in
+                              let* α1 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::Arguments")
+                                  "new_v1" in
+                              let* α2 := M.read (mk_str "> ") in
+                              let* α3 := M.read (mk_str "
 ") in
-                              let* α3 := M.alloc [ α1; α2 ] in
-                              let* α4 :=
+                              let* α4 := M.alloc [ α2; α3 ] in
+                              let* α5 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::rt::Argument")
+                                  "new_display" in
+                              let* α6 := M.call α5 [ x ] in
+                              let* α7 := M.alloc [ α6 ] in
+                              let* α8 :=
                                 M.call
-                                  (Ty.path
-                                      "core::fmt::rt::Argument")::["new_display"]
-                                  [ x ] in
-                              let* α5 := M.alloc [ α4 ] in
-                              let* α6 :=
-                                M.call
-                                  (Ty.path "core::fmt::Arguments")::["new_v1"]
+                                  α1
                                   [
-                                    M.pointer_coercion "Unsize" α3;
-                                    M.pointer_coercion "Unsize" α5
+                                    M.pointer_coercion "Unsize" α4;
+                                    M.pointer_coercion "Unsize" α7
                                   ] in
-                              let* α7 := M.call α0 [ α6 ] in
-                              M.alloc α7 in
-                            M.alloc tt in
-                          M.alloc tt
+                              let* α9 := M.call α0 [ α8 ] in
+                              M.alloc α9 in
+                            M.alloc (Value.Tuple []) in
+                          M.alloc (Value.Tuple [])
                         | _ => M.break_match 
                         end)
                     ] in
-                M.alloc tt))
+                M.alloc (Value.Tuple [])))
           ] in
-      M.pure (M.use α6) in
+      M.pure (M.use α7) in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -389,6 +429,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ]
           ] in
       let* α2 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "iter" in
+      let* α3 :=
         M.get_trait_method
           "core::ops::deref::Deref"
           "deref"
@@ -398,17 +442,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α3 := M.call α2 [ xs ] in
-      let* α4 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["iter"]
-          [ α3 ] in
-      let* α5 := M.call α1 [ α4 ] in
-      let* α6 := M.call α0 [ α5 ] in
-      let* α7 := M.alloc α6 in
-      let* α8 :=
+      let* α4 := M.call α3 [ xs ] in
+      let* α5 := M.call α2 [ α4 ] in
+      let* α6 := M.call α1 [ α5 ] in
+      let* α7 := M.call α0 [ α6 ] in
+      let* α8 := M.alloc α7 in
+      let* α9 :=
         match_operator
-          α7
+          α8
           [
             fun γ =>
               (let* iter := M.copy γ in
@@ -461,41 +502,46 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* x := M.copy γ1_1 in
                             let* _ :=
                               let* _ :=
-                                let* α0 := M.var "std::io::stdio::_print" in
-                                let* α1 := M.read (mk_str "In position ") in
-                                let* α2 := M.read (mk_str " we have value ") in
-                                let* α3 := M.read (mk_str "
+                                let* α0 :=
+                                  M.get_function "std::io::stdio::_print" in
+                                let* α1 :=
+                                  M.get_associated_function
+                                    (Ty.path "core::fmt::Arguments")
+                                    "new_v1" in
+                                let* α2 := M.read (mk_str "In position ") in
+                                let* α3 := M.read (mk_str " we have value ") in
+                                let* α4 := M.read (mk_str "
 ") in
-                                let* α4 := M.alloc [ α1; α2; α3 ] in
-                                let* α5 :=
-                                  M.call
-                                    (Ty.path
-                                        "core::fmt::rt::Argument")::["new_display"]
-                                    [ i ] in
+                                let* α5 := M.alloc [ α2; α3; α4 ] in
                                 let* α6 :=
-                                  M.call
-                                    (Ty.path
-                                        "core::fmt::rt::Argument")::["new_display"]
-                                    [ x ] in
-                                let* α7 := M.alloc [ α5; α6 ] in
+                                  M.get_associated_function
+                                    (Ty.path "core::fmt::rt::Argument")
+                                    "new_display" in
+                                let* α7 := M.call α6 [ i ] in
                                 let* α8 :=
+                                  M.get_associated_function
+                                    (Ty.path "core::fmt::rt::Argument")
+                                    "new_display" in
+                                let* α9 := M.call α8 [ x ] in
+                                let* α10 := M.alloc [ α7; α9 ] in
+                                let* α11 :=
                                   M.call
-                                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                                    α1
                                     [
-                                      M.pointer_coercion "Unsize" α4;
-                                      M.pointer_coercion "Unsize" α7
+                                      M.pointer_coercion "Unsize" α5;
+                                      M.pointer_coercion "Unsize" α10
                                     ] in
-                                let* α9 := M.call α0 [ α8 ] in
-                                M.alloc α9 in
-                              M.alloc tt in
-                            M.alloc tt
+                                let* α12 := M.call α0 [ α11 ] in
+                                M.alloc α12 in
+                              M.alloc (Value.Tuple []) in
+                            M.alloc (Value.Tuple [])
                           end
                         | _ => M.break_match 
                         end)
                     ] in
-                M.alloc tt))
+                M.alloc (Value.Tuple [])))
           ] in
-      M.pure (M.use α8) in
+      M.pure (M.use α9) in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -506,6 +552,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "i32" ]
           ] in
       let* α1 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "iter_mut" in
+      let* α2 :=
         M.get_trait_method
           "core::ops::deref::DerefMut"
           "deref_mut"
@@ -515,16 +565,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α2 := M.call α1 [ xs ] in
-      let* α3 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["iter_mut"]
-          [ α2 ] in
-      let* α4 := M.call α0 [ α3 ] in
-      let* α5 := M.alloc α4 in
-      let* α6 :=
+      let* α3 := M.call α2 [ xs ] in
+      let* α4 := M.call α1 [ α3 ] in
+      let* α5 := M.call α0 [ α4 ] in
+      let* α6 := M.alloc α5 in
+      let* α7 :=
         match_operator
-          α5
+          α6
           [
             fun γ =>
               (let* iter := M.copy γ in
@@ -572,32 +619,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 α0
                                 (Value.Integer Integer.I32 3) in
                             M.assign β α1 in
-                          M.alloc tt
+                          M.alloc (Value.Tuple [])
                         | _ => M.break_match 
                         end)
                     ] in
-                M.alloc tt))
+                M.alloc (Value.Tuple [])))
           ] in
-      M.pure (M.use α6) in
+      M.pure (M.use α7) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Updated vector: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Updated vector: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ xs ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ xs ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

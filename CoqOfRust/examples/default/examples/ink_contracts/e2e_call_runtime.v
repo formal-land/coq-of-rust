@@ -78,7 +78,7 @@ Module Impl_e2e_call_runtime_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -121,7 +121,7 @@ Module Impl_e2e_call_runtime_Contract.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -140,7 +140,11 @@ Module Impl_e2e_call_runtime_Contract.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "e2e_call_runtime::Contract")::["init_env"] []
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "e2e_call_runtime::Contract")
+          "init_env" in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -168,11 +172,16 @@ Module Impl_e2e_call_runtime_Contract.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
+      let* α0 :=
+        M.get_associated_function (Ty.path "e2e_call_runtime::Env") "balance" in
       let* α1 :=
-        M.call (Ty.path "e2e_call_runtime::Contract")::["env"] [ α0 ] in
-      let* α2 := M.alloc α1 in
-      M.call (Ty.path "e2e_call_runtime::Env")::["balance"] [ α2 ]
+        M.get_associated_function
+          (Ty.path "e2e_call_runtime::Contract")
+          "env" in
+      let* α2 := M.read self in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.alloc α3 in
+      M.call α0 [ α4 ]
     | _, _ => M.impossible
     end.
   

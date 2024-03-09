@@ -14,7 +14,7 @@ Definition reg_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ _s ] =>
     let* _s := M.alloc _s in
-    M.pure tt
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -25,7 +25,7 @@ Definition gen_spec_t (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ _s ] =>
     let* _s := M.alloc _s in
-    M.pure tt
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -36,7 +36,7 @@ Definition gen_spec_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ _s ] =>
     let* _s := M.alloc _s in
-    M.pure tt
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -47,7 +47,7 @@ Definition generic (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [ T ], [ _s ] =>
     let* _s := M.alloc _s in
-    M.pure tt
+    M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
 
@@ -70,7 +70,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.var "generics_functions::reg_fn" in
+      let* α0 := M.get_function "generics_functions::reg_fn" in
       let* α1 :=
         M.call
           α0
@@ -81,7 +81,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "generics_functions::gen_spec_t" in
+      let* α0 := M.get_function "generics_functions::gen_spec_t" in
       let* α1 :=
         M.call
           α0
@@ -92,7 +92,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "generics_functions::gen_spec_i32" in
+      let* α0 := M.get_function "generics_functions::gen_spec_i32" in
       let* α1 :=
         M.call
           α0
@@ -103,20 +103,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "generics_functions::generic" in
+      let* α0 := M.get_function "generics_functions::generic" in
       let* α1 :=
         M.call
           α0
           [ Value.StructTuple "generics_functions::SGen" [ "a"%char ] ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "generics_functions::generic" in
+      let* α0 := M.get_function "generics_functions::generic" in
       let* α1 :=
         M.call
           α0
           [ Value.StructTuple "generics_functions::SGen" [ "c"%char ] ] in
       M.alloc α1 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

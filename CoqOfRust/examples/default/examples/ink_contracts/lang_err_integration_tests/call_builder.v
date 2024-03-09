@@ -84,7 +84,7 @@ Module Impl_call_builder_Selector.
     match 𝜏, α with
     | [ Self ], [ bytes ] =>
       let* bytes := M.alloc bytes in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -163,7 +163,7 @@ Module Impl_call_builder_CallBuilderTest.
       let* address := M.alloc address in
       let* selector := M.alloc selector in
       let* result :=
-        let* α0 := M.var "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -207,25 +207,32 @@ Module Impl_call_builder_CallBuilderTest.
                 let* γ0_0 :=
                   let* α0 := M.var "core::result::Result::Get_Err_0" in
                   M.pure (α0 γ) in
-                let* α0 := M.var "core::panicking::panic_fmt" in
+                let* α0 := M.get_function "core::panicking::panic_fmt" in
                 let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 :=
                   M.read
                     (mk_str
                       "not implemented: No other `LangError` variants exist at the moment.") in
-                let* α2 := M.alloc [ α1 ] in
-                let* α3 :=
-                  M.call (Ty.path "core::fmt::rt::Argument")::["none"] [] in
-                let* α4 := M.alloc α3 in
-                let* α5 :=
+                let* α3 := M.alloc [ α2 ] in
+                let* α4 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "none" in
+                let* α5 := M.call α4 [] in
+                let* α6 := M.alloc α5 in
+                let* α7 :=
                   M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α2;
-                      M.pointer_coercion "Unsize" α4
+                      M.pointer_coercion "Unsize" α3;
+                      M.pointer_coercion "Unsize" α6
                     ] in
-                let* α6 := M.call α0 [ α5 ] in
-                let* α7 := M.never_to_any α6 in
-                M.alloc α7
+                let* α8 := M.call α0 [ α7 ] in
+                let* α9 := M.never_to_any α8 in
+                M.alloc α9
               | _ => M.break_match 
               end)
           ] in
@@ -252,7 +259,7 @@ Module Impl_call_builder_CallBuilderTest.
       let* self := M.alloc self in
       let* address := M.alloc address in
       let* selector := M.alloc selector in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   

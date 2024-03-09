@@ -95,7 +95,7 @@ Module Impl_contract_transfer_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -116,7 +116,7 @@ Module Impl_contract_transfer_Env.
       let* self := M.alloc self in
       let* _to := M.alloc _to in
       let* _value := M.alloc _value in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -135,7 +135,7 @@ Module Impl_contract_transfer_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -159,7 +159,7 @@ Module Impl_contract_transfer_GiveMe.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -178,7 +178,11 @@ Module Impl_contract_transfer_GiveMe.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "contract_transfer::GiveMe")::["init_env"] []
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "contract_transfer::GiveMe")
+          "init_env" in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -220,93 +224,123 @@ Module Impl_contract_transfer_GiveMe.
       let* value := M.alloc value in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "requested value: ") in
-          let* α2 := M.read (mk_str "
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1" in
+          let* α2 := M.read (mk_str "requested value: ") in
+          let* α3 := M.read (mk_str "
 ") in
-          let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 :=
+          let* α4 := M.alloc [ α2; α3 ] in
+          let* α5 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display" in
+          let* α6 := M.call α5 [ value ] in
+          let* α7 := M.alloc [ α6 ] in
+          let* α8 :=
             M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ value ] in
-          let* α5 := M.alloc [ α4 ] in
-          let* α6 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              α1
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
               ] in
-          let* α7 := M.call α0 [ α6 ] in
-          M.alloc α7 in
-        M.alloc tt in
+          let* α9 := M.call α0 [ α8 ] in
+          M.alloc α9 in
+        M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "contract balance: ") in
-          let* α2 := M.read (mk_str "
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1" in
+          let* α2 := M.read (mk_str "contract balance: ") in
+          let* α3 := M.read (mk_str "
 ") in
-          let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 := M.read self in
+          let* α4 := M.alloc [ α2; α3 ] in
           let* α5 :=
-            M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α4 ] in
-          let* α6 := M.alloc α5 in
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display" in
+          let* α6 :=
+            M.get_associated_function
+              (Ty.path "contract_transfer::Env")
+              "balance" in
           let* α7 :=
-            M.call (Ty.path "contract_transfer::Env")::["balance"] [ α6 ] in
-          let* α8 := M.alloc α7 in
-          let* α9 :=
+            M.get_associated_function
+              (Ty.path "contract_transfer::GiveMe")
+              "env" in
+          let* α8 := M.read self in
+          let* α9 := M.call α7 [ α8 ] in
+          let* α10 := M.alloc α9 in
+          let* α11 := M.call α6 [ α10 ] in
+          let* α12 := M.alloc α11 in
+          let* α13 := M.call α5 [ α12 ] in
+          let* α14 := M.alloc [ α13 ] in
+          let* α15 :=
             M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α8 ] in
-          let* α10 := M.alloc [ α9 ] in
-          let* α11 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+              α1
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α14
               ] in
-          let* α12 := M.call α0 [ α11 ] in
-          M.alloc α12 in
-        M.alloc tt in
+          let* α16 := M.call α0 [ α15 ] in
+          M.alloc α16 in
+        M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 := M.read value in
-        let* α1 := M.read self in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "contract_transfer::Env")
+            "balance" in
         let* α2 :=
-          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α1 ] in
-        let* α3 := M.alloc α2 in
-        let* α4 :=
-          M.call (Ty.path "contract_transfer::Env")::["balance"] [ α3 ] in
-        let* α5 := M.alloc (UnOp.not (BinOp.Pure.le α0 α4)) in
-        let* α6 := M.read (M.use α5) in
-        if α6 then
-          let* α0 := M.var "std::panicking::begin_panic" in
+          M.get_associated_function
+            (Ty.path "contract_transfer::GiveMe")
+            "env" in
+        let* α3 := M.read self in
+        let* α4 := M.call α2 [ α3 ] in
+        let* α5 := M.alloc α4 in
+        let* α6 := M.call α1 [ α5 ] in
+        let* α7 := M.alloc (UnOp.not (BinOp.Pure.le α0 α6)) in
+        let* α8 := M.read (M.use α7) in
+        if α8 then
+          let* α0 := M.get_function "std::panicking::begin_panic" in
           let* α1 := M.read (mk_str "insufficient funds!") in
           let* α2 := M.call α0 [ α1 ] in
           let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
-          M.alloc tt in
-      let* α0 := M.read self in
-      let* α1 := M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α0 ] in
-      let* α2 := M.alloc α1 in
-      let* α3 := M.read self in
-      let* α4 := M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α3 ] in
-      let* α5 := M.alloc α4 in
-      let* α6 := M.call (Ty.path "contract_transfer::Env")::["caller"] [ α5 ] in
-      let* α7 := M.read value in
-      let* α8 :=
-        M.call
-          (Ty.path "contract_transfer::Env")::["transfer"]
-          [ α2; α6; α7 ] in
-      let* α9 := M.alloc α8 in
-      let* α10 :=
-        M.call
-          (Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.tuple [] ])::["is_err"]
-          [ α9 ] in
-      let* α11 := M.alloc α10 in
-      let* α12 := M.read (M.use α11) in
+          M.alloc (Value.Tuple []) in
       let* α0 :=
-        if α12 then
-          let* α0 := M.var "std::panicking::begin_panic" in
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.tuple []; Ty.tuple [] ])
+          "is_err" in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.path "contract_transfer::Env")
+          "transfer" in
+      let* α2 :=
+        M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" in
+      let* α3 := M.read self in
+      let* α4 := M.call α2 [ α3 ] in
+      let* α5 := M.alloc α4 in
+      let* α6 :=
+        M.get_associated_function (Ty.path "contract_transfer::Env") "caller" in
+      let* α7 :=
+        M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" in
+      let* α8 := M.read self in
+      let* α9 := M.call α7 [ α8 ] in
+      let* α10 := M.alloc α9 in
+      let* α11 := M.call α6 [ α10 ] in
+      let* α12 := M.read value in
+      let* α13 := M.call α1 [ α5; α11; α12 ] in
+      let* α14 := M.alloc α13 in
+      let* α15 := M.call α0 [ α14 ] in
+      let* α16 := M.alloc α15 in
+      let* α17 := M.read (M.use α16) in
+      let* α0 :=
+        if α17 then
+          let* α0 := M.get_function "std::panicking::begin_panic" in
           let* α1 :=
             M.read
               (mk_str
@@ -315,7 +349,7 @@ Module Impl_contract_transfer_GiveMe.
           let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
-          M.alloc tt in
+          M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -335,55 +369,68 @@ Module Impl_contract_transfer_GiveMe.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "received payment: ") in
-          let* α2 := M.read (mk_str "
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1" in
+          let* α2 := M.read (mk_str "received payment: ") in
+          let* α3 := M.read (mk_str "
 ") in
-          let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 := M.read self in
+          let* α4 := M.alloc [ α2; α3 ] in
           let* α5 :=
-            M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α4 ] in
-          let* α6 := M.alloc α5 in
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display" in
+          let* α6 :=
+            M.get_associated_function
+              (Ty.path "contract_transfer::Env")
+              "transferred_value" in
           let* α7 :=
+            M.get_associated_function
+              (Ty.path "contract_transfer::GiveMe")
+              "env" in
+          let* α8 := M.read self in
+          let* α9 := M.call α7 [ α8 ] in
+          let* α10 := M.alloc α9 in
+          let* α11 := M.call α6 [ α10 ] in
+          let* α12 := M.alloc α11 in
+          let* α13 := M.call α5 [ α12 ] in
+          let* α14 := M.alloc [ α13 ] in
+          let* α15 :=
             M.call
-              (Ty.path "contract_transfer::Env")::["transferred_value"]
-              [ α6 ] in
-          let* α8 := M.alloc α7 in
-          let* α9 :=
-            M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ α8 ] in
-          let* α10 := M.alloc [ α9 ] in
-          let* α11 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+              α1
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α14
               ] in
-          let* α12 := M.call α0 [ α11 ] in
-          M.alloc α12 in
-        M.alloc tt in
+          let* α16 := M.call α0 [ α15 ] in
+          M.alloc α16 in
+        M.alloc (Value.Tuple []) in
       let* _ :=
-        let* α0 := M.read self in
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "contract_transfer::Env")
+            "transferred_value" in
         let* α1 :=
-          M.call (Ty.path "contract_transfer::GiveMe")::["env"] [ α0 ] in
-        let* α2 := M.alloc α1 in
-        let* α3 :=
-          M.call
-            (Ty.path "contract_transfer::Env")::["transferred_value"]
-            [ α2 ] in
-        let* α4 :=
+          M.get_associated_function
+            (Ty.path "contract_transfer::GiveMe")
+            "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 := M.call α0 [ α4 ] in
+        let* α6 :=
           M.alloc
-            (UnOp.not (BinOp.Pure.eq α3 (Value.Integer Integer.U128 10))) in
-        let* α5 := M.read (M.use α4) in
-        if α5 then
-          let* α0 := M.var "std::panicking::begin_panic" in
+            (UnOp.not (BinOp.Pure.eq α5 (Value.Integer Integer.U128 10))) in
+        let* α7 := M.read (M.use α6) in
+        if α7 then
+          let* α0 := M.get_function "std::panicking::begin_panic" in
           let* α1 := M.read (mk_str "payment was not ten") in
           let* α2 := M.call α0 [ α1 ] in
           let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
-          M.alloc tt in
-      let* α0 := M.alloc tt in
+          M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

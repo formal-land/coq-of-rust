@@ -79,13 +79,15 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "Inches") in
-      let* α2 := M.read self in
-      let* α3 := M.alloc (M.get_struct_tuple α2 0) in
-      M.call
-        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; M.pointer_coercion "Unsize" α3 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_tuple_field1_finish" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "Inches") in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (M.get_struct_tuple α3 0) in
+      M.call α0 [ α1; α2; M.pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -182,22 +184,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "One foot equals ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "One foot equals ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ foot ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ foot ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* meter :=
       let* α0 := M.read UnsupportedLiteral in
       M.alloc (Value.StructTuple "derive::Centimeters" [ α0 ]) in
@@ -211,37 +218,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Rhs *) Ty.path "derive::Centimeters"
           ] in
       let* α1 :=
-        M.call (Ty.path "derive::Inches")::["to_centimeters"] [ foot ] in
-      let* α2 := M.alloc α1 in
-      let* α3 := M.call α0 [ α2; meter ] in
-      let* α4 := M.alloc α3 in
-      let* α5 := M.read (M.use α4) in
-      let* α6 :=
-        if α5 then
+        M.get_associated_function (Ty.path "derive::Inches") "to_centimeters" in
+      let* α2 := M.call α1 [ foot ] in
+      let* α3 := M.alloc α2 in
+      let* α4 := M.call α0 [ α3; meter ] in
+      let* α5 := M.alloc α4 in
+      let* α6 := M.read (M.use α5) in
+      let* α7 :=
+        if α6 then
           M.pure (mk_str "smaller")
         else
           let* α0 := M.read (mk_str "bigger") in
           M.alloc α0 in
-      M.copy α6 in
+      M.copy α7 in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "One foot is ") in
-        let* α2 := M.read (mk_str " than one meter.
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "One foot is ") in
+        let* α3 := M.read (mk_str " than one meter.
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ cmp ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.call α5 [ cmp ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

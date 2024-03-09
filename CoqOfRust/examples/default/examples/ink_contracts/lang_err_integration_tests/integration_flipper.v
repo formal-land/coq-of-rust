@@ -14,9 +14,13 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "FlipperError") in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α1 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "FlipperError") in
+      M.call α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -58,12 +62,16 @@ Module Impl_integration_flipper_Flipper.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
+        M.get_associated_function
+          (Ty.path "integration_flipper::Flipper")
+          "new" in
+      let* α1 :=
         M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
-      let* α1 := M.call α0 [] in
-      M.call (Ty.path "integration_flipper::Flipper")::["new"] [ α1 ]
+      let* α2 := M.call α1 [] in
+      M.call α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -87,8 +95,11 @@ Module Impl_integration_flipper_Flipper.
       let* α1 :=
         if α0 then
           let* α0 :=
-            M.call (Ty.path "integration_flipper::Flipper")::["new"] [ true ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α0 ])
+            M.get_associated_function
+              (Ty.path "integration_flipper::Flipper")
+              "new" in
+          let* α1 := M.call α0 [ true ] in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
           M.alloc
             (Value.StructTuple
@@ -115,7 +126,7 @@ Module Impl_integration_flipper_Flipper.
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
         M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -149,12 +160,16 @@ Module Impl_integration_flipper_Flipper.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.call (Ty.path "integration_flipper::Flipper")::["flip"] [ α0 ] in
-        M.alloc α1 in
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "integration_flipper::Flipper")
+            "flip" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
       let* α0 :=
-        M.alloc (Value.StructTuple "core::result::Result::Err" [ tt ]) in
+        M.alloc
+          (Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]) in
       M.read α0
     | _, _ => M.impossible
     end.

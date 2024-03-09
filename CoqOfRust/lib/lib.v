@@ -26,9 +26,6 @@ Module List.
     end.
 End List.
 
-Notation "ty ::[ name ]" := (M.associated_function ty name)
-  (at level 0).
-
 Definition assign (target : Value.t) (source : Value.t) : M :=
   let* _ := M.write target source in
   M.alloc (Value.Tuple []).

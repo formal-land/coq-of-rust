@@ -12,18 +12,19 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "called `my_mod::private_function()`
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 := M.read (mk_str "called `my_mod::private_function()`
 ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
-      let* α0 := M.alloc tt in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -38,18 +39,19 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "called `my_mod::function()`
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 := M.read (mk_str "called `my_mod::function()`
 ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
-      let* α0 := M.alloc tt in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -65,23 +67,24 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" in
           let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 :=
             M.read (mk_str "called `my_mod::indirect_access()`, that
 > ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
       let* _ :=
-        let* α0 := M.var "visibility::my_mod::private_function" in
+        let* α0 := M.get_function "visibility::my_mod::private_function" in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -97,18 +100,19 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
-            let* α1 := M.read (mk_str "called `my_mod::nested::function()`
+            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const" in
+            let* α2 := M.read (mk_str "called `my_mod::nested::function()`
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ M.pointer_coercion "Unsize" α2 ] in
-            let* α4 := M.call α0 [ α3 ] in
-            M.alloc α4 in
-          M.alloc tt in
-        let* α0 := M.alloc tt in
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -124,19 +128,20 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" in
             let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const" in
+            let* α2 :=
               M.read (mk_str "called `my_mod::nested::private_function()`
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ M.pointer_coercion "Unsize" α2 ] in
-            let* α4 := M.call α0 [ α3 ] in
-            M.alloc α4 in
-          M.alloc tt in
-        let* α0 := M.alloc tt in
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -155,26 +160,28 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" in
             let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const" in
+            let* α2 :=
               M.read
                 (mk_str
                   "called `my_mod::nested::public_function_in_my_mod()`, that
 > ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ M.pointer_coercion "Unsize" α2 ] in
-            let* α4 := M.call α0 [ α3 ] in
-            M.alloc α4 in
-          M.alloc tt in
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
         let* _ :=
           let* α0 :=
-            M.var "visibility::my_mod::nested::public_function_in_nested" in
+            M.get_function
+              "visibility::my_mod::nested::public_function_in_nested" in
           let* α1 := M.call α0 [] in
           M.alloc α1 in
-        let* α0 := M.alloc tt in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -192,21 +199,22 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" in
             let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const" in
+            let* α2 :=
               M.read
                 (mk_str
                   "called `my_mod::nested::public_function_in_nested()`
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ M.pointer_coercion "Unsize" α2 ] in
-            let* α4 := M.call α0 [ α3 ] in
-            M.alloc α4 in
-          M.alloc tt in
-        let* α0 := M.alloc tt in
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -224,21 +232,22 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" in
             let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const" in
+            let* α2 :=
               M.read
                 (mk_str
                   "called `my_mod::nested::public_function_in_super_mod()`
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ M.pointer_coercion "Unsize" α2 ] in
-            let* α4 := M.call α0 [ α3 ] in
-            M.alloc α4 in
-          M.alloc tt in
-        let* α0 := M.alloc tt in
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -260,43 +269,47 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" in
           let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 :=
             M.read
               (mk_str
                 "called `my_mod::call_public_function_in_my_mod()`, that
 > ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 :=
-          M.var "visibility::my_mod::nested::public_function_in_my_mod" in
+          M.get_function
+            "visibility::my_mod::nested::public_function_in_my_mod" in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "> ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 := M.read (mk_str "> ") in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 :=
-          M.var "visibility::my_mod::nested::public_function_in_super_mod" in
+          M.get_function
+            "visibility::my_mod::nested::public_function_in_super_mod" in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -311,19 +324,20 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" in
           let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 :=
             M.read (mk_str "called `my_mod::public_function_in_crate()`
 ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
-      let* α0 := M.alloc tt in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -340,19 +354,20 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" in
             let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const" in
+            let* α2 :=
               M.read (mk_str "called `my_mod::private_nested::function()`
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ M.pointer_coercion "Unsize" α2 ] in
-            let* α4 := M.call α0 [ α3 ] in
-            M.alloc α4 in
-          M.alloc tt in
-        let* α0 := M.alloc tt in
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -368,21 +383,22 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" in
             let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const" in
+            let* α2 :=
               M.read
                 (mk_str
                   "called `my_mod::private_nested::restricted_function()`
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_const"]
-                [ M.pointer_coercion "Unsize" α2 ] in
-            let* α4 := M.call α0 [ α3 ] in
-            M.alloc α4 in
-          M.alloc tt in
-        let* α0 := M.alloc tt in
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -399,18 +415,19 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "called `function()`
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const" in
+        let* α2 := M.read (mk_str "called `function()`
 ") in
-        let* α2 := M.alloc [ α1 ] in
-        let* α3 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ M.pointer_coercion "Unsize" α2 ] in
-        let* α4 := M.call α0 [ α3 ] in
-        M.alloc α4 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α3 := M.alloc [ α2 ] in
+        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -460,30 +477,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.var "visibility::function" in
+      let* α0 := M.get_function "visibility::function" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "visibility::my_mod::function" in
+      let* α0 := M.get_function "visibility::my_mod::function" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "visibility::my_mod::indirect_access" in
+      let* α0 := M.get_function "visibility::my_mod::indirect_access" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "visibility::my_mod::nested::function" in
+      let* α0 := M.get_function "visibility::my_mod::nested::function" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "visibility::my_mod::call_public_function_in_my_mod" in
+      let* α0 :=
+        M.get_function "visibility::my_mod::call_public_function_in_my_mod" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "visibility::my_mod::public_function_in_crate" in
+      let* α0 :=
+        M.get_function "visibility::my_mod::public_function_in_crate" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

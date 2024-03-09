@@ -25,16 +25,17 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ]) in
     M.catch_return
       (let* file :=
-        let* α0 := M.read filename in
-        let* α1 := M.call (Ty.path "std::fs::File")::["open"] [ α0 ] in
-        let* α2 :=
-          M.call
+        let* α0 :=
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error"
-                ])::["unwrap"]
-            [ α1 ] in
-        M.alloc α2 in
+              (Ty.path "core::result::Result")
+              [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+            "unwrap" in
+        let* α1 := M.get_associated_function (Ty.path "std::fs::File") "open" in
+        let* α2 := M.read filename in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       let* α0 :=
         M.get_trait_method
           "std::io::BufRead"
@@ -45,15 +46,16 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "std::io::buffered::bufreader::BufReader")
                 [ Ty.path "std::fs::File" ]
           ] in
-      let* α1 := M.read file in
-      let* α2 :=
-        M.call
+      let* α1 :=
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "std::io::buffered::bufreader::BufReader")
-              [ Ty.path "std::fs::File" ])::["new"]
-          [ α1 ] in
-      let* α3 := M.call α0 [ α2 ] in
-      let* α0 := return_ α3 in
+            (Ty.path "std::io::buffered::bufreader::BufReader")
+            [ Ty.path "std::fs::File" ])
+          "new" in
+      let* α2 := M.read file in
+      let* α3 := M.call α1 [ α2 ] in
+      let* α4 := M.call α0 [ α3 ] in
+      let* α0 := return_ α4 in
       let* α1 := M.read α0 in
       M.never_to_any α1)
   | _, _ => M.impossible
@@ -74,7 +76,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* lines :=
-      let* α0 := M.var "file_io_read_lines::read_lines" in
+      let* α0 := M.get_function "file_io_read_lines::read_lines" in
       let* α1 :=
         M.get_trait_method
           "alloc::string::ToString"
@@ -149,43 +151,49 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* line := M.copy γ0_0 in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.var "std::io::stdio::_print" in
-                            let* α1 := M.read (mk_str "") in
-                            let* α2 := M.read (mk_str "
+                            let* α0 :=
+                              M.get_function "std::io::stdio::_print" in
+                            let* α1 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::Arguments")
+                                "new_v1" in
+                            let* α2 := M.read (mk_str "") in
+                            let* α3 := M.read (mk_str "
 ") in
-                            let* α3 := M.alloc [ α1; α2 ] in
-                            let* α4 := M.read line in
+                            let* α4 := M.alloc [ α2; α3 ] in
                             let* α5 :=
-                              M.call
+                              M.get_associated_function
+                                (Ty.path "core::fmt::rt::Argument")
+                                "new_display" in
+                            let* α6 :=
+                              M.get_associated_function
                                 (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.path "alloc::string::String";
-                                      Ty.path "std::io::error::Error"
-                                    ])::["unwrap"]
-                                [ α4 ] in
-                            let* α6 := M.alloc α5 in
-                            let* α7 :=
+                                  (Ty.path "core::result::Result")
+                                  [
+                                    Ty.path "alloc::string::String";
+                                    Ty.path "std::io::error::Error"
+                                  ])
+                                "unwrap" in
+                            let* α7 := M.read line in
+                            let* α8 := M.call α6 [ α7 ] in
+                            let* α9 := M.alloc α8 in
+                            let* α10 := M.call α5 [ α9 ] in
+                            let* α11 := M.alloc [ α10 ] in
+                            let* α12 :=
                               M.call
-                                (Ty.path
-                                    "core::fmt::rt::Argument")::["new_display"]
-                                [ α6 ] in
-                            let* α8 := M.alloc [ α7 ] in
-                            let* α9 :=
-                              M.call
-                                (Ty.path "core::fmt::Arguments")::["new_v1"]
+                                α1
                                 [
-                                  M.pointer_coercion "Unsize" α3;
-                                  M.pointer_coercion "Unsize" α8
+                                  M.pointer_coercion "Unsize" α4;
+                                  M.pointer_coercion "Unsize" α11
                                 ] in
-                            let* α10 := M.call α0 [ α9 ] in
-                            M.alloc α10 in
-                          M.alloc tt in
-                        M.alloc tt
+                            let* α13 := M.call α0 [ α12 ] in
+                            M.alloc α13 in
+                          M.alloc (Value.Tuple []) in
+                        M.alloc (Value.Tuple [])
                       | _ => M.break_match 
                       end)
                   ] in
-              M.alloc tt))
+              M.alloc (Value.Tuple [])))
         ] in
     M.read (M.use α4)
   | _, _ => M.impossible

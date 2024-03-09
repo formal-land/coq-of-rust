@@ -12,8 +12,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 :=
         match_operator
           self
           [
@@ -73,8 +77,8 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
               | _ => M.break_match 
               end)
           ] in
-      let* α2 := M.read α1 in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
+      let* α3 := M.read α2 in
+      M.call α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -109,58 +113,63 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* apple :=
       M.alloc unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple in
     let* first_available_fruit :=
-      let* α0 := M.read apple in
-      let* α1 :=
-        M.call
+      let* α0 :=
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "core::option::Option")
-              [
-                Ty.path
-                  "unpacking_options_and_defaults_via_get_or_insert::Fruit"
-              ])::["get_or_insert"]
-          [ my_fruit; α0 ] in
-      M.alloc α1 in
+            (Ty.path "core::option::Option")
+            [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit"
+            ])
+          "get_or_insert" in
+      let* α1 := M.read apple in
+      let* α2 := M.call α0 [ my_fruit; α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "my_fruit is: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "my_fruit is: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ first_available_fruit ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ first_available_fruit ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "first_available_fruit is: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "first_available_fruit is: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ first_available_fruit ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ first_available_fruit ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

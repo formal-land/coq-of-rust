@@ -12,8 +12,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 :=
         match_operator
           self
           [
@@ -83,8 +87,8 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
               | _ => M.break_match 
               end)
           ] in
-      let* α2 := M.read α1 in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
+      let* α3 := M.read α2 in
+      M.call α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -137,74 +141,82 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 (let* _ :=
                   let* _ :=
-                    let* α0 := M.var "std::io::stdio::_print" in
-                    let* α1 := M.read (mk_str "Providing lemon as fallback
+                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_const" in
+                    let* α2 := M.read (mk_str "Providing lemon as fallback
 ") in
-                    let* α2 := M.alloc [ α1 ] in
-                    let* α3 :=
-                      M.call
-                        (Ty.path "core::fmt::Arguments")::["new_const"]
-                        [ M.pointer_coercion "Unsize" α2 ] in
-                    let* α4 := M.call α0 [ α3 ] in
-                    M.alloc α4 in
-                  M.alloc tt in
+                    let* α3 := M.alloc [ α2 ] in
+                    let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                    let* α5 := M.call α0 [ α4 ] in
+                    M.alloc α5 in
+                  M.alloc (Value.Tuple []) in
                 let* α0 :=
                   M.alloc
                     unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
                 M.read α0)
             ])) in
     let* first_available_fruit :=
-      let* α0 := M.read get_lemon_as_fallback in
-      let* α1 :=
-        M.call
+      let* α0 :=
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "core::option::Option")
-              [
-                Ty.path
-                  "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-              ])::["get_or_insert_with"]
-          [ my_fruit; α0 ] in
-      M.alloc α1 in
+            (Ty.path "core::option::Option")
+            [
+              Ty.path
+                "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
+            ])
+          "get_or_insert_with" in
+      let* α1 := M.read get_lemon_as_fallback in
+      let* α2 := M.call α0 [ my_fruit; α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "my_fruit is: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "my_fruit is: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ first_available_fruit ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ first_available_fruit ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "first_available_fruit is: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "first_available_fruit is: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ first_available_fruit ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ first_available_fruit ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* my_apple :=
       M.alloc
         (Value.StructTuple
@@ -212,58 +224,65 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
           ]) in
     let* should_be_apple :=
-      let* α0 := M.read get_lemon_as_fallback in
-      let* α1 :=
-        M.call
+      let* α0 :=
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "core::option::Option")
-              [
-                Ty.path
-                  "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
-              ])::["get_or_insert_with"]
-          [ my_apple; α0 ] in
-      M.alloc α1 in
+            (Ty.path "core::option::Option")
+            [
+              Ty.path
+                "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"
+            ])
+          "get_or_insert_with" in
+      let* α1 := M.read get_lemon_as_fallback in
+      let* α2 := M.call α0 [ my_apple; α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "should_be_apple is: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "should_be_apple is: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ should_be_apple ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ should_be_apple ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "my_apple is unchanged: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "my_apple is unchanged: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ my_apple ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ my_apple ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

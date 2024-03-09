@@ -53,7 +53,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 := M.var "std::sync::mpsc::channel" in
+    let* α0 := M.get_function "std::sync::mpsc::channel" in
     let* α1 := M.call α0 [] in
     let* α2 := M.alloc α1 in
     let* α3 :=
@@ -70,17 +70,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* rx := M.copy γ0_1 in
               let* children :=
                 let* α0 :=
-                  M.call
+                  M.get_associated_function
                     (Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [
-                          Ty.apply
-                            (Ty.path "std::thread::JoinHandle")
-                            [ Ty.tuple [] ];
-                          Ty.path "alloc::alloc::Global"
-                        ])::["new"]
-                    [] in
-                M.alloc α0 in
+                      (Ty.path "alloc::vec::Vec")
+                      [
+                        Ty.apply
+                          (Ty.path "std::thread::JoinHandle")
+                          [ Ty.tuple [] ];
+                        Ty.path "alloc::alloc::Global"
+                      ])
+                    "new" in
+                let* α1 := M.call α0 [] in
+                M.alloc α1 in
               let* _ :=
                 let* α0 :=
                   M.get_trait_method
@@ -162,7 +163,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       let* α1 := M.call α0 [ tx ] in
                                       M.alloc α1 in
                                     let* child :=
-                                      let* α0 := M.var "std::thread::spawn" in
+                                      let* α0 :=
+                                        M.get_function "std::thread::spawn" in
                                       let* α1 :=
                                         M.call
                                           α0
@@ -174,117 +176,129 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                 [
                                                   fun γ =>
                                                     (let* _ :=
-                                                      let* α0 := M.read id in
+                                                      let* α0 :=
+                                                        M.get_associated_function
+                                                          (Ty.apply
+                                                            (Ty.path
+                                                              "core::result::Result")
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "std::sync::mpsc::SendError")
+                                                                [ Ty.path "i32"
+                                                                ]
+                                                            ])
+                                                          "unwrap" in
                                                       let* α1 :=
-                                                        M.call
+                                                        M.get_associated_function
                                                           (Ty.apply
-                                                              (Ty.path
-                                                                "std::sync::mpsc::Sender")
-                                                              [ Ty.path "i32"
-                                                              ])::["send"]
-                                                          [ thread_tx; α0 ] in
-                                                      let* α2 :=
+                                                            (Ty.path
+                                                              "std::sync::mpsc::Sender")
+                                                            [ Ty.path "i32" ])
+                                                          "send" in
+                                                      let* α2 := M.read id in
+                                                      let* α3 :=
                                                         M.call
-                                                          (Ty.apply
-                                                              (Ty.path
-                                                                "core::result::Result")
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "std::sync::mpsc::SendError")
-                                                                  [
-                                                                    Ty.path
-                                                                      "i32"
-                                                                  ]
-                                                              ])::["unwrap"]
-                                                          [ α1 ] in
-                                                      M.alloc α2 in
+                                                          α1
+                                                          [ thread_tx; α2 ] in
+                                                      let* α4 :=
+                                                        M.call α0 [ α3 ] in
+                                                      M.alloc α4 in
                                                     let* _ :=
                                                       let* _ :=
                                                         let* α0 :=
-                                                          M.var
+                                                          M.get_function
                                                             "std::io::stdio::_print" in
                                                         let* α1 :=
+                                                          M.get_associated_function
+                                                            (Ty.path
+                                                              "core::fmt::Arguments")
+                                                            "new_v1" in
+                                                        let* α2 :=
                                                           M.read
                                                             (mk_str
                                                               "thread ") in
-                                                        let* α2 :=
+                                                        let* α3 :=
                                                           M.read
                                                             (mk_str
                                                               " finished
 ") in
-                                                        let* α3 :=
-                                                          M.alloc [ α1; α2 ] in
                                                         let* α4 :=
-                                                          M.call
-                                                            (Ty.path
-                                                                "core::fmt::rt::Argument")::["new_display"]
-                                                            [ id ] in
+                                                          M.alloc [ α2; α3 ] in
                                                         let* α5 :=
-                                                          M.alloc [ α4 ] in
-                                                        let* α6 :=
-                                                          M.call
+                                                          M.get_associated_function
                                                             (Ty.path
-                                                                "core::fmt::Arguments")::["new_v1"]
+                                                              "core::fmt::rt::Argument")
+                                                            "new_display" in
+                                                        let* α6 :=
+                                                          M.call α5 [ id ] in
+                                                        let* α7 :=
+                                                          M.alloc [ α6 ] in
+                                                        let* α8 :=
+                                                          M.call
+                                                            α1
                                                             [
                                                               M.pointer_coercion
                                                                 "Unsize"
-                                                                α3;
+                                                                α4;
                                                               M.pointer_coercion
                                                                 "Unsize"
-                                                                α5
+                                                                α7
                                                             ] in
-                                                        let* α7 :=
-                                                          M.call α0 [ α6 ] in
-                                                        M.alloc α7 in
-                                                      M.alloc tt in
-                                                    let* α0 := M.alloc tt in
+                                                        let* α9 :=
+                                                          M.call α0 [ α8 ] in
+                                                        M.alloc α9 in
+                                                      M.alloc
+                                                        (Value.Tuple []) in
+                                                    let* α0 :=
+                                                      M.alloc
+                                                        (Value.Tuple []) in
                                                     M.read α0)
                                                 ])
                                           ] in
                                       M.alloc α1 in
                                     let* _ :=
-                                      let* α0 := M.read child in
-                                      let* α1 :=
-                                        M.call
+                                      let* α0 :=
+                                        M.get_associated_function
                                           (Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "std::thread::JoinHandle")
-                                                  [ Ty.tuple [] ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ])::["push"]
-                                          [ children; α0 ] in
-                                      M.alloc α1 in
-                                    M.alloc tt
+                                            (Ty.path "alloc::vec::Vec")
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "std::thread::JoinHandle")
+                                                [ Ty.tuple [] ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ])
+                                          "push" in
+                                      let* α1 := M.read child in
+                                      let* α2 := M.call α0 [ children; α1 ] in
+                                      M.alloc α2 in
+                                    M.alloc (Value.Tuple [])
                                   | _ => M.break_match 
                                   end)
                               ] in
-                          M.alloc tt))
+                          M.alloc (Value.Tuple [])))
                     ] in
                 M.pure (M.use α6) in
               let* ids :=
-                let* α0 := M.var "channels::NTHREADS" in
-                let* α1 := M.read α0 in
-                let* α2 := M.read α1 in
-                let* α3 :=
-                  M.call
+                let* α0 :=
+                  M.get_associated_function
                     (Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "i32";
-                              Ty.path "std::sync::mpsc::RecvError"
-                            ];
-                          Ty.path "alloc::alloc::Global"
-                        ])::["with_capacity"]
-                    [ M.rust_cast α2 ] in
-                M.alloc α3 in
+                      (Ty.path "alloc::vec::Vec")
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.path "i32"; Ty.path "std::sync::mpsc::RecvError"
+                          ];
+                        Ty.path "alloc::alloc::Global"
+                      ])
+                    "with_capacity" in
+                let* α1 := M.var "channels::NTHREADS" in
+                let* α2 := M.read α1 in
+                let* α3 := M.read α2 in
+                let* α4 := M.call α0 [ M.rust_cast α3 ] in
+                M.alloc α4 in
               let* _ :=
                 let* α0 :=
                   M.get_trait_method
@@ -352,34 +366,35 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       M.pure (α0 γ) in
                                     let* _ :=
                                       let* α0 :=
-                                        M.call
+                                        M.get_associated_function
                                           (Ty.apply
-                                              (Ty.path
-                                                "std::sync::mpsc::Receiver")
-                                              [ Ty.path "i32" ])::["recv"]
-                                          [ rx ] in
+                                            (Ty.path "alloc::vec::Vec")
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                [
+                                                  Ty.path "i32";
+                                                  Ty.path
+                                                    "std::sync::mpsc::RecvError"
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ])
+                                          "push" in
                                       let* α1 :=
-                                        M.call
+                                        M.get_associated_function
                                           (Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "core::result::Result")
-                                                  [
-                                                    Ty.path "i32";
-                                                    Ty.path
-                                                      "std::sync::mpsc::RecvError"
-                                                  ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ])::["push"]
-                                          [ ids; α0 ] in
-                                      M.alloc α1 in
-                                    M.alloc tt
+                                            (Ty.path
+                                              "std::sync::mpsc::Receiver")
+                                            [ Ty.path "i32" ])
+                                          "recv" in
+                                      let* α2 := M.call α1 [ rx ] in
+                                      let* α3 := M.call α0 [ ids; α2 ] in
+                                      M.alloc α3 in
+                                    M.alloc (Value.Tuple [])
                                   | _ => M.break_match 
                                   end)
                               ] in
-                          M.alloc tt))
+                          M.alloc (Value.Tuple [])))
                     ] in
                 M.pure (M.use α6) in
               let* _ :=
@@ -451,68 +466,73 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       M.pure (α0 γ) in
                                     let* child := M.copy γ0_0 in
                                     let* _ :=
-                                      let* α0 := M.read child in
-                                      let* α1 :=
-                                        M.call
+                                      let* α0 :=
+                                        M.get_associated_function
                                           (Ty.apply
-                                              (Ty.path
-                                                "std::thread::JoinHandle")
-                                              [ Ty.tuple [] ])::["join"]
-                                          [ α0 ] in
-                                      let* α2 :=
+                                            (Ty.path "core::result::Result")
+                                            [
+                                              Ty.tuple [];
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                [
+                                                  Ty.dyn
+                                                    [
+                                                      ("core::any::Any::Trait",
+                                                        [])
+                                                    ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ])
+                                          "expect" in
+                                      let* α1 :=
+                                        M.get_associated_function
+                                          (Ty.apply
+                                            (Ty.path "std::thread::JoinHandle")
+                                            [ Ty.tuple [] ])
+                                          "join" in
+                                      let* α2 := M.read child in
+                                      let* α3 := M.call α1 [ α2 ] in
+                                      let* α4 :=
                                         M.read
                                           (mk_str
                                             "oops! the child thread panicked") in
-                                      let* α3 :=
-                                        M.call
-                                          (Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              [
-                                                Ty.tuple [];
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  [
-                                                    Ty.dyn
-                                                      [
-                                                        ("core::any::Any::Trait",
-                                                          [])
-                                                      ];
-                                                    Ty.path
-                                                      "alloc::alloc::Global"
-                                                  ]
-                                              ])::["expect"]
-                                          [ α1; α2 ] in
-                                      M.alloc α3 in
-                                    M.alloc tt
+                                      let* α5 := M.call α0 [ α3; α4 ] in
+                                      M.alloc α5 in
+                                    M.alloc (Value.Tuple [])
                                   | _ => M.break_match 
                                   end)
                               ] in
-                          M.alloc tt))
+                          M.alloc (Value.Tuple [])))
                     ] in
                 M.pure (M.use α4) in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.var "std::io::stdio::_print" in
-                  let* α1 := M.read (mk_str "") in
-                  let* α2 := M.read (mk_str "
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 := M.read (mk_str "") in
+                  let* α3 := M.read (mk_str "
 ") in
-                  let* α3 := M.alloc [ α1; α2 ] in
-                  let* α4 :=
+                  let* α4 := M.alloc [ α2; α3 ] in
+                  let* α5 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_debug" in
+                  let* α6 := M.call α5 [ ids ] in
+                  let* α7 := M.alloc [ α6 ] in
+                  let* α8 :=
                     M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                      [ ids ] in
-                  let* α5 := M.alloc [ α4 ] in
-                  let* α6 :=
-                    M.call
-                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      α1
                       [
-                        M.pointer_coercion "Unsize" α3;
-                        M.pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α4;
+                        M.pointer_coercion "Unsize" α7
                       ] in
-                  let* α7 := M.call α0 [ α6 ] in
-                  M.alloc α7 in
-                M.alloc tt in
-              M.alloc tt
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
+                M.alloc (Value.Tuple []) in
+              M.alloc (Value.Tuple [])
             end)
         ] in
     M.read α3

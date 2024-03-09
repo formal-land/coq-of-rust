@@ -35,37 +35,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.copy (M.use α0) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "") in
-        let* α2 := M.read (mk_str " nanoseconds + ") in
-        let* α3 := M.read (mk_str " inches = ") in
-        let* α4 := M.read (mk_str " unit?
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str " nanoseconds + ") in
+        let* α4 := M.read (mk_str " inches = ") in
+        let* α5 := M.read (mk_str " unit?
 ") in
-        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ nanoseconds ] in
+        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
         let* α7 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α8 := M.call α7 [ nanoseconds ] in
+        let* α9 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α10 := M.call α9 [ inches ] in
+        let* α11 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α12 := M.read nanoseconds in
+        let* α13 := M.read inches in
+        let* α14 := BinOp.Panic.add α12 α13 in
+        let* α15 := M.alloc α14 in
+        let* α16 := M.call α11 [ α15 ] in
+        let* α17 := M.alloc [ α8; α10; α16 ] in
+        let* α18 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ inches ] in
-        let* α8 := M.read nanoseconds in
-        let* α9 := M.read inches in
-        let* α10 := BinOp.Panic.add α8 α9 in
-        let* α11 := M.alloc α10 in
-        let* α12 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α11 ] in
-        let* α13 := M.alloc [ α6; α7; α12 ] in
-        let* α14 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α13
+            α1
+            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α17
             ] in
-        let* α15 := M.call α0 [ α14 ] in
-        M.alloc α15 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α19 := M.call α0 [ α18 ] in
+        M.alloc α19 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

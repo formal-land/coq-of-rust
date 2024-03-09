@@ -14,23 +14,28 @@ Definition destroy_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* c := M.alloc c in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Destroying a box that contains ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Destroying a box that contains ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ c ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.call α5 [ c ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -80,58 +85,73 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* y := M.copy x in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "x is ") in
-        let* α2 := M.read (mk_str ", and y is ") in
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "x is ") in
+        let* α3 := M.read (mk_str ", and y is ") in
+        let* α4 := M.read (mk_str "
+") in
+        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α6 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α7 := M.call α6 [ x ] in
+        let* α8 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α9 := M.call α8 [ y ] in
+        let* α10 := M.alloc [ α7; α9 ] in
+        let* α11 :=
+          M.call
+            α1
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            ] in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* a :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          "new" in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
+      M.alloc α1 in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "a contains: ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α1; α2; α3 ] in
+        let* α4 := M.alloc [ α2; α3 ] in
         let* α5 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ x ] in
-        let* α6 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ y ] in
-        let* α7 := M.alloc [ α5; α6 ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.call α5 [ a ] in
+        let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            α1
             [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
-      M.alloc tt in
-    let* a :=
-      let* α0 :=
-        M.call
-          (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ Value.Integer Integer.I32 5 ] in
-      M.alloc α0 in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "a contains: ") in
-        let* α2 := M.read (mk_str "
-") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ a ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
-            ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+      M.alloc (Value.Tuple []) in
     let* b := M.copy a in
     let* _ :=
-      let* α0 := M.var "scoping_rules_ownership_and_rules::destroy_box" in
+      let* α0 :=
+        M.get_function "scoping_rules_ownership_and_rules::destroy_box" in
       let* α1 := M.read b in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -77,68 +77,78 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* another_borrow := M.alloc point in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Point has coordinates: (") in
-        let* α2 := M.read (mk_str ", ") in
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Point has coordinates: (") in
         let* α3 := M.read (mk_str ", ") in
-        let* α4 := M.read (mk_str ")
+        let* α4 := M.read (mk_str ", ") in
+        let* α5 := M.read (mk_str ")
 ") in
-        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 := M.read borrowed_point in
+        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α6 "x" ] in
-        let* α8 := M.read another_borrow in
-        let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α8 "y" ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α8 := M.read borrowed_point in
+        let* α9 := M.call α7 [ M.get_struct_record α8 "x" ] in
         let* α10 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α11 := M.read another_borrow in
+        let* α12 := M.call α10 [ M.get_struct_record α11 "y" ] in
+        let* α13 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α14 := M.call α13 [ M.get_struct_record point "z" ] in
+        let* α15 := M.alloc [ α9; α12; α14 ] in
+        let* α16 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record point "z" ] in
-        let* α11 := M.alloc [ α7; α9; α10 ] in
-        let* α12 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α11
+            α1
+            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α15
             ] in
-        let* α13 := M.call α0 [ α12 ] in
-        M.alloc α13 in
-      M.alloc tt in
+        let* α17 := M.call α0 [ α16 ] in
+        M.alloc α17 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Point has coordinates: (") in
-        let* α2 := M.read (mk_str ", ") in
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Point has coordinates: (") in
         let* α3 := M.read (mk_str ", ") in
-        let* α4 := M.read (mk_str ")
+        let* α4 := M.read (mk_str ", ") in
+        let* α5 := M.read (mk_str ")
 ") in
-        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 := M.read borrowed_point in
+        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α6 "x" ] in
-        let* α8 := M.read another_borrow in
-        let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α8 "y" ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α8 := M.read borrowed_point in
+        let* α9 := M.call α7 [ M.get_struct_record α8 "x" ] in
         let* α10 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α11 := M.read another_borrow in
+        let* α12 := M.call α10 [ M.get_struct_record α11 "y" ] in
+        let* α13 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α14 := M.call α13 [ M.get_struct_record point "z" ] in
+        let* α15 := M.alloc [ α9; α12; α14 ] in
+        let* α16 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record point "z" ] in
-        let* α11 := M.alloc [ α7; α9; α10 ] in
-        let* α12 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α11
+            α1
+            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α15
             ] in
-        let* α13 := M.call α0 [ α12 ] in
-        M.alloc α13 in
-      M.alloc tt in
+        let* α17 := M.call α0 [ α16 ] in
+        M.alloc α17 in
+      M.alloc (Value.Tuple []) in
     let* mutable_borrow := M.alloc point in
     let* _ :=
       let* α0 := M.read mutable_borrow in
@@ -151,72 +161,82 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.assign (M.get_struct_record α0 "z") (Value.Integer Integer.I32 1) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Point has coordinates: (") in
-        let* α2 := M.read (mk_str ", ") in
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Point has coordinates: (") in
         let* α3 := M.read (mk_str ", ") in
-        let* α4 := M.read (mk_str ")
+        let* α4 := M.read (mk_str ", ") in
+        let* α5 := M.read (mk_str ")
 ") in
-        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 := M.read mutable_borrow in
+        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α6 "x" ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
         let* α8 := M.read mutable_borrow in
-        let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α8 "y" ] in
-        let* α10 := M.read mutable_borrow in
-        let* α11 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α10 "z" ] in
-        let* α12 := M.alloc [ α7; α9; α11 ] in
+        let* α9 := M.call α7 [ M.get_struct_record α8 "x" ] in
+        let* α10 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α11 := M.read mutable_borrow in
+        let* α12 := M.call α10 [ M.get_struct_record α11 "y" ] in
         let* α13 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α14 := M.read mutable_borrow in
+        let* α15 := M.call α13 [ M.get_struct_record α14 "z" ] in
+        let* α16 := M.alloc [ α9; α12; α15 ] in
+        let* α17 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α12
+            α1
+            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α16
             ] in
-        let* α14 := M.call α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc tt in
+        let* α18 := M.call α0 [ α17 ] in
+        M.alloc α18 in
+      M.alloc (Value.Tuple []) in
     let* new_borrowed_point := M.alloc point in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Point now has coordinates: (") in
-        let* α2 := M.read (mk_str ", ") in
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Point now has coordinates: (") in
         let* α3 := M.read (mk_str ", ") in
-        let* α4 := M.read (mk_str ")
+        let* α4 := M.read (mk_str ", ") in
+        let* α5 := M.read (mk_str ")
 ") in
-        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 := M.read new_borrowed_point in
+        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α6 "x" ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
         let* α8 := M.read new_borrowed_point in
-        let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α8 "y" ] in
-        let* α10 := M.read new_borrowed_point in
-        let* α11 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ M.get_struct_record α10 "z" ] in
-        let* α12 := M.alloc [ α7; α9; α11 ] in
+        let* α9 := M.call α7 [ M.get_struct_record α8 "x" ] in
+        let* α10 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α11 := M.read new_borrowed_point in
+        let* α12 := M.call α10 [ M.get_struct_record α11 "y" ] in
         let* α13 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α14 := M.read new_borrowed_point in
+        let* α15 := M.call α13 [ M.get_struct_record α14 "z" ] in
+        let* α16 := M.alloc [ α9; α12; α15 ] in
+        let* α17 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α12
+            α1
+            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α16
             ] in
-        let* α14 := M.call α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α18 := M.call α0 [ α17 ] in
+        M.alloc α18 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

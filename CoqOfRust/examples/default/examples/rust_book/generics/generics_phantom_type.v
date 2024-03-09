@@ -178,7 +178,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "generics_phantom_type::PhantomStruct"
           [ ("first", "Q"%char); ("phantom", core.marker.PhantomData.Build)
           ]) in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

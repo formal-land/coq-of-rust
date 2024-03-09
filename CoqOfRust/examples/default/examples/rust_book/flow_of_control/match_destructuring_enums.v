@@ -41,17 +41,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "What color is it?
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const" in
+        let* α2 := M.read (mk_str "What color is it?
 ") in
-        let* α2 := M.alloc [ α1 ] in
-        let* α3 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ M.pointer_coercion "Unsize" α2 ] in
-        let* α4 := M.call α0 [ α3 ] in
-        M.alloc α4 in
-      M.alloc tt in
+        let* α3 := M.alloc [ α2 ] in
+        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
     let* α0 :=
       match_operator
         color
@@ -61,17 +62,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | match_destructuring_enums.Color.Red =>
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "The color is Red!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "The color is Red!
 ") in
-                let* α2 := M.alloc [ α1 ] in
-                let* α3 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ M.pointer_coercion "Unsize" α2 ] in
-                let* α4 := M.call α0 [ α3 ] in
-                M.alloc α4 in
-              M.alloc tt
+                let* α3 := M.alloc [ α2 ] in
+                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -79,17 +81,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | match_destructuring_enums.Color.Blue =>
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "The color is Blue!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "The color is Blue!
 ") in
-                let* α2 := M.alloc [ α1 ] in
-                let* α3 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ M.pointer_coercion "Unsize" α2 ] in
-                let* α4 := M.call α0 [ α3 ] in
-                M.alloc α4 in
-              M.alloc tt
+                let* α3 := M.alloc [ α2 ] in
+                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -97,17 +100,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | match_destructuring_enums.Color.Green =>
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "The color is Green!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "The color is Green!
 ") in
-                let* α2 := M.alloc [ α1 ] in
-                let* α3 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ M.pointer_coercion "Unsize" α2 ] in
-                let* α4 := M.call α0 [ α3 ] in
-                M.alloc α4 in
-              M.alloc tt
+                let* α3 := M.alloc [ α2 ] in
+                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -130,36 +134,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* g := M.copy γ0_1 in
               let* b := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "Red: ") in
-                let* α2 := M.read (mk_str ", green: ") in
-                let* α3 := M.read (mk_str ", and blue: ") in
-                let* α4 := M.read (mk_str "!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Red: ") in
+                let* α3 := M.read (mk_str ", green: ") in
+                let* α4 := M.read (mk_str ", and blue: ") in
+                let* α5 := M.read (mk_str "!
 ") in
-                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-                let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ r ] in
+                let* α6 := M.alloc [ α2; α3; α4; α5 ] in
                 let* α7 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α8 := M.call α7 [ r ] in
+                let* α9 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α10 := M.call α9 [ g ] in
+                let* α11 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α12 := M.call α11 [ b ] in
+                let* α13 := M.alloc [ α8; α10; α12 ] in
+                let* α14 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ g ] in
-                let* α8 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ b ] in
-                let* α9 := M.alloc [ α6; α7; α8 ] in
-                let* α10 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α5;
-                      M.pointer_coercion "Unsize" α9
+                      M.pointer_coercion "Unsize" α6;
+                      M.pointer_coercion "Unsize" α13
                     ] in
-                let* α11 := M.call α0 [ α10 ] in
-                M.alloc α11 in
-              M.alloc tt
+                let* α15 := M.call α0 [ α14 ] in
+                M.alloc α15 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -182,36 +193,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* s := M.copy γ0_1 in
               let* v := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "Hue: ") in
-                let* α2 := M.read (mk_str ", saturation: ") in
-                let* α3 := M.read (mk_str ", value: ") in
-                let* α4 := M.read (mk_str "!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Hue: ") in
+                let* α3 := M.read (mk_str ", saturation: ") in
+                let* α4 := M.read (mk_str ", value: ") in
+                let* α5 := M.read (mk_str "!
 ") in
-                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-                let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ h ] in
+                let* α6 := M.alloc [ α2; α3; α4; α5 ] in
                 let* α7 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α8 := M.call α7 [ h ] in
+                let* α9 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α10 := M.call α9 [ s ] in
+                let* α11 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α12 := M.call α11 [ v ] in
+                let* α13 := M.alloc [ α8; α10; α12 ] in
+                let* α14 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ s ] in
-                let* α8 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ v ] in
-                let* α9 := M.alloc [ α6; α7; α8 ] in
-                let* α10 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α5;
-                      M.pointer_coercion "Unsize" α9
+                      M.pointer_coercion "Unsize" α6;
+                      M.pointer_coercion "Unsize" α13
                     ] in
-                let* α11 := M.call α0 [ α10 ] in
-                M.alloc α11 in
-              M.alloc tt
+                let* α15 := M.call α0 [ α14 ] in
+                M.alloc α15 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -234,36 +252,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* s := M.copy γ0_1 in
               let* l := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "Hue: ") in
-                let* α2 := M.read (mk_str ", saturation: ") in
-                let* α3 := M.read (mk_str ", lightness: ") in
-                let* α4 := M.read (mk_str "!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Hue: ") in
+                let* α3 := M.read (mk_str ", saturation: ") in
+                let* α4 := M.read (mk_str ", lightness: ") in
+                let* α5 := M.read (mk_str "!
 ") in
-                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-                let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ h ] in
+                let* α6 := M.alloc [ α2; α3; α4; α5 ] in
                 let* α7 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α8 := M.call α7 [ h ] in
+                let* α9 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α10 := M.call α9 [ s ] in
+                let* α11 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α12 := M.call α11 [ l ] in
+                let* α13 := M.alloc [ α8; α10; α12 ] in
+                let* α14 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ s ] in
-                let* α8 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ l ] in
-                let* α9 := M.alloc [ α6; α7; α8 ] in
-                let* α10 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α5;
-                      M.pointer_coercion "Unsize" α9
+                      M.pointer_coercion "Unsize" α6;
+                      M.pointer_coercion "Unsize" α13
                     ] in
-                let* α11 := M.call α0 [ α10 ] in
-                M.alloc α11 in
-              M.alloc tt
+                let* α15 := M.call α0 [ α14 ] in
+                M.alloc α15 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -286,36 +311,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* m := M.copy γ0_1 in
               let* y := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "Cyan: ") in
-                let* α2 := M.read (mk_str ", magenta: ") in
-                let* α3 := M.read (mk_str ", yellow: ") in
-                let* α4 := M.read (mk_str "!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Cyan: ") in
+                let* α3 := M.read (mk_str ", magenta: ") in
+                let* α4 := M.read (mk_str ", yellow: ") in
+                let* α5 := M.read (mk_str "!
 ") in
-                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-                let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ c ] in
+                let* α6 := M.alloc [ α2; α3; α4; α5 ] in
                 let* α7 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α8 := M.call α7 [ c ] in
+                let* α9 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α10 := M.call α9 [ m ] in
+                let* α11 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α12 := M.call α11 [ y ] in
+                let* α13 := M.alloc [ α8; α10; α12 ] in
+                let* α14 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ m ] in
-                let* α8 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ y ] in
-                let* α9 := M.alloc [ α6; α7; α8 ] in
-                let* α10 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α5;
-                      M.pointer_coercion "Unsize" α9
+                      M.pointer_coercion "Unsize" α6;
+                      M.pointer_coercion "Unsize" α13
                     ] in
-                let* α11 := M.call α0 [ α10 ] in
-                M.alloc α11 in
-              M.alloc tt
+                let* α15 := M.call α0 [ α14 ] in
+                M.alloc α15 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -343,41 +375,49 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* y := M.copy γ0_2 in
               let* k := M.copy γ0_3 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "Cyan: ") in
-                let* α2 := M.read (mk_str ", magenta: ") in
-                let* α3 := M.read (mk_str ", yellow: ") in
-                let* α4 := M.read (mk_str ", key (black): ") in
-                let* α5 := M.read (mk_str "!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Cyan: ") in
+                let* α3 := M.read (mk_str ", magenta: ") in
+                let* α4 := M.read (mk_str ", yellow: ") in
+                let* α5 := M.read (mk_str ", key (black): ") in
+                let* α6 := M.read (mk_str "!
 ") in
-                let* α6 := M.alloc [ α1; α2; α3; α4; α5 ] in
-                let* α7 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ c ] in
+                let* α7 := M.alloc [ α2; α3; α4; α5; α6 ] in
                 let* α8 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ m ] in
-                let* α9 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ y ] in
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α9 := M.call α8 [ c ] in
                 let* α10 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ k ] in
-                let* α11 := M.alloc [ α7; α8; α9; α10 ] in
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α11 := M.call α10 [ m ] in
                 let* α12 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α13 := M.call α12 [ y ] in
+                let* α14 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α15 := M.call α14 [ k ] in
+                let* α16 := M.alloc [ α9; α11; α13; α15 ] in
+                let* α17 :=
                   M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α6;
-                      M.pointer_coercion "Unsize" α11
+                      M.pointer_coercion "Unsize" α7;
+                      M.pointer_coercion "Unsize" α16
                     ] in
-                let* α13 := M.call α0 [ α12 ] in
-                M.alloc α13 in
-              M.alloc tt
+                let* α18 := M.call α0 [ α17 ] in
+                M.alloc α18 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end)
         ] in

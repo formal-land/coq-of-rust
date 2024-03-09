@@ -44,7 +44,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) Ty.path "from::Number"; (* T *) Ty.path "i32" ] in
       let* α1 := M.call α0 [ Value.Integer Integer.I32 30 ] in
       M.alloc α1 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

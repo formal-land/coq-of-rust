@@ -72,7 +72,7 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
     match 𝜏, α with
     | [ Self ], [ _value ] =>
       let* _value := M.alloc _value in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -114,9 +114,13 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "ConstructorError") in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α1 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "ConstructorError") in
+      M.call α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -143,7 +147,7 @@ Module Impl_constructors_return_value_ReturnFlags.
     match 𝜏, α with
     | [ Self ], [ has_reverted ] =>
       let* has_reverted := M.alloc has_reverted in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -164,7 +168,7 @@ Definition return_value (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [ R ], [ return_flags; return_value ] =>
     let* return_flags := M.alloc return_flags in
     let* return_value := M.alloc return_value in
-    let* α0 := M.var "core::panicking::panic" in
+    let* α0 := M.get_function "core::panicking::panic" in
     let* α1 := M.read (mk_str "not implemented") in
     M.call α0 [ α1 ]
   | _, _ => M.impossible
@@ -210,11 +214,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       let* α1 :=
         if α0 then
           let* α0 :=
-            M.call
-              (Ty.path
-                  "constructors_return_value::ConstructorsReturnValue")::["new"]
-              [ true ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α0 ])
+            M.get_associated_function
+              (Ty.path "constructors_return_value::ConstructorsReturnValue")
+              "new" in
+          let* α1 := M.call α0 [ true ] in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
           M.alloc
             (Value.StructTuple
@@ -239,13 +243,13 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match 𝜏, α with
     | [ Self ], [ _init_value ] =>
       let* _init_value := M.alloc _init_value in
-      let* α0 := M.var "constructors_return_value::return_value" in
+      let* α0 := M.get_function "constructors_return_value::return_value" in
       let* α1 :=
-        M.call
-          (Ty.path
-              "constructors_return_value::ReturnFlags")::["new_with_reverted"]
-          [ true ] in
-      let* α2 :=
+        M.get_associated_function
+          (Ty.path "constructors_return_value::ReturnFlags")
+          "new_with_reverted" in
+      let* α2 := M.call α1 [ true ] in
+      let* α3 :=
         M.get_trait_method
           "core::convert::From"
           "from"
@@ -253,11 +257,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             (* Self *) Ty.path "constructors_return_value::AccountId";
             (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ]
           ] in
-      let* α3 := M.call α2 [ repeat (Value.Integer Integer.U8 0) 32 ] in
-      let* α4 :=
-        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α3 ]) in
-      let* α5 := M.call α0 [ α1; α4 ] in
-      M.never_to_any α5
+      let* α4 := M.call α3 [ repeat (Value.Integer Integer.U8 0) 32 ] in
+      let* α5 :=
+        M.alloc (Value.StructTuple "core::result::Result::Ok" [ α4 ]) in
+      let* α6 := M.call α0 [ α2; α5 ] in
+      M.never_to_any α6
     | _, _ => M.impossible
     end.
   
@@ -305,15 +309,15 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 "core::result::Result::Err"
                 [ constructors_return_value.LangError.CouldNotReadInput ]) in
         M.copy α1 in
-      let* α0 := M.var "constructors_return_value::return_value" in
+      let* α0 := M.get_function "constructors_return_value::return_value" in
       let* α1 :=
-        M.call
-          (Ty.path
-              "constructors_return_value::ReturnFlags")::["new_with_reverted"]
-          [ true ] in
-      let* α2 := M.call α0 [ α1; value ] in
-      let* α3 := M.never_to_any α2 in
-      let* α0 := M.alloc α3 in
+        M.get_associated_function
+          (Ty.path "constructors_return_value::ReturnFlags")
+          "new_with_reverted" in
+      let* α2 := M.call α1 [ true ] in
+      let* α3 := M.call α0 [ α2; value ] in
+      let* α4 := M.never_to_any α3 in
+      let* α0 := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.

@@ -12,7 +12,7 @@ Definition set_code_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [ E ], [ code_hash ] =>
     let* code_hash := M.alloc code_hash in
-    let* α0 := M.var "core::panicking::panic" in
+    let* α0 := M.get_function "core::panicking::panic" in
     let* α1 := M.read (mk_str "not implemented") in
     let* α2 := M.call α0 [ α1 ] in
     M.never_to_any α2
@@ -91,28 +91,33 @@ Module Impl_set_code_hash_Incrementer.
         M.assign β α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "The new count is ") in
-          let* α2 :=
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1" in
+          let* α2 := M.read (mk_str "The new count is ") in
+          let* α3 :=
             M.read
               (mk_str ", it was modified using the original contract code.
 ") in
-          let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 := M.read self in
+          let* α4 := M.alloc [ α2; α3 ] in
           let* α5 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display" in
+          let* α6 := M.read self in
+          let* α7 := M.call α5 [ M.get_struct_record α6 "count" ] in
+          let* α8 := M.alloc [ α7 ] in
+          let* α9 :=
             M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ M.get_struct_record α4 "count" ] in
-          let* α6 := M.alloc [ α5 ] in
-          let* α7 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+              α1
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
               ] in
-          let* α8 := M.call α0 [ α7 ] in
-          M.alloc α8 in
-        M.alloc tt in
-      let* α0 := M.alloc tt in
+          let* α10 := M.call α0 [ α9 ] in
+          M.alloc α10 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -149,16 +154,19 @@ Module Impl_set_code_hash_Incrementer.
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* _ :=
-        let* α0 := M.var "set_code_hash::set_code_hash" in
-        let* α1 := M.call α0 [ code_hash ] in
-        let* α2 :=
-          M.call
+        let* α0 :=
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "set_code_hash::Error"
-                ])::["unwrap_or_else"]
+              (Ty.path "core::result::Result")
+              [ Ty.tuple []; Ty.path "set_code_hash::Error" ])
+            "unwrap_or_else" in
+        let* α1 := M.get_function "set_code_hash::set_code_hash" in
+        let* α2 := M.call α1 [ code_hash ] in
+        let* α3 :=
+          M.call
+            α0
             [
-              α1;
+              α2;
               fun (α0 : Ty.path "set_code_hash::Error") =>
                 (let* α0 := M.alloc α0 in
                 match_operator
@@ -166,7 +174,7 @@ Module Impl_set_code_hash_Incrementer.
                   [
                     fun γ =>
                       (let* err := M.copy γ in
-                      let* α0 := M.var "std::panicking::begin_panic" in
+                      let* α0 := M.get_function "std::panicking::begin_panic" in
                       let* α1 :=
                         M.read
                           (mk_str
@@ -175,28 +183,33 @@ Module Impl_set_code_hash_Incrementer.
                       M.never_to_any α2)
                   ])
             ] in
-        M.alloc α2 in
+        M.alloc α3 in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "Switched code hash to ") in
-          let* α2 := M.read (mk_str ".
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1" in
+          let* α2 := M.read (mk_str "Switched code hash to ") in
+          let* α3 := M.read (mk_str ".
 ") in
-          let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 :=
+          let* α4 := M.alloc [ α2; α3 ] in
+          let* α5 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_debug" in
+          let* α6 := M.call α5 [ code_hash ] in
+          let* α7 := M.alloc [ α6 ] in
+          let* α8 :=
             M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-              [ code_hash ] in
-          let* α5 := M.alloc [ α4 ] in
-          let* α6 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              α1
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
               ] in
-          let* α7 := M.call α0 [ α6 ] in
-          M.alloc α7 in
-        M.alloc tt in
-      let* α0 := M.alloc tt in
+          let* α9 := M.call α0 [ α8 ] in
+          M.alloc α9 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

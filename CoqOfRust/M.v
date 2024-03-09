@@ -267,8 +267,8 @@ Module Primitive.
   | StateRead {Address : Set} (address : Address)
   | StateWrite {Address : Set} (address : Address) (value : Value.t)
   | EnvRead
-  | AssociatedFunction (ty : Ty.t) (name : string)
-  | Var (path : string).
+  | GetFunction (path : string)
+  | GetAssociatedFunction (ty : Ty.t) (name : string).
 End Primitive.
 
 Module LowM.
@@ -480,11 +480,13 @@ Definition read_env : M :=
 Definition impossible : M :=
   LowM.Impossible.
 
-Definition associated_function (ty : Ty.t) (name : string) : M :=
-  call_primitive (Primitive.AssociatedFunction ty name).
+Definition get_function (path : string) : M :=
+  call_primitive (Primitive.GetFunction path).
 
-Definition var (path : string) : M :=
-  call_primitive (Primitive.Var path).
+Definition get_associated_function (ty : Ty.t) (name : string) : M :=
+  call_primitive (Primitive.GetAssociatedFunction ty name).
+
+Parameter get_trait_method : string -> string -> list Ty.t -> M.
 
 Definition catch (body : M) (handler : Exception.t -> M) : M :=
   let- result := body in
@@ -545,10 +547,6 @@ Fixpoint match_operator
         end
       )
   end.
-
-Parameter get_trait_method : string -> string -> list Ty.t -> M.
-
-Parameter get_function : string -> list Ty.t -> M.
 
 Definition never_to_any (x : Value.t) : M :=
   M.impossible.

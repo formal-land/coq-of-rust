@@ -44,14 +44,14 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.var "unit_testing::add" in
+        let* α0 := M.get_function "unit_testing::add" in
         let* α1 :=
           M.call
             α0
             [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.I32 3) in
-        let* α4 := M.alloc (α2, α3) in
+        let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
         match_operator
           α4
           [
@@ -71,7 +71,7 @@ Module tests.
                 let* α5 := M.read (M.use α4) in
                 if α5 then
                   let* kind := M.alloc core.panicking.AssertKind.Eq in
-                  let* α0 := M.var "core::panicking::assert_failed" in
+                  let* α0 := M.get_function "core::panicking::assert_failed" in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -82,10 +82,10 @@ Module tests.
                   let* α2 := M.never_to_any α1 in
                   M.alloc α2
                 else
-                  M.alloc tt
+                  M.alloc (Value.Tuple [])
               end)
           ] in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -101,14 +101,14 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.var "unit_testing::bad_add" in
+        let* α0 := M.get_function "unit_testing::bad_add" in
         let* α1 :=
           M.call
             α0
             [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.I32 3) in
-        let* α4 := M.alloc (α2, α3) in
+        let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
         match_operator
           α4
           [
@@ -128,7 +128,7 @@ Module tests.
                 let* α5 := M.read (M.use α4) in
                 if α5 then
                   let* kind := M.alloc core.panicking.AssertKind.Eq in
-                  let* α0 := M.var "core::panicking::assert_failed" in
+                  let* α0 := M.get_function "core::panicking::assert_failed" in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -139,10 +139,10 @@ Module tests.
                   let* α2 := M.never_to_any α1 in
                   M.alloc α2
                 else
-                  M.alloc tt
+                  M.alloc (Value.Tuple [])
               end)
           ] in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

@@ -26,29 +26,35 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* triple :=
       M.alloc
-        (Value.Integer Integer.I32 0,
-          Value.Integer Integer.I32 (-2),
-          Value.Integer Integer.I32 3) in
+        (Value.Tuple
+          [
+            Value.Integer Integer.I32 0;
+            Value.Integer Integer.I32 (-2);
+            Value.Integer Integer.I32 3
+          ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Tell me about ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Tell me about ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ triple ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ triple ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* α0 :=
       match_operator
         triple
@@ -66,31 +72,37 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* y := M.copy γ0_1 in
                 let* z := M.copy γ0_2 in
                 let* _ :=
-                  let* α0 := M.var "std::io::stdio::_print" in
-                  let* α1 := M.read (mk_str "First is `0`, `y` is ") in
-                  let* α2 := M.read (mk_str ", and `z` is ") in
-                  let* α3 := M.read (mk_str "
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 := M.read (mk_str "First is `0`, `y` is ") in
+                  let* α3 := M.read (mk_str ", and `z` is ") in
+                  let* α4 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc [ α1; α2; α3 ] in
-                  let* α5 :=
-                    M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                      [ y ] in
+                  let* α5 := M.alloc [ α2; α3; α4 ] in
                   let* α6 :=
-                    M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                      [ z ] in
-                  let* α7 := M.alloc [ α5; α6 ] in
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_debug" in
+                  let* α7 := M.call α6 [ y ] in
                   let* α8 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_debug" in
+                  let* α9 := M.call α8 [ z ] in
+                  let* α10 := M.alloc [ α7; α9 ] in
+                  let* α11 :=
                     M.call
-                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      α1
                       [
-                        M.pointer_coercion "Unsize" α4;
-                        M.pointer_coercion "Unsize" α7
+                        M.pointer_coercion "Unsize" α5;
+                        M.pointer_coercion "Unsize" α10
                       ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
-                M.alloc tt
+                  let* α12 := M.call α0 [ α11 ] in
+                  M.alloc α12 in
+                M.alloc (Value.Tuple [])
               | _ => M.break_match 
               end
             end);
@@ -105,19 +117,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | i32.Make 1 =>
                 let* _ :=
-                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" in
                   let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const" in
+                  let* α2 :=
                     M.read
                       (mk_str "First is `1` and the rest doesn't matter
 ") in
-                  let* α2 := M.alloc [ α1 ] in
-                  let* α3 :=
-                    M.call
-                      (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ M.pointer_coercion "Unsize" α2 ] in
-                  let* α4 := M.call α0 [ α3 ] in
-                  M.alloc α4 in
-                M.alloc tt
+                  let* α3 := M.alloc [ α2 ] in
+                  let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                  let* α5 := M.call α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple [])
               | _ => M.break_match 
               end
             end);
@@ -132,19 +145,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | i32.Make 2 =>
                 let* _ :=
-                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" in
                   let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const" in
+                  let* α2 :=
                     M.read
                       (mk_str "last is `2` and the rest doesn't matter
 ") in
-                  let* α2 := M.alloc [ α1 ] in
-                  let* α3 :=
-                    M.call
-                      (Ty.path "core::fmt::Arguments")::["new_const"]
-                      [ M.pointer_coercion "Unsize" α2 ] in
-                  let* α4 := M.call α0 [ α3 ] in
-                  M.alloc α4 in
-                M.alloc tt
+                  let* α3 := M.alloc [ α2 ] in
+                  let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                  let* α5 := M.call α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple [])
               | _ => M.break_match 
               end
             end);
@@ -162,20 +176,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | i32.Make 4 =>
                   let* _ :=
-                    let* α0 := M.var "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" in
                     let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_const" in
+                    let* α2 :=
                       M.read
                         (mk_str
                           "First is `3`, last is `4`, and the rest doesn't matter
 ") in
-                    let* α2 := M.alloc [ α1 ] in
-                    let* α3 :=
-                      M.call
-                        (Ty.path "core::fmt::Arguments")::["new_const"]
-                        [ M.pointer_coercion "Unsize" α2 ] in
-                    let* α4 := M.call α0 [ α3 ] in
-                    M.alloc α4 in
-                  M.alloc tt
+                    let* α3 := M.alloc [ α2 ] in
+                    let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                    let* α5 := M.call α0 [ α4 ] in
+                    M.alloc α5 in
+                  M.alloc (Value.Tuple [])
                 | _ => M.break_match 
                 end
               | _ => M.break_match 
@@ -183,17 +198,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             end);
           fun γ =>
             (let* _ :=
-              let* α0 := M.var "std::io::stdio::_print" in
-              let* α1 := M.read (mk_str "It doesn't matter what they are
+              let* α0 := M.get_function "std::io::stdio::_print" in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const" in
+              let* α2 := M.read (mk_str "It doesn't matter what they are
 ") in
-              let* α2 := M.alloc [ α1 ] in
-              let* α3 :=
-                M.call
-                  (Ty.path "core::fmt::Arguments")::["new_const"]
-                  [ M.pointer_coercion "Unsize" α2 ] in
-              let* α4 := M.call α0 [ α3 ] in
-              M.alloc α4 in
-            M.alloc tt)
+              let* α3 := M.alloc [ α2 ] in
+              let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+              let* α5 := M.call α0 [ α4 ] in
+              M.alloc α5 in
+            M.alloc (Value.Tuple []))
         ] in
     M.read α0
   | _, _ => M.impossible

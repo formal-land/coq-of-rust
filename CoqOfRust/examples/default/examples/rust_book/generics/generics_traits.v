@@ -19,7 +19,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
     | [ Self; T; U ], [ self; Pattern ] =>
       let* self := M.alloc self in
       let* Pattern := M.alloc Pattern in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -65,7 +65,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.read null in
       let* α3 := M.call α0 [ α1; α2 ] in
       M.alloc α3 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

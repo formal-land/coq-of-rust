@@ -32,26 +32,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call "unimplemented parent_kind" [ Value.Integer Integer.U32 9 ] in
-        let* α5 := M.alloc α4 in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
         let* α6 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+          M.call "unimplemented parent_kind" [ Value.Integer Integer.U32 9 ] in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call α5 [ α7 ] in
+        let* α9 := M.alloc [ α8 ] in
+        let* α10 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α9
             ] in
-        let* α9 := M.call α0 [ α8 ] in
-        M.alloc α9 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α11 := M.call α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -170,11 +175,11 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α1 := M.read addition in
                             let* α2 := BinOp.Panic.add α0 α1 in
                             M.assign β α2 in
-                          M.alloc tt
+                          M.alloc (Value.Tuple [])
                         | _ => M.break_match 
                         end)
                     ] in
-                M.alloc tt))
+                M.alloc (Value.Tuple [])))
           ] in
       M.pure (M.use α4) in
     M.read acc

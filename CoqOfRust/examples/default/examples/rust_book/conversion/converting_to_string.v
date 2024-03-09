@@ -14,20 +14,27 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "Circle of radius ") in
-      let* α2 := M.alloc [ α1 ] in
-      let* α3 := M.read self in
-      let* α4 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_fmt" in
+      let* α1 := M.read f in
+      let* α2 :=
+        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+      let* α3 := M.read (mk_str "Circle of radius ") in
+      let* α4 := M.alloc [ α3 ] in
+      let* α5 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::rt::Argument")
+          "new_display" in
+      let* α6 := M.read self in
+      let* α7 := M.call α5 [ M.get_struct_record α6 "radius" ] in
+      let* α8 := M.alloc [ α7 ] in
+      let* α9 :=
         M.call
-          (Ty.path "core::fmt::rt::Argument")::["new_display"]
-          [ M.get_struct_record α3 "radius" ] in
-      let* α5 := M.alloc [ α4 ] in
-      let* α6 :=
-        M.call
-          (Ty.path "core::fmt::Arguments")::["new_v1"]
-          [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α5 ] in
-      M.call (Ty.path "core::fmt::Formatter")::["write_fmt"] [ α0; α6 ]
+          α2
+          [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8 ] in
+      M.call α0 [ α1; α9 ]
     | _, _ => M.impossible
     end.
   
@@ -63,7 +70,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) Ty.path "converting_to_string::Circle" ] in
       let* α1 := M.call α0 [ circle ] in
       M.alloc α1 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

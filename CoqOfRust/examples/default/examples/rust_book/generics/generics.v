@@ -40,7 +40,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ Value.Integer Integer.I32 6 ]) in
     let* _char :=
       M.alloc (Value.StructTuple "generics::SingleGen" [ "a"%char ]) in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

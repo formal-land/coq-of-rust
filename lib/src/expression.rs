@@ -158,7 +158,7 @@ pub(crate) enum ExprKind {
 
 impl ExprKind {
     pub(crate) fn tt() -> Rc<Self> {
-        Rc::new(ExprKind::LocalVar("tt".to_string())).alloc(Some(CoqType::unit()))
+        Rc::new(ExprKind::Tuple { elements: vec![] }).alloc(Some(CoqType::unit()))
     }
 }
 
@@ -396,8 +396,8 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             }),
             fresh_vars,
         ),
-        ExprKind::AssociatedFunction { .. } => (pure(expr.clone()), fresh_vars),
-        ExprKind::Literal { .. } => (pure(expr.clone()), fresh_vars),
+        ExprKind::AssociatedFunction { .. } => (expr, fresh_vars),
+        ExprKind::Literal { .. } => (pure(expr), fresh_vars),
         ExprKind::Call {
             func,
             args,
@@ -669,7 +669,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 }),
             )
         }
-        ExprKind::StructUnit { .. } => (pure(expr.clone()), fresh_vars),
+        ExprKind::StructUnit { .. } => (pure(expr), fresh_vars),
         ExprKind::Use(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
             (
                 pure(Rc::new(Expr {
@@ -688,7 +688,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 fresh_vars,
             )
         }),
-        ExprKind::Message(_) => (pure(expr.clone()), fresh_vars),
+        ExprKind::Message(_) => (pure(expr), fresh_vars),
     }
 }
 
@@ -871,12 +871,16 @@ impl ExprKind {
                     ),
                 ]),
             ),
-            ExprKind::AssociatedFunction { ty, func } => nest([
-                ty.to_coq().to_doc(true),
-                text("::["),
-                text(format!("\"{func}\"")),
-                text("]"),
-            ]),
+            ExprKind::AssociatedFunction { ty, func } => paren(
+                with_paren,
+                nest([
+                    text("M.get_associated_function"),
+                    line(),
+                    ty.to_coq().to_doc(true),
+                    line(),
+                    text(format!("\"{func}\"")),
+                ]),
+            ),
             ExprKind::Literal(literal) => literal.to_doc(with_paren),
             ExprKind::Call {
                 func,
@@ -946,11 +950,17 @@ impl ExprKind {
                     .collect(),
             ),
             ExprKind::Tuple { elements } => paren(
-                true,
-                nest([intersperse(
-                    elements.iter().map(|element| element.to_doc(false)),
-                    [text(","), line()],
-                )]),
+                with_paren,
+                nest([
+                    text("Value.Tuple"),
+                    line(),
+                    list(
+                        elements
+                            .iter()
+                            .map(|element| element.to_doc(false))
+                            .collect(),
+                    ),
+                ]),
             ),
             ExprKind::Let {
                 is_monadic,

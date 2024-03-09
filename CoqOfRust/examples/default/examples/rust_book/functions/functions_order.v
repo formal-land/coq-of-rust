@@ -15,7 +15,7 @@ Module Impl_functions_order_SomeType.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -31,11 +31,14 @@ Module Impl_functions_order_SomeType.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.call (Ty.path "functions_order::SomeType")::["meth2"] [ α0 ] in
-        M.alloc α1 in
-      let* α0 := M.alloc tt in
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "functions_order::SomeType")
+            "meth2" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ α1 ] in
+        M.alloc α2 in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -56,7 +59,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -100,7 +103,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -111,7 +114,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -161,7 +164,7 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.StructTuple "functions_order::SomeType" [ α1 ]) in
       let* α3 := M.call α0 [ α2 ] in
       M.alloc α3 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -171,7 +174,10 @@ Module inner_mod.
       fn tar() {}
   *)
   Definition tar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
+    match 𝜏, α with
+    | [], [] => M.pure (Value.Tuple [])
+    | _, _ => M.impossible
+    end.
   
   (*
       pub fn bar() {
@@ -183,10 +189,10 @@ Module inner_mod.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.var "functions_order::inner_mod::tar" in
+        let* α0 := M.get_function "functions_order::inner_mod::tar" in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -196,7 +202,10 @@ Module inner_mod.
             fn tack() {}
     *)
     Definition tack (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
+      match 𝜏, α with
+      | [], [] => M.pure (Value.Tuple [])
+      | _, _ => M.impossible
+      end.
     
     (*
             pub fn tick() {
@@ -207,10 +216,11 @@ Module inner_mod.
       match 𝜏, α with
       | [], [] =>
         let* _ :=
-          let* α0 := M.var "functions_order::inner_mod::nested_mod::tack" in
+          let* α0 :=
+            M.get_function "functions_order::inner_mod::nested_mod::tack" in
           let* α1 := M.call α0 [] in
           M.alloc α1 in
-        let* α0 := M.alloc tt in
+        let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
       | _, _ => M.impossible
       end.
@@ -221,7 +231,10 @@ End inner_mod.
 fn foo() {}
 *)
 Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
+  match 𝜏, α with
+  | [], [] => M.pure (Value.Tuple [])
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -236,24 +249,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.var "functions_order::foo" in
+      let* α0 := M.get_function "functions_order::foo" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "functions_order::inner_mod::bar" in
+      let* α0 := M.get_function "functions_order::inner_mod::bar" in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
+        M.get_associated_function
+          (Ty.path "functions_order::SomeType")
+          "meth1" in
+      let* α1 :=
         M.call
-          (Ty.path "functions_order::SomeType")::["meth1"]
+          α0
           [
             Value.StructTuple
               "functions_order::SomeType"
               [ Value.Integer Integer.U32 0 ]
           ] in
-      M.alloc α0 in
-    let* α0 := M.alloc tt in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

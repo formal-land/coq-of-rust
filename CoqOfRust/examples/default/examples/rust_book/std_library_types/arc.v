@@ -27,17 +27,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* apple :=
-      let* α0 := M.read (mk_str "the same apple") in
-      let* α1 :=
-        M.call
+      let* α0 :=
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "alloc::sync::Arc")
-              [
-                Ty.apply (Ty.path "ref") [ Ty.path "str" ];
-                Ty.path "alloc::alloc::Global"
-              ])::["new"]
-          [ α0 ] in
-      M.alloc α1 in
+            (Ty.path "alloc::sync::Arc")
+            [
+              Ty.apply (Ty.path "ref") [ Ty.path "str" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new" in
+      let* α1 := M.read (mk_str "the same apple") in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -119,7 +120,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α1 := M.call α0 [ apple ] in
                             M.alloc α1 in
                           let* _ :=
-                            let* α0 := M.var "std::thread::spawn" in
+                            let* α0 := M.get_function "std::thread::spawn" in
                             let* α1 :=
                               M.call
                                 α0
@@ -133,54 +134,60 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                           (let* _ :=
                                             let* _ :=
                                               let* α0 :=
-                                                M.var
+                                                M.get_function
                                                   "std::io::stdio::_print" in
-                                              let* α1 := M.read (mk_str "") in
-                                              let* α2 := M.read (mk_str "
+                                              let* α1 :=
+                                                M.get_associated_function
+                                                  (Ty.path
+                                                    "core::fmt::Arguments")
+                                                  "new_v1" in
+                                              let* α2 := M.read (mk_str "") in
+                                              let* α3 := M.read (mk_str "
 ") in
-                                              let* α3 := M.alloc [ α1; α2 ] in
-                                              let* α4 :=
-                                                M.call
+                                              let* α4 := M.alloc [ α2; α3 ] in
+                                              let* α5 :=
+                                                M.get_associated_function
                                                   (Ty.path
-                                                      "core::fmt::rt::Argument")::["new_debug"]
-                                                  [ apple ] in
-                                              let* α5 := M.alloc [ α4 ] in
-                                              let* α6 :=
+                                                    "core::fmt::rt::Argument")
+                                                  "new_debug" in
+                                              let* α6 := M.call α5 [ apple ] in
+                                              let* α7 := M.alloc [ α6 ] in
+                                              let* α8 :=
                                                 M.call
-                                                  (Ty.path
-                                                      "core::fmt::Arguments")::["new_v1"]
+                                                  α1
                                                   [
                                                     M.pointer_coercion
                                                       "Unsize"
-                                                      α3;
+                                                      α4;
                                                     M.pointer_coercion
                                                       "Unsize"
-                                                      α5
+                                                      α7
                                                   ] in
-                                              let* α7 := M.call α0 [ α6 ] in
-                                              M.alloc α7 in
-                                            M.alloc tt in
-                                          let* α0 := M.alloc tt in
+                                              let* α9 := M.call α0 [ α8 ] in
+                                              M.alloc α9 in
+                                            M.alloc (Value.Tuple []) in
+                                          let* α0 := M.alloc (Value.Tuple []) in
                                           M.read α0)
                                       ])
                                 ] in
                             M.alloc α1 in
-                          M.alloc tt
+                          M.alloc (Value.Tuple [])
                         | _ => M.break_match 
                         end)
                     ] in
-                M.alloc tt))
+                M.alloc (Value.Tuple [])))
           ] in
       M.pure (M.use α3) in
     let* _ :=
-      let* α0 := M.var "std::thread::sleep" in
+      let* α0 := M.get_function "std::thread::sleep" in
       let* α1 :=
-        M.call
-          (Ty.path "core::time::Duration")::["from_secs"]
-          [ Value.Integer Integer.U64 1 ] in
-      let* α2 := M.call α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc tt in
+        M.get_associated_function
+          (Ty.path "core::time::Duration")
+          "from_secs" in
+      let* α2 := M.call α1 [ Value.Integer Integer.U64 1 ] in
+      let* α3 := M.call α0 [ α2 ] in
+      M.alloc α3 in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

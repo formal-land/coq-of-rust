@@ -30,13 +30,14 @@ Module Impl_flipper_Flipper.
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 :=
+      let* α0 := M.get_associated_function (Ty.path "flipper::Flipper") "new" in
+      let* α1 :=
         M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
-      let* α1 := M.call α0 [] in
-      M.call (Ty.path "flipper::Flipper")::["new"] [ α1 ]
+      let* α2 := M.call α1 [] in
+      M.call α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -57,7 +58,7 @@ Module Impl_flipper_Flipper.
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
         M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

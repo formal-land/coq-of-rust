@@ -135,15 +135,17 @@ Module Impl_associated_functions_and_methods_Rectangle.
                           M.pure (α0 γ) in
                         let* x2 := M.copy γ0_0 in
                         let* y2 := M.copy γ0_1 in
-                        let* α0 := M.read x1 in
-                        let* α1 := M.read x2 in
-                        let* α2 := BinOp.Panic.sub α0 α1 in
-                        let* α3 := M.read y1 in
-                        let* α4 := M.read y2 in
-                        let* α5 := BinOp.Panic.sub α3 α4 in
-                        let* α6 := BinOp.Panic.mul α2 α5 in
-                        let* α7 := M.call (Ty.path "f64")::["abs"] [ α6 ] in
-                        M.alloc α7
+                        let* α0 :=
+                          M.get_associated_function (Ty.path "f64") "abs" in
+                        let* α1 := M.read x1 in
+                        let* α2 := M.read x2 in
+                        let* α3 := BinOp.Panic.sub α1 α2 in
+                        let* α4 := M.read y1 in
+                        let* α5 := M.read y2 in
+                        let* α6 := BinOp.Panic.sub α4 α5 in
+                        let* α7 := BinOp.Panic.mul α3 α6 in
+                        let* α8 := M.call α0 [ α7 ] in
+                        M.alloc α8
                       end)
                   ]
               end)
@@ -216,17 +218,21 @@ Module Impl_associated_functions_and_methods_Rectangle.
                         let* x2 := M.copy γ0_0 in
                         let* y2 := M.copy γ0_1 in
                         let* α0 := M.read UnsupportedLiteral in
-                        let* α1 := M.read x1 in
-                        let* α2 := M.read x2 in
-                        let* α3 := BinOp.Panic.sub α1 α2 in
-                        let* α4 := M.call (Ty.path "f64")::["abs"] [ α3 ] in
-                        let* α5 := M.read y1 in
-                        let* α6 := M.read y2 in
-                        let* α7 := BinOp.Panic.sub α5 α6 in
-                        let* α8 := M.call (Ty.path "f64")::["abs"] [ α7 ] in
-                        let* α9 := BinOp.Panic.add α4 α8 in
-                        let* α10 := BinOp.Panic.mul α0 α9 in
-                        M.alloc α10
+                        let* α1 :=
+                          M.get_associated_function (Ty.path "f64") "abs" in
+                        let* α2 := M.read x1 in
+                        let* α3 := M.read x2 in
+                        let* α4 := BinOp.Panic.sub α2 α3 in
+                        let* α5 := M.call α1 [ α4 ] in
+                        let* α6 :=
+                          M.get_associated_function (Ty.path "f64") "abs" in
+                        let* α7 := M.read y1 in
+                        let* α8 := M.read y2 in
+                        let* α9 := BinOp.Panic.sub α7 α8 in
+                        let* α10 := M.call α6 [ α9 ] in
+                        let* α11 := BinOp.Panic.add α5 α10 in
+                        let* α12 := BinOp.Panic.mul α0 α11 in
+                        M.alloc α12
                       end)
                   ]
               end)
@@ -285,7 +291,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         let* α1 := M.read y in
         let* α2 := BinOp.Panic.add α0 α1 in
         M.assign β α2 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -333,32 +339,38 @@ Module Impl_associated_functions_and_methods_Pair.
                 let* second := M.copy γ0_1 in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.var "std::io::stdio::_print" in
-                    let* α1 := M.read (mk_str "Destroying Pair(") in
-                    let* α2 := M.read (mk_str ", ") in
-                    let* α3 := M.read (mk_str ")
+                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "Destroying Pair(") in
+                    let* α3 := M.read (mk_str ", ") in
+                    let* α4 := M.read (mk_str ")
 ") in
-                    let* α4 := M.alloc [ α1; α2; α3 ] in
-                    let* α5 :=
-                      M.call
-                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        [ first ] in
+                    let* α5 := M.alloc [ α2; α3; α4 ] in
                     let* α6 :=
-                      M.call
-                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        [ second ] in
-                    let* α7 := M.alloc [ α5; α6 ] in
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α7 := M.call α6 [ first ] in
                     let* α8 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α9 := M.call α8 [ second ] in
+                    let* α10 := M.alloc [ α7; α9 ] in
+                    let* α11 :=
                       M.call
-                        (Ty.path "core::fmt::Arguments")::["new_v1"]
+                        α1
                         [
-                          M.pointer_coercion "Unsize" α4;
-                          M.pointer_coercion "Unsize" α7
+                          M.pointer_coercion "Unsize" α5;
+                          M.pointer_coercion "Unsize" α10
                         ] in
-                    let* α9 := M.call α0 [ α8 ] in
-                    M.alloc α9 in
-                  M.alloc tt in
-                M.alloc tt
+                    let* α12 := M.call α0 [ α11 ] in
+                    M.alloc α12 in
+                  M.alloc (Value.Tuple []) in
+                M.alloc (Value.Tuple [])
               end)
           ] in
       M.read α0
@@ -411,114 +423,133 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* rectangle :=
       let* α0 :=
-        M.call
-          (Ty.path "associated_functions_and_methods::Point")::["origin"]
-          [] in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.read UnsupportedLiteral in
-      let* α3 :=
-        M.call
-          (Ty.path "associated_functions_and_methods::Point")::["new"]
-          [ α1; α2 ] in
+        M.get_associated_function
+          (Ty.path "associated_functions_and_methods::Point")
+          "origin" in
+      let* α1 := M.call α0 [] in
+      let* α2 :=
+        M.get_associated_function
+          (Ty.path "associated_functions_and_methods::Point")
+          "new" in
+      let* α3 := M.read UnsupportedLiteral in
+      let* α4 := M.read UnsupportedLiteral in
+      let* α5 := M.call α2 [ α3; α4 ] in
       M.alloc
         (Value.StructRecord
           "associated_functions_and_methods::Rectangle"
-          [ ("p1", α0); ("p2", α3) ]) in
+          [ ("p1", α1); ("p2", α5) ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Rectangle perimeter: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Rectangle perimeter: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call
-            (Ty.path
-                "associated_functions_and_methods::Rectangle")::["perimeter"]
-            [ rectangle ] in
-        let* α5 := M.alloc α4 in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
         let* α6 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+          M.get_associated_function
+            (Ty.path "associated_functions_and_methods::Rectangle")
+            "perimeter" in
+        let* α7 := M.call α6 [ rectangle ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
             ] in
-        let* α9 := M.call α0 [ α8 ] in
-        M.alloc α9 in
-      M.alloc tt in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Rectangle area: ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Rectangle area: ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call
-            (Ty.path "associated_functions_and_methods::Rectangle")::["area"]
-            [ rectangle ] in
-        let* α5 := M.alloc α4 in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
         let* α6 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α5 ] in
-        let* α7 := M.alloc [ α6 ] in
-        let* α8 :=
+          M.get_associated_function
+            (Ty.path "associated_functions_and_methods::Rectangle")
+            "area" in
+        let* α7 := M.call α6 [ rectangle ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α7
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
             ] in
-        let* α9 := M.call α0 [ α8 ] in
-        M.alloc α9 in
-      M.alloc tt in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
     let* square :=
       let* α0 :=
-        M.call
-          (Ty.path "associated_functions_and_methods::Point")::["origin"]
-          [] in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.read UnsupportedLiteral in
-      let* α3 :=
-        M.call
-          (Ty.path "associated_functions_and_methods::Point")::["new"]
-          [ α1; α2 ] in
+        M.get_associated_function
+          (Ty.path "associated_functions_and_methods::Point")
+          "origin" in
+      let* α1 := M.call α0 [] in
+      let* α2 :=
+        M.get_associated_function
+          (Ty.path "associated_functions_and_methods::Point")
+          "new" in
+      let* α3 := M.read UnsupportedLiteral in
+      let* α4 := M.read UnsupportedLiteral in
+      let* α5 := M.call α2 [ α3; α4 ] in
       M.alloc
         (Value.StructRecord
           "associated_functions_and_methods::Rectangle"
-          [ ("p1", α0); ("p2", α3) ]) in
+          [ ("p1", α1); ("p2", α5) ]) in
     let* _ :=
-      let* α0 := M.read UnsupportedLiteral in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "associated_functions_and_methods::Rectangle")
+          "translate" in
       let* α1 := M.read UnsupportedLiteral in
-      let* α2 :=
-        M.call
-          (Ty.path "associated_functions_and_methods::Rectangle")::["translate"]
-          [ square; α0; α1 ] in
-      M.alloc α2 in
+      let* α2 := M.read UnsupportedLiteral in
+      let* α3 := M.call α0 [ square; α1; α2 ] in
+      M.alloc α3 in
     let* pair :=
       let* α0 :=
-        M.call
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ Value.Integer Integer.I32 1 ] in
-      let* α1 :=
-        M.call
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          "new" in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 1 ] in
+      let* α2 :=
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ Value.Integer Integer.I32 2 ] in
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          "new" in
+      let* α3 := M.call α2 [ Value.Integer Integer.I32 2 ] in
       M.alloc
         (Value.StructTuple
           "associated_functions_and_methods::Pair"
-          [ α0; α1 ]) in
+          [ α1; α3 ]) in
     let* _ :=
-      let* α0 := M.read pair in
-      let* α1 :=
-        M.call
-          (Ty.path "associated_functions_and_methods::Pair")::["destroy"]
-          [ α0 ] in
-      M.alloc α1 in
-    let* α0 := M.alloc tt in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "associated_functions_and_methods::Pair")
+          "destroy" in
+      let* α1 := M.read pair in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

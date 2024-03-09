@@ -12,13 +12,15 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "Borrowed") in
-      let* α2 := M.read self in
-      let* α3 := M.alloc (M.get_struct_tuple α2 0) in
-      M.call
-        (Ty.path "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-        [ α0; α1; M.pointer_coercion "Unsize" α3 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_tuple_field1_finish" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "Borrowed") in
+      let* α3 := M.read self in
+      let* α4 := M.alloc (M.get_struct_tuple α3 0) in
+      M.call α0 [ α1; α2; M.pointer_coercion "Unsize" α4 ]
     | _, _ => M.impossible
     end.
   
@@ -42,22 +44,26 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "NamedBorrowed") in
-      let* α2 := M.read (mk_str "x") in
-      let* α3 := M.read self in
-      let* α4 := M.read (mk_str "y") in
-      let* α5 := M.read self in
-      let* α6 := M.alloc (M.get_struct_record α5 "y") in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_struct_field2_finish" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "NamedBorrowed") in
+      let* α3 := M.read (mk_str "x") in
+      let* α4 := M.read self in
+      let* α5 := M.read (mk_str "y") in
+      let* α6 := M.read self in
+      let* α7 := M.alloc (M.get_struct_record α6 "y") in
       M.call
-        (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
+        α0
         [
-          α0;
           α1;
           α2;
-          M.pointer_coercion "Unsize" (M.get_struct_record α3 "x");
-          α4;
-          M.pointer_coercion "Unsize" α6
+          α3;
+          M.pointer_coercion "Unsize" (M.get_struct_record α4 "x");
+          α5;
+          M.pointer_coercion "Unsize" α7
         ]
     | _, _ => M.impossible
     end.
@@ -99,14 +105,15 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       "scoping_rules_lifetimes_structs::Either::Get_Num_0" in
                   M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 := M.read f in
-                let* α1 := M.read (mk_str "Num") in
-                let* α2 :=
-                  M.call
-                    (Ty.path
-                        "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-                    [ α0; α1; M.pointer_coercion "Unsize" __self_0 ] in
-                M.alloc α2
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Formatter")
+                    "debug_tuple_field1_finish" in
+                let* α1 := M.read f in
+                let* α2 := M.read (mk_str "Num") in
+                let* α3 :=
+                  M.call α0 [ α1; α2; M.pointer_coercion "Unsize" __self_0 ] in
+                M.alloc α3
               | _ => M.break_match 
               end);
             fun γ =>
@@ -122,14 +129,15 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       "scoping_rules_lifetimes_structs::Either::Get_Ref_0" in
                   M.pure (α0 γ) in
                 let* __self_0 := M.alloc (borrow γ1_0) in
-                let* α0 := M.read f in
-                let* α1 := M.read (mk_str "Ref") in
-                let* α2 :=
-                  M.call
-                    (Ty.path
-                        "core::fmt::Formatter")::["debug_tuple_field1_finish"]
-                    [ α0; α1; M.pointer_coercion "Unsize" __self_0 ] in
-                M.alloc α2
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Formatter")
+                    "debug_tuple_field1_finish" in
+                let* α1 := M.read f in
+                let* α2 := M.read (mk_str "Ref") in
+                let* α3 :=
+                  M.call α0 [ α1; α2; M.pointer_coercion "Unsize" __self_0 ] in
+                M.alloc α3
               | _ => M.break_match 
               end)
           ] in
@@ -189,85 +197,97 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ α0 ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "x is borrowed in ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "x is borrowed in ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ single ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ single ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "x and y are borrowed in ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "x and y are borrowed in ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ double ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ double ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "x is borrowed in ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "x is borrowed in ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ reference ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ reference ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "y is *not* borrowed in ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "y is *not* borrowed in ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 := M.call α5 [ number ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ number ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

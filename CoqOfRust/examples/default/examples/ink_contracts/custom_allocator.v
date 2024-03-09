@@ -17,21 +17,22 @@ Module Impl_custom_allocator_CustomAllocator.
     match 𝜏, α with
     | [ Self ], [ init_value ] =>
       let* init_value := M.alloc init_value in
-      let* α0 := M.read init_value in
-      let* α1 := M.alloc [ α0 ] in
-      let* α2 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "bool" ])
+          "into_vec" in
+      let* α1 := M.read init_value in
+      let* α2 := M.alloc [ α1 ] in
+      let* α3 :=
         M.call
           (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α1 ] in
-      let* α3 := M.read α2 in
-      let* α4 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "bool" ])::["into_vec"]
-          [ M.pointer_coercion "Unsize" α3 ] in
+          [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call α0 [ M.pointer_coercion "Unsize" α4 ] in
       M.pure
         (Value.StructRecord
           "custom_allocator::CustomAllocator"
-          [ ("value", α4) ])
+          [ ("value", α5) ])
     | _, _ => M.impossible
     end.
   
@@ -46,12 +47,16 @@ Module Impl_custom_allocator_CustomAllocator.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
+        M.get_associated_function
+          (Ty.path "custom_allocator::CustomAllocator")
+          "new" in
+      let* α1 :=
         M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
-      let* α1 := M.call α0 [] in
-      M.call (Ty.path "custom_allocator::CustomAllocator")::["new"] [ α1 ]
+      let* α2 := M.call α1 [] in
+      M.call α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -102,7 +107,7 @@ Module Impl_custom_allocator_CustomAllocator.
             [ M.get_struct_record α4 "value"; Value.Integer Integer.Usize 0 ] in
         let* α6 := M.read α5 in
         M.assign α2 (UnOp.not α6) in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

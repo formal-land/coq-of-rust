@@ -1296,7 +1296,7 @@ fn compile_expr_kind<'a>(
                         }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {
-                        ExprKind::Var(compile_def_id(env, *def_id))
+                        ExprKind::GetFunction(compile_def_id(env, *def_id))
                     }
                     DefKind::Variant => ExprKind::Constructor(compile_def_id(env, *def_id)),
                     DefKind::Struct => {

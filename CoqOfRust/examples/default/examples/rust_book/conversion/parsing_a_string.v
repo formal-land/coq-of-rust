@@ -13,18 +13,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.read (mk_str "12") in
-      let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+      let* α1 := M.read (mk_str "12") in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read (mk_str "true") in
-      let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
-      M.alloc α1 in
+      let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+      let* α1 := M.read (mk_str "true") in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
     let* _ :=
-      let* α0 := M.read (mk_str "unparsable") in
-      let* α1 := M.call (Ty.path "str")::["parse"] [ α0 ] in
-      M.alloc α1 in
-    let* α0 := M.alloc tt in
+      let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+      let* α1 := M.read (mk_str "unparsable") in
+      let* α2 := M.call α0 [ α1 ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -30,51 +30,58 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* byte_escape := M.copy (mk_str "I'm writing Rust!") in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "What are you doing? (\x3F means ?) ") in
-        let* α2 := M.read (mk_str "
-") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ byte_escape ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
-            ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* unicode_codepoint := M.copy (mk_str (String.String "029" "")) in
-    let* character_name := M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Unicode character ") in
-        let* α2 := M.read (mk_str " (U+211D) is called ") in
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "What are you doing? (\x3F means ?) ") in
         let* α3 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α1; α2; α3 ] in
+        let* α4 := M.alloc [ α2; α3 ] in
         let* α5 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ unicode_codepoint ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ character_name ] in
-        let* α7 := M.alloc [ α5; α6 ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.call α5 [ byte_escape ] in
+        let* α7 := M.alloc [ α6 ] in
         let* α8 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
+            α1
             [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
         let* α9 := M.call α0 [ α8 ] in
         M.alloc α9 in
-      M.alloc tt in
+      M.alloc (Value.Tuple []) in
+    let* unicode_codepoint := M.copy (mk_str (String.String "029" "")) in
+    let* character_name := M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Unicode character ") in
+        let* α3 := M.read (mk_str " (U+211D) is called ") in
+        let* α4 := M.read (mk_str "
+") in
+        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α6 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α7 := M.call α6 [ unicode_codepoint ] in
+        let* α8 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α9 := M.call α8 [ character_name ] in
+        let* α10 := M.alloc [ α7; α9 ] in
+        let* α11 :=
+          M.call
+            α1
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            ] in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
     let* long_string :=
       M.copy
         (mk_str
@@ -83,25 +90,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         The linebreak and indentation here -><- can be escaped too!") in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.call α5 [ long_string ] in
+        let* α7 := M.alloc [ α6 ] in
+        let* α8 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_display"]
-            [ long_string ] in
-        let* α5 := M.alloc [ α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
             ] in
-        let* α7 := M.call α0 [ α6 ] in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α9 := M.call α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

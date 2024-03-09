@@ -48,7 +48,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
-    let* α0 := M.var "option::checked_division" in
+    let* α0 := M.get_function "option::checked_division" in
     let* α1 := M.read dividend in
     let* α2 := M.read divisor in
     let* α3 := M.call α0 [ α1; α2 ] in
@@ -62,31 +62,37 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | core.option.Option.None =>
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "") in
-                let* α2 := M.read (mk_str " / ") in
-                let* α3 := M.read (mk_str " failed!
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "") in
+                let* α3 := M.read (mk_str " / ") in
+                let* α4 := M.read (mk_str " failed!
 ") in
-                let* α4 := M.alloc [ α1; α2; α3 ] in
-                let* α5 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ dividend ] in
+                let* α5 := M.alloc [ α2; α3; α4 ] in
                 let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ divisor ] in
-                let* α7 := M.alloc [ α5; α6 ] in
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α7 := M.call α6 [ dividend ] in
                 let* α8 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α9 := M.call α8 [ divisor ] in
+                let* α10 := M.alloc [ α7; α9 ] in
+                let* α11 :=
                   M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α4;
-                      M.pointer_coercion "Unsize" α7
+                      M.pointer_coercion "Unsize" α5;
+                      M.pointer_coercion "Unsize" α10
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
-                M.alloc α9 in
-              M.alloc tt
+                let* α12 := M.call α0 [ α11 ] in
+                M.alloc α12 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -98,36 +104,43 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (α0 γ) in
               let* quotient := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "") in
-                let* α2 := M.read (mk_str " / ") in
-                let* α3 := M.read (mk_str " = ") in
-                let* α4 := M.read (mk_str "
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "") in
+                let* α3 := M.read (mk_str " / ") in
+                let* α4 := M.read (mk_str " = ") in
+                let* α5 := M.read (mk_str "
 ") in
-                let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-                let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ dividend ] in
+                let* α6 := M.alloc [ α2; α3; α4; α5 ] in
                 let* α7 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α8 := M.call α7 [ dividend ] in
+                let* α9 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α10 := M.call α9 [ divisor ] in
+                let* α11 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α12 := M.call α11 [ quotient ] in
+                let* α13 := M.alloc [ α8; α10; α12 ] in
+                let* α14 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ divisor ] in
-                let* α8 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                    [ quotient ] in
-                let* α9 := M.alloc [ α6; α7; α8 ] in
-                let* α10 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α5;
-                      M.pointer_coercion "Unsize" α9
+                      M.pointer_coercion "Unsize" α6;
+                      M.pointer_coercion "Unsize" α13
                     ] in
-                let* α11 := M.call α0 [ α10 ] in
-                M.alloc α11 in
-              M.alloc tt
+                let* α15 := M.call α0 [ α14 ] in
+                M.alloc α15 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end)
         ] in
@@ -162,14 +175,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.var "option::try_division" in
+      let* α0 := M.get_function "option::try_division" in
       let* α1 :=
         M.call
           α0
           [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.var "option::try_division" in
+      let* α0 := M.get_function "option::try_division" in
       let* α1 :=
         M.call
           α0
@@ -182,65 +195,77 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "") in
-        let* α2 := M.read (mk_str " unwraps to ") in
-        let* α3 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str " unwraps to ") in
+        let* α4 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α1; α2; α3 ] in
-        let* α5 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ optional_float ] in
-        let* α6 := M.read optional_float in
-        let* α7 :=
-          M.call
-            (Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "f32" ])::["unwrap"]
-            [ α6 ] in
-        let* α8 := M.alloc α7 in
+        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α6 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α7 := M.call α6 [ optional_float ] in
+        let* α8 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
         let* α9 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α8 ] in
-        let* α10 := M.alloc [ α5; α9 ] in
-        let* α11 :=
+          M.get_associated_function
+            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ])
+            "unwrap" in
+        let* α10 := M.read optional_float in
+        let* α11 := M.call α9 [ α10 ] in
+        let* α12 := M.alloc α11 in
+        let* α13 := M.call α8 [ α12 ] in
+        let* α14 := M.alloc [ α7; α13 ] in
+        let* α15 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            α1
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α14
             ] in
-        let* α12 := M.call α0 [ α11 ] in
-        M.alloc α12 in
-      M.alloc tt in
+        let* α16 := M.call α0 [ α15 ] in
+        M.alloc α16 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "") in
-        let* α2 := M.read (mk_str " unwraps to ") in
-        let* α3 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str " unwraps to ") in
+        let* α4 := M.read (mk_str "
 ") in
-        let* α4 := M.alloc [ α1; α2; α3 ] in
-        let* α5 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ none ] in
-        let* α6 := M.read none in
-        let* α7 :=
-          M.call
-            (Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "i32" ])::["unwrap"]
-            [ α6 ] in
-        let* α8 := M.alloc α7 in
+        let* α5 := M.alloc [ α2; α3; α4 ] in
+        let* α6 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α7 := M.call α6 [ none ] in
+        let* α8 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
         let* α9 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α8 ] in
-        let* α10 := M.alloc [ α5; α9 ] in
-        let* α11 :=
+          M.get_associated_function
+            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
+            "unwrap" in
+        let* α10 := M.read none in
+        let* α11 := M.call α9 [ α10 ] in
+        let* α12 := M.alloc α11 in
+        let* α13 := M.call α8 [ α12 ] in
+        let* α14 := M.alloc [ α7; α13 ] in
+        let* α15 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
+            α1
+            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α14
             ] in
-        let* α12 := M.call α0 [ α11 ] in
-        M.alloc α12 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α16 := M.call α0 [ α15 ] in
+        M.alloc α16 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

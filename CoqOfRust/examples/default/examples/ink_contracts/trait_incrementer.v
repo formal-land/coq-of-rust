@@ -51,7 +51,7 @@ Module Impl_trait_incrementer_Incrementer.
         let* α1 := M.read delta in
         let* α2 := BinOp.Panic.add α0 α1 in
         M.assign β α2 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -70,10 +70,12 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.call
-        (Ty.path "trait_incrementer::Incrementer")::["inc_by"]
-        [ α0; Value.Integer Integer.U64 1 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "trait_incrementer::Incrementer")
+          "inc_by" in
+      let* α1 := M.read self in
+      M.call α0 [ α1; Value.Integer Integer.U64 1 ]
     | _, _ => M.impossible
     end.
   
@@ -116,7 +118,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
         M.assign
           (M.get_struct_record α0 "value")
           (Value.Integer Integer.U64 0) in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

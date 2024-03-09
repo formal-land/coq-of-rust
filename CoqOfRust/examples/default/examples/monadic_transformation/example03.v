@@ -13,12 +13,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       M.alloc
-        (Value.Integer Integer.I32 1,
-          Value.Integer Integer.I32 2,
-          Value.Integer Integer.I32 3,
-          Value.Integer Integer.I32 4) in
+        (Value.Tuple
+          [
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3;
+            Value.Integer Integer.I32 4
+          ]) in
     let* _ :=
       let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec" in
+      let* α1 :=
         M.alloc
           [
             Value.Integer Integer.I32 5;
@@ -26,17 +33,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Value.Integer Integer.I32 7;
             Value.Integer Integer.I32 8
           ] in
-      let* α1 :=
+      let* α2 :=
         M.call
           (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α0 ] in
-      let* α2 := M.read α1 in
-      let* α3 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ M.pointer_coercion "Unsize" α2 ] in
-      M.alloc α3 in
-    let* α0 := M.alloc tt in
+          [ α1 ] in
+      let* α3 := M.read α2 in
+      let* α4 := M.call α0 [ M.pointer_coercion "Unsize" α3 ] in
+      M.alloc α4 in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

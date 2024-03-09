@@ -16,9 +16,13 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "FooBar") in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α1 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "FooBar") in
+      M.call α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -42,9 +46,13 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "BarFoo") in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α1 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "BarFoo") in
+      M.call α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -77,17 +85,18 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "> Foo.add(Bar) was called
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 := M.read (mk_str "> Foo.add(Bar) was called
 ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
       let* α0 := M.alloc operator_overloading.FooBar.Build in
       M.read α0
     | _, _ => M.impossible
@@ -123,17 +132,18 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "> Bar.add(Foo) was called
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const" in
+          let* α2 := M.read (mk_str "> Bar.add(Foo) was called
 ") in
-          let* α2 := M.alloc [ α1 ] in
-          let* α3 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_const"]
-              [ M.pointer_coercion "Unsize" α2 ] in
-          let* α4 := M.call α0 [ α3 ] in
-          M.alloc α4 in
-        M.alloc tt in
+          let* α3 := M.alloc [ α2 ] in
+          let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+          let* α5 := M.call α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
       let* α0 := M.alloc operator_overloading.BarFoo.Build in
       M.read α0
     | _, _ => M.impossible
@@ -161,12 +171,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Foo + Bar = ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Foo + Bar = ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 :=
           M.get_trait_method
             "core::ops::arith::Add"
             "add"
@@ -174,31 +190,36 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *) Ty.path "operator_overloading::Foo";
               (* Rhs *) Ty.path "operator_overloading::Bar"
             ] in
-        let* α5 :=
+        let* α7 :=
           M.call
-            α4
+            α6
             [ operator_overloading.Foo.Build; operator_overloading.Bar.Build
             ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
             ] in
-        let* α10 := M.call α0 [ α9 ] in
-        M.alloc α10 in
-      M.alloc tt in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "Bar + Foo = ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "Bar + Foo = ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α6 :=
           M.get_trait_method
             "core::ops::arith::Add"
             "add"
@@ -206,24 +227,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *) Ty.path "operator_overloading::Bar";
               (* Rhs *) Ty.path "operator_overloading::Foo"
             ] in
-        let* α5 :=
+        let* α7 :=
           M.call
-            α4
+            α6
             [ operator_overloading.Bar.Build; operator_overloading.Foo.Build
             ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
             ] in
-        let* α10 := M.call α0 [ α9 ] in
-        M.alloc α10 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

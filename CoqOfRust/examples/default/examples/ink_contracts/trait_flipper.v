@@ -49,7 +49,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
         M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

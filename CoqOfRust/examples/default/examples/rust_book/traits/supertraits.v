@@ -37,63 +37,77 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
   | [ DynT ], [ student ] =>
     let* student := M.alloc student in
     let* res :=
-      let* α0 := M.var "alloc::fmt::format" in
-      let* α1 := M.read (mk_str "My name is ") in
-      let* α2 := M.read (mk_str " and I attend ") in
-      let* α3 := M.read (mk_str ". My favorite language is ") in
-      let* α4 := M.read (mk_str ". My Git username is ") in
-      let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-      let* α6 :=
+      let* α0 := M.get_function "alloc::fmt::format" in
+      let* α1 :=
+        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+      let* α2 := M.read (mk_str "My name is ") in
+      let* α3 := M.read (mk_str " and I attend ") in
+      let* α4 := M.read (mk_str ". My favorite language is ") in
+      let* α5 := M.read (mk_str ". My Git username is ") in
+      let* α6 := M.alloc [ α2; α3; α4; α5 ] in
+      let* α7 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::rt::Argument")
+          "new_display" in
+      let* α8 :=
         M.get_trait_method
           "supertraits::Person"
           "name"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
-      let* α7 := M.read student in
-      let* α8 := M.call α6 [ α7 ] in
-      let* α9 := M.alloc α8 in
-      let* α10 :=
-        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α9 ] in
-      let* α11 :=
+      let* α9 := M.read student in
+      let* α10 := M.call α8 [ α9 ] in
+      let* α11 := M.alloc α10 in
+      let* α12 := M.call α7 [ α11 ] in
+      let* α13 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::rt::Argument")
+          "new_display" in
+      let* α14 :=
         M.get_trait_method
           "supertraits::Student"
           "university"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
-      let* α12 := M.read student in
-      let* α13 := M.call α11 [ α12 ] in
-      let* α14 := M.alloc α13 in
-      let* α15 :=
-        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α14 ] in
-      let* α16 :=
+      let* α15 := M.read student in
+      let* α16 := M.call α14 [ α15 ] in
+      let* α17 := M.alloc α16 in
+      let* α18 := M.call α13 [ α17 ] in
+      let* α19 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::rt::Argument")
+          "new_display" in
+      let* α20 :=
         M.get_trait_method
           "supertraits::Programmer"
           "fav_language"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
-      let* α17 := M.read student in
-      let* α18 := M.call α16 [ α17 ] in
-      let* α19 := M.alloc α18 in
-      let* α20 :=
-        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α19 ] in
-      let* α21 :=
+      let* α21 := M.read student in
+      let* α22 := M.call α20 [ α21 ] in
+      let* α23 := M.alloc α22 in
+      let* α24 := M.call α19 [ α23 ] in
+      let* α25 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::rt::Argument")
+          "new_display" in
+      let* α26 :=
         M.get_trait_method
           "supertraits::CompSciStudent"
           "git_username"
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
-      let* α22 := M.read student in
-      let* α23 := M.call α21 [ α22 ] in
-      let* α24 := M.alloc α23 in
-      let* α25 :=
-        M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α24 ] in
-      let* α26 := M.alloc [ α10; α15; α20; α25 ] in
-      let* α27 :=
+      let* α27 := M.read student in
+      let* α28 := M.call α26 [ α27 ] in
+      let* α29 := M.alloc α28 in
+      let* α30 := M.call α25 [ α29 ] in
+      let* α31 := M.alloc [ α12; α18; α24; α30 ] in
+      let* α32 :=
         M.call
-          (Ty.path "core::fmt::Arguments")::["new_v1"]
-          [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α26 ] in
-      let* α28 := M.call α0 [ α27 ] in
-      M.alloc α28 in
+          α1
+          [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α31 ] in
+      let* α33 := M.call α0 [ α32 ] in
+      M.alloc α33 in
     M.read res
   | _, _ => M.impossible
   end.
@@ -103,4 +117,7 @@ fn main() {}
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
+  match 𝜏, α with
+  | [], [] => M.pure (Value.Tuple [])
+  | _, _ => M.impossible
+  end.

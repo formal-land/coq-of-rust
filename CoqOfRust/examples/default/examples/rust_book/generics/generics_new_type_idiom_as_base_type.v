@@ -33,7 +33,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.var "generics_new_type_idiom_as_base_type::Years::Get_0" in
                 M.pure (α0 γ) in
               let* years_as_primitive_2 := M.copy γ0_0 in
-              M.alloc tt
+              M.alloc (Value.Tuple [])
             end)
         ] in
     M.read α0

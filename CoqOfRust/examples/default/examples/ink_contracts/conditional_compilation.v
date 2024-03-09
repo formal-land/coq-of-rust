@@ -110,7 +110,7 @@ Module Impl_conditional_compilation_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -129,7 +129,7 @@ Module Impl_conditional_compilation_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -154,7 +154,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -173,10 +173,11 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.call
-        (Ty.path
-            "conditional_compilation::ConditionalCompilation")::["init_env"]
-        []
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "conditional_compilation::ConditionalCompilation")
+          "init_env" in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -288,39 +289,46 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* caller :=
         let* α0 :=
-          M.call
-            (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"]
-            [] in
-        let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.call (Ty.path "conditional_compilation::Env")::["caller"] [ α1 ] in
-        M.alloc α2 in
+          M.get_associated_function
+            (Ty.path "conditional_compilation::Env")
+            "caller" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::ConditionalCompilation")
+            "init_env" in
+        let* α2 := M.call α1 [] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::Env")
+            "emit_event" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::ConditionalCompilation")
+            "init_env" in
+        let* α2 := M.call α1 [] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.read self in
+        let* α5 := M.read (M.get_struct_record α4 "value") in
+        let* α6 := M.read caller in
+        let* α7 :=
           M.call
-            (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"]
-            [] in
-        let* α1 := M.alloc α0 in
-        let* α2 := M.read self in
-        let* α3 := M.read (M.get_struct_record α2 "value") in
-        let* α4 := M.read caller in
-        let* α5 :=
-          M.call
-            (Ty.path "conditional_compilation::Env")::["emit_event"]
+            α0
             [
-              α1;
+              α3;
               Value.StructTuple
                 "conditional_compilation::Event::Changes"
                 [
                   Value.StructRecord
                     "conditional_compilation::Changes"
-                    [ ("new_value", α3); ("by_", α4) ]
+                    [ ("new_value", α5); ("by_", α6) ]
                 ]
             ] in
-        M.alloc α5 in
-      let* α0 := M.alloc tt in
+        M.alloc α7 in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -346,26 +354,30 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
-          M.call
-            (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"]
-            [] in
-        let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.call (Ty.path "conditional_compilation::Env")::["caller"] [ α1 ] in
-        M.alloc α2 in
+          M.get_associated_function
+            (Ty.path "conditional_compilation::Env")
+            "caller" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::ConditionalCompilation")
+            "init_env" in
+        let* α2 := M.call α1 [] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       let* block_number :=
         let* α0 :=
-          M.call
-            (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"]
-            [] in
-        let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.call
-            (Ty.path "conditional_compilation::Env")::["block_number"]
-            [ α1 ] in
-        M.alloc α2 in
+          M.get_associated_function
+            (Ty.path "conditional_compilation::Env")
+            "block_number" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::ConditionalCompilation")
+            "init_env" in
+        let* α2 := M.call α1 [] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
@@ -373,30 +385,34 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
       let* _ :=
         let* α0 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::Env")
+            "emit_event" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::ConditionalCompilation")
+            "init_env" in
+        let* α2 := M.call α1 [] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.read self in
+        let* α5 := M.read (M.get_struct_record α4 "value") in
+        let* α6 := M.read caller in
+        let* α7 := M.read block_number in
+        let* α8 :=
           M.call
-            (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"]
-            [] in
-        let* α1 := M.alloc α0 in
-        let* α2 := M.read self in
-        let* α3 := M.read (M.get_struct_record α2 "value") in
-        let* α4 := M.read caller in
-        let* α5 := M.read block_number in
-        let* α6 :=
-          M.call
-            (Ty.path "conditional_compilation::Env")::["emit_event"]
+            α0
             [
-              α1;
+              α3;
               Value.StructTuple
                 "conditional_compilation::Event::ChangesDated"
                 [
                   Value.StructRecord
                     "conditional_compilation::ChangesDated"
-                    [ ("new_value", α3); ("by_", α4); ("when", α5) ]
+                    [ ("new_value", α5); ("by_", α6); ("when", α7) ]
                 ]
             ] in
-        M.alloc α6 in
-      let* α0 := M.alloc tt in
+        M.alloc α8 in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -420,7 +436,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
         M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -456,42 +472,49 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       let* value := M.alloc value in
       let* caller :=
         let* α0 :=
-          M.call
-            (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"]
-            [] in
-        let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.call (Ty.path "conditional_compilation::Env")::["caller"] [ α1 ] in
-        M.alloc α2 in
+          M.get_associated_function
+            (Ty.path "conditional_compilation::Env")
+            "caller" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::ConditionalCompilation")
+            "init_env" in
+        let* α2 := M.call α1 [] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.call α0 [ α3 ] in
+        M.alloc α4 in
       let* _ :=
         let* α0 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::Env")
+            "emit_event" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "conditional_compilation::ConditionalCompilation")
+            "init_env" in
+        let* α2 := M.call α1 [] in
+        let* α3 := M.alloc α2 in
+        let* α4 := M.read value in
+        let* α5 := M.read caller in
+        let* α6 :=
           M.call
-            (Ty.path
-                "conditional_compilation::ConditionalCompilation")::["init_env"]
-            [] in
-        let* α1 := M.alloc α0 in
-        let* α2 := M.read value in
-        let* α3 := M.read caller in
-        let* α4 :=
-          M.call
-            (Ty.path "conditional_compilation::Env")::["emit_event"]
+            α0
             [
-              α1;
+              α3;
               Value.StructTuple
                 "conditional_compilation::Event::Changes"
                 [
                   Value.StructRecord
                     "conditional_compilation::Changes"
-                    [ ("new_value", α2); ("by_", α3) ]
+                    [ ("new_value", α4); ("by_", α5) ]
                 ]
             ] in
-        M.alloc α4 in
+        M.alloc α6 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read value in
         M.assign (M.get_struct_record α0 "value") α1 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

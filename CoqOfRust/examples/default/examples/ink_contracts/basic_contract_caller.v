@@ -106,7 +106,7 @@ Module Impl_basic_contract_caller_OtherContract.
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
         M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -153,7 +153,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | [ Self ], [ other_contract_code_hash ] =>
       let* other_contract_code_hash := M.alloc other_contract_code_hash in
       let* other_contract :=
-        let* α0 := M.var "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -181,18 +181,20 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
-        let* α1 :=
-          M.call
-            (Ty.path "basic_contract_caller::OtherContract")::["flip"]
-            [ M.get_struct_record α0 "other_contract" ] in
-        M.alloc α1 in
-      let* α0 := M.read self in
-      let* α1 :=
-        M.call
-          (Ty.path "basic_contract_caller::OtherContract")::["get"]
-          [ M.get_struct_record α0 "other_contract" ] in
-      let* α0 := M.alloc α1 in
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "basic_contract_caller::OtherContract")
+            "flip" in
+        let* α1 := M.read self in
+        let* α2 := M.call α0 [ M.get_struct_record α1 "other_contract" ] in
+        M.alloc α2 in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "basic_contract_caller::OtherContract")
+          "get" in
+      let* α1 := M.read self in
+      let* α2 := M.call α0 [ M.get_struct_record α1 "other_contract" ] in
+      let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.

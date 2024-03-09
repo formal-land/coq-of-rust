@@ -64,7 +64,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Integer Integer.I32 4)
           else
             M.alloc (Value.Integer Integer.I32 5) in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

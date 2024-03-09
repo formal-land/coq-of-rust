@@ -44,15 +44,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (mk_str "Alice") in
       let* α2 := M.call α0 [ α1 ] in
       let* α3 :=
-        M.call
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ Value.Integer Integer.U8 20 ] in
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          "new" in
+      let* α4 := M.call α3 [ Value.Integer Integer.U8 20 ] in
       M.alloc
         (Value.StructRecord
           "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-          [ ("name", α2); ("age", α3) ]) in
+          [ ("name", α2); ("age", α4) ]) in
     let* α0 :=
       match_operator
         person
@@ -84,72 +85,87 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* age := M.alloc (borrow γ0_1) in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.var "std::io::stdio::_print" in
-                  let* α1 := M.read (mk_str "The person's age is ") in
-                  let* α2 := M.read (mk_str "
-") in
-                  let* α3 := M.alloc [ α1; α2 ] in
-                  let* α4 :=
-                    M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ age ] in
-                  let* α5 := M.alloc [ α4 ] in
-                  let* α6 :=
-                    M.call
-                      (Ty.path "core::fmt::Arguments")::["new_v1"]
-                      [
-                        M.pointer_coercion "Unsize" α3;
-                        M.pointer_coercion "Unsize" α5
-                      ] in
-                  let* α7 := M.call α0 [ α6 ] in
-                  M.alloc α7 in
-                M.alloc tt in
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.var "std::io::stdio::_print" in
-                  let* α1 := M.read (mk_str "The person's name is ") in
-                  let* α2 := M.read (mk_str "
-") in
-                  let* α3 := M.alloc [ α1; α2 ] in
-                  let* α4 :=
-                    M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ name ] in
-                  let* α5 := M.alloc [ α4 ] in
-                  let* α6 :=
-                    M.call
-                      (Ty.path "core::fmt::Arguments")::["new_v1"]
-                      [
-                        M.pointer_coercion "Unsize" α3;
-                        M.pointer_coercion "Unsize" α5
-                      ] in
-                  let* α7 := M.call α0 [ α6 ] in
-                  M.alloc α7 in
-                M.alloc tt in
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.var "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" in
                   let* α1 :=
-                    M.read (mk_str "The person's age from person struct is ") in
-                  let* α2 := M.read (mk_str "
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 := M.read (mk_str "The person's age is ") in
+                  let* α3 := M.read (mk_str "
 ") in
-                  let* α3 := M.alloc [ α1; α2 ] in
-                  let* α4 :=
+                  let* α4 := M.alloc [ α2; α3 ] in
+                  let* α5 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display" in
+                  let* α6 := M.call α5 [ age ] in
+                  let* α7 := M.alloc [ α6 ] in
+                  let* α8 :=
                     M.call
-                      (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                      [ M.get_struct_record person "age" ] in
-                  let* α5 := M.alloc [ α4 ] in
-                  let* α6 :=
-                    M.call
-                      (Ty.path "core::fmt::Arguments")::["new_v1"]
+                      α1
                       [
-                        M.pointer_coercion "Unsize" α3;
-                        M.pointer_coercion "Unsize" α5
+                        M.pointer_coercion "Unsize" α4;
+                        M.pointer_coercion "Unsize" α7
                       ] in
-                  let* α7 := M.call α0 [ α6 ] in
-                  M.alloc α7 in
-                M.alloc tt in
-              M.alloc tt
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
+                M.alloc (Value.Tuple []) in
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 := M.read (mk_str "The person's name is ") in
+                  let* α3 := M.read (mk_str "
+") in
+                  let* α4 := M.alloc [ α2; α3 ] in
+                  let* α5 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display" in
+                  let* α6 := M.call α5 [ name ] in
+                  let* α7 := M.alloc [ α6 ] in
+                  let* α8 :=
+                    M.call
+                      α1
+                      [
+                        M.pointer_coercion "Unsize" α4;
+                        M.pointer_coercion "Unsize" α7
+                      ] in
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
+                M.alloc (Value.Tuple []) in
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 :=
+                    M.read (mk_str "The person's age from person struct is ") in
+                  let* α3 := M.read (mk_str "
+") in
+                  let* α4 := M.alloc [ α2; α3 ] in
+                  let* α5 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display" in
+                  let* α6 := M.call α5 [ M.get_struct_record person "age" ] in
+                  let* α7 := M.alloc [ α6 ] in
+                  let* α8 :=
+                    M.call
+                      α1
+                      [
+                        M.pointer_coercion "Unsize" α4;
+                        M.pointer_coercion "Unsize" α7
+                      ] in
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
+                M.alloc (Value.Tuple []) in
+              M.alloc (Value.Tuple [])
             end)
         ] in
     M.read α0
@@ -167,22 +183,26 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "Person") in
-      let* α2 := M.read (mk_str "name") in
-      let* α3 := M.read self in
-      let* α4 := M.read (mk_str "age") in
-      let* α5 := M.read self in
-      let* α6 := M.alloc (M.get_struct_record α5 "age") in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_struct_field2_finish" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "Person") in
+      let* α3 := M.read (mk_str "name") in
+      let* α4 := M.read self in
+      let* α5 := M.read (mk_str "age") in
+      let* α6 := M.read self in
+      let* α7 := M.alloc (M.get_struct_record α6 "age") in
       M.call
-        (Ty.path "core::fmt::Formatter")::["debug_struct_field2_finish"]
+        α0
         [
-          α0;
           α1;
           α2;
-          M.pointer_coercion "Unsize" (M.get_struct_record α3 "name");
-          α4;
-          M.pointer_coercion "Unsize" α6
+          α3;
+          M.pointer_coercion "Unsize" (M.get_struct_record α4 "name");
+          α5;
+          M.pointer_coercion "Unsize" α7
         ]
     | _, _ => M.impossible
     end.

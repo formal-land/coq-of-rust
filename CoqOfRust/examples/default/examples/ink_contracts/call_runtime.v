@@ -78,7 +78,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
     match 𝜏, α with
     | [ Self ], [ _value ] =>
       let* _value := M.alloc _value in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -134,9 +134,13 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 := M.read (mk_str "CallRuntimeFailed") in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α1 ]
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 := M.read (mk_str "CallRuntimeFailed") in
+      M.call α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -202,7 +206,7 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -246,7 +250,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
               | _ => M.break_match 
               end);
             fun γ =>
-              (let* α0 := M.var "std::panicking::begin_panic" in
+              (let* α0 := M.get_function "std::panicking::begin_panic" in
               let* α1 :=
                 M.read (mk_str "Unexpected error from `pallet-contracts`.") in
               let* α2 := M.call α0 [ α1 ] in
@@ -279,7 +283,7 @@ Module Impl_call_runtime_Env.
     | [ Self; Call ], [ self; _call ] =>
       let* self := M.alloc self in
       let* _call := M.alloc _call in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -301,7 +305,7 @@ Module Impl_call_runtime_RuntimeCaller.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -320,7 +324,11 @@ Module Impl_call_runtime_RuntimeCaller.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "call_runtime::RuntimeCaller")::["init_env"] []
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "call_runtime::RuntimeCaller")
+          "init_env" in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -365,11 +373,24 @@ Module Impl_call_runtime_RuntimeCaller.
       let* self := M.alloc self in
       let* receiver := M.alloc receiver in
       let* value := M.alloc value in
-      let* α0 := M.read self in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])
+          "map_err" in
       let* α1 :=
-        M.call (Ty.path "call_runtime::RuntimeCaller")::["env"] [ α0 ] in
-      let* α2 := M.alloc α1 in
-      let* α3 :=
+        M.get_associated_function
+          (Ty.path "call_runtime::Env")
+          "call_runtime" in
+      let* α2 :=
+        M.get_associated_function
+          (Ty.path "call_runtime::RuntimeCaller")
+          "env" in
+      let* α3 := M.read self in
+      let* α4 := M.call α2 [ α3 ] in
+      let* α5 := M.alloc α4 in
+      let* α6 :=
         M.get_trait_method
           "core::convert::Into"
           "into"
@@ -380,21 +401,20 @@ Module Impl_call_runtime_RuntimeCaller.
                 (Ty.path "call_runtime::MultiAddress")
                 [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
           ] in
-      let* α4 := M.read receiver in
-      let* α5 := M.call α3 [ α4 ] in
-      let* α6 := M.read value in
-      let* α7 :=
+      let* α7 := M.read receiver in
+      let* α8 := M.call α6 [ α7 ] in
+      let* α9 := M.read value in
+      let* α10 :=
         M.alloc
           (Value.StructTuple
             "call_runtime::RuntimeCall::Balances"
             [
               Value.StructRecord
                 "call_runtime::BalancesCall::Transfer"
-                [ ("dest", α5); ("value", α6) ]
+                [ ("dest", α8); ("value", α9) ]
             ]) in
-      let* α8 :=
-        M.call (Ty.path "call_runtime::Env")::["call_runtime"] [ α2; α7 ] in
-      let* α9 :=
+      let* α11 := M.call α1 [ α5; α10 ] in
+      let* α12 :=
         M.get_trait_method
           "core::convert::Into"
           "into"
@@ -402,11 +422,7 @@ Module Impl_call_runtime_RuntimeCaller.
             (* Self *) Ty.path "call_runtime::EnvError";
             (* T *) Ty.path "call_runtime::RuntimeError"
           ] in
-      M.call
-        (Ty.apply
-            (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])::["map_err"]
-        [ α8; α9 ]
+      M.call α0 [ α11; α12 ]
     | _, _ => M.impossible
     end.
   
@@ -429,14 +445,26 @@ Module Impl_call_runtime_RuntimeCaller.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])
+          "map_err" in
       let* α1 :=
-        M.call (Ty.path "call_runtime::RuntimeCaller")::["env"] [ α0 ] in
-      let* α2 := M.alloc α1 in
-      let* α3 := M.alloc tt in
-      let* α4 :=
-        M.call (Ty.path "call_runtime::Env")::["call_runtime"] [ α2; α3 ] in
-      let* α5 :=
+        M.get_associated_function
+          (Ty.path "call_runtime::Env")
+          "call_runtime" in
+      let* α2 :=
+        M.get_associated_function
+          (Ty.path "call_runtime::RuntimeCaller")
+          "env" in
+      let* α3 := M.read self in
+      let* α4 := M.call α2 [ α3 ] in
+      let* α5 := M.alloc α4 in
+      let* α6 := M.alloc (Value.Tuple []) in
+      let* α7 := M.call α1 [ α5; α6 ] in
+      let* α8 :=
         M.get_trait_method
           "core::convert::Into"
           "into"
@@ -444,11 +472,7 @@ Module Impl_call_runtime_RuntimeCaller.
             (* Self *) Ty.path "call_runtime::EnvError";
             (* T *) Ty.path "call_runtime::RuntimeError"
           ] in
-      M.call
-        (Ty.apply
-            (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])::["map_err"]
-        [ α4; α5 ]
+      M.call α0 [ α7; α8 ]
     | _, _ => M.impossible
     end.
   

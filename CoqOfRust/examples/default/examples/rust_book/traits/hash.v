@@ -67,8 +67,11 @@ Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* s :=
       let* α0 :=
-        M.call (Ty.path "std::hash::random::DefaultHasher")::["new"] [] in
-      M.alloc α0 in
+        M.get_associated_function
+          (Ty.path "std::hash::random::DefaultHasher")
+          "new" in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -143,14 +146,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ("phone", Value.Integer Integer.U64 5556667777)
           ]) in
     let* _ :=
-      let* α0 := M.var "hash::calculate_hash" in
+      let* α0 := M.get_function "hash::calculate_hash" in
       let* α1 := M.call α0 [ person1 ] in
-      let* α2 := M.var "hash::calculate_hash" in
+      let* α2 := M.get_function "hash::calculate_hash" in
       let* α3 := M.call α2 [ person2 ] in
       let* α4 := M.alloc (UnOp.not (BinOp.Pure.ne α1 α3)) in
       let* α5 := M.read (M.use α4) in
       if α5 then
-        let* α0 := M.var "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" in
         let* α1 :=
           M.read
             (mk_str
@@ -159,8 +162,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
-        M.alloc tt in
-    let* α0 := M.alloc tt in
+        M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

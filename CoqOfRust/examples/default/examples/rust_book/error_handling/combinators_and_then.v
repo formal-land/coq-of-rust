@@ -12,8 +12,12 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 :=
         match_operator
           self
           [
@@ -51,8 +55,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
               | _ => M.break_match 
               end)
           ] in
-      let* α2 := M.read α1 in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
+      let* α3 := M.read α2 in
+      M.call α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -76,8 +80,12 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
     | [ Self ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.read f in
-      let* α1 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "write_str" in
+      let* α1 := M.read f in
+      let* α2 :=
         match_operator
           self
           [
@@ -115,8 +123,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
               | _ => M.break_match 
               end)
           ] in
-      let* α2 := M.read α1 in
-      M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
+      let* α3 := M.read α2 in
+      M.call α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -205,7 +213,7 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ food ] =>
     let* food := M.alloc food in
-    let* α0 := M.var "combinators_and_then::have_recipe" in
+    let* α0 := M.get_function "combinators_and_then::have_recipe" in
     let* α1 := M.read food in
     let* α2 := M.call α0 [ α1 ] in
     let* α3 := M.alloc α2 in
@@ -227,7 +235,8 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 := M.var "core::option::Option::Get_Some_0" in
                 M.pure (α0 γ) in
               let* food := M.copy γ0_0 in
-              let* α0 := M.var "combinators_and_then::have_ingredients" in
+              let* α0 :=
+                M.get_function "combinators_and_then::have_ingredients" in
               let* α1 := M.read food in
               let* α2 := M.call α0 [ α1 ] in
               let* α3 := M.alloc α2 in
@@ -270,15 +279,17 @@ Definition cookable_v2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ food ] =>
     let* food := M.alloc food in
-    let* α0 := M.var "combinators_and_then::have_recipe" in
-    let* α1 := M.read food in
-    let* α2 := M.call α0 [ α1 ] in
-    let* α3 := M.var "combinators_and_then::have_ingredients" in
-    M.call
-      (Ty.apply
+    let* α0 :=
+      M.get_associated_function
+        (Ty.apply
           (Ty.path "core::option::Option")
-          [ Ty.path "combinators_and_then::Food" ])::["and_then"]
-      [ α2; α3 ]
+          [ Ty.path "combinators_and_then::Food" ])
+        "and_then" in
+    let* α1 := M.get_function "combinators_and_then::have_recipe" in
+    let* α2 := M.read food in
+    let* α3 := M.call α1 [ α2 ] in
+    let* α4 := M.get_function "combinators_and_then::have_ingredients" in
+    M.call α0 [ α3; α4 ]
   | _, _ => M.impossible
   end.
 
@@ -295,7 +306,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ food; day ] =>
     let* food := M.alloc food in
     let* day := M.alloc day in
-    let* α0 := M.var "combinators_and_then::cookable_v2" in
+    let* α0 := M.get_function "combinators_and_then::cookable_v2" in
     let* α1 := M.read food in
     let* α2 := M.call α0 [ α1 ] in
     let* α3 := M.alloc α2 in
@@ -312,31 +323,37 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (α0 γ) in
               let* food := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "Yay! On ") in
-                let* α2 := M.read (mk_str " we get to eat ") in
-                let* α3 := M.read (mk_str ".
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Yay! On ") in
+                let* α3 := M.read (mk_str " we get to eat ") in
+                let* α4 := M.read (mk_str ".
 ") in
-                let* α4 := M.alloc [ α1; α2; α3 ] in
-                let* α5 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    [ day ] in
+                let* α5 := M.alloc [ α2; α3; α4 ] in
                 let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    [ food ] in
-                let* α7 := M.alloc [ α5; α6 ] in
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_debug" in
+                let* α7 := M.call α6 [ day ] in
                 let* α8 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_debug" in
+                let* α9 := M.call α8 [ food ] in
+                let* α10 := M.alloc [ α7; α9 ] in
+                let* α11 :=
                   M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α4;
-                      M.pointer_coercion "Unsize" α7
+                      M.pointer_coercion "Unsize" α5;
+                      M.pointer_coercion "Unsize" α10
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
-                M.alloc α9 in
-              M.alloc tt
+                let* α12 := M.call α0 [ α11 ] in
+                M.alloc α12 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -344,26 +361,31 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | core.option.Option.None =>
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "Oh no. We don't get to eat on ") in
-                let* α2 := M.read (mk_str "?
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Oh no. We don't get to eat on ") in
+                let* α3 := M.read (mk_str "?
 ") in
-                let* α3 := M.alloc [ α1; α2 ] in
-                let* α4 :=
+                let* α4 := M.alloc [ α2; α3 ] in
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_debug" in
+                let* α6 := M.call α5 [ day ] in
+                let* α7 := M.alloc [ α6 ] in
+                let* α8 :=
                   M.call
-                    (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                    [ day ] in
-                let* α5 := M.alloc [ α4 ] in
-                let* α6 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_v1"]
+                    α1
                     [
-                      M.pointer_coercion "Unsize" α3;
-                      M.pointer_coercion "Unsize" α5
+                      M.pointer_coercion "Unsize" α4;
+                      M.pointer_coercion "Unsize" α7
                     ] in
-                let* α7 := M.call α0 [ α6 ] in
-                M.alloc α7 in
-              M.alloc tt
+                let* α9 := M.call α0 [ α8 ] in
+                M.alloc α9 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end)
         ] in
@@ -386,9 +408,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* α0 :=
       M.alloc
-        (combinators_and_then.Food.CordonBleu,
-          combinators_and_then.Food.Steak,
-          combinators_and_then.Food.Sushi) in
+        (Value.Tuple
+          [
+            combinators_and_then.Food.CordonBleu;
+            combinators_and_then.Food.Steak;
+            combinators_and_then.Food.Sushi
+          ]) in
     let* α1 :=
       match_operator
         α0
@@ -404,22 +429,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* steak := M.copy γ0_1 in
               let* sushi := M.copy γ0_2 in
               let* _ :=
-                let* α0 := M.var "combinators_and_then::eat" in
+                let* α0 := M.get_function "combinators_and_then::eat" in
                 let* α1 := M.read cordon_bleu in
                 let* α2 := M.call α0 [ α1; combinators_and_then.Day.Monday ] in
                 M.alloc α2 in
               let* _ :=
-                let* α0 := M.var "combinators_and_then::eat" in
+                let* α0 := M.get_function "combinators_and_then::eat" in
                 let* α1 := M.read steak in
                 let* α2 := M.call α0 [ α1; combinators_and_then.Day.Tuesday ] in
                 M.alloc α2 in
               let* _ :=
-                let* α0 := M.var "combinators_and_then::eat" in
+                let* α0 := M.get_function "combinators_and_then::eat" in
                 let* α1 := M.read sushi in
                 let* α2 :=
                   M.call α0 [ α1; combinators_and_then.Day.Wednesday ] in
                 M.alloc α2 in
-              M.alloc tt
+              M.alloc (Value.Tuple [])
             end)
         ] in
     M.read α1

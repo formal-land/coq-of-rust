@@ -21,60 +21,79 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "zero is ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "zero is ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 0)) in
+        let* α4 := M.alloc [ α2; α3 ] in
         let* α5 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
-            ] in
-        let* α8 := M.call α0 [ α7 ] in
-        M.alloc α8 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "one is ") in
-        let* α2 := M.read (mk_str "
-") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 1)) in
-        let* α5 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α4 ] in
-        let* α6 := M.alloc [ α5 ] in
-        let* α7 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
-            ] in
-        let* α8 := M.call α0 [ α7 ] in
-        M.alloc α8 in
-      M.alloc tt in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "roses are #") in
-        let* α2 := M.read (mk_str "
-") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "enums_c_like::Color::Red_discriminant" in
-        let* α5 := BinOp.Panic.add α4 (Value.Integer Integer.Isize 0) in
-        let* α6 := M.alloc (M.rust_cast α5) in
-        let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_lower_hex"]
-            [ α6 ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 0)) in
+        let* α7 := M.call α5 [ α6 ] in
         let* α8 := M.alloc [ α7 ] in
         let* α9 :=
           M.call
-            (Ty.path "core::fmt::rt::Placeholder")::["new"]
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
+            ] in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "one is ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 1)) in
+        let* α7 := M.call α5 [ α6 ] in
+        let* α8 := M.alloc [ α7 ] in
+        let* α9 :=
+          M.call
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
+            ] in
+        let* α10 := M.call α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted" in
+        let* α2 := M.read (mk_str "roses are #") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_lower_hex" in
+        let* α6 := M.var "enums_c_like::Color::Red_discriminant" in
+        let* α7 := BinOp.Panic.add α6 (Value.Integer Integer.Isize 0) in
+        let* α8 := M.alloc (M.rust_cast α7) in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new" in
+        let* α12 :=
+          M.call
+            α11
             [
               Value.Integer Integer.Usize 0;
               " "%char;
@@ -85,38 +104,51 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "core::fmt::rt::Count::Is"
                 [ Value.Integer Integer.Usize 6 ]
             ] in
-        let* α10 := M.alloc [ α9 ] in
-        let* α11 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α12 :=
+        let* α13 := M.alloc [ α12 ] in
+        let* α14 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new" in
+        let* α15 := M.call α14 [] in
+        let* α16 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
+            α1
             [
-              M.pointer_coercion "Unsize" α3;
-              M.pointer_coercion "Unsize" α8;
+              M.pointer_coercion "Unsize" α4;
               M.pointer_coercion "Unsize" α10;
-              α11
+              M.pointer_coercion "Unsize" α13;
+              α15
             ] in
-        let* α13 := M.call α0 [ α12 ] in
-        M.alloc α13 in
-      M.alloc tt in
+        let* α17 := M.call α0 [ α16 ] in
+        M.alloc α17 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "violets are #") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted" in
+        let* α2 := M.read (mk_str "violets are #") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "enums_c_like::Color::Blue_discriminant" in
-        let* α5 := BinOp.Panic.add α4 (Value.Integer Integer.Isize 0) in
-        let* α6 := M.alloc (M.rust_cast α5) in
-        let* α7 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_lower_hex" in
+        let* α6 := M.var "enums_c_like::Color::Blue_discriminant" in
+        let* α7 := BinOp.Panic.add α6 (Value.Integer Integer.Isize 0) in
+        let* α8 := M.alloc (M.rust_cast α7) in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new" in
+        let* α12 :=
           M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_lower_hex"]
-            [ α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
-          M.call
-            (Ty.path "core::fmt::rt::Placeholder")::["new"]
+            α11
             [
               Value.Integer Integer.Usize 0;
               " "%char;
@@ -127,21 +159,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "core::fmt::rt::Count::Is"
                 [ Value.Integer Integer.Usize 6 ]
             ] in
-        let* α10 := M.alloc [ α9 ] in
-        let* α11 := M.call (Ty.path "core::fmt::rt::UnsafeArg")::["new"] [] in
-        let* α12 :=
+        let* α13 := M.alloc [ α12 ] in
+        let* α14 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new" in
+        let* α15 := M.call α14 [] in
+        let* α16 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1_formatted"]
+            α1
             [
-              M.pointer_coercion "Unsize" α3;
-              M.pointer_coercion "Unsize" α8;
+              M.pointer_coercion "Unsize" α4;
               M.pointer_coercion "Unsize" α10;
-              α11
+              M.pointer_coercion "Unsize" α13;
+              α15
             ] in
-        let* α13 := M.call α0 [ α12 ] in
-        M.alloc α13 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α17 := M.call α0 [ α16 ] in
+        M.alloc α17 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

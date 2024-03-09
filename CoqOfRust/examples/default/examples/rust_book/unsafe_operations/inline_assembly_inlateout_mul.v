@@ -26,7 +26,10 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
+  match 𝜏, α with
+  | [], [] => M.pure (Value.Tuple [])
+  | _, _ => M.impossible
+  end.
 
 (*
     fn mul(a: u64, b: u64) -> u128 {
@@ -56,7 +59,7 @@ Definition mul (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* hi := M.copy Value.DeclaredButUndefined in
     let* _ :=
       let _ := InlineAssembly in
-      M.alloc tt in
+      M.alloc (Value.Tuple []) in
     let* α0 := M.read hi in
     let* α1 :=
       BinOp.Panic.shl (M.rust_cast α0) (Value.Integer Integer.I32 64) in

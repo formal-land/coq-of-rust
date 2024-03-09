@@ -14,13 +14,14 @@ Definition create_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _box1 :=
       let* α0 :=
-        M.call
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ Value.Integer Integer.I32 3 ] in
-      M.alloc α0 in
-    let* α0 := M.alloc tt in
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          "new" in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 3 ] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -53,22 +54,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _box2 :=
       let* α0 :=
-        M.call
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-          [ Value.Integer Integer.I32 5 ] in
-      M.alloc α0 in
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          "new" in
+      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
+      M.alloc α1 in
     let* _ :=
       let* _box3 :=
         let* α0 :=
-          M.call
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "alloc::boxed::Box")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])::["new"]
-            [ Value.Integer Integer.I32 4 ] in
-        M.alloc α0 in
-      M.alloc tt in
+              (Ty.path "alloc::boxed::Box")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            "new" in
+        let* α1 := M.call α0 [ Value.Integer Integer.I32 4 ] in
+        M.alloc α1 in
+      M.alloc (Value.Tuple []) in
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
@@ -130,14 +133,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α0 := M.var "core::option::Option::Get_Some_0" in
                           M.pure (α0 γ) in
                         let* _ :=
-                          let* α0 := M.var "scoping_rules_raii::create_box" in
+                          let* α0 :=
+                            M.get_function "scoping_rules_raii::create_box" in
                           let* α1 := M.call α0 [] in
                           M.alloc α1 in
-                        M.alloc tt
+                        M.alloc (Value.Tuple [])
                       | _ => M.break_match 
                       end)
                   ] in
-              M.alloc tt))
+              M.alloc (Value.Tuple [])))
         ] in
     M.read (M.use α3)
   | _, _ => M.impossible

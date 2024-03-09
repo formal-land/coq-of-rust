@@ -42,7 +42,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* mutable := M.alloc (Value.Integer Integer.I32 12) in
     let* _ := M.assign mutable (Value.Integer Integer.I32 21) in
     let* mutable := M.alloc true in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

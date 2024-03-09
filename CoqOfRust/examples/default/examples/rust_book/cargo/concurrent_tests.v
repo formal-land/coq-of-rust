@@ -26,17 +26,18 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (α0 γ) in
               let* _a := M.copy γ0_0 in
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "some
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "some
 ") in
-                let* α2 := M.alloc [ α1 ] in
-                let* α3 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ M.pointer_coercion "Unsize" α2 ] in
-                let* α4 := M.call α0 [ α3 ] in
-                M.alloc α4 in
-              M.alloc tt
+                let* α3 := M.alloc [ α2 ] in
+                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end);
           fun γ =>
@@ -44,17 +45,18 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
             match α0 with
             | core.option.Option.None =>
               let* _ :=
-                let* α0 := M.var "std::io::stdio::_print" in
-                let* α1 := M.read (mk_str "nothing
+                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "nothing
 ") in
-                let* α2 := M.alloc [ α1 ] in
-                let* α3 :=
-                  M.call
-                    (Ty.path "core::fmt::Arguments")::["new_const"]
-                    [ M.pointer_coercion "Unsize" α2 ] in
-                let* α4 := M.call α0 [ α3 ] in
-                M.alloc α4 in
-              M.alloc tt
+                let* α3 := M.alloc [ α2 ] in
+                let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple [])
             | _ => M.break_match 
             end)
         ] in
@@ -83,24 +85,29 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* file :=
-        let* α0 := M.call (Ty.path "std::fs::OpenOptions")::["new"] [] in
-        let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.call (Ty.path "std::fs::OpenOptions")::["append"] [ α1; true ] in
-        let* α3 :=
-          M.call (Ty.path "std::fs::OpenOptions")::["create"] [ α2; true ] in
-        let* α4 := M.read (mk_str "ferris.txt") in
-        let* α5 :=
-          M.call (Ty.path "std::fs::OpenOptions")::["open"] [ α3; α4 ] in
-        let* α6 := M.read (mk_str "Failed to open ferris.txt") in
-        let* α7 :=
-          M.call
+        let* α0 :=
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error"
-                ])::["expect"]
-            [ α5; α6 ] in
-        M.alloc α7 in
+              (Ty.path "core::result::Result")
+              [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+            "expect" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "open" in
+        let* α2 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "create" in
+        let* α3 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "append" in
+        let* α4 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" in
+        let* α5 := M.call α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 := M.call α3 [ α6; true ] in
+        let* α8 := M.call α2 [ α7; true ] in
+        let* α9 := M.read (mk_str "ferris.txt") in
+        let* α10 := M.call α1 [ α8; α9 ] in
+        let* α11 := M.read (mk_str "Failed to open ferris.txt") in
+        let* α12 := M.call α0 [ α10; α11 ] in
+        M.alloc α12 in
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
@@ -164,32 +171,34 @@ Module tests.
                             M.pure (α0 γ) in
                           let* _ :=
                             let* α0 :=
+                              M.get_associated_function
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.tuple []; Ty.path "std::io::error::Error"
+                                  ])
+                                "expect" in
+                            let* α1 :=
                               M.get_trait_method
                                 "std::io::Write"
                                 "write_all"
                                 [ (* Self *) Ty.path "std::fs::File" ] in
-                            let* α1 := M.read (mk_str "Ferris
-") in
                             let* α2 :=
-                              M.call (Ty.path "str")::["as_bytes"] [ α1 ] in
-                            let* α3 := M.call α0 [ file; α2 ] in
-                            let* α4 :=
+                              M.get_associated_function
+                                (Ty.path "str")
+                                "as_bytes" in
+                            let* α3 := M.read (mk_str "Ferris
+") in
+                            let* α4 := M.call α2 [ α3 ] in
+                            let* α5 := M.call α1 [ file; α4 ] in
+                            let* α6 :=
                               M.read (mk_str "Could not write to ferris.txt") in
-                            let* α5 :=
-                              M.call
-                                (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.tuple [];
-                                      Ty.path "std::io::error::Error"
-                                    ])::["expect"]
-                                [ α3; α4 ] in
-                            M.alloc α5 in
-                          M.alloc tt
+                            let* α7 := M.call α0 [ α5; α6 ] in
+                            M.alloc α7 in
+                          M.alloc (Value.Tuple [])
                         | _ => M.break_match 
                         end)
                     ] in
-                M.alloc tt))
+                M.alloc (Value.Tuple [])))
           ] in
       M.read (M.use α3)
     | _, _ => M.impossible
@@ -215,24 +224,29 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* file :=
-        let* α0 := M.call (Ty.path "std::fs::OpenOptions")::["new"] [] in
-        let* α1 := M.alloc α0 in
-        let* α2 :=
-          M.call (Ty.path "std::fs::OpenOptions")::["append"] [ α1; true ] in
-        let* α3 :=
-          M.call (Ty.path "std::fs::OpenOptions")::["create"] [ α2; true ] in
-        let* α4 := M.read (mk_str "ferris.txt") in
-        let* α5 :=
-          M.call (Ty.path "std::fs::OpenOptions")::["open"] [ α3; α4 ] in
-        let* α6 := M.read (mk_str "Failed to open ferris.txt") in
-        let* α7 :=
-          M.call
+        let* α0 :=
+          M.get_associated_function
             (Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error"
-                ])::["expect"]
-            [ α5; α6 ] in
-        M.alloc α7 in
+              (Ty.path "core::result::Result")
+              [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+            "expect" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "open" in
+        let* α2 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "create" in
+        let* α3 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "append" in
+        let* α4 :=
+          M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" in
+        let* α5 := M.call α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 := M.call α3 [ α6; true ] in
+        let* α8 := M.call α2 [ α7; true ] in
+        let* α9 := M.read (mk_str "ferris.txt") in
+        let* α10 := M.call α1 [ α8; α9 ] in
+        let* α11 := M.read (mk_str "Failed to open ferris.txt") in
+        let* α12 := M.call α0 [ α10; α11 ] in
+        M.alloc α12 in
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
@@ -296,32 +310,34 @@ Module tests.
                             M.pure (α0 γ) in
                           let* _ :=
                             let* α0 :=
+                              M.get_associated_function
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.tuple []; Ty.path "std::io::error::Error"
+                                  ])
+                                "expect" in
+                            let* α1 :=
                               M.get_trait_method
                                 "std::io::Write"
                                 "write_all"
                                 [ (* Self *) Ty.path "std::fs::File" ] in
-                            let* α1 := M.read (mk_str "Corro
-") in
                             let* α2 :=
-                              M.call (Ty.path "str")::["as_bytes"] [ α1 ] in
-                            let* α3 := M.call α0 [ file; α2 ] in
-                            let* α4 :=
+                              M.get_associated_function
+                                (Ty.path "str")
+                                "as_bytes" in
+                            let* α3 := M.read (mk_str "Corro
+") in
+                            let* α4 := M.call α2 [ α3 ] in
+                            let* α5 := M.call α1 [ file; α4 ] in
+                            let* α6 :=
                               M.read (mk_str "Could not write to ferris.txt") in
-                            let* α5 :=
-                              M.call
-                                (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [
-                                      Ty.tuple [];
-                                      Ty.path "std::io::error::Error"
-                                    ])::["expect"]
-                                [ α3; α4 ] in
-                            M.alloc α5 in
-                          M.alloc tt
+                            let* α7 := M.call α0 [ α5; α6 ] in
+                            M.alloc α7 in
+                          M.alloc (Value.Tuple [])
                         | _ => M.break_match 
                         end)
                     ] in
-                M.alloc tt))
+                M.alloc (Value.Tuple [])))
           ] in
       M.read (M.use α3)
     | _, _ => M.impossible

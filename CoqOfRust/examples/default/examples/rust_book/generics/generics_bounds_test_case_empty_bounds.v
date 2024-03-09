@@ -89,47 +89,59 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "A cardinal is ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "A cardinal is ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "generics_bounds_test_case_empty_bounds::red" in
-        let* α5 := M.call α4 [ cardinal ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 :=
+          M.get_function "generics_bounds_test_case_empty_bounds::red" in
+        let* α7 := M.call α6 [ cardinal ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
             ] in
-        let* α10 := M.call α0 [ α9 ] in
-        M.alloc α10 in
-      M.alloc tt in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "A blue jay is ") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "A blue jay is ") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "generics_bounds_test_case_empty_bounds::blue" in
-        let* α5 := M.call α4 [ blue_jay ] in
-        let* α6 := M.alloc α5 in
-        let* α7 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α6 ] in
-        let* α8 := M.alloc [ α7 ] in
-        let* α9 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 :=
+          M.get_function "generics_bounds_test_case_empty_bounds::blue" in
+        let* α7 := M.call α6 [ blue_jay ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call α5 [ α8 ] in
+        let* α10 := M.alloc [ α9 ] in
+        let* α11 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α8
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α10
             ] in
-        let* α10 := M.call α0 [ α9 ] in
-        M.alloc α10 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α12 := M.call α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

@@ -51,7 +51,7 @@ Module Impl_mother_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -73,7 +73,7 @@ Module Impl_mother_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -204,7 +204,9 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.alloc tt) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          [ fun γ => (M.alloc (Value.Tuple [])) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -373,7 +375,9 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.alloc tt) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          [ fun γ => (M.alloc (Value.Tuple [])) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -459,12 +463,12 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -505,7 +509,7 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.pure tt
+      M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
   
@@ -599,12 +603,12 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -612,7 +616,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
       let* α1 := M.read __arg1_tag in
       let* α2 := M.read self in
       let* α3 := M.read other in
-      let* α4 := M.alloc (α2, α3) in
+      let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
       let* α5 :=
         match_operator
           α4
@@ -777,7 +781,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
             fun γ =>
               (match_operator
                 Value.DeclaredButUndefined
-                [ fun γ => (M.alloc tt) ])
+                [ fun γ => (M.alloc (Value.Tuple [])) ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -1090,7 +1094,10 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
                                           fun γ =>
                                             (match_operator
                                               Value.DeclaredButUndefined
-                                              [ fun γ => (M.alloc tt) ])
+                                              [
+                                                fun γ =>
+                                                  (M.alloc (Value.Tuple []))
+                                              ])
                                         ])
                                   ])
                             ])
@@ -1298,12 +1305,12 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.var "core::intrinsics::discriminant_value" in
+        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -1311,7 +1318,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
       let* α1 := M.read __arg1_tag in
       let* α2 := M.read self in
       let* α3 := M.read other in
-      let* α4 := M.alloc (α2, α3) in
+      let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
       let* α5 :=
         match_operator
           α4
@@ -1398,7 +1405,9 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.alloc tt) ] in
+        match_operator
+          Value.DeclaredButUndefined
+          [ fun γ => (M.alloc (Value.Tuple [])) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1450,7 +1459,7 @@ Module Impl_mother_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -1514,7 +1523,7 @@ Module Impl_mother_Mother.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -1533,7 +1542,9 @@ Module Impl_mother_Mother.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "mother::Mother")::["init_env"] []
+      let* α0 :=
+        M.get_associated_function (Ty.path "mother::Mother") "init_env" in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -1648,26 +1659,29 @@ Module Impl_mother_Mother.
       let* self := M.alloc self in
       let* auction := M.alloc auction in
       let* _ :=
-        let* α0 := M.read self in
-        let* α1 := M.call (Ty.path "mother::Mother")::["env"] [ α0 ] in
-        let* α2 := M.alloc α1 in
-        let* α3 :=
+        let* α0 :=
+          M.get_associated_function (Ty.path "mother::Env") "emit_event" in
+        let* α1 := M.get_associated_function (Ty.path "mother::Mother") "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
           M.get_trait_method
             "core::clone::Clone"
             "clone"
             [ (* Self *) Ty.path "mother::Auction" ] in
-        let* α4 := M.call α3 [ auction ] in
-        let* α5 :=
+        let* α6 := M.call α5 [ auction ] in
+        let* α7 :=
           M.call
-            (Ty.path "mother::Env")::["emit_event"]
+            α0
             [
-              α2;
+              α4;
               Value.StructTuple
                 "mother::Event::AuctionEchoed"
-                [ Value.StructRecord "mother::AuctionEchoed" [ ("auction", α4) ]
+                [ Value.StructRecord "mother::AuctionEchoed" [ ("auction", α6) ]
                 ]
             ] in
-        M.alloc α5 in
+        M.alloc α7 in
       M.read auction
     | _, _ => M.impossible
     end.
@@ -1735,7 +1749,7 @@ Module Impl_mother_Mother.
                 let* α0 := M.read γ0_0 in
                 match α0 with
                 | mother.Failure.Panic =>
-                  let* α0 := M.var "std::panicking::begin_panic" in
+                  let* α0 := M.get_function "std::panicking::begin_panic" in
                   let* α1 := M.read (mk_str "Trapping on user demand!") in
                   let* α2 := M.call α0 [ α1 ] in
                   let* α3 := M.never_to_any α2 in
@@ -1748,7 +1762,10 @@ Module Impl_mother_Mother.
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.None =>
-                M.alloc (Value.StructTuple "core::result::Result::Ok" [ tt ])
+                M.alloc
+                  (Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ Value.Tuple [] ])
               | _ => M.break_match 
               end)
           ] in
@@ -1771,25 +1788,30 @@ Module Impl_mother_Mother.
       let* _message := M.alloc _message in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "debug_log: ") in
-          let* α2 := M.read (mk_str "
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1" in
+          let* α2 := M.read (mk_str "debug_log: ") in
+          let* α3 := M.read (mk_str "
 ") in
-          let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 :=
+          let* α4 := M.alloc [ α2; α3 ] in
+          let* α5 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display" in
+          let* α6 := M.call α5 [ _message ] in
+          let* α7 := M.alloc [ α6 ] in
+          let* α8 :=
             M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ _message ] in
-          let* α5 := M.alloc [ α4 ] in
-          let* α6 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α5
+              α1
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α7
               ] in
-          let* α7 := M.call α0 [ α6 ] in
-          M.alloc α7 in
-        M.alloc tt in
-      let* α0 := M.alloc tt in
+          let* α9 := M.call α0 [ α8 ] in
+          M.alloc α9 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

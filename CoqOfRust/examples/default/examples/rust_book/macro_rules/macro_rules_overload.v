@@ -13,75 +13,89 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "") in
-        let* α2 := M.read (mk_str " and ") in
-        let* α3 := M.read (mk_str " is ") in
-        let* α4 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str " and ") in
+        let* α4 := M.read (mk_str " is ") in
+        let* α5 := M.read (mk_str "
 ") in
-        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ mk_str "1i32 + 1 == 2i32" ] in
+        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ mk_str "2i32 * 2 == 4i32" ] in
-        let* α8 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α8 := M.call α7 [ mk_str "1i32 + 1 == 2i32" ] in
+        let* α9 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α10 := M.call α9 [ mk_str "2i32 * 2 == 4i32" ] in
+        let* α11 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α12 :=
           BinOp.Panic.add
             (Value.Integer Integer.I32 1)
             (Value.Integer Integer.I32 1) in
-        let* α9 :=
+        let* α13 :=
           BinOp.Panic.mul
             (Value.Integer Integer.I32 2)
             (Value.Integer Integer.I32 2) in
-        let* α10 :=
+        let* α14 :=
           M.alloc
             (BinOp.Pure.and
-              (BinOp.Pure.eq α8 (Value.Integer Integer.I32 2))
-              (BinOp.Pure.eq α9 (Value.Integer Integer.I32 4))) in
-        let* α11 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α10 ] in
-        let* α12 := M.alloc [ α6; α7; α11 ] in
-        let* α13 :=
+              (BinOp.Pure.eq α12 (Value.Integer Integer.I32 2))
+              (BinOp.Pure.eq α13 (Value.Integer Integer.I32 4))) in
+        let* α15 := M.call α11 [ α14 ] in
+        let* α16 := M.alloc [ α8; α10; α15 ] in
+        let* α17 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α12
+            α1
+            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α16
             ] in
-        let* α14 := M.call α0 [ α13 ] in
-        M.alloc α14 in
-      M.alloc tt in
+        let* α18 := M.call α0 [ α17 ] in
+        M.alloc α18 in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "") in
-        let* α2 := M.read (mk_str " or ") in
-        let* α3 := M.read (mk_str " is ") in
-        let* α4 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str " or ") in
+        let* α4 := M.read (mk_str " is ") in
+        let* α5 := M.read (mk_str "
 ") in
-        let* α5 := M.alloc [ α1; α2; α3; α4 ] in
-        let* α6 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ mk_str "true" ] in
+        let* α6 := M.alloc [ α2; α3; α4; α5 ] in
         let* α7 :=
-          M.call
-            (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-            [ mk_str "false" ] in
-        let* α8 := M.alloc (BinOp.Pure.or true false) in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α8 := M.call α7 [ mk_str "true" ] in
         let* α9 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_debug"] [ α8 ] in
-        let* α10 := M.alloc [ α6; α7; α9 ] in
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α10 := M.call α9 [ mk_str "false" ] in
         let* α11 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug" in
+        let* α12 := M.alloc (BinOp.Pure.or true false) in
+        let* α13 := M.call α11 [ α12 ] in
+        let* α14 := M.alloc [ α8; α10; α13 ] in
+        let* α15 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α5; M.pointer_coercion "Unsize" α10
+            α1
+            [ M.pointer_coercion "Unsize" α6; M.pointer_coercion "Unsize" α14
             ] in
-        let* α12 := M.call α0 [ α11 ] in
-        M.alloc α12 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α16 := M.call α0 [ α15 ] in
+        M.alloc α16 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

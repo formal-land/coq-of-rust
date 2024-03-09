@@ -13,8 +13,12 @@ Module checked.
       | [ Self ], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
-        let* α0 := M.read f in
-        let* α1 :=
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Formatter")
+            "write_str" in
+        let* α1 := M.read f in
+        let* α2 :=
           match_operator
             self
             [
@@ -52,8 +56,8 @@ Module checked.
                 | _ => M.break_match 
                 end)
             ] in
-        let* α2 := M.read α1 in
-        M.call (Ty.path "core::fmt::Formatter")::["write_str"] [ α0; α2 ]
+        let* α3 := M.read α2 in
+        M.call α0 [ α1; α3 ]
       | _, _ => M.impossible
       end.
     
@@ -132,9 +136,10 @@ Module checked.
               "core::result::Result::Err"
               [ result.checked.MathError.NegativeSquareRoot ])
         else
-          let* α0 := M.read x in
-          let* α1 := M.call (Ty.path "f64")::["sqrt"] [ α0 ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
+          let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" in
+          let* α1 := M.read x in
+          let* α2 := M.call α0 [ α1 ] in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
       M.read α4
     | _, _ => M.impossible
     end.
@@ -163,9 +168,10 @@ Module checked.
               "core::result::Result::Err"
               [ result.checked.MathError.NonPositiveLogarithm ])
         else
-          let* α0 := M.read x in
-          let* α1 := M.call (Ty.path "f64")::["ln"] [ α0 ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
+          let* α0 := M.get_associated_function (Ty.path "f64") "ln" in
+          let* α1 := M.read x in
+          let* α2 := M.call α0 [ α1 ] in
+          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
       M.read α4
     | _, _ => M.impossible
     end.
@@ -191,7 +197,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ x; y ] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
-    let* α0 := M.var "result::checked::div" in
+    let* α0 := M.get_function "result::checked::div" in
     let* α1 := M.read x in
     let* α2 := M.read y in
     let* α3 := M.call α0 [ α1; α2 ] in
@@ -208,24 +214,29 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 := M.var "core::result::Result::Get_Err_0" in
                 M.pure (α0 γ) in
               let* why := M.copy γ0_0 in
-              let* α0 := M.var "core::panicking::panic_fmt" in
-              let* α1 := M.read (mk_str "") in
-              let* α2 := M.alloc [ α1 ] in
-              let* α3 :=
+              let* α0 := M.get_function "core::panicking::panic_fmt" in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_v1" in
+              let* α2 := M.read (mk_str "") in
+              let* α3 := M.alloc [ α2 ] in
+              let* α4 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_debug" in
+              let* α5 := M.call α4 [ why ] in
+              let* α6 := M.alloc [ α5 ] in
+              let* α7 :=
                 M.call
-                  (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                  [ why ] in
-              let* α4 := M.alloc [ α3 ] in
-              let* α5 :=
-                M.call
-                  (Ty.path "core::fmt::Arguments")::["new_v1"]
+                  α1
                   [
-                    M.pointer_coercion "Unsize" α2;
-                    M.pointer_coercion "Unsize" α4
+                    M.pointer_coercion "Unsize" α3;
+                    M.pointer_coercion "Unsize" α6
                   ] in
-              let* α6 := M.call α0 [ α5 ] in
-              let* α7 := M.never_to_any α6 in
-              M.alloc α7
+              let* α8 := M.call α0 [ α7 ] in
+              let* α9 := M.never_to_any α8 in
+              M.alloc α9
             | _ => M.break_match 
             end);
           fun γ =>
@@ -236,7 +247,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 := M.var "core::result::Result::Get_Ok_0" in
                 M.pure (α0 γ) in
               let* ratio := M.copy γ0_0 in
-              let* α0 := M.var "result::checked::ln" in
+              let* α0 := M.get_function "result::checked::ln" in
               let* α1 := M.read ratio in
               let* α2 := M.call α0 [ α1 ] in
               let* α3 := M.alloc α2 in
@@ -251,24 +262,29 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.var "core::result::Result::Get_Err_0" in
                         M.pure (α0 γ) in
                       let* why := M.copy γ0_0 in
-                      let* α0 := M.var "core::panicking::panic_fmt" in
-                      let* α1 := M.read (mk_str "") in
-                      let* α2 := M.alloc [ α1 ] in
-                      let* α3 :=
+                      let* α0 := M.get_function "core::panicking::panic_fmt" in
+                      let* α1 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_v1" in
+                      let* α2 := M.read (mk_str "") in
+                      let* α3 := M.alloc [ α2 ] in
+                      let* α4 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::rt::Argument")
+                          "new_debug" in
+                      let* α5 := M.call α4 [ why ] in
+                      let* α6 := M.alloc [ α5 ] in
+                      let* α7 :=
                         M.call
-                          (Ty.path "core::fmt::rt::Argument")::["new_debug"]
-                          [ why ] in
-                      let* α4 := M.alloc [ α3 ] in
-                      let* α5 :=
-                        M.call
-                          (Ty.path "core::fmt::Arguments")::["new_v1"]
+                          α1
                           [
-                            M.pointer_coercion "Unsize" α2;
-                            M.pointer_coercion "Unsize" α4
+                            M.pointer_coercion "Unsize" α3;
+                            M.pointer_coercion "Unsize" α6
                           ] in
-                      let* α6 := M.call α0 [ α5 ] in
-                      let* α7 := M.never_to_any α6 in
-                      M.alloc α7
+                      let* α8 := M.call α0 [ α7 ] in
+                      let* α9 := M.never_to_any α8 in
+                      M.alloc α9
                     | _ => M.break_match 
                     end);
                   fun γ =>
@@ -279,7 +295,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 := M.var "core::result::Result::Get_Ok_0" in
                         M.pure (α0 γ) in
                       let* ln := M.copy γ0_0 in
-                      let* α0 := M.var "result::checked::sqrt" in
+                      let* α0 := M.get_function "result::checked::sqrt" in
                       let* α1 := M.read ln in
                       let* α2 := M.call α0 [ α1 ] in
                       let* α3 := M.alloc α2 in
@@ -295,25 +311,30 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   M.var "core::result::Result::Get_Err_0" in
                                 M.pure (α0 γ) in
                               let* why := M.copy γ0_0 in
-                              let* α0 := M.var "core::panicking::panic_fmt" in
-                              let* α1 := M.read (mk_str "") in
-                              let* α2 := M.alloc [ α1 ] in
-                              let* α3 :=
+                              let* α0 :=
+                                M.get_function "core::panicking::panic_fmt" in
+                              let* α1 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::Arguments")
+                                  "new_v1" in
+                              let* α2 := M.read (mk_str "") in
+                              let* α3 := M.alloc [ α2 ] in
+                              let* α4 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::rt::Argument")
+                                  "new_debug" in
+                              let* α5 := M.call α4 [ why ] in
+                              let* α6 := M.alloc [ α5 ] in
+                              let* α7 :=
                                 M.call
-                                  (Ty.path
-                                      "core::fmt::rt::Argument")::["new_debug"]
-                                  [ why ] in
-                              let* α4 := M.alloc [ α3 ] in
-                              let* α5 :=
-                                M.call
-                                  (Ty.path "core::fmt::Arguments")::["new_v1"]
+                                  α1
                                   [
-                                    M.pointer_coercion "Unsize" α2;
-                                    M.pointer_coercion "Unsize" α4
+                                    M.pointer_coercion "Unsize" α3;
+                                    M.pointer_coercion "Unsize" α6
                                   ] in
-                              let* α6 := M.call α0 [ α5 ] in
-                              let* α7 := M.never_to_any α6 in
-                              M.alloc α7
+                              let* α8 := M.call α0 [ α7 ] in
+                              let* α9 := M.never_to_any α8 in
+                              M.alloc α9
                             | _ => M.break_match 
                             end);
                           fun γ =>
@@ -351,28 +372,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "") in
-        let* α2 := M.read (mk_str "
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str "
 ") in
-        let* α3 := M.alloc [ α1; α2 ] in
-        let* α4 := M.var "result::op" in
-        let* α5 := M.read UnsupportedLiteral in
-        let* α6 := M.read UnsupportedLiteral in
-        let* α7 := M.call α4 [ α5; α6 ] in
-        let* α8 := M.alloc α7 in
-        let* α9 :=
-          M.call (Ty.path "core::fmt::rt::Argument")::["new_display"] [ α8 ] in
-        let* α10 := M.alloc [ α9 ] in
-        let* α11 :=
+        let* α4 := M.alloc [ α2; α3 ] in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display" in
+        let* α6 := M.get_function "result::op" in
+        let* α7 := M.read UnsupportedLiteral in
+        let* α8 := M.read UnsupportedLiteral in
+        let* α9 := M.call α6 [ α7; α8 ] in
+        let* α10 := M.alloc α9 in
+        let* α11 := M.call α5 [ α10 ] in
+        let* α12 := M.alloc [ α11 ] in
+        let* α13 :=
           M.call
-            (Ty.path "core::fmt::Arguments")::["new_v1"]
-            [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α10
+            α1
+            [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α12
             ] in
-        let* α12 := M.call α0 [ α11 ] in
-        M.alloc α12 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α14 := M.call α0 [ α13 ] in
+        M.alloc α14 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

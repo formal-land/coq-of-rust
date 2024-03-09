@@ -94,7 +94,7 @@ Module Impl_contract_terminate_Env.
     | [ Self ], [ self; _account ] =>
       let* self := M.alloc self in
       let* _account := M.alloc _account in
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -118,7 +118,7 @@ Module Impl_contract_terminate_JustTerminate.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.var "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -137,7 +137,11 @@ Module Impl_contract_terminate_JustTerminate.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      M.call (Ty.path "contract_terminate::JustTerminate")::["init_env"] []
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "contract_terminate::JustTerminate")
+          "init_env" in
+      M.call α0 []
     | _, _ => M.impossible
     end.
   
@@ -166,26 +170,32 @@ Module Impl_contract_terminate_JustTerminate.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.read self in
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "contract_terminate::Env")
+            "terminate_contract" in
         let* α1 :=
-          M.call
-            (Ty.path "contract_terminate::JustTerminate")::["env"]
-            [ α0 ] in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.read self in
-        let* α4 :=
-          M.call
-            (Ty.path "contract_terminate::JustTerminate")::["env"]
-            [ α3 ] in
-        let* α5 := M.alloc α4 in
+          M.get_associated_function
+            (Ty.path "contract_terminate::JustTerminate")
+            "env" in
+        let* α2 := M.read self in
+        let* α3 := M.call α1 [ α2 ] in
+        let* α4 := M.alloc α3 in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "contract_terminate::Env")
+            "caller" in
         let* α6 :=
-          M.call (Ty.path "contract_terminate::Env")::["caller"] [ α5 ] in
-        let* α7 :=
-          M.call
-            (Ty.path "contract_terminate::Env")::["terminate_contract"]
-            [ α2; α6 ] in
-        M.alloc α7 in
-      let* α0 := M.alloc tt in
+          M.get_associated_function
+            (Ty.path "contract_terminate::JustTerminate")
+            "env" in
+        let* α7 := M.read self in
+        let* α8 := M.call α6 [ α7 ] in
+        let* α9 := M.alloc α8 in
+        let* α10 := M.call α5 [ α9 ] in
+        let* α11 := M.call α0 [ α4; α10 ] in
+        M.alloc α11 in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

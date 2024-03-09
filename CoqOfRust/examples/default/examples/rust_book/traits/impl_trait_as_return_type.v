@@ -168,37 +168,39 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* v1 :=
       let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec" in
+      let* α1 :=
         M.alloc
           [
             Value.Integer Integer.I32 1;
             Value.Integer Integer.I32 2;
             Value.Integer Integer.I32 3
           ] in
-      let* α1 :=
+      let* α2 :=
         M.call
           (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α0 ] in
-      let* α2 := M.read α1 in
-      let* α3 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ M.pointer_coercion "Unsize" α2 ] in
-      M.alloc α3 in
+          [ α1 ] in
+      let* α3 := M.read α2 in
+      let* α4 := M.call α0 [ M.pointer_coercion "Unsize" α3 ] in
+      M.alloc α4 in
     let* v2 :=
       let* α0 :=
-        M.alloc [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 5 ] in
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec" in
       let* α1 :=
+        M.alloc [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 5 ] in
+      let* α2 :=
         M.call
           (alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
-          [ α0 ] in
-      let* α2 := M.read α1 in
-      let* α3 :=
-        M.call
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])::["into_vec"]
-          [ M.pointer_coercion "Unsize" α2 ] in
-      M.alloc α3 in
+          [ α1 ] in
+      let* α3 := M.read α2 in
+      let* α4 := M.call α0 [ M.pointer_coercion "Unsize" α3 ] in
+      M.alloc α4 in
     let* v3 :=
-      let* α0 := M.var "impl_trait_as_return_type::combine_vecs" in
+      let* α0 := M.get_function "impl_trait_as_return_type::combine_vecs" in
       let* α1 := M.read v1 in
       let* α2 := M.read v2 in
       let* α3 := M.call α0 [ α1; α2 ] in
@@ -216,7 +218,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) _ ] in
       let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (α0, α3) in
+      let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
         α4
         [
@@ -249,7 +251,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 := M.read (M.use α4) in
               if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α0 := M.get_function "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
@@ -259,7 +261,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc tt
+                M.alloc (Value.Tuple [])
             end)
         ] in
     let* _ :=
@@ -275,7 +277,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) _ ] in
       let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (α0, α3) in
+      let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
         α4
         [
@@ -308,7 +310,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 := M.read (M.use α4) in
               if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α0 := M.get_function "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
@@ -318,7 +320,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc tt
+                M.alloc (Value.Tuple [])
             end)
         ] in
     let* _ :=
@@ -334,7 +336,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) _ ] in
       let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (α0, α3) in
+      let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
         α4
         [
@@ -367,7 +369,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 := M.read (M.use α4) in
               if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α0 := M.get_function "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
@@ -377,7 +379,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc tt
+                M.alloc (Value.Tuple [])
             end)
         ] in
     let* _ :=
@@ -393,7 +395,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) _ ] in
       let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (α0, α3) in
+      let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
         α4
         [
@@ -426,7 +428,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 := M.read (M.use α4) in
               if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α0 := M.get_function "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
@@ -436,7 +438,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc tt
+                M.alloc (Value.Tuple [])
             end)
         ] in
     let* _ :=
@@ -452,7 +454,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) _ ] in
       let* α2 := M.call α1 [ v3 ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.alloc (α0, α3) in
+      let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
         α4
         [
@@ -485,7 +487,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 := M.read (M.use α4) in
               if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α0 := M.get_function "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
@@ -495,23 +497,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc tt
+                M.alloc (Value.Tuple [])
             end)
         ] in
     let* _ :=
       let* _ :=
-        let* α0 := M.var "std::io::stdio::_print" in
-        let* α1 := M.read (mk_str "all done
+        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const" in
+        let* α2 := M.read (mk_str "all done
 ") in
-        let* α2 := M.alloc [ α1 ] in
-        let* α3 :=
-          M.call
-            (Ty.path "core::fmt::Arguments")::["new_const"]
-            [ M.pointer_coercion "Unsize" α2 ] in
-        let* α4 := M.call α0 [ α3 ] in
-        M.alloc α4 in
-      M.alloc tt in
-    let* α0 := M.alloc tt in
+        let* α3 := M.alloc [ α2 ] in
+        let* α4 := M.call α1 [ M.pointer_coercion "Unsize" α3 ] in
+        let* α5 := M.call α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

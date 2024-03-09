@@ -13,7 +13,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x :=
       let* α0 := M.alloc (Value.Integer Integer.I32 1) in
       M.alloc α0 in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

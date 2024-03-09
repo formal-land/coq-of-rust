@@ -22,7 +22,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
         let* α0 := M.read β in
         let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
         M.assign β α1 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -41,26 +41,31 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.var "std::io::stdio::_print" in
-          let* α1 := M.read (mk_str "`print`: ") in
-          let* α2 := M.read (mk_str "
+          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1" in
+          let* α2 := M.read (mk_str "`print`: ") in
+          let* α3 := M.read (mk_str "
 ") in
-          let* α3 := M.alloc [ α1; α2 ] in
-          let* α4 := M.read self in
+          let* α4 := M.alloc [ α2; α3 ] in
           let* α5 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display" in
+          let* α6 := M.read self in
+          let* α7 := M.call α5 [ M.get_struct_tuple α6 0 ] in
+          let* α8 := M.alloc [ α7 ] in
+          let* α9 :=
             M.call
-              (Ty.path "core::fmt::rt::Argument")::["new_display"]
-              [ M.get_struct_tuple α4 0 ] in
-          let* α6 := M.alloc [ α5 ] in
-          let* α7 :=
-            M.call
-              (Ty.path "core::fmt::Arguments")::["new_v1"]
-              [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
+              α1
+              [ M.pointer_coercion "Unsize" α4; M.pointer_coercion "Unsize" α8
               ] in
-          let* α8 := M.call α0 [ α7 ] in
-          M.alloc α8 in
-        M.alloc tt in
-      let* α0 := M.alloc tt in
+          let* α10 := M.call α0 [ α9 ] in
+          M.alloc α10 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -87,17 +92,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ Value.Integer Integer.I32 18 ]) in
     let* _ :=
       let* α0 :=
-        M.call
-          (Ty.path "scoping_rules_lifetimes_methods::Owner")::["add_one"]
-          [ owner ] in
-      M.alloc α0 in
+        M.get_associated_function
+          (Ty.path "scoping_rules_lifetimes_methods::Owner")
+          "add_one" in
+      let* α1 := M.call α0 [ owner ] in
+      M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.call
-          (Ty.path "scoping_rules_lifetimes_methods::Owner")::["print"]
-          [ owner ] in
-      M.alloc α0 in
-    let* α0 := M.alloc tt in
+        M.get_associated_function
+          (Ty.path "scoping_rules_lifetimes_methods::Owner")
+          "print" in
+      let* α1 := M.call α0 [ owner ] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

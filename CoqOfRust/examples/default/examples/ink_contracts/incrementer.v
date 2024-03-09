@@ -31,12 +31,14 @@ Module Impl_incrementer_Incrementer.
     match 𝜏, α with
     | [ Self ], [] =>
       let* α0 :=
+        M.get_associated_function (Ty.path "incrementer::Incrementer") "new" in
+      let* α1 :=
         M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "i32" ] in
-      let* α1 := M.call α0 [] in
-      M.call (Ty.path "incrementer::Incrementer")::["new"] [ α1 ]
+      let* α2 := M.call α1 [] in
+      M.call α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -61,7 +63,7 @@ Module Impl_incrementer_Incrementer.
         let* α1 := M.read by_ in
         let* α2 := BinOp.Panic.add α0 α1 in
         M.assign β α2 in
-      let* α0 := M.alloc tt in
+      let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
     end.

@@ -24,20 +24,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* output :=
-      let* α0 := M.read (mk_str "rustc") in
-      let* α1 := M.call (Ty.path "std::process::Command")::["new"] [ α0 ] in
-      let* α2 := M.alloc α1 in
-      let* α3 := M.read (mk_str "--version") in
-      let* α4 := M.call (Ty.path "std::process::Command")::["arg"] [ α2; α3 ] in
-      let* α5 := M.call (Ty.path "std::process::Command")::["output"] [ α4 ] in
-      let* α6 :=
-        M.call
+      let* α0 :=
+        M.get_associated_function
           (Ty.apply
-              (Ty.path "core::result::Result")
-              [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error"
-              ])::["unwrap_or_else"]
+            (Ty.path "core::result::Result")
+            [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ])
+          "unwrap_or_else" in
+      let* α1 :=
+        M.get_associated_function (Ty.path "std::process::Command") "output" in
+      let* α2 :=
+        M.get_associated_function (Ty.path "std::process::Command") "arg" in
+      let* α3 :=
+        M.get_associated_function (Ty.path "std::process::Command") "new" in
+      let* α4 := M.read (mk_str "rustc") in
+      let* α5 := M.call α3 [ α4 ] in
+      let* α6 := M.alloc α5 in
+      let* α7 := M.read (mk_str "--version") in
+      let* α8 := M.call α2 [ α6; α7 ] in
+      let* α9 := M.call α1 [ α8 ] in
+      let* α10 :=
+        M.call
+          α0
           [
-            α5;
+            α9;
             fun (α0 : Ty.path "std::io::error::Error") =>
               (let* α0 := M.alloc α0 in
               match_operator
@@ -45,36 +54,46 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     (let* e := M.copy γ in
-                    let* α0 := M.var "core::panicking::panic_fmt" in
-                    let* α1 := M.read (mk_str "failed to execute process: ") in
-                    let* α2 := M.alloc [ α1 ] in
-                    let* α3 :=
+                    let* α0 := M.get_function "core::panicking::panic_fmt" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "failed to execute process: ") in
+                    let* α3 := M.alloc [ α2 ] in
+                    let* α4 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α5 := M.call α4 [ e ] in
+                    let* α6 := M.alloc [ α5 ] in
+                    let* α7 :=
                       M.call
-                        (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                        [ e ] in
-                    let* α4 := M.alloc [ α3 ] in
-                    let* α5 :=
-                      M.call
-                        (Ty.path "core::fmt::Arguments")::["new_v1"]
+                        α1
                         [
-                          M.pointer_coercion "Unsize" α2;
-                          M.pointer_coercion "Unsize" α4
+                          M.pointer_coercion "Unsize" α3;
+                          M.pointer_coercion "Unsize" α6
                         ] in
-                    let* α6 := M.call α0 [ α5 ] in
-                    M.never_to_any α6)
+                    let* α8 := M.call α0 [ α7 ] in
+                    M.never_to_any α8)
                 ])
           ] in
-      M.alloc α6 in
+      M.alloc α10 in
     let* α0 :=
-      M.call
-        (Ty.path "std::process::ExitStatus")::["success"]
-        [ M.get_struct_record output "status" ] in
-    let* α1 := M.alloc α0 in
-    let* α2 := M.read (M.use α1) in
+      M.get_associated_function
+        (Ty.path "std::process::ExitStatus")
+        "success" in
+    let* α1 := M.call α0 [ M.get_struct_record output "status" ] in
+    let* α2 := M.alloc α1 in
+    let* α3 := M.read (M.use α2) in
     let* α0 :=
-      if α2 then
+      if α3 then
         let* s :=
           let* α0 :=
+            M.get_associated_function
+              (Ty.path "alloc::string::String")
+              "from_utf8_lossy" in
+          let* α1 :=
             M.get_trait_method
               "core::ops::deref::Deref"
               "deref"
@@ -84,35 +103,41 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ] in
-          let* α1 := M.call α0 [ M.get_struct_record output "stdout" ] in
-          let* α2 :=
-            M.call
-              (Ty.path "alloc::string::String")::["from_utf8_lossy"]
-              [ α1 ] in
-          M.alloc α2 in
+          let* α2 := M.call α1 [ M.get_struct_record output "stdout" ] in
+          let* α3 := M.call α0 [ α2 ] in
+          M.alloc α3 in
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
-            let* α1 := M.read (mk_str "rustc succeeded and stdout was:
+            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_v1" in
+            let* α2 := M.read (mk_str "rustc succeeded and stdout was:
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display" in
+            let* α5 := M.call α4 [ s ] in
+            let* α6 := M.alloc [ α5 ] in
+            let* α7 :=
               M.call
-                (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                [ s ] in
-            let* α4 := M.alloc [ α3 ] in
-            let* α5 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_v1"]
-                [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α4
+                α1
+                [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
                 ] in
-            let* α6 := M.call α0 [ α5 ] in
-            M.alloc α6 in
-          M.alloc tt in
-        M.alloc tt
+            let* α8 := M.call α0 [ α7 ] in
+            M.alloc α8 in
+          M.alloc (Value.Tuple []) in
+        M.alloc (Value.Tuple [])
       else
         let* s :=
           let* α0 :=
+            M.get_associated_function
+              (Ty.path "alloc::string::String")
+              "from_utf8_lossy" in
+          let* α1 :=
             M.get_trait_method
               "core::ops::deref::Deref"
               "deref"
@@ -122,32 +147,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ] in
-          let* α1 := M.call α0 [ M.get_struct_record output "stderr" ] in
-          let* α2 :=
-            M.call
-              (Ty.path "alloc::string::String")::["from_utf8_lossy"]
-              [ α1 ] in
-          M.alloc α2 in
+          let* α2 := M.call α1 [ M.get_struct_record output "stderr" ] in
+          let* α3 := M.call α0 [ α2 ] in
+          M.alloc α3 in
         let* _ :=
           let* _ :=
-            let* α0 := M.var "std::io::stdio::_print" in
-            let* α1 := M.read (mk_str "rustc failed and stderr was:
+            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_v1" in
+            let* α2 := M.read (mk_str "rustc failed and stderr was:
 ") in
-            let* α2 := M.alloc [ α1 ] in
-            let* α3 :=
+            let* α3 := M.alloc [ α2 ] in
+            let* α4 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display" in
+            let* α5 := M.call α4 [ s ] in
+            let* α6 := M.alloc [ α5 ] in
+            let* α7 :=
               M.call
-                (Ty.path "core::fmt::rt::Argument")::["new_display"]
-                [ s ] in
-            let* α4 := M.alloc [ α3 ] in
-            let* α5 :=
-              M.call
-                (Ty.path "core::fmt::Arguments")::["new_v1"]
-                [ M.pointer_coercion "Unsize" α2; M.pointer_coercion "Unsize" α4
+                α1
+                [ M.pointer_coercion "Unsize" α3; M.pointer_coercion "Unsize" α6
                 ] in
-            let* α6 := M.call α0 [ α5 ] in
-            M.alloc α6 in
-          M.alloc tt in
-        M.alloc tt in
+            let* α8 := M.call α0 [ α7 ] in
+            M.alloc α8 in
+          M.alloc (Value.Tuple []) in
+        M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.

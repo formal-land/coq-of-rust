@@ -21,10 +21,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc (Value.Integer Integer.U16 171) in
     let* _ :=
       let _ := InlineAssembly in
-      M.alloc tt in
+      M.alloc (Value.Tuple []) in
     let* _ :=
       let* α0 := M.alloc (Value.Integer Integer.U16 43947) in
-      let* α1 := M.alloc (x, α0) in
+      let* α1 := M.alloc (Value.Tuple [ x; α0 ]) in
       match_operator
         α1
         [
@@ -44,7 +44,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 := M.read (M.use α4) in
               if α5 then
                 let* kind := M.alloc core.panicking.AssertKind.Eq in
-                let* α0 := M.var "core::panicking::assert_failed" in
+                let* α0 := M.get_function "core::panicking::assert_failed" in
                 let* α1 := M.read kind in
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
@@ -54,10 +54,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc tt
+                M.alloc (Value.Tuple [])
             end)
         ] in
-    let* α0 := M.alloc tt in
+    let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible
   end.
