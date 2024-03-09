@@ -35,14 +35,14 @@ struct HirFnSigAndBody<'a> {
     body: &'a rustc_hir::Body<'a>,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 struct FnSigAndBody {
     args: Vec<(String, Rc<CoqType>)>,
     ret_ty: Rc<CoqType>,
     body: Option<Rc<Expr>>,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 enum TraitItem {
     Definition {
         ty_params: Vec<String>,
@@ -53,14 +53,14 @@ enum TraitItem {
 }
 
 /// fields common for all function definitions
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 struct FunDefinition {
     ty_params: Vec<String>,
     signature_and_body: Rc<FnSigAndBody>,
     is_dead_code: bool,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 enum ImplItemKind {
     Const {
         ty: Rc<CoqType>,
@@ -75,7 +75,7 @@ enum ImplItemKind {
     },
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 struct TraitBound {
     name: Path,
     ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
@@ -83,14 +83,14 @@ struct TraitBound {
 
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) enum VariantItem {
     Struct { fields: Vec<(String, Rc<CoqType>)> },
     Tuple { tys: Vec<Rc<CoqType>> },
 }
 
 /// The value for a field that may have a default value
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) enum FieldWithDefault<A> {
     /// the value of a field that has no defaults
     RequiredValue(A),
@@ -100,17 +100,17 @@ pub(crate) enum FieldWithDefault<A> {
     Default,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 struct Snippet(Vec<String>);
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 struct ImplItem {
     name: String,
     snippet: Option<Rc<Snippet>>,
     kind: Rc<ImplItemKind>,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 struct TraitImplItem {
     name: String,
     snippet: Option<Rc<Snippet>>,
@@ -119,7 +119,7 @@ struct TraitImplItem {
 
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 enum TopLevelItem {
     Const {
         name: String,
@@ -180,7 +180,7 @@ enum TopLevelItem {
     Error(String),
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 struct TypeStructStruct {
     name: String,
     ty_params: Vec<(String, Option<Rc<CoqType>>)>,
@@ -188,7 +188,7 @@ struct TypeStructStruct {
     is_dead_code: bool,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub struct TopLevel(Vec<Rc<TopLevelItem>>);
 
 impl<A> FieldWithDefault<A> {

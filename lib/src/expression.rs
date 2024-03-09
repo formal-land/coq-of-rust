@@ -24,7 +24,7 @@ impl FreshVars {
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) struct MatchArm {
     pub(crate) pattern: Rc<Pattern>,
     pub(crate) body: Rc<Expr>,
@@ -32,26 +32,26 @@ pub(crate) struct MatchArm {
 
 /// [LoopControlFlow] represents the expressions responsible for
 /// the flow of control in a loop
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug)]
 pub(crate) enum LoopControlFlow {
     Continue,
     Break,
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug)]
 pub(crate) enum Purity {
     Pure,
     Effectful,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) struct LiteralInteger {
     pub(crate) name: String,
     pub(crate) negative_sign: bool,
     pub(crate) value: u128,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) enum Literal {
     Bool(bool),
     Integer(LiteralInteger),
@@ -60,14 +60,14 @@ pub(crate) enum Literal {
     Error,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) struct Expr {
     pub(crate) kind: Rc<ExprKind>,
     pub(crate) ty: Option<Rc<CoqType>>,
 }
 
 /// Enum [ExprKind] represents the AST of rust terms.
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) enum ExprKind {
     Pure(Rc<Expr>),
     LocalVar(String),
