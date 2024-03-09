@@ -11,67 +11,6 @@ use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::TyKind;
 use std::rc::Rc;
 
-impl ExprKind {
-    fn match_simple_call(self: &Rc<Self>, name_in: &[&str]) -> Option<Rc<Expr>> {
-        if let ExprKind::Call {
-            func,
-            args,
-            purity: _,
-            from_user: _,
-        } = self.as_ref()
-        {
-            if let ExprKind::LocalVar(func) = func.kind.as_ref() {
-                if name_in.contains(&func.as_str()) && args.len() == 1 {
-                    return Some(args.first().unwrap().clone());
-                }
-            }
-        }
-
-        None
-    }
-
-    pub(crate) fn alloc(self: Rc<Self>, ty: Option<Rc<CoqType>>) -> Rc<Self> {
-        Rc::new(ExprKind::Call {
-            func: Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("M.alloc".to_string())),
-                ty: None,
-            }),
-            args: vec![Rc::new(Expr { kind: self, ty })],
-            purity: Purity::Effectful,
-            from_user: false,
-        })
-    }
-
-    pub(crate) fn read(self: &Rc<Self>) -> Rc<Self> {
-        // If we read an allocated expression, we just return the expression.
-        if let Some(expr) = self.clone().match_simple_call(&["M.alloc"]) {
-            return expr.kind.clone();
-        }
-
-        Rc::new(ExprKind::Call {
-            func: Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("M.read".to_string())),
-                ty: None,
-            }),
-            args: vec![Rc::new(Expr {
-                kind: self.clone(),
-                ty: None,
-            })],
-            purity: Purity::Effectful,
-            from_user: false,
-        })
-    }
-}
-
-impl Expr {
-    pub(crate) fn alloc(self: Rc<Self>) -> Rc<Self> {
-        Rc::new(Expr {
-            kind: self.kind.clone().alloc(self.ty.clone()),
-            ty: None,
-        })
-    }
-}
-
 fn path_of_bin_op(
     bin_op: &BinOp,
     ty_left: &Rc<CoqType>,
@@ -99,49 +38,6 @@ fn path_of_bin_op(
     }
 }
 
-pub(crate) fn compile_expr<'a>(
-    env: &Env<'a>,
-    thir: &rustc_middle::thir::Thir<'a>,
-    expr_id: &rustc_middle::thir::ExprId,
-) -> Rc<Expr> {
-    let expr = thir.exprs.get(*expr_id).unwrap();
-    let kind = compile_expr_kind(env, thir, expr_id);
-    let ty = compile_type(env, &expr.ty).val();
-    Rc::new(Expr { kind, ty: Some(ty) })
-}
-
-impl Expr {
-    fn match_simple_call(self: &Rc<Self>, name_in: &[&str]) -> Option<Rc<Self>> {
-        self.kind.match_simple_call(name_in)
-    }
-
-    pub(crate) fn read(self: Rc<Self>) -> Rc<Self> {
-        Rc::new(Expr {
-            kind: self.kind.read(),
-            ty: None,
-        })
-    }
-
-    fn copy(self: Rc<Self>) -> Rc<Self> {
-        if self.match_simple_call(&["M.alloc"]).is_some() {
-            return self;
-        }
-
-        Rc::new(Expr {
-            ty: self.ty.clone(),
-            kind: Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar("M.copy".to_string())),
-                    ty: None,
-                }),
-                args: vec![self],
-                purity: Purity::Effectful,
-                from_user: false,
-            }),
-        })
-    }
-}
-
 pub(crate) fn is_mutable_borrow_kind(borrow_kind: &BorrowKind) -> bool {
     match borrow_kind {
         BorrowKind::Shared => false,
@@ -152,17 +48,11 @@ pub(crate) fn is_mutable_borrow_kind(borrow_kind: &BorrowKind) -> bool {
 
 pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr> {
     bindings.iter().rfold(body, |body, binding| {
-        Rc::new(Expr {
-            ty: body.ty.clone(),
-            kind: Rc::new(ExprKind::Let {
-                is_monadic: false,
-                name: Some(binding.clone()),
-                init: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar(binding.clone())).alloc(None),
-                    ty: None,
-                }),
-                body,
-            }),
+        Rc::new(Expr::Let {
+            is_monadic: false,
+            name: Some(binding.clone()),
+            init: Expr::local_var(binding).alloc(),
+            body,
         })
     })
 }
@@ -174,14 +64,11 @@ fn build_inner_match(
 ) -> Rc<Expr> {
     let default_match_arm = Rc::new(MatchArm {
         pattern: Rc::new(Pattern::Wild),
-        body: Rc::new(Expr {
-            kind: Rc::new(ExprKind::Call {
-                func: Expr::local_var("M.break_match"),
-                args: vec![],
-                purity: Purity::Effectful,
-                from_user: false,
-            }),
-            ty: None,
+        body: Rc::new(Expr::Call {
+            func: Expr::local_var("M.break_match"),
+            args: vec![],
+            purity: Purity::Effectful,
+            from_user: false,
         }),
     });
 
@@ -193,221 +80,104 @@ fn build_inner_match(
                 name,
                 is_with_ref,
                 pattern,
-            } => Rc::new(Expr {
-                ty: body.ty.clone(),
-                kind: Rc::new(ExprKind::Let {
-                    is_monadic: false,
-                    name: Some(name.clone()),
-                    init: match is_with_ref {
-                        None => Expr::local_var(&scrutinee).copy(),
-                        Some(is_with_ref) => {
-                            let func = if *is_with_ref { "borrow_mut" } else { "borrow" };
+            } => Rc::new(Expr::Let {
+                is_monadic: false,
+                name: Some(name.clone()),
+                init: match is_with_ref {
+                    None => Expr::local_var(&scrutinee).copy(),
+                    Some(is_with_ref) => {
+                        let func = if *is_with_ref { "borrow_mut" } else { "borrow" };
 
-                            Rc::new(Expr {
-                                ty: None,
-                                kind: Rc::new(ExprKind::Call {
-                                    func: Expr::local_var(func),
-                                    args: vec![Expr::local_var(&scrutinee)],
-                                    purity: Purity::Pure,
-                                    from_user: false,
-                                })
-                                .alloc(None),
-                            })
-                        }
-                    },
-                    body: match pattern {
-                        None => body,
-                        Some(pattern) => {
-                            build_inner_match(vec![(scrutinee, pattern.clone())], body, depth + 1)
-                        }
-                    },
-                }),
+                        Rc::new(Expr::Call {
+                            func: Expr::local_var(func),
+                            args: vec![Expr::local_var(&scrutinee)],
+                            purity: Purity::Pure,
+                            from_user: false,
+                        })
+                        .alloc()
+                    }
+                },
+                body: match pattern {
+                    None => body,
+                    Some(pattern) => {
+                        build_inner_match(vec![(scrutinee, pattern.clone())], body, depth + 1)
+                    }
+                },
             }),
-            Pattern::StructStruct(path, fields, struct_or_variant) => Rc::new(Expr {
-                ty: body.ty.clone(),
-                kind: Rc::new(ExprKind::Match {
-                    scrutinee: Expr::local_var(&scrutinee).read(),
-                    arms: [
-                        vec![Rc::new(MatchArm {
-                            pattern: Rc::new(Pattern::StructStruct(
-                                path.clone(),
+            Pattern::StructStruct(path, fields, struct_or_variant) => Rc::new(Expr::Match {
+                scrutinee: Expr::local_var(&scrutinee).read(),
+                arms: [
+                    vec![Rc::new(MatchArm {
+                        pattern: Rc::new(Pattern::StructStruct(
+                            path.clone(),
+                            fields
+                                .iter()
+                                .map(|(field_name, _)| (field_name.clone(), Rc::new(Pattern::Wild)))
+                                .collect(),
+                            *struct_or_variant,
+                        )),
+                        body: {
+                            let body = build_inner_match(
                                 fields
                                     .iter()
-                                    .map(|(field_name, _)| {
-                                        (field_name.clone(), Rc::new(Pattern::Wild))
+                                    .enumerate()
+                                    .map(|(index, (_, field_pattern))| {
+                                        (format!("γ{depth}_{index}"), field_pattern.clone())
                                     })
                                     .collect(),
-                                *struct_or_variant,
-                            )),
-                            body: {
-                                let body = build_inner_match(
-                                    fields
-                                        .iter()
-                                        .enumerate()
-                                        .map(|(index, (_, field_pattern))| {
-                                            (format!("γ{depth}_{index}"), field_pattern.clone())
-                                        })
-                                        .collect(),
-                                    body,
-                                    depth + 1,
-                                );
+                                body,
+                                depth + 1,
+                            );
 
-                                fields.iter().enumerate().rfold(
-                                    body,
-                                    |body, (index, (field_name, _))| {
-                                        let getter_path = match struct_or_variant {
-                                            StructOrVariant::Struct => Path::concat(&[
-                                                path.clone(),
-                                                Path::new(&[format!("Get_{field_name}")]),
-                                            ]),
-                                            StructOrVariant::Variant { .. } => Path::concat(&[
-                                                Path::new(
-                                                    &path.segments[0..path.segments.len() - 1],
-                                                ),
-                                                Path::new(&[format!(
-                                                    "Get_{variant}_{field_name}",
-                                                    variant = path.segments.last().unwrap()
-                                                )]),
-                                            ]),
-                                        };
-
-                                        Rc::new(Expr {
-                                            ty: body.ty.clone(),
-                                            kind: Rc::new(ExprKind::Let {
-                                                is_monadic: false,
-                                                name: Some(format!("γ{depth}_{index}")),
-                                                init: Rc::new(Expr {
-                                                    ty: None,
-                                                    kind: Rc::new(ExprKind::Call {
-                                                        func: Rc::new(Expr {
-                                                            kind: Rc::new(ExprKind::Var(
-                                                                getter_path,
-                                                            )),
-                                                            ty: None,
-                                                        }),
-                                                        args: vec![Expr::local_var(&scrutinee)],
-                                                        purity: Purity::Pure,
-                                                        from_user: false,
-                                                    }),
-                                                }),
-                                                body,
-                                            }),
-                                        })
-                                    },
-                                )
-                            },
-                        })],
-                        match struct_or_variant {
-                            StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
-                                vec![]
-                            }
-                            StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
-                        },
-                    ]
-                    .concat(),
-                }),
-            }),
-            Pattern::StructTuple(path, patterns, struct_or_variant) => Rc::new(Expr {
-                ty: body.ty.clone(),
-                kind: Rc::new(ExprKind::Match {
-                    scrutinee: Expr::local_var(&scrutinee).read(),
-                    arms: [
-                        vec![Rc::new(MatchArm {
-                            pattern: Rc::new(Pattern::StructTuple(
-                                path.clone(),
-                                patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
-                                *struct_or_variant,
-                            )),
-                            body: {
-                                let body = build_inner_match(
-                                    patterns
-                                        .iter()
-                                        .enumerate()
-                                        .map(|(index, pattern)| {
-                                            (format!("γ{depth}_{index}"), pattern.clone())
-                                        })
-                                        .collect(),
-                                    body,
-                                    depth + 1,
-                                );
-
-                                patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                            fields.iter().enumerate().rfold(
+                                body,
+                                |body, (index, (field_name, _))| {
                                     let getter_path = match struct_or_variant {
                                         StructOrVariant::Struct => Path::concat(&[
                                             path.clone(),
-                                            Path::new(&[format!("Get_{index}")]),
+                                            Path::new(&[format!("Get_{field_name}")]),
                                         ]),
                                         StructOrVariant::Variant { .. } => Path::concat(&[
                                             Path::new(&path.segments[0..path.segments.len() - 1]),
                                             Path::new(&[format!(
-                                                "Get_{variant}_{index}",
-                                                variant = path.segments.last().unwrap(),
+                                                "Get_{variant}_{field_name}",
+                                                variant = path.segments.last().unwrap()
                                             )]),
                                         ]),
                                     };
 
-                                    Rc::new(Expr {
-                                        ty: body.ty.clone(),
-                                        kind: Rc::new(ExprKind::Let {
-                                            is_monadic: false,
-                                            name: Some(format!("γ{depth}_{index}")),
-                                            init: Rc::new(Expr {
-                                                ty: None,
-                                                kind: Rc::new(ExprKind::Call {
-                                                    func: Rc::new(Expr {
-                                                        kind: Rc::new(ExprKind::Var(getter_path)),
-                                                        ty: None,
-                                                    }),
-                                                    args: vec![Expr::local_var(&scrutinee)],
-                                                    purity: Purity::Pure,
-                                                    from_user: false,
-                                                }),
-                                            }),
-                                            body,
+                                    Rc::new(Expr::Let {
+                                        is_monadic: false,
+                                        name: Some(format!("γ{depth}_{index}")),
+                                        init: Rc::new(Expr::Call {
+                                            func: Rc::new(Expr::Var(getter_path)),
+                                            args: vec![Expr::local_var(&scrutinee)],
+                                            purity: Purity::Pure,
+                                            from_user: false,
                                         }),
+                                        body,
                                     })
-                                })
-                            },
-                        })],
-                        match struct_or_variant {
-                            StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
-                                vec![]
-                            }
-                            StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
+                                },
+                            )
                         },
-                    ]
-                    .concat(),
-                }),
+                    })],
+                    match struct_or_variant {
+                        StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
+                            vec![]
+                        }
+                        StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
+                    },
+                ]
+                .concat(),
             }),
-            Pattern::Deref(pattern) => Rc::new(Expr {
-                ty: body.ty.clone(),
-                kind: Rc::new(ExprKind::Let {
-                    is_monadic: false,
-                    name: Some(scrutinee.clone()),
-                    init: Rc::new(Expr {
-                        ty: None,
-                        kind: Rc::new(ExprKind::Call {
-                            func: Expr::local_var("deref"),
-                            args: vec![Expr::local_var(&scrutinee).read()],
-                            purity: Purity::Pure,
-                            from_user: false,
-                        }),
-                    }),
-                    body: build_inner_match(
-                        vec![(scrutinee.clone(), pattern.clone())],
-                        body,
-                        depth + 1,
-                    ),
-                }),
-            }),
-            Pattern::Or(_) => panic!("Or pattern should have been flattened"),
-            Pattern::Tuple(patterns) => Rc::new(Expr {
-                ty: body.ty.clone(),
-                kind: Rc::new(ExprKind::Match {
-                    scrutinee: Expr::local_var(&scrutinee).read(),
-                    arms: vec![Rc::new(MatchArm {
-                        pattern: Rc::new(Pattern::Tuple(
+            Pattern::StructTuple(path, patterns, struct_or_variant) => Rc::new(Expr::Match {
+                scrutinee: Expr::local_var(&scrutinee).read(),
+                arms: [
+                    vec![Rc::new(MatchArm {
+                        pattern: Rc::new(Pattern::StructTuple(
+                            path.clone(),
                             patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
+                            *struct_or_variant,
                         )),
                         body: {
                             let body = build_inner_match(
@@ -423,165 +193,201 @@ fn build_inner_match(
                             );
 
                             patterns.iter().enumerate().rfold(body, |body, (index, _)| {
-                                Rc::new(Expr {
-                                    ty: body.ty.clone(),
-                                    kind: Rc::new(ExprKind::Let {
-                                        is_monadic: false,
-                                        name: Some(format!("γ{depth}_{index}")),
-                                        init: {
-                                            let init = (0..(patterns.len() - 1 - index)).fold(
-                                                Expr::local_var(&scrutinee),
-                                                |init, _| {
-                                                    Rc::new(Expr {
-                                                        ty: None,
-                                                        kind: Rc::new(ExprKind::Call {
-                                                            func: Expr::local_var(
-                                                                "Tuple.Access.left",
-                                                            ),
-                                                            args: vec![init],
-                                                            purity: Purity::Pure,
-                                                            from_user: false,
-                                                        }),
-                                                    })
-                                                },
-                                            );
+                                let getter_path = match struct_or_variant {
+                                    StructOrVariant::Struct => Path::concat(&[
+                                        path.clone(),
+                                        Path::new(&[format!("Get_{index}")]),
+                                    ]),
+                                    StructOrVariant::Variant { .. } => Path::concat(&[
+                                        Path::new(&path.segments[0..path.segments.len() - 1]),
+                                        Path::new(&[format!(
+                                            "Get_{variant}_{index}",
+                                            variant = path.segments.last().unwrap(),
+                                        )]),
+                                    ]),
+                                };
 
-                                            if index == 0 {
-                                                init
-                                            } else {
-                                                Rc::new(Expr {
-                                                    ty: None,
-                                                    kind: Rc::new(ExprKind::Call {
-                                                        func: Expr::local_var("Tuple.Access.right"),
-                                                        args: vec![init],
-                                                        purity: Purity::Pure,
-                                                        from_user: false,
-                                                    }),
-                                                })
-                                            }
-                                        },
-                                        body,
+                                Rc::new(Expr::Let {
+                                    is_monadic: false,
+                                    name: Some(format!("γ{depth}_{index}")),
+                                    init: Rc::new(Expr::Call {
+                                        func: Rc::new(Expr::Var(getter_path)),
+                                        args: vec![Expr::local_var(&scrutinee)],
+                                        purity: Purity::Pure,
+                                        from_user: false,
                                     }),
+                                    body,
                                 })
                             })
                         },
                     })],
-                }),
+                    match struct_or_variant {
+                        StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
+                            vec![]
+                        }
+                        StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
+                    },
+                ]
+                .concat(),
             }),
-            Pattern::Lit(_) => Rc::new(Expr {
-                ty: body.ty.clone(),
-                kind: Rc::new(ExprKind::Match {
-                    scrutinee: Expr::local_var(&scrutinee).read(),
-                    arms: vec![
-                        Rc::new(MatchArm {
-                            pattern: pattern.clone(),
-                            body,
-                        }),
-                        default_match_arm.clone(),
-                    ],
+            Pattern::Deref(pattern) => Rc::new(Expr::Let {
+                is_monadic: false,
+                name: Some(scrutinee.clone()),
+                init: Rc::new(Expr::Call {
+                    func: Expr::local_var("deref"),
+                    args: vec![Expr::local_var(&scrutinee).read()],
+                    purity: Purity::Pure,
+                    from_user: false,
                 }),
+                body: build_inner_match(
+                    vec![(scrutinee.clone(), pattern.clone())],
+                    body,
+                    depth + 1,
+                ),
+            }),
+            Pattern::Or(_) => panic!("Or pattern should have been flattened"),
+            Pattern::Tuple(patterns) => Rc::new(Expr::Match {
+                scrutinee: Expr::local_var(&scrutinee).read(),
+                arms: vec![Rc::new(MatchArm {
+                    pattern: Rc::new(Pattern::Tuple(
+                        patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
+                    )),
+                    body: {
+                        let body = build_inner_match(
+                            patterns
+                                .iter()
+                                .enumerate()
+                                .map(|(index, pattern)| {
+                                    (format!("γ{depth}_{index}"), pattern.clone())
+                                })
+                                .collect(),
+                            body,
+                            depth + 1,
+                        );
+
+                        patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                            Rc::new(Expr::Let {
+                                is_monadic: false,
+                                name: Some(format!("γ{depth}_{index}")),
+                                init: {
+                                    let init = (0..(patterns.len() - 1 - index)).fold(
+                                        Expr::local_var(&scrutinee),
+                                        |init, _| {
+                                            Rc::new(Expr::Call {
+                                                func: Expr::local_var("Tuple.Access.left"),
+                                                args: vec![init],
+                                                purity: Purity::Pure,
+                                                from_user: false,
+                                            })
+                                        },
+                                    );
+
+                                    if index == 0 {
+                                        init
+                                    } else {
+                                        Rc::new(Expr::Call {
+                                            func: Expr::local_var("Tuple.Access.right"),
+                                            args: vec![init],
+                                            purity: Purity::Pure,
+                                            from_user: false,
+                                        })
+                                    }
+                                },
+                                body,
+                            })
+                        })
+                    },
+                })],
+            }),
+            Pattern::Lit(_) => Rc::new(Expr::Match {
+                scrutinee: Expr::local_var(&scrutinee).read(),
+                arms: vec![
+                    Rc::new(MatchArm {
+                        pattern: pattern.clone(),
+                        body,
+                    }),
+                    default_match_arm.clone(),
+                ],
             }),
             Pattern::Slice {
                 init_patterns,
                 slice_pattern,
-            } => Rc::new(Expr {
-                ty: body.ty.clone(),
-                kind: Rc::new(ExprKind::Match {
-                    scrutinee: Expr::local_var(&scrutinee).read(),
-                    arms: vec![
-                        Rc::new(MatchArm {
-                            pattern: Rc::new(Pattern::Slice {
-                                init_patterns: init_patterns
-                                    .iter()
-                                    .map(|_| Rc::new(Pattern::Wild))
-                                    .collect(),
-                                slice_pattern: slice_pattern
-                                    .as_ref()
-                                    .map(|_| Rc::new(Pattern::Wild)),
-                            }),
-                            body: {
-                                let body = build_inner_match(
-                                    [
-                                        init_patterns
-                                            .iter()
-                                            .enumerate()
-                                            .map(|(index, pattern)| {
-                                                (format!("γ{depth}_{index}"), pattern.clone())
-                                            })
-                                            .collect(),
-                                        match slice_pattern {
-                                            None => vec![],
-                                            Some(slice_pattern) => {
-                                                vec![(
-                                                    format!("γ{depth}_slice"),
-                                                    slice_pattern.clone(),
-                                                )]
-                                            }
-                                        },
-                                    ]
-                                    .concat(),
-                                    body,
-                                    depth + 1,
-                                );
-
-                                let body = match slice_pattern {
-                                    None => body,
-                                    Some(_) => Rc::new(Expr {
-                                        ty: body.ty.clone(),
-                                        kind: Rc::new(ExprKind::Let {
-                                            is_monadic: false,
-                                            name: Some(format!("γ{depth}_slice")),
-                                            init: Rc::new(Expr {
-                                                ty: None,
-                                                kind: Rc::new(ExprKind::Call {
-                                                    func: Expr::local_var(&format!(
-                                                        "[{}].slice",
-                                                        init_patterns.len()
-                                                    )),
-                                                    args: vec![Expr::local_var(&scrutinee)],
-                                                    purity: Purity::Pure,
-                                                    from_user: false,
-                                                }),
-                                            }),
-                                            body,
-                                        }),
-                                    }),
-                                };
-
-                                init_patterns
-                                    .iter()
-                                    .enumerate()
-                                    .rfold(body, |body, (index, _)| {
-                                        Rc::new(Expr {
-                                            ty: body.ty.clone(),
-                                            kind: Rc::new(ExprKind::Let {
-                                                is_monadic: false,
-                                                name: Some(format!("γ{depth}_{index}")),
-                                                init: Rc::new(Expr {
-                                                    ty: None,
-                                                    kind: Rc::new(ExprKind::Call {
-                                                        func: Expr::local_var(&format!(
-                                                            "[{index}]"
-                                                        )),
-                                                        args: vec![Expr::local_var(&scrutinee)],
-                                                        purity: Purity::Pure,
-                                                        from_user: false,
-                                                    }),
-                                                }),
-                                                body,
-                                            }),
-                                        })
-                                    })
-                            },
+            } => Rc::new(Expr::Match {
+                scrutinee: Expr::local_var(&scrutinee).read(),
+                arms: vec![
+                    Rc::new(MatchArm {
+                        pattern: Rc::new(Pattern::Slice {
+                            init_patterns: init_patterns
+                                .iter()
+                                .map(|_| Rc::new(Pattern::Wild))
+                                .collect(),
+                            slice_pattern: slice_pattern.as_ref().map(|_| Rc::new(Pattern::Wild)),
                         }),
-                        default_match_arm.clone(),
-                    ],
-                }),
+                        body: {
+                            let body = build_inner_match(
+                                [
+                                    init_patterns
+                                        .iter()
+                                        .enumerate()
+                                        .map(|(index, pattern)| {
+                                            (format!("γ{depth}_{index}"), pattern.clone())
+                                        })
+                                        .collect(),
+                                    match slice_pattern {
+                                        None => vec![],
+                                        Some(slice_pattern) => {
+                                            vec![(format!("γ{depth}_slice"), slice_pattern.clone())]
+                                        }
+                                    },
+                                ]
+                                .concat(),
+                                body,
+                                depth + 1,
+                            );
+
+                            let body = match slice_pattern {
+                                None => body,
+                                Some(_) => Rc::new(Expr::Let {
+                                    is_monadic: false,
+                                    name: Some(format!("γ{depth}_slice")),
+                                    init: Rc::new(Expr::Call {
+                                        func: Expr::local_var(&format!(
+                                            "[{}].slice",
+                                            init_patterns.len()
+                                        )),
+                                        args: vec![Expr::local_var(&scrutinee)],
+                                        purity: Purity::Pure,
+                                        from_user: false,
+                                    }),
+                                    body,
+                                }),
+                            };
+
+                            init_patterns
+                                .iter()
+                                .enumerate()
+                                .rfold(body, |body, (index, _)| {
+                                    Rc::new(Expr::Let {
+                                        is_monadic: false,
+                                        name: Some(format!("γ{depth}_{index}")),
+                                        init: Rc::new(Expr::Call {
+                                            func: Expr::local_var(&format!("[{index}]")),
+                                            args: vec![Expr::local_var(&scrutinee)],
+                                            purity: Purity::Pure,
+                                            from_user: false,
+                                        }),
+                                        body,
+                                    })
+                                })
+                        },
+                    }),
+                    default_match_arm.clone(),
+                ],
             }),
         })
 }
 
-fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>, _ty: Option<Rc<CoqType>>) -> Rc<ExprKind> {
+fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
     let arms_with_flatten_patterns = arms.into_iter().flat_map(|MatchArm { pattern, body }| {
         pattern
             .flatten_ors()
@@ -592,30 +398,20 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>, _ty: Option<Rc<CoqType>
             })
     });
 
-    Rc::new(ExprKind::Call {
+    Rc::new(Expr::Call {
         func: Expr::local_var("match_operator"),
         args: vec![
             scrutinee,
-            Rc::new(Expr {
-                kind: Rc::new(ExprKind::Array {
-                    elements: arms_with_flatten_patterns
-                        .map(|MatchArm { pattern, body }| {
-                            Rc::new(Expr {
-                                kind: Rc::new(ExprKind::Lambda {
-                                    args: vec![("γ".to_string(), None)],
-                                    body: build_inner_match(
-                                        vec![("γ".to_string(), pattern)],
-                                        body,
-                                        0,
-                                    ),
-                                    is_for_match: true,
-                                }),
-                                ty: None,
-                            })
+            Rc::new(Expr::Array {
+                elements: arms_with_flatten_patterns
+                    .map(|MatchArm { pattern, body }| {
+                        Rc::new(Expr::Lambda {
+                            args: vec![("γ".to_string(), None)],
+                            body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
+                            is_for_match: true,
                         })
-                        .collect(),
-                }),
-                ty: None,
+                    })
+                    .collect(),
             }),
         ],
         purity: Purity::Effectful,
@@ -676,38 +472,35 @@ fn compile_literal_integer(
     }
 }
 
-fn compile_expr_kind<'a>(
+pub(crate) fn compile_expr<'a>(
     env: &Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     expr_id: &rustc_middle::thir::ExprId,
-) -> Rc<ExprKind> {
+) -> Rc<Expr> {
     let expr = thir.exprs.get(*expr_id).unwrap();
     let ty = compile_type(env, &expr.ty);
 
     match &expr.kind {
-        thir::ExprKind::Scope { value, .. } => compile_expr_kind(env, thir, value),
+        thir::ExprKind::Scope { value, .. } => compile_expr(env, thir, value),
         thir::ExprKind::Box { value } => {
             let value_ty = compile_type(env, &thir.exprs.get(*value).unwrap().ty);
             let value = compile_expr(env, thir, value);
 
-            Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::AssociatedFunction {
-                        ty: Rc::new(CoqType::Application {
-                            func: Rc::new(CoqType::Path {
-                                path: Rc::new(Path::new(&["alloc", "boxed", "Box"])),
-                            }),
-                            args: vec![
-                                value_ty,
-                                Rc::new(CoqType::Path {
-                                    path: Rc::new(Path::new(&["alloc", "alloc", "Global"])),
-                                }),
-                            ],
-                            is_alias: false,
+            Rc::new(Expr::Call {
+                func: Rc::new(Expr::AssociatedFunction {
+                    ty: Rc::new(CoqType::Application {
+                        func: Rc::new(CoqType::Path {
+                            path: Rc::new(Path::new(&["alloc", "boxed", "Box"])),
                         }),
-                        func: "new".to_string(),
+                        args: vec![
+                            value_ty,
+                            Rc::new(CoqType::Path {
+                                path: Rc::new(Path::new(&["alloc", "alloc", "Global"])),
+                            }),
+                        ],
+                        is_alias: false,
                     }),
-                    ty: None,
+                    func: "new".to_string(),
                 }),
                 args: vec![value],
                 purity: Purity::Effectful,
@@ -739,13 +532,12 @@ fn compile_expr_kind<'a>(
                             body: failure,
                         },
                     ],
-                    Some(ty),
                 );
             }
 
             let condition = compile_expr(env, thir, cond).read();
 
-            Rc::new(ExprKind::If {
+            Rc::new(Expr::If {
                 condition,
                 success,
                 failure,
@@ -761,8 +553,8 @@ fn compile_expr_kind<'a>(
                 let default = (Purity::Effectful, true);
 
                 match func.match_simple_call(&["M.alloc"]).as_ref() {
-                    Some(expr) => match expr.kind.as_ref() {
-                        ExprKind::Constructor(_) => (Purity::Pure, false),
+                    Some(expr) => match expr.as_ref() {
+                        Expr::Constructor(_) => (Purity::Pure, false),
                         _ => default,
                     },
                     _ => default,
@@ -770,15 +562,15 @@ fn compile_expr_kind<'a>(
             };
             let func = func.read();
 
-            Rc::new(ExprKind::Call {
+            Rc::new(Expr::Call {
                 func,
                 args,
                 purity,
                 from_user,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
-        thir::ExprKind::Deref { arg } => compile_expr_kind(env, thir, arg).read(),
+        thir::ExprKind::Deref { arg } => compile_expr(env, thir, arg).read(),
         thir::ExprKind::Binary { op, lhs, rhs } => {
             let left_ty = compile_type(env, &thir.exprs.get(*lhs).unwrap().ty);
             let right_ty = compile_type(env, &thir.exprs.get(*rhs).unwrap().ty);
@@ -786,16 +578,13 @@ fn compile_expr_kind<'a>(
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 
-            Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar(path.to_string())),
-                    ty: None,
-                }),
+            Rc::new(Expr::Call {
+                func: Expr::local_var(path),
                 args: vec![lhs.read(), rhs.read()],
                 purity,
                 from_user: false,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
         thir::ExprKind::LogicalOp { op, lhs, rhs } => {
             let path = match op {
@@ -805,16 +594,13 @@ fn compile_expr_kind<'a>(
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 
-            Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar(path.to_string())),
-                    ty: None,
-                }),
+            Rc::new(Expr::Call {
+                func: Expr::local_var(path),
                 args: vec![lhs.read(), rhs.read()],
                 purity: Purity::Pure,
                 from_user: false,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
         thir::ExprKind::Unary { op, arg } => {
             let (path, purity) = match op {
@@ -823,73 +609,64 @@ fn compile_expr_kind<'a>(
             };
             let arg = compile_expr(env, thir, arg);
 
-            Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar(path.to_string())),
-                    ty: None,
-                }),
+            Rc::new(Expr::Call {
+                func: Expr::local_var(path),
                 args: vec![arg.read()],
                 purity,
                 from_user: false,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
         thir::ExprKind::Cast { source } => {
             let func = Expr::local_var("M.rust_cast");
             let source = compile_expr(env, thir, source);
 
-            Rc::new(ExprKind::Call {
+            Rc::new(Expr::Call {
                 func,
                 args: vec![source.read()],
                 purity: Purity::Pure,
                 from_user: false,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
         thir::ExprKind::Use { source } => {
             let source = compile_expr(env, thir, source);
 
-            Rc::new(ExprKind::Use(source))
+            Rc::new(Expr::Use(source))
         }
         thir::ExprKind::NeverToAny { source } => {
-            let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("M.never_to_any".to_string())),
-                ty: None,
-            });
+            let func = Expr::local_var("M.never_to_any");
             let source = compile_expr(env, thir, source);
-            Rc::new(ExprKind::Call {
+
+            Rc::new(Expr::Call {
                 func,
                 args: vec![source.read()],
                 purity: Purity::Effectful,
                 from_user: false,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
         thir::ExprKind::PointerCoercion { source, cast } => {
-            let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("M.pointer_coercion".to_string())),
-                ty: None,
-            });
+            let func = Expr::local_var("M.pointer_coercion");
             let source = compile_expr(env, thir, source).read();
-            let cast = Rc::new(Expr {
-                kind: Rc::new(ExprKind::Message(format!("{cast:?}"))),
-                ty: None,
-            });
-            Rc::new(ExprKind::Call {
+            let cast = Rc::new(Expr::Message(format!("{cast:?}")));
+
+            Rc::new(Expr::Call {
                 func,
                 args: vec![cast, source],
                 purity: Purity::Pure,
                 from_user: false,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
         thir::ExprKind::Loop { body, .. } => {
             let body = compile_expr(env, thir, body);
-            Rc::new(ExprKind::Loop { body })
+
+            Rc::new(Expr::Loop { body })
         }
-        thir::ExprKind::Let { .. } => Rc::new(ExprKind::Message(
-            "`if let` expected into an `if`".to_string(),
-        )),
+        thir::ExprKind::Let { .. } => {
+            Rc::new(Expr::Message("`if let` expected into an `if`".to_string()))
+        }
         thir::ExprKind::Match {
             scrutinee, arms, ..
         } => {
@@ -903,21 +680,18 @@ fn compile_expr_kind<'a>(
                     MatchArm { pattern, body }
                 })
                 .collect();
-            build_match(scrutinee, arms, Some(ty.val()))
+
+            build_match(scrutinee, arms)
         }
-        thir::ExprKind::Block { block: block_id } => {
-            compile_block(env, thir, block_id).kind.clone()
-        }
+        thir::ExprKind::Block { block: block_id } => compile_block(env, thir, block_id),
         thir::ExprKind::Assign { lhs, rhs } => {
-            let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("M.assign".to_string())),
-                ty: None,
-            });
+            let func = Expr::local_var("M.assign");
             let args = vec![
                 compile_expr(env, thir, lhs),
                 compile_expr(env, thir, rhs).read(),
             ];
-            Rc::new(ExprKind::Call {
+
+            Rc::new(Expr::Call {
                 func,
                 args,
                 purity: Purity::Effectful,
@@ -931,45 +705,23 @@ fn compile_expr_kind<'a>(
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 
-            Rc::new(ExprKind::Let {
+            Rc::new(Expr::Let {
                 is_monadic: false,
                 name: Some("β".to_string()),
                 init: lhs,
-                body: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::Call {
-                        func: Rc::new(Expr {
-                            kind: Rc::new(ExprKind::LocalVar("M.assign".to_string())),
-                            ty: None,
+                body: Rc::new(Expr::Call {
+                    func: Expr::local_var("M.assign"),
+                    args: vec![
+                        Expr::local_var("β"),
+                        Rc::new(Expr::Call {
+                            func: Expr::local_var(path),
+                            args: vec![Expr::local_var("β").read(), rhs.read()],
+                            purity,
+                            from_user: false,
                         }),
-                        args: vec![
-                            Rc::new(Expr {
-                                kind: Rc::new(ExprKind::LocalVar("β".to_string())),
-                                ty: None,
-                            }),
-                            Rc::new(Expr {
-                                kind: Rc::new(ExprKind::Call {
-                                    func: Rc::new(Expr {
-                                        kind: Rc::new(ExprKind::LocalVar(path.to_string())),
-                                        ty: None,
-                                    }),
-                                    args: vec![
-                                        Rc::new(Expr {
-                                            kind: Rc::new(ExprKind::LocalVar("β".to_string())),
-                                            ty: None,
-                                        })
-                                        .read(),
-                                        rhs.read(),
-                                    ],
-                                    purity,
-                                    from_user: false,
-                                }),
-                                ty: None,
-                            }),
-                        ],
-                        purity: Purity::Effectful,
-                        from_user: false,
-                    }),
-                    ty: None,
+                    ],
+                    purity: Purity::Effectful,
+                    from_user: false,
                 }),
             })
         }
@@ -996,16 +748,10 @@ fn compile_expr_kind<'a>(
                     } else {
                         format!("\"{name}\"")
                     };
-                    let index = Rc::new(Expr {
-                        kind: Rc::new(ExprKind::LocalVar(name_as_index)),
-                        ty: None,
-                    });
+                    let index = Expr::local_var(&name_as_index);
 
-                    Rc::new(ExprKind::Call {
-                        func: Rc::new(Expr {
-                            kind: Rc::new(ExprKind::LocalVar(getter_name.to_string())),
-                            ty: None,
-                        }),
+                    Rc::new(Expr::Call {
+                        func: Expr::local_var(getter_name),
                         args: vec![base, index],
                         purity: Purity::Pure,
                         from_user: false,
@@ -1019,7 +765,7 @@ fn compile_expr_kind<'a>(
                         "Please report the error!",
                     );
 
-                    Rc::new(ExprKind::Message("Unknown Field".to_string()))
+                    Rc::new(Expr::Message("Unknown Field".to_string()))
                 }
             }
         }
@@ -1027,79 +773,70 @@ fn compile_expr_kind<'a>(
             let base = compile_expr(env, thir, lhs);
             let index = compile_expr(env, thir, index);
 
-            Rc::new(ExprKind::Index { base, index })
+            Rc::new(Expr::Index { base, index })
         }
         thir::ExprKind::VarRef { id } => {
             let name = to_valid_coq_name(env.tcx.hir().opt_name(id.0).unwrap().as_str());
 
-            Rc::new(ExprKind::LocalVar(name))
+            Rc::new(Expr::LocalVar(name))
         }
         thir::ExprKind::UpvarRef { var_hir_id, .. } => {
             let name = to_valid_coq_name(env.tcx.hir().opt_name(var_hir_id.0).unwrap().as_str());
 
-            Rc::new(ExprKind::LocalVar(name))
+            Rc::new(Expr::LocalVar(name))
         }
         thir::ExprKind::Borrow {
             borrow_kind: _,
             arg,
         }
-        | thir::ExprKind::AddressOf { mutability: _, arg } => {
-            compile_expr_kind(env, thir, arg).alloc(Some(ty))
-        }
-        thir::ExprKind::Break { .. } => Rc::new(ExprKind::ControlFlow(LoopControlFlow::Break)),
-        thir::ExprKind::Continue { .. } => {
-            Rc::new(ExprKind::ControlFlow(LoopControlFlow::Continue))
-        }
+        | thir::ExprKind::AddressOf { mutability: _, arg } => compile_expr(env, thir, arg).alloc(),
+        thir::ExprKind::Break { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Break)),
+        thir::ExprKind::Continue { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Continue)),
         thir::ExprKind::Return { value } => {
             let value = match value {
                 Some(value) => compile_expr(env, thir, value).read(),
                 None => Expr::tt().read(),
             };
 
-            Rc::new(ExprKind::Return(value))
+            Rc::new(Expr::Return(value))
         }
         rustc_middle::thir::ExprKind::Become { value } => {
             let value = compile_expr(env, thir, value).read();
 
-            Rc::new(ExprKind::Return(value))
+            Rc::new(Expr::Return(value))
         }
-        thir::ExprKind::ConstBlock { did, .. } => Rc::new(ExprKind::Var(compile_def_id(env, *did))),
+        thir::ExprKind::ConstBlock { did, .. } => Rc::new(Expr::Var(compile_def_id(env, *did))),
         thir::ExprKind::Repeat { value, count } => {
-            let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("repeat".to_string())),
-                ty: None,
-            });
+            let func = Expr::local_var("repeat");
             let args = vec![
                 compile_expr(env, thir, value).read(),
-                Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar(count.to_string())),
-                    ty: None,
-                }),
+                Expr::local_var(&count.to_string()),
             ];
-            Rc::new(ExprKind::Call {
+
+            Rc::new(Expr::Call {
                 func,
                 args,
                 purity: Purity::Pure,
                 from_user: false,
             })
-            .alloc(Some(ty))
+            .alloc()
         }
-        thir::ExprKind::Array { fields } => Rc::new(ExprKind::Array {
+        thir::ExprKind::Array { fields } => Rc::new(Expr::Array {
             elements: fields
                 .iter()
                 .map(|field| compile_expr(env, thir, field).read())
                 .collect(),
         })
-        .alloc(Some(ty)),
+        .alloc(),
         thir::ExprKind::Tuple { fields } => {
             let elements: Vec<_> = fields
                 .iter()
                 .map(|field| compile_expr(env, thir, field).read())
                 .collect();
             if elements.is_empty() {
-                ExprKind::tt()
+                Expr::tt()
             } else {
-                Rc::new(ExprKind::Tuple { elements }).alloc(Some(ty))
+                Rc::new(Expr::Tuple { elements }).alloc()
             }
         }
         thir::ExprKind::Adt(adt_expr) => {
@@ -1109,7 +846,7 @@ fn compile_expr_kind<'a>(
                 fields,
                 base,
                 ..
-            } = &**adt_expr;
+            } = adt_expr.as_ref();
             let variant = adt_def.variant(*variant_index);
             let path = compile_def_id(env, variant.def_id);
             let fields: Vec<_> = fields
@@ -1137,35 +874,33 @@ fn compile_expr_kind<'a>(
                 .map(|base| compile_expr(env, thir, &base.base).read());
 
             if fields.is_empty() {
-                return Rc::new(ExprKind::StructUnit {
+                return Rc::new(Expr::StructUnit {
                     path,
                     struct_or_variant,
                 })
-                .alloc(Some(ty));
+                .alloc();
             }
 
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Rc::new(ExprKind::StructTuple {
+                Rc::new(Expr::StructTuple {
                     path,
                     fields,
                     struct_or_variant,
                 })
-                .alloc(Some(ty))
+                .alloc()
             } else {
-                Rc::new(ExprKind::StructStruct {
+                Rc::new(Expr::StructStruct {
                     path,
                     fields,
                     base,
                     struct_or_variant,
                 })
-                .alloc(Some(ty))
+                .alloc()
             }
         }
         thir::ExprKind::PlaceTypeAscription { source, .. }
-        | thir::ExprKind::ValueTypeAscription { source, .. } => {
-            compile_expr_kind(env, thir, source)
-        }
+        | thir::ExprKind::ValueTypeAscription { source, .. } => compile_expr(env, thir, source),
         thir::ExprKind::Closure(closure) => {
             let rustc_middle::thir::ClosureExpr { closure_id, .. } = closure.as_ref();
             let result = apply_on_thir(env, closure_id, |thir, expr_id| {
@@ -1192,23 +927,13 @@ fn compile_expr_kind<'a>(
                     .iter()
                     .enumerate()
                     .rfold(body, |body, (index, (pattern, _))| {
-                        let ty = body.ty.clone();
-
-                        Rc::new(Expr {
-                            kind: build_match(
-                                Rc::new(Expr {
-                                    kind: Rc::new(ExprKind::LocalVar(format!("α{index}")))
-                                        .alloc(None),
-                                    ty: None,
-                                }),
-                                vec![MatchArm {
-                                    pattern: pattern.clone(),
-                                    body,
-                                }],
-                                ty.clone(),
-                            ),
-                            ty,
-                        })
+                        build_match(
+                            Expr::local_var(&format!("α{index}")).alloc(),
+                            vec![MatchArm {
+                                pattern: pattern.clone(),
+                                body,
+                            }],
+                        )
                     });
                 let args = args
                     .iter()
@@ -1216,45 +941,41 @@ fn compile_expr_kind<'a>(
                     .map(|(index, (_, ty))| (format!("α{index}"), Some(ty.clone())))
                     .collect();
 
-                Rc::new(ExprKind::Lambda {
+                Rc::new(Expr::Lambda {
                     args,
                     body,
                     is_for_match: false,
                 })
-                .alloc(Some(ty))
+                .alloc()
             });
 
             match result {
                 Ok(expr) => expr,
-                Err(error) => Rc::new(ExprKind::Message(error)),
+                Err(error) => Rc::new(Expr::Message(error)),
             }
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
-                Rc::new(ExprKind::Literal(Literal::String(symbol.to_string())))
+                Rc::new(Expr::Literal(Literal::String(symbol.to_string())))
             }
-            rustc_ast::LitKind::Char(c) => {
-                Rc::new(ExprKind::Literal(Literal::Char(c))).alloc(Some(ty))
-            }
-            rustc_ast::LitKind::Int(i, _) => Rc::new(ExprKind::Literal(Literal::Integer(
+            rustc_ast::LitKind::Char(c) => Rc::new(Expr::Literal(Literal::Char(c))).alloc(),
+            rustc_ast::LitKind::Int(i, _) => Rc::new(Expr::Literal(Literal::Integer(
                 compile_literal_integer(env, &expr.span, &expr.ty, *neg, i),
             )))
-            .alloc(Some(ty)),
-            rustc_ast::LitKind::Bool(c) => {
-                Rc::new(ExprKind::Literal(Literal::Bool(c))).alloc(Some(ty))
-            }
-            _ => Rc::new(ExprKind::Literal(Literal::Error)),
+            .alloc(),
+            rustc_ast::LitKind::Bool(c) => Rc::new(Expr::Literal(Literal::Bool(c))).alloc(),
+            _ => Rc::new(Expr::Literal(Literal::Error)),
         },
-        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::Literal(Literal::Integer(
-            compile_literal_integer(
+        thir::ExprKind::NonHirLiteral { lit, .. } => {
+            Rc::new(Expr::Literal(Literal::Integer(compile_literal_integer(
                 env,
                 &expr.span,
                 &expr.ty,
                 false,
                 lit.try_to_uint(lit.size()).unwrap(),
-            ),
-        )))
-        .alloc(Some(ty)),
+            ))))
+            .alloc()
+        }
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
             TyKind::FnDef(def_id, generic_args) => {
                 let key = env.tcx.def_key(def_id);
@@ -1267,7 +988,7 @@ fn compile_expr_kind<'a>(
                             env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
                         let ty = compile_type(env, &parent_type);
                         let func = symbol.unwrap().to_string();
-                        ExprKind::AssociatedFunction { ty, func }
+                        Expr::AssociatedFunction { ty, func }
                     }
                     DefKind::Trait => {
                         let generics = env.tcx.generics_of(def_id);
@@ -1302,36 +1023,27 @@ fn compile_expr_kind<'a>(
                         // We know that the first type is the `Self` type
                         let self_ty = &tys.first().unwrap().1;
 
-                        ExprKind::TraitMethod {
+                        Expr::TraitMethod {
                             trait_name: parent_path,
                             method_name: symbol.unwrap().to_string(),
                             self_and_generic_tys: tys,
                         }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {
-                        ExprKind::GetFunction(compile_def_id(env, *def_id))
+                        Expr::GetFunction(compile_def_id(env, *def_id))
                     }
-                    DefKind::Variant => ExprKind::Constructor(compile_def_id(env, *def_id)),
+                    DefKind::Variant => Expr::Constructor(compile_def_id(env, *def_id)),
                     DefKind::Struct => {
                         let mut segments = compile_def_id(env, *def_id).segments;
                         segments.push("Build_t".to_string());
 
-                        ExprKind::Lambda {
+                        Expr::Lambda {
                             args: vec![("α".to_string(), None)],
-                            body: Rc::new(Expr {
-                                kind: Rc::new(ExprKind::Call {
-                                    func: Rc::new(Expr {
-                                        kind: Rc::new(ExprKind::Constructor(Path { segments })),
-                                        ty: None,
-                                    }),
-                                    args: vec![Rc::new(Expr {
-                                        kind: Rc::new(ExprKind::LocalVar("α".to_string())),
-                                        ty: None,
-                                    })],
-                                    purity: Purity::Pure,
-                                    from_user: false,
-                                }),
-                                ty: None,
+                            body: Rc::new(Expr::Call {
+                                func: Rc::new(Expr::Constructor(Path { segments })),
+                                args: vec![Expr::local_var("α")],
+                                purity: Purity::Pure,
+                                from_user: false,
                             }),
                             is_for_match: false,
                         }
@@ -1339,10 +1051,11 @@ fn compile_expr_kind<'a>(
                     _ => {
                         eprintln!("unimplemented parent_kind: {:#?}", parent_kind);
                         eprintln!("expression: {:#?}", expr);
-                        ExprKind::Message("unimplemented parent_kind".to_string())
+
+                        Expr::Message("unimplemented parent_kind".to_string())
                     }
                 })
-                .alloc(Some(ty))
+                .alloc()
             }
             _ => {
                 let error_message = "Expected a function name";
@@ -1350,39 +1063,34 @@ fn compile_expr_kind<'a>(
                     .sess
                     .struct_span_warn(expr.span, error_message)
                     .emit();
-                Rc::new(ExprKind::Message(error_message.to_string()))
+                Rc::new(Expr::Message(error_message.to_string()))
             }
         },
         thir::ExprKind::NamedConst { def_id, .. } => {
             let path = compile_def_id(env, *def_id);
-            let expr = Rc::new(ExprKind::Var(path));
+            let expr = Rc::new(Expr::Var(path));
             let parent = env.tcx.opt_parent(*def_id).unwrap();
             let parent_kind = env.tcx.def_kind(parent);
 
             if matches!(parent_kind, DefKind::Variant) {
-                return expr.alloc(Some(ty));
+                return expr.alloc();
             }
 
             expr
         }
         thir::ExprKind::ConstParam { def_id, .. } => {
-            Rc::new(ExprKind::Var(compile_def_id(env, *def_id)))
+            Rc::new(Expr::Var(compile_def_id(env, *def_id)))
         }
         thir::ExprKind::StaticRef { def_id, .. } => {
-            Rc::new(ExprKind::Var(compile_def_id(env, *def_id)))
+            Rc::new(Expr::Var(compile_def_id(env, *def_id)))
         }
-        thir::ExprKind::InlineAsm(_) => Rc::new(ExprKind::LocalVar("InlineAssembly".to_string())),
-        thir::ExprKind::OffsetOf { .. } => Rc::new(ExprKind::LocalVar("OffsetOf".to_string())),
-        thir::ExprKind::ThreadLocalRef(def_id) => {
-            Rc::new(ExprKind::Var(compile_def_id(env, *def_id)))
-        }
+        thir::ExprKind::InlineAsm(_) => Rc::new(Expr::LocalVar("InlineAssembly".to_string())),
+        thir::ExprKind::OffsetOf { .. } => Rc::new(Expr::LocalVar("OffsetOf".to_string())),
+        thir::ExprKind::ThreadLocalRef(def_id) => Rc::new(Expr::Var(compile_def_id(env, *def_id))),
         thir::ExprKind::Yield { value } => {
-            let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("yield".to_string())),
-                ty: None,
-            });
+            let func = Expr::local_var("yield");
             let args = vec![compile_expr(env, thir, value)];
-            Rc::new(ExprKind::Call {
+            Rc::new(Expr::Call {
                 func,
                 args,
                 purity: Purity::Effectful,
@@ -1415,49 +1123,37 @@ fn compile_stmts<'a>(
                 } => {
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, thir, initializer),
-                        None => Rc::new(Expr {
-                            kind: Rc::new(ExprKind::LocalVar(
-                                "Value.DeclaredButUndefined".to_string(),
-                            )),
-                            ty: None,
-                        }),
+                        None => Expr::local_var("Value.DeclaredButUndefined"),
                     };
-
                     let pattern = crate::thir_pattern::compile_pattern(env, pattern);
-                    let ty = body.ty.clone();
-                    let kind = match pattern.as_ref() {
+
+                    match pattern.as_ref() {
                         Pattern::Binding {
                             name,
                             pattern: None,
                             is_with_ref: None,
-                        } => Rc::new(ExprKind::Let {
+                        } => Rc::new(Expr::Let {
                             is_monadic: false,
                             name: Some(name.clone()),
                             init: init.copy(),
                             body,
                         }),
-                        _ => build_match(init, vec![MatchArm { pattern, body }], ty.clone()),
-                    };
-                    Rc::new(Expr { kind, ty })
+                        _ => build_match(init, vec![MatchArm { pattern, body }]),
+                    }
                 }
                 thir::StmtKind::Expr { expr: expr_id, .. } => {
                     let init = compile_expr(env, thir, expr_id);
                     let init_ty = &thir.exprs.get(*expr_id).unwrap().ty;
-
                     // Special case with the [never] type
                     if let TyKind::Never = init_ty.kind() {
                         return init;
                     }
 
-                    let ty = body.ty.clone();
-                    Rc::new(Expr {
-                        kind: Rc::new(ExprKind::Let {
-                            is_monadic: false,
-                            name: None,
-                            init,
-                            body,
-                        }),
-                        ty,
+                    Rc::new(Expr::Let {
+                        is_monadic: false,
+                        name: None,
+                        init,
+                        body,
                     })
                 }
             }
