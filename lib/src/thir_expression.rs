@@ -433,12 +433,7 @@ fn compile_literal_integer(
         TyKind::Int(int_ty) => format!("{int_ty:?}"),
         TyKind::Uint(uint_ty) => format!("{uint_ty:?}"),
         _ => {
-            emit_warning_with_note(
-                env,
-                span,
-                "Unknown integer type",
-                "Please report the error!",
-            );
+            emit_warning_with_note(env, span, "Unknown integer type", "Please report 🙏");
 
             "unknown_kind_of_integer".to_string()
         }
@@ -721,12 +716,7 @@ pub(crate) fn compile_expr<'a>(
                     })
                 }
                 None => {
-                    emit_warning_with_note(
-                        env,
-                        &expr.span,
-                        "Unknown Field",
-                        "Please report the error!",
-                    );
+                    emit_warning_with_note(env, &expr.span, "Unknown Field", "Please report 🙏");
 
                     Rc::new(Expr::Message("Unknown Field".to_string()))
                 }
@@ -1010,8 +1000,12 @@ pub(crate) fn compile_expr<'a>(
                         }
                     }
                     _ => {
-                        eprintln!("unimplemented parent_kind: {:#?}", parent_kind);
-                        eprintln!("expression: {:#?}", expr);
+                        emit_warning_with_note(
+                            env,
+                            &expr.span,
+                            "We do not support this kind of expression",
+                            &format!("Please report 🙏\n\nparent_kind: {parent_kind:#?}\nexpression: {expr:#?}"),
+                        );
 
                         Expr::Message("unimplemented parent_kind".to_string())
                     }
