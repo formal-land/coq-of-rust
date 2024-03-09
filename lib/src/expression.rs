@@ -734,7 +734,14 @@ impl Literal {
                     },
                 ]),
             ),
-            Literal::Char(c) => text(format!("\"{c}\"%char")),
+            Literal::Char(c) => paren(
+                with_paren,
+                nest([
+                    text("Value.UnicodeChar"),
+                    line(),
+                    text((*c as u32).to_string()),
+                ]),
+            ),
             Literal::String(s) => string_to_doc(with_paren, s.as_str()),
             Literal::Error => text("UnsupportedLiteral"),
         }

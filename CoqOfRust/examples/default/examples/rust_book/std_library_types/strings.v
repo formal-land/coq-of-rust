@@ -320,7 +320,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ]) in
       M.pure (M.use α4) in
     let* chars_to_trim :=
-      let* α0 := M.alloc (Value.Array [ " "%char; ","%char ]) in
+      let* α0 :=
+        M.alloc (Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ]) in
       M.alloc (M.pointer_coercion (* Unsize *) α0) in
     let* trimmed_str :=
       let* α0 := M.get_associated_function (Ty.path "str") "trim_matches" in

@@ -221,7 +221,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* pressed :=
-      M.alloc (Value.StructTuple "enums::WebEvent::KeyPress" [ "x"%char ]) in
+      M.alloc
+        (Value.StructTuple
+          "enums::WebEvent::KeyPress"
+          [ Value.UnicodeChar 120 ]) in
     let* pasted :=
       let* α0 :=
         M.get_trait_method

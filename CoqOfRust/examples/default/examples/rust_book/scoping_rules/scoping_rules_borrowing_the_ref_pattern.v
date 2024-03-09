@@ -99,7 +99,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* c := M.alloc "Q"%char in
+    let* c := M.alloc (Value.UnicodeChar 81) in
     let* α0 :=
       match_operator
         c

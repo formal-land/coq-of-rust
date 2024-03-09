@@ -295,7 +295,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α9
             [
               Value.Integer Integer.Usize 0;
-              " "%char;
+              Value.UnicodeChar 32;
               Value.StructTuple "core::fmt::rt::Alignment::Right" [];
               Value.Integer Integer.U32 0;
               Value.StructTuple "core::fmt::rt::Count::Implied" [];
@@ -348,7 +348,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α9
             [
               Value.Integer Integer.Usize 0;
-              "0"%char;
+              Value.UnicodeChar 48;
               Value.StructTuple "core::fmt::rt::Alignment::Left" [];
               Value.Integer Integer.U32 0;
               Value.StructTuple "core::fmt::rt::Count::Implied" [];
@@ -407,7 +407,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α12
             [
               Value.Integer Integer.Usize 0;
-              "0"%char;
+              Value.UnicodeChar 48;
               Value.StructTuple "core::fmt::rt::Alignment::Right" [];
               Value.Integer Integer.U32 0;
               Value.StructTuple "core::fmt::rt::Count::Implied" [];
@@ -490,7 +490,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α10
             [
               Value.Integer Integer.Usize 0;
-              " "%char;
+              Value.UnicodeChar 32;
               Value.StructTuple "core::fmt::rt::Alignment::Right" [];
               Value.Integer Integer.U32 0;
               Value.StructTuple "core::fmt::rt::Count::Implied" [];

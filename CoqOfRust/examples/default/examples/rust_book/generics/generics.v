@@ -33,7 +33,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "generics::Single"
           [ Value.StructTuple "generics::A" [] ]) in
     let* _char :=
-      M.alloc (Value.StructTuple "generics::SingleGen" [ "a"%char ]) in
+      M.alloc
+        (Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ]) in
     let* _t :=
       M.alloc
         (Value.StructTuple
@@ -45,7 +46,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "generics::SingleGen"
           [ Value.Integer Integer.I32 6 ]) in
     let* _char :=
-      M.alloc (Value.StructTuple "generics::SingleGen" [ "a"%char ]) in
+      M.alloc
+        (Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ]) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible

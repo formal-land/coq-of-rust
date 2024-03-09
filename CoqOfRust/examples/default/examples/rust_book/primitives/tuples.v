@@ -143,7 +143,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Value.Integer Integer.I64 (-4);
             α0;
             α1;
-            "a"%char;
+            Value.UnicodeChar 97;
             Value.Bool true
           ]) in
     let* _ :=

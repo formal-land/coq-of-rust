@@ -100,7 +100,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α11
             [
               Value.Integer Integer.Usize 0;
-              " "%char;
+              Value.UnicodeChar 32;
               Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
               Value.Integer Integer.U32 8;
               Value.StructTuple "core::fmt::rt::Count::Implied" [];
@@ -155,7 +155,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α11
             [
               Value.Integer Integer.Usize 0;
-              " "%char;
+              Value.UnicodeChar 32;
               Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
               Value.Integer Integer.U32 8;
               Value.StructTuple "core::fmt::rt::Count::Implied" [];
