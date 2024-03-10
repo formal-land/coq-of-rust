@@ -106,7 +106,6 @@ pub(crate) enum Expr {
     Lambda {
         args: Vec<(String, Option<Rc<CoqType>>)>,
         body: Rc<Expr>,
-        is_for_match: bool,
     },
     Array {
         elements: Vec<Rc<Expr>>,
@@ -387,17 +386,12 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 )
             })
         }
-        Expr::Lambda {
-            args,
-            body,
-            is_for_match,
-        } => {
+        Expr::Lambda { args, body } => {
             let (body, _) = mt_expression(FreshVars::new(), body.clone());
             (
                 pure(Rc::new(Expr::Lambda {
                     args: args.clone(),
                     body,
-                    is_for_match: *is_for_match,
                 })),
                 fresh_vars,
             )
@@ -792,11 +786,7 @@ impl Expr {
                     rhs.to_doc(true),
                 ]),
             ),
-            Expr::Lambda {
-                args,
-                body,
-                is_for_match: _,
-            } => {
+            Expr::Lambda { args, body } => {
                 if args.is_empty() {
                     paren(with_paren, body.to_doc(true))
                 } else {

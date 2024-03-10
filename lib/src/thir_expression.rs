@@ -395,7 +395,6 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
                         Rc::new(Expr::Lambda {
                             args: vec![("γ".to_string(), None)],
                             body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
-                            is_for_match: true,
                         })
                     })
                     .collect(),
@@ -893,12 +892,7 @@ pub(crate) fn compile_expr<'a>(
                     .map(|(index, (_, ty))| (format!("α{index}"), Some(ty.clone())))
                     .collect();
 
-                Rc::new(Expr::Lambda {
-                    args,
-                    body,
-                    is_for_match: false,
-                })
-                .alloc()
+                Rc::new(Expr::Lambda { args, body }).alloc()
             });
 
             match result {
@@ -1005,7 +999,6 @@ pub(crate) fn compile_expr<'a>(
                                 args: vec![Expr::local_var("α")],
                                 kind: CallKind::Pure,
                             }),
-                            is_for_match: false,
                         }
                     }
                     _ => {
