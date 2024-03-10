@@ -32,7 +32,6 @@ pub(crate) enum CoqType {
     // TODO: add the type parameters for the traits
     Dyn(Vec<Path>),
     Infer,
-    Monad(Rc<CoqType>),
     Val(Rc<CoqType>),
 }
 
@@ -88,32 +87,6 @@ impl CoqType {
             CoqType::Val(ty) => Some(ty.clone()),
             _ => None,
         }
-    }
-}
-
-pub(crate) fn mt_ty(ty: Rc<CoqType>) -> Rc<CoqType> {
-    match &*ty {
-        CoqType::Application { func, args } => Rc::new(CoqType::Application {
-            func: func.clone(),
-            args: args.iter().map(|ty| mt_ty(ty.clone())).collect(),
-        }),
-        CoqType::Var(..) | CoqType::Path { .. } => ty,
-        CoqType::PathInTrait { path, self_ty } => Rc::new(CoqType::PathInTrait {
-            path: path.clone(),
-            self_ty: mt_ty(self_ty.clone()),
-        }),
-        CoqType::Function { args, ret } => Rc::new(CoqType::Function {
-            args: args.iter().map(|ty| mt_ty(ty.clone())).collect(),
-            ret: Rc::new(CoqType::Monad(mt_ty(ret.clone()))),
-        }),
-        CoqType::Tuple(tys) => Rc::new(CoqType::Tuple(
-            tys.iter().map(|ty| mt_ty(ty.clone())).collect(),
-        )),
-        CoqType::OpaqueType(..) => ty,
-        CoqType::Dyn(..) => ty,
-        CoqType::Infer => ty,
-        CoqType::Monad(_) => panic!("the monadic type should not appear here"),
-        CoqType::Val(ty) => Rc::new(CoqType::Val(mt_ty(ty.clone()))),
     }
 }
 
@@ -239,7 +212,6 @@ impl CoqType {
                 })
             }
             CoqType::Infer => coq::Expression::Wild,
-            CoqType::Monad(ty) => ty.to_coq(),
             CoqType::Val(ty) => ty.to_coq(),
         }
     }
@@ -294,7 +266,6 @@ impl CoqType {
                 name
             }
             CoqType::Infer => "inferred_type".to_string(),
-            CoqType::Monad(ty) => format!("Monad_{}", ty.to_name()),
             CoqType::Val(ty) => format!("Val_{}", ty.to_name()),
         }
     }
@@ -313,7 +284,6 @@ impl CoqType {
             CoqType::OpaqueType(_) => true,
             CoqType::Dyn(_) => false,
             CoqType::Infer => false,
-            CoqType::Monad(ty) => ty.has_opaque_types(),
             CoqType::Val(ty) => ty.has_opaque_types(),
         }
     }
@@ -340,7 +310,6 @@ impl CoqType {
             CoqType::OpaqueType(bounds) => vec![bounds.to_owned()],
             CoqType::Dyn(..) => vec![],
             CoqType::Infer => vec![],
-            CoqType::Monad(ty) => ty.opaque_types_bounds(),
             CoqType::Val(ty) => ty.opaque_types_bounds(),
         }
     }

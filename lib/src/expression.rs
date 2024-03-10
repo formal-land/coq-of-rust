@@ -324,7 +324,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             pure(Rc::new(Expr::VarWithTy {
                 path: path.clone(),
                 ty_name: ty_name.clone(),
-                ty: mt_ty(var_ty.clone()),
+                ty: var_ty.clone(),
             })),
             fresh_vars,
         ),
@@ -336,10 +336,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             Rc::new(Expr::TraitMethod {
                 trait_name: trait_name.clone(),
                 method_name: method_name.clone(),
-                self_and_generic_tys: self_and_generic_tys
-                    .iter()
-                    .map(|(name, ty)| (name.clone(), mt_ty(ty.clone())))
-                    .collect(),
+                self_and_generic_tys: self_and_generic_tys.clone(),
             }),
             fresh_vars,
         ),

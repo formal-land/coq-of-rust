@@ -1066,7 +1066,7 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
                 }
             };
             Rc::new(ImplItemKind::Const {
-                ty: mt_ty(ty.clone()),
+                ty: ty.clone(),
                 body,
                 is_dead_code: *is_dead_code,
             })
@@ -1081,12 +1081,8 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
 impl FnSigAndBody {
     fn mt(&self) -> Rc<Self> {
         Rc::new(FnSigAndBody {
-            args: self
-                .args
-                .iter()
-                .map(|(name, ty)| (name.clone(), mt_ty(ty.clone())))
-                .collect(),
-            ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty.clone()))),
+            args: self.args.clone(),
+            ret_ty: self.ret_ty.clone(),
             body: match &self.body {
                 None => self.body.clone(),
                 Some(body) => {
@@ -1102,7 +1098,7 @@ fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
     match body.as_ref() {
         TraitItem::Definition { ty_params, ty } => Rc::new(TraitItem::Definition {
             ty_params: ty_params.clone(),
-            ty: mt_ty(ty.clone()),
+            ty: ty.clone(),
         }),
         TraitItem::Type(x) => Rc::new(TraitItem::Type(x.clone())), // TODO: apply monadic transform
         TraitItem::DefinitionWithDefault(fun_definition) => {
