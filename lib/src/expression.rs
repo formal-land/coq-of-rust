@@ -109,6 +109,7 @@ pub(crate) enum Expr {
     },
     Array {
         elements: Vec<Rc<Expr>>,
+        is_internal: bool,
     },
     Tuple {
         elements: Vec<Rc<Expr>>,
@@ -152,6 +153,8 @@ pub(crate) enum Expr {
         struct_or_variant: StructOrVariant,
     },
     Use(Rc<Expr>),
+    InternalString(String),
+    InternalInteger(usize),
     Return(Rc<Expr>),
     /// Useful for error messages or annotations
     Message(String),
@@ -283,7 +286,7 @@ fn monadic_optional_let(
     }
 }
 
-type DynLetFn = Box<dyn FnOnce(FreshVars, Vec<Rc<Expr>>) -> (Rc<Expr>, FreshVars)>;
+type DynLetFn<'a> = Box<dyn FnOnce(FreshVars, Vec<Rc<Expr>>) -> (Rc<Expr>, FreshVars) + 'a>;
 
 fn monadic_lets(fresh_vars: FreshVars, es: Vec<Rc<Expr>>, f: DynLetFn) -> (Rc<Expr>, FreshVars) {
     match &es[..] {
@@ -396,10 +399,21 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 fresh_vars,
             )
         }
-        Expr::Array { elements } => monadic_lets(
+        Expr::Array {
+            elements,
+            is_internal,
+        } => monadic_lets(
             fresh_vars,
             elements.clone(),
-            Box::new(|fresh_vars, elements| (pure(Rc::new(Expr::Array { elements })), fresh_vars)),
+            Box::new(|fresh_vars, elements| {
+                (
+                    pure(Rc::new(Expr::Array {
+                        elements,
+                        is_internal: *is_internal,
+                    })),
+                    fresh_vars,
+                )
+            }),
         ),
         Expr::Tuple { elements } => monadic_lets(
             fresh_vars,
@@ -554,6 +568,8 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::Use(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
             (pure(Rc::new(Expr::Use(expr))), fresh_vars)
         }),
+        Expr::InternalString(_) => (pure(expr), fresh_vars),
+        Expr::InternalInteger(_) => (pure(expr), fresh_vars),
         Expr::Return(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
             (Rc::new(Expr::Return(expr)), fresh_vars)
         }),
@@ -800,12 +816,11 @@ impl Expr {
                                     args.iter().map(|(name, ty)| match ty {
                                         None => text(name),
                                         Some(ty) => nest([
-                                            text("("),
                                             text(name),
-                                            text(" :"),
                                             line(),
+                                            text("(* : "),
                                             ty.to_coq().to_doc(false),
-                                            text(")"),
+                                            text(" *)"),
                                         ]),
                                     }),
                                     [line()],
@@ -818,19 +833,26 @@ impl Expr {
                     )
                 }
             }
-            Expr::Array { elements } => paren(
-                with_paren,
-                nest([
-                    text("Value.Array"),
-                    line(),
-                    list(
-                        elements
-                            .iter()
-                            .map(|element| element.to_doc(false))
-                            .collect(),
-                    ),
-                ]),
-            ),
+            Expr::Array {
+                elements,
+                is_internal,
+            } => {
+                let elements_doc = list(
+                    elements
+                        .iter()
+                        .map(|element| element.to_doc(false))
+                        .collect(),
+                );
+
+                if *is_internal {
+                    return elements_doc;
+                }
+
+                paren(
+                    with_paren,
+                    nest([text("Value.Array"), line(), elements_doc]),
+                )
+            }
             Expr::Tuple { elements } => paren(
                 with_paren,
                 nest([
@@ -993,6 +1015,8 @@ impl Expr {
                 ])
                 .to_doc(with_paren),
             Expr::Use(expr) => paren(with_paren, nest([text("M.use"), line(), expr.to_doc(true)])),
+            Expr::InternalString(s) => text(format!("\"{s}\"")),
+            Expr::InternalInteger(i) => text(i.to_string()),
             Expr::Return(value) => paren(
                 with_paren,
                 nest([text("M.return_"), line(), value.to_doc(true)]),

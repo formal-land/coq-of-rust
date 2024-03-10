@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -305,7 +303,7 @@ Module Impl_contract_transfer_GiveMe.
         let* α4 := M.call α2 [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 := M.call α1 [ α5 ] in
-        let* α7 := M.alloc (UnOp.not (BinOp.Pure.le α0 α6)) in
+        let* α7 := M.alloc (UnOp.Pure.not (BinOp.Pure.le α0 α6)) in
         let* α8 := M.read (M.use α7) in
         if Value.is_true α8 then
           let* α0 :=
@@ -434,7 +432,8 @@ Module Impl_contract_transfer_GiveMe.
         let* α5 := M.call α0 [ α4 ] in
         let* α6 :=
           M.alloc
-            (UnOp.not (BinOp.Pure.eq α5 (Value.Integer Integer.U128 10))) in
+            (UnOp.Pure.not
+              (BinOp.Pure.eq α5 (Value.Integer Integer.U128 10))) in
         let* α7 := M.read (M.use α6) in
         if Value.is_true α7 then
           let* α0 :=

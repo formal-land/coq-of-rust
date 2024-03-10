@@ -17,10 +17,8 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         } => {
             let name = to_valid_coq_name(name.as_str());
             let is_with_ref = match mode {
-                rustc_middle::thir::BindingMode::ByValue => None,
-                rustc_middle::thir::BindingMode::ByRef(borrow_kind) => {
-                    Some(crate::thir_expression::is_mutable_borrow_kind(borrow_kind))
-                }
+                rustc_middle::thir::BindingMode::ByValue => false,
+                rustc_middle::thir::BindingMode::ByRef(_) => true,
             };
             let pattern = subpattern
                 .as_ref()

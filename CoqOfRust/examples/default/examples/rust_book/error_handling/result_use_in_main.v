@@ -25,37 +25,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α4 :=
         match_operator
           α3
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.result.Result.Ok _ =>
-                  let* γ0_0 :=
-                    let* α0 := M.var "core::result::Result::Get_Ok_0" in
-                    M.pure (α0 γ) in
-                  let* number := M.copy γ0_0 in
-                  M.pure number
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.result.Result.Err _ =>
-                  let* γ0_0 :=
-                    let* α0 := M.var "core::result::Result::Get_Err_0" in
-                    M.pure (α0 γ) in
-                  let* e := M.copy γ0_0 in
-                  let* α0 := M.read e in
-                  let* α1 :=
-                    M.return_
-                      (Value.StructTuple "core::result::Result::Err" [ α0 ]) in
-                  let* α2 := M.read α1 in
-                  let* α3 := M.never_to_any α2 in
-                  M.alloc α3
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::result::Result::Ok"
+                  0 in
+              let* number := M.copy γ0_0 in
+              M.pure number);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::result::Result::Err"
+                  0 in
+              let* e := M.copy γ0_0 in
+              let* α0 := M.read e in
+              let* α1 :=
+                M.return_
+                  (Value.StructTuple "core::result::Result::Err" [ α0 ]) in
+              let* α2 := M.read α1 in
+              let* α3 := M.never_to_any α2 in
+              M.alloc α3)
+          ] in
       M.copy α4 in
     let* _ :=
       let* _ :=

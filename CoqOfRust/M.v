@@ -568,3 +568,12 @@ Parameter get_struct_record : Value.t -> string -> Value.t.
 Parameter pointer_coercion : Value.t -> Value.t.
 
 Parameter assign : Value.t -> Value.t -> M.
+
+Parameter get_tuple_field_or_break_match :
+  Value.t -> Z -> M.
+
+Parameter get_struct_record_field_or_break_match :
+  Value.t -> string -> string -> M.
+
+Parameter get_struct_tuple_field_or_break_match :
+  Value.t -> string -> Z -> M.

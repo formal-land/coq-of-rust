@@ -31,16 +31,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.alloc (Value.Integer Integer.I32 1) in
       match_operator
         α0
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | i32.Make 0 => M.alloc (Value.Bool false)
-              | _ => M.break_match
-              end);
-            fun γ => (M.alloc (Value.Bool true))
-          ]) in
+        [
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 0 => M.alloc (Value.Bool false)
+            | _ => M.break_match
+            end);
+          fun γ => (M.alloc (Value.Bool true))
+        ] in
     let* _ :=
       let* α0 := M.alloc (Value.Bool true) in
       let* α1 := M.read (M.use α0) in

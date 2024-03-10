@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -174,72 +172,56 @@ Module Impl_call_builder_CallBuilderTest.
       let* α0 :=
         match_operator
           result
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.result.Result.Ok _ =>
-                  let* γ0_0 :=
-                    let* α0 := M.var "core::result::Result::Get_Ok_0" in
-                    M.pure (α0 γ) in
-                  M.alloc (Value.StructTuple "core::option::Option::None" [])
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.result.Result.Err _ =>
-                  let* γ0_0 :=
-                    let* α0 := M.var "core::result::Result::Get_Err_0" in
-                    M.pure (α0 γ) in
-                  let* e := M.copy γ0_0 in
-                  let* α0 := M.read γ0_0 in
-                  match α0 with
-                  | call_builder.LangError.CouldNotReadInput =>
-                    let* α0 := M.read e in
-                    M.alloc
-                      (Value.StructTuple "core::option::Option::Some" [ α0 ])
-                  | _ => M.break_match
-                  end
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.result.Result.Err _ =>
-                  let* γ0_0 :=
-                    let* α0 := M.var "core::result::Result::Get_Err_0" in
-                    M.pure (α0 γ) in
-                  let* α0 := M.get_function "core::panicking::panic_fmt" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 :=
-                    M.read
-                      (mk_str
-                        "not implemented: No other `LangError` variants exist at the moment.") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  let* α4 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "none" in
-                  let* α5 := M.call α4 [] in
-                  let* α6 := M.alloc α5 in
-                  let* α7 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α3;
-                        M.pointer_coercion (* Unsize *) α6
-                      ] in
-                  let* α8 := M.call α0 [ α7 ] in
-                  let* α9 := M.never_to_any α8 in
-                  M.alloc α9
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::result::Result::Ok"
+                  0 in
+              M.alloc (Value.StructTuple "core::option::Option::None" []));
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::result::Result::Err"
+                  0 in
+              let* e := M.copy γ0_0 in
+              let* α0 := M.read e in
+              M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]));
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::result::Result::Err"
+                  0 in
+              let* α0 := M.get_function "core::panicking::panic_fmt" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_v1" in
+              let* α2 :=
+                M.read
+                  (mk_str
+                    "not implemented: No other `LangError` variants exist at the moment.") in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "none" in
+              let* α5 := M.call α4 [] in
+              let* α6 := M.alloc α5 in
+              let* α7 :=
+                M.call
+                  α1
+                  [
+                    M.pointer_coercion (* Unsize *) α3;
+                    M.pointer_coercion (* Unsize *) α6
+                  ] in
+              let* α8 := M.call α0 [ α7 ] in
+              let* α9 := M.never_to_any α8 in
+              M.alloc α9)
+          ] in
       M.read α0
     | _, _ => M.impossible
     end.

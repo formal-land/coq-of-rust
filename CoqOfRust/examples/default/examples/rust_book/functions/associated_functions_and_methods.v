@@ -90,68 +90,50 @@ Module Impl_associated_functions_and_methods_Rectangle.
       let* α1 :=
         match_operator
           (M.get_struct_record α0 "p1")
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                |
-                    {|
-                      associated_functions_and_methods.Point.x := _;
-                      associated_functions_and_methods.Point.y := _;
-                    |}
-                    =>
-                  let* γ0_0 :=
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_record_field_or_break_match
+                  γ
+                  "associated_functions_and_methods::Point"
+                  "x" in
+              let* γ0_1 :=
+                M.get_struct_record_field_or_break_match
+                  γ
+                  "associated_functions_and_methods::Point"
+                  "y" in
+              let* x1 := M.copy γ0_0 in
+              let* y1 := M.copy γ0_1 in
+              let* α0 := M.read self in
+              match_operator
+                (M.get_struct_record α0 "p2")
+                [
+                  fun γ =>
+                    (let* γ0_0 :=
+                      M.get_struct_record_field_or_break_match
+                        γ
+                        "associated_functions_and_methods::Point"
+                        "x" in
+                    let* γ0_1 :=
+                      M.get_struct_record_field_or_break_match
+                        γ
+                        "associated_functions_and_methods::Point"
+                        "y" in
+                    let* x2 := M.copy γ0_0 in
+                    let* y2 := M.copy γ0_1 in
                     let* α0 :=
-                      M.var "associated_functions_and_methods::Point::Get_x" in
-                    M.pure (α0 γ) in
-                  let* γ0_1 :=
-                    let* α0 :=
-                      M.var "associated_functions_and_methods::Point::Get_y" in
-                    M.pure (α0 γ) in
-                  let* x1 := M.copy γ0_0 in
-                  let* y1 := M.copy γ0_1 in
-                  let* α0 := M.read self in
-                  match_operator
-                    (M.get_struct_record α0 "p2")
-                    (Value.Array
-                      [
-                        fun γ =>
-                          (let* α0 := M.read γ in
-                          match α0 with
-                          |
-                              {|
-                                associated_functions_and_methods.Point.x := _;
-                                associated_functions_and_methods.Point.y := _;
-                              |}
-                              =>
-                            let* γ0_0 :=
-                              let* α0 :=
-                                M.var
-                                  "associated_functions_and_methods::Point::Get_x" in
-                              M.pure (α0 γ) in
-                            let* γ0_1 :=
-                              let* α0 :=
-                                M.var
-                                  "associated_functions_and_methods::Point::Get_y" in
-                              M.pure (α0 γ) in
-                            let* x2 := M.copy γ0_0 in
-                            let* y2 := M.copy γ0_1 in
-                            let* α0 :=
-                              M.get_associated_function (Ty.path "f64") "abs" in
-                            let* α1 := M.read x1 in
-                            let* α2 := M.read x2 in
-                            let* α3 := BinOp.Panic.sub α1 α2 in
-                            let* α4 := M.read y1 in
-                            let* α5 := M.read y2 in
-                            let* α6 := BinOp.Panic.sub α4 α5 in
-                            let* α7 := BinOp.Panic.mul α3 α6 in
-                            let* α8 := M.call α0 [ α7 ] in
-                            M.alloc α8
-                          end)
-                      ])
-                end)
-            ]) in
+                      M.get_associated_function (Ty.path "f64") "abs" in
+                    let* α1 := M.read x1 in
+                    let* α2 := M.read x2 in
+                    let* α3 := BinOp.Panic.sub α1 α2 in
+                    let* α4 := M.read y1 in
+                    let* α5 := M.read y2 in
+                    let* α6 := BinOp.Panic.sub α4 α5 in
+                    let* α7 := BinOp.Panic.mul α3 α6 in
+                    let* α8 := M.call α0 [ α7 ] in
+                    M.alloc α8)
+                ])
+          ] in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -174,73 +156,55 @@ Module Impl_associated_functions_and_methods_Rectangle.
       let* α1 :=
         match_operator
           (M.get_struct_record α0 "p1")
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                |
-                    {|
-                      associated_functions_and_methods.Point.x := _;
-                      associated_functions_and_methods.Point.y := _;
-                    |}
-                    =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var "associated_functions_and_methods::Point::Get_x" in
-                    M.pure (α0 γ) in
-                  let* γ0_1 :=
-                    let* α0 :=
-                      M.var "associated_functions_and_methods::Point::Get_y" in
-                    M.pure (α0 γ) in
-                  let* x1 := M.copy γ0_0 in
-                  let* y1 := M.copy γ0_1 in
-                  let* α0 := M.read self in
-                  match_operator
-                    (M.get_struct_record α0 "p2")
-                    (Value.Array
-                      [
-                        fun γ =>
-                          (let* α0 := M.read γ in
-                          match α0 with
-                          |
-                              {|
-                                associated_functions_and_methods.Point.x := _;
-                                associated_functions_and_methods.Point.y := _;
-                              |}
-                              =>
-                            let* γ0_0 :=
-                              let* α0 :=
-                                M.var
-                                  "associated_functions_and_methods::Point::Get_x" in
-                              M.pure (α0 γ) in
-                            let* γ0_1 :=
-                              let* α0 :=
-                                M.var
-                                  "associated_functions_and_methods::Point::Get_y" in
-                              M.pure (α0 γ) in
-                            let* x2 := M.copy γ0_0 in
-                            let* y2 := M.copy γ0_1 in
-                            let* α0 := M.read UnsupportedLiteral in
-                            let* α1 :=
-                              M.get_associated_function (Ty.path "f64") "abs" in
-                            let* α2 := M.read x1 in
-                            let* α3 := M.read x2 in
-                            let* α4 := BinOp.Panic.sub α2 α3 in
-                            let* α5 := M.call α1 [ α4 ] in
-                            let* α6 :=
-                              M.get_associated_function (Ty.path "f64") "abs" in
-                            let* α7 := M.read y1 in
-                            let* α8 := M.read y2 in
-                            let* α9 := BinOp.Panic.sub α7 α8 in
-                            let* α10 := M.call α6 [ α9 ] in
-                            let* α11 := BinOp.Panic.add α5 α10 in
-                            let* α12 := BinOp.Panic.mul α0 α11 in
-                            M.alloc α12
-                          end)
-                      ])
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_record_field_or_break_match
+                  γ
+                  "associated_functions_and_methods::Point"
+                  "x" in
+              let* γ0_1 :=
+                M.get_struct_record_field_or_break_match
+                  γ
+                  "associated_functions_and_methods::Point"
+                  "y" in
+              let* x1 := M.copy γ0_0 in
+              let* y1 := M.copy γ0_1 in
+              let* α0 := M.read self in
+              match_operator
+                (M.get_struct_record α0 "p2")
+                [
+                  fun γ =>
+                    (let* γ0_0 :=
+                      M.get_struct_record_field_or_break_match
+                        γ
+                        "associated_functions_and_methods::Point"
+                        "x" in
+                    let* γ0_1 :=
+                      M.get_struct_record_field_or_break_match
+                        γ
+                        "associated_functions_and_methods::Point"
+                        "y" in
+                    let* x2 := M.copy γ0_0 in
+                    let* y2 := M.copy γ0_1 in
+                    let* α0 := M.read UnsupportedLiteral in
+                    let* α1 :=
+                      M.get_associated_function (Ty.path "f64") "abs" in
+                    let* α2 := M.read x1 in
+                    let* α3 := M.read x2 in
+                    let* α4 := BinOp.Panic.sub α2 α3 in
+                    let* α5 := M.call α1 [ α4 ] in
+                    let* α6 :=
+                      M.get_associated_function (Ty.path "f64") "abs" in
+                    let* α7 := M.read y1 in
+                    let* α8 := M.read y2 in
+                    let* α9 := BinOp.Panic.sub α7 α8 in
+                    let* α10 := M.call α6 [ α9 ] in
+                    let* α11 := BinOp.Panic.add α5 α10 in
+                    let* α12 := BinOp.Panic.mul α0 α11 in
+                    M.alloc α12)
+                ])
+          ] in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -326,58 +290,55 @@ Module Impl_associated_functions_and_methods_Pair.
       let* α0 :=
         match_operator
           self
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | associated_functions_and_methods.Pair.Build_t _ _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var "associated_functions_and_methods::Pair::Get_0" in
-                    M.pure (α0 γ) in
-                  let* γ0_1 :=
-                    let* α0 :=
-                      M.var "associated_functions_and_methods::Pair::Get_1" in
-                    M.pure (α0 γ) in
-                  let* first := M.copy γ0_0 in
-                  let* second := M.copy γ0_1 in
-                  let* _ :=
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
-                      let* α2 := M.read (mk_str "Destroying Pair(") in
-                      let* α3 := M.read (mk_str ", ") in
-                      let* α4 := M.read (mk_str ")
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "associated_functions_and_methods::Pair"
+                  0 in
+              let* γ0_1 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "associated_functions_and_methods::Pair"
+                  1 in
+              let* first := M.copy γ0_0 in
+              let* second := M.copy γ0_1 in
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 := M.read (mk_str "Destroying Pair(") in
+                  let* α3 := M.read (mk_str ", ") in
+                  let* α4 := M.read (mk_str ")
 ") in
-                      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                      let* α6 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
-                      let* α7 := M.call α6 [ first ] in
-                      let* α8 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
-                      let* α9 := M.call α8 [ second ] in
-                      let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
-                      let* α11 :=
-                        M.call
-                          α1
-                          [
-                            M.pointer_coercion (* Unsize *) α5;
-                            M.pointer_coercion (* Unsize *) α10
-                          ] in
-                      let* α12 := M.call α0 [ α11 ] in
-                      M.alloc α12 in
-                    M.alloc (Value.Tuple []) in
-                  M.alloc (Value.Tuple [])
-                end)
-            ]) in
+                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                  let* α6 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display" in
+                  let* α7 := M.call α6 [ first ] in
+                  let* α8 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display" in
+                  let* α9 := M.call α8 [ second ] in
+                  let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                  let* α11 :=
+                    M.call
+                      α1
+                      [
+                        M.pointer_coercion (* Unsize *) α5;
+                        M.pointer_coercion (* Unsize *) α10
+                      ] in
+                  let* α12 := M.call α0 [ α11 ] in
+                  M.alloc α12 in
+                M.alloc (Value.Tuple []) in
+              M.alloc (Value.Tuple []))
+          ] in
       M.read α0
     | _, _ => M.impossible
     end.

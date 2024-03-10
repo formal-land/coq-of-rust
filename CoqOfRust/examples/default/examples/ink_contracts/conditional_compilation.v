@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -288,7 +286,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         let* α0 := M.read self in
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
+        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
       let* caller :=
         let* α0 :=
           M.get_associated_function
@@ -384,7 +382,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         let* α0 := M.read self in
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
+        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -437,7 +435,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         let* α0 := M.read self in
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
+        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible

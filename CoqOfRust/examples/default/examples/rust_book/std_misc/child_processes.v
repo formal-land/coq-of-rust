@@ -47,39 +47,36 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α0
           [
             α9;
-            fun (α0 : Ty.path "std::io::error::Error") =>
+            fun α0 (* : Ty.path "std::io::error::Error" *) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                (Value.Array
-                  [
-                    fun γ =>
-                      (let* e := M.copy γ in
-                      let* α0 :=
-                        M.get_function "core::panicking::panic_fmt" [] in
-                      let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
-                      let* α2 :=
-                        M.read (mk_str "failed to execute process: ") in
-                      let* α3 := M.alloc (Value.Array [ α2 ]) in
-                      let* α4 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
-                      let* α5 := M.call α4 [ e ] in
-                      let* α6 := M.alloc (Value.Array [ α5 ]) in
-                      let* α7 :=
-                        M.call
-                          α1
-                          [
-                            M.pointer_coercion (* Unsize *) α3;
-                            M.pointer_coercion (* Unsize *) α6
-                          ] in
-                      let* α8 := M.call α0 [ α7 ] in
-                      M.never_to_any α8)
-                  ]))
+                [
+                  fun γ =>
+                    (let* e := M.copy γ in
+                    let* α0 := M.get_function "core::panicking::panic_fmt" [] in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_v1" in
+                    let* α2 := M.read (mk_str "failed to execute process: ") in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    let* α4 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display" in
+                    let* α5 := M.call α4 [ e ] in
+                    let* α6 := M.alloc (Value.Array [ α5 ]) in
+                    let* α7 :=
+                      M.call
+                        α1
+                        [
+                          M.pointer_coercion (* Unsize *) α3;
+                          M.pointer_coercion (* Unsize *) α6
+                        ] in
+                    let* α8 := M.call α0 [ α7 ] in
+                    M.never_to_any α8)
+                ])
           ] in
       M.alloc α10 in
     let* α0 :=

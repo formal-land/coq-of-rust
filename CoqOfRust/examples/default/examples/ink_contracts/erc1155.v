@@ -206,9 +206,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -319,8 +317,7 @@ Definition zero_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-Definition ON_ERC_1155_RECEIVED_SELECTOR
-    : Ty.apply (Ty.path "array") [ Ty.path "u8" ] :=
+Definition ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
   M.run
     (M.alloc
       (Value.Array
@@ -331,8 +328,7 @@ Definition ON_ERC_1155_RECEIVED_SELECTOR
           Value.Integer Integer.U8 97
         ])).
 
-Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR
-    : Ty.apply (Ty.path "array") [ Ty.path "u8" ] :=
+Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
   M.run
     (M.alloc
       (Value.Array
@@ -766,7 +762,7 @@ Module Impl_erc1155_Contract.
         let* α0 := M.read token_id in
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "token_id_nonce") in
-        let* α3 := M.alloc (UnOp.not (BinOp.Pure.le α0 α2)) in
+        let* α3 := M.alloc (UnOp.Pure.not (BinOp.Pure.le α0 α2)) in
         let* α4 := M.read (M.use α3) in
         if Value.is_true α4 then
           let* α0 :=
@@ -1277,7 +1273,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 := M.read from in
             let* α3 := M.read caller in
             let* α4 := M.call α0 [ α1; α2; α3 ] in
-            let* α5 := M.alloc (UnOp.not α4) in
+            let* α5 := M.alloc (UnOp.Pure.not α4) in
             let* α6 := M.read (M.use α5) in
             if Value.is_true α6 then
               let* α0 :=
@@ -1316,7 +1312,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let* α2 := M.call α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call α0 [ to; α3 ] in
-        let* α5 := M.alloc (UnOp.not α4) in
+        let* α5 := M.alloc (UnOp.Pure.not α4) in
         let* α6 := M.read (M.use α5) in
         if Value.is_true α6 then
           let* α0 :=
@@ -1352,7 +1348,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
       let* _ :=
         let* α0 := M.read balance in
         let* α1 := M.read value in
-        let* α2 := M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
+        let* α2 := M.alloc (UnOp.Pure.not (BinOp.Pure.ge α0 α1)) in
         let* α3 := M.read (M.use α2) in
         if Value.is_true α3 then
           let* α0 :=
@@ -1487,7 +1483,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             let* α2 := M.read from in
             let* α3 := M.read caller in
             let* α4 := M.call α0 [ α1; α2; α3 ] in
-            let* α5 := M.alloc (UnOp.not α4) in
+            let* α5 := M.alloc (UnOp.Pure.not α4) in
             let* α6 := M.read (M.use α5) in
             if Value.is_true α6 then
               let* α0 :=
@@ -1526,7 +1522,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let* α2 := M.call α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call α0 [ to; α3 ] in
-        let* α5 := M.alloc (UnOp.not α4) in
+        let* α5 := M.alloc (UnOp.Pure.not α4) in
         let* α6 := M.read (M.use α5) in
         if Value.is_true α6 then
           let* α0 :=
@@ -1556,7 +1552,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ])
             "is_empty" in
         let* α1 := M.call α0 [ token_ids ] in
-        let* α2 := M.alloc (UnOp.not (UnOp.not α1)) in
+        let* α2 := M.alloc (UnOp.Pure.not (UnOp.Pure.not α1)) in
         let* α3 := M.read (M.use α2) in
         if Value.is_true α3 then
           let* α0 :=
@@ -1594,7 +1590,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ])
             "len" in
         let* α3 := M.call α2 [ values ] in
-        let* α4 := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+        let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
         let* α5 := M.read (M.use α4) in
         if Value.is_true α5 then
           let* α0 :=
@@ -1703,119 +1699,100 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let* α5 :=
           match_operator
             α4
-            (Value.Array
-              [
-                fun γ =>
-                  (let* iter := M.copy γ in
-                  M.loop
-                    (let* _ :=
-                      let* α0 :=
-                        M.get_trait_method
-                          "core::iter::traits::iterator::Iterator"
-                          "next"
-                          [
-                            (* Self *)
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::zip::Zip")
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    [ Ty.path "u128" ];
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    [ Ty.path "u128" ]
-                                ]
-                          ] in
-                      let* α1 := M.call α0 [ iter ] in
-                      let* α2 := M.alloc α1 in
-                      match_operator
-                        α2
-                        (Value.Array
-                          [
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.None =>
-                                let* α0 := M.break in
-                                let* α1 := M.read α0 in
-                                let* α2 := M.never_to_any α1 in
-                                M.alloc α2
-                              | _ => M.break_match
-                              end);
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.Some _ =>
-                                let* γ0_0 :=
-                                  let* α0 :=
-                                    M.var "core::option::Option::Get_Some_0" in
-                                  M.pure (α0 γ) in
-                                let* α0 := M.read γ0_0 in
-                                match α0 with
-                                | (_, _) =>
-                                  let γ1_0 := Tuple.Access.left γ0_0 in
-                                  let γ1_1 := Tuple.Access.right γ0_0 in
-                                  let* γ1_0 :=
-                                    let* α0 := M.read γ1_0 in
-                                    M.pure (deref α0) in
-                                  let* id := M.copy γ1_0 in
-                                  let* γ1_1 :=
-                                    let* α0 := M.read γ1_1 in
-                                    M.pure (deref α0) in
-                                  let* v := M.copy γ1_1 in
-                                  let* balance :=
-                                    let* α0 :=
-                                      M.get_trait_method
-                                        "erc1155::Erc1155"
-                                        "balance_of"
-                                        [ (* Self *) Ty.path "erc1155::Contract"
-                                        ] in
-                                    let* α1 := M.read self in
-                                    let* α2 := M.read from in
-                                    let* α3 := M.read id in
-                                    let* α4 := M.call α0 [ α1; α2; α3 ] in
-                                    M.alloc α4 in
-                                  let* _ :=
-                                    let* α0 := M.read balance in
-                                    let* α1 := M.read v in
-                                    let* α2 :=
-                                      M.alloc
-                                        (UnOp.not (BinOp.Pure.ge α0 α1)) in
-                                    let* α3 := M.read (M.use α2) in
-                                    if Value.is_true α3 then
-                                      let* α0 :=
-                                        M.get_trait_method
-                                          "core::convert::Into"
-                                          "into"
-                                          [
-                                            (* Self *) Ty.path "erc1155::Error";
-                                            (* T *) Ty.path "erc1155::Error"
-                                          ] in
-                                      let* α1 :=
-                                        M.call
-                                          α0
-                                          [
-                                            Value.StructTuple
-                                              "erc1155::Error::InsufficientBalance"
-                                              []
-                                          ] in
-                                      let* α2 :=
-                                        M.return_
-                                          (Value.StructTuple
-                                            "core::result::Result::Err"
-                                            [ α1 ]) in
-                                      let* α3 := M.read α2 in
-                                      let* α4 := M.never_to_any α3 in
-                                      M.alloc α4
-                                    else
-                                      M.alloc (Value.Tuple []) in
-                                  M.alloc (Value.Tuple [])
-                                end
-                              | _ => M.break_match
-                              end)
-                          ]) in
-                    M.alloc (Value.Tuple [])))
-              ]) in
+            [
+              fun γ =>
+                (let* iter := M.copy γ in
+                M.loop
+                  (let* _ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::iter::traits::iterator::Iterator"
+                        "next"
+                        [
+                          (* Self *)
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  [ Ty.path "u128" ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  [ Ty.path "u128" ]
+                              ]
+                        ] in
+                    let* α1 := M.call α0 [ iter ] in
+                    let* α2 := M.alloc α1 in
+                    match_operator
+                      α2
+                      [
+                        fun γ =>
+                          (let* α0 := M.break in
+                          let* α1 := M.read α0 in
+                          let* α2 := M.never_to_any α1 in
+                          M.alloc α2);
+                        fun γ =>
+                          (let* γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match
+                              γ
+                              "core::option::Option::Some"
+                              0 in
+                          let* γ1_0 :=
+                            M.get_tuple_field_or_break_match γ0_0 0 in
+                          let* γ1_1 :=
+                            M.get_tuple_field_or_break_match γ0_0 1 in
+                          let* γ1_0 := M.read γ1_0 in
+                          let* id := M.copy γ1_0 in
+                          let* γ1_1 := M.read γ1_1 in
+                          let* v := M.copy γ1_1 in
+                          let* balance :=
+                            let* α0 :=
+                              M.get_trait_method
+                                "erc1155::Erc1155"
+                                "balance_of"
+                                [ (* Self *) Ty.path "erc1155::Contract" ] in
+                            let* α1 := M.read self in
+                            let* α2 := M.read from in
+                            let* α3 := M.read id in
+                            let* α4 := M.call α0 [ α1; α2; α3 ] in
+                            M.alloc α4 in
+                          let* _ :=
+                            let* α0 := M.read balance in
+                            let* α1 := M.read v in
+                            let* α2 :=
+                              M.alloc (UnOp.Pure.not (BinOp.Pure.ge α0 α1)) in
+                            let* α3 := M.read (M.use α2) in
+                            if Value.is_true α3 then
+                              let* α0 :=
+                                M.get_trait_method
+                                  "core::convert::Into"
+                                  "into"
+                                  [
+                                    (* Self *) Ty.path "erc1155::Error";
+                                    (* T *) Ty.path "erc1155::Error"
+                                  ] in
+                              let* α1 :=
+                                M.call
+                                  α0
+                                  [
+                                    Value.StructTuple
+                                      "erc1155::Error::InsufficientBalance"
+                                      []
+                                  ] in
+                              let* α2 :=
+                                M.return_
+                                  (Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [ α1 ]) in
+                              let* α3 := M.read α2 in
+                              let* α4 := M.never_to_any α3 in
+                              M.alloc α4
+                            else
+                              M.alloc (Value.Tuple []) in
+                          M.alloc (Value.Tuple []))
+                      ] in
+                  M.alloc (Value.Tuple [])))
+            ] in
         M.pure (M.use α5) in
       let* _ :=
         let* α0 :=
@@ -1841,86 +1818,68 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let* α4 :=
           match_operator
             α3
-            (Value.Array
-              [
-                fun γ =>
-                  (let* iter := M.copy γ in
-                  M.loop
-                    (let* _ :=
-                      let* α0 :=
-                        M.get_trait_method
-                          "core::iter::traits::iterator::Iterator"
-                          "next"
-                          [
-                            (* Self *)
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::zip::Zip")
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    [ Ty.path "u128" ];
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    [ Ty.path "u128" ]
-                                ]
-                          ] in
-                      let* α1 := M.call α0 [ iter ] in
-                      let* α2 := M.alloc α1 in
-                      match_operator
-                        α2
-                        (Value.Array
-                          [
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.None =>
-                                let* α0 := M.break in
-                                let* α1 := M.read α0 in
-                                let* α2 := M.never_to_any α1 in
-                                M.alloc α2
-                              | _ => M.break_match
-                              end);
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.Some _ =>
-                                let* γ0_0 :=
-                                  let* α0 :=
-                                    M.var "core::option::Option::Get_Some_0" in
-                                  M.pure (α0 γ) in
-                                let* α0 := M.read γ0_0 in
-                                match α0 with
-                                | (_, _) =>
-                                  let γ1_0 := Tuple.Access.left γ0_0 in
-                                  let γ1_1 := Tuple.Access.right γ0_0 in
-                                  let* γ1_0 :=
-                                    let* α0 := M.read γ1_0 in
-                                    M.pure (deref α0) in
-                                  let* id := M.copy γ1_0 in
-                                  let* γ1_1 :=
-                                    let* α0 := M.read γ1_1 in
-                                    M.pure (deref α0) in
-                                  let* v := M.copy γ1_1 in
-                                  let* _ :=
-                                    let* α0 :=
-                                      M.get_associated_function
-                                        (Ty.path "erc1155::Contract")
-                                        "perform_transfer" in
-                                    let* α1 := M.read self in
-                                    let* α2 := M.read from in
-                                    let* α3 := M.read to in
-                                    let* α4 := M.read id in
-                                    let* α5 := M.read v in
-                                    let* α6 :=
-                                      M.call α0 [ α1; α2; α3; α4; α5 ] in
-                                    M.alloc α6 in
-                                  M.alloc (Value.Tuple [])
-                                end
-                              | _ => M.break_match
-                              end)
-                          ]) in
-                    M.alloc (Value.Tuple [])))
-              ]) in
+            [
+              fun γ =>
+                (let* iter := M.copy γ in
+                M.loop
+                  (let* _ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::iter::traits::iterator::Iterator"
+                        "next"
+                        [
+                          (* Self *)
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  [ Ty.path "u128" ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  [ Ty.path "u128" ]
+                              ]
+                        ] in
+                    let* α1 := M.call α0 [ iter ] in
+                    let* α2 := M.alloc α1 in
+                    match_operator
+                      α2
+                      [
+                        fun γ =>
+                          (let* α0 := M.break in
+                          let* α1 := M.read α0 in
+                          let* α2 := M.never_to_any α1 in
+                          M.alloc α2);
+                        fun γ =>
+                          (let* γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match
+                              γ
+                              "core::option::Option::Some"
+                              0 in
+                          let* γ1_0 :=
+                            M.get_tuple_field_or_break_match γ0_0 0 in
+                          let* γ1_1 :=
+                            M.get_tuple_field_or_break_match γ0_0 1 in
+                          let* γ1_0 := M.read γ1_0 in
+                          let* id := M.copy γ1_0 in
+                          let* γ1_1 := M.read γ1_1 in
+                          let* v := M.copy γ1_1 in
+                          let* _ :=
+                            let* α0 :=
+                              M.get_associated_function
+                                (Ty.path "erc1155::Contract")
+                                "perform_transfer" in
+                            let* α1 := M.read self in
+                            let* α2 := M.read from in
+                            let* α3 := M.read to in
+                            let* α4 := M.read id in
+                            let* α5 := M.read v in
+                            let* α6 := M.call α0 [ α1; α2; α3; α4; α5 ] in
+                            M.alloc α6 in
+                          M.alloc (Value.Tuple []))
+                      ] in
+                  M.alloc (Value.Tuple [])))
+            ] in
         M.pure (M.use α4) in
       let* _ :=
         let* α0 :=
@@ -2017,173 +1976,134 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let* α3 :=
           match_operator
             α2
-            (Value.Array
-              [
-                fun γ =>
-                  (let* iter := M.copy γ in
-                  M.loop
-                    (let* _ :=
-                      let* α0 :=
-                        M.get_trait_method
-                          "core::iter::traits::iterator::Iterator"
-                          "next"
-                          [
-                            (* Self *)
-                              Ty.apply
-                                (Ty.path "core::slice::iter::Iter")
-                                [ Ty.path "erc1155::AccountId" ]
-                          ] in
-                      let* α1 := M.call α0 [ iter ] in
-                      let* α2 := M.alloc α1 in
-                      match_operator
-                        α2
-                        (Value.Array
-                          [
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.None =>
-                                let* α0 := M.break in
-                                let* α1 := M.read α0 in
-                                let* α2 := M.never_to_any α1 in
-                                M.alloc α2
-                              | _ => M.break_match
-                              end);
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.Some _ =>
-                                let* γ0_0 :=
-                                  let* α0 :=
-                                    M.var "core::option::Option::Get_Some_0" in
-                                  M.pure (α0 γ) in
-                                let* o := M.copy γ0_0 in
-                                let* α0 :=
-                                  M.get_trait_method
-                                    "core::iter::traits::collect::IntoIterator"
-                                    "into_iter"
+            [
+              fun γ =>
+                (let* iter := M.copy γ in
+                M.loop
+                  (let* _ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::iter::traits::iterator::Iterator"
+                        "next"
+                        [
+                          (* Self *)
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              [ Ty.path "erc1155::AccountId" ]
+                        ] in
+                    let* α1 := M.call α0 [ iter ] in
+                    let* α2 := M.alloc α1 in
+                    match_operator
+                      α2
+                      [
+                        fun γ =>
+                          (let* α0 := M.break in
+                          let* α1 := M.read α0 in
+                          let* α2 := M.never_to_any α1 in
+                          M.alloc α2);
+                        fun γ =>
+                          (let* γ0_0 :=
+                            M.get_struct_tuple_field_or_break_match
+                              γ
+                              "core::option::Option::Some"
+                              0 in
+                          let* o := M.copy γ0_0 in
+                          let* α0 :=
+                            M.get_trait_method
+                              "core::iter::traits::collect::IntoIterator"
+                              "into_iter"
+                              [
+                                (* Self *)
+                                  Ty.apply
+                                    (Ty.path "&")
                                     [
-                                      (* Self *)
-                                        Ty.apply
-                                          (Ty.path "&")
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        [
+                                          Ty.path "u128";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                              ] in
+                          let* α1 := M.call α0 [ token_ids ] in
+                          let* α2 := M.alloc α1 in
+                          let* α3 :=
+                            match_operator
+                              α2
+                              [
+                                fun γ =>
+                                  (let* iter := M.copy γ in
+                                  M.loop
+                                    (let* _ :=
+                                      let* α0 :=
+                                        M.get_trait_method
+                                          "core::iter::traits::iterator::Iterator"
+                                          "next"
                                           [
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              [
-                                                Ty.path "u128";
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
-                                          ]
-                                    ] in
-                                let* α1 := M.call α0 [ token_ids ] in
-                                let* α2 := M.alloc α1 in
-                                let* α3 :=
-                                  match_operator
-                                    α2
-                                    (Value.Array
-                                      [
-                                        fun γ =>
-                                          (let* iter := M.copy γ in
-                                          M.loop
-                                            (let* _ :=
+                                            (* Self *)
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::slice::iter::Iter")
+                                                [ Ty.path "u128" ]
+                                          ] in
+                                      let* α1 := M.call α0 [ iter ] in
+                                      let* α2 := M.alloc α1 in
+                                      match_operator
+                                        α2
+                                        [
+                                          fun γ =>
+                                            (let* α0 := M.break in
+                                            let* α1 := M.read α0 in
+                                            let* α2 := M.never_to_any α1 in
+                                            M.alloc α2);
+                                          fun γ =>
+                                            (let* γ0_0 :=
+                                              M.get_struct_tuple_field_or_break_match
+                                                γ
+                                                "core::option::Option::Some"
+                                                0 in
+                                            let* t := M.copy γ0_0 in
+                                            let* amount :=
                                               let* α0 :=
                                                 M.get_trait_method
-                                                  "core::iter::traits::iterator::Iterator"
-                                                  "next"
+                                                  "erc1155::Erc1155"
+                                                  "balance_of"
                                                   [
                                                     (* Self *)
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "core::slice::iter::Iter")
-                                                        [ Ty.path "u128" ]
+                                                      Ty.path
+                                                        "erc1155::Contract"
                                                   ] in
-                                              let* α1 := M.call α0 [ iter ] in
-                                              let* α2 := M.alloc α1 in
-                                              match_operator
-                                                α2
-                                                (Value.Array
-                                                  [
-                                                    fun γ =>
-                                                      (let* α0 := M.read γ in
-                                                      match α0 with
-                                                      |
-                                                          core.option.Option.None
-                                                          =>
-                                                        let* α0 := M.break in
-                                                        let* α1 := M.read α0 in
-                                                        let* α2 :=
-                                                          M.never_to_any α1 in
-                                                        M.alloc α2
-                                                      | _ => M.break_match
-                                                      end);
-                                                    fun γ =>
-                                                      (let* α0 := M.read γ in
-                                                      match α0 with
-                                                      |
-                                                          core.option.Option.Some
-                                                            _
-                                                          =>
-                                                        let* γ0_0 :=
-                                                          let* α0 :=
-                                                            M.var
-                                                              "core::option::Option::Get_Some_0" in
-                                                          M.pure (α0 γ) in
-                                                        let* t := M.copy γ0_0 in
-                                                        let* amount :=
-                                                          let* α0 :=
-                                                            M.get_trait_method
-                                                              "erc1155::Erc1155"
-                                                              "balance_of"
-                                                              [
-                                                                (* Self *)
-                                                                  Ty.path
-                                                                    "erc1155::Contract"
-                                                              ] in
-                                                          let* α1 :=
-                                                            M.read self in
-                                                          let* α2 := M.read o in
-                                                          let* α3 :=
-                                                            M.read α2 in
-                                                          let* α4 := M.read t in
-                                                          let* α5 :=
-                                                            M.read α4 in
-                                                          let* α6 :=
-                                                            M.call
-                                                              α0
-                                                              [ α1; α3; α5 ] in
-                                                          M.alloc α6 in
-                                                        let* _ :=
-                                                          let* α0 :=
-                                                            M.get_associated_function
-                                                              (Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::vec::Vec")
-                                                                [
-                                                                  Ty.path
-                                                                    "u128";
-                                                                  Ty.path
-                                                                    "alloc::alloc::Global"
-                                                                ])
-                                                              "push" in
-                                                          let* α1 :=
-                                                            M.read amount in
-                                                          let* α2 :=
-                                                            M.call
-                                                              α0
-                                                              [ output; α1 ] in
-                                                          M.alloc α2 in
-                                                        M.alloc (Value.Tuple [])
-                                                      | _ => M.break_match
-                                                      end)
-                                                  ]) in
-                                            M.alloc (Value.Tuple [])))
-                                      ]) in
-                                M.pure (M.use α3)
-                              | _ => M.break_match
-                              end)
-                          ]) in
-                    M.alloc (Value.Tuple [])))
-              ]) in
+                                              let* α1 := M.read self in
+                                              let* α2 := M.read o in
+                                              let* α3 := M.read α2 in
+                                              let* α4 := M.read t in
+                                              let* α5 := M.read α4 in
+                                              let* α6 :=
+                                                M.call α0 [ α1; α3; α5 ] in
+                                              M.alloc α6 in
+                                            let* _ :=
+                                              let* α0 :=
+                                                M.get_associated_function
+                                                  (Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    [
+                                                      Ty.path "u128";
+                                                      Ty.path
+                                                        "alloc::alloc::Global"
+                                                    ])
+                                                  "push" in
+                                              let* α1 := M.read amount in
+                                              let* α2 :=
+                                                M.call α0 [ output; α1 ] in
+                                              M.alloc α2 in
+                                            M.alloc (Value.Tuple []))
+                                        ] in
+                                    M.alloc (Value.Tuple [])))
+                              ] in
+                          M.pure (M.use α3))
+                      ] in
+                  M.alloc (Value.Tuple [])))
+            ] in
         M.pure (M.use α3) in
       M.read output
     | _, _ => M.impossible
@@ -2235,7 +2155,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               (* Rhs *) Ty.path "erc1155::AccountId"
             ] in
         let* α1 := M.call α0 [ operator; caller ] in
-        let* α2 := M.alloc (UnOp.not α1) in
+        let* α2 := M.alloc (UnOp.Pure.not α1) in
         let* α3 := M.read (M.use α2) in
         if Value.is_true α3 then
           let* α0 :=

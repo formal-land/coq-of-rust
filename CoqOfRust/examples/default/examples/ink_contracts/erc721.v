@@ -206,9 +206,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1133,57 +1131,46 @@ Module Impl_erc721_Erc721.
         let* α7 := M.alloc α6 in
         match_operator
           α7
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "erc721::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "erc721::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "erc721::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "erc721::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* α0 :=
         M.alloc
           (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
@@ -1282,7 +1269,7 @@ Module Impl_erc721_Erc721.
             let* α5 := M.call α2 [ α3; α4 ] in
             let* α6 := M.read caller in
             M.call α0 [ α1; α5; α6 ]) in
-        let* α5 := M.alloc (UnOp.not α4) in
+        let* α5 := M.alloc (UnOp.Pure.not α4) in
         let* α6 := M.read (M.use α5) in
         if Value.is_true α6 then
           let* α0 :=
@@ -1432,57 +1419,46 @@ Module Impl_erc721_Erc721.
         let* α6 := M.alloc α5 in
         match_operator
           α6
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "erc721::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "erc721::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "erc721::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "erc721::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* α0 :=
         M.alloc
           (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
@@ -1524,201 +1500,175 @@ Module Impl_erc721_Erc721.
       let* α0 :=
         match_operator
           self
-          (Value.Array
-            [
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    {|
-                      erc721.Erc721.token_owner := _;
-                      erc721.Erc721.owned_tokens_count := _;
-                    |}
-                    =>
-                  let* γ1_0 :=
-                    let* α0 := M.var "erc721::Erc721::Get_token_owner" in
-                    M.pure (α0 γ) in
-                  let* γ1_1 :=
-                    let* α0 := M.var "erc721::Erc721::Get_owned_tokens_count" in
-                    M.pure (α0 γ) in
-                  let* token_owner := M.alloc (borrow_mut γ1_0) in
-                  let* owned_tokens_count := M.alloc (borrow_mut γ1_1) in
-                  let* _ :=
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "erc721::Mapping")
-                          [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
-                        "contains" in
-                    let* α1 := M.read token_owner in
-                    let* α2 := M.call α0 [ α1; id ] in
-                    let* α3 := M.alloc (UnOp.not α2) in
-                    let* α4 := M.read (M.use α3) in
-                    if Value.is_true α4 then
-                      let* α0 :=
-                        M.return_
-                          (Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "erc721::Error::TokenNotFound"
-                                []
-                            ]) in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.never_to_any α1 in
-                      M.alloc α2
-                    else
-                      M.alloc (Value.Tuple []) in
-                  let* count :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::ops::try_trait::Try"
-                        "branch"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              [ Ty.path "u32"; Ty.path "erc721::Error" ]
-                        ] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.path "u32" ])
-                        "ok_or" in
-                    let* α2 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.path "u32" ])
-                        "map" in
-                    let* α3 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "erc721::Mapping")
-                          [ Ty.path "erc721::AccountId"; Ty.path "u32" ])
-                        "get" in
-                    let* α4 := M.read owned_tokens_count in
-                    let* α5 := M.read from in
-                    let* α6 := M.call α3 [ α4; α5 ] in
-                    let* α7 :=
-                      M.call
-                        α2
-                        [
-                          α6;
-                          fun (α0 : Ty.path "u32") =>
-                            (let* α0 := M.alloc α0 in
-                            match_operator
-                              α0
-                              (Value.Array
-                                [
-                                  fun γ =>
-                                    (let* c := M.copy γ in
-                                    let* α0 := M.read c in
-                                    let* α1 :=
-                                      M.alloc (Value.Integer Integer.U32 1) in
-                                    let* α2 := M.read (M.use α1) in
-                                    BinOp.Panic.sub α0 α2)
-                                ]))
-                        ] in
-                    let* α8 :=
-                      M.call
-                        α1
-                        [
-                          α7;
-                          Value.StructTuple "erc721::Error::CannotFetchValue" []
-                        ] in
-                    let* α9 := M.call α0 [ α8 ] in
-                    let* α10 := M.alloc α9 in
-                    let* α11 :=
-                      match_operator
-                        α10
-                        (Value.Array
+          [
+            fun γ =>
+              (let* γ := M.read γ in
+              let* γ1_0 :=
+                M.get_struct_record_field_or_break_match
+                  γ
+                  "erc721::Erc721"
+                  "token_owner" in
+              let* γ1_1 :=
+                M.get_struct_record_field_or_break_match
+                  γ
+                  "erc721::Erc721"
+                  "owned_tokens_count" in
+              let* token_owner := M.alloc γ1_0 in
+              let* owned_tokens_count := M.alloc γ1_1 in
+              let* _ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
+                    "contains" in
+                let* α1 := M.read token_owner in
+                let* α2 := M.call α0 [ α1; id ] in
+                let* α3 := M.alloc (UnOp.Pure.not α2) in
+                let* α4 := M.read (M.use α3) in
+                if Value.is_true α4 then
+                  let* α0 :=
+                    M.return_
+                      (Value.StructTuple
+                        "core::result::Result::Err"
+                        [ Value.StructTuple "erc721::Error::TokenNotFound" []
+                        ]) in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2
+                else
+                  M.alloc (Value.Tuple []) in
+              let* count :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::ops::try_trait::Try"
+                    "branch"
+                    [
+                      (* Self *)
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.path "u32"; Ty.path "erc721::Error" ]
+                    ] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "u32" ])
+                    "ok_or" in
+                let* α2 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "u32" ])
+                    "map" in
+                let* α3 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [ Ty.path "erc721::AccountId"; Ty.path "u32" ])
+                    "get" in
+                let* α4 := M.read owned_tokens_count in
+                let* α5 := M.read from in
+                let* α6 := M.call α3 [ α4; α5 ] in
+                let* α7 :=
+                  M.call
+                    α2
+                    [
+                      α6;
+                      fun α0 (* : Ty.path "u32" *) =>
+                        (let* α0 := M.alloc α0 in
+                        match_operator
+                          α0
                           [
                             fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.ops.control_flow.ControlFlow.Break _ =>
-                                let* γ0_0 :=
-                                  let* α0 :=
-                                    M.var
-                                      "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                                  M.pure (α0 γ) in
-                                let* residual := M.copy γ0_0 in
-                                let* α0 :=
-                                  M.get_trait_method
-                                    "core::ops::try_trait::FromResidual"
-                                    "from_residual"
-                                    [
-                                      (* Self *)
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          [ Ty.tuple []; Ty.path "erc721::Error"
-                                          ];
-                                      (* R *)
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.path "erc721::Error"
-                                          ]
-                                    ] in
-                                let* α1 := M.read residual in
-                                let* α2 := M.call α0 [ α1 ] in
-                                let* α3 := M.return_ α2 in
-                                let* α4 := M.read α3 in
-                                let* α5 := M.never_to_any α4 in
-                                M.alloc α5
-                              | _ => M.break_match
-                              end);
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.ops.control_flow.ControlFlow.Continue _ =>
-                                let* γ0_0 :=
-                                  let* α0 :=
-                                    M.var
-                                      "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                                  M.pure (α0 γ) in
-                                let* val := M.copy γ0_0 in
-                                M.pure val
-                              | _ => M.break_match
-                              end)
-                          ]) in
-                    M.copy α11 in
-                  let* _ :=
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "erc721::Mapping")
-                          [ Ty.path "erc721::AccountId"; Ty.path "u32" ])
-                        "insert" in
-                    let* α1 := M.read owned_tokens_count in
-                    let* α2 := M.read from in
-                    let* α3 := M.read α2 in
-                    let* α4 := M.read count in
-                    let* α5 := M.call α0 [ α1; α3; α4 ] in
-                    M.alloc α5 in
-                  let* _ :=
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "erc721::Mapping")
-                          [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
-                        "remove" in
-                    let* α1 := M.read token_owner in
-                    let* α2 := M.read id in
-                    let* α3 := M.call α0 [ α1; α2 ] in
-                    M.alloc α3 in
-                  M.alloc
-                    (Value.StructTuple
-                      "core::result::Result::Ok"
-                      [ Value.Tuple [] ])
-                end)
-            ]) in
+                              (let* c := M.copy γ in
+                              let* α0 := M.read c in
+                              let* α1 :=
+                                M.alloc (Value.Integer Integer.U32 1) in
+                              let* α2 := M.read (M.use α1) in
+                              BinOp.Panic.sub α0 α2)
+                          ])
+                    ] in
+                let* α8 :=
+                  M.call
+                    α1
+                    [ α7; Value.StructTuple "erc721::Error::CannotFetchValue" []
+                    ] in
+                let* α9 := M.call α0 [ α8 ] in
+                let* α10 := M.alloc α9 in
+                let* α11 :=
+                  match_operator
+                    α10
+                    [
+                      fun γ =>
+                        (let* γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match
+                            γ
+                            "core::ops::control_flow::ControlFlow::Break"
+                            0 in
+                        let* residual := M.copy γ0_0 in
+                        let* α0 :=
+                          M.get_trait_method
+                            "core::ops::try_trait::FromResidual"
+                            "from_residual"
+                            [
+                              (* Self *)
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.tuple []; Ty.path "erc721::Error" ];
+                              (* R *)
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "erc721::Error"
+                                  ]
+                            ] in
+                        let* α1 := M.read residual in
+                        let* α2 := M.call α0 [ α1 ] in
+                        let* α3 := M.return_ α2 in
+                        let* α4 := M.read α3 in
+                        let* α5 := M.never_to_any α4 in
+                        M.alloc α5);
+                      fun γ =>
+                        (let* γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match
+                            γ
+                            "core::ops::control_flow::ControlFlow::Continue"
+                            0 in
+                        let* val := M.copy γ0_0 in
+                        M.pure val)
+                    ] in
+                M.copy α11 in
+              let* _ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [ Ty.path "erc721::AccountId"; Ty.path "u32" ])
+                    "insert" in
+                let* α1 := M.read owned_tokens_count in
+                let* α2 := M.read from in
+                let* α3 := M.read α2 in
+                let* α4 := M.read count in
+                let* α5 := M.call α0 [ α1; α3; α4 ] in
+                M.alloc α5 in
+              let* _ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
+                    "remove" in
+                let* α1 := M.read token_owner in
+                let* α2 := M.read id in
+                let* α3 := M.call α0 [ α1; α2 ] in
+                M.alloc α3 in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ Value.Tuple [] ]))
+          ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1831,57 +1781,46 @@ Module Impl_erc721_Erc721.
         let* α6 := M.alloc α5 in
         match_operator
           α6
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "erc721::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "erc721::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "erc721::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "erc721::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* α0 :=
         M.alloc
           (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
@@ -1932,57 +1871,46 @@ Module Impl_erc721_Erc721.
         let* α6 := M.alloc α5 in
         match_operator
           α6
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "erc721::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "erc721::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "erc721::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "erc721::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* α0 :=
         M.alloc
           (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
@@ -2038,57 +1966,46 @@ Module Impl_erc721_Erc721.
         let* α6 := M.alloc α5 in
         match_operator
           α6
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "erc721::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "erc721::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "erc721::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "erc721::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "erc721::Env") "emit_event" in

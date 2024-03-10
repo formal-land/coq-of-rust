@@ -187,19 +187,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α2
           [
             α5;
-            fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "str" ]) =>
+            fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "str" ] *) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                (Value.Array
-                  [
-                    fun γ =>
-                      (let* s := M.copy γ in
-                      let* α0 :=
-                        M.get_associated_function (Ty.path "str") "parse" in
-                      let* α1 := M.read s in
-                      M.call α0 [ α1 ])
-                  ]))
+                [
+                  fun γ =>
+                    (let* s := M.copy γ in
+                    let* α0 :=
+                      M.get_associated_function (Ty.path "str") "parse" in
+                    let* α1 := M.read s in
+                    M.call α0 [ α1 ])
+                ])
           ] in
       let* α7 :=
         M.call
@@ -207,65 +206,64 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             α6;
             fun
-                (α0 :
-                  Ty.apply
+                α0
+                  (* : Ty.apply
                     (Ty.path "core::result::Result")
                     [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError"
-                    ]) =>
+                    ] *) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                (Value.Array
-                  [
-                    fun γ =>
-                      (let* r := M.copy γ in
-                      let* α0 :=
-                        M.get_associated_function
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.path "u8"; Ty.tuple [] ])
-                          "ok" in
-                      let* α1 :=
-                        M.get_associated_function
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "u8";
-                              Ty.path "core::num::error::ParseIntError"
-                            ])
-                          "map_err" in
-                      let* α2 := M.read r in
-                      let* α3 :=
-                        M.call
-                          α1
+                [
+                  fun γ =>
+                    (let* r := M.copy γ in
+                    let* α0 :=
+                      M.get_associated_function
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.path "u8"; Ty.tuple [] ])
+                        "ok" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
                           [
-                            α2;
-                            fun
-                                (α0 :
-                                  Ty.path "core::num::error::ParseIntError") =>
-                              (let* α0 := M.alloc α0 in
-                              match_operator
-                                α0
-                                (Value.Array
-                                  [
-                                    fun γ =>
-                                      (let* e := M.copy γ in
-                                      let* α0 :=
-                                        M.get_associated_function
-                                          (Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            [
-                                              Ty.path
-                                                "core::num::error::ParseIntError";
-                                              Ty.path "alloc::alloc::Global"
-                                            ])
-                                          "push" in
-                                      let* α1 := M.read e in
-                                      M.call α0 [ errors; α1 ])
-                                  ]))
-                          ] in
-                      M.call α0 [ α3 ])
-                  ]))
+                            Ty.path "u8";
+                            Ty.path "core::num::error::ParseIntError"
+                          ])
+                        "map_err" in
+                    let* α2 := M.read r in
+                    let* α3 :=
+                      M.call
+                        α1
+                        [
+                          α2;
+                          fun
+                              α0
+                                (* : Ty.path
+                                  "core::num::error::ParseIntError" *) =>
+                            (let* α0 := M.alloc α0 in
+                            match_operator
+                              α0
+                              [
+                                fun γ =>
+                                  (let* e := M.copy γ in
+                                  let* α0 :=
+                                    M.get_associated_function
+                                      (Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        [
+                                          Ty.path
+                                            "core::num::error::ParseIntError";
+                                          Ty.path "alloc::alloc::Global"
+                                        ])
+                                      "push" in
+                                  let* α1 := M.read e in
+                                  M.call α0 [ errors; α1 ])
+                              ])
+                        ] in
+                    M.call α0 [ α3 ])
+                ])
           ] in
       let* α8 := M.call α0 [ α7 ] in
       M.alloc α8 in

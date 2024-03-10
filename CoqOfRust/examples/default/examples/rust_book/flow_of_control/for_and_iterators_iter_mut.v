@@ -82,73 +82,58 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α7 :=
         match_operator
           α6
-          (Value.Array
-            [
-              fun γ =>
-                (let* iter := M.copy γ in
-                M.loop
-                  (let* _ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::iter::traits::iterator::Iterator"
-                        "next"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::slice::iter::IterMut")
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                        ] in
-                    let* α1 := M.call α0 [ iter ] in
-                    let* α2 := M.alloc α1 in
-                    match_operator
-                      α2
-                      (Value.Array
-                        [
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.None =>
-                              let* α0 := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 := M.never_to_any α1 in
-                              M.alloc α2
-                            | _ => M.break_match
-                            end);
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.Some _ =>
-                              let* γ0_0 :=
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ :=
+                  let* α0 :=
+                    M.get_trait_method
+                      "core::iter::traits::iterator::Iterator"
+                      "next"
+                      [
+                        (* Self *)
+                          Ty.apply
+                            (Ty.path "core::slice::iter::IterMut")
+                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                      ] in
+                  let* α1 := M.call α0 [ iter ] in
+                  let* α2 := M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 := M.never_to_any α1 in
+                        M.alloc α2);
+                      fun γ =>
+                        (let* γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match
+                            γ
+                            "core::option::Option::Some"
+                            0 in
+                        let* name := M.copy γ0_0 in
+                        let* α0 := M.read name in
+                        let* α1 :=
+                          match_operator
+                            name
+                            [
+                              fun γ =>
+                                (let* γ := M.read γ in
                                 let* α0 :=
-                                  M.var "core::option::Option::Get_Some_0" in
-                                M.pure (α0 γ) in
-                              let* name := M.copy γ0_0 in
-                              let* α0 := M.read name in
-                              let* α1 :=
-                                match_operator
-                                  name
-                                  (Value.Array
-                                    [
-                                      fun γ =>
-                                        (let* γ :=
-                                          let* α0 := M.read γ in
-                                          M.pure (deref α0) in
-                                        let* α0 :=
-                                          M.read
-                                            (mk_str
-                                              "There is a rustacean among us!") in
-                                        M.alloc α0);
-                                      fun γ =>
-                                        (let* α0 := M.read (mk_str "Hello") in
-                                        M.alloc α0)
-                                    ]) in
-                              let* α2 := M.read α1 in
-                              M.assign α0 α2
-                            | _ => M.break_match
-                            end)
-                        ]) in
-                  M.alloc (Value.Tuple [])))
-            ]) in
+                                  M.read
+                                    (mk_str "There is a rustacean among us!") in
+                                M.alloc α0);
+                              fun γ =>
+                                (let* α0 := M.read (mk_str "Hello") in
+                                M.alloc α0)
+                            ] in
+                        let* α2 := M.read α1 in
+                        M.assign α0 α2)
+                    ] in
+                M.alloc (Value.Tuple [])))
+          ] in
       M.pure (M.use α7) in
     let* _ :=
       let* _ :=

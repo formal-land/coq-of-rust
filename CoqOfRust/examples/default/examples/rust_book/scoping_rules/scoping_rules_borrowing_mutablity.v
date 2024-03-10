@@ -15,19 +15,17 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          (Value.Array
-            [
-              fun γ =>
-                (match_operator
-                  Value.DeclaredButUndefined
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (match_operator
-                          Value.DeclaredButUndefined
-                          (Value.Array [ fun γ => (M.read self) ]))
-                    ]))
-            ]) in
+          [
+            fun γ =>
+              (match_operator
+                Value.DeclaredButUndefined
+                [
+                  fun γ =>
+                    (match_operator
+                      Value.DeclaredButUndefined
+                      [ fun γ => (M.read self) ])
+                ])
+          ] in
       M.read α0
     | _, _ => M.impossible
     end.

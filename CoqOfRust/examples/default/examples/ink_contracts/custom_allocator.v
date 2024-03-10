@@ -112,7 +112,7 @@ Module Impl_custom_allocator_CustomAllocator.
             α3
             [ M.get_struct_record α4 "value"; Value.Integer Integer.Usize 0 ] in
         let* α6 := M.read α5 in
-        M.assign α2 (UnOp.not α6) in
+        M.assign α2 (UnOp.Pure.not α6) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible

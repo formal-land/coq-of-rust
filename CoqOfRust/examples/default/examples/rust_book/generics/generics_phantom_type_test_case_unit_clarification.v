@@ -13,7 +13,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := match_operator α0 (Value.Array []) in
+      let* α1 := match_operator α0 [] in
       let* α2 := M.read α1 in
       M.never_to_any α2
     | _, _ => M.impossible
@@ -75,7 +75,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := match_operator α0 (Value.Array []) in
+      let* α1 := match_operator α0 [] in
       let* α2 := M.read α1 in
       M.never_to_any α2
     | _, _ => M.impossible

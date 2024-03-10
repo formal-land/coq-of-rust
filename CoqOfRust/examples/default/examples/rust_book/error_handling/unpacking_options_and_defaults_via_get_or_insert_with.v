@@ -20,74 +20,28 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
       let* α2 :=
         match_operator
           self
-          (Value.Array
-            [
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
-                    =>
-                  let* α0 := M.read (mk_str "Apple") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange
-                    =>
-                  let* α0 := M.read (mk_str "Orange") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana
-                    =>
-                  let* α0 := M.read (mk_str "Banana") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi
-                    =>
-                  let* α0 := M.read (mk_str "Kiwi") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon
-                    =>
-                  let* α0 := M.read (mk_str "Lemon") in
-                  M.alloc α0
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Apple") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Orange") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Banana") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Kiwi") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Lemon") in
+              M.alloc α0)
+          ] in
       let* α3 := M.read α2 in
       M.call α0 [ α1; α3 ]
     | _, _ => M.impossible
@@ -135,36 +89,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* get_lemon_as_fallback :=
       M.alloc
-        (fun (α0 : Ty.path "unit") =>
+        (fun α0 (* : Ty.path "unit" *) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            (Value.Array
-              [
-                fun γ =>
-                  (let* _ :=
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_const" in
-                      let* α2 :=
-                        M.read (mk_str "Providing lemon as fallback
+            [
+              fun γ =>
+                (let* _ :=
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_const" in
+                    let* α2 := M.read (mk_str "Providing lemon as fallback
 ") in
-                      let* α3 := M.alloc (Value.Array [ α2 ]) in
-                      let* α4 :=
-                        M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                      let* α5 := M.call α0 [ α4 ] in
-                      M.alloc α5 in
-                    M.alloc (Value.Tuple []) in
-                  let* α0 :=
-                    M.alloc
-                      (Value.StructTuple
-                        "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Lemon"
-                        []) in
-                  M.read α0)
-              ]))) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    let* α4 :=
+                      M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                    let* α5 := M.call α0 [ α4 ] in
+                    M.alloc α5 in
+                  M.alloc (Value.Tuple []) in
+                let* α0 :=
+                  M.alloc
+                    (Value.StructTuple
+                      "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Lemon"
+                      []) in
+                M.read α0)
+            ])) in
     let* first_available_fruit :=
       let* α0 :=
         M.get_associated_function

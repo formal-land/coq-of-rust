@@ -20,64 +20,28 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
       let* α2 :=
         match_operator
           self
-          (Value.Array
-            [
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                | unpacking_options_and_defaults_via_or.Fruit.Apple =>
-                  let* α0 := M.read (mk_str "Apple") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                | unpacking_options_and_defaults_via_or.Fruit.Orange =>
-                  let* α0 := M.read (mk_str "Orange") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                | unpacking_options_and_defaults_via_or.Fruit.Banana =>
-                  let* α0 := M.read (mk_str "Banana") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                | unpacking_options_and_defaults_via_or.Fruit.Kiwi =>
-                  let* α0 := M.read (mk_str "Kiwi") in
-                  M.alloc α0
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                | unpacking_options_and_defaults_via_or.Fruit.Lemon =>
-                  let* α0 := M.read (mk_str "Lemon") in
-                  M.alloc α0
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Apple") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Orange") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Banana") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Kiwi") in
+              M.alloc α0);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read (mk_str "Lemon") in
+              M.alloc α0)
+          ] in
       let* α3 := M.read α2 in
       M.call α0 [ α1; α3 ]
     | _, _ => M.impossible

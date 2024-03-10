@@ -317,83 +317,70 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         match_operator
           α2
-          (Value.Array
-            [
-              fun γ =>
-                (let* iter := M.copy γ in
-                M.loop
-                  (let* _ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::iter::traits::iterator::Iterator"
-                        "next"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::ops::range::Range")
-                              [ Ty.path "i32" ]
-                        ] in
-                    let* α1 := M.call α0 [ iter ] in
-                    let* α2 := M.alloc α1 in
-                    match_operator
-                      α2
-                      (Value.Array
-                        [
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.None =>
-                              let* α0 := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 := M.never_to_any α1 in
-                              M.alloc α2
-                            | _ => M.break_match
-                            end);
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.Some _ =>
-                              let* γ0_0 :=
-                                let* α0 :=
-                                  M.var "core::option::Option::Get_Some_0" in
-                                M.pure (α0 γ) in
-                              let* i := M.copy γ0_0 in
-                              let* _ :=
-                                let* _ :=
-                                  let* α0 :=
-                                    M.get_function
-                                      "std::io::stdio::_print"
-                                      [] in
-                                  let* α1 :=
-                                    M.get_associated_function
-                                      (Ty.path "core::fmt::Arguments")
-                                      "new_v1" in
-                                  let* α2 := M.read (mk_str "> ") in
-                                  let* α3 := M.read (mk_str "
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ :=
+                  let* α0 :=
+                    M.get_trait_method
+                      "core::iter::traits::iterator::Iterator"
+                      "next"
+                      [
+                        (* Self *)
+                          Ty.apply
+                            (Ty.path "core::ops::range::Range")
+                            [ Ty.path "i32" ]
+                      ] in
+                  let* α1 := M.call α0 [ iter ] in
+                  let* α2 := M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 := M.never_to_any α1 in
+                        M.alloc α2);
+                      fun γ =>
+                        (let* γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match
+                            γ
+                            "core::option::Option::Some"
+                            0 in
+                        let* i := M.copy γ0_0 in
+                        let* _ :=
+                          let* _ :=
+                            let* α0 :=
+                              M.get_function "std::io::stdio::_print" [] in
+                            let* α1 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::Arguments")
+                                "new_v1" in
+                            let* α2 := M.read (mk_str "> ") in
+                            let* α3 := M.read (mk_str "
 ") in
-                                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                                  let* α5 :=
-                                    M.get_associated_function
-                                      (Ty.path "core::fmt::rt::Argument")
-                                      "new_display" in
-                                  let* α6 := M.call α5 [ i ] in
-                                  let* α7 := M.alloc (Value.Array [ α6 ]) in
-                                  let* α8 :=
-                                    M.call
-                                      α1
-                                      [
-                                        M.pointer_coercion (* Unsize *) α4;
-                                        M.pointer_coercion (* Unsize *) α7
-                                      ] in
-                                  let* α9 := M.call α0 [ α8 ] in
-                                  M.alloc α9 in
-                                M.alloc (Value.Tuple []) in
-                              M.alloc (Value.Tuple [])
-                            | _ => M.break_match
-                            end)
-                        ]) in
-                  M.alloc (Value.Tuple [])))
-            ]) in
+                            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                            let* α5 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::rt::Argument")
+                                "new_display" in
+                            let* α6 := M.call α5 [ i ] in
+                            let* α7 := M.alloc (Value.Array [ α6 ]) in
+                            let* α8 :=
+                              M.call
+                                α1
+                                [
+                                  M.pointer_coercion (* Unsize *) α4;
+                                  M.pointer_coercion (* Unsize *) α7
+                                ] in
+                            let* α9 := M.call α0 [ α8 ] in
+                            M.alloc α9 in
+                          M.alloc (Value.Tuple []) in
+                        M.alloc (Value.Tuple []))
+                    ] in
+                M.alloc (Value.Tuple [])))
+          ] in
       M.pure (M.use α3) in
     let* _ :=
       let* _ :=
@@ -435,83 +422,70 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α7 :=
         match_operator
           α6
-          (Value.Array
-            [
-              fun γ =>
-                (let* iter := M.copy γ in
-                M.loop
-                  (let* _ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::iter::traits::iterator::Iterator"
-                        "next"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::take::Take")
-                              [ Ty.path "iterators::Fibonacci" ]
-                        ] in
-                    let* α1 := M.call α0 [ iter ] in
-                    let* α2 := M.alloc α1 in
-                    match_operator
-                      α2
-                      (Value.Array
-                        [
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.None =>
-                              let* α0 := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 := M.never_to_any α1 in
-                              M.alloc α2
-                            | _ => M.break_match
-                            end);
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.Some _ =>
-                              let* γ0_0 :=
-                                let* α0 :=
-                                  M.var "core::option::Option::Get_Some_0" in
-                                M.pure (α0 γ) in
-                              let* i := M.copy γ0_0 in
-                              let* _ :=
-                                let* _ :=
-                                  let* α0 :=
-                                    M.get_function
-                                      "std::io::stdio::_print"
-                                      [] in
-                                  let* α1 :=
-                                    M.get_associated_function
-                                      (Ty.path "core::fmt::Arguments")
-                                      "new_v1" in
-                                  let* α2 := M.read (mk_str "> ") in
-                                  let* α3 := M.read (mk_str "
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ :=
+                  let* α0 :=
+                    M.get_trait_method
+                      "core::iter::traits::iterator::Iterator"
+                      "next"
+                      [
+                        (* Self *)
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::take::Take")
+                            [ Ty.path "iterators::Fibonacci" ]
+                      ] in
+                  let* α1 := M.call α0 [ iter ] in
+                  let* α2 := M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 := M.never_to_any α1 in
+                        M.alloc α2);
+                      fun γ =>
+                        (let* γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match
+                            γ
+                            "core::option::Option::Some"
+                            0 in
+                        let* i := M.copy γ0_0 in
+                        let* _ :=
+                          let* _ :=
+                            let* α0 :=
+                              M.get_function "std::io::stdio::_print" [] in
+                            let* α1 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::Arguments")
+                                "new_v1" in
+                            let* α2 := M.read (mk_str "> ") in
+                            let* α3 := M.read (mk_str "
 ") in
-                                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                                  let* α5 :=
-                                    M.get_associated_function
-                                      (Ty.path "core::fmt::rt::Argument")
-                                      "new_display" in
-                                  let* α6 := M.call α5 [ i ] in
-                                  let* α7 := M.alloc (Value.Array [ α6 ]) in
-                                  let* α8 :=
-                                    M.call
-                                      α1
-                                      [
-                                        M.pointer_coercion (* Unsize *) α4;
-                                        M.pointer_coercion (* Unsize *) α7
-                                      ] in
-                                  let* α9 := M.call α0 [ α8 ] in
-                                  M.alloc α9 in
-                                M.alloc (Value.Tuple []) in
-                              M.alloc (Value.Tuple [])
-                            | _ => M.break_match
-                            end)
-                        ]) in
-                  M.alloc (Value.Tuple [])))
-            ]) in
+                            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                            let* α5 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::rt::Argument")
+                                "new_display" in
+                            let* α6 := M.call α5 [ i ] in
+                            let* α7 := M.alloc (Value.Array [ α6 ]) in
+                            let* α8 :=
+                              M.call
+                                α1
+                                [
+                                  M.pointer_coercion (* Unsize *) α4;
+                                  M.pointer_coercion (* Unsize *) α7
+                                ] in
+                            let* α9 := M.call α0 [ α8 ] in
+                            M.alloc α9 in
+                          M.alloc (Value.Tuple []) in
+                        M.alloc (Value.Tuple []))
+                    ] in
+                M.alloc (Value.Tuple [])))
+          ] in
       M.pure (M.use α7) in
     let* _ :=
       let* _ :=
@@ -568,87 +542,74 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α9 :=
         match_operator
           α8
-          (Value.Array
-            [
-              fun γ =>
-                (let* iter := M.copy γ in
-                M.loop
-                  (let* _ :=
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::iter::traits::iterator::Iterator"
-                        "next"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::take::Take")
-                              [
-                                Ty.apply
-                                  (Ty.path "core::iter::adapters::skip::Skip")
-                                  [ Ty.path "iterators::Fibonacci" ]
-                              ]
-                        ] in
-                    let* α1 := M.call α0 [ iter ] in
-                    let* α2 := M.alloc α1 in
-                    match_operator
-                      α2
-                      (Value.Array
-                        [
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.None =>
-                              let* α0 := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 := M.never_to_any α1 in
-                              M.alloc α2
-                            | _ => M.break_match
-                            end);
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.Some _ =>
-                              let* γ0_0 :=
-                                let* α0 :=
-                                  M.var "core::option::Option::Get_Some_0" in
-                                M.pure (α0 γ) in
-                              let* i := M.copy γ0_0 in
-                              let* _ :=
-                                let* _ :=
-                                  let* α0 :=
-                                    M.get_function
-                                      "std::io::stdio::_print"
-                                      [] in
-                                  let* α1 :=
-                                    M.get_associated_function
-                                      (Ty.path "core::fmt::Arguments")
-                                      "new_v1" in
-                                  let* α2 := M.read (mk_str "> ") in
-                                  let* α3 := M.read (mk_str "
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ :=
+                  let* α0 :=
+                    M.get_trait_method
+                      "core::iter::traits::iterator::Iterator"
+                      "next"
+                      [
+                        (* Self *)
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::take::Take")
+                            [
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::skip::Skip")
+                                [ Ty.path "iterators::Fibonacci" ]
+                            ]
+                      ] in
+                  let* α1 := M.call α0 [ iter ] in
+                  let* α2 := M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 := M.never_to_any α1 in
+                        M.alloc α2);
+                      fun γ =>
+                        (let* γ0_0 :=
+                          M.get_struct_tuple_field_or_break_match
+                            γ
+                            "core::option::Option::Some"
+                            0 in
+                        let* i := M.copy γ0_0 in
+                        let* _ :=
+                          let* _ :=
+                            let* α0 :=
+                              M.get_function "std::io::stdio::_print" [] in
+                            let* α1 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::Arguments")
+                                "new_v1" in
+                            let* α2 := M.read (mk_str "> ") in
+                            let* α3 := M.read (mk_str "
 ") in
-                                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                                  let* α5 :=
-                                    M.get_associated_function
-                                      (Ty.path "core::fmt::rt::Argument")
-                                      "new_display" in
-                                  let* α6 := M.call α5 [ i ] in
-                                  let* α7 := M.alloc (Value.Array [ α6 ]) in
-                                  let* α8 :=
-                                    M.call
-                                      α1
-                                      [
-                                        M.pointer_coercion (* Unsize *) α4;
-                                        M.pointer_coercion (* Unsize *) α7
-                                      ] in
-                                  let* α9 := M.call α0 [ α8 ] in
-                                  M.alloc α9 in
-                                M.alloc (Value.Tuple []) in
-                              M.alloc (Value.Tuple [])
-                            | _ => M.break_match
-                            end)
-                        ]) in
-                  M.alloc (Value.Tuple [])))
-            ]) in
+                            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                            let* α5 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::rt::Argument")
+                                "new_display" in
+                            let* α6 := M.call α5 [ i ] in
+                            let* α7 := M.alloc (Value.Array [ α6 ]) in
+                            let* α8 :=
+                              M.call
+                                α1
+                                [
+                                  M.pointer_coercion (* Unsize *) α4;
+                                  M.pointer_coercion (* Unsize *) α7
+                                ] in
+                            let* α9 := M.call α0 [ α8 ] in
+                            M.alloc α9 in
+                          M.alloc (Value.Tuple []) in
+                        M.alloc (Value.Tuple []))
+                    ] in
+                M.alloc (Value.Tuple [])))
+          ] in
       M.pure (M.use α9) in
     let* array_ :=
       M.alloc
@@ -703,81 +664,70 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α5 :=
       match_operator
         α4
-        (Value.Array
-          [
-            fun γ =>
-              (let* iter := M.copy γ in
-              M.loop
-                (let* _ :=
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::iter::traits::iterator::Iterator"
-                      "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::slice::iter::Iter")
-                            [ Ty.path "u32" ]
-                      ] in
-                  let* α1 := M.call α0 [ iter ] in
-                  let* α2 := M.alloc α1 in
-                  match_operator
-                    α2
-                    (Value.Array
-                      [
-                        fun γ =>
-                          (let* α0 := M.read γ in
-                          match α0 with
-                          | core.option.Option.None =>
-                            let* α0 := M.break in
-                            let* α1 := M.read α0 in
-                            let* α2 := M.never_to_any α1 in
-                            M.alloc α2
-                          | _ => M.break_match
-                          end);
-                        fun γ =>
-                          (let* α0 := M.read γ in
-                          match α0 with
-                          | core.option.Option.Some _ =>
-                            let* γ0_0 :=
-                              let* α0 :=
-                                M.var "core::option::Option::Get_Some_0" in
-                              M.pure (α0 γ) in
-                            let* i := M.copy γ0_0 in
-                            let* _ :=
-                              let* _ :=
-                                let* α0 :=
-                                  M.get_function "std::io::stdio::_print" [] in
-                                let* α1 :=
-                                  M.get_associated_function
-                                    (Ty.path "core::fmt::Arguments")
-                                    "new_v1" in
-                                let* α2 := M.read (mk_str "> ") in
-                                let* α3 := M.read (mk_str "
+        [
+          fun γ =>
+            (let* iter := M.copy γ in
+            M.loop
+              (let* _ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::iter::traits::iterator::Iterator"
+                    "next"
+                    [
+                      (* Self *)
+                        Ty.apply
+                          (Ty.path "core::slice::iter::Iter")
+                          [ Ty.path "u32" ]
+                    ] in
+                let* α1 := M.call α0 [ iter ] in
+                let* α2 := M.alloc α1 in
+                match_operator
+                  α2
+                  [
+                    fun γ =>
+                      (let* α0 := M.break in
+                      let* α1 := M.read α0 in
+                      let* α2 := M.never_to_any α1 in
+                      M.alloc α2);
+                    fun γ =>
+                      (let* γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          γ
+                          "core::option::Option::Some"
+                          0 in
+                      let* i := M.copy γ0_0 in
+                      let* _ :=
+                        let* _ :=
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
+                          let* α1 :=
+                            M.get_associated_function
+                              (Ty.path "core::fmt::Arguments")
+                              "new_v1" in
+                          let* α2 := M.read (mk_str "> ") in
+                          let* α3 := M.read (mk_str "
 ") in
-                                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                                let* α5 :=
-                                  M.get_associated_function
-                                    (Ty.path "core::fmt::rt::Argument")
-                                    "new_display" in
-                                let* α6 := M.call α5 [ i ] in
-                                let* α7 := M.alloc (Value.Array [ α6 ]) in
-                                let* α8 :=
-                                  M.call
-                                    α1
-                                    [
-                                      M.pointer_coercion (* Unsize *) α4;
-                                      M.pointer_coercion (* Unsize *) α7
-                                    ] in
-                                let* α9 := M.call α0 [ α8 ] in
-                                M.alloc α9 in
-                              M.alloc (Value.Tuple []) in
-                            M.alloc (Value.Tuple [])
-                          | _ => M.break_match
-                          end)
-                      ]) in
-                M.alloc (Value.Tuple [])))
-          ]) in
+                          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                          let* α5 :=
+                            M.get_associated_function
+                              (Ty.path "core::fmt::rt::Argument")
+                              "new_display" in
+                          let* α6 := M.call α5 [ i ] in
+                          let* α7 := M.alloc (Value.Array [ α6 ]) in
+                          let* α8 :=
+                            M.call
+                              α1
+                              [
+                                M.pointer_coercion (* Unsize *) α4;
+                                M.pointer_coercion (* Unsize *) α7
+                              ] in
+                          let* α9 := M.call α0 [ α8 ] in
+                          M.alloc α9 in
+                        M.alloc (Value.Tuple []) in
+                      M.alloc (Value.Tuple []))
+                  ] in
+              M.alloc (Value.Tuple [])))
+        ] in
     M.read (M.use α5)
   | _, _ => M.impossible
   end.

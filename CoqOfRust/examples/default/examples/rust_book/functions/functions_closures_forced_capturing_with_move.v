@@ -53,32 +53,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α5 in
     let* contains :=
       M.alloc
-        (fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "i32" ]) =>
+        (fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "i32" ] *) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            (Value.Array
-              [
-                fun γ =>
-                  (let* needle := M.copy γ in
-                  let* α0 :=
-                    M.get_associated_function
-                      (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-                      "contains" in
-                  let* α1 :=
-                    M.get_trait_method
-                      "core::ops::deref::Deref"
-                      "deref"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                      ] in
-                  let* α2 := M.call α1 [ haystack ] in
-                  let* α3 := M.read needle in
-                  M.call α0 [ α2; α3 ])
-              ]))) in
+            [
+              fun γ =>
+                (let* needle := M.copy γ in
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+                    "contains" in
+                let* α1 :=
+                  M.get_trait_method
+                    "core::ops::deref::Deref"
+                    "deref"
+                    [
+                      (* Self *)
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                    ] in
+                let* α2 := M.call α1 [ haystack ] in
+                let* α3 := M.read needle in
+                M.call α0 [ α2; α3 ])
+            ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in

@@ -12,9 +12,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -103,245 +101,211 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       match_operator
         c
-        (Value.Array
-          [
-            fun γ =>
-              (let* ref_c1 := M.alloc (borrow γ) in
-              let* ref_c2 := M.alloc c in
+        [
+          fun γ =>
+            (let* ref_c1 := M.alloc γ in
+            let* ref_c2 := M.alloc c in
+            let* _ :=
               let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "ref_c1 equals ref_c2: ") in
-                  let* α3 := M.read (mk_str "
-") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α6 := M.read ref_c1 in
-                  let* α7 := M.read α6 in
-                  let* α8 := M.read ref_c2 in
-                  let* α9 := M.read α8 in
-                  let* α10 := M.alloc (BinOp.Pure.eq α7 α9) in
-                  let* α11 := M.call α5 [ α10 ] in
-                  let* α12 := M.alloc (Value.Array [ α11 ]) in
-                  let* α13 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α4;
-                        M.pointer_coercion (* Unsize *) α12
-                      ] in
-                  let* α14 := M.call α0 [ α13 ] in
-                  M.alloc α14 in
-                M.alloc (Value.Tuple []) in
-              let* point :=
-                M.alloc
-                  (Value.StructRecord
-                    "scoping_rules_borrowing_the_ref_pattern::Point"
-                    [
-                      ("x", Value.Integer Integer.I32 0);
-                      ("y", Value.Integer Integer.I32 0)
-                    ]) in
-              let* _copy_of_x :=
-                let* α0 :=
-                  match_operator
-                    point
-                    (Value.Array
-                      [
-                        fun γ =>
-                          (let* α0 := M.read γ in
-                          match α0 with
-                          |
-                              {|
-                                scoping_rules_borrowing_the_ref_pattern.Point.x
-                                  :=
-                                  _;
-                                scoping_rules_borrowing_the_ref_pattern.Point.y
-                                  :=
-                                  _;
-                              |}
-                              =>
-                            let* γ0_0 :=
-                              let* α0 :=
-                                M.var
-                                  "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
-                              M.pure (α0 γ) in
-                            let* γ0_1 :=
-                              let* α0 :=
-                                M.var
-                                  "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
-                              M.pure (α0 γ) in
-                            let* ref_to_x := M.alloc (borrow γ0_0) in
-                            M.read ref_to_x
-                          end)
-                      ]) in
-                M.copy α0 in
-              let* mutable_point := M.copy point in
-              let* _ :=
-                match_operator
-                  mutable_point
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        |
-                            {|
-                              scoping_rules_borrowing_the_ref_pattern.Point.x
-                                :=
-                                _;
-                              scoping_rules_borrowing_the_ref_pattern.Point.y
-                                :=
-                                _;
-                            |}
-                            =>
-                          let* γ0_0 :=
-                            let* α0 :=
-                              M.var
-                                "scoping_rules_borrowing_the_ref_pattern::Point::Get_x" in
-                            M.pure (α0 γ) in
-                          let* γ0_1 :=
-                            let* α0 :=
-                              M.var
-                                "scoping_rules_borrowing_the_ref_pattern::Point::Get_y" in
-                            M.pure (α0 γ) in
-                          let* mut_ref_to_y := M.alloc (borrow_mut γ0_1) in
-                          let* _ :=
-                            let* α0 := M.read mut_ref_to_y in
-                            M.assign α0 (Value.Integer Integer.I32 1) in
-                          M.alloc (Value.Tuple [])
-                        end)
-                    ]) in
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "point is (") in
-                  let* α3 := M.read (mk_str ", ") in
-                  let* α4 := M.read (mk_str ")
-") in
-                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α7 := M.call α6 [ M.get_struct_record point "x" ] in
-                  let* α8 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α9 := M.call α8 [ M.get_struct_record point "y" ] in
-                  let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
-                  let* α11 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α5;
-                        M.pointer_coercion (* Unsize *) α10
-                      ] in
-                  let* α12 := M.call α0 [ α11 ] in
-                  M.alloc α12 in
-                M.alloc (Value.Tuple []) in
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "mutable_point is (") in
-                  let* α3 := M.read (mk_str ", ") in
-                  let* α4 := M.read (mk_str ")
-") in
-                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                  let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α7 :=
-                    M.call α6 [ M.get_struct_record mutable_point "x" ] in
-                  let* α8 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α9 :=
-                    M.call α8 [ M.get_struct_record mutable_point "y" ] in
-                  let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
-                  let* α11 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α5;
-                        M.pointer_coercion (* Unsize *) α10
-                      ] in
-                  let* α12 := M.call α0 [ α11 ] in
-                  M.alloc α12 in
-                M.alloc (Value.Tuple []) in
-              let* mutable_tuple :=
-                let* α0 :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
                   M.get_associated_function
-                    (Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-                    "new" in
-                let* α1 := M.call α0 [ Value.Integer Integer.U32 5 ] in
-                M.alloc (Value.Tuple [ α1; Value.Integer Integer.U32 3 ]) in
-              let* _ :=
-                match_operator
-                  mutable_tuple
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        | (_, _) =>
-                          let γ0_0 := Tuple.Access.left γ in
-                          let γ0_1 := Tuple.Access.right γ in
-                          let* last := M.alloc (borrow_mut γ0_1) in
-                          let* _ :=
-                            let* α0 := M.read last in
-                            M.assign α0 (Value.Integer Integer.U32 2) in
-                          M.alloc (Value.Tuple [])
-                        end)
-                    ]) in
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "tuple is ") in
-                  let* α3 := M.read (mk_str "
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "ref_c1 equals ref_c2: ") in
+                let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_debug" in
-                  let* α6 := M.call α5 [ mutable_tuple ] in
-                  let* α7 := M.alloc (Value.Array [ α6 ]) in
-                  let* α8 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α4;
-                        M.pointer_coercion (* Unsize *) α7
-                      ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
-                M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple []))
-          ]) in
+                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α6 := M.read ref_c1 in
+                let* α7 := M.read α6 in
+                let* α8 := M.read ref_c2 in
+                let* α9 := M.read α8 in
+                let* α10 := M.alloc (BinOp.Pure.eq α7 α9) in
+                let* α11 := M.call α5 [ α10 ] in
+                let* α12 := M.alloc (Value.Array [ α11 ]) in
+                let* α13 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α4;
+                      M.pointer_coercion (* Unsize *) α12
+                    ] in
+                let* α14 := M.call α0 [ α13 ] in
+                M.alloc α14 in
+              M.alloc (Value.Tuple []) in
+            let* point :=
+              M.alloc
+                (Value.StructRecord
+                  "scoping_rules_borrowing_the_ref_pattern::Point"
+                  [
+                    ("x", Value.Integer Integer.I32 0);
+                    ("y", Value.Integer Integer.I32 0)
+                  ]) in
+            let* _copy_of_x :=
+              let* α0 :=
+                match_operator
+                  point
+                  [
+                    fun γ =>
+                      (let* γ0_0 :=
+                        M.get_struct_record_field_or_break_match
+                          γ
+                          "scoping_rules_borrowing_the_ref_pattern::Point"
+                          "x" in
+                      let* γ0_1 :=
+                        M.get_struct_record_field_or_break_match
+                          γ
+                          "scoping_rules_borrowing_the_ref_pattern::Point"
+                          "y" in
+                      let* ref_to_x := M.alloc γ0_0 in
+                      M.read ref_to_x)
+                  ] in
+              M.copy α0 in
+            let* mutable_point := M.copy point in
+            let* _ :=
+              match_operator
+                mutable_point
+                [
+                  fun γ =>
+                    (let* γ0_0 :=
+                      M.get_struct_record_field_or_break_match
+                        γ
+                        "scoping_rules_borrowing_the_ref_pattern::Point"
+                        "x" in
+                    let* γ0_1 :=
+                      M.get_struct_record_field_or_break_match
+                        γ
+                        "scoping_rules_borrowing_the_ref_pattern::Point"
+                        "y" in
+                    let* mut_ref_to_y := M.alloc γ0_1 in
+                    let* _ :=
+                      let* α0 := M.read mut_ref_to_y in
+                      M.assign α0 (Value.Integer Integer.I32 1) in
+                    M.alloc (Value.Tuple []))
+                ] in
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "point is (") in
+                let* α3 := M.read (mk_str ", ") in
+                let* α4 := M.read (mk_str ")
+") in
+                let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                let* α6 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α7 := M.call α6 [ M.get_struct_record point "x" ] in
+                let* α8 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α9 := M.call α8 [ M.get_struct_record point "y" ] in
+                let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                let* α11 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α5;
+                      M.pointer_coercion (* Unsize *) α10
+                    ] in
+                let* α12 := M.call α0 [ α11 ] in
+                M.alloc α12 in
+              M.alloc (Value.Tuple []) in
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "mutable_point is (") in
+                let* α3 := M.read (mk_str ", ") in
+                let* α4 := M.read (mk_str ")
+") in
+                let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                let* α6 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α7 :=
+                  M.call α6 [ M.get_struct_record mutable_point "x" ] in
+                let* α8 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α9 :=
+                  M.call α8 [ M.get_struct_record mutable_point "y" ] in
+                let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                let* α11 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α5;
+                      M.pointer_coercion (* Unsize *) α10
+                    ] in
+                let* α12 := M.call α0 [ α11 ] in
+                M.alloc α12 in
+              M.alloc (Value.Tuple []) in
+            let* mutable_tuple :=
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+                  "new" in
+              let* α1 := M.call α0 [ Value.Integer Integer.U32 5 ] in
+              M.alloc (Value.Tuple [ α1; Value.Integer Integer.U32 3 ]) in
+            let* _ :=
+              match_operator
+                mutable_tuple
+                [
+                  fun γ =>
+                    (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+                    let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+                    let* last := M.alloc γ0_1 in
+                    let* _ :=
+                      let* α0 := M.read last in
+                      M.assign α0 (Value.Integer Integer.U32 2) in
+                    M.alloc (Value.Tuple []))
+                ] in
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "tuple is ") in
+                let* α3 := M.read (mk_str "
+") in
+                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_debug" in
+                let* α6 := M.call α5 [ mutable_tuple ] in
+                let* α7 := M.alloc (Value.Array [ α6 ]) in
+                let* α8 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α4;
+                      M.pointer_coercion (* Unsize *) α7
+                    ] in
+                let* α9 := M.call α0 [ α8 ] in
+                M.alloc α9 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []))
+        ] in
     M.read α0
   | _, _ => M.impossible
   end.

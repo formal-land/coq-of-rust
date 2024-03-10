@@ -78,18 +78,10 @@ fn build_inner_match(
             } => Rc::new(Expr::Let {
                 is_monadic: false,
                 name: Some(name.clone()),
-                init: match is_with_ref {
-                    None => Expr::local_var(&scrutinee).copy(),
-                    Some(is_with_ref) => {
-                        let func = if *is_with_ref { "borrow_mut" } else { "borrow" };
-
-                        Rc::new(Expr::Call {
-                            func: Expr::local_var(func),
-                            args: vec![Expr::local_var(&scrutinee)],
-                            kind: CallKind::Pure,
-                        })
-                        .alloc()
-                    }
+                init: if *is_with_ref {
+                    Expr::local_var(&scrutinee).alloc()
+                } else {
+                    Expr::local_var(&scrutinee).copy()
                 },
                 body: match pattern {
                     None => body,
@@ -98,138 +90,71 @@ fn build_inner_match(
                     }
                 },
             }),
-            Pattern::StructStruct(path, fields, struct_or_variant) => Rc::new(Expr::Match {
-                scrutinee: Expr::local_var(&scrutinee).read(),
-                arms: [
-                    vec![Rc::new(MatchArm {
-                        pattern: Rc::new(Pattern::StructStruct(
-                            path.clone(),
-                            fields
-                                .iter()
-                                .map(|(field_name, _)| (field_name.clone(), Rc::new(Pattern::Wild)))
-                                .collect(),
-                            *struct_or_variant,
-                        )),
-                        body: {
-                            let body = build_inner_match(
-                                fields
-                                    .iter()
-                                    .enumerate()
-                                    .map(|(index, (_, field_pattern))| {
-                                        (format!("γ{depth}_{index}"), field_pattern.clone())
-                                    })
-                                    .collect(),
-                                body,
-                                depth + 1,
-                            );
+            Pattern::StructStruct(path, fields, struct_or_variant) => {
+                let body = build_inner_match(
+                    fields
+                        .iter()
+                        .enumerate()
+                        .map(|(index, (_, field_pattern))| {
+                            (format!("γ{depth}_{index}"), field_pattern.clone())
+                        })
+                        .collect(),
+                    body,
+                    depth + 1,
+                );
 
-                            fields.iter().enumerate().rfold(
-                                body,
-                                |body, (index, (field_name, _))| {
-                                    let getter_path = match struct_or_variant {
-                                        StructOrVariant::Struct => Path::concat(&[
-                                            path.clone(),
-                                            Path::new(&[format!("Get_{field_name}")]),
-                                        ]),
-                                        StructOrVariant::Variant { .. } => Path::concat(&[
-                                            Path::new(&path.segments[0..path.segments.len() - 1]),
-                                            Path::new(&[format!(
-                                                "Get_{variant}_{field_name}",
-                                                variant = path.segments.last().unwrap()
-                                            )]),
-                                        ]),
-                                    };
+                fields
+                    .iter()
+                    .enumerate()
+                    .rfold(body, |body, (index, (field_name, _))| {
+                        Rc::new(Expr::Let {
+                            is_monadic: false,
+                            name: Some(format!("γ{depth}_{index}")),
+                            init: Rc::new(Expr::Call {
+                                func: Expr::local_var("M.get_struct_record_field_or_break_match"),
+                                args: vec![
+                                    Expr::local_var(&scrutinee),
+                                    Rc::new(Expr::InternalString(path.to_string())),
+                                    Rc::new(Expr::InternalString(field_name.clone())),
+                                ],
+                                kind: CallKind::Effectful,
+                            }),
+                            body,
+                        })
+                    })
+            }
+            Pattern::StructTuple(path, patterns, struct_or_variant) => {
+                let body = build_inner_match(
+                    patterns
+                        .iter()
+                        .enumerate()
+                        .map(|(index, pattern)| (format!("γ{depth}_{index}"), pattern.clone()))
+                        .collect(),
+                    body,
+                    depth + 1,
+                );
 
-                                    Rc::new(Expr::Let {
-                                        is_monadic: false,
-                                        name: Some(format!("γ{depth}_{index}")),
-                                        init: Rc::new(Expr::Call {
-                                            func: Rc::new(Expr::Var(getter_path)),
-                                            args: vec![Expr::local_var(&scrutinee)],
-                                            kind: CallKind::Pure,
-                                        }),
-                                        body,
-                                    })
-                                },
-                            )
-                        },
-                    })],
-                    match struct_or_variant {
-                        StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
-                            vec![]
-                        }
-                        StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
-                    },
-                ]
-                .concat(),
-            }),
-            Pattern::StructTuple(path, patterns, struct_or_variant) => Rc::new(Expr::Match {
-                scrutinee: Expr::local_var(&scrutinee).read(),
-                arms: [
-                    vec![Rc::new(MatchArm {
-                        pattern: Rc::new(Pattern::StructTuple(
-                            path.clone(),
-                            patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
-                            *struct_or_variant,
-                        )),
-                        body: {
-                            let body = build_inner_match(
-                                patterns
-                                    .iter()
-                                    .enumerate()
-                                    .map(|(index, pattern)| {
-                                        (format!("γ{depth}_{index}"), pattern.clone())
-                                    })
-                                    .collect(),
-                                body,
-                                depth + 1,
-                            );
-
-                            patterns.iter().enumerate().rfold(body, |body, (index, _)| {
-                                let getter_path = match struct_or_variant {
-                                    StructOrVariant::Struct => Path::concat(&[
-                                        path.clone(),
-                                        Path::new(&[format!("Get_{index}")]),
-                                    ]),
-                                    StructOrVariant::Variant { .. } => Path::concat(&[
-                                        Path::new(&path.segments[0..path.segments.len() - 1]),
-                                        Path::new(&[format!(
-                                            "Get_{variant}_{index}",
-                                            variant = path.segments.last().unwrap(),
-                                        )]),
-                                    ]),
-                                };
-
-                                Rc::new(Expr::Let {
-                                    is_monadic: false,
-                                    name: Some(format!("γ{depth}_{index}")),
-                                    init: Rc::new(Expr::Call {
-                                        func: Rc::new(Expr::Var(getter_path)),
-                                        args: vec![Expr::local_var(&scrutinee)],
-                                        kind: CallKind::Pure,
-                                    }),
-                                    body,
-                                })
-                            })
-                        },
-                    })],
-                    match struct_or_variant {
-                        StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
-                            vec![]
-                        }
-                        StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
-                    },
-                ]
-                .concat(),
-            }),
+                patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                    Rc::new(Expr::Let {
+                        is_monadic: false,
+                        name: Some(format!("γ{depth}_{index}")),
+                        init: Rc::new(Expr::Call {
+                            func: Expr::local_var("M.get_struct_tuple_field_or_break_match"),
+                            args: vec![
+                                Expr::local_var(&scrutinee),
+                                Rc::new(Expr::InternalString(path.to_string())),
+                                Rc::new(Expr::InternalInteger(index)),
+                            ],
+                            kind: CallKind::Effectful,
+                        }),
+                        body,
+                    })
+                })
+            }
             Pattern::Deref(pattern) => Rc::new(Expr::Let {
                 is_monadic: false,
                 name: Some(scrutinee.clone()),
-                init: Rc::new(Expr::Call {
-                    func: Expr::local_var("deref"),
-                    args: vec![Expr::local_var(&scrutinee).read()],
-                    kind: CallKind::Pure,
-                }),
+                init: Expr::local_var(&scrutinee).read(),
                 body: build_inner_match(
                     vec![(scrutinee.clone(), pattern.clone())],
                     body,
@@ -237,58 +162,34 @@ fn build_inner_match(
                 ),
             }),
             Pattern::Or(_) => panic!("Or pattern should have been flattened"),
-            Pattern::Tuple(patterns) => Rc::new(Expr::Match {
-                scrutinee: Expr::local_var(&scrutinee).read(),
-                arms: vec![Rc::new(MatchArm {
-                    pattern: Rc::new(Pattern::Tuple(
-                        patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
-                    )),
-                    body: {
-                        let body = build_inner_match(
-                            patterns
-                                .iter()
-                                .enumerate()
-                                .map(|(index, pattern)| {
-                                    (format!("γ{depth}_{index}"), pattern.clone())
-                                })
-                                .collect(),
-                            body,
-                            depth + 1,
-                        );
+            Pattern::Tuple(patterns) => {
+                let body = build_inner_match(
+                    patterns
+                        .iter()
+                        .enumerate()
+                        .map(|(index, pattern)| (format!("γ{depth}_{index}"), pattern.clone()))
+                        .collect(),
+                    body,
+                    depth + 1,
+                );
 
-                        patterns.iter().enumerate().rfold(body, |body, (index, _)| {
-                            Rc::new(Expr::Let {
-                                is_monadic: false,
-                                name: Some(format!("γ{depth}_{index}")),
-                                init: {
-                                    let init = (0..(patterns.len() - 1 - index)).fold(
-                                        Expr::local_var(&scrutinee),
-                                        |init, _| {
-                                            Rc::new(Expr::Call {
-                                                func: Expr::local_var("Tuple.Access.left"),
-                                                args: vec![init],
-                                                kind: CallKind::Pure,
-                                            })
-                                        },
-                                    );
-
-                                    if index == 0 {
-                                        init
-                                    } else {
-                                        Rc::new(Expr::Call {
-                                            func: Expr::local_var("Tuple.Access.right"),
-                                            args: vec![init],
-                                            kind: CallKind::Pure,
-                                        })
-                                    }
-                                },
-                                body,
-                            })
-                        })
-                    },
-                })],
-            }),
-            Pattern::Lit(_) => Rc::new(Expr::Match {
+                patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                    Rc::new(Expr::Let {
+                        is_monadic: false,
+                        name: Some(format!("γ{depth}_{index}")),
+                        init: Rc::new(Expr::Call {
+                            func: Expr::local_var("M.get_tuple_field_or_break_match"),
+                            args: vec![
+                                Expr::local_var(&scrutinee),
+                                Rc::new(Expr::InternalInteger(index)),
+                            ],
+                            kind: CallKind::Effectful,
+                        }),
+                        body,
+                    })
+                })
+            }
+            Pattern::Lit(literal) => Rc::new(Expr::Match {
                 scrutinee: Expr::local_var(&scrutinee).read(),
                 arms: vec![
                     Rc::new(MatchArm {
@@ -398,6 +299,7 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
                         })
                     })
                     .collect(),
+                is_internal: true,
             }),
         ],
         kind: CallKind::Effectful,
@@ -571,8 +473,8 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Unary { op, arg } => {
             let (path, kind) = match op {
-                UnOp::Not => ("UnOp.not", CallKind::Pure),
-                UnOp::Neg => ("UnOp.neg", CallKind::Effectful),
+                UnOp::Not => ("UnOp.Pure.not", CallKind::Pure),
+                UnOp::Neg => ("UnOp.Panic.neg", CallKind::Effectful),
             };
             let arg = compile_expr(env, thir, arg);
 
@@ -777,6 +679,7 @@ pub(crate) fn compile_expr<'a>(
                 .iter()
                 .map(|field| compile_expr(env, thir, field).read())
                 .collect(),
+            is_internal: false,
         })
         .alloc(),
         thir::ExprKind::Tuple { fields } => {
@@ -1089,7 +992,7 @@ fn compile_stmts<'a>(
                         Pattern::Binding {
                             name,
                             pattern: None,
-                            is_with_ref: None,
+                            is_with_ref: false,
                         } => Rc::new(Expr::Let {
                             is_monadic: false,
                             name: Some(name.clone()),

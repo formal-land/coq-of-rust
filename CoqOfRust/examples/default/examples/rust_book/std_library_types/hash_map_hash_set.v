@@ -157,7 +157,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
           "insert" in
       let* α1 := M.call α0 [ a; Value.Integer Integer.I32 4 ] in
-      let* α2 := M.alloc (UnOp.not α1) in
+      let* α2 := M.alloc (UnOp.Pure.not α1) in
       let* α3 := M.read (M.use α2) in
       if Value.is_true α3 then
         let* α0 := M.get_function "core::panicking::panic" [] in
@@ -176,7 +176,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "contains" in
       let* α1 := M.alloc (Value.Integer Integer.I32 4) in
       let* α2 := M.call α0 [ a; α1 ] in
-      let* α3 := M.alloc (UnOp.not α2) in
+      let* α3 := M.alloc (UnOp.Pure.not α2) in
       let* α4 := M.read (M.use α3) in
       if Value.is_true α4 then
         let* α0 := M.get_function "core::panicking::panic" [] in

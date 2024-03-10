@@ -4,7 +4,7 @@ use itertools::Itertools;
 use std::rc::Rc;
 use std::vec;
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) enum PatternLit {
     Integer {
         name: String,
@@ -14,13 +14,12 @@ pub(crate) enum PatternLit {
 }
 
 /// The enum [Pat] represents the patterns which can be matched
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug)]
 pub(crate) enum Pattern {
     Wild,
     Binding {
         name: String,
-        /// Wether the reference is mutable, if any
-        is_with_ref: Option<bool>,
+        is_with_ref: bool,
         pattern: Option<Rc<Pattern>>,
     },
     StructStruct(Path, Vec<(String, Rc<Pattern>)>, StructOrVariant),

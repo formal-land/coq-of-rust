@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -274,25 +272,24 @@ Module Impl_updated_incrementer_Incrementer.
             α0
             [
               α6;
-              fun (α0 : Ty.path "updated_incrementer::Error") =>
+              fun α0 (* : Ty.path "updated_incrementer::Error" *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* err := M.copy γ in
-                        let* α0 :=
-                          M.get_function
-                            "std::panicking::begin_panic"
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                        let* α1 :=
-                          M.read
-                            (mk_str
-                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                        let* α2 := M.call α0 [ α1 ] in
-                        M.never_to_any α2)
-                    ]))
+                  [
+                    fun γ =>
+                      (let* err := M.copy γ in
+                      let* α0 :=
+                        M.get_function
+                          "std::panicking::begin_panic"
+                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                      let* α1 :=
+                        M.read
+                          (mk_str
+                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
+                      let* α2 := M.call α0 [ α1 ] in
+                      M.never_to_any α2)
+                  ])
             ] in
         M.alloc α7 in
       let* _ :=

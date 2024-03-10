@@ -91,61 +91,46 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       let* α0 :=
         match_operator
           self
-          (Value.Array
-            [
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                | scoping_rules_lifetimes_structs.Either.Num _ =>
-                  let* γ1_0 :=
-                    let* α0 :=
-                      M.var
-                        "scoping_rules_lifetimes_structs::Either::Get_Num_0" in
-                    M.pure (α0 γ) in
-                  let* __self_0 := M.alloc (borrow γ1_0) in
-                  let* α0 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Formatter")
-                      "debug_tuple_field1_finish" in
-                  let* α1 := M.read f in
-                  let* α2 := M.read (mk_str "Num") in
-                  let* α3 :=
-                    M.call
-                      α0
-                      [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-                  M.alloc α3
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                | scoping_rules_lifetimes_structs.Either.Ref _ =>
-                  let* γ1_0 :=
-                    let* α0 :=
-                      M.var
-                        "scoping_rules_lifetimes_structs::Either::Get_Ref_0" in
-                    M.pure (α0 γ) in
-                  let* __self_0 := M.alloc (borrow γ1_0) in
-                  let* α0 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Formatter")
-                      "debug_tuple_field1_finish" in
-                  let* α1 := M.read f in
-                  let* α2 := M.read (mk_str "Ref") in
-                  let* α3 :=
-                    M.call
-                      α0
-                      [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-                  M.alloc α3
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ := M.read γ in
+              let* γ1_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "scoping_rules_lifetimes_structs::Either::Num"
+                  0 in
+              let* __self_0 := M.alloc γ1_0 in
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Formatter")
+                  "debug_tuple_field1_finish" in
+              let* α1 := M.read f in
+              let* α2 := M.read (mk_str "Num") in
+              let* α3 :=
+                M.call
+                  α0
+                  [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
+              M.alloc α3);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* γ1_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "scoping_rules_lifetimes_structs::Either::Ref"
+                  0 in
+              let* __self_0 := M.alloc γ1_0 in
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Formatter")
+                  "debug_tuple_field1_finish" in
+              let* α1 := M.read f in
+              let* α2 := M.read (mk_str "Ref") in
+              let* α3 :=
+                M.call
+                  α0
+                  [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
+              M.alloc α3)
+          ] in
       M.read α0
     | _, _ => M.impossible
     end.

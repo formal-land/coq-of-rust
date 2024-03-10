@@ -1622,7 +1622,7 @@ impl TopLevelItem {
                         name,
                         &coq::DefinitionKind::Alias {
                             args: vec![],
-                            ty: Some(ty.to_coq()),
+                            ty: Some(coq::Expression::just_name("Value.t")),
                             body: coq::Expression::Code(nest([
                                 text("M.run"),
                                 line(),

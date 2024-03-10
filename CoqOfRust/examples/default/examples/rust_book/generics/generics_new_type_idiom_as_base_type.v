@@ -23,21 +23,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       match_operator
         years
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | generics_new_type_idiom_as_base_type.Years.Build_t _ =>
-                let* γ0_0 :=
-                  let* α0 :=
-                    M.var
-                      "generics_new_type_idiom_as_base_type::Years::Get_0" in
-                  M.pure (α0 γ) in
-                let* years_as_primitive_2 := M.copy γ0_0 in
-                M.alloc (Value.Tuple [])
-              end)
-          ]) in
+        [
+          fun γ =>
+            (let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "generics_new_type_idiom_as_base_type::Years"
+                0 in
+            let* years_as_primitive_2 := M.copy γ0_0 in
+            M.alloc (Value.Tuple []))
+        ] in
     M.read α0
   | _, _ => M.impossible
   end.

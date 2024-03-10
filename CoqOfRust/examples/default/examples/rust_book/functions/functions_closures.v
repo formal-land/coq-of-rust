@@ -37,32 +37,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* outer_var := M.alloc (Value.Integer Integer.I32 42) in
     let* closure_annotated :=
       M.alloc
-        (fun (α0 : Ty.path "i32") =>
+        (fun α0 (* : Ty.path "i32" *) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            (Value.Array
-              [
-                fun γ =>
-                  (let* i := M.copy γ in
-                  let* α0 := M.read i in
-                  let* α1 := M.read outer_var in
-                  BinOp.Panic.add α0 α1)
-              ]))) in
+            [
+              fun γ =>
+                (let* i := M.copy γ in
+                let* α0 := M.read i in
+                let* α1 := M.read outer_var in
+                BinOp.Panic.add α0 α1)
+            ])) in
     let* closure_inferred :=
       M.alloc
-        (fun (α0 : Ty.path "i32") =>
+        (fun α0 (* : Ty.path "i32" *) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            (Value.Array
-              [
-                fun γ =>
-                  (let* i := M.copy γ in
-                  let* α0 := M.read i in
-                  let* α1 := M.read outer_var in
-                  BinOp.Panic.add α0 α1)
-              ]))) in
+            [
+              fun γ =>
+                (let* i := M.copy γ in
+                let* α0 := M.read i in
+                let* α1 := M.read outer_var in
+                BinOp.Panic.add α0 α1)
+            ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -144,12 +142,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* one :=
       M.alloc
-        (fun (α0 : Ty.path "unit") =>
+        (fun α0 (* : Ty.path "unit" *) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            (Value.Array
-              [ fun γ => (M.pure (Value.Integer Integer.I32 1)) ]))) in
+            [ fun γ => (M.pure (Value.Integer Integer.I32 1)) ])) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in

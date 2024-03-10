@@ -44,41 +44,40 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc (Value.Integer Integer.I32 7) in
     let* print :=
       M.alloc
-        (fun (α0 : Ty.path "unit") =>
+        (fun α0 (* : Ty.path "unit" *) =>
           (let* α0 := M.alloc α0 in
           match_operator
             α0
-            (Value.Array
-              [
-                fun γ =>
-                  (let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_v1" in
-                    let* α2 := M.read (mk_str "") in
-                    let* α3 := M.read (mk_str "
+            [
+              fun γ =>
+                (let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 := M.read (mk_str "") in
+                  let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    let* α5 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display" in
-                    let* α6 := M.call α5 [ x ] in
-                    let* α7 := M.alloc (Value.Array [ α6 ]) in
-                    let* α8 :=
-                      M.call
-                        α1
-                        [
-                          M.pointer_coercion (* Unsize *) α4;
-                          M.pointer_coercion (* Unsize *) α7
-                        ] in
-                    let* α9 := M.call α0 [ α8 ] in
-                    M.alloc α9 in
-                  let* α0 := M.alloc (Value.Tuple []) in
-                  M.read α0)
-              ]))) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                  let* α5 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display" in
+                  let* α6 := M.call α5 [ x ] in
+                  let* α7 := M.alloc (Value.Array [ α6 ]) in
+                  let* α8 :=
+                    M.call
+                      α1
+                      [
+                        M.pointer_coercion (* Unsize *) α4;
+                        M.pointer_coercion (* Unsize *) α7
+                      ] in
+                  let* α9 := M.call α0 [ α8 ] in
+                  M.alloc α9 in
+                let* α0 := M.alloc (Value.Tuple []) in
+                M.read α0)
+            ])) in
     let* _ :=
       let* α0 :=
         M.get_function

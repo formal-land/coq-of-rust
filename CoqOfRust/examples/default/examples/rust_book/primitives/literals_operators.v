@@ -158,7 +158,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.alloc (UnOp.not (Value.Bool true)) in
+        let* α6 := M.alloc (UnOp.Pure.not (Value.Bool true)) in
         let* α7 := M.call α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=

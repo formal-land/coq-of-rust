@@ -39,153 +39,136 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       match_operator
         foo
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              |
-                  {|
-                    match_destructuring_structs.Foo.x := _;
-                    match_destructuring_structs.Foo.y := _;
-                  |}
-                  =>
-                let* γ0_0 :=
-                  let* α0 := M.var "match_destructuring_structs::Foo::Get_x" in
-                  M.pure (α0 γ) in
-                let* γ0_1 :=
-                  let* α0 := M.var "match_destructuring_structs::Foo::Get_y" in
-                  M.pure (α0 γ) in
-                let* α0 := M.read γ0_0 in
-                match α0 with
-                | (_, _) =>
-                  let γ1_0 := Tuple.Access.left γ0_0 in
-                  let γ1_1 := Tuple.Access.right γ0_0 in
-                  let* α0 := M.read γ1_0 in
-                  match α0 with
-                  | u32.Make 1 =>
-                    let* b := M.copy γ1_1 in
-                    let* y := M.copy γ0_1 in
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
-                      let* α2 := M.read (mk_str "First of x is 1, b = ") in
-                      let* α3 := M.read (mk_str ",  y = ") in
-                      let* α4 := M.read (mk_str " 
+        [
+          fun γ =>
+            (let* γ0_0 :=
+              M.get_struct_record_field_or_break_match
+                γ
+                "match_destructuring_structs::Foo"
+                "x" in
+            let* γ0_1 :=
+              M.get_struct_record_field_or_break_match
+                γ
+                "match_destructuring_structs::Foo"
+                "y" in
+            let* γ1_0 := M.get_tuple_field_or_break_match γ0_0 0 in
+            let* γ1_1 := M.get_tuple_field_or_break_match γ0_0 1 in
+            let* α0 := M.read γ1_0 in
+            match α0 with
+            | u32.Make 1 =>
+              let* b := M.copy γ1_1 in
+              let* y := M.copy γ0_1 in
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "First of x is 1, b = ") in
+                let* α3 := M.read (mk_str ",  y = ") in
+                let* α4 := M.read (mk_str " 
 ") in
-                      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                      let* α6 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
-                      let* α7 := M.call α6 [ b ] in
-                      let* α8 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
-                      let* α9 := M.call α8 [ y ] in
-                      let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
-                      let* α11 :=
-                        M.call
-                          α1
-                          [
-                            M.pointer_coercion (* Unsize *) α5;
-                            M.pointer_coercion (* Unsize *) α10
-                          ] in
-                      let* α12 := M.call α0 [ α11 ] in
-                      M.alloc α12 in
-                    M.alloc (Value.Tuple [])
-                  | _ => M.break_match
-                  end
-                end
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              |
-                  {|
-                    match_destructuring_structs.Foo.y := _;
-                    match_destructuring_structs.Foo.x := _;
-                  |}
-                  =>
-                let* γ0_0 :=
-                  let* α0 := M.var "match_destructuring_structs::Foo::Get_y" in
-                  M.pure (α0 γ) in
-                let* γ0_1 :=
-                  let* α0 := M.var "match_destructuring_structs::Foo::Get_x" in
-                  M.pure (α0 γ) in
-                let* α0 := M.read γ0_0 in
-                match α0 with
-                | u32.Make 2 =>
-                  let* i := M.copy γ0_1 in
-                  let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_v1" in
-                    let* α2 := M.read (mk_str "y is 2, i = ") in
-                    let* α3 := M.read (mk_str "
+                let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                let* α6 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α7 := M.call α6 [ b ] in
+                let* α8 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α9 := M.call α8 [ y ] in
+                let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                let* α11 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α5;
+                      M.pointer_coercion (* Unsize *) α10
+                    ] in
+                let* α12 := M.call α0 [ α11 ] in
+                M.alloc α12 in
+              M.alloc (Value.Tuple [])
+            | _ => M.break_match
+            end);
+          fun γ =>
+            (let* γ0_0 :=
+              M.get_struct_record_field_or_break_match
+                γ
+                "match_destructuring_structs::Foo"
+                "y" in
+            let* γ0_1 :=
+              M.get_struct_record_field_or_break_match
+                γ
+                "match_destructuring_structs::Foo"
+                "x" in
+            let* α0 := M.read γ0_0 in
+            match α0 with
+            | u32.Make 2 =>
+              let* i := M.copy γ0_1 in
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "y is 2, i = ") in
+                let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    let* α5 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_debug" in
-                    let* α6 := M.call α5 [ i ] in
-                    let* α7 := M.alloc (Value.Array [ α6 ]) in
-                    let* α8 :=
-                      M.call
-                        α1
-                        [
-                          M.pointer_coercion (* Unsize *) α4;
-                          M.pointer_coercion (* Unsize *) α7
-                        ] in
-                    let* α9 := M.call α0 [ α8 ] in
-                    M.alloc α9 in
-                  M.alloc (Value.Tuple [])
-                | _ => M.break_match
-                end
-              end);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | {| match_destructuring_structs.Foo.y := _; |} =>
-                let* γ0_0 :=
-                  let* α0 := M.var "match_destructuring_structs::Foo::Get_y" in
-                  M.pure (α0 γ) in
-                let* y := M.copy γ0_0 in
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
-                  let* α2 := M.read (mk_str "y = ") in
-                  let* α3 := M.read (mk_str ", we don't care about x
+                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_debug" in
+                let* α6 := M.call α5 [ i ] in
+                let* α7 := M.alloc (Value.Array [ α6 ]) in
+                let* α8 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α4;
+                      M.pointer_coercion (* Unsize *) α7
+                    ] in
+                let* α9 := M.call α0 [ α8 ] in
+                M.alloc α9 in
+              M.alloc (Value.Tuple [])
+            | _ => M.break_match
+            end);
+          fun γ =>
+            (let* γ0_0 :=
+              M.get_struct_record_field_or_break_match
+                γ
+                "match_destructuring_structs::Foo"
+                "y" in
+            let* y := M.copy γ0_0 in
+            let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_v1" in
+              let* α2 := M.read (mk_str "y = ") in
+              let* α3 := M.read (mk_str ", we don't care about x
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  let* α5 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
-                  let* α6 := M.call α5 [ y ] in
-                  let* α7 := M.alloc (Value.Array [ α6 ]) in
-                  let* α8 :=
-                    M.call
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α4;
-                        M.pointer_coercion (* Unsize *) α7
-                      ] in
-                  let* α9 := M.call α0 [ α8 ] in
-                  M.alloc α9 in
-                M.alloc (Value.Tuple [])
-              end)
-          ]) in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              let* α5 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display" in
+              let* α6 := M.call α5 [ y ] in
+              let* α7 := M.alloc (Value.Array [ α6 ]) in
+              let* α8 :=
+                M.call
+                  α1
+                  [
+                    M.pointer_coercion (* Unsize *) α4;
+                    M.pointer_coercion (* Unsize *) α7
+                  ] in
+              let* α9 := M.call α0 [ α8 ] in
+              M.alloc α9 in
+            M.alloc (Value.Tuple []))
+        ] in
     M.read α0
   | _, _ => M.impossible
   end.

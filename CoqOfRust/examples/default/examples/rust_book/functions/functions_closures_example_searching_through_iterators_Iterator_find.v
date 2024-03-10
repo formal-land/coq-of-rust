@@ -156,26 +156,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               iter;
               fun
-                  (α0 :
-                    Ty.apply
+                  α0
+                    (* : Ty.apply
                       (Ty.path "&")
-                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]) =>
+                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* γ :=
-                          let* α0 := M.read γ in
-                          M.pure (deref α0) in
-                        let* γ :=
-                          let* α0 := M.read γ in
-                          M.pure (deref α0) in
-                        let* x := M.copy γ in
-                        let* α0 := M.read x in
-                        M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
-                    ]))
+                  [
+                    fun γ =>
+                      (let* γ := M.read γ in
+                      let* γ := M.read γ in
+                      let* x := M.copy γ in
+                      let* α0 := M.read x in
+                      M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
+                  ])
             ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -222,20 +217,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             α6
             [
               into_iter;
-              fun (α0 : Ty.apply (Ty.path "&") [ Ty.path "i32" ]) =>
+              fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "i32" ] *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* γ :=
-                          let* α0 := M.read γ in
-                          M.pure (deref α0) in
-                        let* x := M.copy γ in
-                        let* α0 := M.read x in
-                        M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
-                    ]))
+                  [
+                    fun γ =>
+                      (let* γ := M.read γ in
+                      let* x := M.copy γ in
+                      let* α0 := M.read x in
+                      M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
+                  ])
             ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -310,26 +302,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               α9;
               fun
-                  (α0 :
-                    Ty.apply
+                  α0
+                    (* : Ty.apply
                       (Ty.path "&")
-                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]) =>
+                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* γ :=
-                          let* α0 := M.read γ in
-                          M.pure (deref α0) in
-                        let* γ :=
-                          let* α0 := M.read γ in
-                          M.pure (deref α0) in
-                        let* x := M.copy γ in
-                        let* α0 := M.read x in
-                        M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
-                    ]))
+                  [
+                    fun γ =>
+                      (let* γ := M.read γ in
+                      let* γ := M.read γ in
+                      let* x := M.copy γ in
+                      let* α0 := M.read x in
+                      M.pure (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2)))
+                  ])
             ] in
         let* α11 := M.alloc α10 in
         let* α12 := M.call α5 [ α11 ] in
@@ -394,24 +381,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [
               α9;
               fun
-                  (α0 :
-                    Ty.apply
+                  α0
+                    (* : Ty.apply
                       (Ty.path "&")
-                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]) =>
+                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* γ :=
-                          let* α0 := M.read γ in
-                          M.pure (deref α0) in
-                        let* x := M.copy γ in
-                        let* α0 := M.read x in
-                        let* α1 := M.read α0 in
-                        M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.I32 2)))
-                    ]))
+                  [
+                    fun γ =>
+                      (let* γ := M.read γ in
+                      let* x := M.copy γ in
+                      let* α0 := M.read x in
+                      let* α1 := M.read α0 in
+                      M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.I32 2)))
+                  ])
             ] in
         let* α11 := M.alloc α10 in
         let* α12 := M.call α5 [ α11 ] in

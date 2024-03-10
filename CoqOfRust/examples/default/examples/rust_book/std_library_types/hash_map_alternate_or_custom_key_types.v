@@ -89,13 +89,12 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          (Value.Array
-            [
-              fun γ =>
-                (match_operator
-                  Value.DeclaredButUndefined
-                  (Value.Array [ fun γ => (M.alloc (Value.Tuple [])) ]))
-            ]) in
+          [
+            fun γ =>
+              (match_operator
+                Value.DeclaredButUndefined
+                [ fun γ => (M.alloc (Value.Tuple [])) ])
+          ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -279,105 +278,100 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       match_operator
         α3
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.option.Option.Some _ =>
-                let* γ0_0 :=
-                  let* α0 := M.var "core::option::Option::Get_Some_0" in
-                  M.pure (α0 γ) in
-                let* account_info := M.copy γ0_0 in
-                let* _ :=
-                  let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_const" in
-                    let* α2 := M.read (mk_str "Successful logon!
-") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    let* α4 :=
-                      M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                    let* α5 := M.call α0 [ α4 ] in
-                    M.alloc α5 in
-                  M.alloc (Value.Tuple []) in
-                let* _ :=
-                  let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_v1" in
-                    let* α2 := M.read (mk_str "Name: ") in
-                    let* α3 := M.read (mk_str "
-") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    let* α5 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display" in
-                    let* α6 := M.read account_info in
-                    let* α7 := M.call α5 [ M.get_struct_record α6 "name" ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in
-                    let* α9 :=
-                      M.call
-                        α1
-                        [
-                          M.pointer_coercion (* Unsize *) α4;
-                          M.pointer_coercion (* Unsize *) α8
-                        ] in
-                    let* α10 := M.call α0 [ α9 ] in
-                    M.alloc α10 in
-                  M.alloc (Value.Tuple []) in
-                let* _ :=
-                  let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_v1" in
-                    let* α2 := M.read (mk_str "Email: ") in
-                    let* α3 := M.read (mk_str "
-") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    let* α5 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display" in
-                    let* α6 := M.read account_info in
-                    let* α7 := M.call α5 [ M.get_struct_record α6 "email" ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in
-                    let* α9 :=
-                      M.call
-                        α1
-                        [
-                          M.pointer_coercion (* Unsize *) α4;
-                          M.pointer_coercion (* Unsize *) α8
-                        ] in
-                    let* α10 := M.call α0 [ α9 ] in
-                    M.alloc α10 in
-                  M.alloc (Value.Tuple []) in
-                M.alloc (Value.Tuple [])
-              | _ => M.break_match
-              end);
-            fun γ =>
-              (let* _ :=
+        [
+          fun γ =>
+            (let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "core::option::Option::Some"
+                0 in
+            let* account_info := M.copy γ0_0 in
+            let* _ :=
+              let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
                     "new_const" in
-                let* α2 := M.read (mk_str "Login failed!
+                let* α2 := M.read (mk_str "Successful logon!
 ") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
                 let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                 let* α5 := M.call α0 [ α4 ] in
                 M.alloc α5 in
-              M.alloc (Value.Tuple []))
-          ]) in
+              M.alloc (Value.Tuple []) in
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Name: ") in
+                let* α3 := M.read (mk_str "
+") in
+                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α6 := M.read account_info in
+                let* α7 := M.call α5 [ M.get_struct_record α6 "name" ] in
+                let* α8 := M.alloc (Value.Array [ α7 ]) in
+                let* α9 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α4;
+                      M.pointer_coercion (* Unsize *) α8
+                    ] in
+                let* α10 := M.call α0 [ α9 ] in
+                M.alloc α10 in
+              M.alloc (Value.Tuple []) in
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "Email: ") in
+                let* α3 := M.read (mk_str "
+") in
+                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α6 := M.read account_info in
+                let* α7 := M.call α5 [ M.get_struct_record α6 "email" ] in
+                let* α8 := M.alloc (Value.Array [ α7 ]) in
+                let* α9 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α4;
+                      M.pointer_coercion (* Unsize *) α8
+                    ] in
+                let* α10 := M.call α0 [ α9 ] in
+                M.alloc α10 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []));
+          fun γ =>
+            (let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const" in
+              let* α2 := M.read (mk_str "Login failed!
+") in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call α0 [ α4 ] in
+              M.alloc α5 in
+            M.alloc (Value.Tuple []))
+        ] in
     M.read α0
   | _, _ => M.impossible
   end.

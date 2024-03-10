@@ -130,9 +130,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -203,7 +201,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
               "new_display" in
           let* α11 := M.read self in
           let* α12 := M.read (M.get_struct_record α11 "im") in
-          let* α13 := UnOp.neg α12 in
+          let* α13 := UnOp.Panic.neg α12 in
           let* α14 := M.alloc α13 in
           let* α15 := M.call α10 [ α14 ] in
           let* α16 := M.alloc (Value.Array [ α9; α15 ]) in

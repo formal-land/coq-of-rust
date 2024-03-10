@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -124,7 +122,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.alloc (Value.Tuple [])) ]) in
+          [ fun γ => (M.alloc (Value.Tuple [])) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -755,22 +753,21 @@ Module Impl_payment_channel_PaymentChannel.
             α0
             [
               α2;
-              fun (α0 : Ty.path "payment_channel::Error") =>
+              fun α0 (* : Ty.path "payment_channel::Error" *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (let* err := M.copy γ in
-                        let* α0 :=
-                          M.get_function
-                            "std::panicking::begin_panic"
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                        let* α1 := M.read (mk_str "recover failed: {err:?}") in
-                        let* α2 := M.call α0 [ α1 ] in
-                        M.never_to_any α2)
-                    ]))
+                  [
+                    fun γ =>
+                      (let* err := M.copy γ in
+                      let* α0 :=
+                        M.get_function
+                          "std::panicking::begin_panic"
+                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                      let* α1 := M.read (mk_str "recover failed: {err:?}") in
+                      let* α2 := M.call α0 [ α1 ] in
+                      M.never_to_any α2)
+                  ])
             ] in
         M.alloc α3 in
       let* signature_account_id :=
@@ -954,7 +951,7 @@ Module Impl_payment_channel_PaymentChannel.
         let* α2 := M.read amount in
         let* α3 := M.read signature in
         let* α4 := M.call α0 [ α1; α2; α3 ] in
-        let* α5 := M.alloc (UnOp.not α4) in
+        let* α5 := M.alloc (UnOp.Pure.not α4) in
         let* α6 := M.read (M.use α5) in
         if Value.is_true α6 then
           let* α0 :=
@@ -1011,74 +1008,62 @@ Module Impl_payment_channel_PaymentChannel.
             α1
             [
               α13;
-              fun (α0 : Ty.path "payment_channel::Error") =>
+              fun α0 (* : Ty.path "payment_channel::Error" *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (M.pure
-                          (Value.StructTuple
-                            "payment_channel::Error::TransferFailed"
-                            []))
-                    ]))
+                  [
+                    fun γ =>
+                      (M.pure
+                        (Value.StructTuple
+                          "payment_channel::Error::TransferFailed"
+                          []))
+                  ])
             ] in
         let* α15 := M.call α0 [ α14 ] in
         let* α16 := M.alloc α15 in
         match_operator
           α16
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "payment_channel::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "payment_channel::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "payment_channel::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "payment_channel::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* α0 :=
         M.alloc
           (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
@@ -1126,57 +1111,46 @@ Module Impl_payment_channel_PaymentChannel.
         let* α7 := M.alloc α6 in
         match_operator
           α7
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "payment_channel::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "payment_channel::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "payment_channel::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "payment_channel::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -1358,87 +1332,75 @@ Module Impl_payment_channel_PaymentChannel.
       let* α1 :=
         match_operator
           (M.get_struct_record α0 "expiration")
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.option.Option.Some _ =>
-                  let* γ0_0 :=
-                    let* α0 := M.var "core::option::Option::Get_Some_0" in
-                    M.pure (α0 γ) in
-                  let* expiration := M.copy γ0_0 in
-                  let* now :=
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.path "payment_channel::Env")
-                        "block_timestamp" in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "payment_channel::PaymentChannel")
-                        "env" in
-                    let* α2 := M.read self in
-                    let* α3 := M.call α1 [ α2 ] in
-                    let* α4 := M.alloc α3 in
-                    let* α5 := M.call α0 [ α4 ] in
-                    M.alloc α5 in
-                  let* _ :=
-                    let* α0 := M.read now in
-                    let* α1 := M.read expiration in
-                    let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-                    let* α3 := M.read (M.use α2) in
-                    if Value.is_true α3 then
-                      let* α0 :=
-                        M.return_
-                          (Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              Value.StructTuple
-                                "payment_channel::Error::NotYetExpired"
-                                []
-                            ]) in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.never_to_any α1 in
-                      M.alloc α2
-                    else
-                      M.alloc (Value.Tuple []) in
-                  let* _ :=
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.path "payment_channel::Env")
-                        "terminate_contract" in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "payment_channel::PaymentChannel")
-                        "env" in
-                    let* α2 := M.read self in
-                    let* α3 := M.call α1 [ α2 ] in
-                    let* α4 := M.alloc α3 in
-                    let* α5 := M.read self in
-                    let* α6 := M.read (M.get_struct_record α5 "sender") in
-                    let* α7 := M.call α0 [ α4; α6 ] in
-                    M.alloc α7 in
-                  M.alloc
-                    (Value.StructTuple
-                      "core::result::Result::Ok"
-                      [ Value.Tuple [] ])
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.option.Option.None =>
-                  M.alloc
-                    (Value.StructTuple
-                      "core::result::Result::Err"
-                      [
-                        Value.StructTuple
-                          "payment_channel::Error::NotYetExpired"
-                          []
-                      ])
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::option::Option::Some"
+                  0 in
+              let* expiration := M.copy γ0_0 in
+              let* now :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::Env")
+                    "block_timestamp" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::PaymentChannel")
+                    "env" in
+                let* α2 := M.read self in
+                let* α3 := M.call α1 [ α2 ] in
+                let* α4 := M.alloc α3 in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              let* _ :=
+                let* α0 := M.read now in
+                let* α1 := M.read expiration in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                let* α3 := M.read (M.use α2) in
+                if Value.is_true α3 then
+                  let* α0 :=
+                    M.return_
+                      (Value.StructTuple
+                        "core::result::Result::Err"
+                        [
+                          Value.StructTuple
+                            "payment_channel::Error::NotYetExpired"
+                            []
+                        ]) in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2
+                else
+                  M.alloc (Value.Tuple []) in
+              let* _ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::Env")
+                    "terminate_contract" in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::PaymentChannel")
+                    "env" in
+                let* α2 := M.read self in
+                let* α3 := M.call α1 [ α2 ] in
+                let* α4 := M.alloc α3 in
+                let* α5 := M.read self in
+                let* α6 := M.read (M.get_struct_record α5 "sender") in
+                let* α7 := M.call α0 [ α4; α6 ] in
+                M.alloc α7 in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ Value.Tuple [] ]));
+            fun γ =>
+              (M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ Value.StructTuple "payment_channel::Error::NotYetExpired" []
+                  ]))
+          ] in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -1526,7 +1488,7 @@ Module Impl_payment_channel_PaymentChannel.
         let* α2 := M.read amount in
         let* α3 := M.read signature in
         let* α4 := M.call α0 [ α1; α2; α3 ] in
-        let* α5 := M.alloc (UnOp.not α4) in
+        let* α5 := M.alloc (UnOp.Pure.not α4) in
         let* α6 := M.read (M.use α5) in
         if Value.is_true α6 then
           let* α0 :=
@@ -1615,74 +1577,62 @@ Module Impl_payment_channel_PaymentChannel.
             α1
             [
               α10;
-              fun (α0 : Ty.path "payment_channel::Error") =>
+              fun α0 (* : Ty.path "payment_channel::Error" *) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
                   α0
-                  (Value.Array
-                    [
-                      fun γ =>
-                        (M.pure
-                          (Value.StructTuple
-                            "payment_channel::Error::TransferFailed"
-                            []))
-                    ]))
+                  [
+                    fun γ =>
+                      (M.pure
+                        (Value.StructTuple
+                          "payment_channel::Error::TransferFailed"
+                          []))
+                  ])
             ] in
         let* α12 := M.call α0 [ α11 ] in
         let* α13 := M.alloc α12 in
         match_operator
           α13
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Break_0" in
-                    M.pure (α0 γ) in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :=
-                    M.get_trait_method
-                      "core::ops::try_trait::FromResidual"
-                      "from_residual"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [ Ty.tuple []; Ty.path "payment_channel::Error" ];
-                        (* R *)
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "core::convert::Infallible";
-                              Ty.path "payment_channel::Error"
-                            ]
-                      ] in
-                  let* α1 := M.read residual in
-                  let* α2 := M.call α0 [ α1 ] in
-                  let* α3 := M.return_ α2 in
-                  let* α4 := M.read α3 in
-                  let* α5 := M.never_to_any α4 in
-                  M.alloc α5
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let* γ0_0 :=
-                    let* α0 :=
-                      M.var
-                        "core::ops::control_flow::ControlFlow::Get_Continue_0" in
-                    M.pure (α0 γ) in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  "from_residual"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [ Ty.tuple []; Ty.path "payment_channel::Error" ];
+                    (* R *)
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "payment_channel::Error"
+                        ]
+                  ] in
+              let* α1 := M.read residual in
+              let* α2 := M.call α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5);
+            fun γ =>
+              (let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val)
+          ] in
       let* α0 :=
         M.alloc
           (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in

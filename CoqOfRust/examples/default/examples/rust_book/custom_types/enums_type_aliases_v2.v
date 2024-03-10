@@ -24,39 +24,20 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
       let* α0 :=
         match_operator
           self
-          (Value.Array
-            [
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add
-                    =>
-                  let* α0 := M.read x in
-                  let* α1 := M.read y in
-                  let* α2 := BinOp.Panic.add α0 α1 in
-                  M.alloc α2
-                | _ => M.break_match
-                end);
-              fun γ =>
-                (let* γ :=
-                  let* α0 := M.read γ in
-                  M.pure (deref α0) in
-                let* α0 := M.read γ in
-                match α0 with
-                |
-                    enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract
-                    =>
-                  let* α0 := M.read x in
-                  let* α1 := M.read y in
-                  let* α2 := BinOp.Panic.sub α0 α1 in
-                  M.alloc α2
-                | _ => M.break_match
-                end)
-            ]) in
+          [
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read x in
+              let* α1 := M.read y in
+              let* α2 := BinOp.Panic.add α0 α1 in
+              M.alloc α2);
+            fun γ =>
+              (let* γ := M.read γ in
+              let* α0 := M.read x in
+              let* α1 := M.read y in
+              let* α2 := BinOp.Panic.sub α0 α1 in
+              M.alloc α2)
+          ] in
       M.read α0
     | _, _ => M.impossible
     end.

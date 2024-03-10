@@ -74,52 +74,47 @@ Module Impl_wildcard_selector_WildcardSelector.
       let* α5 :=
         match_operator
           α4
-          (Value.Array
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | (_, _) =>
-                  let γ0_0 := Tuple.Access.left γ in
-                  let γ0_1 := Tuple.Access.right γ in
-                  let* _selector := M.copy γ0_0 in
-                  let* _message := M.copy γ0_1 in
-                  let* _ :=
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
-                      let* α2 := M.read (mk_str "Wildcard selector: ") in
-                      let* α3 := M.read (mk_str ", message: ") in
-                      let* α4 := M.read (mk_str "
+          [
+            fun γ =>
+              (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+              let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+              let* _selector := M.copy γ0_0 in
+              let* _message := M.copy γ0_1 in
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1" in
+                  let* α2 := M.read (mk_str "Wildcard selector: ") in
+                  let* α3 := M.read (mk_str ", message: ") in
+                  let* α4 := M.read (mk_str "
 ") in
-                      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                      let* α6 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_debug" in
-                      let* α7 := M.call α6 [ _selector ] in
-                      let* α8 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
-                      let* α9 := M.call α8 [ _message ] in
-                      let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
-                      let* α11 :=
-                        M.call
-                          α1
-                          [
-                            M.pointer_coercion (* Unsize *) α5;
-                            M.pointer_coercion (* Unsize *) α10
-                          ] in
-                      let* α12 := M.call α0 [ α11 ] in
-                      M.alloc α12 in
-                    M.alloc (Value.Tuple []) in
-                  M.alloc (Value.Tuple [])
-                end)
-            ]) in
+                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                  let* α6 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_debug" in
+                  let* α7 := M.call α6 [ _selector ] in
+                  let* α8 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display" in
+                  let* α9 := M.call α8 [ _message ] in
+                  let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                  let* α11 :=
+                    M.call
+                      α1
+                      [
+                        M.pointer_coercion (* Unsize *) α5;
+                        M.pointer_coercion (* Unsize *) α10
+                      ] in
+                  let* α12 := M.call α0 [ α11 ] in
+                  M.alloc α12 in
+                M.alloc (Value.Tuple []) in
+              M.alloc (Value.Tuple []))
+          ] in
       M.read α5
     | _, _ => M.impossible
     end.

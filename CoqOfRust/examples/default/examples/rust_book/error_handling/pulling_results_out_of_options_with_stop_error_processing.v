@@ -50,50 +50,48 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [
             α4;
             fun
-                (α0 :
-                  Ty.apply
+                α0
+                  (* : Ty.apply
                     (Ty.path "&")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]) =>
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] *) =>
               (let* α0 := M.alloc α0 in
               match_operator
                 α0
-                (Value.Array
-                  [
-                    fun γ =>
-                      (let* first := M.copy γ in
-                      let* α0 :=
-                        M.get_associated_function
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
+                [
+                  fun γ =>
+                    (let* first := M.copy γ in
+                    let* α0 :=
+                      M.get_associated_function
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "i32";
+                            Ty.path "core::num::error::ParseIntError"
+                          ])
+                        "map" in
+                    let* α1 :=
+                      M.get_associated_function (Ty.path "str") "parse" in
+                    let* α2 := M.read first in
+                    let* α3 := M.read α2 in
+                    let* α4 := M.call α1 [ α3 ] in
+                    M.call
+                      α0
+                      [
+                        α4;
+                        fun α0 (* : Ty.path "i32" *) =>
+                          (let* α0 := M.alloc α0 in
+                          match_operator
+                            α0
                             [
-                              Ty.path "i32";
-                              Ty.path "core::num::error::ParseIntError"
+                              fun γ =>
+                                (let* n := M.copy γ in
+                                let* α0 := M.read n in
+                                BinOp.Panic.mul
+                                  (Value.Integer Integer.I32 2)
+                                  α0)
                             ])
-                          "map" in
-                      let* α1 :=
-                        M.get_associated_function (Ty.path "str") "parse" in
-                      let* α2 := M.read first in
-                      let* α3 := M.read α2 in
-                      let* α4 := M.call α1 [ α3 ] in
-                      M.call
-                        α0
-                        [
-                          α4;
-                          fun (α0 : Ty.path "i32") =>
-                            (let* α0 := M.alloc α0 in
-                            match_operator
-                              α0
-                              (Value.Array
-                                [
-                                  fun γ =>
-                                    (let* n := M.copy γ in
-                                    let* α0 := M.read n in
-                                    BinOp.Panic.mul
-                                      (Value.Integer Integer.I32 2)
-                                      α0)
-                                ]))
-                        ])
-                  ]))
+                      ])
+                ])
           ] in
       M.alloc α5 in
     let* α0 :=
@@ -116,30 +114,29 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "core::result::Result::Ok"
             [ Value.StructTuple "core::option::Option::None" [] ];
           fun
-              (α0 :
-                Ty.apply
+              α0
+                (* : Ty.apply
                   (Ty.path "core::result::Result")
                   [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                  ]) =>
+                  ] *) =>
             (let* α0 := M.alloc α0 in
             match_operator
               α0
-              (Value.Array
-                [
-                  fun γ =>
-                    (let* r := M.copy γ in
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "i32";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
-                        "map" in
-                    let* α1 := M.read r in
-                    M.call α0 [ α1; core.option.Option.Some ])
-                ]))
+              [
+                fun γ =>
+                  (let* r := M.copy γ in
+                  let* α0 :=
+                    M.get_associated_function
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "i32";
+                          Ty.path "core::num::error::ParseIntError"
+                        ])
+                      "map" in
+                  let* α1 := M.read r in
+                  M.call α0 [ α1; core.option.Option.Some ])
+              ])
         ] in
     let* α0 := M.alloc α2 in
     M.read α0

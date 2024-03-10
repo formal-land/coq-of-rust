@@ -49,144 +49,121 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       match_operator
         a
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | if_let_match_enum_values.Foo.Bar =>
-                let* _ :=
-                  let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_const" in
-                    let* α2 := M.read (mk_str "a is foobar
+        [
+          fun γ =>
+            (let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "a is foobar
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    let* α4 :=
-                      M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                    let* α5 := M.call α0 [ α4 ] in
-                    M.alloc α5 in
-                  M.alloc (Value.Tuple []) in
-                M.alloc (Value.Tuple [])
-              | _ => M.break_match
-              end);
-            fun γ => (M.alloc (Value.Tuple []))
-          ]) in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []));
+          fun γ => (M.alloc (Value.Tuple []))
+        ] in
     let* _ :=
       match_operator
         b
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | if_let_match_enum_values.Foo.Bar =>
-                let* _ :=
-                  let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_const" in
-                    let* α2 := M.read (mk_str "b is foobar
+        [
+          fun γ =>
+            (let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "b is foobar
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    let* α4 :=
-                      M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                    let* α5 := M.call α0 [ α4 ] in
-                    M.alloc α5 in
-                  M.alloc (Value.Tuple []) in
-                M.alloc (Value.Tuple [])
-              | _ => M.break_match
-              end);
-            fun γ => (M.alloc (Value.Tuple []))
-          ]) in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []));
+          fun γ => (M.alloc (Value.Tuple []))
+        ] in
     let* _ :=
       match_operator
         c
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | if_let_match_enum_values.Foo.Qux _ =>
-                let* γ0_0 :=
-                  let* α0 := M.var "if_let_match_enum_values::Foo::Get_Qux_0" in
-                  M.pure (α0 γ) in
-                let* value := M.copy γ0_0 in
-                let* _ :=
-                  let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" [] in
-                    let* α1 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::Arguments")
-                        "new_v1" in
-                    let* α2 := M.read (mk_str "c is ") in
-                    let* α3 := M.read (mk_str "
+        [
+          fun γ =>
+            (let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "if_let_match_enum_values::Foo::Qux"
+                0 in
+            let* value := M.copy γ0_0 in
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1" in
+                let* α2 := M.read (mk_str "c is ") in
+                let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    let* α5 :=
-                      M.get_associated_function
-                        (Ty.path "core::fmt::rt::Argument")
-                        "new_display" in
-                    let* α6 := M.call α5 [ value ] in
-                    let* α7 := M.alloc (Value.Array [ α6 ]) in
-                    let* α8 :=
-                      M.call
-                        α1
-                        [
-                          M.pointer_coercion (* Unsize *) α4;
-                          M.pointer_coercion (* Unsize *) α7
-                        ] in
-                    let* α9 := M.call α0 [ α8 ] in
-                    M.alloc α9 in
-                  M.alloc (Value.Tuple []) in
-                M.alloc (Value.Tuple [])
-              | _ => M.break_match
-              end);
-            fun γ => (M.alloc (Value.Tuple []))
-          ]) in
+                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display" in
+                let* α6 := M.call α5 [ value ] in
+                let* α7 := M.alloc (Value.Array [ α6 ]) in
+                let* α8 :=
+                  M.call
+                    α1
+                    [
+                      M.pointer_coercion (* Unsize *) α4;
+                      M.pointer_coercion (* Unsize *) α7
+                    ] in
+                let* α9 := M.call α0 [ α8 ] in
+                M.alloc α9 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []));
+          fun γ => (M.alloc (Value.Tuple []))
+        ] in
     let* α0 :=
       match_operator
         c
-        (Value.Array
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | if_let_match_enum_values.Foo.Qux _ =>
-                let* γ0_0 :=
-                  let* α0 := M.var "if_let_match_enum_values::Foo::Get_Qux_0" in
-                  M.pure (α0 γ) in
-                let* value := M.copy γ0_0 in
-                let* α0 := M.read γ0_0 in
-                match α0 with
-                | u32.Make 100 =>
-                  let* _ :=
-                    let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
-                      let* α1 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::Arguments")
-                          "new_const" in
-                      let* α2 := M.read (mk_str "c is one hundred
+        [
+          fun γ =>
+            (let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "if_let_match_enum_values::Foo::Qux"
+                0 in
+            let* value := M.copy γ0_0 in
+            let* α0 := M.read γ0_0 in
+            match α0 with
+            | u32.Make 100 =>
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const" in
+                  let* α2 := M.read (mk_str "c is one hundred
 ") in
-                      let* α3 := M.alloc (Value.Array [ α2 ]) in
-                      let* α4 :=
-                        M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                      let* α5 := M.call α0 [ α4 ] in
-                      M.alloc α5 in
-                    M.alloc (Value.Tuple []) in
-                  M.alloc (Value.Tuple [])
-                | _ => M.break_match
-                end
-              | _ => M.break_match
-              end);
-            fun γ => (M.alloc (Value.Tuple []))
-          ]) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                  let* α5 := M.call α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple []) in
+              M.alloc (Value.Tuple [])
+            | _ => M.break_match
+            end);
+          fun γ => (M.alloc (Value.Tuple []))
+        ] in
     M.read α0
   | _, _ => M.impossible
   end.

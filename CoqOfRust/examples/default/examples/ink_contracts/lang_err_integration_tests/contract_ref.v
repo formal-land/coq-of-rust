@@ -38,9 +38,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
-          Value.DeclaredButUndefined
-          (Value.Array [ fun γ => (M.read self) ]) in
+        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -230,7 +228,7 @@ Module Impl_contract_ref_FlipperRef.
         let* α0 := M.read self in
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.not α2) in
+        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
