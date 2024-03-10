@@ -142,26 +142,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "if_let_match_enum_values::Foo::Qux"
                 0 in
             let* value := M.copy γ0_0 in
-            let* α0 := M.read γ0_0 in
-            match α0 with
-            | u32.Make 100 =>
+            let* _ :=
+              let* α0 := M.read γ0_0 in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.U32 100) in
+            let* _ :=
               let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const" in
-                  let* α2 := M.read (mk_str "c is one hundred
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 := M.read (mk_str "c is one hundred
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                  let* α5 := M.call α0 [ α4 ] in
-                  M.alloc α5 in
-                M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match
-            end);
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []));
           fun γ => (M.alloc (Value.Tuple []))
         ] in
     M.read α0

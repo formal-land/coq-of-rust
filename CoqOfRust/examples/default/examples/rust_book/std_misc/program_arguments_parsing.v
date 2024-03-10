@@ -206,40 +206,105 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | usize.Make 1 =>
+            (let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.Usize 1) in
+            let* _ :=
               let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const" in
-                  let* α2 :=
-                    M.read
-                      (mk_str
-                        "My name is 'match_args'. Try passing some arguments!
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const" in
+                let* α2 :=
+                  M.read
+                    (mk_str
+                      "My name is 'match_args'. Try passing some arguments!
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                  let* α5 := M.call α0 [ α4 ] in
-                  M.alloc α5 in
-                M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match
-            end);
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []));
           fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | usize.Make 2 =>
-              let* α0 := M.get_associated_function (Ty.path "str") "parse" in
-              let* α1 :=
-                M.get_trait_method
-                  "core::ops::deref::Deref"
-                  "deref"
-                  [ (* Self *) Ty.path "alloc::string::String" ] in
-              let* α2 :=
+            (let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.Usize 2) in
+            let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+            let* α1 :=
+              M.get_trait_method
+                "core::ops::deref::Deref"
+                "deref"
+                [ (* Self *) Ty.path "alloc::string::String" ] in
+            let* α2 :=
+              M.get_trait_method
+                "core::ops::index::Index"
+                "index"
+                [
+                  (* Self *)
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      [
+                        Ty.path "alloc::string::String";
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                  (* Idx *) Ty.path "usize"
+                ] in
+            let* α3 := M.call α2 [ args; Value.Integer Integer.Usize 1 ] in
+            let* α4 := M.call α1 [ α3 ] in
+            let* α5 := M.call α0 [ α4 ] in
+            let* α6 := M.alloc α5 in
+            match_operator
+              α6
+              [
+                fun γ =>
+                  (let* γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match
+                      γ
+                      "core::result::Result::Ok"
+                      0 in
+                  let* _ :=
+                    let* α0 := M.read γ0_0 in
+                    M.is_constant_or_break_match
+                      α0
+                      (Value.Integer Integer.I32 42) in
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_const" in
+                    let* α2 := M.read (mk_str "This is the answer!
+") in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    let* α4 :=
+                      M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                    let* α5 := M.call α0 [ α4 ] in
+                    M.alloc α5 in
+                  M.alloc (Value.Tuple []));
+                fun γ =>
+                  (let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_const" in
+                    let* α2 := M.read (mk_str "This is not the answer.
+") in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    let* α4 :=
+                      M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                    let* α5 := M.call α0 [ α4 ] in
+                    M.alloc α5 in
+                  M.alloc (Value.Tuple []))
+              ]);
+          fun γ =>
+            (let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.Usize 3) in
+            let* cmd :=
+              let* α0 :=
                 M.get_trait_method
                   "core::ops::index::Index"
                   "index"
@@ -253,212 +318,136 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         ];
                     (* Idx *) Ty.path "usize"
                   ] in
-              let* α3 := M.call α2 [ args; Value.Integer Integer.Usize 1 ] in
-              let* α4 := M.call α1 [ α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
-              let* α6 := M.alloc α5 in
-              match_operator
-                α6
-                [
-                  fun γ =>
-                    (let* γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match
-                        γ
-                        "core::result::Result::Ok"
-                        0 in
-                    let* α0 := M.read γ0_0 in
-                    match α0 with
-                    | i32.Make 42 =>
+              let* α1 := M.call α0 [ args; Value.Integer Integer.Usize 1 ] in
+              M.alloc α1 in
+            let* num :=
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::index::Index"
+                  "index"
+                  [
+                    (* Self *)
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [
+                          Ty.path "alloc::string::String";
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                    (* Idx *) Ty.path "usize"
+                  ] in
+              let* α1 := M.call α0 [ args; Value.Integer Integer.Usize 2 ] in
+              M.alloc α1 in
+            let* number :=
+              let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+              let* α1 :=
+                M.get_trait_method
+                  "core::ops::deref::Deref"
+                  "deref"
+                  [ (* Self *) Ty.path "alloc::string::String" ] in
+              let* α2 := M.read num in
+              let* α3 := M.call α1 [ α2 ] in
+              let* α4 := M.call α0 [ α3 ] in
+              let* α5 := M.alloc α4 in
+              let* α6 :=
+                match_operator
+                  α5
+                  [
+                    fun γ =>
+                      (let* γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          γ
+                          "core::result::Result::Ok"
+                          0 in
+                      let* n := M.copy γ0_0 in
+                      M.pure n);
+                    fun γ =>
+                      (let* γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          γ
+                          "core::result::Result::Err"
+                          0 in
                       let* _ :=
-                        let* α0 := M.get_function "std::io::stdio::_print" [] in
-                        let* α1 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::Arguments")
-                            "new_const" in
-                        let* α2 := M.read (mk_str "This is the answer!
+                        let* _ :=
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_eprint" [] in
+                          let* α1 :=
+                            M.get_associated_function
+                              (Ty.path "core::fmt::Arguments")
+                              "new_const" in
+                          let* α2 :=
+                            M.read
+                              (mk_str
+                                "error: second argument not an integer
 ") in
-                        let* α3 := M.alloc (Value.Array [ α2 ]) in
-                        let* α4 :=
-                          M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                        let* α5 := M.call α0 [ α4 ] in
-                        M.alloc α5 in
-                      M.alloc (Value.Tuple [])
-                    | _ => M.break_match
-                    end);
-                  fun γ =>
-                    (let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                          let* α3 := M.alloc (Value.Array [ α2 ]) in
+                          let* α4 :=
+                            M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                          let* α5 := M.call α0 [ α4 ] in
+                          M.alloc α5 in
+                        M.alloc (Value.Tuple []) in
+                      let* _ :=
+                        let* α0 :=
+                          M.get_function "program_arguments_parsing::help" [] in
+                        let* α1 := M.call α0 [] in
+                        M.alloc α1 in
+                      let* α0 := M.return_ (Value.Tuple []) in
+                      let* α1 := M.read α0 in
+                      let* α2 := M.never_to_any α1 in
+                      M.alloc α2)
+                  ] in
+              M.copy α6 in
+            let* α0 :=
+              M.get_trait_method
+                "core::ops::index::Index"
+                "index"
+                [
+                  (* Self *) Ty.path "alloc::string::String";
+                  (* Idx *) Ty.path "core::ops::range::RangeFull"
+                ] in
+            let* α1 := M.read cmd in
+            let* α2 :=
+              M.call
+                α0
+                [ α1; Value.StructTuple "core::ops::range::RangeFull" [] ] in
+            let* α3 := M.alloc α2 in
+            match_operator
+              α3
+              [
+                fun γ =>
+                  (let* α0 :=
+                    M.get_function "program_arguments_parsing::increase" [] in
+                  let* α1 := M.read number in
+                  let* α2 := M.call α0 [ α1 ] in
+                  M.alloc α2);
+                fun γ =>
+                  (let* α0 :=
+                    M.get_function "program_arguments_parsing::decrease" [] in
+                  let* α1 := M.read number in
+                  let* α2 := M.call α0 [ α1 ] in
+                  M.alloc α2);
+                fun γ =>
+                  (let* _ :=
+                    let* _ :=
+                      let* α0 := M.get_function "std::io::stdio::_eprint" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
                           "new_const" in
-                      let* α2 := M.read (mk_str "This is not the answer.
+                      let* α2 := M.read (mk_str "error: invalid command
 ") in
                       let* α3 := M.alloc (Value.Array [ α2 ]) in
                       let* α4 :=
                         M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                       let* α5 := M.call α0 [ α4 ] in
                       M.alloc α5 in
-                    M.alloc (Value.Tuple []))
-                ]
-            | _ => M.break_match
-            end);
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | usize.Make 3 =>
-              let* cmd :=
-                let* α0 :=
-                  M.get_trait_method
-                    "core::ops::index::Index"
-                    "index"
-                    [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          [
-                            Ty.path "alloc::string::String";
-                            Ty.path "alloc::alloc::Global"
-                          ];
-                      (* Idx *) Ty.path "usize"
-                    ] in
-                let* α1 := M.call α0 [ args; Value.Integer Integer.Usize 1 ] in
-                M.alloc α1 in
-              let* num :=
-                let* α0 :=
-                  M.get_trait_method
-                    "core::ops::index::Index"
-                    "index"
-                    [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          [
-                            Ty.path "alloc::string::String";
-                            Ty.path "alloc::alloc::Global"
-                          ];
-                      (* Idx *) Ty.path "usize"
-                    ] in
-                let* α1 := M.call α0 [ args; Value.Integer Integer.Usize 2 ] in
-                M.alloc α1 in
-              let* number :=
-                let* α0 := M.get_associated_function (Ty.path "str") "parse" in
-                let* α1 :=
-                  M.get_trait_method
-                    "core::ops::deref::Deref"
-                    "deref"
-                    [ (* Self *) Ty.path "alloc::string::String" ] in
-                let* α2 := M.read num in
-                let* α3 := M.call α1 [ α2 ] in
-                let* α4 := M.call α0 [ α3 ] in
-                let* α5 := M.alloc α4 in
-                let* α6 :=
-                  match_operator
-                    α5
-                    [
-                      fun γ =>
-                        (let* γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match
-                            γ
-                            "core::result::Result::Ok"
-                            0 in
-                        let* n := M.copy γ0_0 in
-                        M.pure n);
-                      fun γ =>
-                        (let* γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match
-                            γ
-                            "core::result::Result::Err"
-                            0 in
-                        let* _ :=
-                          let* _ :=
-                            let* α0 :=
-                              M.get_function "std::io::stdio::_eprint" [] in
-                            let* α1 :=
-                              M.get_associated_function
-                                (Ty.path "core::fmt::Arguments")
-                                "new_const" in
-                            let* α2 :=
-                              M.read
-                                (mk_str
-                                  "error: second argument not an integer
-") in
-                            let* α3 := M.alloc (Value.Array [ α2 ]) in
-                            let* α4 :=
-                              M.call
-                                α1
-                                [ M.pointer_coercion (* Unsize *) α3 ] in
-                            let* α5 := M.call α0 [ α4 ] in
-                            M.alloc α5 in
-                          M.alloc (Value.Tuple []) in
-                        let* _ :=
-                          let* α0 :=
-                            M.get_function
-                              "program_arguments_parsing::help"
-                              [] in
-                          let* α1 := M.call α0 [] in
-                          M.alloc α1 in
-                        let* α0 := M.return_ (Value.Tuple []) in
-                        let* α1 := M.read α0 in
-                        let* α2 := M.never_to_any α1 in
-                        M.alloc α2)
-                    ] in
-                M.copy α6 in
-              let* α0 :=
-                M.get_trait_method
-                  "core::ops::index::Index"
-                  "index"
-                  [
-                    (* Self *) Ty.path "alloc::string::String";
-                    (* Idx *) Ty.path "core::ops::range::RangeFull"
-                  ] in
-              let* α1 := M.read cmd in
-              let* α2 :=
-                M.call
-                  α0
-                  [ α1; Value.StructTuple "core::ops::range::RangeFull" [] ] in
-              let* α3 := M.alloc α2 in
-              match_operator
-                α3
-                [
-                  fun γ =>
-                    (let* α0 :=
-                      M.get_function "program_arguments_parsing::increase" [] in
-                    let* α1 := M.read number in
-                    let* α2 := M.call α0 [ α1 ] in
-                    M.alloc α2);
-                  fun γ =>
-                    (let* α0 :=
-                      M.get_function "program_arguments_parsing::decrease" [] in
-                    let* α1 := M.read number in
-                    let* α2 := M.call α0 [ α1 ] in
-                    M.alloc α2);
-                  fun γ =>
-                    (let* _ :=
-                      let* _ :=
-                        let* α0 :=
-                          M.get_function "std::io::stdio::_eprint" [] in
-                        let* α1 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::Arguments")
-                            "new_const" in
-                        let* α2 := M.read (mk_str "error: invalid command
-") in
-                        let* α3 := M.alloc (Value.Array [ α2 ]) in
-                        let* α4 :=
-                          M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                        let* α5 := M.call α0 [ α4 ] in
-                        M.alloc α5 in
-                      M.alloc (Value.Tuple []) in
-                    let* _ :=
-                      let* α0 :=
-                        M.get_function "program_arguments_parsing::help" [] in
-                      let* α1 := M.call α0 [] in
-                      M.alloc α1 in
-                    M.alloc (Value.Tuple []))
-                ]
-            | _ => M.break_match
-            end);
+                    M.alloc (Value.Tuple []) in
+                  let* _ :=
+                    let* α0 :=
+                      M.get_function "program_arguments_parsing::help" [] in
+                    let* α1 := M.call α0 [] in
+                    M.alloc α1 in
+                  M.alloc (Value.Tuple []))
+              ]);
           fun γ =>
             (let* _ :=
               let* α0 := M.get_function "program_arguments_parsing::help" [] in

@@ -33,11 +33,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α0
         [
           fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | i32.Make 0 => M.alloc (Value.Bool false)
-            | _ => M.break_match
-            end);
+            (let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
+            M.alloc (Value.Bool false));
           fun γ => (M.alloc (Value.Bool true))
         ] in
     let* _ :=

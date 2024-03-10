@@ -65,121 +65,111 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
-            let* α0 := M.read γ0_0 in
-            match α0 with
-            | i32.Make 0 =>
-              let* y := M.copy γ0_1 in
-              let* z := M.copy γ0_2 in
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
-                let* α2 := M.read (mk_str "First is `0`, `y` is ") in
-                let* α3 := M.read (mk_str ", and `z` is ") in
-                let* α4 := M.read (mk_str "
+            let* _ :=
+              let* α0 := M.read γ0_0 in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
+            let* y := M.copy γ0_1 in
+            let* z := M.copy γ0_2 in
+            let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_v1" in
+              let* α2 := M.read (mk_str "First is `0`, `y` is ") in
+              let* α3 := M.read (mk_str ", and `z` is ") in
+              let* α4 := M.read (mk_str "
 ") in
-                let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-                let* α6 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_debug" in
-                let* α7 := M.call α6 [ y ] in
-                let* α8 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_debug" in
-                let* α9 := M.call α8 [ z ] in
-                let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
-                let* α11 :=
-                  M.call
-                    α1
-                    [
-                      M.pointer_coercion (* Unsize *) α5;
-                      M.pointer_coercion (* Unsize *) α10
-                    ] in
-                let* α12 := M.call α0 [ α11 ] in
-                M.alloc α12 in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match
-            end);
+              let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_debug" in
+              let* α7 := M.call α6 [ y ] in
+              let* α8 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_debug" in
+              let* α9 := M.call α8 [ z ] in
+              let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+              let* α11 :=
+                M.call
+                  α1
+                  [
+                    M.pointer_coercion (* Unsize *) α5;
+                    M.pointer_coercion (* Unsize *) α10
+                  ] in
+              let* α12 := M.call α0 [ α11 ] in
+              M.alloc α12 in
+            M.alloc (Value.Tuple []));
           fun γ =>
             (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
-            let* α0 := M.read γ0_0 in
-            match α0 with
-            | i32.Make 1 =>
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const" in
-                let* α2 :=
-                  M.read (mk_str "First is `1` and the rest doesn't matter
+            let* _ :=
+              let* α0 := M.read γ0_0 in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 1) in
+            let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const" in
+              let* α2 :=
+                M.read (mk_str "First is `1` and the rest doesn't matter
 ") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in
-                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
-                M.alloc α5 in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match
-            end);
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call α0 [ α4 ] in
+              M.alloc α5 in
+            M.alloc (Value.Tuple []));
           fun γ =>
             (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
-            let* α0 := M.read γ0_2 in
-            match α0 with
-            | i32.Make 2 =>
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const" in
-                let* α2 :=
-                  M.read (mk_str "last is `2` and the rest doesn't matter
-") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in
-                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
-                M.alloc α5 in
-              M.alloc (Value.Tuple [])
-            | _ => M.break_match
-            end);
-          fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
-            let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
-            let* α0 := M.read γ0_0 in
-            match α0 with
-            | i32.Make 3 =>
+            let* _ :=
               let* α0 := M.read γ0_2 in
-              match α0 with
-              | i32.Make 4 =>
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const" in
-                  let* α2 :=
-                    M.read
-                      (mk_str
-                        "First is `3`, last is `4`, and the rest doesn't matter
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 2) in
+            let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const" in
+              let* α2 :=
+                M.read (mk_str "last is `2` and the rest doesn't matter
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                  let* α5 := M.call α0 [ α4 ] in
-                  M.alloc α5 in
-                M.alloc (Value.Tuple [])
-              | _ => M.break_match
-              end
-            | _ => M.break_match
-            end);
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call α0 [ α4 ] in
+              M.alloc α5 in
+            M.alloc (Value.Tuple []));
+          fun γ =>
+            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
+            let* _ :=
+              let* α0 := M.read γ0_0 in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 3) in
+            let* _ :=
+              let* α0 := M.read γ0_2 in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 4) in
+            let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const" in
+              let* α2 :=
+                M.read
+                  (mk_str
+                    "First is `3`, last is `4`, and the rest doesn't matter
+") in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call α0 [ α4 ] in
+              M.alloc α5 in
+            M.alloc (Value.Tuple []));
           fun γ =>
             (let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in

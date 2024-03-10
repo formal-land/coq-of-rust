@@ -1,17 +1,9 @@
+use crate::expression::*;
 use crate::path::*;
 use crate::render::*;
 use itertools::Itertools;
 use std::rc::Rc;
 use std::vec;
-
-#[derive(Debug)]
-pub(crate) enum PatternLit {
-    Integer {
-        name: String,
-        negative_sign: bool,
-        value: u128,
-    },
-}
 
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Debug)]
@@ -27,34 +19,12 @@ pub(crate) enum Pattern {
     Deref(Rc<Pattern>),
     Or(Vec<Rc<Pattern>>),
     Tuple(Vec<Rc<Pattern>>),
-    Lit(PatternLit),
+    Literal(Rc<Literal>),
     // TODO: modify if necessary to fully implement the case of Slice in compile_pattern below
     Slice {
         init_patterns: Vec<Rc<Pattern>>,
         slice_pattern: Option<Rc<Pattern>>,
     },
-}
-
-impl PatternLit {
-    fn to_doc(&self, with_paren: bool) -> Doc {
-        match self {
-            PatternLit::Integer {
-                name,
-                negative_sign,
-                value,
-            } => paren(
-                with_paren,
-                nest([
-                    text(name),
-                    text(".Make"),
-                    line(),
-                    if *negative_sign { text("(-") } else { nil() },
-                    text(value.to_string()),
-                    if *negative_sign { text(")") } else { nil() },
-                ]),
-            ),
-        }
-    }
 }
 
 impl Pattern {
@@ -146,7 +116,7 @@ impl Pattern {
             .into_iter()
             .map(|patterns| Rc::new(Pattern::Tuple(patterns)))
             .collect(),
-            Pattern::Lit(_) => vec![self.clone()],
+            Pattern::Literal(_) => vec![self.clone()],
             Pattern::Slice {
                 init_patterns,
                 slice_pattern,
@@ -265,7 +235,7 @@ impl Pattern {
                     [text(","), line()],
                 )]),
             ),
-            Pattern::Lit(literal) => literal.to_doc(with_paren),
+            Pattern::Literal(literal) => literal.to_doc(with_paren),
             Pattern::Slice {
                 init_patterns,
                 slice_pattern,

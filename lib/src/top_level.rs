@@ -635,7 +635,7 @@ fn compile_top_level_item_without_local_items<'a>(
                     })]
                 }
                 None => {
-                    let counter_entry = env.impl_counter.entry(self_ty.clone());
+                    let counter_entry = env.impl_counter.entry(self_ty.to_name());
                     let counter = *counter_entry
                         .and_modify(|counter| *counter += 1)
                         .or_insert(1);

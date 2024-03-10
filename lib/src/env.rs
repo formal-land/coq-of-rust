@@ -10,7 +10,7 @@ use std::rc::Rc;
 pub(crate) struct Env<'a> {
     /// We use a counter for the disambiguation of several impls for the same
     /// type
-    pub(crate) impl_counter: HashMap<Rc<CoqType>, u64>,
+    pub(crate) impl_counter: HashMap<String, u64>,
     pub(crate) tcx: TyCtxt<'a>,
     pub(crate) axiomatize: bool,
     pub(crate) axiomatize_public: bool,

@@ -2,6 +2,7 @@ use crate::env::*;
 use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
+use crate::render::*;
 use crate::thir_ty::*;
 use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
@@ -189,89 +190,77 @@ fn build_inner_match(
                     })
                 })
             }
-            Pattern::Lit(literal) => Rc::new(Expr::Match {
-                scrutinee: Expr::local_var(&scrutinee).read(),
-                arms: vec![
-                    Rc::new(MatchArm {
-                        pattern: pattern.clone(),
-                        body,
-                    }),
-                    default_match_arm.clone(),
-                ],
+            Pattern::Literal(literal) => Rc::new(Expr::Let {
+                is_monadic: false,
+                name: None,
+                init: Rc::new(Expr::Call {
+                    func: Expr::local_var("M.is_constant_or_break_match"),
+                    args: vec![
+                        Expr::local_var(&scrutinee).read(),
+                        Rc::new(Expr::Literal(literal.clone())),
+                    ],
+                    kind: CallKind::Effectful,
+                }),
+                body,
             }),
             Pattern::Slice {
                 init_patterns,
                 slice_pattern,
-            } => Rc::new(Expr::Match {
-                scrutinee: Expr::local_var(&scrutinee).read(),
-                arms: vec![
-                    Rc::new(MatchArm {
-                        pattern: Rc::new(Pattern::Slice {
-                            init_patterns: init_patterns
-                                .iter()
-                                .map(|_| Rc::new(Pattern::Wild))
-                                .collect(),
-                            slice_pattern: slice_pattern.as_ref().map(|_| Rc::new(Pattern::Wild)),
-                        }),
-                        body: {
-                            let body = build_inner_match(
-                                [
-                                    init_patterns
-                                        .iter()
-                                        .enumerate()
-                                        .map(|(index, pattern)| {
-                                            (format!("γ{depth}_{index}"), pattern.clone())
-                                        })
-                                        .collect(),
-                                    match slice_pattern {
-                                        None => vec![],
-                                        Some(slice_pattern) => {
-                                            vec![(format!("γ{depth}_slice"), slice_pattern.clone())]
-                                        }
-                                    },
-                                ]
-                                .concat(),
-                                body,
-                                depth + 1,
-                            );
-
-                            let body = match slice_pattern {
-                                None => body,
-                                Some(_) => Rc::new(Expr::Let {
-                                    is_monadic: false,
-                                    name: Some(format!("γ{depth}_slice")),
-                                    init: Rc::new(Expr::Call {
-                                        func: Expr::local_var(&format!(
-                                            "[{}].slice",
-                                            init_patterns.len()
-                                        )),
-                                        args: vec![Expr::local_var(&scrutinee)],
-                                        kind: CallKind::Pure,
-                                    }),
-                                    body,
-                                }),
-                            };
-
-                            init_patterns
-                                .iter()
-                                .enumerate()
-                                .rfold(body, |body, (index, _)| {
-                                    Rc::new(Expr::Let {
-                                        is_monadic: false,
-                                        name: Some(format!("γ{depth}_{index}")),
-                                        init: Rc::new(Expr::Call {
-                                            func: Expr::local_var(&format!("[{index}]")),
-                                            args: vec![Expr::local_var(&scrutinee)],
-                                            kind: CallKind::Pure,
-                                        }),
-                                        body,
-                                    })
-                                })
+            } => {
+                let body = build_inner_match(
+                    [
+                        init_patterns
+                            .iter()
+                            .enumerate()
+                            .map(|(index, pattern)| (format!("γ{depth}_{index}"), pattern.clone()))
+                            .collect(),
+                        match slice_pattern {
+                            None => vec![],
+                            Some(slice_pattern) => {
+                                vec![(format!("γ{depth}_rest"), slice_pattern.clone())]
+                            }
                         },
+                    ]
+                    .concat(),
+                    body,
+                    depth + 1,
+                );
+                let body = match slice_pattern {
+                    None => body,
+                    Some(_) => Rc::new(Expr::Let {
+                        is_monadic: false,
+                        name: Some(format!("γ{depth}_rest")),
+                        init: Rc::new(Expr::Call {
+                            func: Expr::local_var("M.get_slice_rest_or_break_match"),
+                            args: vec![
+                                Expr::local_var(&scrutinee),
+                                Rc::new(Expr::InternalInteger(init_patterns.len())),
+                            ],
+                            kind: CallKind::Effectful,
+                        }),
+                        body,
                     }),
-                    default_match_arm.clone(),
-                ],
-            }),
+                };
+
+                init_patterns
+                    .iter()
+                    .enumerate()
+                    .rfold(body, |body, (index, _)| {
+                        Rc::new(Expr::Let {
+                            is_monadic: false,
+                            name: Some(format!("γ{depth}_{index}")),
+                            init: Rc::new(Expr::Call {
+                                func: Expr::local_var("get_slice_index_or_break_match"),
+                                args: vec![
+                                    Expr::local_var(&scrutinee),
+                                    Rc::new(Expr::InternalInteger(index)),
+                                ],
+                                kind: CallKind::Effectful,
+                            }),
+                            body,
+                        })
+                    })
+            }
         })
 }
 
@@ -339,13 +328,7 @@ fn compile_literal_integer(
             "unknown_kind_of_integer".to_string()
         }
     };
-    let name = uncapitalized_name
-        .chars()
-        .next()
-        .unwrap()
-        .to_uppercase()
-        .collect::<String>()
-        + &uncapitalized_name[1..];
+    let name = capitalize(&uncapitalized_name);
 
     LiteralInteger {
         name,
@@ -805,26 +788,30 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
-                Rc::new(Expr::Literal(Literal::String(symbol.to_string())))
+                Rc::new(Expr::Literal(Rc::new(Literal::String(symbol.to_string()))))
             }
-            rustc_ast::LitKind::Char(c) => Rc::new(Expr::Literal(Literal::Char(c))).alloc(),
-            rustc_ast::LitKind::Int(i, _) => Rc::new(Expr::Literal(Literal::Integer(
+            rustc_ast::LitKind::Char(c) => {
+                Rc::new(Expr::Literal(Rc::new(Literal::Char(c)))).alloc()
+            }
+            rustc_ast::LitKind::Int(i, _) => Rc::new(Expr::Literal(Rc::new(Literal::Integer(
                 compile_literal_integer(env, &expr.span, &expr.ty, *neg, i),
-            )))
+            ))))
             .alloc(),
-            rustc_ast::LitKind::Bool(c) => Rc::new(Expr::Literal(Literal::Bool(c))).alloc(),
-            _ => Rc::new(Expr::Literal(Literal::Error)),
+            rustc_ast::LitKind::Bool(c) => {
+                Rc::new(Expr::Literal(Rc::new(Literal::Bool(c)))).alloc()
+            }
+            _ => Rc::new(Expr::Literal(Rc::new(Literal::Error))),
         },
-        thir::ExprKind::NonHirLiteral { lit, .. } => {
-            Rc::new(Expr::Literal(Literal::Integer(compile_literal_integer(
+        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(Expr::Literal(Rc::new(
+            Literal::Integer(compile_literal_integer(
                 env,
                 &expr.span,
                 &expr.ty,
                 false,
                 lit.try_to_uint(lit.size()).unwrap(),
-            ))))
-            .alloc()
-        }
+            )),
+        )))
+        .alloc(),
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
             TyKind::FnDef(def_id, generic_args) => {
                 let key = env.tcx.def_key(def_id);

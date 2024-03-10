@@ -1,6 +1,8 @@
 use crate::env::*;
+use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
+use crate::render::*;
 use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::TyKind;
 use std::rc::Rc;
@@ -108,22 +110,26 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                         let uint_value = constant.try_to_scalar().unwrap().assert_int();
                         let int_value = uint_value.try_to_int(uint_value.size()).unwrap();
 
-                        return Rc::new(Pattern::Lit(PatternLit::Integer {
-                            name: format!("{int_ty:?}"),
-                            negative_sign: int_value < 0,
-                            // The `unsigned_abs` method is necessary to get the minimal int128's
-                            // absolute value.
-                            value: int_value.unsigned_abs(),
-                        }));
+                        return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
+                            LiteralInteger {
+                                name: capitalize(&format!("{int_ty:?}")),
+                                negative_sign: int_value < 0,
+                                // The `unsigned_abs` method is necessary to get the minimal int128's
+                                // absolute value.
+                                value: int_value.unsigned_abs(),
+                            },
+                        ))));
                     }
                     rustc_middle::ty::TyKind::Uint(uint_ty) => {
                         let uint_value = constant.try_to_scalar().unwrap().assert_int();
 
-                        return Rc::new(Pattern::Lit(PatternLit::Integer {
-                            name: format!("{uint_ty:?}"),
-                            negative_sign: false,
-                            value: uint_value.assert_bits(uint_value.size()),
-                        }));
+                        return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
+                            LiteralInteger {
+                                name: capitalize(&format!("{uint_ty:?}")),
+                                negative_sign: false,
+                                value: uint_value.assert_bits(uint_value.size()),
+                            },
+                        ))));
                     }
                     // TODO: handle other kinds of constants
                     _ => {}
@@ -136,6 +142,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                     "This kind of constant in patterns is not yet supported.",
                 )
                 .emit();
+
             Rc::new(Pattern::Wild)
         }
         PatKind::Range(_) => {

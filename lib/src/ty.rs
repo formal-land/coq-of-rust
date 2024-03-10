@@ -7,7 +7,7 @@ use rustc_hir::{FnDecl, FnRetTy, Ty};
 use rustc_middle::ty::TyCtxt;
 use std::rc::Rc;
 
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug)]
 pub(crate) enum CoqType {
     Var(String),
     Path {

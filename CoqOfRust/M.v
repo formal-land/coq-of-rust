@@ -577,3 +577,17 @@ Parameter get_struct_record_field_or_break_match :
 
 Parameter get_struct_tuple_field_or_break_match :
   Value.t -> string -> Z -> M.
+
+Parameter is_constant_or_break_match :
+  Value.t -> Value.t -> M.
+
+Parameter get_slice_index_or_break_match :
+  Value.t -> Z -> M.
+
+Parameter get_slice_rest_or_break_match :
+  Value.t -> Z -> M.
+
+(** This function is explicitely called in the Rust AST, and should take two
+    types that are actually different but convertible, like different kinds of
+    integers. *)
+Parameter rust_cast : Value.t -> Value.t.

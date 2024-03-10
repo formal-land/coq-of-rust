@@ -90,7 +90,7 @@ pub(crate) enum Expr {
         ty: Rc<CoqType>,
         func: String,
     },
-    Literal(Literal),
+    Literal(Rc<Literal>),
     Call {
         func: Rc<Expr>,
         args: Vec<Rc<Expr>>,
@@ -656,7 +656,7 @@ impl LoopControlFlow {
 }
 
 impl Literal {
-    fn to_doc(&self, with_paren: bool) -> Doc {
+    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
             Literal::Bool(b) => paren(
                 with_paren,

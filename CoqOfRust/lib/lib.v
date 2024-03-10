@@ -341,9 +341,3 @@ Fixpoint repeat_nat {A : Set} (times : nat) (v : A) : list A :=
 (** The repeat operator to create new arrays, like in `[0; 32]`. *)
 Definition repeat (v : Value.t) (times : Z) : Value.t :=
   Value.Array (repeat_nat (Z.to_nat times) v).
-
-(** This function is different from the [M.cast] operator of the monad. This
-    function is explicitely called in the Rust AST, and should take two types
-    that are actually different but convertible, like different kinds of
-    integers. *)
-Parameter rust_cast : Value.t -> Value.t.
