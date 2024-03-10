@@ -30,7 +30,7 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   (let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -92,7 +92,7 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   (let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -154,7 +154,7 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   (let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -204,19 +204,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* fn_plain :=
       let* α0 :=
-        M.get_function "functions_closures_as_output_parameters::create_fn" in
+        M.get_function
+          "functions_closures_as_output_parameters::create_fn"
+          [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* fn_mut :=
       let* α0 :=
         M.get_function
-          "functions_closures_as_output_parameters::create_fnmut" in
+          "functions_closures_as_output_parameters::create_fnmut"
+          [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* fn_once :=
       let* α0 :=
         M.get_function
-          "functions_closures_as_output_parameters::create_fnonce" in
+          "functions_closures_as_output_parameters::create_fnonce"
+          [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=

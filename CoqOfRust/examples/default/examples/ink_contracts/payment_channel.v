@@ -152,7 +152,7 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
     match 𝜏, α with
     | [ Self ], [ value ] =>
       let* value := M.alloc value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -199,12 +199,18 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "payment_channel::Error" ] in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "payment_channel::Error" ] in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -264,7 +270,7 @@ End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "payment_channel::Result") =
+  (Ty.apply (Ty.path "payment_channel::Result") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [ T; Ty.path "payment_channel::Error" ]).
@@ -303,7 +309,7 @@ Module Impl_payment_channel_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -323,7 +329,7 @@ Module Impl_payment_channel_Env.
     | [ Self ], [ self; sender ] =>
       let* self := M.alloc self in
       let* sender := M.alloc sender in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -344,7 +350,7 @@ Module Impl_payment_channel_Env.
       let* self := M.alloc self in
       let* recipient := M.alloc recipient in
       let* amount := M.alloc amount in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -363,7 +369,7 @@ Module Impl_payment_channel_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -382,7 +388,7 @@ Module Impl_payment_channel_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -401,7 +407,7 @@ Module Impl_payment_channel_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -435,7 +441,7 @@ Definition hash_encoded (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [ H; T ], [ input; output ] =>
     let* input := M.alloc input in
     let* output := M.alloc output in
-    let* α0 := M.get_function "core::panicking::panic" in
+    let* α0 := M.get_function "core::panicking::panic" [] in
     let* α1 := M.read (mk_str "not implemented") in
     let* α2 := M.call α0 [ α1 ] in
     M.never_to_any α2
@@ -457,7 +463,7 @@ Definition ecdsa_recover (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* signature := M.alloc signature in
     let* message_hash := M.alloc message_hash in
     let* output := M.alloc output in
-    let* α0 := M.get_function "core::panicking::panic" in
+    let* α0 := M.get_function "core::panicking::panic" [] in
     let* α1 := M.read (mk_str "not implemented") in
     let* α2 := M.call α0 [ α1 ] in
     M.never_to_any α2
@@ -543,7 +549,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
     | [ Self ], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -570,7 +576,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
     | [ Self ], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -597,7 +603,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
     | [ Self ], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -624,7 +630,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
     | [ Self ], [ input; output ] =>
       let* input := M.alloc input in
       let* output := M.alloc output in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -651,7 +657,7 @@ Module Impl_payment_channel_PaymentChannel.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -725,7 +731,13 @@ Module Impl_payment_channel_PaymentChannel.
         let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* _ :=
-        let* α0 := M.get_function "payment_channel::hash_encoded" in
+        let* α0 :=
+          M.get_function
+            "payment_channel::hash_encoded"
+            [
+              Ty.path "payment_channel::Sha2x256";
+              Ty.tuple [ Ty.path "payment_channel::AccountId"; Ty.path "u128" ]
+            ] in
         let* α1 := M.call α0 [ encodable; message ] in
         M.alloc α1 in
       let* pub_key := M.alloc (repeat (Value.Integer Integer.U8 0) 33) in
@@ -736,7 +748,7 @@ Module Impl_payment_channel_PaymentChannel.
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "payment_channel::Error" ])
             "unwrap_or_else" in
-        let* α1 := M.get_function "payment_channel::ecdsa_recover" in
+        let* α1 := M.get_function "payment_channel::ecdsa_recover" [] in
         let* α2 := M.call α1 [ signature; message; pub_key ] in
         let* α3 :=
           M.call
@@ -752,7 +764,9 @@ Module Impl_payment_channel_PaymentChannel.
                       fun γ =>
                         (let* err := M.copy γ in
                         let* α0 :=
-                          M.get_function "std::panicking::begin_panic" in
+                          M.get_function
+                            "std::panicking::begin_panic"
+                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                         let* α1 := M.read (mk_str "recover failed: {err:?}") in
                         let* α2 := M.call α0 [ α1 ] in
                         M.never_to_any α2)

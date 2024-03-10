@@ -28,7 +28,10 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc α1 in
       let* α3 := M.read (M.use α2) in
       if Value.is_true α3 then
-        let* α0 := M.get_function "std::panicking::begin_panic" in
+        let* α0 :=
+          M.get_function
+            "std::panicking::begin_panic"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -37,7 +40,7 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Some refreshing ") in
@@ -76,12 +79,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "panic::drink" in
+      let* α0 := M.get_function "panic::drink" [] in
       let* α1 := M.read (mk_str "water") in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "panic::drink" in
+      let* α0 := M.get_function "panic::drink" [] in
       let* α1 := M.read (mk_str "lemonade") in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in

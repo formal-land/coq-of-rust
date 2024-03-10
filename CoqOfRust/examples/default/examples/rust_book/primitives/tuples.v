@@ -148,7 +148,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "long tuple first value: ") in
@@ -173,7 +173,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "long tuple second value: ") in
@@ -212,7 +212,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "tuple of tuples: ") in
@@ -239,7 +239,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple [ Value.Integer Integer.I32 1; Value.Bool true ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "pair is ") in
@@ -264,7 +264,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "the reversed pair is ") in
@@ -275,7 +275,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.get_function "tuples::reverse" in
+        let* α6 := M.get_function "tuples::reverse" [] in
         let* α7 := M.read pair in
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
@@ -293,7 +293,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "one element tuple: ") in
@@ -319,7 +319,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "just an integer: ") in
@@ -371,7 +371,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* d := M.copy γ0_3 in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -423,7 +423,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Value.StructTuple "tuples::Matrix" [ α0; α1; α2; α3 ]) in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")

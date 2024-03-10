@@ -11,7 +11,7 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -40,7 +40,7 @@ Module deeply.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -86,12 +86,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 :=
-        M.get_function "the_use_as_declaration::deeply::nested::function" in
+        M.get_function "the_use_as_declaration::deeply::nested::function" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -106,12 +106,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          M.get_function "the_use_as_declaration::deeply::nested::function" in
+          M.get_function
+            "the_use_as_declaration::deeply::nested::function"
+            [] in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -125,7 +127,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "the_use_as_declaration::function" in
+      let* α0 := M.get_function "the_use_as_declaration::function" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

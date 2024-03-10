@@ -189,7 +189,7 @@ Module inner_mod.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.get_function "functions_order::inner_mod::tar" in
+        let* α0 := M.get_function "functions_order::inner_mod::tar" [] in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -217,7 +217,7 @@ Module inner_mod.
       | [], [] =>
         let* _ :=
           let* α0 :=
-            M.get_function "functions_order::inner_mod::nested_mod::tack" in
+            M.get_function "functions_order::inner_mod::nested_mod::tack" [] in
           let* α1 := M.call α0 [] in
           M.alloc α1 in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -249,11 +249,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "functions_order::foo" in
+      let* α0 := M.get_function "functions_order::foo" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "functions_order::inner_mod::bar" in
+      let* α0 := M.get_function "functions_order::inner_mod::bar" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=

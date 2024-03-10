@@ -215,7 +215,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α5 := M.call α0 [ M.pointer_coercion (* Unsize *) α4 ] in
       M.alloc α5 in
     let* v3 :=
-      let* α0 := M.get_function "impl_trait_as_return_type::combine_vecs" in
+      let* α0 := M.get_function "impl_trait_as_return_type::combine_vecs" [] in
       let* α1 := M.read v1 in
       let* α2 := M.read v2 in
       let* α3 := M.call α0 [ α1; α2 ] in
@@ -271,7 +271,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -343,7 +353,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -415,7 +435,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -487,7 +517,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -559,7 +599,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -582,7 +632,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")

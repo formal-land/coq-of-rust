@@ -158,7 +158,7 @@ End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "payment_channel::Result") =
+  (Ty.apply (Ty.path "payment_channel::Result") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [ T; Ty.path "payment_channel::Error" ]).

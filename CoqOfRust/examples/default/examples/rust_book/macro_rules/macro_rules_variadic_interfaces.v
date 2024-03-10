@@ -23,7 +23,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α0 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -58,7 +58,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α0 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -93,7 +93,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "(2 * 3) + 1 = ") in

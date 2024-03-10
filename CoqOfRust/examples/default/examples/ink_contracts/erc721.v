@@ -51,7 +51,7 @@ Module Impl_erc721_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -72,7 +72,7 @@ Module Impl_erc721_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -94,7 +94,7 @@ Module Impl_erc721_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -115,7 +115,7 @@ Module Impl_erc721_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -136,7 +136,7 @@ Module Impl_erc721_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -157,7 +157,7 @@ Module Impl_erc721_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -278,7 +278,7 @@ Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
     match 𝜏, α with
     | [ Self ], [ _value ] =>
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -402,12 +402,18 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "erc721::Error" ] in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "erc721::Error" ] in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -535,7 +541,7 @@ Module Impl_erc721_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -557,7 +563,7 @@ Module Impl_erc721_Erc721.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2

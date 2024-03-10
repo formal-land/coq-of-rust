@@ -14,7 +14,7 @@ Definition destroy_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* c := M.alloc c in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Destroying a box that contains ") in
@@ -87,7 +87,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* y := M.copy x in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "x is ") in
@@ -127,7 +127,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "a contains: ") in
@@ -153,7 +153,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* b := M.copy a in
     let* _ :=
       let* α0 :=
-        M.get_function "scoping_rules_ownership_and_rules::destroy_box" in
+        M.get_function "scoping_rules_ownership_and_rules::destroy_box" [] in
       let* α1 := M.read b in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in

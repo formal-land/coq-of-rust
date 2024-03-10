@@ -26,7 +26,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               (let* i := M.copy γ in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -41,7 +41,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               (let* i := M.copy γ in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -55,7 +55,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc (Value.Tuple []));
             fun γ =>
               (let* α0 :=
-                M.get_function "core::panicking::unreachable_display" in
+                M.get_function
+                  "core::panicking::unreachable_display"
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α1 := M.call α0 [ mk_str "Should never happen." ] in
               let* α2 := M.never_to_any α1 in
               M.alloc α2)

@@ -138,7 +138,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* _ :=
                               let* α0 :=
                                 M.get_function
-                                  "scoping_rules_raii::create_box" in
+                                  "scoping_rules_raii::create_box"
+                                  [] in
                               let* α1 := M.call α0 [] in
                               M.alloc α1 in
                             M.alloc (Value.Tuple [])

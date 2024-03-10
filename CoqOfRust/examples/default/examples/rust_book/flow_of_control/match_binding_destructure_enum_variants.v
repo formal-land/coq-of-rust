@@ -34,7 +34,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* α0 :=
-      M.get_function "match_binding_destructure_enum_variants::some_number" in
+      M.get_function
+        "match_binding_destructure_enum_variants::some_number"
+        [] in
     let* α1 := M.call α0 [] in
     let* α2 := M.alloc α1 in
     let* α3 :=
@@ -54,7 +56,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | u32.Make 42 =>
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -92,7 +94,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* n := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")

@@ -201,7 +201,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -280,7 +296,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -366,7 +398,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -446,7 +494,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

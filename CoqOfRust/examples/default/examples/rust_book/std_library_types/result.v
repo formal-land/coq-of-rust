@@ -210,7 +210,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ x; y ] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
-    let* α0 := M.get_function "result::checked::div" in
+    let* α0 := M.get_function "result::checked::div" [] in
     let* α1 := M.read x in
     let* α2 := M.read y in
     let* α3 := M.call α0 [ α1; α2 ] in
@@ -228,7 +228,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.var "core::result::Result::Get_Err_0" in
                   M.pure (α0 γ) in
                 let* why := M.copy γ0_0 in
-                let* α0 := M.get_function "core::panicking::panic_fmt" in
+                let* α0 := M.get_function "core::panicking::panic_fmt" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -261,7 +261,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.var "core::result::Result::Get_Ok_0" in
                   M.pure (α0 γ) in
                 let* ratio := M.copy γ0_0 in
-                let* α0 := M.get_function "result::checked::ln" in
+                let* α0 := M.get_function "result::checked::ln" [] in
                 let* α1 := M.read ratio in
                 let* α2 := M.call α0 [ α1 ] in
                 let* α3 := M.alloc α2 in
@@ -279,7 +279,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.pure (α0 γ) in
                           let* why := M.copy γ0_0 in
                           let* α0 :=
-                            M.get_function "core::panicking::panic_fmt" in
+                            M.get_function "core::panicking::panic_fmt" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -312,7 +312,8 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α0 := M.var "core::result::Result::Get_Ok_0" in
                             M.pure (α0 γ) in
                           let* ln := M.copy γ0_0 in
-                          let* α0 := M.get_function "result::checked::sqrt" in
+                          let* α0 :=
+                            M.get_function "result::checked::sqrt" [] in
                           let* α1 := M.read ln in
                           let* α2 := M.call α0 [ α1 ] in
                           let* α3 := M.alloc α2 in
@@ -332,7 +333,8 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     let* why := M.copy γ0_0 in
                                     let* α0 :=
                                       M.get_function
-                                        "core::panicking::panic_fmt" in
+                                        "core::panicking::panic_fmt"
+                                        [] in
                                     let* α1 :=
                                       M.get_associated_function
                                         (Ty.path "core::fmt::Arguments")
@@ -393,7 +395,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in
@@ -404,7 +406,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "result::op" in
+        let* α6 := M.get_function "result::op" [] in
         let* α7 := M.read UnsupportedLiteral in
         let* α8 := M.read UnsupportedLiteral in
         let* α9 := M.call α6 [ α7; α8 ] in

@@ -53,7 +53,7 @@ fn main() {
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 := M.get_function "std::sync::mpsc::channel" in
+    let* α0 := M.get_function "std::sync::mpsc::channel" [ Ty.path "i32" ] in
     let* α1 := M.call α0 [] in
     let* α2 := M.alloc α1 in
     let* α3 :=
@@ -169,7 +169,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                           let* child :=
                                             let* α0 :=
                                               M.get_function
-                                                "std::thread::spawn" in
+                                                "std::thread::spawn"
+                                                [
+                                                  Ty.function
+                                                    [ Ty.tuple [] ]
+                                                    (Ty.tuple []);
+                                                  Ty.tuple []
+                                                ] in
                                             let* α1 :=
                                               M.call
                                                 α0
@@ -227,7 +233,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                               let* _ :=
                                                                 let* α0 :=
                                                                   M.get_function
-                                                                    "std::io::stdio::_print" in
+                                                                    "std::io::stdio::_print"
+                                                                    [] in
                                                                 let* α1 :=
                                                                   M.get_associated_function
                                                                     (Ty.path
@@ -552,7 +559,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (M.use α4) in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")

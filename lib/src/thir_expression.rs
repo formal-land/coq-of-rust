@@ -934,6 +934,7 @@ pub(crate) fn compile_expr<'a>(
                 let symbol = key.get_opt_name();
                 let parent = env.tcx.opt_parent(*def_id).unwrap();
                 let parent_kind = env.tcx.def_kind(parent);
+
                 Rc::new(match parent_kind {
                     DefKind::Impl { .. } => {
                         let parent_type =
@@ -945,12 +946,8 @@ pub(crate) fn compile_expr<'a>(
                     DefKind::Trait => {
                         let generics = env.tcx.generics_of(def_id);
                         let parent_path = compile_def_id(env, parent);
-                        let path = Path::concat(&[
-                            parent_path.clone(),
-                            Path::local(symbol.unwrap().as_str()),
-                        ]);
                         let parent_generics = env.tcx.generics_of(parent);
-                        let tys = [
+                        let self_and_generic_tys = [
                             parent_generics
                                 .params
                                 .iter()
@@ -972,17 +969,29 @@ pub(crate) fn compile_expr<'a>(
                                 .map(|ty| (param, compile_type(env, ty)))
                         })
                         .collect::<Vec<_>>();
-                        // We know that the first type is the `Self` type
-                        let self_ty = &tys.first().unwrap().1;
 
                         Expr::TraitMethod {
                             trait_name: parent_path,
                             method_name: symbol.unwrap().to_string(),
-                            self_and_generic_tys: tys,
+                            self_and_generic_tys,
                         }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {
-                        Expr::GetFunction(compile_def_id(env, *def_id))
+                        let generic_tys =
+                            generic_args
+                            .iter()
+                            .filter_map(|generic_arg| {
+                                generic_arg
+                                    .as_type()
+                                    .as_ref()
+                                    .map(|ty| compile_type(env, ty))
+                            })
+                            .collect::<Vec<_>>();
+
+                        Expr::GetFunction {
+                            func: compile_def_id(env, *def_id),
+                            generic_tys,
+                        }
                     }
                     DefKind::Variant => Expr::Constructor(compile_def_id(env, *def_id)),
                     DefKind::Struct => {
@@ -1018,6 +1027,7 @@ pub(crate) fn compile_expr<'a>(
                     .sess
                     .struct_span_warn(expr.span, error_message)
                     .emit();
+
                 Rc::new(Expr::Message(error_message.to_string()))
             }
         },
@@ -1045,6 +1055,7 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::Yield { value } => {
             let func = Expr::local_var("yield");
             let args = vec![compile_expr(env, thir, value)];
+
             Rc::new(Expr::Call {
                 func,
                 args,

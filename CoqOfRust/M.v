@@ -274,7 +274,7 @@ Module Primitive.
   | StateRead {Address : Set} (address : Address)
   | StateWrite {Address : Set} (address : Address) (value : Value.t)
   | EnvRead
-  | GetFunction (path : string)
+  | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string).
 End Primitive.
 
@@ -487,8 +487,8 @@ Definition read_env : M :=
 Definition impossible : M :=
   LowM.Impossible.
 
-Definition get_function (path : string) : M :=
-  call_primitive (Primitive.GetFunction path).
+Definition get_function (path : string) (generic_tys : list Ty.t) : M :=
+  call_primitive (Primitive.GetFunction path generic_tys).
 
 Definition get_associated_function (ty : Ty.t) (name : string) : M :=
   call_primitive (Primitive.GetAssociatedFunction ty name).

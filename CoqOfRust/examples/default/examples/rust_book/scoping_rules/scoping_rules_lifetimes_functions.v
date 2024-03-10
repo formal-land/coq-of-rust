@@ -12,7 +12,7 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* x := M.alloc x in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "`print_one`: x is ") in
@@ -71,7 +71,7 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* y := M.alloc y in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "`print_multi`: x is ") in
@@ -143,32 +143,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* y := M.alloc (Value.Integer Integer.I32 9) in
     let* _ :=
       let* α0 :=
-        M.get_function "scoping_rules_lifetimes_functions::print_one" in
+        M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
       let* α1 := M.call α0 [ x ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_function "scoping_rules_lifetimes_functions::print_multi" in
+        M.get_function "scoping_rules_lifetimes_functions::print_multi" [] in
       let* α1 := M.call α0 [ x; y ] in
       M.alloc α1 in
     let* z :=
-      let* α0 := M.get_function "scoping_rules_lifetimes_functions::pass_x" in
+      let* α0 :=
+        M.get_function "scoping_rules_lifetimes_functions::pass_x" [] in
       let* α1 := M.call α0 [ x; y ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_function "scoping_rules_lifetimes_functions::print_one" in
+        M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
       let* α1 := M.read z in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* t := M.alloc (Value.Integer Integer.I32 3) in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_lifetimes_functions::add_one" in
+      let* α0 :=
+        M.get_function "scoping_rules_lifetimes_functions::add_one" [] in
       let* α1 := M.call α0 [ t ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_function "scoping_rules_lifetimes_functions::print_one" in
+        M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
       let* α1 := M.call α0 [ t ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

@@ -12,7 +12,7 @@ Definition cos (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ z ] =>
     let* z := M.alloc z in
-    let* α0 := M.get_function "foreign_function_interface::ccosf" in
+    let* α0 := M.get_function "foreign_function_interface::ccosf" [] in
     let* α1 := M.read z in
     M.call α0 [ α1 ]
   | _, _ => M.impossible
@@ -44,13 +44,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "foreign_function_interface::Complex"
           [ ("re", α0); ("im", α1) ]) in
     let* z_sqrt :=
-      let* α0 := M.get_function "foreign_function_interface::csqrtf" in
+      let* α0 := M.get_function "foreign_function_interface::csqrtf" [] in
       let* α1 := M.read z in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "the square root of ") in
@@ -81,7 +81,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "cos(") in
@@ -98,7 +98,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α9 := M.get_function "foreign_function_interface::cos" in
+        let* α9 := M.get_function "foreign_function_interface::cos" [] in
         let* α10 := M.read z in
         let* α11 := M.call α9 [ α10 ] in
         let* α12 := M.alloc α11 in

@@ -94,7 +94,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (M.rust_cast α0) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Casting: ") in
@@ -131,7 +131,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "1000 as a u16 is: ") in
@@ -157,7 +157,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "1000 as a u8 is : ") in
@@ -183,7 +183,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "  -1 as a u8 is : ") in
@@ -209,7 +209,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "1000 mod 256 is : ") in
@@ -239,7 +239,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str " 128 as a i16 is: ") in
@@ -265,7 +265,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str " 128 as a i8 is : ") in
@@ -291,7 +291,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "1000 as a u8 is : ") in
@@ -317,7 +317,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str " 232 as a i8 is : ") in
@@ -343,7 +343,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str " 300.0 as u8 is : ") in
@@ -370,7 +370,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "-100.0 as u8 is : ") in
@@ -397,7 +397,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "   nan as u8 is : ") in
@@ -425,7 +425,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str " 300.0 as u8 is : ") in
@@ -455,7 +455,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "-100.0 as u8 is : ") in
@@ -485,7 +485,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "   nan as u8 is : ") in

@@ -194,7 +194,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* password := M.alloc password in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Username: ") in
@@ -219,7 +219,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Password: ") in
@@ -244,7 +244,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -291,7 +291,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* account_info := M.copy γ0_0 in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -306,7 +306,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (Value.Tuple []) in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -334,7 +334,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (Value.Tuple []) in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -365,7 +365,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
               end);
             fun γ =>
               (let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -451,14 +451,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α3 in
     let* _ :=
       let* α0 :=
-        M.get_function "hash_map_alternate_or_custom_key_types::try_logon" in
+        M.get_function "hash_map_alternate_or_custom_key_types::try_logon" [] in
       let* α1 := M.read (mk_str "j.everyman") in
       let* α2 := M.read (mk_str "psasword123") in
       let* α3 := M.call α0 [ accounts; α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
-        M.get_function "hash_map_alternate_or_custom_key_types::try_logon" in
+        M.get_function "hash_map_alternate_or_custom_key_types::try_logon" [] in
       let* α1 := M.read (mk_str "j.everyman") in
       let* α2 := M.read (mk_str "password123") in
       let* α3 := M.call α0 [ accounts; α1; α2 ] in

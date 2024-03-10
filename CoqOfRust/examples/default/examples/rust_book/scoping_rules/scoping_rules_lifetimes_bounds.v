@@ -49,7 +49,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "`print`: t is ") in
@@ -91,7 +91,7 @@ Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "`print_ref`: t is ") in
@@ -136,11 +136,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* ref_x :=
       M.alloc (Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ]) in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_lifetimes_bounds::print_ref" in
+      let* α0 :=
+        M.get_function
+          "scoping_rules_lifetimes_bounds::print_ref"
+          [
+            Ty.apply
+              (Ty.path "scoping_rules_lifetimes_bounds::Ref")
+              [ Ty.path "i32" ]
+          ] in
       let* α1 := M.call α0 [ ref_x ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_lifetimes_bounds::print" in
+      let* α0 :=
+        M.get_function
+          "scoping_rules_lifetimes_bounds::print"
+          [
+            Ty.apply
+              (Ty.path "scoping_rules_lifetimes_bounds::Ref")
+              [ Ty.path "i32" ]
+          ] in
       let* α1 := M.read ref_x in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in

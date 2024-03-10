@@ -96,7 +96,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.None =>
-                let* α0 := M.get_function "std::panicking::begin_panic" in
+                let* α0 :=
+                  M.get_function
+                    "std::panicking::begin_panic"
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                 let* α1 :=
                   M.read (mk_str "new path is not a valid UTF-8 sequence") in
                 let* α2 := M.call α0 [ α1 ] in
@@ -113,7 +116,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* s := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")

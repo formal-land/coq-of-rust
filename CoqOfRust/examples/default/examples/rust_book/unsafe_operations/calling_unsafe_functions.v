@@ -65,7 +65,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call α0 [ some_vector ] in
       M.alloc α1 in
     let* my_slice :=
-      let* α0 := M.get_function "core::slice::raw::from_raw_parts" in
+      let* α0 :=
+        M.get_function "core::slice::raw::from_raw_parts" [ Ty.path "u32" ] in
       let* α1 := M.read pointer in
       let* α2 := M.read length in
       let* α3 := M.call α0 [ α1; α2 ] in
@@ -117,7 +118,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
+                        Ty.apply
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                      ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

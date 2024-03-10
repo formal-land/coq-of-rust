@@ -65,7 +65,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ]))) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "closure_annotated: ") in
@@ -105,7 +105,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "closure_inferred: ") in
@@ -152,7 +152,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ fun γ => (M.pure (Value.Integer Integer.I32 1)) ]))) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "closure returning one: ") in

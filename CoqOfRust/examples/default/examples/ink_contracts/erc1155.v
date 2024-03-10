@@ -51,7 +51,7 @@ Module Impl_erc1155_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -72,7 +72,7 @@ Module Impl_erc1155_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -94,7 +94,7 @@ Module Impl_erc1155_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -115,7 +115,7 @@ Module Impl_erc1155_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -136,7 +136,7 @@ Module Impl_erc1155_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -157,7 +157,7 @@ Module Impl_erc1155_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -278,7 +278,7 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
     match 𝜏, α with
     | [ Self ], [ _v ] =>
       let* _v := M.alloc _v in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -367,12 +367,18 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "erc1155::Error" ] in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "erc1155::Error" ] in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -432,7 +438,7 @@ End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "erc1155::Result") =
+  (Ty.apply (Ty.path "erc1155::Result") [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ]).
 
 (* Trait *)
@@ -487,7 +493,7 @@ Module Impl_erc1155_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -570,7 +576,7 @@ Module Impl_erc1155_Contract.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -1306,7 +1312,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               (* Self *) Ty.path "erc1155::AccountId";
               (* Rhs *) Ty.path "erc1155::AccountId"
             ] in
-        let* α1 := M.get_function "erc1155::zero_address" in
+        let* α1 := M.get_function "erc1155::zero_address" [] in
         let* α2 := M.call α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call α0 [ to; α3 ] in
@@ -1516,7 +1522,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               (* Self *) Ty.path "erc1155::AccountId";
               (* Rhs *) Ty.path "erc1155::AccountId"
             ] in
-        let* α1 := M.get_function "erc1155::zero_address" in
+        let* α1 := M.get_function "erc1155::zero_address" [] in
         let* α2 := M.call α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.call α0 [ to; α3 ] in
@@ -2387,7 +2393,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
       let* _token_id := M.alloc _token_id in
       let* _value := M.alloc _value in
       let* _data := M.alloc _data in
-      let* α0 := M.get_function "core::panicking::panic_fmt" in
+      let* α0 := M.get_function "core::panicking::panic_fmt" [] in
       let* α1 :=
         M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
       let* α2 :=
@@ -2443,7 +2449,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
       let* _token_ids := M.alloc _token_ids in
       let* _values := M.alloc _values in
       let* _data := M.alloc _data in
-      let* α0 := M.get_function "core::panicking::panic_fmt" in
+      let* α0 := M.get_function "core::panicking::panic_fmt" [] in
       let* α1 :=
         M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
       let* α2 :=

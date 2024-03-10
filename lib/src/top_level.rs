@@ -1682,8 +1682,16 @@ impl TopLevelItem {
                         )],
                         image: Rc::new(coq::Expression::Equality {
                             lhs: Rc::new(
-                                coq::Expression::just_name("Ty.path")
-                                    .apply(&coq::Expression::String(path.to_string())),
+                                CoqType::Application {
+                                    func: Rc::new(CoqType::Path {
+                                        path: Rc::new(path.clone()),
+                                    }),
+                                    args: ty_params
+                                        .iter()
+                                        .map(|ty_param| Rc::new(CoqType::Var(ty_param.clone())))
+                                        .collect(),
+                                }
+                                .to_coq(),
                             ),
                             rhs: Rc::new(ty.to_coq()),
                         }),

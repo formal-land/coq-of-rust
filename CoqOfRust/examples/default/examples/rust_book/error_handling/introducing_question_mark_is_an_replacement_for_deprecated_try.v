@@ -146,7 +146,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* n := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -182,7 +182,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* e := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -227,10 +227,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_function
-          "introducing_question_mark_is_an_replacement_for_deprecated_try::print" in
+          "introducing_question_mark_is_an_replacement_for_deprecated_try::print"
+          [] in
       let* α1 :=
         M.get_function
-          "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply" in
+          "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply"
+          [] in
       let* α2 := M.read (mk_str "10") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call α1 [ α2; α3 ] in
@@ -239,10 +241,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_function
-          "introducing_question_mark_is_an_replacement_for_deprecated_try::print" in
+          "introducing_question_mark_is_an_replacement_for_deprecated_try::print"
+          [] in
       let* α1 :=
         M.get_function
-          "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply" in
+          "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply"
+          [] in
       let* α2 := M.read (mk_str "t") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call α1 [ α2; α3 ] in

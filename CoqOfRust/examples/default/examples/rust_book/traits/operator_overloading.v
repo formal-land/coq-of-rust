@@ -85,7 +85,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -133,7 +133,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -173,7 +173,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Foo + Bar = ") in
@@ -214,7 +214,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Bar + Foo = ") in

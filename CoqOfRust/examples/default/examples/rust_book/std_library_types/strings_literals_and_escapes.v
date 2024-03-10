@@ -30,7 +30,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* byte_escape := M.copy (mk_str "I'm writing Rust!") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "What are you doing? (\x3F means ?) ") in
@@ -57,7 +57,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* character_name := M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Unicode character ") in
@@ -94,7 +94,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         The linebreak and indentation here -><- can be escaped too!") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in

@@ -55,7 +55,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       (let* e := M.copy γ in
-                      let* α0 := M.get_function "core::panicking::panic_fmt" in
+                      let* α0 :=
+                        M.get_function "core::panicking::panic_fmt" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
@@ -110,7 +111,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.alloc α3 in
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -156,7 +157,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.alloc α3 in
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")

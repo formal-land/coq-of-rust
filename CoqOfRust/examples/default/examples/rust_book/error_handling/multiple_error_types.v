@@ -147,7 +147,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α8 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "The first doubled is ") in
@@ -158,7 +158,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "multiple_error_types::double_first" in
+        let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read numbers in
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
@@ -176,7 +176,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "The first doubled is ") in
@@ -187,7 +187,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "multiple_error_types::double_first" in
+        let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read empty in
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in
@@ -205,7 +205,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "The first doubled is ") in
@@ -216,7 +216,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "multiple_error_types::double_first" in
+        let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read strings in
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in

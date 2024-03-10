@@ -52,7 +52,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   (let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -82,7 +82,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_function
-          "functions_closures_type_anonymity_define_and_use::apply" in
+          "functions_closures_type_anonymity_define_and_use::apply"
+          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
       let* α1 := M.read print in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in

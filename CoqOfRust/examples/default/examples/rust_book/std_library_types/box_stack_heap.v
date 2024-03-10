@@ -179,11 +179,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* point :=
-      let* α0 := M.get_function "box_stack_heap::origin" in
+      let* α0 := M.get_function "box_stack_heap::origin" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* rectangle :=
-      let* α0 := M.get_function "box_stack_heap::origin" in
+      let* α0 := M.get_function "box_stack_heap::origin" [] in
       let* α1 := M.call α0 [] in
       let* α2 := M.read UnsupportedLiteral in
       let* α3 := M.read UnsupportedLiteral in
@@ -207,7 +207,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
-      let* α1 := M.get_function "box_stack_heap::origin" in
+      let* α1 := M.get_function "box_stack_heap::origin" [] in
       let* α2 := M.call α1 [] in
       let* α3 := M.read UnsupportedLiteral in
       let* α4 := M.read UnsupportedLiteral in
@@ -233,7 +233,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ])
           "new" in
-      let* α1 := M.get_function "box_stack_heap::origin" in
+      let* α1 := M.get_function "box_stack_heap::origin" [] in
       let* α2 := M.call α1 [] in
       let* α3 := M.call α0 [ α2 ] in
       M.alloc α3 in
@@ -252,13 +252,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
-      let* α1 := M.get_function "box_stack_heap::boxed_origin" in
+      let* α1 := M.get_function "box_stack_heap::boxed_origin" [] in
       let* α2 := M.call α1 [] in
       let* α3 := M.call α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Point occupies ") in
@@ -269,7 +269,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 :=
+          M.get_function
+            "core::mem::size_of_val"
+            [ Ty.path "box_stack_heap::Point" ] in
         let* α7 := M.call α6 [ point ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -286,7 +289,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Rectangle occupies ") in
@@ -297,7 +300,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 :=
+          M.get_function
+            "core::mem::size_of_val"
+            [ Ty.path "box_stack_heap::Rectangle" ] in
         let* α7 := M.call α6 [ rectangle ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -314,7 +320,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Boxed point occupies ") in
@@ -325,7 +331,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 :=
+          M.get_function
+            "core::mem::size_of_val"
+            [
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.path "box_stack_heap::Point";
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α7 := M.call α6 [ boxed_point ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -342,7 +358,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Boxed rectangle occupies ") in
@@ -353,7 +369,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 :=
+          M.get_function
+            "core::mem::size_of_val"
+            [
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.path "box_stack_heap::Rectangle";
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α7 := M.call α6 [ boxed_rectangle ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -370,7 +396,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Boxed box occupies ") in
@@ -381,7 +407,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 :=
+          M.get_function
+            "core::mem::size_of_val"
+            [
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    [
+                      Ty.path "box_stack_heap::Point";
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α7 := M.call α6 [ box_in_a_box ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -401,7 +442,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.copy α0 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Unboxed point occupies ") in
@@ -412,7 +453,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 :=
+          M.get_function
+            "core::mem::size_of_val"
+            [ Ty.path "box_stack_heap::Point" ] in
         let* α7 := M.call α6 [ unboxed_point ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in

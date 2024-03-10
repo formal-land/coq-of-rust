@@ -75,7 +75,7 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "wrapping_errors::Result") =
+  (Ty.apply (Ty.path "wrapping_errors::Result") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [ T; Ty.path "wrapping_errors::DoubleError" ]).
@@ -485,7 +485,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* n := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -522,7 +522,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* e := M.copy γ0_0 in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -570,7 +570,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* _ :=
                             let* _ :=
                               let* α0 :=
-                                M.get_function "std::io::stdio::_print" in
+                                M.get_function "std::io::stdio::_print" [] in
                               let* α1 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::Arguments")
@@ -687,22 +687,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
       M.alloc α8 in
     let* _ :=
-      let* α0 := M.get_function "wrapping_errors::print" in
-      let* α1 := M.get_function "wrapping_errors::double_first" in
+      let* α0 := M.get_function "wrapping_errors::print" [] in
+      let* α1 := M.get_function "wrapping_errors::double_first" [] in
       let* α2 := M.read numbers in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 := M.call α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
-      let* α0 := M.get_function "wrapping_errors::print" in
-      let* α1 := M.get_function "wrapping_errors::double_first" in
+      let* α0 := M.get_function "wrapping_errors::print" [] in
+      let* α1 := M.get_function "wrapping_errors::double_first" [] in
       let* α2 := M.read empty in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 := M.call α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
-      let* α0 := M.get_function "wrapping_errors::print" in
-      let* α1 := M.get_function "wrapping_errors::double_first" in
+      let* α0 := M.get_function "wrapping_errors::print" [] in
+      let* α1 := M.get_function "wrapping_errors::double_first" [] in
       let* α2 := M.read strings in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 := M.call α0 [ α3 ] in

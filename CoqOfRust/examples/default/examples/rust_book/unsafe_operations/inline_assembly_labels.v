@@ -57,7 +57,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (Value.StructTuple
                         "core::panicking::AssertKind::Eq"
                         []) in
-                  let* α0 := M.get_function "core::panicking::assert_failed" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [ Ty.path "i32"; Ty.path "i32" ] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

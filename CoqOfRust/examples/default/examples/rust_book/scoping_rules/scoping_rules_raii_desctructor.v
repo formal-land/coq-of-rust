@@ -15,7 +15,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -55,7 +55,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")

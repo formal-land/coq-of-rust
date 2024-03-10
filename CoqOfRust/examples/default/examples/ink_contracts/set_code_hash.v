@@ -12,7 +12,7 @@ Definition set_code_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [ E ], [ code_hash ] =>
     let* code_hash := M.alloc code_hash in
-    let* α0 := M.get_function "core::panicking::panic" in
+    let* α0 := M.get_function "core::panicking::panic" [] in
     let* α1 := M.read (mk_str "not implemented") in
     let* α2 := M.call α0 [ α1 ] in
     M.never_to_any α2
@@ -91,7 +91,7 @@ Module Impl_set_code_hash_Incrementer.
         M.assign β α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -162,7 +162,10 @@ Module Impl_set_code_hash_Incrementer.
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "set_code_hash::Error" ])
             "unwrap_or_else" in
-        let* α1 := M.get_function "set_code_hash::set_code_hash" in
+        let* α1 :=
+          M.get_function
+            "set_code_hash::set_code_hash"
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
         let* α2 := M.call α1 [ code_hash ] in
         let* α3 :=
           M.call
@@ -178,7 +181,9 @@ Module Impl_set_code_hash_Incrementer.
                       fun γ =>
                         (let* err := M.copy γ in
                         let* α0 :=
-                          M.get_function "std::panicking::begin_panic" in
+                          M.get_function
+                            "std::panicking::begin_panic"
+                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                         let* α1 :=
                           M.read
                             (mk_str
@@ -190,7 +195,7 @@ Module Impl_set_code_hash_Incrementer.
         M.alloc α3 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")

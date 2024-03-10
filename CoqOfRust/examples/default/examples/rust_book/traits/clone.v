@@ -192,7 +192,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* copied_unit := M.copy unit_ in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "original: ") in
@@ -217,7 +217,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "copy: ") in
@@ -258,7 +258,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructTuple "clone::Pair" [ α1; α3 ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "original: ") in
@@ -284,7 +284,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* moved_pair := M.copy pair in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "moved: ") in
@@ -316,13 +316,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call α0 [ moved_pair ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "core::mem::drop" in
+      let* α0 := M.get_function "core::mem::drop" [ Ty.path "clone::Pair" ] in
       let* α1 := M.read moved_pair in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "clone: ") in

@@ -154,7 +154,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ α0; α1 ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Does container contain ") in
@@ -204,7 +204,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "First number: ") in
@@ -240,7 +240,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Last number: ") in
@@ -276,7 +276,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "The difference is: ") in
@@ -288,7 +288,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 :=
-          M.get_function "generics_associated_types_problem::difference" in
+          M.get_function
+            "generics_associated_types_problem::difference"
+            [
+              Ty.path "i32";
+              Ty.path "i32";
+              Ty.path "generics_associated_types_problem::Container"
+            ] in
         let* α7 := M.call α6 [ container ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in

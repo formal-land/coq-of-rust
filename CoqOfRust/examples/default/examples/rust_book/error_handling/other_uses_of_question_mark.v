@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "other_uses_of_question_mark::Result") =
+  (Ty.apply (Ty.path "other_uses_of_question_mark::Result") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [
@@ -333,7 +333,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* n := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -369,7 +369,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* e := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -481,22 +481,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
       M.alloc α8 in
     let* _ :=
-      let* α0 := M.get_function "other_uses_of_question_mark::print" in
-      let* α1 := M.get_function "other_uses_of_question_mark::double_first" in
+      let* α0 := M.get_function "other_uses_of_question_mark::print" [] in
+      let* α1 :=
+        M.get_function "other_uses_of_question_mark::double_first" [] in
       let* α2 := M.read numbers in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 := M.call α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
-      let* α0 := M.get_function "other_uses_of_question_mark::print" in
-      let* α1 := M.get_function "other_uses_of_question_mark::double_first" in
+      let* α0 := M.get_function "other_uses_of_question_mark::print" [] in
+      let* α1 :=
+        M.get_function "other_uses_of_question_mark::double_first" [] in
       let* α2 := M.read empty in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 := M.call α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
-      let* α0 := M.get_function "other_uses_of_question_mark::print" in
-      let* α1 := M.get_function "other_uses_of_question_mark::double_first" in
+      let* α0 := M.get_function "other_uses_of_question_mark::print" [] in
+      let* α1 :=
+        M.get_function "other_uses_of_question_mark::double_first" [] in
       let* α2 := M.read strings in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 := M.call α0 [ α3 ] in

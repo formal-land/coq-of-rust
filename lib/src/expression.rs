@@ -71,7 +71,10 @@ pub(crate) enum Expr {
     Pure(Rc<Expr>),
     LocalVar(String),
     Var(Path),
-    GetFunction(Path),
+    GetFunction {
+        func: Path,
+        generic_tys: Vec<Rc<CoqType>>,
+    },
     Constructor(Path),
     VarWithTy {
         path: Path,
@@ -309,7 +312,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::Pure(_) => panic!("Expressions should not be monadic yet."),
         Expr::LocalVar(_) => (pure(expr), fresh_vars),
         Expr::Var(_) => (expr, fresh_vars),
-        Expr::GetFunction(_) => (expr, fresh_vars),
+        Expr::GetFunction { .. } => (expr, fresh_vars),
         Expr::Constructor(_) => (pure(expr), fresh_vars),
         Expr::VarWithTy {
             path,
@@ -696,9 +699,20 @@ impl Expr {
                 with_paren,
                 nest([text("M.var"), line(), text(format!("\"{path}\""))]),
             ),
-            Expr::GetFunction(path) => paren(
+            Expr::GetFunction { func, generic_tys } => paren(
                 with_paren,
-                nest([text("M.get_function"), line(), text(format!("\"{path}\""))]),
+                nest([
+                    text("M.get_function"),
+                    line(),
+                    text(format!("\"{func}\"")),
+                    line(),
+                    list(
+                        generic_tys
+                            .iter()
+                            .map(|generic_ty| generic_ty.to_coq().to_doc(false))
+                            .collect(),
+                    ),
+                ]),
             ),
             Expr::Constructor(path) => path.to_doc(),
             Expr::VarWithTy { path, ty_name, ty } => paren(

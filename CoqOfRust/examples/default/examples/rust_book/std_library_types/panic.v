@@ -21,7 +21,10 @@ Definition division (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.read (M.use α1) in
     let* α3 :=
       if Value.is_true α2 then
-        let* α0 := M.get_function "std::panicking::begin_panic" in
+        let* α0 :=
+          M.get_function
+            "std::panicking::begin_panic"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α1 := M.read (mk_str "division by zero") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -62,7 +65,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.call α0 [ Value.Integer Integer.I32 0 ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "panic::division" in
+      let* α0 := M.get_function "panic::division" [] in
       let* α1 :=
         M.call
           α0
@@ -70,7 +73,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")

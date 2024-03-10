@@ -70,7 +70,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "generics_functions::reg_fn" in
+      let* α0 := M.get_function "generics_functions::reg_fn" [] in
       let* α1 :=
         M.call
           α0
@@ -81,7 +81,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::gen_spec_t" in
+      let* α0 := M.get_function "generics_functions::gen_spec_t" [] in
       let* α1 :=
         M.call
           α0
@@ -92,7 +92,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::gen_spec_i32" in
+      let* α0 := M.get_function "generics_functions::gen_spec_i32" [] in
       let* α1 :=
         M.call
           α0
@@ -103,7 +103,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::generic" in
+      let* α0 :=
+        M.get_function "generics_functions::generic" [ Ty.path "char" ] in
       let* α1 :=
         M.call
           α0
@@ -114,7 +115,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "generics_functions::generic" in
+      let* α0 :=
+        M.get_function "generics_functions::generic" [ Ty.path "char" ] in
       let* α1 :=
         M.call
           α0

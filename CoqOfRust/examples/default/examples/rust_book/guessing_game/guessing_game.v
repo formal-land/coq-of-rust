@@ -9,7 +9,7 @@ fn gen_range() -> u32 {
 Definition gen_range (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
-    let* α0 := M.get_function "core::panicking::panic" in
+    let* α0 := M.get_function "core::panicking::panic" [] in
     let* α1 := M.read (mk_str "not yet implemented") in
     let* α2 := M.call α0 [ α1 ] in
     M.never_to_any α2
@@ -56,7 +56,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -69,14 +69,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* secret_number :=
-      let* α0 := M.get_function "guessing_game::gen_range" in
+      let* α0 := M.get_function "guessing_game::gen_range" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* α0 :=
       M.loop
         (let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -104,7 +104,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "std::io::stdio::Stdin")
               "read_line" in
-          let* α2 := M.get_function "std::io::stdio::stdin" in
+          let* α2 := M.get_function "std::io::stdio::stdin" [] in
           let* α3 := M.call α2 [] in
           let* α4 := M.alloc α3 in
           let* α5 := M.call α1 [ α4; guess ] in
@@ -156,7 +156,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.copy α7 in
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -197,7 +197,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | core.cmp.Ordering.Less =>
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -217,7 +217,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | core.cmp.Ordering.Greater =>
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -238,7 +238,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 | core.cmp.Ordering.Equal =>
                   let* _ :=
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")

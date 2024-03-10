@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "other_uses_of_question_mark::Result") =
+  (Ty.apply (Ty.path "other_uses_of_question_mark::Result") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [

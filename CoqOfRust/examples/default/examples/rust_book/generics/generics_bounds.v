@@ -90,7 +90,7 @@ Definition print_debug (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in
@@ -173,12 +173,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "generics_bounds::Triangle"
           [ ("length", α0); ("height", α1) ]) in
     let* _ :=
-      let* α0 := M.get_function "generics_bounds::print_debug" in
+      let* α0 :=
+        M.get_function
+          "generics_bounds::print_debug"
+          [ Ty.path "generics_bounds::Rectangle" ] in
       let* α1 := M.call α0 [ rectangle ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Area: ") in

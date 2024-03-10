@@ -192,7 +192,7 @@ End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "erc1155::Result") =
+  (Ty.apply (Ty.path "erc1155::Result") [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ]).
 
 (* Trait *)

@@ -31,7 +31,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* f := M.copy UnsupportedLiteral in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "size of `x` in bytes: ") in
@@ -42,7 +42,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 := M.get_function "core::mem::size_of_val" [ Ty.path "u8" ] in
         let* α7 := M.call α6 [ x ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -59,7 +59,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "size of `y` in bytes: ") in
@@ -70,7 +70,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 := M.get_function "core::mem::size_of_val" [ Ty.path "u32" ] in
         let* α7 := M.call α6 [ y ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -87,7 +87,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "size of `z` in bytes: ") in
@@ -98,7 +98,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 := M.get_function "core::mem::size_of_val" [ Ty.path "f32" ] in
         let* α7 := M.call α6 [ z ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -115,7 +115,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "size of `i` in bytes: ") in
@@ -126,7 +126,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 := M.get_function "core::mem::size_of_val" [ Ty.path "i32" ] in
         let* α7 := M.call α6 [ i ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in
@@ -143,7 +143,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "size of `f` in bytes: ") in
@@ -154,7 +154,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.get_function "core::mem::size_of_val" in
+        let* α6 := M.get_function "core::mem::size_of_val" [ Ty.path "f64" ] in
         let* α7 := M.call α6 [ f ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call α5 [ α8 ] in

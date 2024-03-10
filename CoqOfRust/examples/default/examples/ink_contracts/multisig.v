@@ -53,7 +53,7 @@ Module Impl_multisig_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -74,7 +74,7 @@ Module Impl_multisig_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -96,7 +96,7 @@ Module Impl_multisig_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -117,7 +117,7 @@ Module Impl_multisig_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -138,7 +138,7 @@ Module Impl_multisig_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -159,7 +159,7 @@ Module Impl_multisig_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -719,7 +719,7 @@ Module Impl_multisig_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -738,7 +738,7 @@ Module Impl_multisig_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -757,7 +757,7 @@ Module Impl_multisig_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -900,7 +900,7 @@ Definition ensure_requirement_is_valid (𝜏 : list Ty.t) (α : list Value.t) : 
       let* α3 := M.alloc (UnOp.not α2) in
       let* α4 := M.read (M.use α3) in
       if Value.is_true α4 then
-        let* α0 := M.get_function "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 :=
           M.read
             (mk_str
@@ -926,7 +926,7 @@ Module Impl_multisig_Multisig.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -1014,7 +1014,7 @@ Module Impl_multisig_Multisig.
         let* α1 := M.call α0 [ owners ] in
         M.alloc α1 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
@@ -1174,7 +1174,7 @@ Module Impl_multisig_Multisig.
         let* α9 := M.alloc (UnOp.not (BinOp.Pure.ge α6 α8)) in
         let* α10 := M.read (M.use α9) in
         if Value.is_true α10 then
-          let* α0 := M.get_function "core::panicking::panic" in
+          let* α0 := M.get_function "core::panicking::panic" [] in
           let* α1 :=
             M.read
               (mk_str
@@ -1260,7 +1260,7 @@ Module Impl_multisig_Multisig.
         let* α4 := M.alloc (UnOp.not α3) in
         let* α5 := M.read (M.use α4) in
         if Value.is_true α5 then
-          let* α0 := M.get_function "core::panicking::panic" in
+          let* α0 := M.get_function "core::panicking::panic" [] in
           let* α1 :=
             M.read (mk_str "assertion failed: self.is_owner.contains(owner)") in
           let* α2 := M.call α0 [ α1 ] in
@@ -1375,7 +1375,12 @@ Module Impl_multisig_Multisig.
                           "core::panicking::AssertKind::Eq"
                           []) in
                     let* α0 :=
-                      M.get_function "core::panicking::assert_failed" in
+                      M.get_function
+                        "core::panicking::assert_failed"
+                        [
+                          Ty.path "multisig::AccountId";
+                          Ty.path "multisig::AccountId"
+                        ] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in
@@ -1427,7 +1432,7 @@ Module Impl_multisig_Multisig.
         let* α4 := M.alloc (UnOp.not (UnOp.not α3)) in
         let* α5 := M.read (M.use α4) in
         if Value.is_true α5 then
-          let* α0 := M.get_function "core::panicking::panic" in
+          let* α0 := M.get_function "core::panicking::panic" [] in
           let* α1 :=
             M.read
               (mk_str "assertion failed: !self.is_owner.contains(owner)") in
@@ -1477,7 +1482,7 @@ Module Impl_multisig_Multisig.
         let* α2 := M.call α0 [ α1; new_owner ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
@@ -1914,7 +1919,7 @@ Module Impl_multisig_Multisig.
         let* α4 := M.call α0 [ α1; α3 ] in
         M.alloc α4 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 := M.read len in
         let* α2 := M.read requirement in
         let* α3 := M.call α0 [ α1; α2 ] in
@@ -2168,7 +2173,7 @@ Module Impl_multisig_Multisig.
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
@@ -3182,7 +3187,7 @@ Module Impl_multisig_Multisig.
         let* α7 := M.alloc (UnOp.not (BinOp.Pure.eq α5 α6)) in
         let* α8 := M.read (M.use α7) in
         if Value.is_true α8 then
-          let* α0 := M.get_function "core::panicking::panic" in
+          let* α0 := M.get_function "core::panicking::panic" [] in
           let* α1 :=
             M.read
               (mk_str
@@ -3193,7 +3198,7 @@ Module Impl_multisig_Multisig.
         else
           M.alloc (Value.Tuple []) in
       let* result :=
-        let* α0 := M.get_function "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in

@@ -112,7 +112,7 @@ Module Impl_conditional_compilation_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -131,7 +131,7 @@ Module Impl_conditional_compilation_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -156,7 +156,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2

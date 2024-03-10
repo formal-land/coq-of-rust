@@ -97,7 +97,7 @@ End Impl_core_default_Default_for_erc20_Erc20.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "erc20::Result") =
+  (Ty.apply (Ty.path "erc20::Result") [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc20::Error" ]).
 
 Module Impl_erc20_Env.

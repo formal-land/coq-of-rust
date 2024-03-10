@@ -54,7 +54,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -150,7 +150,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               else
                                 let* α0 :=
                                   M.get_function
-                                    "higher_order_functions::is_odd" in
+                                    "higher_order_functions::is_odd"
+                                    [] in
                                 let* α1 := M.read n_squared in
                                 let* α2 := M.call α0 [ α1 ] in
                                 let* α3 := M.alloc α2 in
@@ -173,7 +174,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.pure (M.use α3) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "imperative style: ") in
@@ -345,7 +346,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.pure (deref α0) in
                       let* n_squared := M.copy γ in
                       let* α0 :=
-                        M.get_function "higher_order_functions::is_odd" in
+                        M.get_function "higher_order_functions::is_odd" [] in
                       let* α1 := M.read n_squared in
                       M.call α0 [ α1 ])
                   ]))
@@ -354,7 +355,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α7 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "functional style: ") in

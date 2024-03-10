@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "boxing_errors::Result") =
+  (Ty.apply (Ty.path "boxing_errors::Result") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [

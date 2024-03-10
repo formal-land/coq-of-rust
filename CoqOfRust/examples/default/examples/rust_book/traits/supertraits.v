@@ -37,7 +37,7 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
   | [ DynT ], [ student ] =>
     let* student := M.alloc student in
     let* res :=
-      let* α0 := M.get_function "alloc::fmt::format" in
+      let* α0 := M.get_function "alloc::fmt::format" [] in
       let* α1 :=
         M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
       let* α2 := M.read (mk_str "My name is ") in

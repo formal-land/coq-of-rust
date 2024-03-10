@@ -137,7 +137,7 @@ End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "trait_erc20::Result") =
+  (Ty.apply (Ty.path "trait_erc20::Result") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [ T; Ty.path "trait_erc20::Error" ]).

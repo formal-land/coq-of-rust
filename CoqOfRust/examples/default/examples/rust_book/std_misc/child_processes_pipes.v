@@ -80,7 +80,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.var "core::result::Result::Get_Err_0" in
                     M.pure (α0 γ) in
                   let* why := M.copy γ0_0 in
-                  let* α0 := M.get_function "core::panicking::panic_fmt" in
+                  let* α0 := M.get_function "core::panicking::panic_fmt" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -152,7 +152,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.var "core::result::Result::Get_Err_0" in
                   M.pure (α0 γ) in
                 let* why := M.copy γ0_0 in
-                let* α0 := M.get_function "core::panicking::panic_fmt" in
+                let* α0 := M.get_function "core::panicking::panic_fmt" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -185,7 +185,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.var "core::result::Result::Get_Ok_0" in
                   M.pure (α0 γ) in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -234,7 +234,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.var "core::result::Result::Get_Err_0" in
                   M.pure (α0 γ) in
                 let* why := M.copy γ0_0 in
-                let* α0 := M.get_function "core::panicking::panic_fmt" in
+                let* α0 := M.get_function "core::panicking::panic_fmt" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -267,7 +267,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.var "core::result::Result::Get_Ok_0" in
                   M.pure (α0 γ) in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")

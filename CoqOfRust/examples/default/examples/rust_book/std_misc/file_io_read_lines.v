@@ -65,7 +65,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* lines :=
-      let* α0 := M.get_function "file_io_read_lines::read_lines" in
+      let* α0 := M.get_function "file_io_read_lines::read_lines" [] in
       let* α1 :=
         M.get_trait_method
           "alloc::string::ToString"
@@ -144,7 +144,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* _ :=
                               let* _ :=
                                 let* α0 :=
-                                  M.get_function "std::io::stdio::_print" in
+                                  M.get_function "std::io::stdio::_print" [] in
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::Arguments")

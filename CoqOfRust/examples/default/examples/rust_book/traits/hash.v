@@ -146,14 +146,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ("phone", Value.Integer Integer.U64 5556667777)
           ]) in
     let* _ :=
-      let* α0 := M.get_function "hash::calculate_hash" in
+      let* α0 :=
+        M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
       let* α1 := M.call α0 [ person1 ] in
-      let* α2 := M.get_function "hash::calculate_hash" in
+      let* α2 :=
+        M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
       let* α3 := M.call α2 [ person2 ] in
       let* α4 := M.alloc (UnOp.not (BinOp.Pure.ne α1 α3)) in
       let* α5 := M.read (M.use α4) in
       if Value.is_true α5 then
-        let* α0 := M.get_function "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 :=
           M.read
             (mk_str

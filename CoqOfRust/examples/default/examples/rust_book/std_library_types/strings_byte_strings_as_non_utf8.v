@@ -46,7 +46,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α0 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "A byte string: ") in
@@ -72,7 +72,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* escaped := M.copy UnsupportedLiteral in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Some escaped bytes: ") in
@@ -98,7 +98,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* raw_bytestring := M.copy UnsupportedLiteral in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in
@@ -122,7 +122,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "core::str::converts::from_utf8" in
+      let* α0 := M.get_function "core::str::converts::from_utf8" [] in
       let* α1 := M.read raw_bytestring in
       let* α2 := M.call α0 [ M.pointer_coercion (* Unsize *) α1 ] in
       let* α3 := M.alloc α2 in
@@ -140,7 +140,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* my_str := M.copy γ0_0 in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -173,7 +173,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _quotes := M.copy UnsupportedLiteral in
     let* shift_jis := M.copy UnsupportedLiteral in
     let* _ :=
-      let* α0 := M.get_function "core::str::converts::from_utf8" in
+      let* α0 := M.get_function "core::str::converts::from_utf8" [] in
       let* α1 := M.read shift_jis in
       let* α2 := M.call α0 [ M.pointer_coercion (* Unsize *) α1 ] in
       let* α3 := M.alloc α2 in
@@ -190,7 +190,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* my_str := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -226,7 +226,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* e := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")

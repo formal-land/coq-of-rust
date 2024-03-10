@@ -59,7 +59,7 @@ Axiom Balance :
 
 Axiom ConstructorResult :
   forall (T : Ty.t),
-  (Ty.path "constructors_return_value::ConstructorResult") =
+  (Ty.apply (Ty.path "constructors_return_value::ConstructorResult") [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
       [ T; Ty.path "constructors_return_value::LangError" ]).

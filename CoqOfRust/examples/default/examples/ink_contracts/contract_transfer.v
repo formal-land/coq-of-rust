@@ -97,7 +97,7 @@ Module Impl_contract_transfer_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -118,7 +118,7 @@ Module Impl_contract_transfer_Env.
       let* self := M.alloc self in
       let* _to := M.alloc _to in
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -137,7 +137,7 @@ Module Impl_contract_transfer_Env.
     match 𝜏, α with
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -161,7 +161,7 @@ Module Impl_contract_transfer_GiveMe.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -226,7 +226,7 @@ Module Impl_contract_transfer_GiveMe.
       let* value := M.alloc value in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -253,7 +253,7 @@ Module Impl_contract_transfer_GiveMe.
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -308,7 +308,10 @@ Module Impl_contract_transfer_GiveMe.
         let* α7 := M.alloc (UnOp.not (BinOp.Pure.le α0 α6)) in
         let* α8 := M.read (M.use α7) in
         if Value.is_true α8 then
-          let* α0 := M.get_function "std::panicking::begin_panic" in
+          let* α0 :=
+            M.get_function
+              "std::panicking::begin_panic"
+              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
           let* α1 := M.read (mk_str "insufficient funds!") in
           let* α2 := M.call α0 [ α1 ] in
           let* α3 := M.never_to_any α2 in
@@ -346,7 +349,10 @@ Module Impl_contract_transfer_GiveMe.
       let* α17 := M.read (M.use α16) in
       let* α0 :=
         if Value.is_true α17 then
-          let* α0 := M.get_function "std::panicking::begin_panic" in
+          let* α0 :=
+            M.get_function
+              "std::panicking::begin_panic"
+              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
           let* α1 :=
             M.read
               (mk_str
@@ -375,7 +381,7 @@ Module Impl_contract_transfer_GiveMe.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -431,7 +437,10 @@ Module Impl_contract_transfer_GiveMe.
             (UnOp.not (BinOp.Pure.eq α5 (Value.Integer Integer.U128 10))) in
         let* α7 := M.read (M.use α6) in
         if Value.is_true α7 then
-          let* α0 := M.get_function "std::panicking::begin_panic" in
+          let* α0 :=
+            M.get_function
+              "std::panicking::begin_panic"
+              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
           let* α1 := M.read (mk_str "payment was not ten") in
           let* α2 := M.call α0 [ α1 ] in
           let* α3 := M.never_to_any α2 in

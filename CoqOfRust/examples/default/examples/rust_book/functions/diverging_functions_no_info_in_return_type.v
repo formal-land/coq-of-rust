@@ -24,11 +24,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* a :=
       let* α0 :=
-        M.get_function "diverging_functions_no_info_in_return_type::some_fn" in
+        M.get_function
+          "diverging_functions_no_info_in_return_type::some_fn"
+          [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "std::io::stdio::_print" in
+      let* α0 := M.get_function "std::io::stdio::_print" [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "core::fmt::Arguments")

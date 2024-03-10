@@ -34,7 +34,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Tell me about ") in
@@ -75,7 +75,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* y := M.copy γ0_1 in
                   let* z := M.copy γ0_2 in
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -120,7 +120,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | i32.Make 1 =>
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -149,7 +149,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 match α0 with
                 | i32.Make 2 =>
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -181,7 +181,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   match α0 with
                   | i32.Make 4 =>
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
@@ -204,7 +204,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               end);
             fun γ =>
               (let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")

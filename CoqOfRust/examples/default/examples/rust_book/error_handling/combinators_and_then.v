@@ -218,7 +218,7 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ food ] =>
     let* food := M.alloc food in
-    let* α0 := M.get_function "combinators_and_then::have_recipe" in
+    let* α0 := M.get_function "combinators_and_then::have_recipe" [] in
     let* α1 := M.read food in
     let* α2 := M.call α0 [ α1 ] in
     let* α3 := M.alloc α2 in
@@ -243,7 +243,7 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* food := M.copy γ0_0 in
                 let* α0 :=
-                  M.get_function "combinators_and_then::have_ingredients" in
+                  M.get_function "combinators_and_then::have_ingredients" [] in
                 let* α1 := M.read food in
                 let* α2 := M.call α0 [ α1 ] in
                 let* α3 := M.alloc α2 in
@@ -298,10 +298,10 @@ Definition cookable_v2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.path "core::option::Option")
           [ Ty.path "combinators_and_then::Food" ])
         "and_then" in
-    let* α1 := M.get_function "combinators_and_then::have_recipe" in
+    let* α1 := M.get_function "combinators_and_then::have_recipe" [] in
     let* α2 := M.read food in
     let* α3 := M.call α1 [ α2 ] in
-    let* α4 := M.get_function "combinators_and_then::have_ingredients" in
+    let* α4 := M.get_function "combinators_and_then::have_ingredients" [] in
     M.call α0 [ α3; α4 ]
   | _, _ => M.impossible
   end.
@@ -319,7 +319,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ food; day ] =>
     let* food := M.alloc food in
     let* day := M.alloc day in
-    let* α0 := M.get_function "combinators_and_then::cookable_v2" in
+    let* α0 := M.get_function "combinators_and_then::cookable_v2" [] in
     let* α1 := M.read food in
     let* α2 := M.call α0 [ α1 ] in
     let* α3 := M.alloc α2 in
@@ -337,7 +337,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* food := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -375,7 +375,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | core.option.Option.None =>
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -444,7 +444,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* steak := M.copy γ0_1 in
                 let* sushi := M.copy γ0_2 in
                 let* _ :=
-                  let* α0 := M.get_function "combinators_and_then::eat" in
+                  let* α0 := M.get_function "combinators_and_then::eat" [] in
                   let* α1 := M.read cordon_bleu in
                   let* α2 :=
                     M.call
@@ -455,7 +455,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       ] in
                   M.alloc α2 in
                 let* _ :=
-                  let* α0 := M.get_function "combinators_and_then::eat" in
+                  let* α0 := M.get_function "combinators_and_then::eat" [] in
                   let* α1 := M.read steak in
                   let* α2 :=
                     M.call
@@ -468,7 +468,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       ] in
                   M.alloc α2 in
                 let* _ :=
-                  let* α0 := M.get_function "combinators_and_then::eat" in
+                  let* α0 := M.get_function "combinators_and_then::eat" [] in
                   let* α1 := M.read sushi in
                   let* α2 :=
                     M.call

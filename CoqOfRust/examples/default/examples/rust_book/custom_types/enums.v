@@ -32,7 +32,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | enums.WebEvent.PageLoad =>
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -57,7 +57,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | enums.WebEvent.PageUnload =>
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -80,7 +80,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* c := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -116,7 +116,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* s := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -161,7 +161,7 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* y := M.copy γ0_1 in
                 let* _ :=
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -246,27 +246,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* unload :=
       M.alloc (Value.StructTuple "enums::WebEvent::PageUnload" []) in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" in
+      let* α0 := M.get_function "enums::inspect" [] in
       let* α1 := M.read pressed in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" in
+      let* α0 := M.get_function "enums::inspect" [] in
       let* α1 := M.read pasted in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" in
+      let* α0 := M.get_function "enums::inspect" [] in
       let* α1 := M.read click in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" in
+      let* α0 := M.get_function "enums::inspect" [] in
       let* α1 := M.read load in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" in
+      let* α0 := M.get_function "enums::inspect" [] in
       let* α1 := M.read unload in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in

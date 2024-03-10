@@ -15,7 +15,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -106,7 +106,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.alloc (Value.StructRecord "drop::Droppable" [ ("name", α0) ]) in
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -121,7 +121,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -135,7 +135,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -150,7 +150,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -163,13 +163,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "core::mem::drop" in
+      let* α0 :=
+        M.get_function "core::mem::drop" [ Ty.path "drop::Droppable" ] in
       let* α1 := M.read _a in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")

@@ -231,7 +231,7 @@ End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.path "dns::Result") =
+  (Ty.apply (Ty.path "dns::Result") [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "dns::Error" ]).
 
 Module Impl_dns_DomainNameService.

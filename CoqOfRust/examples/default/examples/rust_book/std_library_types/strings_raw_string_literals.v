@@ -24,7 +24,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* raw_str := M.copy (mk_str "Escapes don't work here: \x3F \u{211D}") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in
@@ -50,7 +50,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* quotes := M.copy (mk_str "And then I said: ""There is no escape!""") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in
@@ -77,7 +77,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.copy (mk_str "A string with ""# in it. And even ""##!") in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in

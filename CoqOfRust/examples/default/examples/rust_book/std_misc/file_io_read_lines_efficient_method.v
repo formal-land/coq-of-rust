@@ -137,7 +137,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* α0 :=
-      M.get_function "file_io_read_lines_efficient_method::read_lines" in
+      M.get_function
+        "file_io_read_lines_efficient_method::read_lines"
+        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
     let* α1 := M.read (mk_str "./hosts") in
     let* α2 := M.call α0 [ α1 ] in
     let* α3 := M.alloc α2 in
@@ -240,7 +242,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                     let* _ :=
                                                       let* α0 :=
                                                         M.get_function
-                                                          "std::io::stdio::_print" in
+                                                          "std::io::stdio::_print"
+                                                          [] in
                                                       let* α1 :=
                                                         M.get_associated_function
                                                           (Ty.path

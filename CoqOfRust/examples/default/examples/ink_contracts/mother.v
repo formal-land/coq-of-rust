@@ -51,7 +51,7 @@ Module Impl_mother_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -73,7 +73,7 @@ Module Impl_mother_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -465,12 +465,18 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "mother::Outline" ] in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "mother::Outline" ] in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -609,12 +615,18 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "mother::Status" ] in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "mother::Status" ] in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -1335,12 +1347,18 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "mother::Failure" ] in
         let* α1 := M.read self in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
-        let* α0 := M.get_function "core::intrinsics::discriminant_value" in
+        let* α0 :=
+          M.get_function
+            "core::intrinsics::discriminant_value"
+            [ Ty.path "mother::Failure" ] in
         let* α1 := M.read other in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
@@ -1493,7 +1511,7 @@ Module Impl_mother_Env.
     | [ Self ], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -1557,7 +1575,7 @@ Module Impl_mother_Mother.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -1784,7 +1802,10 @@ Module Impl_mother_Mother.
                   let* α0 := M.read γ0_0 in
                   match α0 with
                   | mother.Failure.Panic =>
-                    let* α0 := M.get_function "std::panicking::begin_panic" in
+                    let* α0 :=
+                      M.get_function
+                        "std::panicking::begin_panic"
+                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                     let* α1 := M.read (mk_str "Trapping on user demand!") in
                     let* α2 := M.call α0 [ α1 ] in
                     let* α3 := M.never_to_any α2 in
@@ -1823,7 +1844,7 @@ Module Impl_mother_Mother.
       let* _message := M.alloc _message in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")

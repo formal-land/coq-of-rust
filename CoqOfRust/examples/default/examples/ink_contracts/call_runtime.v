@@ -80,7 +80,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
     match 𝜏, α with
     | [ Self ], [ _value ] =>
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -257,7 +257,10 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                 | _ => M.break_match
                 end);
               fun γ =>
-                (let* α0 := M.get_function "std::panicking::begin_panic" in
+                (let* α0 :=
+                  M.get_function
+                    "std::panicking::begin_panic"
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                 let* α1 :=
                   M.read (mk_str "Unexpected error from `pallet-contracts`.") in
                 let* α2 := M.call α0 [ α1 ] in
@@ -290,7 +293,7 @@ Module Impl_call_runtime_Env.
     | [ Self; Call ], [ self; _call ] =>
       let* self := M.alloc self in
       let* _call := M.alloc _call in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -312,7 +315,7 @@ Module Impl_call_runtime_RuntimeCaller.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2

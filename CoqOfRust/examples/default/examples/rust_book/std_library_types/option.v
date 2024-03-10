@@ -48,7 +48,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
-    let* α0 := M.get_function "option::checked_division" in
+    let* α0 := M.get_function "option::checked_division" [] in
     let* α1 := M.read dividend in
     let* α2 := M.read divisor in
     let* α3 := M.call α0 [ α1; α2 ] in
@@ -63,7 +63,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | core.option.Option.None =>
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -105,7 +105,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* quotient := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -176,14 +176,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "option::try_division" in
+      let* α0 := M.get_function "option::try_division" [] in
       let* α1 :=
         M.call
           α0
           [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "option::try_division" in
+      let* α0 := M.get_function "option::try_division" [] in
       let* α1 :=
         M.call
           α0
@@ -197,7 +197,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in
@@ -235,7 +235,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in

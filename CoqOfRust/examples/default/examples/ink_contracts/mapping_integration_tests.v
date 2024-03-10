@@ -54,7 +54,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -75,7 +75,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -97,7 +97,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -116,7 +116,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self; K; V ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -137,7 +137,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -158,7 +158,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -179,7 +179,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     | [ Self; K; V ], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -328,7 +328,7 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -346,7 +346,7 @@ Module Impl_mapping_integration_tests_Mappings.
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [] =>
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2

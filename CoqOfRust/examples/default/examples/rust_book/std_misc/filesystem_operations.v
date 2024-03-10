@@ -363,7 +363,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -376,7 +376,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "std::fs::create_dir" in
+      let* α0 :=
+        M.get_function
+          "std::fs::create_dir"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "a") in
       let* α2 := M.call α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -393,7 +396,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* why := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -439,7 +442,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -458,7 +461,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::result::Result")
             [ Ty.tuple []; Ty.path "std::io::error::Error" ])
           "unwrap_or_else" in
-      let* α1 := M.get_function "filesystem_operations::echo" in
+      let* α1 := M.get_function "filesystem_operations::echo" [] in
       let* α2 := M.read (mk_str "hello") in
       let* α3 := M.get_associated_function (Ty.path "std::path::Path") "new" in
       let* α4 := M.read (mk_str "a/b.txt") in
@@ -479,7 +482,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* why := M.copy γ in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -517,7 +521,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α7 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -536,7 +540,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::result::Result")
             [ Ty.tuple []; Ty.path "std::io::error::Error" ])
           "unwrap_or_else" in
-      let* α1 := M.get_function "std::fs::create_dir_all" in
+      let* α1 :=
+        M.get_function
+          "std::fs::create_dir_all"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α2 := M.read (mk_str "a/c/d") in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 :=
@@ -554,7 +561,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* why := M.copy γ in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -592,7 +600,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α4 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -611,7 +619,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::result::Result")
             [ Ty.tuple []; Ty.path "std::io::error::Error" ])
           "unwrap_or_else" in
-      let* α1 := M.get_function "filesystem_operations::touch" in
+      let* α1 := M.get_function "filesystem_operations::touch" [] in
       let* α2 := M.get_associated_function (Ty.path "std::path::Path") "new" in
       let* α3 := M.read (mk_str "a/c/e.txt") in
       let* α4 := M.call α2 [ α3 ] in
@@ -631,7 +639,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* why := M.copy γ in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -669,7 +678,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α6 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -692,7 +701,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::result::Result")
                 [ Ty.tuple []; Ty.path "std::io::error::Error" ])
               "unwrap_or_else" in
-          let* α1 := M.get_function "std::os::unix::fs::symlink" in
+          let* α1 :=
+            M.get_function
+              "std::os::unix::fs::symlink"
+              [
+                Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                Ty.apply (Ty.path "&") [ Ty.path "str" ]
+              ] in
           let* α2 := M.read (mk_str "../b.txt") in
           let* α3 := M.read (mk_str "a/c/b.txt") in
           let* α4 := M.call α1 [ α2; α3 ] in
@@ -712,7 +727,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* _ :=
                             let* _ :=
                               let* α0 :=
-                                M.get_function "std::io::stdio::_print" in
+                                M.get_function "std::io::stdio::_print" [] in
                               let* α1 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::Arguments")
@@ -753,7 +768,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -766,7 +781,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "filesystem_operations::cat" in
+      let* α0 := M.get_function "filesystem_operations::cat" [] in
       let* α1 := M.get_associated_function (Ty.path "std::path::Path") "new" in
       let* α2 := M.read (mk_str "a/c/b.txt") in
       let* α3 := M.call α1 [ α2 ] in
@@ -785,7 +800,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* why := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -827,7 +842,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* s := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -857,7 +872,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -870,7 +885,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "std::fs::read_dir" in
+      let* α0 :=
+        M.get_function
+          "std::fs::read_dir"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "a") in
       let* α2 := M.call α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -887,7 +905,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* why := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -980,7 +998,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                           let* _ :=
                                             let* α0 :=
                                               M.get_function
-                                                "std::io::stdio::_print" in
+                                                "std::io::stdio::_print"
+                                                [] in
                                             let* α1 :=
                                               M.get_associated_function
                                                 (Ty.path "core::fmt::Arguments")
@@ -1045,7 +1064,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -1064,7 +1083,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::result::Result")
             [ Ty.tuple []; Ty.path "std::io::error::Error" ])
           "unwrap_or_else" in
-      let* α1 := M.get_function "std::fs::remove_file" in
+      let* α1 :=
+        M.get_function
+          "std::fs::remove_file"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α2 := M.read (mk_str "a/c/e.txt") in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 :=
@@ -1082,7 +1104,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* why := M.copy γ in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -1120,7 +1143,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α4 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -1139,7 +1162,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::result::Result")
             [ Ty.tuple []; Ty.path "std::io::error::Error" ])
           "unwrap_or_else" in
-      let* α1 := M.get_function "std::fs::remove_dir" in
+      let* α1 :=
+        M.get_function
+          "std::fs::remove_dir"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α2 := M.read (mk_str "a/c/d") in
       let* α3 := M.call α1 [ α2 ] in
       let* α4 :=
@@ -1157,7 +1183,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       (let* why := M.copy γ in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")

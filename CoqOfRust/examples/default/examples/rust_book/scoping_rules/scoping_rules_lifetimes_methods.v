@@ -41,7 +41,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")

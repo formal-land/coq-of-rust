@@ -34,7 +34,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -46,7 +46,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 := M.call α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.get_function "match_binding::age" in
+    let* α0 := M.get_function "match_binding::age" [] in
     let* α1 := M.call α0 [] in
     let* α2 := M.alloc α1 in
     let* α0 :=
@@ -59,7 +59,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | u32.Make 0 =>
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -78,7 +78,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               (let* n := M.copy γ in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -106,7 +106,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               (let* n := M.copy γ in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -134,7 +134,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               (let* n := M.copy γ in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")

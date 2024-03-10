@@ -53,7 +53,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ n ] =>
     let* n := M.alloc n in
-    let* α0 := M.get_function "functions::is_divisible_by" in
+    let* α0 := M.get_function "functions::is_divisible_by" [] in
     let* α1 := M.read n in
     let* α2 := M.call α0 [ α1; Value.Integer Integer.U32 15 ] in
     let* α3 := M.alloc α2 in
@@ -62,7 +62,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
       if Value.is_true α4 then
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -76,7 +76,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.alloc (Value.Tuple []) in
         M.alloc (Value.Tuple [])
       else
-        let* α0 := M.get_function "functions::is_divisible_by" in
+        let* α0 := M.get_function "functions::is_divisible_by" [] in
         let* α1 := M.read n in
         let* α2 := M.call α0 [ α1; Value.Integer Integer.U32 3 ] in
         let* α3 := M.alloc α2 in
@@ -84,7 +84,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
         if Value.is_true α4 then
           let* _ :=
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" in
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
@@ -98,7 +98,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []) in
           M.alloc (Value.Tuple [])
         else
-          let* α0 := M.get_function "functions::is_divisible_by" in
+          let* α0 := M.get_function "functions::is_divisible_by" [] in
           let* α1 := M.read n in
           let* α2 := M.call α0 [ α1; Value.Integer Integer.U32 5 ] in
           let* α3 := M.alloc α2 in
@@ -106,7 +106,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
           if Value.is_true α4 then
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -122,7 +122,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
           else
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -228,7 +228,8 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.pure (α0 γ) in
                             let* n := M.copy γ0_0 in
                             let* _ :=
-                              let* α0 := M.get_function "functions::fizzbuzz" in
+                              let* α0 :=
+                                M.get_function "functions::fizzbuzz" [] in
                               let* α1 := M.read n in
                               let* α2 := M.call α0 [ α1 ] in
                               M.alloc α2 in
@@ -253,7 +254,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "functions::fizzbuzz_to" in
+      let* α0 := M.get_function "functions::fizzbuzz_to" [] in
       let* α1 := M.call α0 [ Value.Integer Integer.U32 100 ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

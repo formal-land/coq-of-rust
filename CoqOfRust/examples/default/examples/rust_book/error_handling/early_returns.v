@@ -135,7 +135,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* n := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -171,7 +171,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* e := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -214,16 +214,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "early_returns::print" in
-      let* α1 := M.get_function "early_returns::multiply" in
+      let* α0 := M.get_function "early_returns::print" [] in
+      let* α1 := M.get_function "early_returns::multiply" [] in
       let* α2 := M.read (mk_str "10") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call α1 [ α2; α3 ] in
       let* α5 := M.call α0 [ α4 ] in
       M.alloc α5 in
     let* _ :=
-      let* α0 := M.get_function "early_returns::print" in
-      let* α1 := M.get_function "early_returns::multiply" in
+      let* α0 := M.get_function "early_returns::print" [] in
+      let* α1 := M.get_function "early_returns::multiply" [] in
       let* α2 := M.read (mk_str "t") in
       let* α3 := M.read (mk_str "2") in
       let* α4 := M.call α1 [ α2; α3 ] in

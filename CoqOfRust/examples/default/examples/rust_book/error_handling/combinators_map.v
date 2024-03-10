@@ -427,7 +427,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (α0 γ) in
                 let* food := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -459,7 +459,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
               match α0 with
               | core.option.Option.None =>
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -511,40 +511,40 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* potato :=
       M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* cooked_apple :=
-      let* α0 := M.get_function "combinators_map::cook" in
-      let* α1 := M.get_function "combinators_map::chop" in
-      let* α2 := M.get_function "combinators_map::peel" in
+      let* α0 := M.get_function "combinators_map::cook" [] in
+      let* α1 := M.get_function "combinators_map::chop" [] in
+      let* α2 := M.get_function "combinators_map::peel" [] in
       let* α3 := M.read apple in
       let* α4 := M.call α2 [ α3 ] in
       let* α5 := M.call α1 [ α4 ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in
     let* cooked_carrot :=
-      let* α0 := M.get_function "combinators_map::cook" in
-      let* α1 := M.get_function "combinators_map::chop" in
-      let* α2 := M.get_function "combinators_map::peel" in
+      let* α0 := M.get_function "combinators_map::cook" [] in
+      let* α1 := M.get_function "combinators_map::chop" [] in
+      let* α2 := M.get_function "combinators_map::peel" [] in
       let* α3 := M.read carrot in
       let* α4 := M.call α2 [ α3 ] in
       let* α5 := M.call α1 [ α4 ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in
     let* cooked_potato :=
-      let* α0 := M.get_function "combinators_map::process" in
+      let* α0 := M.get_function "combinators_map::process" [] in
       let* α1 := M.read potato in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "combinators_map::eat" in
+      let* α0 := M.get_function "combinators_map::eat" [] in
       let* α1 := M.read cooked_apple in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "combinators_map::eat" in
+      let* α0 := M.get_function "combinators_map::eat" [] in
       let* α1 := M.read cooked_carrot in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "combinators_map::eat" in
+      let* α0 := M.get_function "combinators_map::eat" [] in
       let* α1 := M.read cooked_potato in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in

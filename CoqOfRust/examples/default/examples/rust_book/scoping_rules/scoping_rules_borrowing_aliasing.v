@@ -77,7 +77,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* another_borrow := M.alloc point in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -116,7 +116,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -165,7 +165,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.assign (M.get_struct_record α0 "z") (Value.Integer Integer.I32 1) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Point has coordinates: (") in
@@ -206,7 +206,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* new_borrowed_point := M.alloc point in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Point now has coordinates: (") in

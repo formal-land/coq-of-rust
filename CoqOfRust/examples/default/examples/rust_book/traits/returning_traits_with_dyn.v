@@ -125,13 +125,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* random_number := M.copy UnsupportedLiteral in
     let* animal :=
-      let* α0 := M.get_function "returning_traits_with_dyn::random_animal" in
+      let* α0 := M.get_function "returning_traits_with_dyn::random_animal" [] in
       let* α1 := M.read random_number in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 :=

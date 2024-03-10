@@ -110,7 +110,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* ref_c2 := M.alloc c in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -220,7 +220,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ]) in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -253,7 +253,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (Value.Tuple []) in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -315,7 +315,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ]) in
               let* _ :=
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")

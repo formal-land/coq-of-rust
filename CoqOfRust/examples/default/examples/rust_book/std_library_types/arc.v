@@ -123,7 +123,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.alloc α1 in
                               let* _ :=
                                 let* α0 :=
-                                  M.get_function "std::thread::spawn" in
+                                  M.get_function
+                                    "std::thread::spawn"
+                                    [
+                                      Ty.function [ Ty.tuple [] ] (Ty.tuple []);
+                                      Ty.tuple []
+                                    ] in
                                 let* α1 :=
                                   M.call
                                     α0
@@ -139,7 +144,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   let* _ :=
                                                     let* α0 :=
                                                       M.get_function
-                                                        "std::io::stdio::_print" in
+                                                        "std::io::stdio::_print"
+                                                        [] in
                                                     let* α1 :=
                                                       M.get_associated_function
                                                         (Ty.path
@@ -193,7 +199,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ]) in
       M.pure (M.use α3) in
     let* _ :=
-      let* α0 := M.get_function "std::thread::sleep" in
+      let* α0 := M.get_function "std::thread::sleep" [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "core::time::Duration")

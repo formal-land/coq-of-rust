@@ -11,7 +11,7 @@ Module Animal.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -156,7 +156,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -245,7 +245,7 @@ Module Impl_traits_Sheep_2.
         if Value.is_true α4 then
           let* _ :=
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" in
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
@@ -282,7 +282,7 @@ Module Impl_traits_Sheep_2.
         else
           let* _ :=
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" in
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")

@@ -127,7 +127,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -141,7 +141,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "> ") in
@@ -176,7 +176,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "> ") in
@@ -211,7 +211,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "> ") in
@@ -246,7 +246,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "> ") in
@@ -281,7 +281,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -361,7 +361,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* _ :=
                                 let* _ :=
                                   let* α0 :=
-                                    M.get_function "std::io::stdio::_print" in
+                                    M.get_function
+                                      "std::io::stdio::_print"
+                                      [] in
                                   let* α1 :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::Arguments")
@@ -395,7 +397,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.pure (M.use α3) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -425,7 +427,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "take"
           [ (* Self *) Ty.path "iterators::Fibonacci" ] in
-      let* α2 := M.get_function "iterators::fibonacci" in
+      let* α2 := M.get_function "iterators::fibonacci" [] in
       let* α3 := M.call α2 [] in
       let* α4 := M.call α1 [ α3; Value.Integer Integer.Usize 4 ] in
       let* α5 := M.call α0 [ α4 ] in
@@ -477,7 +479,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* _ :=
                                 let* _ :=
                                   let* α0 :=
-                                    M.get_function "std::io::stdio::_print" in
+                                    M.get_function
+                                      "std::io::stdio::_print"
+                                      [] in
                                   let* α1 :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::Arguments")
@@ -511,7 +515,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.pure (M.use α7) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -555,7 +559,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "skip"
           [ (* Self *) Ty.path "iterators::Fibonacci" ] in
-      let* α3 := M.get_function "iterators::fibonacci" in
+      let* α3 := M.get_function "iterators::fibonacci" [] in
       let* α4 := M.call α3 [] in
       let* α5 := M.call α2 [ α4; Value.Integer Integer.Usize 4 ] in
       let* α6 := M.call α1 [ α5; Value.Integer Integer.Usize 4 ] in
@@ -612,7 +616,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* _ :=
                                 let* _ :=
                                   let* α0 :=
-                                    M.get_function "std::io::stdio::_print" in
+                                    M.get_function
+                                      "std::io::stdio::_print"
+                                      [] in
                                   let* α1 :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::Arguments")
@@ -655,7 +661,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Iterate the following array ") in
@@ -741,7 +747,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* _ :=
                               let* _ :=
                                 let* α0 :=
-                                  M.get_function "std::io::stdio::_print" in
+                                  M.get_function "std::io::stdio::_print" [] in
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::Arguments")

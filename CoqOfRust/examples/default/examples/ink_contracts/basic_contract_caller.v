@@ -155,7 +155,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | [ Self ], [ other_contract_code_hash ] =>
       let* other_contract_code_hash := M.alloc other_contract_code_hash in
       let* other_contract :=
-        let* α0 := M.get_function "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in

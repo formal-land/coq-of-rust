@@ -86,7 +86,7 @@ Module Impl_call_builder_Selector.
     match 𝜏, α with
     | [ Self ], [ bytes ] =>
       let* bytes := M.alloc bytes in
-      let* α0 := M.get_function "core::panicking::panic" in
+      let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
       M.never_to_any α2
@@ -166,7 +166,7 @@ Module Impl_call_builder_CallBuilderTest.
       let* address := M.alloc address in
       let* selector := M.alloc selector in
       let* result :=
-        let* α0 := M.get_function "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -211,7 +211,7 @@ Module Impl_call_builder_CallBuilderTest.
                   let* γ0_0 :=
                     let* α0 := M.var "core::result::Result::Get_Err_0" in
                     M.pure (α0 γ) in
-                  let* α0 := M.get_function "core::panicking::panic_fmt" in
+                  let* α0 := M.get_function "core::panicking::panic_fmt" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")

@@ -186,7 +186,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (deref α0) in
                 let* number := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -199,7 +199,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display" in
-                  let* α6 := M.get_function "hash_map::call" in
+                  let* α6 := M.get_function "hash_map::call" [] in
                   let* α7 := M.read number in
                   let* α8 := M.call α6 [ α7 ] in
                   let* α9 := M.alloc α8 in
@@ -219,7 +219,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               end);
             fun γ =>
               (let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -276,7 +276,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.pure (deref α0) in
                 let* number := M.copy γ0_0 in
                 let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" in
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
@@ -289,7 +289,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display" in
-                  let* α6 := M.get_function "hash_map::call" in
+                  let* α6 := M.get_function "hash_map::call" [] in
                   let* α7 := M.read number in
                   let* α8 := M.call α6 [ α7 ] in
                   let* α9 := M.alloc α8 in
@@ -309,7 +309,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               end);
             fun γ =>
               (let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -420,7 +420,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               let* _ :=
                                 let* _ :=
                                   let* α0 :=
-                                    M.get_function "std::io::stdio::_print" in
+                                    M.get_function
+                                      "std::io::stdio::_print"
+                                      [] in
                                   let* α1 :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::Arguments")
@@ -440,7 +442,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::rt::Argument")
                                       "new_display" in
-                                  let* α9 := M.get_function "hash_map::call" in
+                                  let* α9 :=
+                                    M.get_function "hash_map::call" [] in
                                   let* α10 := M.read number in
                                   let* α11 := M.call α9 [ α10 ] in
                                   let* α12 := M.alloc α11 in

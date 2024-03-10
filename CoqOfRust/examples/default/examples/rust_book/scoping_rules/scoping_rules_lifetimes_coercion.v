@@ -60,7 +60,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* second := M.alloc (Value.Integer Integer.I32 3) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -74,7 +74,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 :=
-            M.get_function "scoping_rules_lifetimes_coercion::multiply" in
+            M.get_function "scoping_rules_lifetimes_coercion::multiply" [] in
           let* α7 := M.call α6 [ first; second ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call α5 [ α8 ] in
@@ -91,7 +91,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -105,7 +105,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 :=
-            M.get_function "scoping_rules_lifetimes_coercion::choose_first" in
+            M.get_function
+              "scoping_rules_lifetimes_coercion::choose_first"
+              [] in
           let* α7 := M.call α6 [ first; second ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call α5 [ α8 ] in

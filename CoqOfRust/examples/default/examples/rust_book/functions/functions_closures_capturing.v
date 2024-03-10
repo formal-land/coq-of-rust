@@ -95,7 +95,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   (let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -164,7 +164,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.assign β α1 in
                   let* _ :=
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
@@ -235,7 +235,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   (let* _ :=
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
@@ -261,7 +261,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α9 in
                     M.alloc (Value.Tuple []) in
                   let* _ :=
-                    let* α0 := M.get_function "core::mem::drop" in
+                    let* α0 :=
+                      M.get_function
+                        "core::mem::drop"
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                        ] in
                     let* α1 := M.read movable in
                     let* α2 := M.call α0 [ α1 ] in
                     M.alloc α2 in

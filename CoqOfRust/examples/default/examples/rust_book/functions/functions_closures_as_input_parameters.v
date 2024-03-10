@@ -112,7 +112,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   (let* _ :=
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
@@ -147,7 +147,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.alloc α2 in
                   let* _ :=
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
@@ -174,7 +174,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (Value.Tuple []) in
                   let* _ :=
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
@@ -188,7 +188,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α5 in
                     M.alloc (Value.Tuple []) in
                   let* _ :=
-                    let* α0 := M.get_function "core::mem::drop" in
+                    let* α0 :=
+                      M.get_function
+                        "core::mem::drop"
+                        [ Ty.path "alloc::string::String" ] in
                     let* α1 := M.read farewell in
                     let* α2 := M.call α0 [ α1 ] in
                     M.alloc α2 in
@@ -197,7 +200,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ]))) in
     let* _ :=
       let* α0 :=
-        M.get_function "functions_closures_as_input_parameters::apply" in
+        M.get_function
+          "functions_closures_as_input_parameters::apply"
+          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
       let* α1 := M.read diary in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
@@ -216,7 +221,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ]))) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "3 doubled: ") in
@@ -228,7 +233,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 :=
-          M.get_function "functions_closures_as_input_parameters::apply_to_3" in
+          M.get_function
+            "functions_closures_as_input_parameters::apply_to_3"
+            [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ] in
         let* α7 := M.read double in
         let* α8 := M.call α6 [ α7 ] in
         let* α9 := M.alloc α8 in

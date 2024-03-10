@@ -115,7 +115,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                     (BinOp.Pure.eq α1 (Value.Integer Integer.U8 1)))) in
             let* α3 := M.read (M.use α2) in
             if Value.is_true α3 then
-              let* α0 := M.get_function "core::panicking::panic" in
+              let* α0 := M.get_function "core::panicking::panic" [] in
               let* α1 :=
                 M.read
                   (mk_str
@@ -445,7 +445,7 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (BinOp.Pure.eq α1 (Value.Integer Integer.U8 1)))) in
           let* α3 := M.read (M.use α2) in
           if Value.is_true α3 then
-            let* α0 := M.get_function "core::panicking::panic" in
+            let* α0 := M.get_function "core::panicking::panic" [] in
             let* α1 :=
               M.read
                 (mk_str "assertion failed: (input == 0u8) | (input == 1u8)") in
@@ -457,7 +457,7 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc (Value.Tuple [])
       else
         M.alloc (Value.Tuple []) in
-    let* α0 := M.get_function "core::ptr::read_volatile" in
+    let* α0 := M.get_function "core::ptr::read_volatile" [ Ty.path "u8" ] in
     let* α1 := M.alloc input in
     let* α2 := M.read (M.use α1) in
     let* α3 := M.call α0 [ α2 ] in
@@ -478,7 +478,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
     match 𝜏, α with
     | [ Self ], [ input ] =>
       let* input := M.alloc input in
-      let* α0 := M.get_function "subtle::black_box" in
+      let* α0 := M.get_function "subtle::black_box" [] in
       let* α1 := M.read input in
       let* α2 := M.call α0 [ α1 ] in
       M.pure (Value.StructTuple "subtle::Choice" [ α2 ])
@@ -1204,7 +1204,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
         let* α1 := M.get_associated_function (Ty.path "usize") "wrapping_neg" in
         let* α2 := M.read x in
         let* α3 := M.call α1 [ α2 ] in
-        let* α4 := M.get_function "core::mem::size_of" in
+        let* α4 := M.get_function "core::mem::size_of" [ Ty.path "usize" ] in
         let* α5 := M.call α4 [] in
         let* α6 := BinOp.Panic.mul α5 (Value.Integer Integer.Usize 8) in
         let* α7 := BinOp.Panic.sub α6 (Value.Integer Integer.Usize 1) in
@@ -2802,7 +2802,9 @@ Module Impl_subtle_CtOption_T.
                           "core::panicking::AssertKind::Eq"
                           []) in
                     let* α0 :=
-                      M.get_function "core::panicking::assert_failed" in
+                      M.get_function
+                        "core::panicking::assert_failed"
+                        [ Ty.path "u8"; Ty.path "u8" ] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in
@@ -2893,7 +2895,9 @@ Module Impl_subtle_CtOption_T.
                           "core::panicking::AssertKind::Eq"
                           []) in
                     let* α0 :=
-                      M.get_function "core::panicking::assert_failed" in
+                      M.get_function
+                        "core::panicking::assert_failed"
+                        [ Ty.path "u8"; Ty.path "u8" ] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in

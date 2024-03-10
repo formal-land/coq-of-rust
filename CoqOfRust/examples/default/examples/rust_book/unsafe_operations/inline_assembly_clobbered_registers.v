@@ -54,13 +54,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "core::str::error::Utf8Error"
             ])
           "unwrap" in
-      let* α1 := M.get_function "core::str::converts::from_utf8" in
+      let* α1 := M.get_function "core::str::converts::from_utf8" [] in
       let* α2 := M.call α1 [ M.pointer_coercion (* Unsize *) name_buf ] in
       let* α3 := M.call α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "CPU Manufacturer ID: ") in

@@ -228,7 +228,9 @@ Module checked.
                   ]
             ] in
         let* α1 :=
-          M.get_function "result_chaining_with_question_mark::checked::div" in
+          M.get_function
+            "result_chaining_with_question_mark::checked::div"
+            [] in
         let* α2 := M.read x in
         let* α3 := M.read y in
         let* α4 := M.call α1 [ α2; α3 ] in
@@ -310,7 +312,7 @@ Module checked.
                   ]
             ] in
         let* α1 :=
-          M.get_function "result_chaining_with_question_mark::checked::ln" in
+          M.get_function "result_chaining_with_question_mark::checked::ln" [] in
         let* α2 := M.read ratio in
         let* α3 := M.call α1 [ α2 ] in
         let* α4 := M.call α0 [ α3 ] in
@@ -376,7 +378,7 @@ Module checked.
               ]) in
         M.copy α6 in
       let* α0 :=
-        M.get_function "result_chaining_with_question_mark::checked::sqrt" in
+        M.get_function "result_chaining_with_question_mark::checked::sqrt" [] in
       let* α1 := M.read ln in
       let* α2 := M.call α0 [ α1 ] in
       let* α0 := M.alloc α2 in
@@ -405,7 +407,7 @@ Module checked.
       let* x := M.alloc x in
       let* y := M.alloc y in
       let* α0 :=
-        M.get_function "result_chaining_with_question_mark::checked::op_" in
+        M.get_function "result_chaining_with_question_mark::checked::op_" [] in
       let* α1 := M.read x in
       let* α2 := M.read y in
       let* α3 := M.call α0 [ α1; α2 ] in
@@ -423,7 +425,10 @@ Module checked.
                     let* α0 := M.var "core::result::Result::Get_Err_0" in
                     M.pure (α0 γ) in
                   let* why := M.copy γ0_0 in
-                  let* α0 := M.get_function "core::panicking::panic_display" in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::panic_display"
+                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                   let* α1 :=
                     match_operator
                       why
@@ -475,7 +480,7 @@ Module checked.
                     M.pure (α0 γ) in
                   let* value := M.copy γ0_0 in
                   let* _ :=
-                    let* α0 := M.get_function "std::io::stdio::_print" in
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -519,7 +524,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 :=
-        M.get_function "result_chaining_with_question_mark::checked::op" in
+        M.get_function "result_chaining_with_question_mark::checked::op" [] in
       let* α1 := M.read UnsupportedLiteral in
       let* α2 := M.read UnsupportedLiteral in
       let* α3 := M.call α0 [ α1; α2 ] in

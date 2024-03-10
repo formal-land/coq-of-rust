@@ -12,7 +12,7 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -39,7 +39,7 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -67,7 +67,7 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -81,7 +81,7 @@ Module my_mod.
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* _ :=
-        let* α0 := M.get_function "visibility::my_mod::private_function" in
+        let* α0 := M.get_function "visibility::my_mod::private_function" [] in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -100,7 +100,7 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -128,7 +128,7 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -160,7 +160,7 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -178,7 +178,8 @@ Module my_mod.
         let* _ :=
           let* α0 :=
             M.get_function
-              "visibility::my_mod::nested::public_function_in_nested" in
+              "visibility::my_mod::nested::public_function_in_nested"
+              [] in
           let* α1 := M.call α0 [] in
           M.alloc α1 in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -199,7 +200,7 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -232,7 +233,7 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -269,7 +270,7 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -287,12 +288,13 @@ Module my_mod.
       let* _ :=
         let* α0 :=
           M.get_function
-            "visibility::my_mod::nested::public_function_in_my_mod" in
+            "visibility::my_mod::nested::public_function_in_my_mod"
+            [] in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -306,7 +308,8 @@ Module my_mod.
       let* _ :=
         let* α0 :=
           M.get_function
-            "visibility::my_mod::nested::public_function_in_super_mod" in
+            "visibility::my_mod::nested::public_function_in_super_mod"
+            [] in
         let* α1 := M.call α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -324,7 +327,7 @@ Module my_mod.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" in
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
@@ -354,7 +357,7 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -383,7 +386,7 @@ Module my_mod.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" in
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
@@ -415,7 +418,7 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
@@ -477,29 +480,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "visibility::function" in
+      let* α0 := M.get_function "visibility::function" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "visibility::my_mod::function" in
+      let* α0 := M.get_function "visibility::my_mod::function" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "visibility::my_mod::indirect_access" in
+      let* α0 := M.get_function "visibility::my_mod::indirect_access" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "visibility::my_mod::nested::function" in
-      let* α1 := M.call α0 [] in
-      M.alloc α1 in
-    let* _ :=
-      let* α0 :=
-        M.get_function "visibility::my_mod::call_public_function_in_my_mod" in
+      let* α0 := M.get_function "visibility::my_mod::nested::function" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
-        M.get_function "visibility::my_mod::public_function_in_crate" in
+        M.get_function
+          "visibility::my_mod::call_public_function_in_my_mod"
+          [] in
+      let* α1 := M.call α0 [] in
+      M.alloc α1 in
+    let* _ :=
+      let* α0 :=
+        M.get_function "visibility::my_mod::public_function_in_crate" [] in
       let* α1 := M.call α0 [] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

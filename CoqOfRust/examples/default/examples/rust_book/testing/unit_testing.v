@@ -44,7 +44,7 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.get_function "unit_testing::add" in
+        let* α0 := M.get_function "unit_testing::add" [] in
         let* α1 :=
           M.call
             α0
@@ -77,7 +77,9 @@ Module tests.
                           "core::panicking::AssertKind::Eq"
                           []) in
                     let* α0 :=
-                      M.get_function "core::panicking::assert_failed" in
+                      M.get_function
+                        "core::panicking::assert_failed"
+                        [ Ty.path "i32"; Ty.path "i32" ] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in
@@ -114,7 +116,7 @@ Module tests.
     match 𝜏, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.get_function "unit_testing::bad_add" in
+        let* α0 := M.get_function "unit_testing::bad_add" [] in
         let* α1 :=
           M.call
             α0
@@ -147,7 +149,9 @@ Module tests.
                           "core::panicking::AssertKind::Eq"
                           []) in
                     let* α0 :=
-                      M.get_function "core::panicking::assert_failed" in
+                      M.get_function
+                        "core::panicking::assert_failed"
+                        [ Ty.path "i32"; Ty.path "i32" ] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in

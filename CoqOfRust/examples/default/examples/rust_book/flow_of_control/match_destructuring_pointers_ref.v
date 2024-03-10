@@ -71,7 +71,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.pure (deref α0) in
               let* val := M.copy γ in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -106,7 +106,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               (let* val := M.copy γ in
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" in
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
@@ -151,7 +151,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         (let* r := M.alloc (borrow γ) in
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
@@ -192,7 +193,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.assign β α1 in
                       let* _ :=
                         let* _ :=
-                          let* α0 := M.get_function "std::io::stdio::_print" in
+                          let* α0 :=
+                            M.get_function "std::io::stdio::_print" [] in
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")

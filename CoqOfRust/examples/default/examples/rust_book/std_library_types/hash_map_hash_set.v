@@ -160,7 +160,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.alloc (UnOp.not α1) in
       let* α3 := M.read (M.use α2) in
       if Value.is_true α3 then
-        let* α0 := M.get_function "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "assertion failed: a.insert(4)") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -179,7 +179,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.alloc (UnOp.not α2) in
       let* α4 := M.read (M.use α3) in
       if Value.is_true α4 then
-        let* α0 := M.get_function "core::panicking::panic" in
+        let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "assertion failed: a.contains(&4)") in
         let* α2 := M.call α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -197,7 +197,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "A: ") in
@@ -222,7 +222,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "B: ") in
@@ -247,7 +247,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Union: ") in
@@ -298,7 +298,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Difference: ") in
@@ -349,7 +349,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Intersection: ") in
@@ -400,7 +400,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Symmetric Difference: ") in

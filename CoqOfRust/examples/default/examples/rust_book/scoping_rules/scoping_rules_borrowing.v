@@ -12,7 +12,7 @@ Definition eat_box_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* boxed_i32 := M.alloc boxed_i32 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "Destroying box that contains ") in
@@ -51,7 +51,7 @@ Definition borrow_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* borrowed_i32 := M.alloc borrowed_i32 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "This int is: ") in
@@ -123,12 +123,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* stacked_i32 := M.alloc (Value.Integer Integer.I32 6) in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" in
+      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
       let* α1 := M.read boxed_i32 in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" in
+      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
       let* α1 := M.call α0 [ stacked_i32 ] in
       M.alloc α1 in
     let* _ :=
@@ -136,13 +136,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α0 := M.read boxed_i32 in
         M.alloc α0 in
       let* _ :=
-        let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" in
+        let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
         let* α1 := M.read _ref_to_i32 in
         let* α2 := M.call α0 [ α1 ] in
         M.alloc α2 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_borrowing::eat_box_i32" in
+      let* α0 := M.get_function "scoping_rules_borrowing::eat_box_i32" [] in
       let* α1 := M.read boxed_i32 in
       let* α2 := M.call α0 [ α1 ] in
       M.alloc α2 in

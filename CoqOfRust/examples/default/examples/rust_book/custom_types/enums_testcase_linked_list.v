@@ -157,7 +157,7 @@ Module Impl_enums_testcase_linked_list_List.
                   let* head := M.copy γ0_0 in
                   let* tail := M.alloc (borrow γ0_1) in
                   let* res :=
-                    let* α0 := M.get_function "alloc::fmt::format" in
+                    let* α0 := M.get_function "alloc::fmt::format" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -201,7 +201,7 @@ Module Impl_enums_testcase_linked_list_List.
                 match α0 with
                 | enums_testcase_linked_list.List.Nil =>
                   let* res :=
-                    let* α0 := M.get_function "alloc::fmt::format" in
+                    let* α0 := M.get_function "alloc::fmt::format" [] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
@@ -276,7 +276,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.assign list α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "linked list has length: ") in
@@ -307,7 +307,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" in
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
           M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
         let* α2 := M.read (mk_str "") in
