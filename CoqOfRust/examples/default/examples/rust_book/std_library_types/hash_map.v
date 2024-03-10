@@ -25,22 +25,22 @@ Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
         number
         [
           fun γ =>
-            (let* α0 :=
+            let* α0 :=
               M.read
                 (mk_str
                   "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again.") in
-            M.alloc α0);
+            M.alloc α0;
           fun γ =>
-            (let* α0 :=
+            let* α0 :=
               M.read
                 (mk_str
                   "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?") in
-            M.alloc α0);
+            M.alloc α0;
           fun γ =>
-            (let* α0 := M.read (mk_str "Hi! Who is this again?") in
-            M.alloc α0)
+            let* α0 := M.read (mk_str "Hi! Who is this again?") in
+            M.alloc α0
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -173,7 +173,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -209,9 +209,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α13 := M.call α0 [ α12 ] in
               M.alloc α13 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -223,7 +223,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     let* _ :=
       let* α0 :=
@@ -257,7 +257,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -293,9 +293,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α13 := M.call α0 [ α12 ] in
               M.alloc α13 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -307,7 +307,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     let* _ :=
       let* α0 :=
@@ -353,7 +353,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            (let* iter := M.copy γ in
+            let* iter := M.copy γ in
             M.loop
               (let* _ :=
                 let* α0 :=
@@ -375,12 +375,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   α2
                   [
                     fun γ =>
-                      (let* α0 := M.break in
+                      let* α0 := M.break in
                       let* α1 := M.read α0 in
                       let* α2 := M.never_to_any α1 in
-                      M.alloc α2);
+                      M.alloc α2;
                     fun γ =>
-                      (let* γ0_0 :=
+                      let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match
                           γ
                           "core::option::Option::Some"
@@ -428,9 +428,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α16 := M.call α0 [ α15 ] in
                           M.alloc α16 in
                         M.alloc (Value.Tuple []) in
-                      M.alloc (Value.Tuple []))
+                      M.alloc (Value.Tuple [])
                   ] in
-              M.alloc (Value.Tuple [])))
+              M.alloc (Value.Tuple []))
         ] in
     M.read (M.use α5)
   | _, _ => M.impossible

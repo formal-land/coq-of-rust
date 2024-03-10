@@ -175,120 +175,144 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           α5;
-          fun α0 (* : Ty.path "unit" *) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* α0 :=
-                    M.get_trait_method
-                      "core::convert::Into"
-                      "into"
-                      [
-                        (* Self *) Ty.path "boxing_errors::EmptyVec";
-                        (* T *)
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            [
-                              Ty.dyn [ ("core::error::Error::Trait", []) ];
-                              Ty.path "alloc::alloc::Global"
-                            ]
-                      ] in
-                  M.call α0 [ Value.StructTuple "boxing_errors::EmptyVec" [] ])
-              ])
+          M.closure
+            (fun γ =>
+              match γ with
+              | [ α0 ] =>
+                let* α0 := M.alloc α0 in
+                match_operator
+                  α0
+                  [
+                    fun γ =>
+                      let* α0 :=
+                        M.get_trait_method
+                          "core::convert::Into"
+                          "into"
+                          [
+                            (* Self *) Ty.path "boxing_errors::EmptyVec";
+                            (* T *)
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                [
+                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                          ] in
+                      M.call
+                        α0
+                        [ Value.StructTuple "boxing_errors::EmptyVec" [] ]
+                  ]
+              | _ => M.impossible
+              end)
         ] in
     M.call
       α0
       [
         α6;
-        fun
-            α0
-              (* : Ty.apply
-                (Ty.path "&")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] *) =>
-          (let* α0 := M.alloc α0 in
-          match_operator
-            α0
-            [
-              fun γ =>
-                (let* s := M.copy γ in
-                let* α0 :=
-                  M.get_associated_function
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      [
-                        Ty.path "i32";
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
+        M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* s := M.copy γ in
+                    let* α0 :=
+                      M.get_associated_function
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
                           [
-                            Ty.dyn [ ("core::error::Error::Trait", []) ];
-                            Ty.path "alloc::alloc::Global"
-                          ]
-                      ])
-                    "map" in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                      ])
-                    "map_err" in
-                let* α2 := M.get_associated_function (Ty.path "str") "parse" in
-                let* α3 := M.read s in
-                let* α4 := M.read α3 in
-                let* α5 := M.call α2 [ α4 ] in
-                let* α6 :=
-                  M.call
-                    α1
-                    [
-                      α5;
-                      fun
-                          α0
-                            (* : Ty.path "core::num::error::ParseIntError" *) =>
-                        (let* α0 := M.alloc α0 in
-                        match_operator
-                          α0
-                          [
-                            fun γ =>
-                              (let* e := M.copy γ in
-                              let* α0 :=
-                                M.get_trait_method
-                                  "core::convert::Into"
-                                  "into"
-                                  [
-                                    (* Self *)
-                                      Ty.path "core::num::error::ParseIntError";
-                                    (* T *)
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        [
-                                          Ty.dyn
-                                            [ ("core::error::Error::Trait", [])
-                                            ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ]
-                                  ] in
-                              let* α1 := M.read e in
-                              M.call α0 [ α1 ])
+                            Ty.path "i32";
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              [
+                                Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
                           ])
-                    ] in
-                M.call
-                  α0
-                  [
-                    α6;
-                    fun α0 (* : Ty.path "i32" *) =>
-                      (let* α0 := M.alloc α0 in
-                      match_operator
-                        α0
+                        "map" in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "i32";
+                            Ty.path "core::num::error::ParseIntError"
+                          ])
+                        "map_err" in
+                    let* α2 :=
+                      M.get_associated_function (Ty.path "str") "parse" in
+                    let* α3 := M.read s in
+                    let* α4 := M.read α3 in
+                    let* α5 := M.call α2 [ α4 ] in
+                    let* α6 :=
+                      M.call
+                        α1
                         [
-                          fun γ =>
-                            (let* i := M.copy γ in
-                            let* α0 := M.read i in
-                            BinOp.Panic.mul (Value.Integer Integer.I32 2) α0)
-                        ])
-                  ])
-            ])
+                          α5;
+                          M.closure
+                            (fun γ =>
+                              match γ with
+                              | [ α0 ] =>
+                                let* α0 := M.alloc α0 in
+                                match_operator
+                                  α0
+                                  [
+                                    fun γ =>
+                                      let* e := M.copy γ in
+                                      let* α0 :=
+                                        M.get_trait_method
+                                          "core::convert::Into"
+                                          "into"
+                                          [
+                                            (* Self *)
+                                              Ty.path
+                                                "core::num::error::ParseIntError";
+                                            (* T *)
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                [
+                                                  Ty.dyn
+                                                    [
+                                                      ("core::error::Error::Trait",
+                                                        [])
+                                                    ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                          ] in
+                                      let* α1 := M.read e in
+                                      M.call α0 [ α1 ]
+                                  ]
+                              | _ => M.impossible
+                              end)
+                        ] in
+                    M.call
+                      α0
+                      [
+                        α6;
+                        M.closure
+                          (fun γ =>
+                            match γ with
+                            | [ α0 ] =>
+                              let* α0 := M.alloc α0 in
+                              match_operator
+                                α0
+                                [
+                                  fun γ =>
+                                    let* i := M.copy γ in
+                                    let* α0 := M.read i in
+                                    BinOp.Panic.mul
+                                      (Value.Integer Integer.I32 2)
+                                      α0
+                                ]
+                            | _ => M.impossible
+                            end)
+                      ]
+                ]
+            | _ => M.impossible
+            end)
       ]
   | _, _ => M.impossible
   end.
@@ -310,7 +334,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Ok"
@@ -341,9 +365,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Err"
@@ -374,7 +398,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

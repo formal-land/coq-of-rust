@@ -84,19 +84,24 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α0
           [
             α5;
-            fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "i32" ] *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* γ := M.read γ in
-                    let* x := M.copy γ in
-                    let* α0 := M.read x in
-                    let* α1 :=
-                      BinOp.Panic.rem α0 (Value.Integer Integer.I32 2) in
-                    M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.I32 0)))
-                ])
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* γ := M.read γ in
+                        let* x := M.copy γ in
+                        let* α0 := M.read x in
+                        let* α1 :=
+                          BinOp.Panic.rem α0 (Value.Integer Integer.I32 2) in
+                        M.pure (BinOp.Pure.eq α1 (Value.Integer Integer.I32 0))
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       M.alloc α6 in
     let* _ :=
@@ -110,7 +115,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
@@ -165,7 +170,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.never_to_any α1 in
               M.alloc α2
             else
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
         ] in
     let* index_of_first_negative_number :=
       let* α0 :=
@@ -197,16 +202,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α0
           [
             α4;
-            fun α0 (* : Ty.path "i32" *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* x := M.copy γ in
-                    let* α0 := M.read x in
-                    M.pure (BinOp.Pure.lt α0 (Value.Integer Integer.I32 0)))
-                ])
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* x := M.copy γ in
+                        let* α0 := M.read x in
+                        M.pure (BinOp.Pure.lt α0 (Value.Integer Integer.I32 0))
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       M.alloc α5 in
     let* _ :=
@@ -216,7 +226,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
@@ -271,7 +281,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.never_to_any α1 in
               M.alloc α2
             else
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
         ] in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

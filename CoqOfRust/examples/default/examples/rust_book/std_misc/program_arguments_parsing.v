@@ -206,7 +206,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.Usize 1) in
             let* _ :=
@@ -226,9 +226,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 := M.call α0 [ α4 ] in
                 M.alloc α5 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.Usize 2) in
             let* α0 := M.get_associated_function (Ty.path "str") "parse" in
@@ -259,7 +259,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               α6
               [
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::result::Result::Ok"
@@ -282,9 +282,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                     let* α5 := M.call α0 [ α4 ] in
                     M.alloc α5 in
-                  M.alloc (Value.Tuple []));
+                  M.alloc (Value.Tuple []);
                 fun γ =>
-                  (let* _ :=
+                  let* _ :=
                     let* α0 := M.get_function "std::io::stdio::_print" [] in
                     let* α1 :=
                       M.get_associated_function
@@ -297,10 +297,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                     let* α5 := M.call α0 [ α4 ] in
                     M.alloc α5 in
-                  M.alloc (Value.Tuple []))
-              ]);
+                  M.alloc (Value.Tuple [])
+              ];
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.Usize 3) in
             let* cmd :=
@@ -353,15 +353,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   α5
                   [
                     fun γ =>
-                      (let* γ0_0 :=
+                      let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match
                           γ
                           "core::result::Result::Ok"
                           0 in
                       let* n := M.copy γ0_0 in
-                      M.pure n);
+                      M.pure n;
                     fun γ =>
-                      (let* γ0_0 :=
+                      let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match
                           γ
                           "core::result::Result::Err"
@@ -393,7 +393,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α0 := M.return_ (Value.Tuple []) in
                       let* α1 := M.read α0 in
                       let* α2 := M.never_to_any α1 in
-                      M.alloc α2)
+                      M.alloc α2
                   ] in
               M.copy α6 in
             let* α0 :=
@@ -414,19 +414,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               α3
               [
                 fun γ =>
-                  (let* α0 :=
+                  let* α0 :=
                     M.get_function "program_arguments_parsing::increase" [] in
                   let* α1 := M.read number in
                   let* α2 := M.call α0 [ α1 ] in
-                  M.alloc α2);
+                  M.alloc α2;
                 fun γ =>
-                  (let* α0 :=
+                  let* α0 :=
                     M.get_function "program_arguments_parsing::decrease" [] in
                   let* α1 := M.read number in
                   let* α2 := M.call α0 [ α1 ] in
-                  M.alloc α2);
+                  M.alloc α2;
                 fun γ =>
-                  (let* _ :=
+                  let* _ :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_eprint" [] in
                       let* α1 :=
@@ -446,14 +446,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       M.get_function "program_arguments_parsing::help" [] in
                     let* α1 := M.call α0 [] in
                     M.alloc α1 in
-                  M.alloc (Value.Tuple []))
-              ]);
+                  M.alloc (Value.Tuple [])
+              ];
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "program_arguments_parsing::help" [] in
               let* α1 := M.call α0 [] in
               M.alloc α1 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

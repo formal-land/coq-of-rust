@@ -119,14 +119,14 @@ Module Impl_derive_Inches.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match γ "derive::Inches" 0 in
               let* inches := M.copy γ1_0 in
               let* α0 := M.read inches in
               let* α1 := M.read UnsupportedLiteral in
               let* α2 := BinOp.Panic.mul (M.rust_cast α0) α1 in
-              M.alloc (Value.StructTuple "derive::Centimeters" [ α2 ]))
+              M.alloc (Value.StructTuple "derive::Centimeters" [ α2 ])
           ] in
       M.read α0
     | _, _ => M.impossible

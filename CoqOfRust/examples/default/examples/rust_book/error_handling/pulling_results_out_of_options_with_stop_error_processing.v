@@ -49,49 +49,55 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α0
           [
             α4;
-            fun
-                α0
-                  (* : Ty.apply
-                    (Ty.path "&")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* first := M.copy γ in
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* first := M.copy γ in
+                        let* α0 :=
+                          M.get_associated_function
+                            (Ty.apply
+                              (Ty.path "core::result::Result")
+                              [
+                                Ty.path "i32";
+                                Ty.path "core::num::error::ParseIntError"
+                              ])
+                            "map" in
+                        let* α1 :=
+                          M.get_associated_function (Ty.path "str") "parse" in
+                        let* α2 := M.read first in
+                        let* α3 := M.read α2 in
+                        let* α4 := M.call α1 [ α3 ] in
+                        M.call
+                          α0
                           [
-                            Ty.path "i32";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
-                        "map" in
-                    let* α1 :=
-                      M.get_associated_function (Ty.path "str") "parse" in
-                    let* α2 := M.read first in
-                    let* α3 := M.read α2 in
-                    let* α4 := M.call α1 [ α3 ] in
-                    M.call
-                      α0
-                      [
-                        α4;
-                        fun α0 (* : Ty.path "i32" *) =>
-                          (let* α0 := M.alloc α0 in
-                          match_operator
-                            α0
-                            [
-                              fun γ =>
-                                (let* n := M.copy γ in
-                                let* α0 := M.read n in
-                                BinOp.Panic.mul
-                                  (Value.Integer Integer.I32 2)
-                                  α0)
-                            ])
-                      ])
-                ])
+                            α4;
+                            M.closure
+                              (fun γ =>
+                                match γ with
+                                | [ α0 ] =>
+                                  let* α0 := M.alloc α0 in
+                                  match_operator
+                                    α0
+                                    [
+                                      fun γ =>
+                                        let* n := M.copy γ in
+                                        let* α0 := M.read n in
+                                        BinOp.Panic.mul
+                                          (Value.Integer Integer.I32 2)
+                                          α0
+                                    ]
+                                | _ => M.impossible
+                                end)
+                          ]
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       M.alloc α5 in
     let* α0 :=
@@ -113,30 +119,30 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           Value.StructTuple
             "core::result::Result::Ok"
             [ Value.StructTuple "core::option::Option::None" [] ];
-          fun
-              α0
-                (* : Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                  ] *) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* r := M.copy γ in
-                  let* α0 :=
-                    M.get_associated_function
-                      (Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "i32";
-                          Ty.path "core::num::error::ParseIntError"
-                        ])
-                      "map" in
-                  let* α1 := M.read r in
-                  M.call α0 [ α1; core.option.Option.Some ])
-              ])
+          M.closure
+            (fun γ =>
+              match γ with
+              | [ α0 ] =>
+                let* α0 := M.alloc α0 in
+                match_operator
+                  α0
+                  [
+                    fun γ =>
+                      let* r := M.copy γ in
+                      let* α0 :=
+                        M.get_associated_function
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "i32";
+                              Ty.path "core::num::error::ParseIntError"
+                            ])
+                          "map" in
+                      let* α1 := M.read r in
+                      M.call α0 [ α1; core.option.Option.Some ]
+                  ]
+              | _ => M.impossible
+              end)
         ] in
     let* α0 := M.alloc α2 in
     M.read α0

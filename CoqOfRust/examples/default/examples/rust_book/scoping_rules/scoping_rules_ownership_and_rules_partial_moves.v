@@ -59,7 +59,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         person
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_record_field_or_break_match
                 γ
                 "scoping_rules_ownership_and_rules_partial_moves::main::Person"
@@ -153,7 +153,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

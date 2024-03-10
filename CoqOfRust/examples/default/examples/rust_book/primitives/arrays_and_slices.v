@@ -318,7 +318,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α3
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
@@ -373,7 +373,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.never_to_any α1 in
               M.alloc α2
             else
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
         ] in
     let* _ :=
       let* α0 := M.alloc empty_array in
@@ -394,7 +394,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α5
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
@@ -449,7 +449,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.never_to_any α1 in
               M.alloc α2
             else
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
         ] in
     let* α0 :=
       M.get_trait_method
@@ -479,7 +479,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α5
         [
           fun γ =>
-            (let* iter := M.copy γ in
+            let* iter := M.copy γ in
             M.loop
               (let* _ :=
                 let* α0 :=
@@ -498,12 +498,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   α2
                   [
                     fun γ =>
-                      (let* α0 := M.break in
+                      let* α0 := M.break in
                       let* α1 := M.read α0 in
                       let* α2 := M.never_to_any α1 in
-                      M.alloc α2);
+                      M.alloc α2;
                     fun γ =>
-                      (let* γ0_0 :=
+                      let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match
                           γ
                           "core::option::Option::Some"
@@ -521,7 +521,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         α3
                         [
                           fun γ =>
-                            (let* γ0_0 :=
+                            let* γ0_0 :=
                               M.get_struct_tuple_field_or_break_match
                                 γ
                                 "core::option::Option::Some"
@@ -559,9 +559,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   ] in
                               let* α12 := M.call α0 [ α11 ] in
                               M.alloc α12 in
-                            M.alloc (Value.Tuple []));
+                            M.alloc (Value.Tuple []);
                           fun γ =>
-                            (let* _ :=
+                            let* _ :=
                               let* α0 :=
                                 M.get_function "std::io::stdio::_print" [] in
                               let* α1 :=
@@ -587,10 +587,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   ] in
                               let* α9 := M.call α0 [ α8 ] in
                               M.alloc α9 in
-                            M.alloc (Value.Tuple []))
-                        ])
+                            M.alloc (Value.Tuple [])
+                        ]
                   ] in
-              M.alloc (Value.Tuple [])))
+              M.alloc (Value.Tuple []))
         ] in
     M.read (M.use α6)
   | _, _ => M.impossible

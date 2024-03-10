@@ -23,7 +23,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         number
         [
           fun γ =>
-            (let* i := M.copy γ in
+            let* i := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
@@ -36,9 +36,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* i := M.copy γ in
+            let* i := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
@@ -51,15 +51,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* α0 :=
+            let* α0 :=
               M.get_function
                 "core::panicking::unreachable_display"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
             let* α1 := M.call α0 [ mk_str "Should never happen." ] in
             let* α2 := M.never_to_any α1 in
-            M.alloc α2)
+            M.alloc α2
         ] in
     M.read α0
   | _, _ => M.impossible

@@ -84,7 +84,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α6
           [
             fun γ =>
-              (let* iter := M.copy γ in
+              let* iter := M.copy γ in
               M.loop
                 (let* _ :=
                   let* α0 :=
@@ -103,12 +103,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     α2
                     [
                       fun γ =>
-                        (let* α0 := M.break in
+                        let* α0 := M.break in
                         let* α1 := M.read α0 in
                         let* α2 := M.never_to_any α1 in
-                        M.alloc α2);
+                        M.alloc α2;
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::option::Option::Some"
@@ -120,19 +120,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             name
                             [
                               fun γ =>
-                                (let* γ := M.read γ in
+                                let* γ := M.read γ in
                                 let* α0 :=
                                   M.read
                                     (mk_str "There is a rustacean among us!") in
-                                M.alloc α0);
+                                M.alloc α0;
                               fun γ =>
-                                (let* α0 := M.read (mk_str "Hello") in
-                                M.alloc α0)
+                                let* α0 := M.read (mk_str "Hello") in
+                                M.alloc α0
                             ] in
                         let* α2 := M.read α1 in
-                        M.assign α0 α2)
+                        M.assign α0 α2
                     ] in
-                M.alloc (Value.Tuple [])))
+                M.alloc (Value.Tuple []))
           ] in
       M.pure (M.use α7) in
     let* _ :=

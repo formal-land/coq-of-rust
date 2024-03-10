@@ -206,7 +206,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1701,7 +1701,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             α4
             [
               fun γ =>
-                (let* iter := M.copy γ in
+                let* iter := M.copy γ in
                 M.loop
                   (let* _ :=
                     let* α0 :=
@@ -1727,12 +1727,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       α2
                       [
                         fun γ =>
-                          (let* α0 := M.break in
+                          let* α0 := M.break in
                           let* α1 := M.read α0 in
                           let* α2 := M.never_to_any α1 in
-                          M.alloc α2);
+                          M.alloc α2;
                         fun γ =>
-                          (let* γ0_0 :=
+                          let* γ0_0 :=
                             M.get_struct_tuple_field_or_break_match
                               γ
                               "core::option::Option::Some"
@@ -1789,9 +1789,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.alloc α4
                             else
                               M.alloc (Value.Tuple []) in
-                          M.alloc (Value.Tuple []))
+                          M.alloc (Value.Tuple [])
                       ] in
-                  M.alloc (Value.Tuple [])))
+                  M.alloc (Value.Tuple []))
             ] in
         M.pure (M.use α5) in
       let* _ :=
@@ -1820,7 +1820,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             α3
             [
               fun γ =>
-                (let* iter := M.copy γ in
+                let* iter := M.copy γ in
                 M.loop
                   (let* _ :=
                     let* α0 :=
@@ -1846,12 +1846,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       α2
                       [
                         fun γ =>
-                          (let* α0 := M.break in
+                          let* α0 := M.break in
                           let* α1 := M.read α0 in
                           let* α2 := M.never_to_any α1 in
-                          M.alloc α2);
+                          M.alloc α2;
                         fun γ =>
-                          (let* γ0_0 :=
+                          let* γ0_0 :=
                             M.get_struct_tuple_field_or_break_match
                               γ
                               "core::option::Option::Some"
@@ -1876,9 +1876,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             let* α5 := M.read v in
                             let* α6 := M.call α0 [ α1; α2; α3; α4; α5 ] in
                             M.alloc α6 in
-                          M.alloc (Value.Tuple []))
+                          M.alloc (Value.Tuple [])
                       ] in
-                  M.alloc (Value.Tuple [])))
+                  M.alloc (Value.Tuple []))
             ] in
         M.pure (M.use α4) in
       let* _ :=
@@ -1978,7 +1978,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             α2
             [
               fun γ =>
-                (let* iter := M.copy γ in
+                let* iter := M.copy γ in
                 M.loop
                   (let* _ :=
                     let* α0 :=
@@ -1997,12 +1997,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       α2
                       [
                         fun γ =>
-                          (let* α0 := M.break in
+                          let* α0 := M.break in
                           let* α1 := M.read α0 in
                           let* α2 := M.never_to_any α1 in
-                          M.alloc α2);
+                          M.alloc α2;
                         fun γ =>
-                          (let* γ0_0 :=
+                          let* γ0_0 :=
                             M.get_struct_tuple_field_or_break_match
                               γ
                               "core::option::Option::Some"
@@ -2032,7 +2032,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               α2
                               [
                                 fun γ =>
-                                  (let* iter := M.copy γ in
+                                  let* iter := M.copy γ in
                                   M.loop
                                     (let* _ :=
                                       let* α0 :=
@@ -2052,12 +2052,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         α2
                                         [
                                           fun γ =>
-                                            (let* α0 := M.break in
+                                            let* α0 := M.break in
                                             let* α1 := M.read α0 in
                                             let* α2 := M.never_to_any α1 in
-                                            M.alloc α2);
+                                            M.alloc α2;
                                           fun γ =>
-                                            (let* γ0_0 :=
+                                            let* γ0_0 :=
                                               M.get_struct_tuple_field_or_break_match
                                                 γ
                                                 "core::option::Option::Some"
@@ -2096,13 +2096,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               let* α2 :=
                                                 M.call α0 [ output; α1 ] in
                                               M.alloc α2 in
-                                            M.alloc (Value.Tuple []))
+                                            M.alloc (Value.Tuple [])
                                         ] in
-                                    M.alloc (Value.Tuple [])))
+                                    M.alloc (Value.Tuple []))
                               ] in
-                          M.pure (M.use α3))
+                          M.pure (M.use α3)
                       ] in
-                  M.alloc (Value.Tuple [])))
+                  M.alloc (Value.Tuple []))
             ] in
         M.pure (M.use α3) in
       M.read output

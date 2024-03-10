@@ -22,17 +22,17 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Apple") in
-              M.alloc α0);
+              M.alloc α0;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Carrot") in
-              M.alloc α0);
+              M.alloc α0;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Potato") in
-              M.alloc α0)
+              M.alloc α0
           ] in
       let* α3 := M.read α2 in
       M.call α0 [ α1; α3 ]
@@ -161,7 +161,7 @@ Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
         food
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -171,8 +171,8 @@ Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ Value.StructTuple "combinators_map::Peeled" [ α0 ] ]));
-          fun γ => (M.alloc (Value.StructTuple "core::option::Option::None" []))
+                [ Value.StructTuple "combinators_map::Peeled" [ α0 ] ]);
+          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" [])
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -195,7 +195,7 @@ Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
         peeled
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -210,8 +210,8 @@ Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ Value.StructTuple "combinators_map::Chopped" [ α0 ] ]));
-          fun γ => (M.alloc (Value.StructTuple "core::option::Option::None" []))
+                [ Value.StructTuple "combinators_map::Chopped" [ α0 ] ]);
+          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" [])
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -237,21 +237,26 @@ Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
       α0
       [
         α1;
-        fun α0 (* : Ty.path "combinators_map::Chopped" *) =>
-          (let* α0 := M.alloc α0 in
-          match_operator
-            α0
-            [
-              fun γ =>
-                (let* γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match
-                    γ
-                    "combinators_map::Chopped"
-                    0 in
-                let* food := M.copy γ0_0 in
-                let* α0 := M.read food in
-                M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ]))
-            ])
+        M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match
+                        γ
+                        "combinators_map::Chopped"
+                        0 in
+                    let* food := M.copy γ0_0 in
+                    let* α0 := M.read food in
+                    M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
+                ]
+            | _ => M.impossible
+            end)
       ]
   | _, _ => M.impossible
   end.
@@ -291,57 +296,74 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           α3;
-          fun α0 (* : Ty.path "combinators_map::Food" *) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* f := M.copy γ in
-                  let* α0 := M.read f in
-                  M.pure (Value.StructTuple "combinators_map::Peeled" [ α0 ]))
-              ])
+          M.closure
+            (fun γ =>
+              match γ with
+              | [ α0 ] =>
+                let* α0 := M.alloc α0 in
+                match_operator
+                  α0
+                  [
+                    fun γ =>
+                      let* f := M.copy γ in
+                      let* α0 := M.read f in
+                      M.pure
+                        (Value.StructTuple "combinators_map::Peeled" [ α0 ])
+                  ]
+              | _ => M.impossible
+              end)
         ] in
     let* α5 :=
       M.call
         α1
         [
           α4;
-          fun α0 (* : Ty.path "combinators_map::Peeled" *) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match
-                      γ
-                      "combinators_map::Peeled"
-                      0 in
-                  let* f := M.copy γ0_0 in
-                  let* α0 := M.read f in
-                  M.pure (Value.StructTuple "combinators_map::Chopped" [ α0 ]))
-              ])
+          M.closure
+            (fun γ =>
+              match γ with
+              | [ α0 ] =>
+                let* α0 := M.alloc α0 in
+                match_operator
+                  α0
+                  [
+                    fun γ =>
+                      let* γ0_0 :=
+                        M.get_struct_tuple_field_or_break_match
+                          γ
+                          "combinators_map::Peeled"
+                          0 in
+                      let* f := M.copy γ0_0 in
+                      let* α0 := M.read f in
+                      M.pure
+                        (Value.StructTuple "combinators_map::Chopped" [ α0 ])
+                  ]
+              | _ => M.impossible
+              end)
         ] in
     M.call
       α0
       [
         α5;
-        fun α0 (* : Ty.path "combinators_map::Chopped" *) =>
-          (let* α0 := M.alloc α0 in
-          match_operator
-            α0
-            [
-              fun γ =>
-                (let* γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match
-                    γ
-                    "combinators_map::Chopped"
-                    0 in
-                let* f := M.copy γ0_0 in
-                let* α0 := M.read f in
-                M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ]))
-            ])
+        M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* γ0_0 :=
+                      M.get_struct_tuple_field_or_break_match
+                        γ
+                        "combinators_map::Chopped"
+                        0 in
+                    let* f := M.copy γ0_0 in
+                    let* α0 := M.read f in
+                    M.pure (Value.StructTuple "combinators_map::Cooked" [ α0 ])
+                ]
+            | _ => M.impossible
+            end)
       ]
   | _, _ => M.impossible
   end.
@@ -363,7 +385,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
         food
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -394,9 +416,9 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -408,7 +430,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

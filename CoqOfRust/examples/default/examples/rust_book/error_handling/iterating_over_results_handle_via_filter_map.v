@@ -106,28 +106,33 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α1
           [
             α4;
-            fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "str" ] *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* s := M.copy γ in
-                    let* α0 :=
-                      M.get_associated_function
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "i32";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
-                        "ok" in
-                    let* α1 :=
-                      M.get_associated_function (Ty.path "str") "parse" in
-                    let* α2 := M.read s in
-                    let* α3 := M.call α1 [ α2 ] in
-                    M.call α0 [ α3 ])
-                ])
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* s := M.copy γ in
+                        let* α0 :=
+                          M.get_associated_function
+                            (Ty.apply
+                              (Ty.path "core::result::Result")
+                              [
+                                Ty.path "i32";
+                                Ty.path "core::num::error::ParseIntError"
+                              ])
+                            "ok" in
+                        let* α1 :=
+                          M.get_associated_function (Ty.path "str") "parse" in
+                        let* α2 := M.read s in
+                        let* α3 := M.call α1 [ α2 ] in
+                        M.call α0 [ α3 ]
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       let* α6 := M.call α0 [ α5 ] in
       M.alloc α6 in

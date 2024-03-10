@@ -67,7 +67,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         number
         [
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 1) in
             let* _ :=
@@ -82,9 +82,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 2) in
             let* _ :=
@@ -99,9 +99,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 3) in
             let* _ :=
@@ -116,9 +116,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 5) in
             let* _ :=
@@ -133,9 +133,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 7) in
             let* _ :=
@@ -150,9 +150,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 11) in
             let* _ :=
@@ -167,9 +167,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -181,9 +181,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -195,7 +195,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     let* boolean := M.alloc (Value.Bool true) in
     let* binary :=
@@ -203,8 +203,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         match_operator
           boolean
           [
-            fun γ => (M.alloc (Value.Integer Integer.I32 0));
-            fun γ => (M.alloc (Value.Integer Integer.I32 1))
+            fun γ => M.alloc (Value.Integer Integer.I32 0);
+            fun γ => M.alloc (Value.Integer Integer.I32 1)
           ] in
       M.copy α0 in
     let* _ :=

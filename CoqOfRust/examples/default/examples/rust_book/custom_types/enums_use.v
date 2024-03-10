@@ -36,7 +36,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         status
         [
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -48,9 +48,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -62,14 +62,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     let* α0 :=
       match_operator
         work
         [
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -81,9 +81,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -95,7 +95,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

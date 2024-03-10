@@ -22,7 +22,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -613,7 +613,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
             α10
             [
               fun γ =>
-                (let* iter := M.copy γ in
+                let* iter := M.copy γ in
                 M.loop
                   (let* _ :=
                     let* α0 :=
@@ -639,12 +639,12 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                       α2
                       [
                         fun γ =>
-                          (let* α0 := M.break in
+                          let* α0 := M.break in
                           let* α1 := M.read α0 in
                           let* α2 := M.never_to_any α1 in
-                          M.alloc α2);
+                          M.alloc α2;
                         fun γ =>
-                          (let* γ0_0 :=
+                          let* γ0_0 :=
                             M.get_struct_tuple_field_or_break_match
                               γ
                               "core::option::Option::Some"
@@ -673,9 +673,9 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                             let* α6 := M.alloc α5 in
                             let* α7 := M.call α1 [ α6 ] in
                             M.assign β (BinOp.Pure.bit_and α0 α7) in
-                          M.alloc (Value.Tuple []))
+                          M.alloc (Value.Tuple [])
                       ] in
-                  M.alloc (Value.Tuple [])))
+                  M.alloc (Value.Tuple []))
             ] in
         M.pure (M.use α11) in
       let* α0 :=
@@ -2766,7 +2766,7 @@ Module Impl_subtle_CtOption_T.
           α4
           [
             fun γ =>
-              (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
               let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
@@ -2820,7 +2820,7 @@ Module Impl_subtle_CtOption_T.
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc (Value.Tuple []))
+                M.alloc (Value.Tuple [])
           ] in
       M.read (M.get_struct_record self "value")
     | _, _ => M.impossible
@@ -2852,7 +2852,7 @@ Module Impl_subtle_CtOption_T.
           α4
           [
             fun γ =>
-              (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
               let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
@@ -2887,7 +2887,7 @@ Module Impl_subtle_CtOption_T.
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc (Value.Tuple []))
+                M.alloc (Value.Tuple [])
           ] in
       M.read (M.get_struct_record self "value")
     | _, _ => M.impossible

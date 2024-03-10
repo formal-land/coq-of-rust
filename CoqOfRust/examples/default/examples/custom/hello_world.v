@@ -86,7 +86,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         number
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -119,15 +119,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []));
-          fun γ => (M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple []);
+          fun γ => M.alloc (Value.Tuple [])
         ] in
     let* _ :=
       match_operator
         letter
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -160,9 +160,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
@@ -179,7 +179,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 := M.call α0 [ α4 ] in
                 M.alloc α5 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     let* i_like_letters := M.alloc (Value.Bool false) in
     let* α0 :=
@@ -187,7 +187,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         emoticon
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -220,9 +220,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* α0 := M.read (M.use i_like_letters) in
+            let* α0 := M.read (M.use i_like_letters) in
             if Value.is_true α0 then
               let* _ :=
                 let* _ :=
@@ -260,7 +260,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α5 := M.call α0 [ α4 ] in
                   M.alloc α5 in
                 M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

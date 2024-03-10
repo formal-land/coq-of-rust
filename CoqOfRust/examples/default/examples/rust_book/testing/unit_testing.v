@@ -56,7 +56,7 @@ Module tests.
           α4
           [
             fun γ =>
-              (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
               let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
@@ -91,7 +91,7 @@ Module tests.
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc (Value.Tuple []))
+                M.alloc (Value.Tuple [])
           ] in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -121,7 +121,7 @@ Module tests.
           α4
           [
             fun γ =>
-              (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
               let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
@@ -156,7 +156,7 @@ Module tests.
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc (Value.Tuple []))
+                M.alloc (Value.Tuple [])
           ] in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0

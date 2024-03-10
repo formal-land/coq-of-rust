@@ -80,7 +80,7 @@ Module Impl_enums_testcase_linked_list_List.
           α0
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "enums_testcase_linked_list::List::Cons"
@@ -99,8 +99,8 @@ Module Impl_enums_testcase_linked_list_List.
               let* α2 := M.read α1 in
               let* α3 := M.call α0 [ α2 ] in
               let* α4 := BinOp.Panic.add (Value.Integer Integer.U32 1) α3 in
-              M.alloc α4);
-            fun γ => (M.alloc (Value.Integer Integer.U32 0))
+              M.alloc α4;
+            fun γ => M.alloc (Value.Integer Integer.U32 0)
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -132,7 +132,7 @@ Module Impl_enums_testcase_linked_list_List.
           α0
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "enums_testcase_linked_list::List::Cons"
@@ -181,9 +181,9 @@ Module Impl_enums_testcase_linked_list_List.
                     ] in
                 let* α16 := M.call α0 [ α15 ] in
                 M.alloc α16 in
-              M.pure res);
+              M.pure res;
             fun γ =>
-              (let* res :=
+              let* res :=
                 let* α0 := M.get_function "alloc::fmt::format" [] in
                 let* α1 :=
                   M.get_associated_function
@@ -194,7 +194,7 @@ Module Impl_enums_testcase_linked_list_List.
                 let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                 let* α5 := M.call α0 [ α4 ] in
                 M.alloc α5 in
-              M.pure res)
+              M.pure res
           ] in
       M.read α1
     | _, _ => M.impossible

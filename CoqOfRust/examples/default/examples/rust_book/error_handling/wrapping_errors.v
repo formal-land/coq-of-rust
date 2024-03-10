@@ -17,7 +17,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Formatter")
@@ -25,9 +25,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
               let* α1 := M.read f in
               let* α2 := M.read (mk_str "EmptyVec") in
               let* α3 := M.call α0 [ α1; α2 ] in
-              M.alloc α3);
+              M.alloc α3;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
@@ -44,7 +44,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                 M.call
                   α0
                   [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-              M.alloc α3)
+              M.alloc α3
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -88,7 +88,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
           α0
           [
             fun γ =>
-              (let* α0 :=
+              let* α0 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Formatter")
                   "write_fmt" in
@@ -103,9 +103,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
               let* α4 := M.alloc (Value.Array [ α3 ]) in
               let* α5 := M.call α2 [ M.pointer_coercion (* Unsize *) α4 ] in
               let* α6 := M.call α0 [ α1; α5 ] in
-              M.alloc α6);
+              M.alloc α6;
             fun γ =>
-              (let* α0 :=
+              let* α0 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Formatter")
                   "write_fmt" in
@@ -120,7 +120,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
               let* α4 := M.alloc (Value.Array [ α3 ]) in
               let* α5 := M.call α2 [ M.pointer_coercion (* Unsize *) α4 ] in
               let* α6 := M.call α0 [ α1; α5 ] in
-              M.alloc α6)
+              M.alloc α6
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -157,9 +157,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
           α0
           [
             fun γ =>
-              (M.alloc (Value.StructTuple "core::option::Option::None" []));
+              M.alloc (Value.StructTuple "core::option::Option::None" []);
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "wrapping_errors::DoubleError::Parse"
@@ -169,7 +169,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               M.alloc
                 (Value.StructTuple
                   "core::option::Option::Some"
-                  [ M.pointer_coercion (* Unsize *) α0 ]))
+                  [ M.pointer_coercion (* Unsize *) α0 ])
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -282,7 +282,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α8
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -311,15 +311,15 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       M.copy α9 in
     let* parsed :=
@@ -344,7 +344,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α6
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -373,15 +373,15 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       M.copy α7 in
     let* α0 := M.read parsed in
@@ -413,7 +413,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Ok"
@@ -444,9 +444,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Err"
@@ -490,7 +490,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               α2
               [
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::option::Option::Some"
@@ -523,9 +523,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α9 := M.call α0 [ α8 ] in
                       M.alloc α9 in
                     M.alloc (Value.Tuple []) in
-                  M.alloc (Value.Tuple []));
-                fun γ => (M.alloc (Value.Tuple []))
-              ])
+                  M.alloc (Value.Tuple []);
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     M.read α0
   | _, _ => M.impossible

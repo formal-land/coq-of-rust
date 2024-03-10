@@ -128,15 +128,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               α6
               [
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::result::Result::Ok"
                       0 in
                   let* num := M.copy γ0_0 in
-                  M.pure num);
+                  M.pure num;
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::result::Result::Err"
@@ -144,7 +144,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.continue in
                   let* α1 := M.read α0 in
                   let* α2 := M.never_to_any α1 in
-                  M.alloc α2)
+                  M.alloc α2
               ] in
           M.copy α7 in
         let* _ :=
@@ -185,7 +185,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α2
           [
             fun γ =>
-              (let* _ :=
+              let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
@@ -197,9 +197,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                 let* α5 := M.call α0 [ α4 ] in
                 M.alloc α5 in
-              M.alloc (Value.Tuple []));
+              M.alloc (Value.Tuple []);
             fun γ =>
-              (let* _ :=
+              let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
                 let* α1 :=
                   M.get_associated_function
@@ -211,9 +211,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
                 let* α5 := M.call α0 [ α4 ] in
                 M.alloc α5 in
-              M.alloc (Value.Tuple []));
+              M.alloc (Value.Tuple []);
             fun γ =>
-              (let* _ :=
+              let* _ :=
                 let* _ :=
                   let* α0 := M.get_function "std::io::stdio::_print" [] in
                   let* α1 :=
@@ -230,7 +230,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.break in
               let* α1 := M.read α0 in
               let* α2 := M.never_to_any α1 in
-              M.alloc α2)
+              M.alloc α2
           ]) in
     M.read α0
   | _, _ => M.impossible

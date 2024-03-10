@@ -172,24 +172,29 @@ Module Impl_set_code_hash_Incrementer.
             α0
             [
               α2;
-              fun α0 (* : Ty.path "set_code_hash::Error" *) =>
-                (let* α0 := M.alloc α0 in
-                match_operator
-                  α0
-                  [
-                    fun γ =>
-                      (let* err := M.copy γ in
-                      let* α0 :=
-                        M.get_function
-                          "std::panicking::begin_panic"
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                      let* α1 :=
-                        M.read
-                          (mk_str
-                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                      let* α2 := M.call α0 [ α1 ] in
-                      M.never_to_any α2)
-                  ])
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          let* err := M.copy γ in
+                          let* α0 :=
+                            M.get_function
+                              "std::panicking::begin_panic"
+                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                          let* α1 :=
+                            M.read
+                              (mk_str
+                                "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
+                          let* α2 := M.call α0 [ α1 ] in
+                          M.never_to_any α2
+                      ]
+                  | _ => M.impossible
+                  end)
             ] in
         M.alloc α3 in
       let* _ :=

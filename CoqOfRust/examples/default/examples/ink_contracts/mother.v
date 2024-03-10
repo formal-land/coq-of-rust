@@ -122,7 +122,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -206,7 +206,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -377,7 +377,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -545,14 +545,14 @@ Module Impl_core_clone_Clone_for_mother_Outline.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Outline::NoWinner" []));
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Outline::NoWinner" []);
             fun γ =>
-              (let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Outline::WinnerDetected" []));
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Outline::WinnerDetected" []);
             fun γ =>
-              (let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Outline::PayoutCompleted" []))
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Outline::PayoutCompleted" [])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -617,7 +617,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
               α2
               [
                 fun γ =>
-                  (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
                   let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
@@ -637,9 +637,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α1 := M.read α0 in
                   let* α2 := M.read __arg1_0 in
                   let* α3 := M.read α2 in
-                  M.alloc (BinOp.Pure.eq α1 α3));
+                  M.alloc (BinOp.Pure.eq α1 α3);
                 fun γ =>
-                  (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
                   let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
@@ -666,9 +666,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α1 := M.read __self_0 in
                   let* α2 := M.read __arg1_0 in
                   let* α3 := M.call α0 [ α1; α2 ] in
-                  M.alloc α3);
+                  M.alloc α3;
                 fun γ =>
-                  (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
                   let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
@@ -688,8 +688,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α1 := M.read α0 in
                   let* α2 := M.read __arg1_0 in
                   let* α3 := M.read α2 in
-                  M.alloc (BinOp.Pure.eq α1 α3));
-                fun γ => (M.alloc (Value.Bool true))
+                  M.alloc (BinOp.Pure.eq α1 α3);
+                fun γ => M.alloc (Value.Bool true)
               ] in
           M.read α3) in
       let* α0 := M.alloc α2 in
@@ -732,9 +732,9 @@ Module Impl_core_cmp_Eq_for_mother_Status.
           Value.DeclaredButUndefined
           [
             fun γ =>
-              (match_operator
+              match_operator
                 Value.DeclaredButUndefined
-                [ fun γ => (M.alloc (Value.Tuple [])) ])
+                [ fun γ => M.alloc (Value.Tuple []) ]
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -766,13 +766,13 @@ Module Impl_core_clone_Clone_for_mother_Status.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Status::NotStarted" []));
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Status::NotStarted" []);
             fun γ =>
-              (let* γ := M.read γ in
-              M.alloc (Value.StructTuple "mother::Status::OpeningPeriod" []));
+              let* γ := M.read γ in
+              M.alloc (Value.StructTuple "mother::Status::OpeningPeriod" []);
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
@@ -786,10 +786,9 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   [ (* Self *) Ty.path "u32" ] in
               let* α1 := M.read __self_0 in
               let* α2 := M.call α0 [ α1 ] in
-              M.alloc
-                (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ]));
+              M.alloc (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ]);
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
@@ -803,9 +802,9 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   [ (* Self *) Ty.path "mother::Outline" ] in
               let* α1 := M.read __self_0 in
               let* α2 := M.call α0 [ α1 ] in
-              M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ]));
+              M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ]);
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
@@ -819,7 +818,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   [ (* Self *) Ty.path "u32" ] in
               let* α1 := M.read __self_0 in
               let* α2 := M.call α0 [ α1 ] in
-              M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ]))
+              M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -1003,37 +1002,37 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
           Value.DeclaredButUndefined
           [
             fun γ =>
-              (match_operator
+              match_operator
                 Value.DeclaredButUndefined
                 [
                   fun γ =>
-                    (match_operator
+                    match_operator
                       Value.DeclaredButUndefined
                       [
                         fun γ =>
-                          (match_operator
+                          match_operator
                             Value.DeclaredButUndefined
                             [
                               fun γ =>
-                                (match_operator
+                                match_operator
                                   Value.DeclaredButUndefined
                                   [
                                     fun γ =>
-                                      (match_operator
+                                      match_operator
                                         Value.DeclaredButUndefined
                                         [
                                           fun γ =>
-                                            (match_operator
+                                            match_operator
                                               Value.DeclaredButUndefined
                                               [
                                                 fun γ =>
-                                                  (M.alloc (Value.Tuple []))
-                                              ])
-                                        ])
-                                  ])
-                            ])
-                      ])
-                ])
+                                                  M.alloc (Value.Tuple [])
+                                              ]
+                                        ]
+                                  ]
+                            ]
+                      ]
+                ]
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -1264,7 +1263,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
               α2
               [
                 fun γ =>
-                  (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
                   let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
@@ -1291,8 +1290,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                   let* α1 := M.read __self_0 in
                   let* α2 := M.read __arg1_0 in
                   let* α3 := M.call α0 [ α1; α2 ] in
-                  M.alloc α3);
-                fun γ => (M.alloc (Value.Bool true))
+                  M.alloc α3;
+                fun γ => M.alloc (Value.Bool true)
               ] in
           M.read α3) in
       let* α0 := M.alloc α2 in
@@ -1333,7 +1332,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1638,7 +1637,7 @@ Module Impl_mother_Mother.
           fail
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::option::Option::Some"
@@ -1658,9 +1657,9 @@ Module Impl_mother_Mother.
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
-                  [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ]));
+                  [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ]);
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::option::Option::Some"
@@ -1672,12 +1671,12 @@ Module Impl_mother_Mother.
               let* α1 := M.read (mk_str "Trapping on user demand!") in
               let* α2 := M.call α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
-              M.alloc α3);
+              M.alloc α3;
             fun γ =>
-              (M.alloc
+              M.alloc
                 (Value.StructTuple
                   "core::result::Result::Ok"
-                  [ Value.Tuple [] ]))
+                  [ Value.Tuple [] ])
           ] in
       M.read α0
     | _, _ => M.impossible

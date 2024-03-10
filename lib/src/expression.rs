@@ -106,6 +106,7 @@ pub(crate) enum Expr {
     Lambda {
         args: Vec<(String, Option<Rc<CoqType>>)>,
         body: Rc<Expr>,
+        is_internal: bool,
     },
     Array {
         elements: Vec<Rc<Expr>>,
@@ -127,10 +128,6 @@ pub(crate) enum Expr {
     },
     Loop {
         body: Rc<Expr>,
-    },
-    Match {
-        scrutinee: Rc<Expr>,
-        arms: Vec<Rc<MatchArm>>,
     },
     Index {
         base: Rc<Expr>,
@@ -386,12 +383,17 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 )
             })
         }
-        Expr::Lambda { args, body } => {
+        Expr::Lambda {
+            args,
+            body,
+            is_internal,
+        } => {
             let (body, _) = mt_expression(FreshVars::new(), body.clone());
             (
                 pure(Rc::new(Expr::Lambda {
                     args: args.clone(),
                     body,
+                    is_internal: *is_internal,
                 })),
                 fresh_vars,
             )
@@ -466,27 +468,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::Loop { body, .. } => {
             let (body, fresh_vars) = mt_expression(fresh_vars, body.clone());
             (Rc::new(Expr::Loop { body }), fresh_vars)
-        }
-        Expr::Match { scrutinee, arms } => {
-            monadic_let(fresh_vars, scrutinee.clone(), |fresh_vars, scrutinee| {
-                (
-                    Rc::new(Expr::Match {
-                        scrutinee,
-                        arms: arms
-                            .iter()
-                            .map(|arm| {
-                                let (body, _fresh_vars) =
-                                    mt_expression(FreshVars::new(), arm.body.clone());
-                                Rc::new(MatchArm {
-                                    pattern: arm.pattern.clone(),
-                                    body,
-                                })
-                            })
-                            .collect(),
-                    }),
-                    fresh_vars,
-                )
-            })
         }
         Expr::Index { base, index } => monadic_let(fresh_vars, base.clone(), |fresh_vars, base| {
             (
@@ -627,22 +608,6 @@ pub(crate) fn compile_hir_id(env: &Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<
     match result {
         Ok(expr) => expr,
         Err(error) => Rc::new(Expr::Message(error)),
-    }
-}
-
-impl MatchArm {
-    fn to_doc(&self) -> Doc {
-        return nest([
-            nest([
-                text("|"),
-                line(),
-                self.pattern.to_doc(false),
-                line(),
-                text("=>"),
-            ]),
-            line(),
-            self.body.to_doc(false),
-        ]);
     }
 }
 
@@ -799,36 +764,49 @@ impl Expr {
                     rhs.to_doc(true),
                 ]),
             ),
-            Expr::Lambda { args, body } => {
-                if args.is_empty() {
-                    paren(with_paren, body.to_doc(true))
-                } else {
-                    paren(
+            Expr::Lambda {
+                args,
+                body,
+                is_internal,
+            } => {
+                if *is_internal {
+                    return paren(
                         with_paren,
                         nest([
                             nest([
                                 text("fun"),
-                                line(),
-                                intersperse(
-                                    args.iter().map(|(name, ty)| match ty {
-                                        None => text(name),
-                                        Some(ty) => nest([
-                                            text(name),
-                                            line(),
-                                            text("(* : "),
-                                            ty.to_coq().to_doc(false),
-                                            text(" *)"),
-                                        ]),
-                                    }),
-                                    [line()],
-                                ),
+                                concat(args.iter().map(|(name, _)| concat([line(), text(name)]))),
                                 text(" =>"),
                             ]),
                             line(),
-                            body.to_doc(true),
+                            body.to_doc(false),
                         ]),
-                    )
+                    );
                 }
+
+                coq::Expression::just_name("M.closure")
+                    .apply(&coq::Expression::Function {
+                        parameters: vec![coq::Expression::just_name("γ")],
+                        body: Rc::new(coq::Expression::Match {
+                            scrutinees: vec![coq::Expression::just_name("γ")],
+                            arms: vec![
+                                (
+                                    vec![coq::Expression::List {
+                                        exprs: args
+                                            .iter()
+                                            .map(|(name, _)| coq::Expression::just_name(name))
+                                            .collect(),
+                                    }],
+                                    coq::Expression::Code(body.to_doc(false)),
+                                ),
+                                (
+                                    vec![coq::Expression::Wild],
+                                    coq::Expression::just_name("M.impossible"),
+                                ),
+                            ],
+                        }),
+                    })
+                    .to_doc(with_paren)
             }
             Expr::Array {
                 elements,
@@ -917,17 +895,6 @@ impl Expr {
                 with_paren,
                 nest([text("M.loop"), line(), paren(true, body.to_doc(with_paren))]),
             ),
-            Expr::Match { scrutinee, arms } => group([
-                group([
-                    nest([text("match"), line(), scrutinee.to_doc(false)]),
-                    line(),
-                    text("with"),
-                ]),
-                hardline(),
-                intersperse(arms.iter().map(|arm| arm.to_doc()), [hardline()]),
-                hardline(),
-                text("end"),
-            ]),
             Expr::Index { base, index } => {
                 nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
             }

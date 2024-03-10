@@ -238,7 +238,7 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -322,7 +322,7 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -424,7 +424,7 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1046,7 +1046,7 @@ Module Impl_multisig_Multisig.
             α2
             [
               fun γ =>
-                (let* iter := M.copy γ in
+                let* iter := M.copy γ in
                 M.loop
                   (let* _ :=
                     let* α0 :=
@@ -1065,12 +1065,12 @@ Module Impl_multisig_Multisig.
                       α2
                       [
                         fun γ =>
-                          (let* α0 := M.break in
+                          let* α0 := M.break in
                           let* α1 := M.read α0 in
                           let* α2 := M.never_to_any α1 in
-                          M.alloc α2);
+                          M.alloc α2;
                         fun γ =>
-                          (let* γ0_0 :=
+                          let* γ0_0 :=
                             M.get_struct_tuple_field_or_break_match
                               γ
                               "core::option::Option::Some"
@@ -1095,9 +1095,9 @@ Module Impl_multisig_Multisig.
                                   Value.Tuple []
                                 ] in
                             M.alloc α3 in
-                          M.alloc (Value.Tuple []))
+                          M.alloc (Value.Tuple [])
                       ] in
-                  M.alloc (Value.Tuple [])))
+                  M.alloc (Value.Tuple []))
             ] in
         M.pure (M.use α3) in
       let* _ :=
@@ -1330,7 +1330,7 @@ Module Impl_multisig_Multisig.
           α14
           [
             fun γ =>
-              (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
               let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
@@ -1375,7 +1375,7 @@ Module Impl_multisig_Multisig.
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
               else
-                M.alloc (Value.Tuple []))
+                M.alloc (Value.Tuple [])
           ] in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -1582,29 +1582,30 @@ Module Impl_multisig_Multisig.
           α1
           [
             α7;
-            fun
-                α0
-                  (* : Ty.apply
-                    (Ty.path "&")
-                    [ Ty.path "multisig::AccountId" ] *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* x := M.copy γ in
-                    let* α0 :=
-                      M.get_trait_method
-                        "core::cmp::PartialEq"
-                        "eq"
-                        [
-                          (* Self *) Ty.path "multisig::AccountId";
-                          (* Rhs *) Ty.path "multisig::AccountId"
-                        ] in
-                    let* α1 := M.read x in
-                    let* α2 := M.read owner in
-                    M.call α0 [ α1; α2 ])
-                ])
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* x := M.copy γ in
+                        let* α0 :=
+                          M.get_trait_method
+                            "core::cmp::PartialEq"
+                            "eq"
+                            [
+                              (* Self *) Ty.path "multisig::AccountId";
+                              (* Rhs *) Ty.path "multisig::AccountId"
+                            ] in
+                        let* α1 := M.read x in
+                        let* α2 := M.read owner in
+                        M.call α0 [ α1; α2 ]
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       let* α9 :=
         M.read
@@ -1666,7 +1667,7 @@ Module Impl_multisig_Multisig.
           α3
           [
             fun γ =>
-              (let* iter := M.copy γ in
+              let* iter := M.copy γ in
               M.loop
                 (let* _ :=
                   let* α0 :=
@@ -1685,12 +1686,12 @@ Module Impl_multisig_Multisig.
                     α2
                     [
                       fun γ =>
-                        (let* α0 := M.break in
+                        let* α0 := M.break in
                         let* α1 := M.read α0 in
                         let* α2 := M.never_to_any α1 in
-                        M.alloc α2);
+                        M.alloc α2;
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::option::Option::Some"
@@ -1799,9 +1800,9 @@ Module Impl_multisig_Multisig.
                             M.alloc α5 in
                           M.alloc (Value.Tuple [])
                         else
-                          M.alloc (Value.Tuple []))
+                          M.alloc (Value.Tuple [])
                     ] in
-                M.alloc (Value.Tuple [])))
+                M.alloc (Value.Tuple []))
           ] in
       M.read (M.use α4)
     | _, _ => M.impossible
@@ -2601,26 +2602,31 @@ Module Impl_multisig_Multisig.
                 α1
                 [
                   α7;
-                  fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "u32" ] *) =>
-                    (let* α0 := M.alloc α0 in
-                    match_operator
-                      α0
-                      [
-                        fun γ =>
-                          (let* t := M.copy γ in
-                          let* α0 :=
-                            M.get_trait_method
-                              "core::cmp::PartialEq"
-                              "eq"
-                              [
-                                (* Self *)
-                                  Ty.apply (Ty.path "&") [ Ty.path "u32" ];
-                                (* Rhs *)
-                                  Ty.apply (Ty.path "&") [ Ty.path "u32" ]
-                              ] in
-                          let* α1 := M.alloc trans_id in
-                          M.call α0 [ t; α1 ])
-                      ])
+                  M.closure
+                    (fun γ =>
+                      match γ with
+                      | [ α0 ] =>
+                        let* α0 := M.alloc α0 in
+                        match_operator
+                          α0
+                          [
+                            fun γ =>
+                              let* t := M.copy γ in
+                              let* α0 :=
+                                M.get_trait_method
+                                  "core::cmp::PartialEq"
+                                  "eq"
+                                  [
+                                    (* Self *)
+                                      Ty.apply (Ty.path "&") [ Ty.path "u32" ];
+                                    (* Rhs *)
+                                      Ty.apply (Ty.path "&") [ Ty.path "u32" ]
+                                  ] in
+                              let* α1 := M.alloc trans_id in
+                              M.call α0 [ t; α1 ]
+                          ]
+                      | _ => M.impossible
+                      end)
                 ] in
             let* α9 :=
               M.read
@@ -2685,7 +2691,7 @@ Module Impl_multisig_Multisig.
                 α7
                 [
                   fun γ =>
-                    (let* iter := M.copy γ in
+                    let* iter := M.copy γ in
                     M.loop
                       (let* _ :=
                         let* α0 :=
@@ -2704,12 +2710,12 @@ Module Impl_multisig_Multisig.
                           α2
                           [
                             fun γ =>
-                              (let* α0 := M.break in
+                              let* α0 := M.break in
                               let* α1 := M.read α0 in
                               let* α2 := M.never_to_any α1 in
-                              M.alloc α2);
+                              M.alloc α2;
                             fun γ =>
-                              (let* γ0_0 :=
+                              let* γ0_0 :=
                                 M.get_struct_tuple_field_or_break_match
                                   γ
                                   "core::option::Option::Some"
@@ -2741,9 +2747,9 @@ Module Impl_multisig_Multisig.
                                       Value.Tuple [ α2; α4 ]
                                     ] in
                                 M.alloc α5 in
-                              M.alloc (Value.Tuple []))
+                              M.alloc (Value.Tuple [])
                           ] in
-                      M.alloc (Value.Tuple [])))
+                      M.alloc (Value.Tuple []))
                 ] in
             M.pure (M.use α8) in
           let* _ :=
@@ -3150,7 +3156,7 @@ Module Impl_multisig_Multisig.
             result
             [
               fun γ =>
-                (let* γ0_0 :=
+                let* γ0_0 :=
                   M.get_struct_tuple_field_or_break_match
                     γ
                     "core::result::Result::Ok"
@@ -3163,13 +3169,13 @@ Module Impl_multisig_Multisig.
                 M.alloc
                   (Value.StructTuple
                     "core::result::Result::Ok"
-                    [ Value.Tuple [] ]));
+                    [ Value.Tuple [] ]);
               fun γ =>
-                (M.alloc
+                M.alloc
                   (Value.StructTuple
                     "core::result::Result::Err"
                     [ Value.StructTuple "multisig::Error::TransactionFailed" []
-                    ]))
+                    ])
             ] in
         M.copy α0 in
       let* _ :=
@@ -3193,15 +3199,20 @@ Module Impl_multisig_Multisig.
             α6
             [
               α7;
-              fun α0 (* : Ty.tuple [] *) =>
-                (let* α0 := M.alloc α0 in
-                match_operator
-                  α0
-                  [
-                    fun γ =>
-                      (M.pure
-                        (Value.StructTuple "core::option::Option::None" []))
-                  ])
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          M.pure
+                            (Value.StructTuple "core::option::Option::None" [])
+                      ]
+                  | _ => M.impossible
+                  end)
             ] in
         let* α9 :=
           M.call

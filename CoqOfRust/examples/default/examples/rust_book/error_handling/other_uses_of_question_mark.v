@@ -162,7 +162,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α8
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -198,15 +198,15 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       M.copy α9 in
     let* parsed :=
@@ -231,7 +231,7 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α6
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -267,15 +267,15 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       M.copy α7 in
     let* α0 := M.read parsed in
@@ -302,7 +302,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Ok"
@@ -333,9 +333,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Err"
@@ -366,7 +366,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

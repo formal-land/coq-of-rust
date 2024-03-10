@@ -23,17 +23,17 @@ Module checked.
             self
             [
               fun γ =>
-                (let* γ := M.read γ in
+                let* γ := M.read γ in
                 let* α0 := M.read (mk_str "DivisionByZero") in
-                M.alloc α0);
+                M.alloc α0;
               fun γ =>
-                (let* γ := M.read γ in
+                let* γ := M.read γ in
                 let* α0 := M.read (mk_str "NonPositiveLogarithm") in
-                M.alloc α0);
+                M.alloc α0;
               fun γ =>
-                (let* γ := M.read γ in
+                let* γ := M.read γ in
                 let* α0 := M.read (mk_str "NegativeSquareRoot") in
-                M.alloc α0)
+                M.alloc α0
             ] in
         let* α3 := M.read α2 in
         M.call α0 [ α1; α3 ]
@@ -198,7 +198,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Err"
@@ -226,9 +226,9 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α8 := M.call α0 [ α7 ] in
             let* α9 := M.never_to_any α8 in
-            M.alloc α9);
+            M.alloc α9;
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Ok"
@@ -242,7 +242,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               α3
               [
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::result::Result::Err"
@@ -270,9 +270,9 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       ] in
                   let* α8 := M.call α0 [ α7 ] in
                   let* α9 := M.never_to_any α8 in
-                  M.alloc α9);
+                  M.alloc α9;
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::result::Result::Ok"
@@ -286,7 +286,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     α3
                     [
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::result::Result::Err"
@@ -315,17 +315,17 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             ] in
                         let* α8 := M.call α0 [ α7 ] in
                         let* α9 := M.never_to_any α8 in
-                        M.alloc α9);
+                        M.alloc α9;
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::result::Result::Ok"
                             0 in
                         let* sqrt := M.copy γ0_0 in
-                        M.pure sqrt)
-                    ])
-              ])
+                        M.pure sqrt
+                    ]
+              ]
         ] in
     M.read α5
   | _, _ => M.impossible

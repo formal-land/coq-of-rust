@@ -57,7 +57,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         array_
         [
           fun γ =>
-            (let* γ0_0 := get_slice_index_or_break_match γ 0 in
+            let* γ0_0 := get_slice_index_or_break_match γ 0 in
             let* γ0_1 := get_slice_index_or_break_match γ 1 in
             let* γ0_2 := get_slice_index_or_break_match γ 2 in
             let* _ :=
@@ -96,9 +96,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α12 := M.call α0 [ α11 ] in
               M.alloc α12 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 := get_slice_index_or_break_match γ 0 in
+            let* γ0_0 := get_slice_index_or_break_match γ 0 in
             let* γ0_1 := get_slice_index_or_break_match γ 1 in
             let* γ0_2 := get_slice_index_or_break_match γ 2 in
             let* _ :=
@@ -130,9 +130,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 := get_slice_index_or_break_match γ 0 in
+            let* γ0_0 := get_slice_index_or_break_match γ 0 in
             let* γ0_1 := get_slice_index_or_break_match γ 1 in
             let* γ0_rest := M.get_slice_rest_or_break_match γ 2 in
             let* _ :=
@@ -167,9 +167,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 := get_slice_index_or_break_match γ 0 in
+            let* γ0_0 := get_slice_index_or_break_match γ 0 in
             let* γ0_1 := get_slice_index_or_break_match γ 1 in
             let* γ0_rest := M.get_slice_rest_or_break_match γ 2 in
             let* _ :=
@@ -208,9 +208,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α12 := M.call α0 [ α11 ] in
               M.alloc α12 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -247,7 +247,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α15 := M.call α0 [ α14 ] in
               M.alloc α15 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

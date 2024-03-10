@@ -113,7 +113,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α3
           [
             fun γ =>
-              (let* iter := M.copy γ in
+              let* iter := M.copy γ in
               M.loop
                 (let* _ :=
                   let* α0 :=
@@ -132,12 +132,12 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     α2
                     [
                       fun γ =>
-                        (let* α0 := M.break in
+                        let* α0 := M.break in
                         let* α1 := M.read α0 in
                         let* α2 := M.never_to_any α1 in
-                        M.alloc α2);
+                        M.alloc α2;
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::option::Option::Some"
@@ -156,12 +156,12 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             match_operator
                               α2
                               [
-                                fun γ => (M.pure i);
+                                fun γ => M.pure i;
                                 fun γ =>
-                                  (let* α0 := M.continue in
+                                  let* α0 := M.continue in
                                   let* α1 := M.read α0 in
                                   let* α2 := M.never_to_any α1 in
-                                  M.alloc α2)
+                                  M.alloc α2
                               ] in
                           M.copy α3 in
                         let* _ :=
@@ -170,9 +170,9 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α1 := M.read addition in
                           let* α2 := BinOp.Panic.add α0 α1 in
                           M.assign β α2 in
-                        M.alloc (Value.Tuple []))
+                        M.alloc (Value.Tuple [])
                     ] in
-                M.alloc (Value.Tuple [])))
+                M.alloc (Value.Tuple []))
           ] in
       M.pure (M.use α4) in
     M.read acc

@@ -16,9 +16,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
           Value.DeclaredButUndefined
           [
             fun γ =>
-              (match_operator
-                Value.DeclaredButUndefined
-                [ fun γ => (M.read self) ])
+              match_operator Value.DeclaredButUndefined [ fun γ => M.read self ]
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -54,7 +52,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -125,7 +123,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
           α5
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -150,15 +148,15 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* α7 := M.read (M.get_struct_record α6 "phone_number") in
       let* α8 := M.call α0 [ α7 ] in
@@ -168,7 +166,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
           α9
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -193,15 +191,15 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       M.read (M.get_struct_record α10 "area_code")
     | _, _ => M.impossible
@@ -275,7 +273,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
@@ -322,7 +320,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.never_to_any α1 in
               M.alloc α2
             else
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
         ] in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

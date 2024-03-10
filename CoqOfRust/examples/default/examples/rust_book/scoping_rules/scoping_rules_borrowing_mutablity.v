@@ -17,14 +17,14 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
           Value.DeclaredButUndefined
           [
             fun γ =>
-              (match_operator
+              match_operator
                 Value.DeclaredButUndefined
                 [
                   fun γ =>
-                    (match_operator
+                    match_operator
                       Value.DeclaredButUndefined
-                      [ fun γ => (M.read self) ])
-                ])
+                      [ fun γ => M.read self ]
+                ]
           ] in
       M.read α0
     | _, _ => M.impossible

@@ -94,7 +94,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α2
           [
             fun γ =>
-              (let* iter := M.copy γ in
+              let* iter := M.copy γ in
               M.loop
                 (let* _ :=
                   let* α0 :=
@@ -113,12 +113,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     α2
                     [
                       fun γ =>
-                        (let* α0 := M.break in
+                        let* α0 := M.break in
                         let* α1 := M.read α0 in
                         let* α2 := M.never_to_any α1 in
-                        M.alloc α2);
+                        M.alloc α2;
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::option::Option::Some"
@@ -156,9 +156,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.assign β α2 in
                             M.alloc (Value.Tuple [])
                           else
-                            M.alloc (Value.Tuple []))
+                            M.alloc (Value.Tuple [])
                     ] in
-                M.alloc (Value.Tuple [])))
+                M.alloc (Value.Tuple []))
           ] in
       M.pure (M.use α3) in
     let* _ :=
@@ -284,54 +284,69 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "core::ops::range::RangeFrom"
               [ ("start", Value.Integer Integer.U32 0) ];
-            fun α0 (* : Ty.path "u32" *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* n := M.copy γ in
-                    let* α0 := M.read n in
-                    let* α1 := M.read n in
-                    BinOp.Panic.mul α0 α1)
-                ])
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* n := M.copy γ in
+                        let* α0 := M.read n in
+                        let* α1 := M.read n in
+                        BinOp.Panic.mul α0 α1
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       let* α5 :=
         M.call
           α2
           [
             α4;
-            fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "u32" ] *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* γ := M.read γ in
-                    let* n_squared := M.copy γ in
-                    let* α0 := M.read n_squared in
-                    let* α1 := M.read upper in
-                    M.pure (BinOp.Pure.lt α0 α1))
-                ])
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* γ := M.read γ in
+                        let* n_squared := M.copy γ in
+                        let* α0 := M.read n_squared in
+                        let* α1 := M.read upper in
+                        M.pure (BinOp.Pure.lt α0 α1)
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       let* α6 :=
         M.call
           α1
           [
             α5;
-            fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "u32" ] *) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* γ := M.read γ in
-                    let* n_squared := M.copy γ in
-                    let* α0 :=
-                      M.get_function "higher_order_functions::is_odd" [] in
-                    let* α1 := M.read n_squared in
-                    M.call α0 [ α1 ])
-                ])
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* γ := M.read γ in
+                        let* n_squared := M.copy γ in
+                        let* α0 :=
+                          M.get_function "higher_order_functions::is_odd" [] in
+                        let* α1 := M.read n_squared in
+                        M.call α0 [ α1 ]
+                    ]
+                | _ => M.impossible
+                end)
           ] in
       let* α7 := M.call α0 [ α6 ] in
       M.alloc α7 in

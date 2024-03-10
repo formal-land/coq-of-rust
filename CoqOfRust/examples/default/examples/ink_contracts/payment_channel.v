@@ -38,7 +38,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -122,7 +122,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       let* α0 :=
         match_operator
           Value.DeclaredButUndefined
-          [ fun γ => (M.alloc (Value.Tuple [])) ] in
+          [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -753,21 +753,27 @@ Module Impl_payment_channel_PaymentChannel.
             α0
             [
               α2;
-              fun α0 (* : Ty.path "payment_channel::Error" *) =>
-                (let* α0 := M.alloc α0 in
-                match_operator
-                  α0
-                  [
-                    fun γ =>
-                      (let* err := M.copy γ in
-                      let* α0 :=
-                        M.get_function
-                          "std::panicking::begin_panic"
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                      let* α1 := M.read (mk_str "recover failed: {err:?}") in
-                      let* α2 := M.call α0 [ α1 ] in
-                      M.never_to_any α2)
-                  ])
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          let* err := M.copy γ in
+                          let* α0 :=
+                            M.get_function
+                              "std::panicking::begin_panic"
+                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                          let* α1 :=
+                            M.read (mk_str "recover failed: {err:?}") in
+                          let* α2 := M.call α0 [ α1 ] in
+                          M.never_to_any α2
+                      ]
+                  | _ => M.impossible
+                  end)
             ] in
         M.alloc α3 in
       let* signature_account_id :=
@@ -1008,17 +1014,22 @@ Module Impl_payment_channel_PaymentChannel.
             α1
             [
               α13;
-              fun α0 (* : Ty.path "payment_channel::Error" *) =>
-                (let* α0 := M.alloc α0 in
-                match_operator
-                  α0
-                  [
-                    fun γ =>
-                      (M.pure
-                        (Value.StructTuple
-                          "payment_channel::Error::TransferFailed"
-                          []))
-                  ])
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          M.pure
+                            (Value.StructTuple
+                              "payment_channel::Error::TransferFailed"
+                              [])
+                      ]
+                  | _ => M.impossible
+                  end)
             ] in
         let* α15 := M.call α0 [ α14 ] in
         let* α16 := M.alloc α15 in
@@ -1026,7 +1037,7 @@ Module Impl_payment_channel_PaymentChannel.
           α16
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1054,15 +1065,15 @@ Module Impl_payment_channel_PaymentChannel.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* α0 :=
         M.alloc
@@ -1113,7 +1124,7 @@ Module Impl_payment_channel_PaymentChannel.
           α7
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1141,15 +1152,15 @@ Module Impl_payment_channel_PaymentChannel.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* _ :=
         let* α0 :=
@@ -1334,7 +1345,7 @@ Module Impl_payment_channel_PaymentChannel.
           (M.get_struct_record α0 "expiration")
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::option::Option::Some"
@@ -1393,13 +1404,13 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Ok"
-                  [ Value.Tuple [] ]));
+                  [ Value.Tuple [] ]);
             fun γ =>
-              (M.alloc
+              M.alloc
                 (Value.StructTuple
                   "core::result::Result::Err"
                   [ Value.StructTuple "payment_channel::Error::NotYetExpired" []
-                  ]))
+                  ])
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -1577,17 +1588,22 @@ Module Impl_payment_channel_PaymentChannel.
             α1
             [
               α10;
-              fun α0 (* : Ty.path "payment_channel::Error" *) =>
-                (let* α0 := M.alloc α0 in
-                match_operator
-                  α0
-                  [
-                    fun γ =>
-                      (M.pure
-                        (Value.StructTuple
-                          "payment_channel::Error::TransferFailed"
-                          []))
-                  ])
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          M.pure
+                            (Value.StructTuple
+                              "payment_channel::Error::TransferFailed"
+                              [])
+                      ]
+                  | _ => M.impossible
+                  end)
             ] in
         let* α12 := M.call α0 [ α11 ] in
         let* α13 := M.alloc α12 in
@@ -1595,7 +1611,7 @@ Module Impl_payment_channel_PaymentChannel.
           α13
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1623,15 +1639,15 @@ Module Impl_payment_channel_PaymentChannel.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* α0 :=
         M.alloc

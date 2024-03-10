@@ -27,15 +27,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α3
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Ok"
                   0 in
               let* number := M.copy γ0_0 in
-              M.pure number);
+              M.pure number;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Err"
@@ -47,7 +47,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Value.StructTuple "core::result::Result::Err" [ α0 ]) in
               let* α2 := M.read α1 in
               let* α3 := M.never_to_any α2 in
-              M.alloc α3)
+              M.alloc α3
           ] in
       M.copy α4 in
     let* _ :=

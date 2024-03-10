@@ -23,17 +23,17 @@ Module checked.
             self
             [
               fun γ =>
-                (let* γ := M.read γ in
+                let* γ := M.read γ in
                 let* α0 := M.read (mk_str "DivisionByZero") in
-                M.alloc α0);
+                M.alloc α0;
               fun γ =>
-                (let* γ := M.read γ in
+                let* γ := M.read γ in
                 let* α0 := M.read (mk_str "NonPositiveLogarithm") in
-                M.alloc α0);
+                M.alloc α0;
               fun γ =>
-                (let* γ := M.read γ in
+                let* γ := M.read γ in
                 let* α0 := M.read (mk_str "NegativeSquareRoot") in
-                M.alloc α0)
+                M.alloc α0
             ] in
         let* α3 := M.read α2 in
         M.call α0 [ α1; α3 ]
@@ -213,7 +213,7 @@ Module checked.
             α6
             [
               fun γ =>
-                (let* γ0_0 :=
+                let* γ0_0 :=
                   M.get_struct_tuple_field_or_break_match
                     γ
                     "core::ops::control_flow::ControlFlow::Break"
@@ -246,15 +246,15 @@ Module checked.
                 let* α3 := M.return_ α2 in
                 let* α4 := M.read α3 in
                 let* α5 := M.never_to_any α4 in
-                M.alloc α5);
+                M.alloc α5;
               fun γ =>
-                (let* γ0_0 :=
+                let* γ0_0 :=
                   M.get_struct_tuple_field_or_break_match
                     γ
                     "core::ops::control_flow::ControlFlow::Continue"
                     0 in
                 let* val := M.copy γ0_0 in
-                M.pure val)
+                M.pure val
             ] in
         M.copy α7 in
       let* ln :=
@@ -283,7 +283,7 @@ Module checked.
             α5
             [
               fun γ =>
-                (let* γ0_0 :=
+                let* γ0_0 :=
                   M.get_struct_tuple_field_or_break_match
                     γ
                     "core::ops::control_flow::ControlFlow::Break"
@@ -316,15 +316,15 @@ Module checked.
                 let* α3 := M.return_ α2 in
                 let* α4 := M.read α3 in
                 let* α5 := M.never_to_any α4 in
-                M.alloc α5);
+                M.alloc α5;
               fun γ =>
-                (let* γ0_0 :=
+                let* γ0_0 :=
                   M.get_struct_tuple_field_or_break_match
                     γ
                     "core::ops::control_flow::ControlFlow::Continue"
                     0 in
                 let* val := M.copy γ0_0 in
-                M.pure val)
+                M.pure val
             ] in
         M.copy α6 in
       let* α0 :=
@@ -367,7 +367,7 @@ Module checked.
           α4
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Err"
@@ -381,21 +381,20 @@ Module checked.
                 match_operator
                   why
                   [
+                    fun γ => M.pure (mk_str "logarithm of non-positive number");
                     fun γ =>
-                      (M.pure (mk_str "logarithm of non-positive number"));
+                      let* α0 := M.read (mk_str "division by zero") in
+                      M.alloc α0;
                     fun γ =>
-                      (let* α0 := M.read (mk_str "division by zero") in
-                      M.alloc α0);
-                    fun γ =>
-                      (let* α0 :=
+                      let* α0 :=
                         M.read (mk_str "square root of negative number") in
-                      M.alloc α0)
+                      M.alloc α0
                   ] in
               let* α2 := M.call α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
-              M.alloc α3);
+              M.alloc α3;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Ok"
@@ -426,7 +425,7 @@ Module checked.
                     ] in
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
           ] in
       M.read α5
     | _, _ => M.impossible

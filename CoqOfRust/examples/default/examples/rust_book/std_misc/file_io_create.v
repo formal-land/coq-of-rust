@@ -55,7 +55,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           α2
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Err"
@@ -89,15 +89,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α11 := M.call α0 [ α10 ] in
               let* α12 := M.never_to_any α11 in
-              M.alloc α12);
+              M.alloc α12;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Ok"
                   0 in
               let* file := M.copy γ0_0 in
-              M.pure file)
+              M.pure file
           ] in
       M.copy α3 in
     let* α0 :=
@@ -117,7 +117,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α7
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Err"
@@ -151,9 +151,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α11 := M.call α0 [ α10 ] in
             let* α12 := M.never_to_any α11 in
-            M.alloc α12);
+            M.alloc α12;
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Ok"
@@ -183,7 +183,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

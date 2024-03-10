@@ -18,13 +18,13 @@ Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
         pair
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* int_param := M.copy γ0_0 in
             let* bool_param := M.copy γ0_1 in
             let* α0 := M.read bool_param in
             let* α1 := M.read int_param in
-            M.alloc (Value.Tuple [ α0; α1 ]))
+            M.alloc (Value.Tuple [ α0; α1 ])
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -349,7 +349,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         tuple
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
             let* γ0_3 := M.get_tuple_field_or_break_match γ 3 in
@@ -435,7 +435,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

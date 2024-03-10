@@ -26,7 +26,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α3
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Ok"
@@ -40,7 +40,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
               α3
               [
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::result::Result::Ok"
@@ -49,28 +49,26 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 := M.read first_number in
                   let* α1 := M.read second_number in
                   let* α2 := BinOp.Panic.mul α0 α1 in
-                  M.alloc
-                    (Value.StructTuple "core::result::Result::Ok" [ α2 ]));
+                  M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]);
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::result::Result::Err"
                       0 in
                   let* e := M.copy γ0_0 in
                   let* α0 := M.read e in
-                  M.alloc
-                    (Value.StructTuple "core::result::Result::Err" [ α0 ]))
-              ]);
+                  M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
+              ];
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Err"
                 0 in
             let* e := M.copy γ0_0 in
             let* α0 := M.read e in
-            M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ]))
+            M.alloc (Value.StructTuple "core::result::Result::Err" [ α0 ])
         ] in
     M.read α4
   | _, _ => M.impossible
@@ -93,7 +91,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
         result
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Ok"
@@ -124,9 +122,9 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::result::Result::Err"
@@ -157,7 +155,7 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

@@ -38,7 +38,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -244,12 +244,12 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
           e
           [
             fun γ =>
-              (M.alloc
+              M.alloc
                 (Value.StructTuple
                   "call_runtime::RuntimeError::CallRuntimeFailed"
-                  []));
+                  []);
             fun γ =>
-              (let* α0 :=
+              let* α0 :=
                 M.get_function
                   "std::panicking::begin_panic"
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
@@ -257,7 +257,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                 M.read (mk_str "Unexpected error from `pallet-contracts`.") in
               let* α2 := M.call α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
-              M.alloc α3)
+              M.alloc α3
           ] in
       M.read α0
     | _, _ => M.impossible

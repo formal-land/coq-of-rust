@@ -38,7 +38,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -174,23 +174,23 @@ Module Impl_call_builder_CallBuilderTest.
           result
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Ok"
                   0 in
-              M.alloc (Value.StructTuple "core::option::Option::None" []));
+              M.alloc (Value.StructTuple "core::option::Option::None" []);
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Err"
                   0 in
               let* e := M.copy γ0_0 in
               let* α0 := M.read e in
-              M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]));
+              M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]);
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::result::Result::Err"
@@ -220,7 +220,7 @@ Module Impl_call_builder_CallBuilderTest.
                   ] in
               let* α8 := M.call α0 [ α7 ] in
               let* α9 := M.never_to_any α8 in
-              M.alloc α9)
+              M.alloc α9
           ] in
       M.read α0
     | _, _ => M.impossible

@@ -1,6 +1,5 @@
 use crate::expression::*;
 use crate::path::*;
-use crate::render::*;
 use itertools::Itertools;
 use std::rc::Rc;
 use std::vec;
@@ -143,116 +142,6 @@ impl Pattern {
                     .collect(),
             })
             .collect(),
-        }
-    }
-
-    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
-        match self {
-            Pattern::Wild => text("_"),
-            Pattern::Binding {
-                name,
-                is_with_ref: _,
-                pattern,
-            } => match pattern {
-                None => text(name),
-                Some(pattern) => nest([
-                    text("("),
-                    pattern.to_doc(false),
-                    text(" as"),
-                    line(),
-                    text(name),
-                    text(")"),
-                ]),
-            },
-            Pattern::StructStruct(path, fields, struct_or_variant) => paren(
-                with_paren
-                    && matches!(struct_or_variant, StructOrVariant::Variant { .. })
-                    && !fields.is_empty(),
-                group([
-                    match struct_or_variant {
-                        StructOrVariant::Struct => nil(),
-                        StructOrVariant::Variant { .. } => path.to_doc(),
-                    },
-                    optional_insert(
-                        fields.is_empty(),
-                        concat([
-                            match struct_or_variant {
-                                StructOrVariant::Struct => nil(),
-                                StructOrVariant::Variant { .. } => line(),
-                            },
-                            nest([
-                                text("{|"),
-                                line(),
-                                intersperse(
-                                    fields.iter().map(|(name, pattern)| {
-                                        nest([
-                                            path.to_doc(),
-                                            text("."),
-                                            text(name),
-                                            line(),
-                                            text(":="),
-                                            line(),
-                                            pattern.to_doc(false),
-                                            text(";"),
-                                        ])
-                                    }),
-                                    [line()],
-                                ),
-                            ]),
-                            line(),
-                            text("|}"),
-                        ]),
-                    ),
-                ]),
-            ),
-            Pattern::StructTuple(path, fields, struct_or_variant) => paren(
-                with_paren && !fields.is_empty(),
-                nest([
-                    path.to_doc(),
-                    match struct_or_variant {
-                        StructOrVariant::Variant { .. } => nil(),
-                        StructOrVariant::Struct => text(".Build_t"),
-                    },
-                    concat(
-                        fields
-                            .iter()
-                            .map(|field| concat([line(), field.to_doc(true)])),
-                    ),
-                ]),
-            ),
-            Pattern::Deref(pattern) => pattern.to_doc(with_paren),
-            Pattern::Or(pats) => paren(
-                with_paren,
-                nest([intersperse(
-                    pats.iter().map(|pat| pat.to_doc(true)),
-                    [text(" |"), line()],
-                )]),
-            ),
-            Pattern::Tuple(pats) => paren(
-                true,
-                nest([intersperse(
-                    pats.iter().map(|pat| pat.to_doc(false)),
-                    [text(","), line()],
-                )]),
-            ),
-            Pattern::Literal(literal) => literal.to_doc(with_paren),
-            Pattern::Slice {
-                init_patterns,
-                slice_pattern,
-            } => {
-                let pats: Vec<Doc> = init_patterns.iter().map(|pat| pat.to_doc(false)).collect();
-                match slice_pattern {
-                    Some(slice_pattern) => nest([
-                        text("("),
-                        intersperse(
-                            [pats, vec![slice_pattern.to_doc(false)]].concat(),
-                            [text("::"), line()],
-                        ),
-                        text(")"),
-                    ]),
-                    None => list(pats),
-                }
-            }
         }
     }
 }

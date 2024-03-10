@@ -92,7 +92,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
           (M.get_struct_record α0 "p1")
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_record_field_or_break_match
                   γ
                   "associated_functions_and_methods::Point"
@@ -109,7 +109,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 (M.get_struct_record α0 "p2")
                 [
                   fun γ =>
-                    (let* γ0_0 :=
+                    let* γ0_0 :=
                       M.get_struct_record_field_or_break_match
                         γ
                         "associated_functions_and_methods::Point"
@@ -131,8 +131,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
                     let* α6 := BinOp.Panic.sub α4 α5 in
                     let* α7 := BinOp.Panic.mul α3 α6 in
                     let* α8 := M.call α0 [ α7 ] in
-                    M.alloc α8)
-                ])
+                    M.alloc α8
+                ]
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -158,7 +158,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
           (M.get_struct_record α0 "p1")
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_record_field_or_break_match
                   γ
                   "associated_functions_and_methods::Point"
@@ -175,7 +175,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 (M.get_struct_record α0 "p2")
                 [
                   fun γ =>
-                    (let* γ0_0 :=
+                    let* γ0_0 :=
                       M.get_struct_record_field_or_break_match
                         γ
                         "associated_functions_and_methods::Point"
@@ -202,8 +202,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
                     let* α10 := M.call α6 [ α9 ] in
                     let* α11 := BinOp.Panic.add α5 α10 in
                     let* α12 := BinOp.Panic.mul α0 α11 in
-                    M.alloc α12)
-                ])
+                    M.alloc α12
+                ]
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -292,7 +292,7 @@ Module Impl_associated_functions_and_methods_Pair.
           self
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "associated_functions_and_methods::Pair"
@@ -337,7 +337,7 @@ Module Impl_associated_functions_and_methods_Pair.
                   let* α12 := M.call α0 [ α11 ] in
                   M.alloc α12 in
                 M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple []))
+              M.alloc (Value.Tuple [])
           ] in
       M.read α0
     | _, _ => M.impossible

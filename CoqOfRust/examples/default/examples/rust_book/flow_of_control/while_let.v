@@ -38,7 +38,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           optional
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::option::Option::Some"
@@ -103,9 +103,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.assign
                     optional
                     (Value.StructTuple "core::option::Option::Some" [ α1 ]) in
-                M.alloc (Value.Tuple []));
+                M.alloc (Value.Tuple []);
             fun γ =>
-              (let* _ :=
+              let* _ :=
                 let* α0 := M.break in
                 let* α1 := M.read α0 in
                 let* α2 := M.never_to_any α1 in
@@ -113,7 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.alloc (Value.Tuple []) in
               let* α1 := M.read α0 in
               let* α2 := M.never_to_any α1 in
-              M.alloc α2)
+              M.alloc α2
           ]) in
     M.read α0
   | _, _ => M.impossible

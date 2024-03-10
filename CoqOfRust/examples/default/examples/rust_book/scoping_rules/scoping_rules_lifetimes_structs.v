@@ -93,7 +93,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
@@ -110,9 +110,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                 M.call
                   α0
                   [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-              M.alloc α3);
+              M.alloc α3;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
@@ -129,7 +129,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                 M.call
                   α0
                   [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-              M.alloc α3)
+              M.alloc α3
           ] in
       M.read α0
     | _, _ => M.impossible

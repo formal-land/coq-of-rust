@@ -130,7 +130,7 @@ Module Value.
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
-  | Closure : {'(t, M) : Set * Set @ t -> M} -> t
+  | Closure : {'(t, M) : Set * Set @ list t -> M} -> t
   (** A special value that does not appear in the translation, but that we use
       to implement primitive functions over values that are not total. *)
   | Error (message : string)
@@ -591,3 +591,6 @@ Parameter get_slice_rest_or_break_match :
     types that are actually different but convertible, like different kinds of
     integers. *)
 Parameter rust_cast : Value.t -> Value.t.
+
+Definition closure (f : list Value.t -> M) : Value.t :=
+  Value.Closure (existS (Value.t, M) f).

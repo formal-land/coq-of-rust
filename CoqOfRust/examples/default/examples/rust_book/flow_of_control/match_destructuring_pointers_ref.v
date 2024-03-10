@@ -65,7 +65,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         reference
         [
           fun γ =>
-            (let* γ := M.read γ in
+            let* γ := M.read γ in
             let* val := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -92,7 +92,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     let* _ :=
       let* α0 := M.read reference in
@@ -100,7 +100,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α0
         [
           fun γ =>
-            (let* val := M.copy γ in
+            let* val := M.copy γ in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
@@ -126,7 +126,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     let* _not_a_reference := M.alloc (Value.Integer Integer.I32 3) in
     let* α0 := M.alloc (Value.Integer Integer.I32 3) in
@@ -135,7 +135,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α0
         [
           fun γ =>
-            (let* _is_a_reference := M.alloc γ in
+            let* _is_a_reference := M.alloc γ in
             let* value := M.alloc (Value.Integer Integer.I32 5) in
             let* mut_value := M.alloc (Value.Integer Integer.I32 6) in
             let* _ :=
@@ -143,7 +143,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 value
                 [
                   fun γ =>
-                    (let* r := M.alloc γ in
+                    let* r := M.alloc γ in
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
                       let* α1 :=
@@ -170,13 +170,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           ] in
                       let* α9 := M.call α0 [ α8 ] in
                       M.alloc α9 in
-                    M.alloc (Value.Tuple []))
+                    M.alloc (Value.Tuple [])
                 ] in
             match_operator
               mut_value
               [
                 fun γ =>
-                  (let* m := M.alloc γ in
+                  let* m := M.alloc γ in
                   let* _ :=
                     let* β := M.read m in
                     let* α0 := M.read β in
@@ -210,8 +210,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α9 := M.call α0 [ α8 ] in
                       M.alloc α9 in
                     M.alloc (Value.Tuple []) in
-                  M.alloc (Value.Tuple []))
-              ])
+                  M.alloc (Value.Tuple [])
+              ]
         ] in
     M.read α0
   | _, _ => M.impossible

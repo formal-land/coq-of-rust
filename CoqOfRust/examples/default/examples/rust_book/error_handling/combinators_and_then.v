@@ -22,17 +22,17 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "CordonBleu") in
-              M.alloc α0);
+              M.alloc α0;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Steak") in
-              M.alloc α0);
+              M.alloc α0;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Sushi") in
-              M.alloc α0)
+              M.alloc α0
           ] in
       let* α3 := M.read α2 in
       M.call α0 [ α1; α3 ]
@@ -69,17 +69,17 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Monday") in
-              M.alloc α0);
+              M.alloc α0;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Tuesday") in
-              M.alloc α0);
+              M.alloc α0;
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* α0 := M.read (mk_str "Wednesday") in
-              M.alloc α0)
+              M.alloc α0
           ] in
       let* α3 := M.read α2 in
       M.call α0 [ α1; α3 ]
@@ -111,11 +111,10 @@ Definition have_ingredients (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match_operator
         food
         [
+          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
           fun γ =>
-            (M.alloc (Value.StructTuple "core::option::Option::None" []));
-          fun γ =>
-            (let* α0 := M.read food in
-            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]))
+            let* α0 := M.read food in
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -137,11 +136,10 @@ Definition have_recipe (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match_operator
         food
         [
+          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
           fun γ =>
-            (M.alloc (Value.StructTuple "core::option::Option::None" []));
-          fun γ =>
-            (let* α0 := M.read food in
-            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]))
+            let* α0 := M.read food in
+            M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -170,10 +168,9 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match_operator
         α3
         [
+          fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
           fun γ =>
-            (M.alloc (Value.StructTuple "core::option::Option::None" []));
-          fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -188,9 +185,9 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
               α3
               [
                 fun γ =>
-                  (M.alloc (Value.StructTuple "core::option::Option::None" []));
+                  M.alloc (Value.StructTuple "core::option::Option::None" []);
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "core::option::Option::Some"
@@ -198,8 +195,8 @@ Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* food := M.copy γ0_0 in
                   let* α0 := M.read food in
                   M.alloc
-                    (Value.StructTuple "core::option::Option::Some" [ α0 ]))
-              ])
+                    (Value.StructTuple "core::option::Option::Some" [ α0 ])
+              ]
         ] in
     M.read α4
   | _, _ => M.impossible
@@ -250,7 +247,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α3
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -287,9 +284,9 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α12 := M.call α0 [ α11 ] in
               M.alloc α12 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -314,7 +311,7 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α9 := M.call α0 [ α8 ] in
               M.alloc α9 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α4
   | _, _ => M.impossible
@@ -346,7 +343,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α0
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
             let* cordon_bleu := M.copy γ0_0 in
@@ -383,7 +380,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Value.StructTuple "combinators_and_then::Day::Wednesday" []
                   ] in
               M.alloc α2 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α1
   | _, _ => M.impossible

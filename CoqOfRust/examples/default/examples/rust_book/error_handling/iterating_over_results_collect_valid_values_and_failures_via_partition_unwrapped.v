@@ -132,18 +132,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           α4;
-          fun α0 (* : Ty.apply (Ty.path "&") [ Ty.path "str" ] *) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* s := M.copy γ in
-                  let* α0 :=
-                    M.get_associated_function (Ty.path "str") "parse" in
-                  let* α1 := M.read s in
-                  M.call α0 [ α1 ])
-              ])
+          M.closure
+            (fun γ =>
+              match γ with
+              | [ α0 ] =>
+                let* α0 := M.alloc α0 in
+                match_operator
+                  α0
+                  [
+                    fun γ =>
+                      let* s := M.copy γ in
+                      let* α0 :=
+                        M.get_associated_function (Ty.path "str") "parse" in
+                      let* α1 := M.read s in
+                      M.call α0 [ α1 ]
+                  ]
+              | _ => M.impossible
+              end)
         ] in
     let* α6 :=
       M.get_associated_function
@@ -158,7 +163,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α8
         [
           fun γ =>
-            (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
             let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
             let* numbers := M.copy γ0_0 in
             let* errors := M.copy γ0_1 in
@@ -413,7 +418,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

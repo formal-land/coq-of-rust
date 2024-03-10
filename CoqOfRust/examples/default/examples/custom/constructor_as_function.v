@@ -122,9 +122,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α10 :=
         M.call
           α1
-          [
-            α9;
-            fun α => (M.pure (constructor_as_function.Constructor.Build_t α))
+          [ α9; fun α => M.pure (constructor_as_function.Constructor.Build_t α)
           ] in
       let* α11 := M.call α0 [ α10 ] in
       M.alloc α11 in

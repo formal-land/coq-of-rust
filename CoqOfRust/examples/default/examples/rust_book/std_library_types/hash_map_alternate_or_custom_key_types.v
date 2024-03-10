@@ -91,9 +91,9 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
           Value.DeclaredButUndefined
           [
             fun γ =>
-              (match_operator
+              match_operator
                 Value.DeclaredButUndefined
-                [ fun γ => (M.alloc (Value.Tuple [])) ])
+                [ fun γ => M.alloc (Value.Tuple []) ]
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -280,7 +280,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α3
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -356,9 +356,9 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α10 := M.call α0 [ α9 ] in
                 M.alloc α10 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -370,7 +370,7 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
               let* α5 := M.call α0 [ α4 ] in
               M.alloc α5 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

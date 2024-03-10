@@ -232,7 +232,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         point
         [
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_record_field_or_break_match
                 γ
                 "structures::Point"
@@ -302,7 +302,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               pair
               [
                 fun γ =>
-                  (let* γ0_0 :=
+                  let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ
                       "structures::Pair"
@@ -347,8 +347,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α12 := M.call α0 [ α11 ] in
                       M.alloc α12 in
                     M.alloc (Value.Tuple []) in
-                  M.alloc (Value.Tuple []))
-              ])
+                  M.alloc (Value.Tuple [])
+              ]
         ] in
     M.read α0
   | _, _ => M.impossible

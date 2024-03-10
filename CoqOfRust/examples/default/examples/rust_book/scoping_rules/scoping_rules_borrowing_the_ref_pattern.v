@@ -12,7 +12,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -103,7 +103,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         c
         [
           fun γ =>
-            (let* ref_c1 := M.alloc γ in
+            let* ref_c1 := M.alloc γ in
             let* ref_c2 := M.alloc c in
             let* _ :=
               let* _ :=
@@ -151,7 +151,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   point
                   [
                     fun γ =>
-                      (let* γ0_0 :=
+                      let* γ0_0 :=
                         M.get_struct_record_field_or_break_match
                           γ
                           "scoping_rules_borrowing_the_ref_pattern::Point"
@@ -162,7 +162,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           "scoping_rules_borrowing_the_ref_pattern::Point"
                           "y" in
                       let* ref_to_x := M.alloc γ0_0 in
-                      M.read ref_to_x)
+                      M.read ref_to_x
                   ] in
               M.copy α0 in
             let* mutable_point := M.copy point in
@@ -171,7 +171,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 mutable_point
                 [
                   fun γ =>
-                    (let* γ0_0 :=
+                    let* γ0_0 :=
                       M.get_struct_record_field_or_break_match
                         γ
                         "scoping_rules_borrowing_the_ref_pattern::Point"
@@ -185,7 +185,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* _ :=
                       let* α0 := M.read mut_ref_to_y in
                       M.assign α0 (Value.Integer Integer.I32 1) in
-                    M.alloc (Value.Tuple []))
+                    M.alloc (Value.Tuple [])
                 ] in
             let* _ :=
               let* _ :=
@@ -269,13 +269,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 mutable_tuple
                 [
                   fun γ =>
-                    (let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
+                    let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
                     let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
                     let* last := M.alloc γ0_1 in
                     let* _ :=
                       let* α0 := M.read last in
                       M.assign α0 (Value.Integer Integer.U32 2) in
-                    M.alloc (Value.Tuple []))
+                    M.alloc (Value.Tuple [])
                 ] in
             let* _ :=
               let* _ :=
@@ -304,7 +304,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 := M.call α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

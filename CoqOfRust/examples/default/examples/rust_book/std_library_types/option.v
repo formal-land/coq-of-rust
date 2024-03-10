@@ -58,7 +58,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            (let* _ :=
+            let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
                 M.get_associated_function
@@ -89,9 +89,9 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α12 := M.call α0 [ α11 ] in
               M.alloc α12 in
-            M.alloc (Value.Tuple []));
+            M.alloc (Value.Tuple []);
           fun γ =>
-            (let* γ0_0 :=
+            let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
                 "core::option::Option::Some"
@@ -134,7 +134,7 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ] in
               let* α15 := M.call α0 [ α14 ] in
               M.alloc α15 in
-            M.alloc (Value.Tuple []))
+            M.alloc (Value.Tuple [])
         ] in
     M.read α5
   | _, _ => M.impossible

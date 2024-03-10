@@ -206,7 +206,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
     | [ Self ], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => (M.read self) ] in
+        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1133,7 +1133,7 @@ Module Impl_erc721_Erc721.
           α7
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1161,15 +1161,15 @@ Module Impl_erc721_Erc721.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* α0 :=
         M.alloc
@@ -1421,7 +1421,7 @@ Module Impl_erc721_Erc721.
           α6
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1449,15 +1449,15 @@ Module Impl_erc721_Erc721.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* α0 :=
         M.alloc
@@ -1502,7 +1502,7 @@ Module Impl_erc721_Erc721.
           self
           [
             fun γ =>
-              (let* γ := M.read γ in
+              let* γ := M.read γ in
               let* γ1_0 :=
                 M.get_struct_record_field_or_break_match
                   γ
@@ -1575,19 +1575,24 @@ Module Impl_erc721_Erc721.
                     α2
                     [
                       α6;
-                      fun α0 (* : Ty.path "u32" *) =>
-                        (let* α0 := M.alloc α0 in
-                        match_operator
-                          α0
-                          [
-                            fun γ =>
-                              (let* c := M.copy γ in
-                              let* α0 := M.read c in
-                              let* α1 :=
-                                M.alloc (Value.Integer Integer.U32 1) in
-                              let* α2 := M.read (M.use α1) in
-                              BinOp.Panic.sub α0 α2)
-                          ])
+                      M.closure
+                        (fun γ =>
+                          match γ with
+                          | [ α0 ] =>
+                            let* α0 := M.alloc α0 in
+                            match_operator
+                              α0
+                              [
+                                fun γ =>
+                                  let* c := M.copy γ in
+                                  let* α0 := M.read c in
+                                  let* α1 :=
+                                    M.alloc (Value.Integer Integer.U32 1) in
+                                  let* α2 := M.read (M.use α1) in
+                                  BinOp.Panic.sub α0 α2
+                              ]
+                          | _ => M.impossible
+                          end)
                     ] in
                 let* α8 :=
                   M.call
@@ -1601,7 +1606,7 @@ Module Impl_erc721_Erc721.
                     α10
                     [
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::ops::control_flow::ControlFlow::Break"
@@ -1629,15 +1634,15 @@ Module Impl_erc721_Erc721.
                         let* α3 := M.return_ α2 in
                         let* α4 := M.read α3 in
                         let* α5 := M.never_to_any α4 in
-                        M.alloc α5);
+                        M.alloc α5;
                       fun γ =>
-                        (let* γ0_0 :=
+                        let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
                             γ
                             "core::ops::control_flow::ControlFlow::Continue"
                             0 in
                         let* val := M.copy γ0_0 in
-                        M.pure val)
+                        M.pure val
                     ] in
                 M.copy α11 in
               let* _ :=
@@ -1667,7 +1672,7 @@ Module Impl_erc721_Erc721.
               M.alloc
                 (Value.StructTuple
                   "core::result::Result::Ok"
-                  [ Value.Tuple [] ]))
+                  [ Value.Tuple [] ])
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -1783,7 +1788,7 @@ Module Impl_erc721_Erc721.
           α6
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1811,15 +1816,15 @@ Module Impl_erc721_Erc721.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* α0 :=
         M.alloc
@@ -1873,7 +1878,7 @@ Module Impl_erc721_Erc721.
           α6
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1901,15 +1906,15 @@ Module Impl_erc721_Erc721.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* α0 :=
         M.alloc
@@ -1968,7 +1973,7 @@ Module Impl_erc721_Erc721.
           α6
           [
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Break"
@@ -1996,15 +2001,15 @@ Module Impl_erc721_Erc721.
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
-              M.alloc α5);
+              M.alloc α5;
             fun γ =>
-              (let* γ0_0 :=
+              let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
               let* val := M.copy γ0_0 in
-              M.pure val)
+              M.pure val
           ] in
       let* _ :=
         let* α0 :=
