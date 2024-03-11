@@ -2,6 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants := [];
+} *)
 
 (*
 fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {

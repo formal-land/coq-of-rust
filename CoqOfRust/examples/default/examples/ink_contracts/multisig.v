@@ -414,6 +414,22 @@ Definition WRONG_TRANSACTION_ID : Value.t :=
 (* Struct CallInput *)
 
 (* Enum ConfirmationStatus *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Confirmed";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "ConfirmationsNeeded";
+        item := Tuple [ Ty.path "u32" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   (*
@@ -522,6 +538,17 @@ Module Impl_core_default_Default_for_multisig_Transaction.
 End Impl_core_default_Default_for_multisig_Transaction.
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "TransactionFailed";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_clone_Clone_for_multisig_Error.
   (*
@@ -684,6 +711,52 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* Struct RequirementChange *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Confirmation";
+        item := Tuple [ Ty.path "multisig::Confirmation" ];
+        discriminant := None;
+      };
+      {
+        name := "Revocation";
+        item := Tuple [ Ty.path "multisig::Revocation" ];
+        discriminant := None;
+      };
+      {
+        name := "Submission";
+        item := Tuple [ Ty.path "multisig::Submission" ];
+        discriminant := None;
+      };
+      {
+        name := "Cancellation";
+        item := Tuple [ Ty.path "multisig::Cancellation" ];
+        discriminant := None;
+      };
+      {
+        name := "Execution";
+        item := Tuple [ Ty.path "multisig::Execution" ];
+        discriminant := None;
+      };
+      {
+        name := "OwnerAddition";
+        item := Tuple [ Ty.path "multisig::OwnerAddition" ];
+        discriminant := None;
+      };
+      {
+        name := "OwnerRemoval";
+        item := Tuple [ Ty.path "multisig::OwnerRemoval" ];
+        discriminant := None;
+      };
+      {
+        name := "RequirementChange";
+        item := Tuple [ Ty.path "multisig::RequirementChange" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_multisig_Env.
   Definition Self : Ty.t := Ty.path "multisig::Env".

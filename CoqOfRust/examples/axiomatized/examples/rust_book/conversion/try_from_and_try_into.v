@@ -55,5 +55,4 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
       (* Instance polymorphic types *) [].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

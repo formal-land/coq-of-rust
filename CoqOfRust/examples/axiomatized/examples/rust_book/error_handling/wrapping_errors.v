@@ -2,6 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum DoubleError *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "EmptyVec";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Parse";
+        item := Tuple [ Ty.path "core::num::error::ParseIntError" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -63,5 +79,4 @@ Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
 
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

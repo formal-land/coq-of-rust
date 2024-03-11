@@ -20,5 +20,4 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       (* Instance polymorphic types *) [ T ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

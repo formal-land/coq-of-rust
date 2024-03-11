@@ -14,7 +14,6 @@ fn main() {
     println!("I got {:?} arguments: {:?}.", args.len() - 1, &args[1..]);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

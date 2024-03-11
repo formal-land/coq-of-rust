@@ -2,6 +2,37 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum WebEvent *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "PageLoad";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "PageUnload";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "KeyPress";
+        item := Tuple [ Ty.path "char" ];
+        discriminant := None;
+      };
+      {
+        name := "Paste";
+        item := Tuple [ Ty.path "alloc::string::String" ];
+        discriminant := None;
+      };
+      {
+        name := "Click";
+        item := Struct [ ("x", Ty.path "i64"); ("y", Ty.path "i64") ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (*
 fn inspect(event: WebEvent) {
@@ -192,7 +223,6 @@ fn main() {
     inspect(unload);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

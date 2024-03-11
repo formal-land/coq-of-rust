@@ -57,5 +57,4 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       (* Instance polymorphic types *) [ A; B ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

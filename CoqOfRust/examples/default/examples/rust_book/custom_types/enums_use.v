@@ -2,8 +2,40 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Status *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Rich";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Poor";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (* Enum Work *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Civilian";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Soldier";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (*
 fn main() {
@@ -25,7 +57,6 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

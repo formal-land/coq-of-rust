@@ -122,7 +122,6 @@ Module my_mod.
                 println!("called `my_mod::nested::private_function()`");
             }
     *)
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition private_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
       | [], [] =>
@@ -351,7 +350,6 @@ Module my_mod.
                 println!("called `my_mod::private_nested::function()`");
             }
     *)
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
       | [], [] =>
@@ -380,7 +378,6 @@ Module my_mod.
                 println!("called `my_mod::private_nested::restricted_function()`");
             }
     *)
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition restricted_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
       | [], [] =>
@@ -475,7 +472,6 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

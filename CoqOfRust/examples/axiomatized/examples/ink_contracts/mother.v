@@ -201,6 +201,27 @@ Module Impl_core_clone_Clone_for_mother_Bids.
 End Impl_core_clone_Clone_for_mother_Bids.
 
 (* Enum Outline *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "NoWinner";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "WinnerDetected";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "PayoutCompleted";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
   Axiom Implements :
@@ -263,6 +284,37 @@ Module Impl_core_clone_Clone_for_mother_Outline.
 End Impl_core_clone_Clone_for_mother_Outline.
 
 (* Enum Status *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "NotStarted";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "OpeningPeriod";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "EndingPeriod";
+        item := Tuple [ Ty.path "u32" ];
+        discriminant := None;
+      };
+      {
+        name := "Ended";
+        item := Tuple [ Ty.path "mother::Outline" ];
+        discriminant := None;
+      };
+      {
+        name := "RfDelay";
+        item := Tuple [ Ty.path "u32" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
   Axiom Implements :
@@ -399,6 +451,22 @@ Module Impl_core_default_Default_for_mother_Auction.
 End Impl_core_default_Default_for_mother_Auction.
 
 (* Enum Failure *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Revert";
+        item := Tuple [ Ty.path "alloc::string::String" ];
+        discriminant := None;
+      };
+      {
+        name := "Panic";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
   Axiom Implements :
@@ -451,6 +519,17 @@ End Impl_core_cmp_Eq_for_mother_Failure.
 (* Struct AuctionEchoed *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "AuctionEchoed";
+        item := Tuple [ Ty.path "mother::AuctionEchoed" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_mother_Env.
   Definition Self : Ty.t := Ty.path "mother::Env".

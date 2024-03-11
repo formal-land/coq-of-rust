@@ -3,6 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   (* Enum MathError *)
+  (* {
+    ty_params := [];
+    variants :=
+      [
+        {
+          name := "DivisionByZero";
+          item := Tuple [];
+          discriminant := None;
+        };
+        {
+          name := "NonPositiveLogarithm";
+          item := Tuple [];
+          discriminant := None;
+        };
+        {
+          name := "NegativeSquareRoot";
+          item := Tuple [];
+          discriminant := None;
+        }
+      ];
+  } *)
   
   Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -37,5 +58,4 @@ Module checked.
   Parameter op : (list Ty.t) -> (list Value.t) -> M.
 End checked.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

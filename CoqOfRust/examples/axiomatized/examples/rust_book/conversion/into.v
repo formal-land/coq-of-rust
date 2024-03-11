@@ -15,5 +15,4 @@ Module Impl_core_convert_From_i32_for_into_Number.
       (* Instance polymorphic types *) [].
 End Impl_core_convert_From_i32_for_into_Number.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

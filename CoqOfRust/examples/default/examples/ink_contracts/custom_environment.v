@@ -149,6 +149,17 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "EventWithTopics";
+        item := Tuple [ Ty.path "custom_environment::EventWithTopics" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_custom_environment_Env.
   Definition Self : Ty.t := Ty.path "custom_environment::Env".

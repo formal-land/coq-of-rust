@@ -1,8 +1,6 @@
 use crate::coq;
 use crate::env::*;
 use crate::path::*;
-use crate::render::*;
-use itertools::Itertools;
 use rustc_hir::{FnDecl, FnRetTy, Ty};
 use rustc_middle::ty::TyCtxt;
 use std::rc::Rc;
@@ -12,10 +10,6 @@ pub(crate) enum CoqType {
     Var(String),
     Path {
         path: Rc<Path>,
-    },
-    PathInTrait {
-        path: Rc<Path>,
-        self_ty: Rc<CoqType>,
     },
     Application {
         func: Rc<CoqType>,
@@ -28,11 +22,9 @@ pub(crate) enum CoqType {
         ret: Rc<CoqType>,
     },
     Tuple(Vec<Rc<CoqType>>),
-    OpaqueType(Vec<Path>),
     // TODO: add the type parameters for the traits
     Dyn(Vec<Path>),
     Infer,
-    Val(Rc<CoqType>),
 }
 
 impl CoqType {
@@ -76,17 +68,6 @@ impl CoqType {
         }
 
         None
-    }
-
-    pub(crate) fn val(self: Rc<CoqType>) -> Rc<CoqType> {
-        Rc::new(CoqType::Val(self))
-    }
-
-    pub(crate) fn unval(self: Rc<CoqType>) -> Option<Rc<CoqType>> {
-        match &*self {
-            CoqType::Val(ty) => Some(ty.clone()),
-            _ => None,
-        }
     }
 }
 
@@ -159,17 +140,6 @@ impl CoqType {
             CoqType::Var(name) => coq::Expression::just_name(name),
             CoqType::Path { path } => coq::Expression::just_name("Ty.path")
                 .apply(&coq::Expression::String(path.to_string())),
-            CoqType::PathInTrait { path, self_ty } => coq::Expression::Variable {
-                ident: path.as_ref().clone(),
-                no_implicit: false,
-            }
-            .apply_many_args(&[
-                (Some("Self".to_string()), self_ty.to_coq()),
-                (
-                    Some("Trait".to_string()),
-                    coq::Expression::Code(text("ltac:(refine _)")),
-                ),
-            ]),
             CoqType::Application { func, args } => {
                 if args.is_empty() {
                     func.to_coq()
@@ -194,10 +164,6 @@ impl CoqType {
                     exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
                 })
             }
-            CoqType::OpaqueType(_) => coq::Expression::Variable {
-                ident: Path::new(&["_ (* OpaqueTy *)"]),
-                no_implicit: false,
-            },
             CoqType::Dyn(traits) => {
                 coq::Expression::just_name("Ty.dyn").apply(&coq::Expression::List {
                     exprs: traits
@@ -212,7 +178,6 @@ impl CoqType {
                 })
             }
             CoqType::Infer => coq::Expression::Wild,
-            CoqType::Val(ty) => ty.to_coq(),
         }
     }
 
@@ -221,9 +186,6 @@ impl CoqType {
         match self {
             CoqType::Var(name) => name.clone(),
             CoqType::Path { path, .. } => path.to_name(),
-            CoqType::PathInTrait { path, self_ty } => {
-                format!("{}_{}", self_ty.to_name(), path.to_name())
-            }
             CoqType::Application { func, args } => {
                 let mut name = func.to_name();
                 for arg in args {
@@ -249,14 +211,6 @@ impl CoqType {
                 }
                 name
             }
-            CoqType::OpaqueType(paths) => {
-                let mut name = "OpaqueType".to_string();
-                for path in paths {
-                    name.push('_');
-                    name.push_str(&path.to_name());
-                }
-                name
-            }
             CoqType::Dyn(paths) => {
                 let mut name = "Dyn".to_string();
                 for path in paths {
@@ -266,126 +220,6 @@ impl CoqType {
                 name
             }
             CoqType::Infer => "inferred_type".to_string(),
-            CoqType::Val(ty) => format!("Val_{}", ty.to_name()),
         }
-    }
-
-    /// returns true if the subtree rooted in [self] contains an opaque type
-    pub(crate) fn has_opaque_types(&self) -> bool {
-        match self {
-            CoqType::Var(_) => false,
-            CoqType::Path { .. } => false,
-            CoqType::PathInTrait { path: _, self_ty } => self_ty.has_opaque_types(),
-            CoqType::Application { args, .. } => args.iter().any(|ty| ty.has_opaque_types()),
-            CoqType::Function { args, ret } => {
-                args.iter().any(|ty| ty.has_opaque_types()) && ret.has_opaque_types()
-            }
-            CoqType::Tuple(types) => types.iter().any(|ty| ty.has_opaque_types()),
-            CoqType::OpaqueType(_) => true,
-            CoqType::Dyn(_) => false,
-            CoqType::Infer => false,
-            CoqType::Val(ty) => ty.has_opaque_types(),
-        }
-    }
-
-    /// returns the list of the parameters of opaque types in the subtree rooted in [self]
-    pub(crate) fn opaque_types_bounds(&self) -> Vec<Vec<Path>> {
-        match self {
-            CoqType::Var(_) => vec![],
-            CoqType::Path { .. } => vec![],
-            CoqType::PathInTrait { path: _, self_ty } => self_ty.opaque_types_bounds(),
-            CoqType::Application { args, .. } => args
-                .iter()
-                .flat_map(|ty| ty.opaque_types_bounds())
-                .collect(),
-            CoqType::Function { args, ret } => args
-                .iter()
-                .flat_map(|ty| ty.opaque_types_bounds())
-                .chain(ret.opaque_types_bounds())
-                .collect(),
-            CoqType::Tuple(types) => types
-                .iter()
-                .flat_map(|ty| ty.opaque_types_bounds())
-                .collect(),
-            CoqType::OpaqueType(bounds) => vec![bounds.to_owned()],
-            CoqType::Dyn(..) => vec![],
-            CoqType::Infer => vec![],
-            CoqType::Val(ty) => ty.opaque_types_bounds(),
-        }
-    }
-
-    /// substitutes all occurrences of OpaqueType with ty
-    #[allow(dead_code)]
-    pub(crate) fn subst_opaque_types(&mut self, _ty: &CoqType) {
-        // match self {
-        //     CoqType::Var(_) => {}
-        //     CoqType::PathInTrait(_, self_ty) => self_ty.subst_opaque_types(ty),
-        //     CoqType::Application { args, .. } => args
-        //         .iter_mut()
-        //         .map(|arg_ty| arg_ty.subst_opaque_types(ty))
-        //         .collect(),
-        //     CoqType::Function { args, ret } => {
-        //         ret.subst_opaque_types(ty);
-        //         args.iter_mut()
-        //             .map(|arg_ty| arg_ty.subst_opaque_types(ty))
-        //             .collect()
-        //     }
-        //     CoqType::Tuple(types) => types
-        //         .iter_mut()
-        //         .map(|one_ty| one_ty.subst_opaque_types(ty))
-        //         .collect(),
-        //     CoqType::Array(item_ty) => item_ty.subst_opaque_types(ty),
-        //     CoqType::Ref(ref_ty, _) => ref_ty.subst_opaque_types(ty),
-        //     CoqType::OpaqueType(_) => *self = ty.clone(),
-        //     CoqType::Dyn(_) => (),
-        //     CoqType::Infer => (),
-        // }
-    }
-
-    /// returns the list of the trait names for the opaque types
-    /// generated for the trait objects from the subtree rooted in [self]
-    #[allow(dead_code)]
-    pub(crate) fn collect_and_subst_trait_objects(&mut self) -> Vec<Vec<Path>> {
-        vec![]
-        // match self {
-        //     CoqType::Var(_) => vec![],
-        //     CoqType::PathInTrait(_, self_ty) => self_ty.collect_and_subst_trait_objects(),
-        //     CoqType::Application { args, .. } => args
-        //         .iter_mut()
-        //         .flat_map(|ty| ty.collect_and_subst_trait_objects())
-        //         .collect(),
-        //     CoqType::Function { args, ret } => args
-        //         .iter_mut()
-        //         .flat_map(|ty| ty.collect_and_subst_trait_objects())
-        //         .chain(ret.collect_and_subst_trait_objects())
-        //         .collect(),
-        //     CoqType::Tuple(types) => types
-        //         .iter_mut()
-        //         .flat_map(|ty| ty.collect_and_subst_trait_objects())
-        //         .collect(),
-        //     CoqType::Array(ty) => ty.collect_and_subst_trait_objects(),
-        //     CoqType::Ref(ty, _) => ty.collect_and_subst_trait_objects(),
-        //     CoqType::OpaqueType(..) => vec![],
-        //     CoqType::Dyn(trait_names) => {
-        //         let tn = trait_names.to_owned();
-        //         *self = *CoqType::var(CoqType::trait_object_to_name(trait_names));
-        //         vec![tn]
-        //     }
-        //     CoqType::Infer => vec![],
-        // }
-    }
-
-    /// produces a name for the opaque type generated for the trait object
-    #[allow(dead_code)]
-    pub(crate) fn trait_object_to_name(trait_names: &[Path]) -> String {
-        [
-            "Dyn_",
-            &trait_names
-                .iter()
-                .map(|name| name.to_name())
-                .collect_vec()
-                .join("_"),
-        ]
-        .concat()
     }
 }

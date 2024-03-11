@@ -24,5 +24,4 @@ Module Impl_generics_implementation_GenVal_T.
     M.IsAssociatedFunction (Self T) "value" value [ T ].
 End Impl_generics_implementation_GenVal_T.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

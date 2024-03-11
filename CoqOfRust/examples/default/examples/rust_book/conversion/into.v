@@ -32,7 +32,6 @@ fn main() {
     <i32 as std::convert::Into<Number>>::into(5);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

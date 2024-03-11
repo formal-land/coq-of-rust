@@ -212,8 +212,40 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* Struct Approval *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Transfer";
+        item := Tuple [ Ty.path "erc20::Transfer" ];
+        discriminant := None;
+      };
+      {
+        name := "Approval";
+        item := Tuple [ Ty.path "erc20::Approval" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "InsufficientBalance";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "InsufficientAllowance";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Axiom Result :
   forall (T : Ty.t),

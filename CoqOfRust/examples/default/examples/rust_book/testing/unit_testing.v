@@ -22,7 +22,6 @@ fn bad_add(a: i32, b: i32) -> i32 {
     a - b
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition bad_add (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ a; b ] =>

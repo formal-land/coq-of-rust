@@ -27,5 +27,4 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       (* Instance polymorphic types *) [].
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

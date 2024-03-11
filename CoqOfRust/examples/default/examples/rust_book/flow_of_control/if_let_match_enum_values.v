@@ -2,6 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Foo *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Bar";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Baz";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Qux";
+        item := Tuple [ Ty.path "u32" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (*
 fn main() {
@@ -33,7 +54,6 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

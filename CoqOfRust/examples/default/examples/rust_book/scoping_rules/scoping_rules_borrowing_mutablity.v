@@ -7,7 +7,6 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   (*
   Clone
   *)
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [ self ] =>
@@ -179,7 +178,6 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

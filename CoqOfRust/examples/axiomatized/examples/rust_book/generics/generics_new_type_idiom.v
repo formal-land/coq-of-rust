@@ -25,5 +25,4 @@ End Impl_generics_new_type_idiom_Days.
 
 Parameter old_enough : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

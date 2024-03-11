@@ -2,6 +2,37 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Fruit *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Apple";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Orange";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Banana";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Kiwi";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Lemon";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   (*
@@ -77,7 +108,6 @@ fn main() {
     // first_available_fruit: Some(Kiwi)
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

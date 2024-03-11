@@ -4,7 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Point *)
 
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -17,7 +16,6 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -45,5 +43,4 @@ Parameter origin : (list Ty.t) -> (list Value.t) -> M.
 
 Parameter boxed_origin : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

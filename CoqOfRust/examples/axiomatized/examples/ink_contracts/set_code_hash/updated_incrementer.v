@@ -42,6 +42,10 @@ Axiom Hash :
     (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants := [];
+} *)
 
 (* Struct Env *)
 

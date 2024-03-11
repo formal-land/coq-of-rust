@@ -2,6 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Inch *)
+(* {
+  ty_params := [];
+  variants := [];
+} *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   (*
@@ -64,6 +68,10 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 (* Enum Mm *)
+(* {
+  ty_params := [];
+  variants := [];
+} *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   (*
@@ -294,7 +302,6 @@ fn main() {
     //let one_feter = one_foot + one_meter;
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

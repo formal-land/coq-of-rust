@@ -117,13 +117,19 @@ struct TraitImplItem {
     kind: Rc<FieldWithDefault<Rc<ImplItemKind>>>,
 }
 
+#[derive(Debug)]
+struct TypeEnumVariant {
+    name: String,
+    item: Rc<VariantItem>,
+    discriminant: Option<u128>,
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Debug)]
 enum TopLevelItem {
     Const {
         name: String,
-        ty: Rc<CoqType>,
         value: Option<Rc<Expr>>,
     },
     Definition {
@@ -140,7 +146,7 @@ enum TopLevelItem {
     TypeEnum {
         name: String,
         ty_params: Vec<(String, Option<Rc<CoqType>>)>,
-        variants: Vec<(String, Rc<VariantItem>, Option<u128>)>,
+        variants: Vec<Rc<TypeEnumVariant>>,
     },
     TypeStructStruct(TypeStructStruct),
     TypeStructTuple {
@@ -360,24 +366,18 @@ fn compile_top_level_item_without_local_items<'a>(
                 return vec![];
             }
 
-            let value = if env.axiomatize {
+            let value_without_alloc = if env.axiomatize {
                 None
             } else {
-                let value = compile_hir_id(env, body_id.hir_id);
-                Some(value)
+                Some(compile_hir_id(env, body_id.hir_id))
             };
-            let ty = compile_type(tcx, env, &item.owner_id.def_id, ty);
-
-            let (value, ty) = if let ItemKind::Static(_, mutability, _) = &item.kind {
-                (
-                    value.map(|value| value.alloc()),
-                    CoqType::make_ref(mutability, ty).val(),
-                )
+            let value = if let ItemKind::Static(_, _, _) = &item.kind {
+                value_without_alloc.map(|value_without_alloc| value_without_alloc.alloc())
             } else {
-                (value, ty.val())
+                value_without_alloc
             };
 
-            vec![Rc::new(TopLevelItem::Const { name, ty, value })]
+            vec![Rc::new(TopLevelItem::Const { name, value })]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
             if check_if_is_test_main_function(tcx, body_id) {
@@ -484,7 +484,11 @@ fn compile_top_level_item_without_local_items<'a>(
                             }
                         };
 
-                        (name, Rc::new(fields), discriminant)
+                        Rc::new(TypeEnumVariant {
+                            name,
+                            item: Rc::new(fields),
+                            discriminant,
+                        })
                     })
                     .collect(),
             })]
@@ -1116,9 +1120,8 @@ fn mt_trait_items(body: Vec<(String, Rc<TraitItem>)>) -> Vec<(String, Rc<TraitIt
 /// Monad transform for [TopLevelItem]
 fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
     match item.as_ref() {
-        TopLevelItem::Const { name, ty, value } => Rc::new(TopLevelItem::Const {
+        TopLevelItem::Const { name, value } => Rc::new(TopLevelItem::Const {
             name: name.clone(),
-            ty: ty.clone(),
             value: match value {
                 None => value.clone(),
                 Some(value) => {
@@ -1337,12 +1340,6 @@ impl FunDefinition {
                     Some(snippet) => snippet.to_coq(),
                     None => vec![],
                 },
-                optional_insert_vec(
-                    !self.is_dead_code,
-                    vec![coq::TopLevelItem::Comment(coq::Comment::new(
-                        "#[allow(dead_code)] - function was ignored by the compiler",
-                    ))],
-                ),
                 match &self.signature_and_body.body {
                     None => vec![coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
@@ -1602,10 +1599,67 @@ impl Snippet {
     }
 }
 
+impl VariantItem {
+    fn to_coq(&self) -> coq::Expression {
+        match self {
+            VariantItem::Struct { fields } => {
+                coq::Expression::just_name("Struct").apply(&coq::Expression::List {
+                    exprs: fields
+                        .iter()
+                        .map(|(name, ty)| {
+                            coq::Expression::Tuple(vec![
+                                coq::Expression::String(name.to_string()),
+                                ty.to_coq(),
+                            ])
+                        })
+                        .collect(),
+                })
+            }
+            VariantItem::Tuple { tys } => {
+                coq::Expression::just_name("Tuple").apply(&coq::Expression::List {
+                    exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
+                })
+            }
+        }
+    }
+}
+
+impl TypeEnumVariant {
+    fn to_coq(&self) -> coq::Expression {
+        let Self {
+            name,
+            item,
+            discriminant,
+        } = self;
+
+        coq::Expression::Record {
+            fields: vec![
+                coq::Field {
+                    name: "name".to_string(),
+                    args: vec![],
+                    body: coq::Expression::String(name.to_string()),
+                },
+                coq::Field {
+                    name: "item".to_string(),
+                    args: vec![],
+                    body: item.to_coq(),
+                },
+                coq::Field {
+                    name: "discriminant".to_string(),
+                    args: vec![],
+                    body: coq::Expression::of_option(discriminant, |discriminant| {
+                        coq::Expression::U128(*discriminant)
+                    }),
+                },
+            ],
+        }
+    }
+}
+
 impl TopLevelItem {
     fn to_doc(&self, to_doc_context: ToDocContext) -> Doc {
         match self {
-            TopLevelItem::Const { name, ty, value } => match value {
+            TopLevelItem::Const { name, value } => match value {
                 None => coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
                     name,
                     &coq::DefinitionKind::Assumption {
@@ -1645,22 +1699,11 @@ impl TopLevelItem {
                     .filter(|&current_name| current_name == name)
                     .count();
 
-                coq::TopLevel::new(
-                    &[
-                        optional_insert_vec(
-                            !*is_dead_code,
-                            vec![coq::TopLevelItem::Comment(coq::Comment::new(
-                                "#[allow(dead_code)] - module was ignored by the compiler",
-                            ))],
-                        ),
-                        vec![coq::TopLevelItem::Module(coq::Module::new_with_repeat(
-                            name,
-                            nb_previous_occurrences_of_module_name,
-                            coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
-                        ))],
-                    ]
-                    .concat(),
-                )
+                coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new_with_repeat(
+                    name,
+                    nb_previous_occurrences_of_module_name,
+                    coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
+                ))])
                 .to_doc()
             }
             TopLevelItem::TypeAlias {
@@ -1699,7 +1742,40 @@ impl TopLevelItem {
                 name,
                 ty_params,
                 variants,
-            } => text(format!("(* Enum {name} *)")),
+            } => coq::TopLevel::new(&[
+                coq::TopLevelItem::Comment(coq::Expression::Message(format!("Enum {name}"))),
+                coq::TopLevelItem::Comment(coq::Expression::Record {
+                    fields: vec![
+                        coq::Field {
+                            name: "ty_params".to_string(),
+                            args: vec![],
+                            body: coq::Expression::List {
+                                exprs: ty_params
+                                    .iter()
+                                    .map(|(name, ty)| {
+                                        coq::Expression::Tuple(vec![
+                                            coq::Expression::String(name.to_string()),
+                                            match ty {
+                                                None => coq::Expression::just_name("None"),
+                                                Some(ty) => coq::Expression::just_name("Some")
+                                                    .apply(&ty.to_coq()),
+                                            },
+                                        ])
+                                    })
+                                    .collect(),
+                            },
+                        },
+                        coq::Field {
+                            name: "variants".to_string(),
+                            args: vec![],
+                            body: coq::Expression::List {
+                                exprs: variants.iter().map(|variant| variant.to_coq()).collect(),
+                            },
+                        },
+                    ],
+                }),
+            ])
+            .to_doc(),
             TopLevelItem::TypeStructStruct(tss) => text(format!("(* Struct {} *)", tss.name)),
             TopLevelItem::TypeStructTuple {
                 name,
@@ -1809,7 +1885,7 @@ impl TopLevelItem {
                 ty_params,
                 body,
             } => coq::TopLevel::new(&[
-                coq::TopLevelItem::Comment(coq::Comment::new("Trait")),
+                coq::TopLevelItem::Comment(coq::Expression::Message("Trait".to_string())),
                 coq::TopLevelItem::Module(coq::Module::new(
                     name,
                     coq::TopLevel::new(
@@ -2003,178 +2079,6 @@ impl TopLevelItem {
             TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),
         }
     }
-}
-
-fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
-    coq::Expression::just_name("Ref.map").apply_many(&[
-        coq::Expression::Function {
-            parameters: vec![coq::Expression::just_name("α")],
-            body: Rc::new(coq::Expression::just_name("Some").apply(
-                &coq::Expression::RecordField {
-                    record: Rc::new(coq::Expression::just_name("α")),
-                    field: name.to_owned(),
-                },
-            )),
-        },
-        coq::Expression::Function {
-            parameters: vec![
-                coq::Expression::just_name("β"),
-                coq::Expression::just_name("α"),
-            ],
-            body: Rc::new(coq::Expression::just_name("Some").apply(
-                &coq::Expression::RecordUpdate {
-                    record: Rc::new(coq::Expression::just_name("α")),
-                    field: name,
-                    update: Rc::new(coq::Expression::just_name("β")),
-                },
-            )),
-        },
-    ])
-}
-
-fn enum_struct_field_value<'a>(
-    constructor_name: &'a str,
-    field_name: &'a str,
-    has_more_than_one_case: bool,
-) -> coq::Expression<'a> {
-    let default_branch = if has_more_than_one_case {
-        vec![(
-            vec![coq::Expression::Wild],
-            coq::Expression::just_name("None"),
-        )]
-    } else {
-        vec![]
-    };
-
-    coq::Expression::just_name("Ref.map").apply_many(&[
-        coq::Expression::Function {
-            parameters: vec![coq::Expression::just_name("α")],
-            body: Rc::new(coq::Expression::Match {
-                scrutinees: vec![coq::Expression::just_name("α")],
-                arms: [
-                    vec![(
-                        vec![coq::Expression::just_name(constructor_name)
-                            .apply(&coq::Expression::just_name("α"))],
-                        coq::Expression::just_name("Some").apply(&coq::Expression::RecordField {
-                            record: Rc::new(coq::Expression::just_name("α")),
-                            field: format!("{constructor_name}.{field_name}"),
-                        }),
-                    )],
-                    default_branch.clone(),
-                ]
-                .concat(),
-            }),
-        },
-        coq::Expression::Function {
-            parameters: vec![
-                coq::Expression::just_name("β"),
-                coq::Expression::just_name("α"),
-            ],
-            body: Rc::new(coq::Expression::Match {
-                scrutinees: vec![coq::Expression::just_name("α")],
-                arms: [
-                    vec![(
-                        vec![coq::Expression::just_name(constructor_name)
-                            .apply(&coq::Expression::just_name("α"))],
-                        coq::Expression::just_name("Some").apply(
-                            &coq::Expression::just_name(constructor_name).apply(
-                                &coq::Expression::RecordUpdate {
-                                    record: Rc::new(coq::Expression::just_name("α")),
-                                    field: format!("{constructor_name}.{field_name}"),
-                                    update: Rc::new(coq::Expression::just_name("β")),
-                                },
-                            ),
-                        ),
-                    )],
-                    default_branch,
-                ]
-                .concat(),
-            }),
-        },
-    ])
-}
-
-fn enum_tuple_field_value(
-    constructor_name: &str,
-    nb_fields: usize,
-    field_index: usize,
-    has_more_than_one_case: bool,
-) -> coq::Expression {
-    let default_branch = if has_more_than_one_case {
-        vec![(
-            vec![coq::Expression::Wild],
-            coq::Expression::just_name("None"),
-        )]
-    } else {
-        vec![]
-    };
-
-    coq::Expression::just_name("Ref.map").apply_many(&[
-        coq::Expression::Function {
-            parameters: vec![coq::Expression::just_name("α")],
-            body: Rc::new(coq::Expression::Match {
-                scrutinees: vec![coq::Expression::just_name("α")],
-                arms: [
-                    vec![(
-                        vec![coq::Expression::just_name(constructor_name).apply_many(
-                            &(0..nb_fields)
-                                .map(|index| {
-                                    if index == field_index {
-                                        coq::Expression::just_name(&format!("α{index}"))
-                                    } else {
-                                        coq::Expression::Wild
-                                    }
-                                })
-                                .collect::<Vec<_>>(),
-                        )],
-                        coq::Expression::just_name("Some")
-                            .apply(&coq::Expression::just_name(&format!("α{field_index}"))),
-                    )],
-                    default_branch.clone(),
-                ]
-                .concat(),
-            }),
-        },
-        coq::Expression::Function {
-            parameters: vec![
-                coq::Expression::just_name("β"),
-                coq::Expression::just_name("α"),
-            ],
-            body: Rc::new(coq::Expression::Match {
-                scrutinees: vec![coq::Expression::just_name("α")],
-                arms: [
-                    vec![(
-                        vec![coq::Expression::just_name(constructor_name).apply_many(
-                            &(0..nb_fields)
-                                .map(|index| {
-                                    if index != field_index {
-                                        coq::Expression::just_name(&format!("α{index}"))
-                                    } else {
-                                        coq::Expression::Wild
-                                    }
-                                })
-                                .collect::<Vec<_>>(),
-                        )],
-                        coq::Expression::just_name("Some").apply(
-                            &coq::Expression::just_name(constructor_name).apply_many(
-                                &(0..nb_fields)
-                                    .map(|index| {
-                                        if index == field_index {
-                                            coq::Expression::just_name("β")
-                                        } else {
-                                            coq::Expression::just_name(&format!("α{index}"))
-                                        }
-                                    })
-                                    .collect::<Vec<_>>(),
-                            ),
-                        ),
-                    )],
-                    default_branch,
-                ]
-                .concat(),
-            }),
-        },
-    ])
 }
 
 impl TopLevel {

@@ -2,6 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Food *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "CordonBleu";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Steak";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Sushi";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   (*
@@ -49,6 +70,27 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Monday";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Tuesday";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Wednesday";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   (*
@@ -326,7 +368,6 @@ fn main() {
     eat(sushi, Day::Wednesday);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

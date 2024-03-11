@@ -4,7 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Book *)
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -30,5 +29,4 @@ Parameter borrow_book : (list Ty.t) -> (list Value.t) -> M.
 
 Parameter new_edition : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

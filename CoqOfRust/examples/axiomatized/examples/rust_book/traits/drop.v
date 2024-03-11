@@ -15,5 +15,4 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       (* Instance polymorphic types *) [].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

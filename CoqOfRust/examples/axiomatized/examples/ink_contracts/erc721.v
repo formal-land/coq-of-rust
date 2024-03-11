@@ -149,6 +149,47 @@ Module Impl_core_default_Default_for_erc721_Erc721.
 End Impl_core_default_Default_for_erc721_Erc721.
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "NotOwner";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "NotApproved";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "TokenExists";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "TokenNotFound";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "CannotInsert";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "CannotFetchValue";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "NotAllowed";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_Error.
   Axiom Implements :
@@ -227,6 +268,27 @@ End Impl_core_marker_Copy_for_erc721_Error.
 (* Struct ApprovalForAll *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Transfer";
+        item := Tuple [ Ty.path "erc721::Transfer" ];
+        discriminant := None;
+      };
+      {
+        name := "Approval";
+        item := Tuple [ Ty.path "erc721::Approval" ];
+        discriminant := None;
+      };
+      {
+        name := "ApprovalForAll";
+        item := Tuple [ Ty.path "erc721::ApprovalForAll" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_erc721_Env.
   Definition Self : Ty.t := Ty.path "erc721::Env".

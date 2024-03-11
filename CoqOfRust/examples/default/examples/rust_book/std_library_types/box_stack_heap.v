@@ -7,7 +7,6 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   (*
   Debug
   *)
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [ self; f ] =>
@@ -50,7 +49,6 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   (*
   Clone
   *)
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [ Self ], [ self ] =>
@@ -172,7 +170,6 @@ fn main() {
     );
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

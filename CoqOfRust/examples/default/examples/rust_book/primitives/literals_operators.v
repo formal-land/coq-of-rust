@@ -26,7 +26,6 @@ fn main() {
     println!("One million is written as {}", 1_000_000u32);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

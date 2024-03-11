@@ -17,16 +17,10 @@ pub(crate) enum TopLevelItem<'a> {
     /// the Code variant is for those constructions
     /// that are not yet represented by the types in this file
     Code(Doc<'a>),
-    Comment(Comment),
+    Comment(Expression<'a>),
     Definition(Definition<'a>),
     Line,
     Module(Module<'a>),
-}
-
-#[derive(Clone)]
-/// a coq comment (always occupies whole lines)
-pub(crate) struct Comment {
-    text: String,
 }
 
 #[derive(Clone)]
@@ -165,8 +159,12 @@ pub(crate) enum Expression<'a> {
         /// the expression for the resulting type
         image: Rc<Expression<'a>>,
     },
-    /// a string
+    /// An integer
+    U128(u128),
+    /// a string in quotes
     String(String),
+    /// a plain string in the code
+    Message(String),
     /// Type constant
     Type,
     /// the unit type
@@ -185,9 +183,9 @@ pub(crate) enum Expression<'a> {
 /// a field of a record expression
 #[derive(Clone)]
 pub(crate) struct Field<'a> {
-    name: Path,
-    args: Vec<ArgDecl<'a>>,
-    body: Expression<'a>,
+    pub(crate) name: String,
+    pub(crate) args: Vec<ArgDecl<'a>>,
+    pub(crate) body: Expression<'a>,
 }
 
 #[derive(Clone)]
@@ -230,19 +228,6 @@ pub(crate) enum ArgSpecKind {
     /// (with `{}` brackets)
     /// (we do not use non-maximal insertion level)
     Implicit,
-}
-
-impl Comment {
-    /// produces a new coq comment
-    pub(crate) fn new(text: &str) -> Self {
-        Comment {
-            text: text.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
-        concat([text("(* "), text(self.text.to_string()), text(" *)")])
-    }
 }
 
 impl<'a> TopLevel<'a> {
@@ -301,7 +286,9 @@ impl<'a> TopLevelItem<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         match self {
             TopLevelItem::Code(code) => code.to_owned(),
-            TopLevelItem::Comment(comment) => comment.to_doc(),
+            TopLevelItem::Comment(expression) => {
+                concat([text("(* "), expression.to_doc(false), text(" *)")])
+            }
             TopLevelItem::Definition(definition) => definition.to_doc(),
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
@@ -627,7 +614,9 @@ impl<'a> Expression<'a> {
                     image.to_doc(false),
                 ]),
             ),
+            Self::U128(u) => text(u.to_string()),
             Self::String(string) => text(format!("\"{string}\"")),
+            Self::Message(string) => text(string.clone()),
             Self::Type => text("Type"),
             Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
@@ -707,10 +696,17 @@ impl<'a> Expression<'a> {
             None => Expression::Unit,
         }
     }
+
+    pub(crate) fn of_option<'b, A>(expr: &'b Option<A>, to_coq: fn(&'b A) -> Self) -> Self {
+        match expr {
+            None => Expression::just_name("None"),
+            Some(expr) => Expression::just_name("Some").apply(&to_coq(expr)),
+        }
+    }
 }
 
 impl<'a> Field<'a> {
-    pub(crate) fn new(name: &Path, args: &[ArgDecl<'a>], body: &Expression<'a>) -> Self {
+    pub(crate) fn new(name: &str, args: &[ArgDecl<'a>], body: &Expression<'a>) -> Self {
         Field {
             name: name.to_owned(),
             args: args.to_owned(),
@@ -721,7 +717,7 @@ impl<'a> Field<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         nest([
             group([
-                self.name.to_doc(),
+                text(self.name.clone()),
                 optional_insert(
                     self.args.is_empty(),
                     group([

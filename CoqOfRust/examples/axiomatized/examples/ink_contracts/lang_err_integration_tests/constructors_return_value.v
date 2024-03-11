@@ -56,6 +56,17 @@ Axiom Balance :
 (* Struct ConstructorsReturnValue *)
 
 (* Enum LangError *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "CouldNotReadInput";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Axiom ConstructorResult :
   forall (T : Ty.t),

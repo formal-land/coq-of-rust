@@ -2,6 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Food *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Apple";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Carrot";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Potato";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   (*
@@ -452,7 +473,6 @@ fn main() {
     eat(cooked_potato);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

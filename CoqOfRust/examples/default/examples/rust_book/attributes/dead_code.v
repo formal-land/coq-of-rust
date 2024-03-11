@@ -13,7 +13,6 @@ Definition used_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn unused_function() {}
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition unused_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] => M.pure (Value.Tuple [])
@@ -34,7 +33,6 @@ fn main() {
     used_function();
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

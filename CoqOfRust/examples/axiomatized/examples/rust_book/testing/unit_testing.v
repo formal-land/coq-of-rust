@@ -3,7 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter add : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter bad_add : (list Ty.t) -> (list Value.t) -> M.
 
 Module tests.

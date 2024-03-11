@@ -39,5 +39,4 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       (* Instance polymorphic types *) [].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -18,5 +18,4 @@ Module my.
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

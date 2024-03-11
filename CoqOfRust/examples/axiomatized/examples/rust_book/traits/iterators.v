@@ -20,5 +20,4 @@ End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Parameter fibonacci : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

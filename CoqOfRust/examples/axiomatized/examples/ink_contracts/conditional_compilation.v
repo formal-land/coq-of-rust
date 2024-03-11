@@ -54,6 +54,22 @@ End Flip.
 (* Struct ChangesDated *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Changes";
+        item := Tuple [ Ty.path "conditional_compilation::Changes" ];
+        discriminant := None;
+      };
+      {
+        name := "ChangesDated";
+        item := Tuple [ Ty.path "conditional_compilation::ChangesDated" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_conditional_compilation_Env.
   Definition Self : Ty.t := Ty.path "conditional_compilation::Env".

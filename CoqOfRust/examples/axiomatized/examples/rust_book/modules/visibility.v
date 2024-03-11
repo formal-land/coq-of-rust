@@ -11,7 +11,6 @@ Module my_mod.
   Module nested.
     Parameter function : (list Ty.t) -> (list Value.t) -> M.
     
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Parameter private_function : (list Ty.t) -> (list Value.t) -> M.
     
     Parameter public_function_in_my_mod : (list Ty.t) -> (list Value.t) -> M.
@@ -26,15 +25,12 @@ Module my_mod.
   Parameter public_function_in_crate : (list Ty.t) -> (list Value.t) -> M.
   
   Module private_nested.
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Parameter function : (list Ty.t) -> (list Value.t) -> M.
     
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
     Parameter restricted_function : (list Ty.t) -> (list Value.t) -> M.
   End private_nested.
 End my_mod.
 
 Parameter function : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

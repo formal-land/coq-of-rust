@@ -2,6 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum VeryVerboseEnumOfThingsToDoWithNumbers *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Add";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Subtract";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Axiom Operations :
   (Ty.path "enums_type_aliases_v1::Operations") =
@@ -14,7 +30,6 @@ fn main() {
     let x = Operations::Add;
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

@@ -61,5 +61,4 @@ Module Impl_unpacking_options_via_question_mark_Person.
     M.IsAssociatedFunction Self "work_phone_area_code" work_phone_area_code [].
 End Impl_unpacking_options_via_question_mark_Person.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

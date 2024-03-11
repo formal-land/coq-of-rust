@@ -2,6 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum DoubleError *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "EmptyVec";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Parse";
+        item := Tuple [ Ty.path "core::num::error::ParseIntError" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   (*
@@ -542,7 +558,6 @@ fn main() {
     print(double_first(strings));
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

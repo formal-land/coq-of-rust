@@ -6,6 +6,17 @@ Axiom Hash :
     (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
 
 (* Enum LangError *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "CouldNotReadInput";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (* Struct CallBuilderDelegateTest *)
 

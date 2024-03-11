@@ -67,6 +67,10 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (* Struct Env *)
 
 (* Enum MultiAddress *)
+(* {
+  ty_params := [ ("AccountId", None); ("AccountIndex", None) ];
+  variants := [];
+} *)
 
 Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
   (*
@@ -99,8 +103,38 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
 (* Enum BalancesCall *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Transfer";
+        item :=
+          Struct
+            [
+              ("dest",
+                Ty.apply
+                  (Ty.path "call_runtime::MultiAddress")
+                  [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
+              ("value", Ty.path "u128")
+            ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (* Enum RuntimeCall *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Balances";
+        item := Tuple [ Ty.path "call_runtime::BalancesCall" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (* Struct RuntimeCaller *)
 
@@ -125,6 +159,17 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
 (* Enum RuntimeError *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "CallRuntimeFailed";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   (*
@@ -225,6 +270,22 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 
 (* Enum EnvError *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "CallRuntimeFailed";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "AnotherKindOfError";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
   (*

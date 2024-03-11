@@ -23,5 +23,4 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       (* Instance polymorphic types *) [ T; U ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

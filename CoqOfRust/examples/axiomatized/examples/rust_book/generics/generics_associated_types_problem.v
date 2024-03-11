@@ -32,5 +32,4 @@ End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associa
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

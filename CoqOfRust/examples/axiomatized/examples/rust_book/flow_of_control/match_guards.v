@@ -2,6 +2,21 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Temperature *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Celsius";
+        item := Tuple [ Ty.path "i32" ];
+        discriminant := None;
+      };
+      {
+        name := "Fahrenheit";
+        item := Tuple [ Ty.path "i32" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

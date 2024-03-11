@@ -153,6 +153,22 @@ Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
 (* Struct Env *)
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "InsufficientBalance";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "InsufficientAllowance";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   (*
@@ -361,6 +377,22 @@ End Impl_core_default_Default_for_trait_erc20_Erc20.
 (* Struct Approval *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Transfer";
+        item := Tuple [ Ty.path "trait_erc20::Transfer" ];
+        discriminant := None;
+      };
+      {
+        name := "Approval";
+        item := Tuple [ Ty.path "trait_erc20::Approval" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_trait_erc20_Env.
   Definition Self : Ty.t := Ty.path "trait_erc20::Env".

@@ -110,7 +110,6 @@ fn main() {
     // Error 2: the element doesn't parse to a number
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

@@ -63,5 +63,4 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

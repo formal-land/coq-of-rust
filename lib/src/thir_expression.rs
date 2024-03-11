@@ -6,7 +6,7 @@ use crate::render::*;
 use crate::thir_ty::*;
 use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
-use rustc_middle::mir::{BinOp, BorrowKind, UnOp};
+use rustc_middle::mir::{BinOp, UnOp};
 use rustc_middle::thir;
 use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::TyKind;
@@ -35,14 +35,6 @@ fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, CallKind) {
     }
 }
 
-pub(crate) fn is_mutable_borrow_kind(borrow_kind: &BorrowKind) -> bool {
-    match borrow_kind {
-        BorrowKind::Shared => false,
-        BorrowKind::Mut { .. } => true,
-        BorrowKind::Fake => todo!(),
-    }
-}
-
 pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr> {
     bindings.iter().rfold(body, |body, binding| {
         Rc::new(Expr::Let {
@@ -59,15 +51,6 @@ fn build_inner_match(
     body: Rc<Expr>,
     depth: usize,
 ) -> Rc<Expr> {
-    let default_match_arm = Rc::new(MatchArm {
-        pattern: Rc::new(Pattern::Wild),
-        body: Rc::new(Expr::Call {
-            func: Expr::local_var("M.break_match"),
-            args: vec![],
-            kind: CallKind::Effectful,
-        }),
-    });
-
     patterns
         .into_iter()
         .rfold(body, |body, (scrutinee, pattern)| match pattern.as_ref() {
@@ -91,7 +74,7 @@ fn build_inner_match(
                     }
                 },
             }),
-            Pattern::StructStruct(path, fields, struct_or_variant) => {
+            Pattern::StructStruct(path, fields, _) => {
                 let body = build_inner_match(
                     fields
                         .iter()
@@ -124,7 +107,7 @@ fn build_inner_match(
                         })
                     })
             }
-            Pattern::StructTuple(path, patterns, struct_or_variant) => {
+            Pattern::StructTuple(path, patterns, _) => {
                 let body = build_inner_match(
                     patterns
                         .iter()

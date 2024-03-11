@@ -17,5 +17,4 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

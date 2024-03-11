@@ -148,6 +148,27 @@ Axiom Hash :
 (* Struct Transfer *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Register";
+        item := Tuple [ Ty.path "dns::Register" ];
+        discriminant := None;
+      };
+      {
+        name := "SetAddress";
+        item := Tuple [ Ty.path "dns::SetAddress" ];
+        discriminant := None;
+      };
+      {
+        name := "Transfer";
+        item := Tuple [ Ty.path "dns::Transfer" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_dns_Env.
   Definition Self : Ty.t := Ty.path "dns::Env".
@@ -180,6 +201,22 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
 End Impl_core_default_Default_for_dns_DomainNameService.
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "NameAlreadyExists";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "CallerIsNotOwner";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Axiom Implements :

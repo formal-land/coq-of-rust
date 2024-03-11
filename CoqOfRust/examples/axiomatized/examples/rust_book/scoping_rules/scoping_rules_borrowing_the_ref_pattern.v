@@ -25,5 +25,4 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
       (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

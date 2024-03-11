@@ -2,10 +2,25 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum VeryVerboseEnumOfThingsToDoWithNumbers *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Add";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Subtract";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Axiom Operations :
   (Ty.path "enums_type_aliases_v1::Operations") =
     (Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers").
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -2,6 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Inch *)
+(* {
+  ty_params := [];
+  variants := [];
+} *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -41,6 +45,10 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 (* Enum Mm *)
+(* {
+  ty_params := [];
+  variants := [];
+} *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -150,5 +158,4 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
       (* Instance polymorphic types *) [ Unit ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

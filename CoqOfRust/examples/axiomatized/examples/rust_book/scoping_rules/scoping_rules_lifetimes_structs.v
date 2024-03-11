@@ -30,6 +30,22 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 (* Enum Either *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Num";
+        item := Tuple [ Ty.path "i32" ];
+        discriminant := None;
+      };
+      {
+        name := "Ref";
+        item := Tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -43,5 +59,4 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

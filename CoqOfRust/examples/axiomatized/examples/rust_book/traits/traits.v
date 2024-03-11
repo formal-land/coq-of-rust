@@ -51,5 +51,4 @@ Module Impl_traits_Sheep_2.
   Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear [].
 End Impl_traits_Sheep_2.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -36,5 +36,4 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -2,6 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Temperature *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Celsius";
+        item := Tuple [ Ty.path "i32" ];
+        discriminant := None;
+      };
+      {
+        name := "Fahrenheit";
+        item := Tuple [ Ty.path "i32" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (*
 fn main() {
@@ -18,7 +34,6 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

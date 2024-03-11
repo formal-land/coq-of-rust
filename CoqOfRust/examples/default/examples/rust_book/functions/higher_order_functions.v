@@ -48,7 +48,6 @@ fn main() {
     println!("functional style: {}", sum_of_squared_odd_numbers);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

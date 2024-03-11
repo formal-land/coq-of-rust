@@ -87,7 +87,6 @@ fn main() {
     println!("3 doubled: {}", apply_to_3(double));
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

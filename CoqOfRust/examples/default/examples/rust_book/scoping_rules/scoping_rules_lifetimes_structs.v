@@ -78,6 +78,22 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 (* Enum Either *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Num";
+        item := Tuple [ Ty.path "i32" ];
+        discriminant := None;
+      };
+      {
+        name := "Ref";
+        item := Tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   (*
@@ -160,7 +176,6 @@ fn main() {
     println!("y is *not* borrowed in {:?}", number);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

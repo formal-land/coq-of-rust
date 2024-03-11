@@ -2,8 +2,50 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Number *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Zero";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "One";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Two";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (* Enum Color *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Red";
+        item := Tuple [];
+        discriminant := Some 16711680;
+      };
+      {
+        name := "Green";
+        item := Tuple [];
+        discriminant := Some 65280;
+      };
+      {
+        name := "Blue";
+        item := Tuple [];
+        discriminant := Some 255;
+      }
+    ];
+} *)
 
 (*
 fn main() {
@@ -15,7 +57,6 @@ fn main() {
     println!("violets are #{:06x}", Color::Blue as i32);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

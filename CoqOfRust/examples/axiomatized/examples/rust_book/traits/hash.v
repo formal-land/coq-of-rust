@@ -17,5 +17,4 @@ End Impl_core_hash_Hash_for_hash_Person.
 
 Parameter calculate_hash : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

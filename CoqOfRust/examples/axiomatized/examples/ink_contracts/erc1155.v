@@ -141,6 +141,42 @@ Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t.
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 
 (* Enum Error *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "UnexistentToken";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "ZeroAddressTransfer";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "NotApproved";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "InsufficientBalance";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "SelfApproval";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "BatchTransferMismatch";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Axiom Implements :
@@ -216,6 +252,27 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* Struct Uri *)
 
 (* Enum Event *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "TransferSingle";
+        item := Tuple [ Ty.path "erc1155::TransferSingle" ];
+        discriminant := None;
+      };
+      {
+        name := "ApprovalForAll";
+        item := Tuple [ Ty.path "erc1155::ApprovalForAll" ];
+        discriminant := None;
+      };
+      {
+        name := "Uri";
+        item := Tuple [ Ty.path "erc1155::Uri" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_erc1155_Env.
   Definition Self : Ty.t := Ty.path "erc1155::Env".

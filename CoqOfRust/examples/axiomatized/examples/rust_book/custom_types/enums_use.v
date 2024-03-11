@@ -2,8 +2,39 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Status *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Rich";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Poor";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 (* Enum Work *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Civilian";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Soldier";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

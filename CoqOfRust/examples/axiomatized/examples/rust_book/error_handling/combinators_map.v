@@ -2,6 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Food *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Apple";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Carrot";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Potato";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -67,5 +88,4 @@ Parameter process : (list Ty.t) -> (list Value.t) -> M.
 
 Parameter eat : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -2,6 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Foo *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Bar";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

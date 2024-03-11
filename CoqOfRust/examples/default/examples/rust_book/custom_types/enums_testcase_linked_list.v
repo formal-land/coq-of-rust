@@ -2,6 +2,32 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum List *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Cons";
+        item :=
+          Tuple
+            [
+              Ty.path "u32";
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.path "enums_testcase_linked_list::List";
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ];
+        discriminant := None;
+      };
+      {
+        name := "Nil";
+        item := Tuple [];
+        discriminant := None;
+      }
+    ];
+} *)
 
 Module Impl_enums_testcase_linked_list_List.
   Definition Self : Ty.t := Ty.path "enums_testcase_linked_list::List".
@@ -219,7 +245,6 @@ fn main() {
     println!("{}", list.stringify());
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>

@@ -15,5 +15,4 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

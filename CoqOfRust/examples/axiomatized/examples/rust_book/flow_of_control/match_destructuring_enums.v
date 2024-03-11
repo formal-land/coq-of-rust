@@ -2,6 +2,52 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Enum Color *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Red";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Blue";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "Green";
+        item := Tuple [];
+        discriminant := None;
+      };
+      {
+        name := "RGB";
+        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        discriminant := None;
+      };
+      {
+        name := "HSV";
+        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        discriminant := None;
+      };
+      {
+        name := "HSL";
+        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        discriminant := None;
+      };
+      {
+        name := "CMY";
+        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        discriminant := None;
+      };
+      {
+        name := "CMYK";
+        item :=
+          Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        discriminant := None;
+      }
+    ];
+} *)
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
