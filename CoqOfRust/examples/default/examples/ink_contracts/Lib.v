@@ -11,6 +11,12 @@ Section Mapping.
   Parameter insert : K -> V -> t K V -> t K V.
   Parameter sum : (V -> Z) -> t K V -> Z.
   Parameter remove : K -> t K V -> t K V.
+
+  Definition contains (key : K) (self : t K V) : bool.t :=
+    match get key self with
+    | option.Option.Some _ => true
+    | option.Option.None => false
+    end.
 End Mapping.
 End Mapping.
 
@@ -63,12 +69,7 @@ Section Impl_Mapping_t_K_V.
       : M bool.t :=
     let* self : Self := M.read self in
     let* key : K := M.read key in
-    M.pure (
-      match Mapping.get key self with
-      | option.Option.Some _ => true
-      | option.Option.None => false
-      end
-    ).
+    M.pure (Mapping.contains key self).
 
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
