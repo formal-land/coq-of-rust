@@ -142,6 +142,7 @@ pub(crate) enum Expr {
     },
     StructUnit {
         path: Path,
+        #[allow(dead_code)]
         struct_or_variant: StructOrVariant,
     },
     Use(Rc<Expr>),
@@ -873,7 +874,7 @@ impl Expr {
                 path,
                 fields,
                 base,
-                struct_or_variant,
+                struct_or_variant: _,
             } => match base {
                 None => paren(
                     with_paren,
@@ -919,7 +920,7 @@ impl Expr {
             Expr::StructTuple {
                 path,
                 fields,
-                struct_or_variant,
+                struct_or_variant: _,
             } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),
@@ -933,7 +934,7 @@ impl Expr {
                 .to_doc(with_paren),
             Expr::StructUnit {
                 path,
-                struct_or_variant,
+                struct_or_variant: _,
             } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),

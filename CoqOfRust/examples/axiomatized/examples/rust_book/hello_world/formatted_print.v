@@ -3,4 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct Structure *)
+(* Struct
+  {
+    name := "Structure";
+    ty_params := [];
+    fields := [ Ty.path "i32" ];
+  } *)

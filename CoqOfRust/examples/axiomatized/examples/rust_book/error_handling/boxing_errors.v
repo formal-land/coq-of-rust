@@ -16,7 +16,11 @@ Axiom Result :
           ]
       ]).
 
-(* Struct EmptyVec *)
+(* Struct
+  {
+    name := "EmptyVec";
+    ty_params := [];
+  } *)
 
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.

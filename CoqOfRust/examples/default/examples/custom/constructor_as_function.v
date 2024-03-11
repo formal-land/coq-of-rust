@@ -36,7 +36,12 @@ Definition matching (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct Constructor *)
+(* Struct
+  {
+    name := "Constructor";
+    ty_params := [];
+    fields := [ Ty.path "i32" ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   (*

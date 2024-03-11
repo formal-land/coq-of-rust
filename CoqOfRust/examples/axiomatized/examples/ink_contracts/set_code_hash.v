@@ -9,7 +9,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct Incrementer *)
+(* Struct
+  {
+    name := "Incrementer";
+    ty_params := [];
+    fields := [ ("count", Ty.path "u32") ];
+  } *)
 
 Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Parameter default : (list Ty.t) -> (list Value.t) -> M.

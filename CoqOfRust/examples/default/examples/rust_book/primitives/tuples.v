@@ -30,7 +30,12 @@ Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct Matrix *)
+(* Struct
+  {
+    name := "Matrix";
+    ty_params := [];
+    fields := [ Ty.path "f32"; Ty.path "f32"; Ty.path "f32"; Ty.path "f32" ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
   (*

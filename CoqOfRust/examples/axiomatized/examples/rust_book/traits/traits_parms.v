@@ -21,7 +21,12 @@ Module SomeTrait.
   
 End SomeTrait.
 
-(* Struct SomeOtherType *)
+(* Struct
+  {
+    name := "SomeOtherType";
+    ty_params := [];
+    fields := [ Ty.path "u32" ];
+  } *)
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
   Axiom Implements :

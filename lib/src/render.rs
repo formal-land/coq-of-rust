@@ -19,6 +19,7 @@ pub(crate) fn optional_insert(when_not: bool, insert_doc: RcDoc<()>) -> RcDoc<()
 }
 
 /// Insert a Vec block when the predicate(usually is_empty()) doesn't satisfy.
+#[allow(dead_code)]
 pub(crate) fn optional_insert_vec<T>(when_not: bool, insert_vec: Vec<T>) -> Vec<T> {
     if when_not {
         vec![]

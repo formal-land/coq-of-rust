@@ -7,7 +7,12 @@ Parameter cos : (list Ty.t) -> (list Value.t) -> M.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct Complex *)
+(* Struct
+  {
+    name := "Complex";
+    ty_params := [];
+    fields := [ ("re", Ty.path "f32"); ("im", Ty.path "f32") ];
+  } *)
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.

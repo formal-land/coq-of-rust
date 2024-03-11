@@ -10,8 +10,8 @@ use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemRef, Item, ItemId, ItemKind,
-    PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
+    GenericParamKind, Impl, ImplItemRef, Item, ItemId, ItemKind, PatKind, QPath, TraitFn,
+    TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -45,11 +45,13 @@ struct FnSigAndBody {
 #[derive(Debug)]
 enum TraitItem {
     Definition {
+        #[allow(dead_code)]
         ty_params: Vec<String>,
+        #[allow(dead_code)]
         ty: Rc<CoqType>,
     },
     DefinitionWithDefault(Rc<FunDefinition>),
-    Type(Vec<Rc<TraitBound>>),
+    Type(),
 }
 
 /// fields common for all function definitions
@@ -57,7 +59,6 @@ enum TraitItem {
 struct FunDefinition {
     ty_params: Vec<String>,
     signature_and_body: Rc<FnSigAndBody>,
-    is_dead_code: bool,
 }
 
 #[derive(Debug)]
@@ -65,7 +66,6 @@ enum ImplItemKind {
     Const {
         ty: Rc<CoqType>,
         body: Option<Rc<Expr>>,
-        is_dead_code: bool,
     },
     Definition {
         definition: Rc<FunDefinition>,
@@ -73,12 +73,6 @@ enum ImplItemKind {
     Type {
         ty: Rc<CoqType>,
     },
-}
-
-#[derive(Debug)]
-struct TraitBound {
-    name: Path,
-    ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
 }
 
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
@@ -161,7 +155,6 @@ enum TopLevelItem {
     Module {
         name: String,
         body: Rc<TopLevel>,
-        is_dead_code: bool,
     },
     Impl {
         generic_tys: Vec<String>,
@@ -191,7 +184,6 @@ struct TypeStructStruct {
     name: String,
     ty_params: Vec<(String, Option<Rc<CoqType>>)>,
     fields: Vec<(String, Rc<CoqType>)>,
-    is_dead_code: bool,
 }
 
 #[derive(Debug)]
@@ -236,7 +228,7 @@ fn compile_fn_sig_and_body<'a>(
         &fn_sig_and_body.body.value.hir_id.owner.def_id,
         &decl.output,
     );
-    let body = compile_function_body(env, &args, fn_sig_and_body.body, ret_ty.clone(), is_axiom);
+    let body = compile_function_body(env, &args, fn_sig_and_body.body, is_axiom);
 
     Rc::new(FnSigAndBody { args, ret_ty, body })
 }
@@ -302,16 +294,6 @@ fn check_lint_attribute<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
         }
     }
     false
-}
-
-// Function checks if code block is having any `allow` attributes, and if it does,
-// it returns [true] if one of attributes disables "dead_code" lint.
-// Returns [false] if attribute is related to something else
-fn check_dead_code_lint_in_attributes<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
-    tcx: &TyCtxt,
-    item: Item,
-) -> bool {
-    check_lint_attribute(tcx, item, "dead_code")
 }
 
 fn check_coq_axiom_lint_in_attributes<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
@@ -385,7 +367,6 @@ fn compile_top_level_item_without_local_items<'a>(
             }
 
             let snippet = Snippet::of_span(env, &item.span);
-            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
 
@@ -398,14 +379,12 @@ fn compile_top_level_item_without_local_items<'a>(
                     generics,
                     &fn_sig_and_body,
                     "arg",
-                    is_dead_code,
                     is_axiom,
                 ),
             })]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let context = get_full_name(tcx, item.hir_id());
             let mut items: Vec<ItemId> = module.item_ids.to_vec();
             reorder_definitions_inplace(tcx, env, &context, &mut items);
@@ -420,7 +399,6 @@ fn compile_top_level_item_without_local_items<'a>(
             vec![Rc::new(TopLevelItem::Module {
                 name,
                 body: Rc::new(TopLevel(items)),
-                is_dead_code,
             })]
         }
         ItemKind::ForeignMod { .. } => {
@@ -494,7 +472,6 @@ fn compile_top_level_item_without_local_items<'a>(
             })]
         }
         ItemKind::Struct(body, generics) => {
-            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let ty_params = get_ty_params(tcx, env, &item.owner_id.def_id, generics);
 
             match body {
@@ -515,7 +492,6 @@ fn compile_top_level_item_without_local_items<'a>(
                         name,
                         ty_params,
                         fields,
-                        is_dead_code,
                     }))]
                 }
                 VariantData::Tuple(fields, _, _) => {
@@ -560,7 +536,6 @@ fn compile_top_level_item_without_local_items<'a>(
             items,
             ..
         }) => {
-            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let generic_tys = get_ty_params_names(tcx, env, generics);
             let self_ty = compile_type(tcx, env, &item.owner_id.def_id, self_ty);
             let mut items: Vec<ImplItemRef> = items.to_vec();
@@ -574,7 +549,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 env.current_trait_impl = Some((trait_path, self_ty.clone()));
             }
 
-            let items = compile_impl_item_refs(tcx, env, &items, is_dead_code);
+            let items = compile_impl_item_refs(tcx, env, &items);
             env.current_trait_impl = None;
 
             match of_trait {
@@ -719,11 +694,10 @@ fn compile_impl_item_refs<'a>(
     tcx: &TyCtxt<'a>,
     env: &mut Env<'a>,
     item_refs: &[ImplItemRef],
-    is_dead_code: bool,
 ) -> Vec<Rc<ImplItem>> {
     item_refs
         .iter()
-        .map(|item_ref| compile_impl_item(tcx, env, tcx.hir().impl_item(item_ref.id), is_dead_code))
+        .map(|item_ref| compile_impl_item(tcx, env, tcx.hir().impl_item(item_ref.id)))
         .collect()
 }
 
@@ -732,7 +706,6 @@ fn compile_impl_item<'a>(
     tcx: &TyCtxt<'a>,
     env: &mut Env<'a>,
     item: &rustc_hir::ImplItem,
-    is_dead_code: bool,
 ) -> Rc<ImplItem> {
     let name = to_valid_coq_name(item.ident.name.as_str());
     let snippet = Snippet::of_span(env, &item.span);
@@ -745,11 +718,7 @@ fn compile_impl_item<'a>(
             } else {
                 Some(compile_hir_id(env, body_id.hir_id))
             };
-            Rc::new(ImplItemKind::Const {
-                ty,
-                body,
-                is_dead_code,
-            })
+            Rc::new(ImplItemKind::Const { ty, body })
         }
         rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => Rc::new(ImplItemKind::Definition {
             definition: FunDefinition::compile(
@@ -758,7 +727,6 @@ fn compile_impl_item<'a>(
                 item.generics,
                 &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
                 "Pattern",
-                is_dead_code,
                 is_axiom,
             ),
         }),
@@ -783,7 +751,6 @@ fn compile_function_body(
     env: &mut Env,
     args: &[(String, Rc<CoqType>)],
     body: &rustc_hir::Body,
-    ret_ty: Rc<CoqType>,
     is_axiom: bool,
 ) -> Option<Rc<Expr>> {
     if env.axiomatize || is_axiom {
@@ -872,29 +839,6 @@ fn get_ty_params_names<'a>(
     generics: &rustc_hir::Generics,
 ) -> Vec<String> {
     compile_ty_params(tcx, env, generics, |_, _, name, _| to_valid_coq_name(&name))
-}
-
-/// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
-fn compile_generic_bounds<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
-    generic_bounds: GenericBounds,
-) -> Vec<Rc<TraitBound>> {
-    generic_bounds
-        .iter()
-        .filter_map(|generic_bound| match generic_bound {
-            GenericBound::Trait(ptraitref, _) => Some(TraitBound::compile(tcx, env, ptraitref)),
-            GenericBound::LangItemTrait { .. } => {
-                let warning_msg = "LangItem trait bounds are not supported yet.";
-                let note_msg = "It will change in the future.";
-                let span = &generic_bound.span();
-                emit_warning_with_note(env, span, warning_msg, note_msg);
-                None
-            }
-            // we ignore lifetimes
-            GenericBound::Outlives { .. } => None,
-        })
-        .collect()
 }
 
 /// computes the list of actual type parameters with their default status
@@ -991,19 +935,18 @@ fn compile_trait_item_body<'a>(
                 Rc::new(TraitItem::DefinitionWithDefault(Rc::new(FunDefinition {
                     ty_params,
                     signature_and_body,
-                    is_dead_code: false,
                 })))
             }
         },
-        TraitItemKind::Type(generic_bounds, concrete_type) => {
+        TraitItemKind::Type(_, concrete_type) => {
             if concrete_type.is_some() {
                 let span = &item.span;
                 let warning_msg = "Concrete value of associated types is not supported yet.";
-                let note_msg = "It may change in future versions.";
+                let note_msg = "It will change in future versions.";
                 emit_warning_with_note(env, span, warning_msg, note_msg);
             }
-            let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
-            Rc::new(TraitItem::Type(generic_bounds))
+
+            Rc::new(TraitItem::Type())
         }
     }
 }
@@ -1056,11 +999,7 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
 
 fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
     match item.as_ref() {
-        ImplItemKind::Const {
-            ty,
-            body,
-            is_dead_code,
-        } => {
+        ImplItemKind::Const { ty, body } => {
             let body = match body {
                 None => body.clone(),
                 Some(body) => {
@@ -1072,7 +1011,6 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
             Rc::new(ImplItemKind::Const {
                 ty: ty.clone(),
                 body,
-                is_dead_code: *is_dead_code,
             })
         }
         ImplItemKind::Definition { definition } => Rc::new(ImplItemKind::Definition {
@@ -1100,11 +1038,8 @@ impl FnSigAndBody {
 
 fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
     match body.as_ref() {
-        TraitItem::Definition { ty_params, ty } => Rc::new(TraitItem::Definition {
-            ty_params: ty_params.clone(),
-            ty: ty.clone(),
-        }),
-        TraitItem::Type(x) => Rc::new(TraitItem::Type(x.clone())), // TODO: apply monadic transform
+        TraitItem::Definition { .. } => body,
+        TraitItem::Type() => body,
         TraitItem::DefinitionWithDefault(fun_definition) => {
             Rc::new(TraitItem::DefinitionWithDefault(fun_definition.mt()))
         }
@@ -1144,14 +1079,9 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
         TopLevelItem::TypeStructStruct { .. } => item,
         TopLevelItem::TypeStructTuple { .. } => item,
         TopLevelItem::TypeStructUnit { .. } => item,
-        TopLevelItem::Module {
-            name,
-            body,
-            is_dead_code,
-        } => Rc::new(TopLevelItem::Module {
+        TopLevelItem::Module { name, body } => Rc::new(TopLevelItem::Module {
             name: name.clone(),
             body: mt_top_level(body.clone()),
-            is_dead_code: *is_dead_code,
         }),
         TopLevelItem::Impl {
             generic_tys,
@@ -1289,7 +1219,6 @@ impl FunDefinition {
         generics: &rustc_hir::Generics,
         fn_sig_and_body: &HirFnSigAndBody,
         default: &str,
-        is_dead_code: bool,
         is_axiom: bool,
     ) -> Rc<Self> {
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
@@ -1314,7 +1243,6 @@ impl FunDefinition {
         Rc::new(FunDefinition {
             ty_params,
             signature_and_body,
-            is_dead_code,
         })
     }
 
@@ -1322,7 +1250,6 @@ impl FunDefinition {
         Rc::new(FunDefinition {
             ty_params: self.ty_params.clone(),
             signature_and_body: self.signature_and_body.mt(),
-            is_dead_code: self.is_dead_code,
         })
     }
 
@@ -1441,19 +1368,8 @@ impl FunDefinition {
 impl ImplItemKind {
     fn to_coq<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> coq::TopLevel<'a> {
         match self {
-            ImplItemKind::Const {
-                ty,
-                body,
-                is_dead_code,
-            } => coq::TopLevel::concat(&[coq::TopLevel::new(&[
-                coq::TopLevelItem::Code(optional_insert(
-                    !*is_dead_code,
-                    concat([
-                        text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
-                        hardline(),
-                    ]),
-                )),
-                match body {
+            ImplItemKind::Const { ty, body } => {
+                coq::TopLevel::concat(&[coq::TopLevel::new(&[match body {
                     None => coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
                         &coq::DefinitionKind::Assumption { ty: ty.to_coq() },
@@ -1470,8 +1386,8 @@ impl ImplItemKind {
                             ])),
                         },
                     )),
-                },
-            ])]),
+                }])])
+            }
             ImplItemKind::Definition { definition, .. } => {
                 coq::TopLevel::new(&[coq::TopLevelItem::Code(definition.to_doc(
                     name,
@@ -1494,56 +1410,6 @@ impl ImplItemKind {
 
     fn to_doc<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Doc {
         self.to_coq(name, generic_tys).to_doc()
-    }
-}
-
-impl TraitBound {
-    /// Get the generics for the trait
-    fn compile<'a>(
-        tcx: &TyCtxt<'a>,
-        env: &Env<'a>,
-        ptraitref: &rustc_hir::PolyTraitRef,
-    ) -> Rc<TraitBound> {
-        Rc::new(TraitBound {
-            name: compile_path(env, ptraitref.trait_ref.path),
-            ty_params: get_ty_params_with_default_status(
-                tcx,
-                env,
-                &ptraitref.trait_ref.hir_ref_id.owner.def_id,
-                tcx.generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
-                ptraitref.trait_ref.path,
-            ),
-        })
-    }
-
-    fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::Expression<'a> {
-        coq::Expression::Application {
-            func: Rc::new(
-                coq::Expression::Variable {
-                    ident: Path::concat(&[self.name.to_owned(), Path::new(&["Trait"])]),
-                    no_implicit: false,
-                }
-                .apply(&self_ty),
-            ),
-            args: self
-                .ty_params
-                .iter()
-                .map(|(name, ty_param)| match ty_param.as_ref() {
-                    FieldWithDefault::RequiredValue(ty) | FieldWithDefault::OptionalValue(ty) => {
-                        (Some(name.clone()), ty.to_coq())
-                    }
-                    FieldWithDefault::Default => (
-                        Some(name.clone()),
-                        coq::Expression::Code(concat([
-                            self.name.to_doc(),
-                            text(".Default."),
-                            text(name.clone()),
-                        ]))
-                        .apply(&self_ty),
-                    ),
-                })
-                .collect(),
-        }
     }
 }
 
@@ -1656,6 +1522,52 @@ impl TypeEnumVariant {
     }
 }
 
+impl TypeStructStruct {
+    fn to_coq(&self) -> coq::Expression {
+        coq::Expression::just_name("Struct").apply(&coq::Expression::Record {
+            fields: vec![
+                coq::Field {
+                    name: "name".to_string(),
+                    args: vec![],
+                    body: coq::Expression::String(self.name.to_string()),
+                },
+                coq::Field {
+                    name: "ty_params".to_string(),
+                    args: vec![],
+                    body: coq::Expression::List {
+                        exprs: self
+                            .ty_params
+                            .iter()
+                            .map(|(name, ty)| {
+                                coq::Expression::Tuple(vec![
+                                    coq::Expression::String(name.to_string()),
+                                    coq::Expression::of_option(ty, |ty| ty.to_coq()),
+                                ])
+                            })
+                            .collect(),
+                    },
+                },
+                coq::Field {
+                    name: "fields".to_string(),
+                    args: vec![],
+                    body: coq::Expression::List {
+                        exprs: self
+                            .fields
+                            .iter()
+                            .map(|(name, ty)| {
+                                coq::Expression::Tuple(vec![
+                                    coq::Expression::String(name.to_string()),
+                                    ty.to_coq(),
+                                ])
+                            })
+                            .collect(),
+                    },
+                },
+            ],
+        })
+    }
+}
+
 impl TopLevelItem {
     fn to_doc(&self, to_doc_context: ToDocContext) -> Doc {
         match self {
@@ -1688,11 +1600,7 @@ impl TopLevelItem {
                 snippet,
                 definition,
             } => definition.to_doc(name, snippet, vec![]),
-            TopLevelItem::Module {
-                name,
-                body,
-                is_dead_code,
-            } => {
+            TopLevelItem::Module { name, body } => {
                 let nb_previous_occurrences_of_module_name = to_doc_context
                     .previous_module_names
                     .iter()
@@ -1755,11 +1663,7 @@ impl TopLevelItem {
                                     .map(|(name, ty)| {
                                         coq::Expression::Tuple(vec![
                                             coq::Expression::String(name.to_string()),
-                                            match ty {
-                                                None => coq::Expression::just_name("None"),
-                                                Some(ty) => coq::Expression::just_name("Some")
-                                                    .apply(&ty.to_coq()),
-                                            },
+                                            coq::Expression::of_option(ty, |ty| ty.to_coq()),
                                         ])
                                     })
                                     .collect(),
@@ -1776,15 +1680,77 @@ impl TopLevelItem {
                 }),
             ])
             .to_doc(),
-            TopLevelItem::TypeStructStruct(tss) => text(format!("(* Struct {} *)", tss.name)),
+            TopLevelItem::TypeStructStruct(tss) => {
+                coq::TopLevelItem::Comment(tss.to_coq()).to_doc()
+            }
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
                 fields,
-            } => text(format!("(* Struct {name} *)")),
-            TopLevelItem::TypeStructUnit { name, ty_params } => {
-                text(format!("(* Struct {name} *)"))
-            }
+            } => coq::TopLevelItem::Comment(coq::Expression::just_name("Struct").apply(
+                &coq::Expression::Record {
+                    fields: vec![
+                        coq::Field {
+                            name: "name".to_string(),
+                            args: vec![],
+                            body: coq::Expression::String(name.to_string()),
+                        },
+                        coq::Field {
+                            name: "ty_params".to_string(),
+                            args: vec![],
+                            body: coq::Expression::List {
+                                exprs: ty_params
+                                    .iter()
+                                    .map(|(name, ty)| {
+                                        coq::Expression::Tuple(vec![
+                                            coq::Expression::String(name.to_string()),
+                                            coq::Expression::of_option(ty, |ty| ty.to_coq()),
+                                        ])
+                                    })
+                                    .collect(),
+                            },
+                        },
+                        coq::Field {
+                            name: "fields".to_string(),
+                            args: vec![],
+                            body: coq::Expression::List {
+                                exprs: fields
+                                    .iter()
+                                    .map(|ty| ty.to_coq())
+                                    .collect(),
+                            },
+                        },
+                    ],
+                },
+            ))
+            .to_doc(),
+            TopLevelItem::TypeStructUnit { name, ty_params } => coq::TopLevelItem::Comment(
+                coq::Expression::just_name("Struct").apply(&coq::Expression::Record {
+                    fields: vec![
+                        coq::Field {
+                            name: "name".to_string(),
+                            args: vec![],
+                            body: coq::Expression::String(name.to_string()),
+                        },
+                        coq::Field {
+                            name: "ty_params".to_string(),
+                            args: vec![],
+                            body: coq::Expression::List {
+                                exprs: ty_params
+                                    .iter()
+                                    .map(|(name, ty)| {
+                                        coq::Expression::Tuple(vec![
+                                            coq::Expression::String(name.to_string()),
+                                            coq::Expression::of_option(ty, |ty| ty.to_coq()),
+                                        ])
+                                    })
+                                    .collect(),
+                            },
+                        },
+                    ],
+                }),
+            )
+            .to_doc(),
             TopLevelItem::Impl {
                 generic_tys,
                 self_ty,

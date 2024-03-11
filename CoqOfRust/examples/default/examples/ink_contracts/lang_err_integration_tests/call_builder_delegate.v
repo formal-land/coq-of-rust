@@ -18,7 +18,12 @@ Axiom Hash :
     ];
 } *)
 
-(* Struct CallBuilderDelegateTest *)
+(* Struct
+  {
+    name := "CallBuilderDelegateTest";
+    ty_params := [];
+    fields := [ ("value", Ty.path "i32") ];
+  } *)
 
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
   (*

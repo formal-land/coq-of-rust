@@ -3,7 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct WildcardSelector *)
+(* Struct
+  {
+    name := "WildcardSelector";
+    ty_params := [];
+  } *)
 
 Module Impl_wildcard_selector_WildcardSelector.
   Definition Self : Ty.t := Ty.path "wildcard_selector::WildcardSelector".

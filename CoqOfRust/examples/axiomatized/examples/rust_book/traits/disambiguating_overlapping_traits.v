@@ -11,7 +11,13 @@ Module AgeWidget.
   
 End AgeWidget.
 
-(* Struct Form *)
+(* Struct
+  {
+    name := "Form";
+    ty_params := [];
+    fields :=
+      [ ("username", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
+  } *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Parameter get : (list Ty.t) -> (list Value.t) -> M.

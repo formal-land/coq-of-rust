@@ -87,7 +87,14 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
       (* Instance polymorphic types *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
-(* Struct Length *)
+(* Struct
+  {
+    name := "Length";
+    ty_params := [ ("Unit", None) ];
+    fields :=
+      [ Ty.path "f64"; Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ]
+      ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.

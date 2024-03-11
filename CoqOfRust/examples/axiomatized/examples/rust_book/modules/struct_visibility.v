@@ -2,9 +2,19 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
-  (* Struct OpenBox *)
+  (* Struct
+    {
+      name := "OpenBox";
+      ty_params := [ ("T", None) ];
+      fields := [ ("contents", T) ];
+    } *)
   
-  (* Struct ClosedBox *)
+  (* Struct
+    {
+      name := "ClosedBox";
+      ty_params := [ ("T", None) ];
+      fields := [ ("contents", T) ];
+    } *)
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self (T : Ty.t) : Ty.t :=

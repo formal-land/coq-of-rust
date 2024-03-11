@@ -58,6 +58,7 @@ pub(crate) enum DefinitionKind<'a> {
     /// (using `Axiom`)
     Axiom { ty: Expression<'a> },
     /// a definition with an `exact` tactic
+    #[allow(dead_code)]
     Ltac {
         args: Vec<String>,
         body: Expression<'a>,
@@ -86,6 +87,7 @@ pub(crate) enum Expression<'a> {
         parameters: Vec<Expression<'a>>,
         body: Rc<Expression<'a>>,
     },
+    #[allow(dead_code)]
     Let {
         name: String,
         ty: Option<Rc<Expression<'a>>>,
@@ -119,6 +121,7 @@ pub(crate) enum Expression<'a> {
         rhs: Rc<Expression<'a>>,
     },
     /// a product of two variables (they can be types or numbers)
+    #[allow(dead_code)]
     Product {
         /// left hand side
         lhs: Rc<Expression<'a>>,
@@ -130,10 +133,12 @@ pub(crate) enum Expression<'a> {
     Record {
         fields: Vec<Field<'a>>,
     },
+    #[allow(dead_code)]
     RecordField {
         record: Rc<Expression<'a>>,
         field: String,
     },
+    #[allow(dead_code)]
     RecordUpdate {
         record: Rc<Expression<'a>>,
         field: String,
@@ -143,16 +148,17 @@ pub(crate) enum Expression<'a> {
         exprs: Vec<Expression<'a>>,
     },
     /// For example ltac:(...) or constr:(...)
+    /// #[allow(dead_code)]
+    #[allow(dead_code)]
     ModeWrapper {
         mode: String,
         expr: Rc<Expression<'a>>,
     },
-    /// Set constant (the type of our types)
-    Set,
     /// Comment next to an expression
     Comment(String, Rc<Expression<'a>>),
     /// a dependent sum of types
     /// (like `Sigma (x : A), B(x)`, defined in CoqOfRust.lib.Notations)
+    #[allow(dead_code)]
     SigmaType {
         /// a list of arguments of `Sigma`
         args: Vec<ArgDecl<'a>>,
@@ -165,10 +171,6 @@ pub(crate) enum Expression<'a> {
     String(String),
     /// a plain string in the code
     Message(String),
-    /// Type constant
-    Type,
-    /// the unit type
-    Unit,
     /// a single variable
     Variable {
         /// a list of names (a path) used to refer to the variable
@@ -207,6 +209,7 @@ pub(crate) enum ArgDeclVar<'a> {
         ty: Option<Expression<'a>>,
     },
     /// a generalized declaration (preceded by `` ` ``)
+    #[allow(dead_code)]
     Generalized {
         /// a possibly empty vector of identifiers
         idents: Vec<String>,
@@ -227,6 +230,7 @@ pub(crate) enum ArgSpecKind {
     /// a maximally inserted implicit argument
     /// (with `{}` brackets)
     /// (we do not use non-maximal insertion level)
+    #[allow(dead_code)]
     Implicit,
 }
 
@@ -238,10 +242,6 @@ impl<'a> TopLevel<'a> {
         }
     }
 
-    pub(crate) fn new_vec(items: Vec<TopLevelItem<'a>>) -> Self {
-        TopLevel { items }
-    }
-
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()])
     }
@@ -250,34 +250,6 @@ impl<'a> TopLevel<'a> {
     pub(crate) fn concat(tls: &[Self]) -> Self {
         TopLevel {
             items: tls.iter().flat_map(|tl| tl.items.to_owned()).collect(),
-        }
-    }
-
-    /// locally unsets primitive projecitons
-    pub(crate) fn locally_unset_primitive_projections(items: &[TopLevelItem<'a>]) -> Self {
-        TopLevel {
-            items: [
-                vec![TopLevelItem::Code(text("Unset Primitive Projections."))],
-                items.to_vec(),
-                vec![TopLevelItem::Code(text(
-                    "Global Set Primitive Projections.",
-                ))],
-            ]
-            .concat(),
-        }
-    }
-
-    /// locally unsets primitive projecitons if the condition is satisfied
-    pub(crate) fn locally_unset_primitive_projections_if(
-        condition: bool,
-        items: &[TopLevelItem<'a>],
-    ) -> Self {
-        if condition {
-            TopLevel::locally_unset_primitive_projections(items)
-        } else {
-            TopLevel {
-                items: [items.to_vec(), vec![TopLevelItem::Line]].concat(),
-            }
         }
     }
 }
@@ -595,7 +567,6 @@ impl<'a> Expression<'a> {
                 expr.to_doc(false),
                 text(")"),
             ]),
-            Self::Set => text("Set"),
             Self::Comment(comment, expr) => nest([
                 text(format!("(* {comment} *)")),
                 line(),
@@ -617,8 +588,6 @@ impl<'a> Expression<'a> {
             Self::U128(u) => text(u.to_string()),
             Self::String(string) => text(format!("\"{string}\"")),
             Self::Message(string) => text(string.clone()),
-            Self::Type => text("Type"),
-            Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
                 concat([optional_insert(!*no_implicit, text("@")), ident.to_doc()])
             }
@@ -668,6 +637,7 @@ impl<'a> Expression<'a> {
         )
     }
 
+    #[allow(dead_code)]
     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
         if domains.is_empty() {
             return self.to_owned();
@@ -679,6 +649,7 @@ impl<'a> Expression<'a> {
         }
     }
 
+    #[allow(dead_code)]
     pub(crate) fn multiply(lhs: Self, rhs: Self) -> Self {
         Expression::Product {
             lhs: Rc::new(lhs),
@@ -686,6 +657,7 @@ impl<'a> Expression<'a> {
         }
     }
 
+    #[allow(dead_code)]
     pub(crate) fn multiply_many(exprs: &[Self]) -> Self {
         let product = exprs
             .iter()
@@ -693,7 +665,7 @@ impl<'a> Expression<'a> {
             .reduce(Expression::multiply);
         match product {
             Some(product) => product,
-            None => Expression::Unit,
+            None => Expression::just_name("unit"),
         }
     }
 
@@ -706,6 +678,7 @@ impl<'a> Expression<'a> {
 }
 
 impl<'a> Field<'a> {
+    #[allow(dead_code)]
     pub(crate) fn new(name: &str, args: &[ArgDecl<'a>], body: &Expression<'a>) -> Self {
         Field {
             name: name.to_owned(),

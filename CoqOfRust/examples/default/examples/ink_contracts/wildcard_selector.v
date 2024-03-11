@@ -16,7 +16,11 @@ Definition decode_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct WildcardSelector *)
+(* Struct
+  {
+    name := "WildcardSelector";
+    ty_params := [];
+  } *)
 
 Module Impl_wildcard_selector_WildcardSelector.
   Definition Self : Ty.t := Ty.path "wildcard_selector::WildcardSelector".

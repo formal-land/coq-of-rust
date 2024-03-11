@@ -6,7 +6,12 @@ Module HasArea.
   
 End HasArea.
 
-(* Struct Rectangle *)
+(* Struct
+  {
+    name := "Rectangle";
+    ty_params := [];
+    fields := [ ("length", Ty.path "f64"); ("height", Ty.path "f64") ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
@@ -20,7 +25,12 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
-(* Struct Triangle *)
+(* Struct
+  {
+    name := "Triangle";
+    ty_params := [];
+    fields := [ ("length", Ty.path "f64"); ("height", Ty.path "f64") ];
+  } *)
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Parameter area : (list Ty.t) -> (list Value.t) -> M.

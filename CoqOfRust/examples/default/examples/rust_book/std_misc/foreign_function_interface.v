@@ -118,7 +118,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct Complex *)
+(* Struct
+  {
+    name := "Complex";
+    ty_params := [];
+    fields := [ ("re", Ty.path "f32"); ("im", Ty.path "f32") ];
+  } *)
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   (*

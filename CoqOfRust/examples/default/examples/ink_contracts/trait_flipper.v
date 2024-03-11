@@ -6,7 +6,12 @@ Module Flip.
   
 End Flip.
 
-(* Struct Flipper *)
+(* Struct
+  {
+    name := "Flipper";
+    ty_params := [];
+    fields := [ ("value", Ty.path "bool") ];
+  } *)
 
 Module Impl_trait_flipper_Flipper.
   Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".

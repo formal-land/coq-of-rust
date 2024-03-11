@@ -69,7 +69,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
-(* Struct Peeled *)
+(* Struct
+  {
+    name := "Peeled";
+    ty_params := [];
+    fields := [ Ty.path "combinators_map::Food" ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   (*
@@ -101,7 +106,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
-(* Struct Chopped *)
+(* Struct
+  {
+    name := "Chopped";
+    ty_params := [];
+    fields := [ Ty.path "combinators_map::Food" ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   (*
@@ -133,7 +143,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       (* Instance polymorphic types *) [].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
-(* Struct Cooked *)
+(* Struct
+  {
+    name := "Cooked";
+    ty_params := [];
+    fields := [ Ty.path "combinators_map::Food" ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   (*

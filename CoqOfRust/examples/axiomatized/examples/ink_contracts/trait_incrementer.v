@@ -11,7 +11,12 @@ Module Reset.
   
 End Reset.
 
-(* Struct Incrementer *)
+(* Struct
+  {
+    name := "Incrementer";
+    ty_params := [];
+    fields := [ ("value", Ty.path "u64") ];
+  } *)
 
 Module Impl_trait_incrementer_Incrementer.
   Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".

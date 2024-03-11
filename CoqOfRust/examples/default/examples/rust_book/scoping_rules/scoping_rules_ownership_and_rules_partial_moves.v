@@ -158,7 +158,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct Person *)
+(* Struct
+  {
+    name := "Person";
+    ty_params := [];
+    fields :=
+      [
+        ("name", Ty.path "alloc::string::String");
+        ("age",
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+      ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
   (*

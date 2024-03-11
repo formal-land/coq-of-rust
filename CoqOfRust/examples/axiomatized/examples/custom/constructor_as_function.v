@@ -3,7 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter matching : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct Constructor *)
+(* Struct
+  {
+    name := "Constructor";
+    ty_params := [];
+    fields := [ Ty.path "i32" ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.

@@ -3,7 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter reverse : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct Matrix *)
+(* Struct
+  {
+    name := "Matrix";
+    ty_params := [];
+    fields := [ Ty.path "f32"; Ty.path "f32"; Ty.path "f32"; Ty.path "f32" ];
+  } *)
 
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
