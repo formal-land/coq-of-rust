@@ -17,7 +17,7 @@ Definition is_big (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 := M.read n in
-    let* α1 := M.var "constants::THRESHOLD" in
+    let* α1 := M.get_constant "constants::THRESHOLD" in
     let* α2 := M.read α1 in
     M.pure (BinOp.Pure.gt α0 α2)
   | _, _ => M.impossible
@@ -55,7 +55,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.var "constants::LANGUAGE" in
+        let* α6 := M.get_constant "constants::LANGUAGE" in
         let* α7 := M.read α6 in
         let* α8 := M.call α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
@@ -82,7 +82,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.var "constants::THRESHOLD" in
+        let* α6 := M.get_constant "constants::THRESHOLD" in
         let* α7 := M.call α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=

@@ -106,7 +106,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         "write_all"
         [ (* Self *) Ty.path "std::fs::File" ] in
     let* α1 := M.get_associated_function (Ty.path "str") "as_bytes" in
-    let* α2 := M.var "file_io_create::LOREM_IPSUM" in
+    let* α2 := M.get_constant "file_io_create::LOREM_IPSUM" in
     let* α3 := M.read α2 in
     let* α4 := M.read α3 in
     let* α5 := M.call α1 [ α4 ] in

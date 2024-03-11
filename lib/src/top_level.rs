@@ -1487,7 +1487,7 @@ impl ImplItemKind {
                     name,
                     &coq::DefinitionKind::Alias {
                         args: vec![],
-                        ty: Some(coq::Expression::Set),
+                        ty: Some(coq::Expression::just_name("Ty.t")),
                         body: coq::Expression::Code(nest([ty.to_coq().to_doc(false)])),
                     },
                 ))])
@@ -1887,7 +1887,10 @@ impl TopLevelItem {
                                         coq::Expression::just_name("InstanceField.Method")
                                             .apply(&coq::Expression::just_name(item.name.as_str()))
                                     }
-                                    ImplItemKind::Type { .. } => coq::Expression::just_name("TODO"),
+                                    ImplItemKind::Type { .. } => {
+                                        coq::Expression::just_name("InstanceField.Ty")
+                                            .apply(&coq::Expression::just_name(item.name.as_str()))
+                                    }
                                 },
                             ])
                         })

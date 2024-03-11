@@ -62,9 +62,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         triple
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
-            let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
+            let* γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
@@ -103,9 +103,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α12 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
-            let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
+            let* γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 1) in
@@ -124,9 +124,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α5 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
-            let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
+            let* γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_2 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 2) in
@@ -145,9 +145,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α5 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
-            let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
+            let* γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 3) in

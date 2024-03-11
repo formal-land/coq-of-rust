@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* Struct Fibonacci *)
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Definition Item : Set := Ty.path "u32".
+  Definition Item : Ty.t := Ty.path "u32".
   
   Parameter next : (list Ty.t) -> (list Value.t) -> M.
   
@@ -13,7 +13,8 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       "core::iter::traits::iterator::Iterator"
       (* Self *) (Ty.path "iterators::Fibonacci")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Item", TODO); ("next", InstanceField.Method next) ]
+      (* Instance *)
+        [ ("Item", InstanceField.Ty Item); ("next", InstanceField.Method next) ]
       (* Instance polymorphic types *) [].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 

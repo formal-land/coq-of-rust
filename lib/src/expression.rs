@@ -70,17 +70,12 @@ pub(crate) enum Literal {
 pub(crate) enum Expr {
     Pure(Rc<Expr>),
     LocalVar(String),
-    Var(Path),
+    GetConst(Path),
     GetFunction {
         func: Path,
         generic_tys: Vec<Rc<CoqType>>,
     },
     Constructor(Path),
-    VarWithTy {
-        path: Path,
-        ty_name: String,
-        ty: Rc<CoqType>,
-    },
     TraitMethod {
         trait_name: Path,
         method_name: String,
@@ -310,21 +305,9 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
     match expr.as_ref() {
         Expr::Pure(_) => panic!("Expressions should not be monadic yet."),
         Expr::LocalVar(_) => (pure(expr), fresh_vars),
-        Expr::Var(_) => (expr, fresh_vars),
+        Expr::GetConst(_) => (expr, fresh_vars),
         Expr::GetFunction { .. } => (expr, fresh_vars),
         Expr::Constructor(_) => (pure(expr), fresh_vars),
-        Expr::VarWithTy {
-            path,
-            ty_name,
-            ty: var_ty,
-        } => (
-            pure(Rc::new(Expr::VarWithTy {
-                path: path.clone(),
-                ty_name: ty_name.clone(),
-                ty: var_ty.clone(),
-            })),
-            fresh_vars,
-        ),
         Expr::TraitMethod {
             trait_name,
             method_name,
@@ -667,9 +650,9 @@ impl Expr {
                 nest([text("M.pure"), line(), expr.to_doc(true)]),
             ),
             Expr::LocalVar(ref name) => text(name),
-            Expr::Var(path) => paren(
+            Expr::GetConst(path) => paren(
                 with_paren,
-                nest([text("M.var"), line(), text(format!("\"{path}\""))]),
+                nest([text("M.get_constant"), line(), text(format!("\"{path}\""))]),
             ),
             Expr::GetFunction { func, generic_tys } => paren(
                 with_paren,
@@ -687,19 +670,6 @@ impl Expr {
                 ]),
             ),
             Expr::Constructor(path) => path.to_doc(),
-            Expr::VarWithTy { path, ty_name, ty } => paren(
-                with_paren,
-                nest([
-                    path.to_doc(),
-                    line(),
-                    nest([
-                        text(format!("({ty_name} :=")),
-                        line(),
-                        ty.to_coq().to_doc(false),
-                        text(")"),
-                    ]),
-                ]),
-            ),
             Expr::TraitMethod {
                 trait_name,
                 method_name,
@@ -929,30 +899,22 @@ impl Expr {
                         ),
                     ]),
                 ),
-                Some(base) => paren(
-                    with_paren && !fields.is_empty(),
-                    nest([
-                        base.to_doc(true),
-                        concat(fields.iter().map(|(name, expr)| {
-                            concat([
-                                line(),
-                                group([
-                                    nest([
-                                        text("<| "),
-                                        path.to_doc(),
-                                        text("."),
-                                        text(name),
-                                        text(" :="),
-                                        line(),
-                                        expr.to_doc(false),
-                                    ]),
-                                    line(),
-                                    text("|>"),
-                                ]),
-                            ])
-                        })),
-                    ]),
-                ),
+                Some(base) => coq::Expression::just_name("M.struct_record_update")
+                    .apply_many(&[
+                        coq::Expression::Code(base.to_doc(true)),
+                        coq::Expression::List {
+                            exprs: fields
+                                .iter()
+                                .map(|(name, expr)| {
+                                    coq::Expression::Tuple(vec![
+                                        coq::Expression::String(name.to_string()),
+                                        coq::Expression::Code(expr.to_doc(false)),
+                                    ])
+                                })
+                                .collect(),
+                        },
+                    ])
+                    .to_doc(with_paren),
             },
             Expr::StructTuple {
                 path,

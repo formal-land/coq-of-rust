@@ -59,7 +59,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   Parameter bitand : (list Ty.t) -> (list Value.t) -> M.
   
@@ -69,7 +69,10 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ]
+        [
+          ("Output", InstanceField.Ty Output);
+          ("bitand", InstanceField.Method bitand)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
@@ -86,7 +89,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   Parameter bitor : (list Ty.t) -> (list Value.t) -> M.
   
@@ -95,7 +98,11 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       "core::ops::bit::BitOr"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ]
+      (* Instance *)
+        [
+          ("Output", InstanceField.Ty Output);
+          ("bitor", InstanceField.Method bitor)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
@@ -112,7 +119,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   Parameter bitxor : (list Ty.t) -> (list Value.t) -> M.
   
@@ -122,7 +129,10 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ]
+        [
+          ("Output", InstanceField.Ty Output);
+          ("bitxor", InstanceField.Method bitxor)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
@@ -139,7 +149,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   Parameter not : (list Ty.t) -> (list Value.t) -> M.
   
@@ -148,7 +158,9 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       "core::ops::bit::Not"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Output", TODO); ("not", InstanceField.Method not) ]
+      (* Instance *)
+        [ ("Output", InstanceField.Ty Output); ("not", InstanceField.Method not)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 

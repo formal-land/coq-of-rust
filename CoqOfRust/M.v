@@ -266,6 +266,35 @@ Module Value.
     | Bool true => true
     | _ => false
     end.
+
+  (** Equality between values. Defined only for basic types. *)
+  Definition eqb (v1 v2 : Value.t) : bool :=
+    match v1, v2 with
+    | Value.Bool b1, Value.Bool b2 => Bool.eqb b1 b2
+    | Value.Integer _ i1, Value.Integer _ i2 => Z.eqb i1 i2
+    | Value.Float f1, Value.Float f2 => String.eqb f1 f2
+    | Value.UnicodeChar c1, Value.UnicodeChar c2 => Z.eqb c1 c2
+    | Value.String s1, Value.String s2 => String.eqb s1 s2
+    | Value.Tuple _, Value.Tuple _
+      | Value.Array _, Value.Array _
+      | Value.StructRecord _ _, Value.StructRecord _ _
+      | Value.StructTuple _ _, Value.StructTuple _ _
+      | Value.Pointer _, Value.Pointer _
+      | Value.Closure _, Value.Closure _
+      | Value.Error _, Value.Error _
+      | Value.DeclaredButUndefined, Value.DeclaredButUndefined =>
+      true
+    | _, _ => false
+    end.
+
+  Lemma eqb_is_reflexive (v : Value.t) : eqb v v = true.
+  Proof.
+    destruct v; simpl;
+      try reflexivity;
+      try apply Z.eqb_refl;
+      try apply String.eqb_refl.
+    now destruct_all bool.
+  Qed.
 End Value.
 
 Module Primitive.
@@ -487,6 +516,8 @@ Definition read_env : M :=
 Definition impossible : M :=
   LowM.Impossible.
 
+Parameter get_constant : string -> M.
+
 Definition get_function (path : string) (generic_tys : list Ty.t) : M :=
   call_primitive (Primitive.GetFunction path generic_tys).
 
@@ -569,8 +600,25 @@ Parameter pointer_coercion : Value.t -> Value.t.
 
 Parameter assign : Value.t -> Value.t -> M.
 
-Parameter get_tuple_field_or_break_match :
-  Value.t -> Z -> M.
+Definition get_tuple_field (value : Value.t) (index : Z) : M :=
+  match value with
+  | Value.Pointer pointer =>
+    match pointer with
+    | Pointer.Immediate value =>
+      match value with
+      | Value.Tuple fields =>
+        match List.nth_error fields (Z.to_nat index) with
+        | Some field => pure (Value.Pointer (Pointer.Immediate field))
+        | None => M.impossible (* Tuple indexes are statically checked *)
+        end
+      | _ => M.impossible
+      end
+    | Pointer.Mutable address path =>
+      let new_path := path ++ [Pointer.Index.Tuple index] in
+      M.pure (Value.Pointer (Pointer.Mutable address new_path))
+    end
+  | _ => M.impossible
+  end.
 
 Parameter get_struct_record_field_or_break_match :
   Value.t -> string -> string -> M.
@@ -578,8 +626,11 @@ Parameter get_struct_record_field_or_break_match :
 Parameter get_struct_tuple_field_or_break_match :
   Value.t -> string -> Z -> M.
 
-Parameter is_constant_or_break_match :
-  Value.t -> Value.t -> M.
+Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
+  if Value.eqb value expected_value then
+    pure (Value.Tuple [])
+  else
+    break_match.
 
 Parameter get_slice_index_or_break_match :
   Value.t -> Z -> M.
@@ -594,3 +645,9 @@ Parameter rust_cast : Value.t -> Value.t.
 
 Definition closure (f : list Value.t -> M) : Value.t :=
   Value.Closure (existS (Value.t, M) f).
+
+Definition constructor_as_closure (constructor : string) : Value.t :=
+  closure (fun args =>
+    pure (Value.StructTuple constructor args)).
+
+Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.

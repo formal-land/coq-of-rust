@@ -385,8 +385,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           γ
                           "core::option::Option::Some"
                           0 in
-                      let* γ1_0 := M.get_tuple_field_or_break_match γ0_0 0 in
-                      let* γ1_1 := M.get_tuple_field_or_break_match γ0_0 1 in
+                      let* γ1_0 := M.get_tuple_field γ0_0 0 in
+                      let* γ1_1 := M.get_tuple_field γ0_0 1 in
                       let* contact := M.copy γ1_0 in
                       let* γ1_1 := M.read γ1_1 in
                       let* number := M.copy γ1_1 in

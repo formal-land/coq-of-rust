@@ -617,8 +617,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
               α2
               [
                 fun γ =>
-                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-                  let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+                  let* γ0_0 := M.get_tuple_field γ 0 in
+                  let* γ0_1 := M.get_tuple_field γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
                     M.get_struct_tuple_field_or_break_match
@@ -639,8 +639,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α3 := M.read α2 in
                   M.alloc (BinOp.Pure.eq α1 α3);
                 fun γ =>
-                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-                  let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+                  let* γ0_0 := M.get_tuple_field γ 0 in
+                  let* γ0_1 := M.get_tuple_field γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
                     M.get_struct_tuple_field_or_break_match
@@ -668,8 +668,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                   let* α3 := M.call α0 [ α1; α2 ] in
                   M.alloc α3;
                 fun γ =>
-                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-                  let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+                  let* γ0_0 := M.get_tuple_field γ 0 in
+                  let* γ0_1 := M.get_tuple_field γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
                     M.get_struct_tuple_field_or_break_match
@@ -1263,8 +1263,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
               α2
               [
                 fun γ =>
-                  let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-                  let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+                  let* γ0_0 := M.get_tuple_field γ 0 in
+                  let* γ0_1 := M.get_tuple_field γ 1 in
                   let* γ0_0 := M.read γ0_0 in
                   let* γ2_0 :=
                     M.get_struct_tuple_field_or_break_match

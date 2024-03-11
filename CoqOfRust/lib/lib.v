@@ -108,37 +108,6 @@ Module Integer.
       inl (Value.Integer kind z).
 End Integer.
 
-Module Eq.
-  (** Equality between values. Defined only for basic types. *)
-  Definition eqb (v1 v2 : Value.t) : bool :=
-    match v1, v2 with
-    | Value.Bool b1, Value.Bool b2 => Bool.eqb b1 b2
-    | Value.Integer _ i1, Value.Integer _ i2 => Z.eqb i1 i2
-    | Value.Float f1, Value.Float f2 => String.eqb f1 f2
-    | Value.UnicodeChar c1, Value.UnicodeChar c2 => Z.eqb c1 c2
-    | Value.String s1, Value.String s2 => String.eqb s1 s2
-    | Value.Tuple _, Value.Tuple _
-      | Value.Array _, Value.Array _
-      | Value.StructRecord _ _, Value.StructRecord _ _
-      | Value.StructTuple _ _, Value.StructTuple _ _
-      | Value.Pointer _, Value.Pointer _
-      | Value.Closure _, Value.Closure _
-      | Value.Error _, Value.Error _
-      | Value.DeclaredButUndefined, Value.DeclaredButUndefined =>
-      true
-    | _, _ => false
-    end.
-
-    Lemma eqb_is_reflexive (v : Value.t) : eqb v v = true.
-    Proof.
-      destruct v; simpl;
-        try reflexivity;
-        try apply Z.eqb_refl;
-        try apply String.eqb_refl.
-      now destruct_all bool.
-    Qed.
-End Eq.
-
 Module UnOp.
   Module Pure.
     Definition not (v : Value.t) : Value.t :=
@@ -169,10 +138,10 @@ Module BinOp.
     Parameter bit_or : Value.t -> Value.t -> Value.t.
 
     Definition eq (v1 v2 : Value.t) : Value.t :=
-      Value.Bool (Eq.eqb v1 v2).
+      Value.Bool (Value.eqb v1 v2).
 
     Definition ne (v1 v2 : Value.t) : Value.t :=
-      Value.Bool (negb (Eq.eqb v1 v2)).
+      Value.Bool (negb (Value.eqb v1 v2)).
 
     Definition lt (v1 v2 : Value.t) : Value.t :=
       match v1, v2 with

@@ -34,8 +34,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 := M.read left_val in

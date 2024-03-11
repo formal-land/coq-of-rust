@@ -61,8 +61,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
             let* tx := M.copy γ0_0 in
             let* rx := M.copy γ0_1 in
             let* children :=
@@ -90,7 +90,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::ops::range::Range")
                         [ Ty.path "i32" ]
                   ] in
-              let* α1 := M.var "channels::NTHREADS" in
+              let* α1 := M.get_constant "channels::NTHREADS" in
               let* α2 := M.read α1 in
               let* α3 := M.read α2 in
               let* α4 :=
@@ -295,7 +295,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "alloc::alloc::Global"
                     ])
                   "with_capacity" in
-              let* α1 := M.var "channels::NTHREADS" in
+              let* α1 := M.get_constant "channels::NTHREADS" in
               let* α2 := M.read α1 in
               let* α3 := M.read α2 in
               let* α4 := M.call α0 [ M.rust_cast α3 ] in
@@ -311,7 +311,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "core::ops::range::Range")
                         [ Ty.path "i32" ]
                   ] in
-              let* α1 := M.var "channels::NTHREADS" in
+              let* α1 := M.get_constant "channels::NTHREADS" in
               let* α2 := M.read α1 in
               let* α3 := M.read α2 in
               let* α4 :=

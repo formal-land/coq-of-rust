@@ -73,7 +73,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   (*
       type Error = ();
   *)
-  Definition Error : Set := Ty.tuple [].
+  Definition Error : Ty.t := Ty.tuple [].
   
   (*
       fn try_from(value: i32) -> Result<Self, Self::Error> {
@@ -114,7 +114,10 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *)
-        [ ("Error", TODO); ("try_from", InstanceField.Method try_from) ]
+        [
+          ("Error", InstanceField.Ty Error);
+          ("try_from", InstanceField.Method try_from)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
@@ -162,8 +165,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
@@ -242,8 +245,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
@@ -329,8 +332,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
@@ -410,8 +413,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=

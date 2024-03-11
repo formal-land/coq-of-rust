@@ -890,7 +890,7 @@ Definition ensure_requirement_is_valid (𝜏 : list Ty.t) (α : list Value.t) : 
         LogicalOp.and
           α1
           (let* α0 := M.read owners in
-          let* α1 := M.var "multisig::MAX_OWNERS" in
+          let* α1 := M.get_constant "multisig::MAX_OWNERS" in
           let* α2 := M.read α1 in
           M.pure (BinOp.Pure.le α0 α2)) in
       let* α3 := M.alloc (UnOp.Pure.not α2) in
@@ -1149,7 +1149,7 @@ Module Impl_multisig_Multisig.
         let* α2 := M.read self in
         let* α3 :=
           M.call α1 [ M.get_struct_record α2 "confirmation_count"; trans_id ] in
-        let* α4 := M.var "multisig::WRONG_TRANSACTION_ID" in
+        let* α4 := M.get_constant "multisig::WRONG_TRANSACTION_ID" in
         let* α5 := M.read α4 in
         let* α6 := M.call α0 [ α3; α5 ] in
         let* α7 := M.read self in
@@ -1204,7 +1204,7 @@ Module Impl_multisig_Multisig.
         let* α2 := M.read self in
         let* α3 :=
           M.call α1 [ M.get_struct_record α2 "transactions"; trans_id ] in
-        let* α4 := M.var "multisig::WRONG_TRANSACTION_ID" in
+        let* α4 := M.get_constant "multisig::WRONG_TRANSACTION_ID" in
         let* α5 := M.read α4 in
         let* α6 := M.call α0 [ α3; α5 ] in
         M.alloc α6 in
@@ -1330,8 +1330,8 @@ Module Impl_multisig_Multisig.
           α14
           [
             fun γ =>
-              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-              let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+              let* γ0_0 := M.get_tuple_field γ 0 in
+              let* γ0_1 := M.get_tuple_field γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
               let* α0 :=
@@ -3115,7 +3115,7 @@ Module Impl_multisig_Multisig.
         let* α2 := M.read self in
         let* α3 := M.read trans_id in
         let* α4 := M.call α1 [ α2; α3 ] in
-        let* α5 := M.var "multisig::WRONG_TRANSACTION_ID" in
+        let* α5 := M.get_constant "multisig::WRONG_TRANSACTION_ID" in
         let* α6 := M.read α5 in
         let* α7 := M.call α0 [ α4; α6 ] in
         M.alloc α7 in

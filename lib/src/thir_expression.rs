@@ -179,7 +179,7 @@ fn build_inner_match(
                         is_monadic: false,
                         name: Some(format!("γ{depth}_{index}")),
                         init: Rc::new(Expr::Call {
-                            func: Expr::local_var("M.get_tuple_field_or_break_match"),
+                            func: Expr::local_var("M.get_tuple_field"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalInteger(index)),
@@ -643,7 +643,9 @@ pub(crate) fn compile_expr<'a>(
 
             Rc::new(Expr::Return(value))
         }
-        thir::ExprKind::ConstBlock { did, .. } => Rc::new(Expr::Var(compile_def_id(env, *did))),
+        thir::ExprKind::ConstBlock { did, .. } => {
+            Rc::new(Expr::GetConst(compile_def_id(env, *did)))
+        }
         thir::ExprKind::Repeat { value, count } => {
             let func = Expr::local_var("repeat");
             let args = vec![
@@ -885,17 +887,14 @@ pub(crate) fn compile_expr<'a>(
                     }
                     DefKind::Variant => Expr::Constructor(compile_def_id(env, *def_id)),
                     DefKind::Struct => {
-                        let mut segments = compile_def_id(env, *def_id).segments;
-                        segments.push("Build_t".to_string());
+                        let path = compile_def_id(env, *def_id);
 
-                        Expr::Lambda {
-                            args: vec![("α".to_string(), None)],
-                            body: Rc::new(Expr::Call {
-                                func: Rc::new(Expr::Constructor(Path { segments })),
-                                args: vec![Expr::local_var("α")],
-                                kind: CallKind::Pure,
-                            }),
-                            is_internal: true,
+                        Expr::Call {
+                            func: Expr::local_var("M.constructor_as_closure"),
+                            args: vec![
+                                Rc::new(Expr::InternalString(path.to_string())),
+                            ],
+                            kind: CallKind::Pure,
                         }
                     }
                     _ => {
@@ -923,7 +922,7 @@ pub(crate) fn compile_expr<'a>(
         },
         thir::ExprKind::NamedConst { def_id, .. } => {
             let path = compile_def_id(env, *def_id);
-            let expr = Rc::new(Expr::Var(path));
+            let expr = Rc::new(Expr::GetConst(path));
             let parent = env.tcx.opt_parent(*def_id).unwrap();
             let parent_kind = env.tcx.def_kind(parent);
 
@@ -934,14 +933,16 @@ pub(crate) fn compile_expr<'a>(
             expr
         }
         thir::ExprKind::ConstParam { def_id, .. } => {
-            Rc::new(Expr::Var(compile_def_id(env, *def_id)))
+            Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
         }
         thir::ExprKind::StaticRef { def_id, .. } => {
-            Rc::new(Expr::Var(compile_def_id(env, *def_id)))
+            Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
         }
         thir::ExprKind::InlineAsm(_) => Rc::new(Expr::LocalVar("InlineAssembly".to_string())),
         thir::ExprKind::OffsetOf { .. } => Rc::new(Expr::LocalVar("OffsetOf".to_string())),
-        thir::ExprKind::ThreadLocalRef(def_id) => Rc::new(Expr::Var(compile_def_id(env, *def_id))),
+        thir::ExprKind::ThreadLocalRef(def_id) => {
+            Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
+        }
         thir::ExprKind::Yield { value } => {
             let func = Expr::local_var("yield");
             let args = vec![compile_expr(env, thir, value)];

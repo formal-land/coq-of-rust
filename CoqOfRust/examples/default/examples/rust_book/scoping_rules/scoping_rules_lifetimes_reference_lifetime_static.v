@@ -15,7 +15,8 @@ Definition coerce_static (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [ arg ] =>
     let* arg := M.alloc arg in
-    let* α0 := M.var "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
+    let* α0 :=
+      M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
     M.read α0
   | _, _ => M.impossible
   end.
@@ -129,7 +130,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 :=
-          M.var "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
+          M.get_constant
+            "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
         let* α7 := M.read α6 in
         let* α8 := M.call α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in

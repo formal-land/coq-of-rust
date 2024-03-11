@@ -18,8 +18,8 @@ Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
         pair
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
             let* int_param := M.copy γ0_0 in
             let* bool_param := M.copy γ0_1 in
             let* α0 := M.read bool_param in
@@ -349,10 +349,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         tuple
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-            let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
-            let* γ0_2 := M.get_tuple_field_or_break_match γ 2 in
-            let* γ0_3 := M.get_tuple_field_or_break_match γ 3 in
+            let* γ0_0 := M.get_tuple_field γ 0 in
+            let* γ0_1 := M.get_tuple_field γ 1 in
+            let* γ0_2 := M.get_tuple_field γ 2 in
+            let* γ0_3 := M.get_tuple_field γ 3 in
             let* a := M.copy γ0_0 in
             let* b := M.copy γ0_1 in
             let* c := M.copy γ0_2 in

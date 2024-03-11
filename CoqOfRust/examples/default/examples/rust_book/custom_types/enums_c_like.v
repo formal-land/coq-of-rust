@@ -86,7 +86,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_lower_hex" in
-        let* α6 := M.var "enums_c_like::Color::Red_discriminant" in
+        let* α6 := M.get_constant "enums_c_like::Color::Red_discriminant" in
         let* α7 := BinOp.Panic.add α6 (Value.Integer Integer.Isize 0) in
         let* α8 := M.alloc (M.rust_cast α7) in
         let* α9 := M.call α5 [ α8 ] in
@@ -141,7 +141,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_lower_hex" in
-        let* α6 := M.var "enums_c_like::Color::Blue_discriminant" in
+        let* α6 := M.get_constant "enums_c_like::Color::Blue_discriminant" in
         let* α7 := BinOp.Panic.add α6 (Value.Integer Integer.Isize 0) in
         let* α8 := M.alloc (M.rust_cast α7) in
         let* α9 := M.call α5 [ α8 ] in

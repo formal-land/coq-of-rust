@@ -85,6 +85,8 @@ examples/default/examples/rust_book/traits/supertraits.v
 examples/default/examples/rust_book/traits/traits.v
 examples/default/examples/subtle.v
 ink/
+MonadicNotationExample.v
+num_traits.v
 std/iter_type.v
 std/iter.v
 std/net.v

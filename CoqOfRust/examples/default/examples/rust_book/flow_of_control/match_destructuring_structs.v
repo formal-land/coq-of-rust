@@ -51,8 +51,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 γ
                 "match_destructuring_structs::Foo"
                 "y" in
-            let* γ1_0 := M.get_tuple_field_or_break_match γ0_0 0 in
-            let* γ1_1 := M.get_tuple_field_or_break_match γ0_0 1 in
+            let* γ1_0 := M.get_tuple_field γ0_0 0 in
+            let* γ1_1 := M.get_tuple_field γ0_0 1 in
             let* _ :=
               let* α0 := M.read γ1_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.U32 1) in

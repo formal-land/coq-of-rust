@@ -145,7 +145,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn bitand(self, rhs: Choice) -> Choice {
@@ -174,7 +174,10 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", TODO); ("bitand", InstanceField.Method bitand) ]
+        [
+          ("Output", InstanceField.Ty Output);
+          ("bitand", InstanceField.Method bitand)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
@@ -222,7 +225,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn bitor(self, rhs: Choice) -> Choice {
@@ -250,7 +253,11 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       "core::ops::bit::BitOr"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Output", TODO); ("bitor", InstanceField.Method bitor) ]
+      (* Instance *)
+        [
+          ("Output", InstanceField.Ty Output);
+          ("bitor", InstanceField.Method bitor)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
@@ -298,7 +305,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn bitxor(self, rhs: Choice) -> Choice {
@@ -327,7 +334,10 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", TODO); ("bitxor", InstanceField.Method bitxor) ]
+        [
+          ("Output", InstanceField.Ty Output);
+          ("bitxor", InstanceField.Method bitxor)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
@@ -375,7 +385,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Set := Ty.path "subtle::Choice".
+  Definition Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn not(self) -> Choice {
@@ -403,7 +413,9 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       "core::ops::bit::Not"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Output", TODO); ("not", InstanceField.Method not) ]
+      (* Instance *)
+        [ ("Output", InstanceField.Ty Output); ("not", InstanceField.Method not)
+        ]
       (* Instance polymorphic types *) [].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
@@ -649,10 +661,8 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                               γ
                               "core::option::Option::Some"
                               0 in
-                          let* γ1_0 :=
-                            M.get_tuple_field_or_break_match γ0_0 0 in
-                          let* γ1_1 :=
-                            M.get_tuple_field_or_break_match γ0_0 1 in
+                          let* γ1_0 := M.get_tuple_field γ0_0 0 in
+                          let* γ1_1 := M.get_tuple_field γ0_0 1 in
                           let* ai := M.copy γ1_0 in
                           let* bi := M.copy γ1_1 in
                           let* _ :=
@@ -2766,8 +2776,8 @@ Module Impl_subtle_CtOption_T.
           α4
           [
             fun γ =>
-              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-              let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+              let* γ0_0 := M.get_tuple_field γ 0 in
+              let* γ0_1 := M.get_tuple_field γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
               let* α0 := M.read left_val in
@@ -2852,8 +2862,8 @@ Module Impl_subtle_CtOption_T.
           α4
           [
             fun γ =>
-              let* γ0_0 := M.get_tuple_field_or_break_match γ 0 in
-              let* γ0_1 := M.get_tuple_field_or_break_match γ 1 in
+              let* γ0_0 := M.get_tuple_field γ 0 in
+              let* γ0_1 := M.get_tuple_field γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
               let* α0 := M.read left_val in

@@ -46,7 +46,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *)
               Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ]
           ] in
-      let* α1 := M.var "threads::NTHREADS" in
+      let* α1 := M.get_constant "threads::NTHREADS" in
       let* α2 := M.read α1 in
       let* α3 :=
         M.call
