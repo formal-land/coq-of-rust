@@ -1,3 +1,10 @@
+examples/default/examples/ink_contracts/Lib.v
+examples/default/examples/ink_contracts/Lib.v
+examples/default/examples/ink_contracts/Simulations/erc20.v
+Proofs/M.v
+lib/Proofs/lib.v
+examples/default/examples/ink_contracts/Proofs/Lib.v
+examples/default/examples/ink_contracts/Proofs/erc20.v
 alloc/
 core/
 std/
