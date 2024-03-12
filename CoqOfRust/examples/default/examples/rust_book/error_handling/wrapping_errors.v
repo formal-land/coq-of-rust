@@ -8,12 +8,12 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "EmptyVec";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Parse";
-        item := Tuple [ Ty.path "core::num::error::ParseIntError" ];
+        item := StructTuple [ Ty.path "core::num::error::ParseIntError" ];
         discriminant := None;
       }
     ];

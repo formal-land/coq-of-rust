@@ -12,13 +12,13 @@ Axiom Hash :
     [
       {
         name := "CouldNotReadInput";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];
 } *)
 
-(* Struct
+(* StructRecord
   {
     name := "CallBuilderDelegateTest";
     ty_params := [];

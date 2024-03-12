@@ -8,27 +8,27 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "PageLoad";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "PageUnload";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "KeyPress";
-        item := Tuple [ Ty.path "char" ];
+        item := StructTuple [ Ty.path "char" ];
         discriminant := None;
       };
       {
         name := "Paste";
-        item := Tuple [ Ty.path "alloc::string::String" ];
+        item := StructTuple [ Ty.path "alloc::string::String" ];
         discriminant := None;
       };
       {
         name := "Click";
-        item := Struct [ ("x", Ty.path "i64"); ("y", Ty.path "i64") ];
+        item := StructRecord [ ("x", Ty.path "i64"); ("y", Ty.path "i64") ];
         discriminant := None;
       }
     ];

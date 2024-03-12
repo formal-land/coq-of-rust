@@ -8,12 +8,12 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Celsius";
-        item := Tuple [ Ty.path "i32" ];
+        item := StructTuple [ Ty.path "i32" ];
         discriminant := None;
       };
       {
         name := "Fahrenheit";
-        item := Tuple [ Ty.path "i32" ];
+        item := StructTuple [ Ty.path "i32" ];
         discriminant := None;
       }
     ];

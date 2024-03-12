@@ -8,17 +8,17 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Bar";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Baz";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Qux";
-        item := Tuple [ Ty.path "u32" ];
+        item := StructTuple [ Ty.path "u32" ];
         discriminant := None;
       }
     ];

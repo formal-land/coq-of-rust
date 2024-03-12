@@ -7,7 +7,7 @@ Parameter cos : (list Ty.t) -> (list Value.t) -> M.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct
+(* StructRecord
   {
     name := "Complex";
     ty_params := [];

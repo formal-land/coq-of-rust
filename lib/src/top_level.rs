@@ -238,6 +238,7 @@ fn compile_fn_sig_and_body<'a>(
 fn check_if_is_test_main_function(tcx: &TyCtxt, body_id: &rustc_hir::BodyId) -> bool {
     let body = tcx.hir().body(*body_id);
     let expr = body.value;
+
     if let rustc_hir::ExprKind::Block(block, _) = expr.kind {
         if let Some(expr) = block.expr {
             if let rustc_hir::ExprKind::Call(func, _) = expr.kind {
@@ -250,6 +251,7 @@ fn check_if_is_test_main_function(tcx: &TyCtxt, body_id: &rustc_hir::BodyId) -> 
             }
         }
     }
+
     false
 }
 
@@ -296,7 +298,7 @@ fn check_lint_attribute<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
     false
 }
 
-fn check_coq_axiom_lint_in_attributes<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
+fn check_lint_attribute_axiom<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
     tcx: &TyCtxt,
     item: Item,
 ) -> bool {
@@ -367,7 +369,7 @@ fn compile_top_level_item_without_local_items<'a>(
             }
 
             let snippet = Snippet::of_span(env, &item.span);
-            let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
+            let is_axiom = check_lint_attribute_axiom(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
 
             vec![Rc::new(TopLevelItem::Definition {
@@ -709,7 +711,6 @@ fn compile_impl_item<'a>(
 ) -> Rc<ImplItem> {
     let name = to_valid_coq_name(item.ident.name.as_str());
     let snippet = Snippet::of_span(env, &item.span);
-    let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
             let ty = compile_type(tcx, env, &item.owner_id.def_id, ty);
@@ -720,16 +721,20 @@ fn compile_impl_item<'a>(
             };
             Rc::new(ImplItemKind::Const { ty, body })
         }
-        rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => Rc::new(ImplItemKind::Definition {
-            definition: FunDefinition::compile(
-                tcx,
-                env,
-                item.generics,
-                &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
-                "Pattern",
-                is_axiom,
-            ),
-        }),
+        rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => {
+            let is_axiom = check_lint_attribute_axiom(tcx, item);
+
+            Rc::new(ImplItemKind::Definition {
+                definition: FunDefinition::compile(
+                    tcx,
+                    env,
+                    item.generics,
+                    &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
+                    "Pattern",
+                    is_axiom,
+                ),
+            })
+        }
         rustc_hir::ImplItemKind::Type(ty) => Rc::new(ImplItemKind::Type {
             ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
         }),
@@ -756,7 +761,13 @@ fn compile_function_body(
     if env.axiomatize || is_axiom {
         return None;
     }
+
     let body_without_bindings = compile_hir_id(env, body.value.hir_id).read();
+
+    if body_without_bindings.is_unimplemented() {
+        return None;
+    }
+
     let body = crate::thir_expression::allocate_bindings(
         &args
             .iter()
@@ -1502,7 +1513,7 @@ impl VariantItem {
     fn to_coq(&self) -> coq::Expression {
         match self {
             VariantItem::Struct { fields } => {
-                coq::Expression::just_name("Struct").apply(&coq::Expression::List {
+                coq::Expression::just_name("StructRecord").apply(&coq::Expression::List {
                     exprs: fields
                         .iter()
                         .map(|(name, ty)| {
@@ -1515,7 +1526,7 @@ impl VariantItem {
                 })
             }
             VariantItem::Tuple { tys } => {
-                coq::Expression::just_name("Tuple").apply(&coq::Expression::List {
+                coq::Expression::just_name("StructTuple").apply(&coq::Expression::List {
                     exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
                 })
             }
@@ -1557,7 +1568,7 @@ impl TypeEnumVariant {
 
 impl TypeStructStruct {
     fn to_coq(&self) -> coq::Expression {
-        coq::Expression::just_name("Struct").apply(&coq::Expression::Record {
+        coq::Expression::just_name("StructRecord").apply(&coq::Expression::Record {
             fields: vec![
                 coq::Field {
                     name: "name".to_string(),
@@ -1720,7 +1731,7 @@ impl TopLevelItem {
                 name,
                 ty_params,
                 fields,
-            } => coq::TopLevelItem::Comment(coq::Expression::just_name("Struct").apply(
+            } => coq::TopLevelItem::Comment(coq::Expression::just_name("StructTuple").apply(
                 &coq::Expression::Record {
                     fields: vec![
                         coq::Field {
@@ -1758,7 +1769,7 @@ impl TopLevelItem {
             ))
             .to_doc(),
             TopLevelItem::TypeStructUnit { name, ty_params } => coq::TopLevelItem::Comment(
-                coq::Expression::just_name("Struct").apply(&coq::Expression::Record {
+                coq::Expression::just_name("StructTuple").apply(&coq::Expression::Record {
                     fields: vec![
                         coq::Field {
                             name: "name".to_string(),

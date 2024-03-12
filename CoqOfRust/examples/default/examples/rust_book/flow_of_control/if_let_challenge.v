@@ -8,7 +8,7 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Bar";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];

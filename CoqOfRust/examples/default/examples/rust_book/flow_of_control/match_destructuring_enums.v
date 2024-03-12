@@ -8,43 +8,44 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Red";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Blue";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Green";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "RGB";
-        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
         discriminant := None;
       };
       {
         name := "HSV";
-        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
         discriminant := None;
       };
       {
         name := "HSL";
-        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
         discriminant := None;
       };
       {
         name := "CMY";
-        item := Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+        item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
         discriminant := None;
       };
       {
         name := "CMYK";
         item :=
-          Tuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
+          StructTuple
+            [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
         discriminant := None;
       }
     ];

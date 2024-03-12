@@ -8,17 +8,17 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Zero";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "One";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Two";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];
@@ -31,17 +31,17 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Red";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := Some 16711680;
       };
       {
         name := "Green";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := Some 65280;
       };
       {
         name := "Blue";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := Some 255;
       }
     ];

@@ -30,7 +30,7 @@ Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct
+(* StructTuple
   {
     name := "Matrix";
     ty_params := [];

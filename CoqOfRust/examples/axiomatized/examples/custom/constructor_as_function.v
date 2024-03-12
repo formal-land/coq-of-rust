@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter matching : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct
+(* StructTuple
   {
     name := "Constructor";
     ty_params := [];

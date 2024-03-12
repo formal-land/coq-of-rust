@@ -8,17 +8,17 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "CordonBleu";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Steak";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Sushi";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];
@@ -77,17 +77,17 @@ End Impl_core_fmt_Debug_for_combinators_and_then_Food.
     [
       {
         name := "Monday";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Tuesday";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Wednesday";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];

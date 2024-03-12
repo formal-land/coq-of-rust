@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct
+(* StructRecord
   {
     name := "Person";
     ty_params := [];

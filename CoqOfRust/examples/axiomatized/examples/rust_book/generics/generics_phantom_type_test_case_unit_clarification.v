@@ -99,7 +99,7 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
       (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
-(* Struct
+(* StructTuple
   {
     name := "Length";
     ty_params := [ ("Unit", None) ];

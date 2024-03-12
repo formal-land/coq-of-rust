@@ -118,7 +118,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct
+(* StructRecord
   {
     name := "Complex";
     ty_params := [];

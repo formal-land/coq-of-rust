@@ -9,17 +9,17 @@ Module checked.
       [
         {
           name := "DivisionByZero";
-          item := Tuple [];
+          item := StructTuple [];
           discriminant := None;
         };
         {
           name := "NonPositiveLogarithm";
-          item := Tuple [];
+          item := StructTuple [];
           discriminant := None;
         };
         {
           name := "NegativeSquareRoot";
-          item := Tuple [];
+          item := StructTuple [];
           discriminant := None;
         }
       ];

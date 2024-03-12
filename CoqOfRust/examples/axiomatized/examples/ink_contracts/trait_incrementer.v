@@ -11,7 +11,7 @@ Module Reset.
   
 End Reset.
 
-(* Struct
+(* StructRecord
   {
     name := "Incrementer";
     ty_params := [];

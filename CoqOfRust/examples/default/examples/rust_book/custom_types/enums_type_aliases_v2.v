@@ -8,12 +8,12 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Add";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Subtract";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];

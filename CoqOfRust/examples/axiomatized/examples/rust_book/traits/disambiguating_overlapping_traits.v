@@ -11,7 +11,7 @@ Module AgeWidget.
   
 End AgeWidget.
 
-(* Struct
+(* StructRecord
   {
     name := "Form";
     ty_params := [];

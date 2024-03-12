@@ -6,7 +6,7 @@ Module Flip.
   
 End Flip.
 
-(* Struct
+(* StructRecord
   {
     name := "Flipper";
     ty_params := [];

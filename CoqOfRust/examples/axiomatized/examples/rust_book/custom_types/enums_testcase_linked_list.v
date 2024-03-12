@@ -9,7 +9,7 @@ Require Import CoqOfRust.CoqOfRust.
       {
         name := "Cons";
         item :=
-          Tuple
+          StructTuple
             [
               Ty.path "u32";
               Ty.apply
@@ -23,7 +23,7 @@ Require Import CoqOfRust.CoqOfRust.
       };
       {
         name := "Nil";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];

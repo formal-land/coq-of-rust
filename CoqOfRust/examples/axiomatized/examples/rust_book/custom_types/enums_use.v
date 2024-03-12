@@ -8,12 +8,12 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Rich";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Poor";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];
@@ -26,12 +26,12 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Civilian";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Soldier";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];

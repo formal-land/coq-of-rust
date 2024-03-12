@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct
+(* StructTuple
   {
     name := "WildcardSelector";
     ty_params := [];

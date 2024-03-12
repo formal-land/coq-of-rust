@@ -6,7 +6,7 @@ Module HasArea.
   
 End HasArea.
 
-(* Struct
+(* StructRecord
   {
     name := "Rectangle";
     ty_params := [];
@@ -56,7 +56,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
-(* Struct
+(* StructRecord
   {
     name := "Triangle";
     ty_params := [];

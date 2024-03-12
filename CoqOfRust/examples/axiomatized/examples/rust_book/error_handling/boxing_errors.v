@@ -16,7 +16,7 @@ Axiom Result :
           ]
       ]).
 
-(* Struct
+(* StructTuple
   {
     name := "EmptyVec";
     ty_params := [];

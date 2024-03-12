@@ -6,17 +6,9 @@ fn decode_input<T>() -> Result<T, ()> {
     unimplemented!()
 }
 *)
-Definition decode_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
-  | [ T ], [] =>
-    let* α0 := M.get_function "core::panicking::panic" [] in
-    let* α1 := M.read (mk_str "not implemented") in
-    let* α2 := M.call α0 [ α1 ] in
-    M.never_to_any α2
-  | _, _ => M.impossible
-  end.
+Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct
+(* StructTuple
   {
     name := "WildcardSelector";
     ty_params := [];

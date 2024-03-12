@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter reverse : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct
+(* StructTuple
   {
     name := "Matrix";
     ty_params := [];

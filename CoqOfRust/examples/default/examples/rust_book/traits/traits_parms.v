@@ -21,7 +21,7 @@ Module SomeTrait.
   
 End SomeTrait.
 
-(* Struct
+(* StructTuple
   {
     name := "SomeOtherType";
     ty_params := [];

@@ -8,27 +8,27 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Apple";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Orange";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Banana";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Kiwi";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Lemon";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];

@@ -2,14 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
-  (* Struct
+  (* StructRecord
     {
       name := "OpenBox";
       ty_params := [ ("T", None) ];
       fields := [ ("contents", T) ];
     } *)
   
-  (* Struct
+  (* StructRecord
     {
       name := "ClosedBox";
       ty_params := [ ("T", None) ];

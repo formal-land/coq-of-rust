@@ -36,7 +36,7 @@ Definition matching (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Struct
+(* StructTuple
   {
     name := "Constructor";
     ty_params := [];

@@ -1,14 +1,84 @@
 Require Import CoqOfRust.CoqOfRust.
-Require CoqOfRust.Simulations.M.
+Require CoqOfRust.simulations.M.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
-Import Simulations.M.Notations.
+Import simulations.M.Notations.
 
 (** ** Primitives *)
 
+Module Option.
+  Definition to_value {A : Set} (x : option A) (f : A -> Value.t) : Value.t :=
+    match x with
+    | None => Value.StructTuple "core::option::Option::None" []
+    | Some x => Value.StructTuple "core::option::Option::Some" [f x]
+    end.
+End Option.
+
+Module Balance.
+  Definition t : Set := Z.
+
+  Definition to_value (x : t) : Value.t :=
+    Value.Integer Integer.U128 x.
+End Balance.
+
+Module AccountId.
+  Definition t : Set := Z.
+
+  Definition to_value (x : t) : Value.t :=
+    Value.StructTuple "erc20::AccountId" [Value.Integer Integer.U128 x].
+End AccountId.
+
+Module Transfer.
+  Record t : Set := {
+    from : option AccountId.t;
+    to : option AccountId.t;
+    value : Balance.t;
+  }.
+
+  Definition to_value (x : t) : Value.t :=
+    Value.StructRecord "erc20::Transfer" [
+      ("from", Option.to_value x.(from) AccountId.to_value);
+      ("to", Option.to_value x.(to) AccountId.to_value);
+      ("value", Balance.to_value x.(value))
+    ].
+End Transfer.
+
+Module Approval.
+  Record t : Set := {
+    owner : AccountId.t;
+    spender : AccountId.t;
+    value : Balance.t;
+  }.
+
+  Definition to_value (x : t) : Value.t :=
+    Value.StructRecord "erc20::Approval" [
+      ("owner", AccountId.to_value x.(owner));
+      ("spender", AccountId.to_value x.(spender));
+      ("value", Balance.to_value x.(value))
+    ].
+End Approval.
+
+Module Event.
+  Inductive t : Set :=
+  | Transfer : erc20.Transfer.t -> t
+  | Approval : erc20.Approval.t -> t.
+
+  Definition to_value (x : t) : Value.t :=
+    match x with
+    | Transfer x => Transfer.to_value x
+    | Approval x => Approval.to_value x
+    end.
+End Event.
+
 Module Env.
-  Definition caller (self : erc20.Env.t) : erc20.AccountId.t :=
-    self.(erc20.Env.caller).
+  Record t : Set := {
+    caller : AccountId.t;
+  }.
+
+  Definition to_value (x : t) : Value.t :=
+    Value.StructRecord "erc20::Env" [
+      ("caller", AccountId.to_value x.(caller))
+    ].
 
   Definition emit_event
       (events : list erc20.Event.t)
@@ -20,9 +90,24 @@ End Env.
 Definition env (env : erc20.Env.t) : erc20.Env.t :=
   env.
 
+Module Erc20.
+  Record t : Set := {
+    total_supply : Balance.t;
+    balances : Lib.Mapping.t AccountId.t Balance.t;
+    allowances : Lib.Mapping.t (AccountId.t * AccountId.t) Balance.t;
+  }.
+
+  Definition to_value (x : t) : Value.t :=
+    Value.StructRecord "erc20::Erc20" [
+      ("total_supply", Balance.to_value x.(total_supply));
+      ("balances", Lib.Mapping.to_value AccountId.to_value Balance.to_value x.(balances));
+      ("allowances", Lib.Mapping.to_value (AccountId.to_value * AccountId.to_value) Balance.to_value x.(allowances))
+    ].
+End Erc20.
+
 (** ** Simulations that only read the state. *)
 
-Definition total_supply (storage : erc20.Erc20.t) : ltac:(erc20.Balance) :=
+Definition total_supply (storage : erc20.Erc20.t) : erc20.Balance.t :=
   storage.(erc20.Erc20.total_supply).
 
 Definition balance_of_impl

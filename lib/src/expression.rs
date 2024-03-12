@@ -32,13 +32,13 @@ pub(crate) struct MatchArm {
 
 /// [LoopControlFlow] represents the expressions responsible for
 /// the flow of control in a loop
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum LoopControlFlow {
     Continue,
     Break,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum CallKind {
     /// Pure call of a function, written with a space following the syntax
     /// of Coq.
@@ -49,14 +49,14 @@ pub(crate) enum CallKind {
     Closure,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub(crate) struct LiteralInteger {
     pub(crate) name: String,
     pub(crate) negative_sign: bool,
     pub(crate) value: u128,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub(crate) enum Literal {
     Bool(bool),
     Integer(LiteralInteger),
@@ -66,7 +66,7 @@ pub(crate) enum Literal {
 }
 
 /// Enum [Expr] represents the AST of rust terms.
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub(crate) enum Expr {
     Pure(Rc<Expr>),
     LocalVar(String),
@@ -210,6 +210,34 @@ impl Expr {
             args: vec![self],
             kind: CallKind::Effectful,
         })
+    }
+
+    /// If the body of the function is the macro call `unimplemented!()`. We do
+    /// a special treatment for this case, by translating the function directly
+    /// to an axiom. That is useful for mocks, where we want to state them equal
+    /// to something defined in Coq at proof time. This is not wrong in the
+    /// translation as we are only losing information here, not stating
+    /// something wrong.
+    pub(crate) fn is_unimplemented(self: &Rc<Self>) -> bool {
+        *self.as_ref()
+            == Expr::Call {
+                func: Expr::local_var("M.never_to_any"),
+                kind: CallKind::Effectful,
+                args: vec![Rc::new(Expr::Call {
+                    func: Rc::new(Expr::GetFunction {
+                        func: Path::new(&["core", "panicking", "panic"]),
+                        generic_tys: vec![],
+                    }),
+                    kind: CallKind::Closure,
+                    args: vec![Rc::new(Expr::Call {
+                        func: Expr::local_var("M.read"),
+                        kind: CallKind::Effectful,
+                        args: vec![Rc::new(Expr::Literal(Rc::new(Literal::String(
+                            "not implemented".to_string(),
+                        ))))],
+                    })],
+                })],
+            }
     }
 }
 

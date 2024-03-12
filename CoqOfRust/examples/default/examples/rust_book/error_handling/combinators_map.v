@@ -8,17 +8,17 @@ Require Import CoqOfRust.CoqOfRust.
     [
       {
         name := "Apple";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Carrot";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       };
       {
         name := "Potato";
-        item := Tuple [];
+        item := StructTuple [];
         discriminant := None;
       }
     ];
@@ -70,7 +70,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
-(* Struct
+(* StructTuple
   {
     name := "Peeled";
     ty_params := [];
@@ -108,7 +108,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
-(* Struct
+(* StructTuple
   {
     name := "Chopped";
     ty_params := [];
@@ -146,7 +146,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
-(* Struct
+(* StructTuple
   {
     name := "Cooked";
     ty_params := [];

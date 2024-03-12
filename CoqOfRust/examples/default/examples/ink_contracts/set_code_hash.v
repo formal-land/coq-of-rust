@@ -12,18 +12,9 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
     unimplemented!()
 }
 *)
-Definition set_code_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
-  | [ E ], [ code_hash ] =>
-    let* code_hash := M.alloc code_hash in
-    let* α0 := M.get_function "core::panicking::panic" [] in
-    let* α1 := M.read (mk_str "not implemented") in
-    let* α2 := M.call α0 [ α1 ] in
-    M.never_to_any α2
-  | _, _ => M.impossible
-  end.
+Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
 
-(* Struct
+(* StructRecord
   {
     name := "Incrementer";
     ty_params := [];
