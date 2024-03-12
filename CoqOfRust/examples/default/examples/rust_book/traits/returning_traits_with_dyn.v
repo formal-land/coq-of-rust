@@ -19,6 +19,8 @@ Module Animal.
 End Animal.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
+  Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Sheep".
+  
   (*
       fn noise(&self) -> &'static str {
           "baaaaah!"
@@ -26,7 +28,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
   *)
   Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.read (mk_str "baaaaah!")
     | _, _ => M.impossible
@@ -37,11 +39,12 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("noise", InstanceField.Method noise) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
+  Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Cow".
+  
   (*
       fn noise(&self) -> &'static str {
           "moooooo!"
@@ -49,7 +52,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   *)
   Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.read (mk_str "moooooo!")
     | _, _ => M.impossible
@@ -60,8 +63,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       "returning_traits_with_dyn::Animal"
       (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("noise", InstanceField.Method noise) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 (*

@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
+  Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,11 +18,12 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       "core::fmt::Debug"
       (* Self *) (Ty.path "box_stack_heap::Point")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
+  Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -28,18 +31,18 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
       "core::clone::Clone"
       (* Self *) (Ty.path "box_stack_heap::Point")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
+  Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "box_stack_heap::Point")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* Struct

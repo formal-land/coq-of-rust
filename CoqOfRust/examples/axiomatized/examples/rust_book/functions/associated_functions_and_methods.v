@@ -13,12 +13,11 @@ Module Impl_associated_functions_and_methods_Point.
   
   Parameter origin : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_origin :
-    M.IsAssociatedFunction Self "origin" origin [].
+  Axiom AssociatedFunction_origin : M.IsAssociatedFunction Self "origin" origin.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_associated_functions_and_methods_Point.
 
 (* Struct
@@ -38,22 +37,21 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Parameter get_p1 : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_p1 :
-    M.IsAssociatedFunction Self "get_p1" get_p1 [].
+  Axiom AssociatedFunction_get_p1 : M.IsAssociatedFunction Self "get_p1" get_p1.
   
   Parameter area : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area [].
+  Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area.
   
   Parameter perimeter : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_perimeter :
-    M.IsAssociatedFunction Self "perimeter" perimeter [].
+    M.IsAssociatedFunction Self "perimeter" perimeter.
   
   Parameter translate : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_translate :
-    M.IsAssociatedFunction Self "translate" translate [].
+    M.IsAssociatedFunction Self "translate" translate.
 End Impl_associated_functions_and_methods_Rectangle.
 
 (* Struct
@@ -77,7 +75,7 @@ Module Impl_associated_functions_and_methods_Pair.
   Parameter destroy : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_destroy :
-    M.IsAssociatedFunction Self "destroy" destroy [].
+    M.IsAssociatedFunction Self "destroy" destroy.
 End Impl_associated_functions_and_methods_Pair.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

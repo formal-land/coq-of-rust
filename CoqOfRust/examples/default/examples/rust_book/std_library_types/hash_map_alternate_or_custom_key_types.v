@@ -13,22 +13,27 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -70,21 +75,25 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   (*
   Eq
   *)
@@ -93,7 +102,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -117,17 +126,19 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   (*
   Hash
   *)
   Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self; __H ], [ self; state ] =>
+    | [ __H ], [ self; state ] =>
       let* self := M.alloc self in
       let* state := M.alloc state in
       let* _ :=
@@ -160,8 +171,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       "core::hash::Hash"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("hash", InstanceField.Method hash) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 (* Struct

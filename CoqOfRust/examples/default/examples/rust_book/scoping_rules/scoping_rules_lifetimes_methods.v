@@ -18,7 +18,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   *)
   Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* β :=
@@ -33,7 +33,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     end.
   
   Axiom AssociatedFunction_add_one :
-    M.IsAssociatedFunction Self "add_one" add_one [].
+    M.IsAssociatedFunction Self "add_one" add_one.
   
   (*
       fn print<'a>(&'a self) {
@@ -42,7 +42,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   *)
   Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -77,7 +77,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print [].
+  Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (*

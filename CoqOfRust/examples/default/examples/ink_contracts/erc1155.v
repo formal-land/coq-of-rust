@@ -13,12 +13,16 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -42,8 +46,7 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "erc1155::Mapping") [ K; V ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [ K; V ].
+      (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
@@ -55,9 +58,10 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition contains (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key ] =>
+    | [], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -69,16 +73,17 @@ Module Impl_erc1155_Mapping_K_V.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
+    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition get (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key ] =>
+    | [], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -90,16 +95,17 @@ Module Impl_erc1155_Mapping_K_V.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+    M.IsAssociatedFunction (Self K V) "get" (get K V).
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
       }
   *)
-  Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition insert (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key; _value ] =>
+    | [], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -112,16 +118,17 @@ Module Impl_erc1155_Mapping_K_V.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
   (*
       fn remove(&self, _key: K) {
           unimplemented!()
       }
   *)
-  Definition remove (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition remove (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key ] =>
+    | [], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -133,16 +140,17 @@ Module Impl_erc1155_Mapping_K_V.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
+    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
           unimplemented!()
       }
   *)
-  Definition size (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition size (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key ] =>
+    | [], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -154,16 +162,17 @@ Module Impl_erc1155_Mapping_K_V.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+    M.IsAssociatedFunction (Self K V) "size" (size K V).
   
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Definition take (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition take (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key ] =>
+    | [], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -175,7 +184,7 @@ Module Impl_erc1155_Mapping_K_V.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
+    M.IsAssociatedFunction (Self K V) "take" (take K V).
 End Impl_erc1155_Mapping_K_V.
 
 (* Struct
@@ -186,12 +195,14 @@ End Impl_erc1155_Mapping_K_V.
   } *)
 
 Module Impl_core_default_Default_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -207,17 +218,18 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_AccountId.
 
 Module Impl_core_clone_Clone_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -230,37 +242,40 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc1155_AccountId.
 
 Module Impl_core_marker_Copy_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_erc1155_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
@@ -276,11 +291,12 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   (*
       fn from(_v: [u8; 32]) -> Self {
           unimplemented!()
@@ -288,7 +304,7 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ _v ] =>
+    | [], [ _v ] =>
       let* _v := M.alloc _v in
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
@@ -303,8 +319,7 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
@@ -399,22 +414,25 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc1155::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
@@ -445,21 +463,23 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc1155::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "erc1155::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_erc1155_Error.
 
 Module Impl_core_cmp_Eq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   (*
   Eq
   *)
@@ -468,7 +488,7 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
     | _, _ => M.impossible
@@ -483,8 +503,7 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
@@ -583,15 +602,14 @@ Module Impl_erc1155_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -600,7 +618,7 @@ Module Impl_erc1155_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; _event ] =>
+    | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -611,7 +629,7 @@ Module Impl_erc1155_Env.
     end.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc1155_Env.
 
 (* Struct
@@ -640,12 +658,14 @@ End Impl_erc1155_Env.
   } *)
 
 Module Impl_core_default_Default_for_erc1155_Contract.
+  Definition Self : Ty.t := Ty.path "erc1155::Contract".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -694,8 +714,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
       "core::default::Default"
       (* Self *) (Ty.path "erc1155::Contract")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_Contract.
 
 Module Impl_erc1155_Contract.
@@ -708,7 +727,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
@@ -717,7 +736,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   (*
       fn env(&self) -> Env {
@@ -726,7 +745,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_associated_function (Ty.path "erc1155::Contract") "init_env" in
@@ -734,7 +753,7 @@ Module Impl_erc1155_Contract.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   (*
       pub fn new() -> Self {
@@ -743,7 +762,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -753,7 +772,7 @@ Module Impl_erc1155_Contract.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn create(&mut self, value: Balance) -> TokenId {
@@ -778,7 +797,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition create (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; value ] =>
+    | [], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
       let* caller :=
@@ -867,8 +886,7 @@ Module Impl_erc1155_Contract.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_create :
-    M.IsAssociatedFunction Self "create" create [].
+  Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
   
   (*
       pub fn mint(&mut self, token_id: TokenId, value: Balance) -> Result<()> {
@@ -891,7 +909,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition mint (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; token_id; value ] =>
+    | [], [ self; token_id; value ] =>
       let* self := M.alloc self in
       let* token_id := M.alloc token_id in
       let* value := M.alloc value in
@@ -992,7 +1010,7 @@ Module Impl_erc1155_Contract.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint [].
+  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
   
   (*
       fn perform_transfer(
@@ -1025,7 +1043,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition perform_transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; from; to; token_id; value ] =>
+    | [], [ self; from; to; token_id; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -1181,7 +1199,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Axiom AssociatedFunction_perform_transfer :
-    M.IsAssociatedFunction Self "perform_transfer" perform_transfer [].
+    M.IsAssociatedFunction Self "perform_transfer" perform_transfer.
   
   (*
       fn transfer_acceptance_check(
@@ -1258,7 +1276,7 @@ Module Impl_erc1155_Contract.
   *)
   Definition transfer_acceptance_check (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; caller; from; to; token_id; value; data ] =>
+    | [], [ self; caller; from; to; token_id; value; data ] =>
       let* self := M.alloc self in
       let* caller := M.alloc caller in
       let* from := M.alloc from in
@@ -1274,11 +1292,12 @@ Module Impl_erc1155_Contract.
     M.IsAssociatedFunction
       Self
       "transfer_acceptance_check"
-      transfer_acceptance_check
-      [].
+      transfer_acceptance_check.
 End Impl_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155_for_erc1155_Contract.
+  Definition Self : Ty.t := Ty.path "erc1155::Contract".
+  
   (*
       fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
           self.approvals.contains(&(owner, operator))
@@ -1286,7 +1305,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   *)
   Definition is_approved_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; owner; operator ] =>
+    | [], [ self; owner; operator ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* operator := M.alloc operator in
@@ -1315,7 +1334,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   *)
   Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; owner; token_id ] =>
+    | [], [ self; owner; token_id ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* token_id := M.alloc token_id in
@@ -1370,7 +1389,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   *)
   Definition safe_transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; from; to; token_id; value; data ] =>
+    | [], [ self; from; to; token_id; value; data ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -1580,7 +1599,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   *)
   Definition safe_batch_transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; from; to; token_ids; values; data ] =>
+    | [], [ self; from; to; token_ids; values; data ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -2073,7 +2092,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   *)
   Definition balance_of_batch (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; owners; token_ids ] =>
+    | [], [ self; owners; token_ids ] =>
       let* self := M.alloc self in
       let* owners := M.alloc owners in
       let* token_ids := M.alloc token_ids in
@@ -2264,7 +2283,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   *)
   Definition set_approval_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; operator; approved ] =>
+    | [], [ self; operator; approved ] =>
       let* self := M.alloc self in
       let* operator := M.alloc operator in
       let* approved := M.alloc approved in
@@ -2409,11 +2428,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             InstanceField.Method safe_batch_transfer_from);
           ("balance_of_batch", InstanceField.Method balance_of_batch);
           ("set_approval_for_all", InstanceField.Method set_approval_for_all)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_erc1155_Erc1155_for_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
+  Definition Self : Ty.t := Ty.path "erc1155::Contract".
+  
   (*
       fn on_received(
           &mut self,
@@ -2439,7 +2459,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
   *)
   Definition on_received (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; _operator; _from; _token_id; _value; _data ] =>
+    | [], [ self; _operator; _from; _token_id; _value; _data ] =>
       let* self := M.alloc self in
       let* _operator := M.alloc _operator in
       let* _from := M.alloc _from in
@@ -2495,7 +2515,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
   *)
   Definition on_batch_received (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; _operator; _from; _token_ids; _values; _data ] =>
+    | [], [ self; _operator; _from; _token_ids; _values; _data ] =>
       let* self := M.alloc self in
       let* _operator := M.alloc _operator in
       let* _from := M.alloc _from in
@@ -2535,6 +2555,5 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
         [
           ("on_received", InstanceField.Method on_received);
           ("on_batch_received", InstanceField.Method on_batch_received)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.

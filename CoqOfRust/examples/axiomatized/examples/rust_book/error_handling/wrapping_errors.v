@@ -20,6 +20,8 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
+  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -27,8 +29,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
@@ -39,6 +40,8 @@ Axiom Result :
       [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
+  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -46,11 +49,12 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
       "core::fmt::Display"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
+  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
+  
   Parameter source : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -58,11 +62,12 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
       "core::error::Error"
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("source", InstanceField.Method source) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("source", InstanceField.Method source) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
+  Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
+  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -71,8 +76,7 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
       (* Self *) (Ty.path "wrapping_errors::DoubleError")
       (* Trait polymorphic types *)
         [ (* T *) Ty.path "core::num::error::ParseIntError" ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

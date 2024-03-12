@@ -35,6 +35,9 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
+  Definition Self : Ty.t :=
+    Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -43,8 +46,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
       (* Self *)
         (Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

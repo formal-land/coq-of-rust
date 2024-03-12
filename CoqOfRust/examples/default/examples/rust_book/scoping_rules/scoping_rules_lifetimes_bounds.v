@@ -9,12 +9,16 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
+  
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -36,8 +40,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       (* Self *)
         (Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [ T ].
+      (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 (*

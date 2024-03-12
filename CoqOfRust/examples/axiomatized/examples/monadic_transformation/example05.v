@@ -13,7 +13,7 @@ Module Impl_example05_Foo.
   
   Parameter plus1 : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1 [].
+  Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1.
 End Impl_example05_Foo.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -21,7 +21,7 @@ Module Impl_generics_new_type_idiom_Years.
   Parameter to_days : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_to_days :
-    M.IsAssociatedFunction Self "to_days" to_days [].
+    M.IsAssociatedFunction Self "to_days" to_days.
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
@@ -30,7 +30,7 @@ Module Impl_generics_new_type_idiom_Days.
   Parameter to_years : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_to_years :
-    M.IsAssociatedFunction Self "to_years" to_years [].
+    M.IsAssociatedFunction Self "to_years" to_years.
 End Impl_generics_new_type_idiom_Days.
 
 Parameter old_enough : (list Ty.t) -> (list Value.t) -> M.

@@ -14,12 +14,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_hash_Hash_for_hash_Person.
+  Definition Self : Ty.t := Ty.path "hash::Person".
+  
   (*
   Hash
   *)
   Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self; __H ], [ self; state ] =>
+    | [ __H ], [ self; state ] =>
       let* self := M.alloc self in
       let* state := M.alloc state in
       let* _ :=
@@ -60,8 +62,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
       "core::hash::Hash"
       (* Self *) (Ty.path "hash::Person")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("hash", InstanceField.Method hash) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_hash_Person.
 
 (*

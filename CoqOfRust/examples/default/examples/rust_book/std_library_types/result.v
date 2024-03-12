@@ -26,12 +26,14 @@ Module checked.
   } *)
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
+    Definition Self : Ty.t := Ty.path "result::checked::MathError".
+    
     (*
         Debug
     *)
     Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
-      | [ Self ], [ self; f ] =>
+      | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
         let* α0 :=
@@ -66,8 +68,7 @@ Module checked.
         "core::fmt::Debug"
         (* Self *) (Ty.path "result::checked::MathError")
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-        (* Instance polymorphic types *) [].
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Axiom MathResult :

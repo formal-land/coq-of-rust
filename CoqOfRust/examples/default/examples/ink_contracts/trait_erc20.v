@@ -13,12 +13,16 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
+  
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -44,8 +48,7 @@ Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [ K; V ].
+      (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
@@ -57,9 +60,10 @@ Module Impl_trait_erc20_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition get (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key ] =>
+    | [], [ self; _key ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -71,16 +75,17 @@ Module Impl_trait_erc20_Mapping_K_V.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+    M.IsAssociatedFunction (Self K V) "get" (get K V).
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
           unimplemented!()
       }
   *)
-  Definition insert (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition insert (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
     match 𝜏, α with
-    | [ Self; K; V ], [ self; _key; _value ] =>
+    | [], [ self; _key; _value ] =>
       let* self := M.alloc self in
       let* _key := M.alloc _key in
       let* _value := M.alloc _value in
@@ -93,7 +98,7 @@ Module Impl_trait_erc20_Mapping_K_V.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
 End Impl_trait_erc20_Mapping_K_V.
 
 (* Struct
@@ -104,12 +109,14 @@ End Impl_trait_erc20_Mapping_K_V.
   } *)
 
 Module Impl_core_default_Default_for_trait_erc20_AccountId.
+  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -125,17 +132,18 @@ Module Impl_core_default_Default_for_trait_erc20_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "trait_erc20::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_trait_erc20_AccountId.
 
 Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
+  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -148,18 +156,18 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "trait_erc20::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_trait_erc20_AccountId.
 
 Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
+  Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "trait_erc20::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_trait_erc20_AccountId.
 
 Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
@@ -190,12 +198,14 @@ Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
 } *)
 
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
+  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -226,27 +236,29 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
       "core::fmt::Debug"
       (* Self *) (Ty.path "trait_erc20::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
+  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "trait_erc20::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
+  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
+  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* __self_tag :=
@@ -277,21 +289,23 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "trait_erc20::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
 
 Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
+  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "trait_erc20::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
+  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
+  
   (*
   Eq
   *)
@@ -300,7 +314,7 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
       (α : list Value.t)
       : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
     | _, _ => M.impossible
@@ -315,8 +329,7 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
 
 Axiom Result :
@@ -357,12 +370,14 @@ End BaseErc20.
   } *)
 
 Module Impl_core_default_Default_for_trait_erc20_Erc20.
+  Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -410,8 +425,7 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
       "core::default::Default"
       (* Self *) (Ty.path "trait_erc20::Erc20")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_trait_erc20_Erc20.
 
 (* Struct
@@ -472,15 +486,14 @@ Module Impl_trait_erc20_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -489,7 +502,7 @@ Module Impl_trait_erc20_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; _event ] =>
+    | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -500,7 +513,7 @@ Module Impl_trait_erc20_Env.
     end.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_trait_erc20_Env.
 
 Module Impl_trait_erc20_Erc20.
@@ -513,7 +526,7 @@ Module Impl_trait_erc20_Erc20.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
@@ -522,7 +535,7 @@ Module Impl_trait_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   (*
       fn env(&self) -> Env {
@@ -531,7 +544,7 @@ Module Impl_trait_erc20_Erc20.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_associated_function (Ty.path "trait_erc20::Erc20") "init_env" in
@@ -539,7 +552,7 @@ Module Impl_trait_erc20_Erc20.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   (*
       pub fn new(total_supply: Balance) -> Self {
@@ -560,7 +573,7 @@ Module Impl_trait_erc20_Erc20.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ total_supply ] =>
+    | [], [ total_supply ] =>
       let* total_supply := M.alloc total_supply in
       let* balances :=
         let* α0 :=
@@ -653,7 +666,7 @@ Module Impl_trait_erc20_Erc20.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -662,7 +675,7 @@ Module Impl_trait_erc20_Erc20.
   *)
   Definition balance_of_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; owner ] =>
+    | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 :=
@@ -683,7 +696,7 @@ Module Impl_trait_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_balance_of_impl :
-    M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl [].
+    M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -692,7 +705,7 @@ Module Impl_trait_erc20_Erc20.
   *)
   Definition allowance_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; owner; spender ] =>
+    | [], [ self; owner; spender ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
@@ -725,7 +738,7 @@ Module Impl_trait_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_allowance_impl :
-    M.IsAssociatedFunction Self "allowance_impl" allowance_impl [].
+    M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -747,7 +760,7 @@ Module Impl_trait_erc20_Erc20.
   *)
   Definition transfer_from_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; from; to; value ] =>
+    | [], [ self; from; to; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -858,10 +871,12 @@ Module Impl_trait_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_transfer_from_to :
-    M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to [].
+    M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
 End Impl_trait_erc20_Erc20.
 
 Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
+  Definition Self : Ty.t := Ty.path "trait_erc20::Erc20".
+  
   (*
       fn total_supply(&self) -> Balance {
           self.total_supply
@@ -869,7 +884,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition total_supply (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "total_supply")
@@ -883,7 +898,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; owner ] =>
+    | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 :=
@@ -902,7 +917,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition allowance (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; owner; spender ] =>
+    | [], [ self; owner; spender ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
@@ -923,7 +938,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; to; value ] =>
+    | [], [ self; to; value ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
       let* value := M.alloc value in
@@ -963,7 +978,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition approve (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; spender; value ] =>
+    | [], [ self; spender; value ] =>
       let* self := M.alloc self in
       let* spender := M.alloc spender in
       let* value := M.alloc value in
@@ -1047,7 +1062,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   *)
   Definition transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; from; to; value ] =>
+    | [], [ self; from; to; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
       let* to := M.alloc to in
@@ -1198,6 +1213,5 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
           ("transfer", InstanceField.Method transfer);
           ("approve", InstanceField.Method approve);
           ("transfer_from", InstanceField.Method transfer_from)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

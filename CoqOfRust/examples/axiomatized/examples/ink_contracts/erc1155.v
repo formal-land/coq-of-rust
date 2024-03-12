@@ -13,7 +13,10 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -21,49 +24,48 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "erc1155::Mapping") [ K; V ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [ K; V ].
+      (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
+    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+    M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
+    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+    M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
+    M.IsAssociatedFunction (Self K V) "take" (take K V).
 End Impl_erc1155_Mapping_K_V.
 
 (* Struct
@@ -74,6 +76,8 @@ End Impl_erc1155_Mapping_K_V.
   } *)
 
 Module Impl_core_default_Default_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -81,11 +85,12 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_AccountId.
 
 Module Impl_core_clone_Clone_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -93,31 +98,34 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc1155_AccountId.
 
 Module Impl_core_marker_Copy_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_erc1155_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -125,11 +133,12 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+  Definition Self : Ty.t := Ty.path "erc1155::AccountId".
+  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -138,8 +147,7 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
       (* Self *) (Ty.path "erc1155::AccountId")
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
@@ -198,16 +206,19 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc1155::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -215,21 +226,23 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc1155::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "erc1155::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_erc1155_Error.
 
 Module Impl_core_cmp_Eq_for_erc1155_Error.
+  Definition Self : Ty.t := Ty.path "erc1155::Error".
+  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -241,8 +254,7 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
@@ -336,13 +348,12 @@ Module Impl_erc1155_Env.
   
   Parameter caller : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc1155_Env.
 
 (* Struct
@@ -371,6 +382,8 @@ End Impl_erc1155_Env.
   } *)
 
 Module Impl_core_default_Default_for_erc1155_Contract.
+  Definition Self : Ty.t := Ty.path "erc1155::Contract".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -378,8 +391,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
       "core::default::Default"
       (* Self *) (Ty.path "erc1155::Contract")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_Contract.
 
 Module Impl_erc1155_Contract.
@@ -388,29 +400,28 @@ Module Impl_erc1155_Contract.
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter create : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_create :
-    M.IsAssociatedFunction Self "create" create [].
+  Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
   
   Parameter mint : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint [].
+  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
   
   Parameter perform_transfer : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_perform_transfer :
-    M.IsAssociatedFunction Self "perform_transfer" perform_transfer [].
+    M.IsAssociatedFunction Self "perform_transfer" perform_transfer.
   
   Parameter transfer_acceptance_check : (list Ty.t) -> (list Value.t) -> M.
   
@@ -418,11 +429,12 @@ Module Impl_erc1155_Contract.
     M.IsAssociatedFunction
       Self
       "transfer_acceptance_check"
-      transfer_acceptance_check
-      [].
+      transfer_acceptance_check.
 End Impl_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155_for_erc1155_Contract.
+  Definition Self : Ty.t := Ty.path "erc1155::Contract".
+  
   Parameter is_approved_for_all : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
@@ -449,11 +461,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             InstanceField.Method safe_batch_transfer_from);
           ("balance_of_batch", InstanceField.Method balance_of_batch);
           ("set_approval_for_all", InstanceField.Method set_approval_for_all)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_erc1155_Erc1155_for_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
+  Definition Self : Ty.t := Ty.path "erc1155::Contract".
+  
   Parameter on_received : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter on_batch_received : (list Ty.t) -> (list Value.t) -> M.
@@ -467,6 +480,5 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
         [
           ("on_received", InstanceField.Method on_received);
           ("on_batch_received", InstanceField.Method on_batch_received)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.

@@ -9,12 +9,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_conditional_compilation_AccountId.
+  Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -30,17 +32,18 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_conditional_compilation_AccountId.
 
 Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
+  Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -53,18 +56,18 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_conditional_compilation_AccountId.
 
 Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
+  Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "conditional_compilation::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_conditional_compilation_AccountId.
 
 Axiom Balance : (Ty.path "conditional_compilation::Balance") = (Ty.path "u128").
@@ -135,15 +138,14 @@ Module Impl_conditional_compilation_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -152,7 +154,7 @@ Module Impl_conditional_compilation_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; _event ] =>
+    | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -163,7 +165,7 @@ Module Impl_conditional_compilation_Env.
     end.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
   
   (*
       fn block_number(&self) -> BlockNumber {
@@ -172,7 +174,7 @@ Module Impl_conditional_compilation_Env.
   *)
   Definition block_number (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
@@ -182,7 +184,7 @@ Module Impl_conditional_compilation_Env.
     end.
   
   Axiom AssociatedFunction_block_number :
-    M.IsAssociatedFunction Self "block_number" block_number [].
+    M.IsAssociatedFunction Self "block_number" block_number.
 End Impl_conditional_compilation_Env.
 
 (* Struct
@@ -203,7 +205,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
@@ -212,7 +214,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   (*
       fn env(&self) -> Env {
@@ -221,7 +223,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_associated_function
@@ -231,7 +233,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   (*
       pub fn new() -> Self {
@@ -242,7 +244,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -256,7 +258,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn new_foo(value: bool) -> Self {
@@ -265,7 +267,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition new_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ value ] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
       M.pure
@@ -276,7 +278,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Axiom AssociatedFunction_new_foo :
-    M.IsAssociatedFunction Self "new_foo" new_foo [].
+    M.IsAssociatedFunction Self "new_foo" new_foo.
   
   (*
       pub fn new_bar(value: bool) -> Self {
@@ -285,7 +287,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition new_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ value ] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
       M.pure
@@ -296,7 +298,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Axiom AssociatedFunction_new_bar :
-    M.IsAssociatedFunction Self "new_bar" new_bar [].
+    M.IsAssociatedFunction Self "new_bar" new_bar.
   
   (*
       pub fn new_foo_bar(value: bool) -> Self {
@@ -305,7 +307,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition new_foo_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ value ] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
       M.pure
@@ -316,7 +318,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Axiom AssociatedFunction_new_foo_bar :
-    M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar [].
+    M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
   
   (*
       pub fn inherent_flip_foo(&mut self) {
@@ -330,7 +332,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition inherent_flip_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -384,7 +386,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Axiom AssociatedFunction_inherent_flip_foo :
-    M.IsAssociatedFunction Self "inherent_flip_foo" inherent_flip_foo [].
+    M.IsAssociatedFunction Self "inherent_flip_foo" inherent_flip_foo.
   
   (*
       pub fn inherent_flip_bar(&mut self) {
@@ -400,7 +402,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Definition inherent_flip_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
         let* α0 :=
@@ -468,10 +470,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     end.
   
   Axiom AssociatedFunction_inherent_flip_bar :
-    M.IsAssociatedFunction Self "inherent_flip_bar" inherent_flip_bar [].
+    M.IsAssociatedFunction Self "inherent_flip_bar" inherent_flip_bar.
 End Impl_conditional_compilation_ConditionalCompilation.
 
 Module Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.
+  Definition Self : Ty.t :=
+    Ty.path "conditional_compilation::ConditionalCompilation".
+  
   (*
       fn flip(&mut self) {
           self.value = !self.value;
@@ -479,7 +484,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -498,7 +503,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "value")
@@ -517,7 +522,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   *)
   Definition push_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; value ] =>
+    | [], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
       let* caller :=
@@ -579,6 +584,5 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           ("flip", InstanceField.Method flip);
           ("get", InstanceField.Method get);
           ("push_foo", InstanceField.Method push_foo)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

@@ -23,15 +23,16 @@ Module Impl_trait_incrementer_Incrementer.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter inc_by : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_inc_by :
-    M.IsAssociatedFunction Self "inc_by" inc_by [].
+  Axiom AssociatedFunction_inc_by : M.IsAssociatedFunction Self "inc_by" inc_by.
 End Impl_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
+  Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
+  
   Parameter inc : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
@@ -42,11 +43,13 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       (* Self *) (Ty.path "trait_incrementer::Incrementer")
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get) ]
-      (* Instance polymorphic types *) [].
+        [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get)
+        ].
 End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+  Definition Self : Ty.t := Ty.path "trait_incrementer::Incrementer".
+  
   Parameter reset : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -54,6 +57,5 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       "trait_incrementer::Reset"
       (* Self *) (Ty.path "trait_incrementer::Incrementer")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("reset", InstanceField.Method reset) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("reset", InstanceField.Method reset) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

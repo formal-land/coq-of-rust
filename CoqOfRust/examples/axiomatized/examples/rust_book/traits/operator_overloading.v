@@ -20,6 +20,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
+  Definition Self : Ty.t := Ty.path "operator_overloading::FooBar".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -27,8 +29,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::FooBar")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 (* Struct
@@ -38,6 +39,8 @@ End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   } *)
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
+  Definition Self : Ty.t := Ty.path "operator_overloading::BarFoo".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -45,11 +48,12 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       "core::fmt::Debug"
       (* Self *) (Ty.path "operator_overloading::BarFoo")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
+  Definition Self : Ty.t := Ty.path "operator_overloading::Foo".
+  
   Definition Output : Ty.t := Ty.path "operator_overloading::FooBar".
   
   Parameter add : (list Ty.t) -> (list Value.t) -> M.
@@ -62,11 +66,12 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
         [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
       (* Instance *)
         [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
+  Definition Self : Ty.t := Ty.path "operator_overloading::Bar".
+  
   Definition Output : Ty.t := Ty.path "operator_overloading::BarFoo".
   
   Parameter add : (list Ty.t) -> (list Value.t) -> M.
@@ -79,8 +84,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
         [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
       (* Instance *)
         [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

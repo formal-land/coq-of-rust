@@ -9,16 +9,19 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
+  Definition Self : Ty.t := Ty.path "derive::Centimeters".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "derive::Centimeters")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
+  Definition Self : Ty.t := Ty.path "derive::Centimeters".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -26,11 +29,12 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "derive::Centimeters")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
+  Definition Self : Ty.t := Ty.path "derive::Centimeters".
+  
   Parameter partial_cmp : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -38,8 +42,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       "core::cmp::PartialOrd"
       (* Self *) (Ty.path "derive::Centimeters")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 (* Struct
@@ -50,6 +53,8 @@ End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   } *)
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
+  Definition Self : Ty.t := Ty.path "derive::Inches".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -57,8 +62,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       "core::fmt::Debug"
       (* Self *) (Ty.path "derive::Inches")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches.
@@ -67,7 +71,7 @@ Module Impl_derive_Inches.
   Parameter to_centimeters : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_to_centimeters :
-    M.IsAssociatedFunction Self "to_centimeters" to_centimeters [].
+    M.IsAssociatedFunction Self "to_centimeters" to_centimeters.
 End Impl_derive_Inches.
 
 (* Struct

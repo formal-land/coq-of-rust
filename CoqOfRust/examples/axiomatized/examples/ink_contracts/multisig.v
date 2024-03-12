@@ -13,7 +13,10 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_multisig_Mapping_K_V.
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -21,49 +24,48 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "multisig::Mapping") [ K; V ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [ K; V ].
+      (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_multisig_Mapping_K_V.
 
 Module Impl_multisig_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
+    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+    M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
+    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+    M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
+    M.IsAssociatedFunction (Self K V) "take" (take K V).
 End Impl_multisig_Mapping_K_V.
 
 (* Struct
@@ -74,6 +76,8 @@ End Impl_multisig_Mapping_K_V.
   } *)
 
 Module Impl_core_default_Default_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -81,11 +85,12 @@ Module Impl_core_default_Default_for_multisig_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_AccountId.
 
 Module Impl_core_fmt_Debug_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -93,11 +98,12 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
       "core::fmt::Debug"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_multisig_AccountId.
 
 Module Impl_core_clone_Clone_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -105,31 +111,34 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_AccountId.
 
 Module Impl_core_marker_Copy_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -137,21 +146,23 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_multisig_AccountId.
 
 Module Impl_core_cmp_Eq_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -163,11 +174,12 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_multisig_AccountId.
 
 Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Parameter partial_cmp : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -175,11 +187,12 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
       "core::cmp::PartialOrd"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_multisig_AccountId.
 
 Module Impl_core_cmp_Ord_for_multisig_AccountId.
+  Definition Self : Ty.t := Ty.path "multisig::AccountId".
+  
   Parameter cmp : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -187,8 +200,7 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
       "core::cmp::Ord"
       (* Self *) (Ty.path "multisig::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("cmp", InstanceField.Method cmp) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_multisig_AccountId.
 
 Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
@@ -234,6 +246,8 @@ Parameter WRONG_TRANSACTION_ID : Value.t.
 } *)
 
 Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
+  Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -241,18 +255,18 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
       "core::clone::Clone"
       (* Self *) (Ty.path "multisig::ConfirmationStatus")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
 
 Module Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
+  Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "multisig::ConfirmationStatus")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
 
 (* Struct
@@ -274,6 +288,8 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
   } *)
 
 Module Impl_core_default_Default_for_multisig_Transaction.
+  Definition Self : Ty.t := Ty.path "multisig::Transaction".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -281,8 +297,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
       "core::default::Default"
       (* Self *) (Ty.path "multisig::Transaction")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Transaction.
 
 (* Enum Error *)
@@ -299,6 +314,8 @@ End Impl_core_default_Default_for_multisig_Transaction.
 } *)
 
 Module Impl_core_clone_Clone_for_multisig_Error.
+  Definition Self : Ty.t := Ty.path "multisig::Error".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -306,31 +323,34 @@ Module Impl_core_clone_Clone_for_multisig_Error.
       "core::clone::Clone"
       (* Self *) (Ty.path "multisig::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_Error.
 
 Module Impl_core_marker_Copy_for_multisig_Error.
+  Definition Self : Ty.t := Ty.path "multisig::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "multisig::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_multisig_Error.
+  Definition Self : Ty.t := Ty.path "multisig::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "multisig::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_Error.
 
 Module Impl_core_cmp_PartialEq_for_multisig_Error.
+  Definition Self : Ty.t := Ty.path "multisig::Error".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -338,21 +358,23 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "multisig::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_Error.
 
 Module Impl_core_marker_StructuralEq_for_multisig_Error.
+  Definition Self : Ty.t := Ty.path "multisig::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "multisig::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_multisig_Error.
 
 Module Impl_core_cmp_Eq_for_multisig_Error.
+  Definition Self : Ty.t := Ty.path "multisig::Error".
+  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -364,8 +386,7 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_multisig_Error.
 
 (* Struct
@@ -383,6 +404,8 @@ End Impl_core_cmp_Eq_for_multisig_Error.
   } *)
 
 Module Impl_core_default_Default_for_multisig_Transactions.
+  Definition Self : Ty.t := Ty.path "multisig::Transactions".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -390,8 +413,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
       "core::default::Default"
       (* Self *) (Ty.path "multisig::Transactions")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Transactions.
 
 (* Struct
@@ -526,23 +548,22 @@ Module Impl_multisig_Env.
   
   Parameter caller : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
   
   Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transferred_value :
-    M.IsAssociatedFunction Self "transferred_value" transferred_value [].
+    M.IsAssociatedFunction Self "transferred_value" transferred_value.
   
   Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_account_id :
-    M.IsAssociatedFunction Self "account_id" account_id [].
+    M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_multisig_Env.
 
 (* Struct
@@ -580,6 +601,8 @@ End Impl_multisig_Env.
   } *)
 
 Module Impl_core_default_Default_for_multisig_Multisig.
+  Definition Self : Ty.t := Ty.path "multisig::Multisig".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -587,8 +610,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
       "core::default::Default"
       (* Self *) (Ty.path "multisig::Multisig")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Multisig.
 
 Parameter ensure_requirement_is_valid : (list Ty.t) -> (list Value.t) -> M.
@@ -599,20 +621,20 @@ Module Impl_multisig_Multisig.
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter ensure_confirmed : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_confirmed :
-    M.IsAssociatedFunction Self "ensure_confirmed" ensure_confirmed [].
+    M.IsAssociatedFunction Self "ensure_confirmed" ensure_confirmed.
   
   Parameter ensure_transaction_exists : (list Ty.t) -> (list Value.t) -> M.
   
@@ -620,42 +642,37 @@ Module Impl_multisig_Multisig.
     M.IsAssociatedFunction
       Self
       "ensure_transaction_exists"
-      ensure_transaction_exists
-      [].
+      ensure_transaction_exists.
   
   Parameter ensure_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_owner :
-    M.IsAssociatedFunction Self "ensure_owner" ensure_owner [].
+    M.IsAssociatedFunction Self "ensure_owner" ensure_owner.
   
   Parameter ensure_caller_is_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_caller_is_owner :
-    M.IsAssociatedFunction
-      Self
-      "ensure_caller_is_owner"
-      ensure_caller_is_owner
-      [].
+    M.IsAssociatedFunction Self "ensure_caller_is_owner" ensure_caller_is_owner.
   
   Parameter ensure_from_wallet : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_from_wallet :
-    M.IsAssociatedFunction Self "ensure_from_wallet" ensure_from_wallet [].
+    M.IsAssociatedFunction Self "ensure_from_wallet" ensure_from_wallet.
   
   Parameter ensure_no_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_no_owner :
-    M.IsAssociatedFunction Self "ensure_no_owner" ensure_no_owner [].
+    M.IsAssociatedFunction Self "ensure_no_owner" ensure_no_owner.
   
   Parameter add_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_add_owner :
-    M.IsAssociatedFunction Self "add_owner" add_owner [].
+    M.IsAssociatedFunction Self "add_owner" add_owner.
   
   Parameter owner_index : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_owner_index :
-    M.IsAssociatedFunction Self "owner_index" owner_index [].
+    M.IsAssociatedFunction Self "owner_index" owner_index.
   
   Parameter clean_owner_confirmations : (list Ty.t) -> (list Value.t) -> M.
   
@@ -663,61 +680,60 @@ Module Impl_multisig_Multisig.
     M.IsAssociatedFunction
       Self
       "clean_owner_confirmations"
-      clean_owner_confirmations
-      [].
+      clean_owner_confirmations.
   
   Parameter remove_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove_owner :
-    M.IsAssociatedFunction Self "remove_owner" remove_owner [].
+    M.IsAssociatedFunction Self "remove_owner" remove_owner.
   
   Parameter replace_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_replace_owner :
-    M.IsAssociatedFunction Self "replace_owner" replace_owner [].
+    M.IsAssociatedFunction Self "replace_owner" replace_owner.
   
   Parameter change_requirement : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_change_requirement :
-    M.IsAssociatedFunction Self "change_requirement" change_requirement [].
+    M.IsAssociatedFunction Self "change_requirement" change_requirement.
   
   Parameter confirm_by_caller : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_confirm_by_caller :
-    M.IsAssociatedFunction Self "confirm_by_caller" confirm_by_caller [].
+    M.IsAssociatedFunction Self "confirm_by_caller" confirm_by_caller.
   
   Parameter submit_transaction : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_submit_transaction :
-    M.IsAssociatedFunction Self "submit_transaction" submit_transaction [].
+    M.IsAssociatedFunction Self "submit_transaction" submit_transaction.
   
   Parameter take_transaction : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take_transaction :
-    M.IsAssociatedFunction Self "take_transaction" take_transaction [].
+    M.IsAssociatedFunction Self "take_transaction" take_transaction.
   
   Parameter cancel_transaction : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_cancel_transaction :
-    M.IsAssociatedFunction Self "cancel_transaction" cancel_transaction [].
+    M.IsAssociatedFunction Self "cancel_transaction" cancel_transaction.
   
   Parameter confirm_transaction : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_confirm_transaction :
-    M.IsAssociatedFunction Self "confirm_transaction" confirm_transaction [].
+    M.IsAssociatedFunction Self "confirm_transaction" confirm_transaction.
   
   Parameter revoke_confirmation : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_revoke_confirmation :
-    M.IsAssociatedFunction Self "revoke_confirmation" revoke_confirmation [].
+    M.IsAssociatedFunction Self "revoke_confirmation" revoke_confirmation.
   
   Parameter invoke_transaction : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_invoke_transaction :
-    M.IsAssociatedFunction Self "invoke_transaction" invoke_transaction [].
+    M.IsAssociatedFunction Self "invoke_transaction" invoke_transaction.
   
   Parameter eval_transaction : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_eval_transaction :
-    M.IsAssociatedFunction Self "eval_transaction" eval_transaction [].
+    M.IsAssociatedFunction Self "eval_transaction" eval_transaction.
 End Impl_multisig_Multisig.

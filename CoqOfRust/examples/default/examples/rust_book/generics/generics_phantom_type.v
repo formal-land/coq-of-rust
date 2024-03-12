@@ -9,6 +9,9 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+  Definition Self (A B : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+  
   Axiom Implements :
     forall (A B : Ty.t),
     M.IsTraitInstance
@@ -16,17 +19,20 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTup
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [ A; B ].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+  Definition Self (A B : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+  
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self A B in
     match 𝜏, α with
-    | [ Self; A; B ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -61,8 +67,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [ A; B ].
+      (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 (* Struct
@@ -77,6 +82,9 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+  Definition Self (A B : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+  
   Axiom Implements :
     forall (A B : Ty.t),
     M.IsTraitInstance
@@ -84,17 +92,20 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStr
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [ A; B ].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+  Definition Self (A B : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+  
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self A B in
     match 𝜏, α with
-    | [ Self; A; B ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -134,8 +145,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       (* Self *)
         (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [ A; B ].
+      (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (*

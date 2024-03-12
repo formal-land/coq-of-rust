@@ -44,12 +44,14 @@ Definition matching (𝜏 : list Ty.t) (α : list Value.t) : M :=
   } *)
 
 Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
+  Definition Self : Ty.t := Ty.path "constructor_as_function::Constructor".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -69,8 +71,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructor_as_function::Constructor")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 (*

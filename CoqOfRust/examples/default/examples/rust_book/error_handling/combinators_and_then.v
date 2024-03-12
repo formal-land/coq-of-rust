@@ -25,12 +25,14 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
+  Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -65,8 +67,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Food")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -93,12 +94,14 @@ End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 } *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
+  Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -133,8 +136,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Day")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 (*

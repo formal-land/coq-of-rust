@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
+  Definition Self : Ty.t := Ty.path "drop::Droppable".
+  
   Parameter drop : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,8 +18,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       "core::ops::drop::Drop"
       (* Self *) (Ty.path "drop::Droppable")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("drop", InstanceField.Method drop) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

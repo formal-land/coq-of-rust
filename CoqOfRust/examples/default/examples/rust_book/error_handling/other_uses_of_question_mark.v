@@ -23,12 +23,14 @@ Axiom Result :
   } *)
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -46,11 +48,12 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Debug"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
+  
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
           write!(f, "invalid first item to double")
@@ -58,7 +61,7 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -82,18 +85,18 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Display"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::error::Error"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 (*

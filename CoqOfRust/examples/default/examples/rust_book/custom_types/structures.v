@@ -10,12 +10,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_structures_Person.
+  Definition Self : Ty.t := Ty.path "structures::Person".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -47,8 +49,7 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       "core::fmt::Debug"
       (* Self *) (Ty.path "structures::Person")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_structures_Person.
 
 (* Struct

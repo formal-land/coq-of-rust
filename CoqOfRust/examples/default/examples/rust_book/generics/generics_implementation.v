@@ -25,14 +25,14 @@ Module Impl_generics_implementation_Val.
   *)
   Definition value (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.pure (M.get_struct_record α0 "val")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value [].
+  Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
@@ -44,9 +44,10 @@ Module Impl_generics_implementation_GenVal_T.
           &self.gen_val
       }
   *)
-  Definition value (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition value (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.pure (M.get_struct_record α0 "gen_val")
@@ -55,7 +56,7 @@ Module Impl_generics_implementation_GenVal_T.
   
   Axiom AssociatedFunction_value :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "value" value [ T ].
+    M.IsAssociatedFunction (Self T) "value" (value T).
 End Impl_generics_implementation_GenVal_T.
 
 (*

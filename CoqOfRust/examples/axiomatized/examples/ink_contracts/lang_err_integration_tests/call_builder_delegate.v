@@ -26,6 +26,9 @@ Axiom Hash :
   } *)
 
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
+  Definition Self : Ty.t :=
+    Ty.path "call_builder_delegate::CallBuilderDelegateTest".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -33,8 +36,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
       "core::default::Default"
       (* Self *) (Ty.path "call_builder_delegate::CallBuilderDelegateTest")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.
@@ -43,15 +45,14 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter delegate : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_delegate :
-    M.IsAssociatedFunction Self "delegate" delegate [].
+    M.IsAssociatedFunction Self "delegate" delegate.
   
   Parameter invoke : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_invoke :
-    M.IsAssociatedFunction Self "invoke" invoke [].
+  Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

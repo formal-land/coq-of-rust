@@ -7,14 +7,21 @@ Module PrintInOption.
 End PrintInOption.
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
+  Definition Self (T : Ty.t) : Ty.t := T.
+  
   (*
       fn print_in_option(self) {
           println!("{:?}", Some(self));
       }
   *)
-  Definition print_in_option (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition print_in_option
+      (T : Ty.t)
+      (𝜏 : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -58,8 +65,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       (* Self *) T
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("print_in_option", InstanceField.Method print_in_option) ]
-      (* Instance polymorphic types *) [ T ].
+        [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (*

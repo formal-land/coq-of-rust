@@ -26,6 +26,9 @@ Module checked.
   } *)
   
   Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Definition Self : Ty.t :=
+      Ty.path "result_chaining_with_question_mark::checked::MathError".
+    
     Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Implements :
@@ -34,8 +37,7 @@ Module checked.
         (* Self *)
           (Ty.path "result_chaining_with_question_mark::checked::MathError")
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-        (* Instance polymorphic types *) [].
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :

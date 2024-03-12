@@ -13,7 +13,10 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_dns_Mapping_K_V.
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "dns::Mapping") [ K; V ].
+  
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -21,55 +24,54 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "dns::Mapping") [ K; V ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [ K; V ].
+      (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "dns::Mapping") [ K; V ].
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
+    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+    M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "new" new [ K; V ].
+    M.IsAssociatedFunction (Self K V) "new" (new K V).
   
-  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
+    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+    M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
+    M.IsAssociatedFunction (Self K V) "take" (take K V).
 End Impl_dns_Mapping_K_V.
 
 (* Struct
@@ -80,6 +82,8 @@ End Impl_dns_Mapping_K_V.
   } *)
 
 Module Impl_core_default_Default_for_dns_AccountId.
+  Definition Self : Ty.t := Ty.path "dns::AccountId".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -87,11 +91,12 @@ Module Impl_core_default_Default_for_dns_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "dns::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_AccountId.
 
 Module Impl_core_clone_Clone_for_dns_AccountId.
+  Definition Self : Ty.t := Ty.path "dns::AccountId".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -99,31 +104,34 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "dns::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_dns_AccountId.
 
 Module Impl_core_marker_Copy_for_dns_AccountId.
+  Definition Self : Ty.t := Ty.path "dns::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "dns::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_dns_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
+  Definition Self : Ty.t := Ty.path "dns::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "dns::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_dns_AccountId.
+  Definition Self : Ty.t := Ty.path "dns::AccountId".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -131,11 +139,12 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "dns::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_dns_AccountId.
+  Definition Self : Ty.t := Ty.path "dns::AccountId".
+  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -144,8 +153,7 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
       (* Self *) (Ty.path "dns::AccountId")
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
@@ -231,13 +239,12 @@ Module Impl_dns_Env.
   
   Parameter caller : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_dns_Env.
 
 (* Struct
@@ -267,6 +274,8 @@ End Impl_dns_Env.
 Parameter zero_address : (list Ty.t) -> (list Value.t) -> M.
 
 Module Impl_core_default_Default_for_dns_DomainNameService.
+  Definition Self : Ty.t := Ty.path "dns::DomainNameService".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -274,8 +283,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
       "core::default::Default"
       (* Self *) (Ty.path "dns::DomainNameService")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
 (* Enum Error *)
@@ -297,16 +305,19 @@ End Impl_core_default_Default_for_dns_DomainNameService.
 } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
+  Definition Self : Ty.t := Ty.path "dns::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "dns::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
 
 Module Impl_core_cmp_PartialEq_for_dns_Error.
+  Definition Self : Ty.t := Ty.path "dns::Error".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -314,21 +325,23 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "dns::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
 
 Module Impl_core_marker_StructuralEq_for_dns_Error.
+  Definition Self : Ty.t := Ty.path "dns::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "dns::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_dns_Error.
 
 Module Impl_core_cmp_Eq_for_dns_Error.
+  Definition Self : Ty.t := Ty.path "dns::Error".
+  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -340,8 +353,7 @@ Module Impl_core_cmp_Eq_for_dns_Error.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
@@ -355,52 +367,48 @@ Module Impl_dns_DomainNameService.
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter register : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_register :
-    M.IsAssociatedFunction Self "register" register [].
+    M.IsAssociatedFunction Self "register" register.
   
   Parameter get_owner_or_default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_owner_or_default :
-    M.IsAssociatedFunction Self "get_owner_or_default" get_owner_or_default [].
+    M.IsAssociatedFunction Self "get_owner_or_default" get_owner_or_default.
   
   Parameter set_address : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_address :
-    M.IsAssociatedFunction Self "set_address" set_address [].
+    M.IsAssociatedFunction Self "set_address" set_address.
   
   Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer :
-    M.IsAssociatedFunction Self "transfer" transfer [].
+    M.IsAssociatedFunction Self "transfer" transfer.
   
   Parameter get_address_or_default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_address_or_default :
-    M.IsAssociatedFunction
-      Self
-      "get_address_or_default"
-      get_address_or_default
-      [].
+    M.IsAssociatedFunction Self "get_address_or_default" get_address_or_default.
   
   Parameter get_address : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_address :
-    M.IsAssociatedFunction Self "get_address" get_address [].
+    M.IsAssociatedFunction Self "get_address" get_address.
   
   Parameter get_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_owner :
-    M.IsAssociatedFunction Self "get_owner" get_owner [].
+    M.IsAssociatedFunction Self "get_owner" get_owner.
 End Impl_dns_DomainNameService.

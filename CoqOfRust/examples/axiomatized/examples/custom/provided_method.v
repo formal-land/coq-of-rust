@@ -10,6 +10,8 @@ Module ProvidedAndRequired.
 End ProvidedAndRequired.
 
 Module Impl_provided_method_ProvidedAndRequired_for_i32.
+  Definition Self : Ty.t := Ty.path "i32".
+  
   Parameter required : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -17,11 +19,12 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "i32")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("required", InstanceField.Method required) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("required", InstanceField.Method required) ].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
+  Definition Self : Ty.t := Ty.path "u32".
+  
   Parameter required : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter provided : (list Ty.t) -> (list Value.t) -> M.
@@ -35,8 +38,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
         [
           ("required", InstanceField.Method required);
           ("provided", InstanceField.Method provided)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

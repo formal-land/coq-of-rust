@@ -25,7 +25,7 @@ Module Impl_generics_new_type_idiom_Years.
   *)
   Definition to_days (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 := M.read (M.get_struct_tuple α0 0) in
@@ -35,7 +35,7 @@ Module Impl_generics_new_type_idiom_Years.
     end.
   
   Axiom AssociatedFunction_to_days :
-    M.IsAssociatedFunction Self "to_days" to_days [].
+    M.IsAssociatedFunction Self "to_days" to_days.
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
@@ -48,7 +48,7 @@ Module Impl_generics_new_type_idiom_Days.
   *)
   Definition to_years (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 := M.read (M.get_struct_tuple α0 0) in
@@ -58,7 +58,7 @@ Module Impl_generics_new_type_idiom_Days.
     end.
   
   Axiom AssociatedFunction_to_years :
-    M.IsAssociatedFunction Self "to_years" to_years [].
+    M.IsAssociatedFunction Self "to_years" to_years.
 End Impl_generics_new_type_idiom_Days.
 
 (*

@@ -18,14 +18,14 @@ Module Impl_flipper_Flipper.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ init_value ] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure (Value.StructRecord "flipper::Flipper" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn new_default() -> Self {
@@ -34,7 +34,7 @@ Module Impl_flipper_Flipper.
   *)
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 := M.get_associated_function (Ty.path "flipper::Flipper") "new" in
       let* α1 :=
         M.get_trait_method
@@ -47,7 +47,7 @@ Module Impl_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default [].
+    M.IsAssociatedFunction Self "new_default" new_default.
   
   (*
       pub fn flip(&mut self) {
@@ -56,7 +56,7 @@ Module Impl_flipper_Flipper.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -68,7 +68,7 @@ Module Impl_flipper_Flipper.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -77,12 +77,12 @@ Module Impl_flipper_Flipper.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
 End Impl_flipper_Flipper.

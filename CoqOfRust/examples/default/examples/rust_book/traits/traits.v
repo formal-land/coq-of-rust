@@ -79,7 +79,7 @@ Module Impl_traits_Sheep.
   *)
   Definition is_naked (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "naked")
@@ -87,10 +87,12 @@ Module Impl_traits_Sheep.
     end.
   
   Axiom AssociatedFunction_is_naked :
-    M.IsAssociatedFunction Self "is_naked" is_naked [].
+    M.IsAssociatedFunction Self "is_naked" is_naked.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
+  Definition Self : Ty.t := Ty.path "traits::Sheep".
+  
   (*
       fn new(name: &'static str) -> Sheep {
           Sheep {
@@ -101,7 +103,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ name ] =>
+    | [], [ name ] =>
       let* name := M.alloc name in
       let* α0 := M.read name in
       M.pure
@@ -118,7 +120,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition name (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "name")
@@ -136,7 +138,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_associated_function (Ty.path "traits::Sheep") "is_naked" in
@@ -161,7 +163,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   *)
   Definition talk (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -221,8 +223,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
           ("name", InstanceField.Method name);
           ("noise", InstanceField.Method noise);
           ("talk", InstanceField.Method talk)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_2.
@@ -242,7 +243,7 @@ Module Impl_traits_Sheep_2.
   *)
   Definition shear (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_associated_function (Ty.path "traits::Sheep") "is_naked" in
@@ -325,7 +326,7 @@ Module Impl_traits_Sheep_2.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear [].
+  Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear.
 End Impl_traits_Sheep_2.
 
 (*

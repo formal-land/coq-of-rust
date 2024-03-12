@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_contract_transfer_AccountId.
+  Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,11 +18,12 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_contract_transfer_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
+  Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -28,18 +31,18 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_contract_transfer_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_transfer_AccountId.
+  Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_transfer::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_transfer_AccountId.
 
 Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").
@@ -56,23 +59,22 @@ Module Impl_contract_transfer_Env.
   
   Parameter caller : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   Parameter balance : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance :
-    M.IsAssociatedFunction Self "balance" balance [].
+    M.IsAssociatedFunction Self "balance" balance.
   
   Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer :
-    M.IsAssociatedFunction Self "transfer" transfer [].
+    M.IsAssociatedFunction Self "transfer" transfer.
   
   Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transferred_value :
-    M.IsAssociatedFunction Self "transferred_value" transferred_value [].
+    M.IsAssociatedFunction Self "transferred_value" transferred_value.
 End Impl_contract_transfer_Env.
 
 (* Struct
@@ -87,23 +89,23 @@ Module Impl_contract_transfer_GiveMe.
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter give_me : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_give_me :
-    M.IsAssociatedFunction Self "give_me" give_me [].
+    M.IsAssociatedFunction Self "give_me" give_me.
   
   Parameter was_it_ten : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_was_it_ten :
-    M.IsAssociatedFunction Self "was_it_ten" was_it_ten [].
+    M.IsAssociatedFunction Self "was_it_ten" was_it_ten.
 End Impl_contract_transfer_GiveMe.

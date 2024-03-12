@@ -18,14 +18,14 @@ Module Impl_example05_Foo.
   *)
   Definition plus1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (M.get_struct_tuple self 0) in
       BinOp.Panic.add α0 (Value.Integer Integer.U32 1)
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1 [].
+  Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1.
 End Impl_example05_Foo.
 
 (*

@@ -32,12 +32,12 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       M.pure (Value.StructTuple "wildcard_selector::WildcardSelector" [])
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn wildcard(&mut self) {
@@ -47,7 +47,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition wildcard (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_associated_function
@@ -124,7 +124,7 @@ Module Impl_wildcard_selector_WildcardSelector.
     end.
   
   Axiom AssociatedFunction_wildcard :
-    M.IsAssociatedFunction Self "wildcard" wildcard [].
+    M.IsAssociatedFunction Self "wildcard" wildcard.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
@@ -133,7 +133,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   *)
   Definition wildcard_complement (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; _message ] =>
+    | [], [ self; _message ] =>
       let* self := M.alloc self in
       let* _message := M.alloc _message in
       let* _ :=
@@ -169,5 +169,5 @@ Module Impl_wildcard_selector_WildcardSelector.
     end.
   
   Axiom AssociatedFunction_wildcard_complement :
-    M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement [].
+    M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement.
 End Impl_wildcard_selector_WildcardSelector.

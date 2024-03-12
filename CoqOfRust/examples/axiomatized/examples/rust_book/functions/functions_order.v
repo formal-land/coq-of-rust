@@ -20,11 +20,11 @@ Module Impl_functions_order_SomeType.
   
   Parameter meth2 : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2 [].
+  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
   
   Parameter meth1 : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1 [].
+  Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
 End Impl_functions_order_SomeType.
 
 (* Trait *)
@@ -33,6 +33,8 @@ Module SomeTrait.
 End SomeTrait.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+  Definition Self : Ty.t := Ty.path "functions_order::SomeType".
+  
   Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
@@ -46,11 +48,12 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
         [
           ("some_trait_bar", InstanceField.Method some_trait_bar);
           ("some_trait_foo", InstanceField.Method some_trait_foo)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+  Definition Self : Ty.t := Ty.path "functions_order::OtherType".
+  
   Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
   
   Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
@@ -64,8 +67,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
         [
           ("some_trait_foo", InstanceField.Method some_trait_foo);
           ("some_trait_bar", InstanceField.Method some_trait_bar)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.

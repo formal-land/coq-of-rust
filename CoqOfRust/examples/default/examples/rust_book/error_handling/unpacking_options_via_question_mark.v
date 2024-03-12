@@ -14,12 +14,15 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
+  Definition Self : Ty.t :=
+    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -37,18 +40,19 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
       "core::clone::Clone"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
+  Definition Self : Ty.t :=
+    Ty.path "unpacking_options_via_question_mark::PhoneNumber".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 (* Struct
@@ -65,12 +69,14 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
   } *)
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -83,18 +89,18 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
       "core::clone::Clone"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
+  Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 (* Struct
@@ -124,7 +130,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
   *)
   Definition work_phone_area_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_trait_method
@@ -238,7 +244,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
     end.
   
   Axiom AssociatedFunction_work_phone_area_code :
-    M.IsAssociatedFunction Self "work_phone_area_code" work_phone_area_code [].
+    M.IsAssociatedFunction Self "work_phone_area_code" work_phone_area_code.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (*

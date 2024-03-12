@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
+  Definition Self : Ty.t := Ty.path "drop::Droppable".
+  
   (*
       fn drop(&mut self) {
           println!("> Dropping {}", self.name);
@@ -16,7 +18,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   *)
   Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -56,8 +58,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       "core::ops::drop::Drop"
       (* Self *) (Ty.path "drop::Droppable")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("drop", InstanceField.Method drop) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (*

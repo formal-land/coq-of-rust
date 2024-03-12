@@ -19,7 +19,11 @@ Module DoubleDrop.
 End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_T_for_U.
-  Parameter double_drop : (list Ty.t) -> (list Value.t) -> M.
+  Definition Self (T U : Ty.t) : Ty.t := U.
+  
+  Parameter double_drop :
+      forall (T U : Ty.t),
+      (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (T U : Ty.t),
@@ -27,8 +31,8 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       "generics_traits::DoubleDrop"
       (* Self *) U
       (* Trait polymorphic types *) [ (* T *) T ]
-      (* Instance *) [ ("double_drop", InstanceField.Method double_drop) ]
-      (* Instance polymorphic types *) [ T; U ].
+      (* Instance *)
+        [ ("double_drop", InstanceField.Method (double_drop T U)) ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

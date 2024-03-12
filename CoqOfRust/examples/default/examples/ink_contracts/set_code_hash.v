@@ -31,12 +31,14 @@ Definition set_code_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
   } *)
 
 Module Impl_core_default_Default_for_set_code_hash_Incrementer.
+  Definition Self : Ty.t := Ty.path "set_code_hash::Incrementer".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -52,8 +54,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
       "core::default::Default"
       (* Self *) (Ty.path "set_code_hash::Incrementer")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
 Module Impl_set_code_hash_Incrementer.
@@ -66,7 +67,7 @@ Module Impl_set_code_hash_Incrementer.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -76,7 +77,7 @@ Module Impl_set_code_hash_Incrementer.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn inc(&mut self) {
@@ -89,7 +90,7 @@ Module Impl_set_code_hash_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* β :=
@@ -133,7 +134,7 @@ Module Impl_set_code_hash_Incrementer.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc [].
+  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
   
   (*
       pub fn get(&self) -> u32 {
@@ -142,14 +143,14 @@ Module Impl_set_code_hash_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "count")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   
   (*
       pub fn set_code(&mut self, code_hash: [u8; 32]) {
@@ -161,7 +162,7 @@ Module Impl_set_code_hash_Incrementer.
   *)
   Definition set_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; code_hash ] =>
+    | [], [ self; code_hash ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* _ :=
@@ -239,5 +240,5 @@ Module Impl_set_code_hash_Incrementer.
     end.
   
   Axiom AssociatedFunction_set_code :
-    M.IsAssociatedFunction Self "set_code" set_code [].
+    M.IsAssociatedFunction Self "set_code" set_code.
 End Impl_set_code_hash_Incrementer.

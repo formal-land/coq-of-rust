@@ -30,23 +30,27 @@ Module Blue.
 End Blue.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
+  Definition Self : Ty.t :=
+    Ty.path "generics_bounds_test_case_empty_bounds::Cardinal".
+  
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Red"
       (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::Cardinal")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
 Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
+  Definition Self : Ty.t :=
+    Ty.path "generics_bounds_test_case_empty_bounds::BlueJay".
+  
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Blue"
       (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::BlueJay")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 (*

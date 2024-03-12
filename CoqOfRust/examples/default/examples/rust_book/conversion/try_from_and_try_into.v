@@ -9,12 +9,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
+  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -34,27 +36,29 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       "core::fmt::Debug"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
+  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
+  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
+  
   (*
   PartialEq
   *)
   Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
@@ -70,11 +74,12 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
+  Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
+  
   (*
       type Error = ();
   *)
@@ -91,7 +96,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   *)
   Definition try_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ value ] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
       let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.I32 2) in
@@ -122,8 +127,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
         [
           ("Error", InstanceField.Ty Error);
           ("try_from", InstanceField.Method try_from)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 (*

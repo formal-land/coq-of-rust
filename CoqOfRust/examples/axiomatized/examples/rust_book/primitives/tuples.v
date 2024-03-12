@@ -11,6 +11,8 @@ Parameter reverse : (list Ty.t) -> (list Value.t) -> M.
   } *)
 
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
+  Definition Self : Ty.t := Ty.path "tuples::Matrix".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -18,8 +20,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       "core::fmt::Debug"
       (* Self *) (Ty.path "tuples::Matrix")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

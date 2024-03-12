@@ -20,6 +20,8 @@ End AgeWidget.
   } *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
+  
   (*
       fn get(&self) -> String {
           self.username.clone()
@@ -27,7 +29,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_trait_method
@@ -44,11 +46,12 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
       "disambiguating_overlapping_traits::UsernameWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("get", InstanceField.Method get) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
+  
   (*
       fn get(&self) -> u8 {
           self.age
@@ -56,7 +59,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "age")
@@ -68,8 +71,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       "disambiguating_overlapping_traits::AgeWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("get", InstanceField.Method get) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (*

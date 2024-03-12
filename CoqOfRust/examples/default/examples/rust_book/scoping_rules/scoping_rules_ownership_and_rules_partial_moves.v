@@ -173,12 +173,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+  Definition Self : Ty.t :=
+    Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person".
+  
   (*
       Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -212,6 +215,5 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
         (Ty.path
           "scoping_rules_ownership_and_rules_partial_moves::main::Person")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

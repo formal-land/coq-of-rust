@@ -14,11 +14,11 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   Parameter add_one : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_add_one :
-    M.IsAssociatedFunction Self "add_one" add_one [].
+    M.IsAssociatedFunction Self "add_one" add_one.
   
   Parameter print : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print [].
+  Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

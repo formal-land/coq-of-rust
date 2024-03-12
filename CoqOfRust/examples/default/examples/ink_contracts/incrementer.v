@@ -18,14 +18,14 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ init_value ] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure (Value.StructRecord "incrementer::Incrementer" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn new_default() -> Self {
@@ -34,7 +34,7 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_associated_function (Ty.path "incrementer::Incrementer") "new" in
       let* α1 :=
@@ -48,7 +48,7 @@ Module Impl_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default [].
+    M.IsAssociatedFunction Self "new_default" new_default.
   
   (*
       pub fn inc(&mut self, by: i32) {
@@ -57,7 +57,7 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; by_ ] =>
+    | [], [ self; by_ ] =>
       let* self := M.alloc self in
       let* by_ := M.alloc by_ in
       let* _ :=
@@ -73,7 +73,7 @@ Module Impl_incrementer_Incrementer.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc [].
+  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
   
   (*
       pub fn get(&self) -> i32 {
@@ -82,12 +82,12 @@ Module Impl_incrementer_Incrementer.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
 End Impl_incrementer_Incrementer.

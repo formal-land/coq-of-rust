@@ -9,12 +9,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
+  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -35,11 +37,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
+  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
+  
   (*
       fn default() -> Self {
           Self { x: &10 }
@@ -47,7 +50,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 := M.alloc (Value.Integer Integer.I32 10) in
       M.pure
         (Value.StructRecord
@@ -61,8 +64,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       "core::default::Default"
       (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (*

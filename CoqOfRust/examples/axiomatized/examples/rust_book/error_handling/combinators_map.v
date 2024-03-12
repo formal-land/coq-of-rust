@@ -25,6 +25,8 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
+  Definition Self : Ty.t := Ty.path "combinators_map::Food".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -32,8 +34,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Food")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct
@@ -44,6 +45,8 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
   } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
+  Definition Self : Ty.t := Ty.path "combinators_map::Peeled".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -51,8 +54,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Peeled")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct
@@ -63,6 +65,8 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
   } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
+  Definition Self : Ty.t := Ty.path "combinators_map::Chopped".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -70,8 +74,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Chopped")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct
@@ -82,6 +85,8 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
   } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
+  Definition Self : Ty.t := Ty.path "combinators_map::Cooked".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -89,8 +94,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Cooked")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel : (list Ty.t) -> (list Value.t) -> M.

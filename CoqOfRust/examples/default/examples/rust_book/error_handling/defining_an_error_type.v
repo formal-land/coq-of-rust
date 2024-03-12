@@ -8,12 +8,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
+  Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -31,17 +33,18 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
+  Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.StructTuple "defining_an_error_type::DoubleError" [])
     | _, _ => M.impossible
@@ -52,8 +55,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       "core::clone::Clone"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
@@ -64,6 +66,8 @@ Axiom Result :
       [ T; Ty.path "defining_an_error_type::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
+  Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
+  
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
           write!(f, "invalid first item to double")
@@ -71,7 +75,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -95,8 +99,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       "core::fmt::Display"
       (* Self *) (Ty.path "defining_an_error_type::DoubleError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 (*

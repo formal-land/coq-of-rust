@@ -14,6 +14,9 @@ Module Contains.
 End Contains.
 
 Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
+  Definition Self : Ty.t :=
+    Ty.path "generics_associated_types_problem::Container".
+  
   (*
       fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
           (&self.0 == number_1) && (&self.1 == number_2)
@@ -21,7 +24,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; number_1; number_2 ] =>
+    | [], [ self; number_1; number_2 ] =>
       let* self := M.alloc self in
       let* number_1 := M.alloc number_1 in
       let* number_2 := M.alloc number_2 in
@@ -59,7 +62,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
   *)
   Definition first (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_tuple α0 0)
@@ -73,7 +76,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
   *)
   Definition last (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_tuple α0 1)
@@ -91,8 +94,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           ("contains", InstanceField.Method contains);
           ("first", InstanceField.Method first);
           ("last", InstanceField.Method last)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
 
 (*

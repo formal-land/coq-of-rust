@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_convert_From_i32_for_into_Number.
+  Definition Self : Ty.t := Ty.path "into::Number".
+  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,8 +18,7 @@ Module Impl_core_convert_From_i32_for_into_Number.
       "core::convert::From"
       (* Self *) (Ty.path "into::Number")
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_into_Number.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

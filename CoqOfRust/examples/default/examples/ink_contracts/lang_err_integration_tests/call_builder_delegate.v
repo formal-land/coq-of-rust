@@ -26,12 +26,15 @@ Axiom Hash :
   } *)
 
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
+  Definition Self : Ty.t :=
+    Ty.path "call_builder_delegate::CallBuilderDelegateTest".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -50,8 +53,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
       "core::default::Default"
       (* Self *) (Ty.path "call_builder_delegate::CallBuilderDelegateTest")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.
@@ -65,7 +67,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ value ] =>
+    | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
       M.pure
@@ -75,7 +77,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn delegate(&mut self, code_hash: Hash, selector: [u8; 4]) -> Option<LangError> {
@@ -98,7 +100,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   *)
   Definition delegate (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; code_hash; selector ] =>
+    | [], [ self; code_hash; selector ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
@@ -107,7 +109,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     end.
   
   Axiom AssociatedFunction_delegate :
-    M.IsAssociatedFunction Self "delegate" delegate [].
+    M.IsAssociatedFunction Self "delegate" delegate.
   
   (*
       pub fn invoke(&mut self, code_hash: Hash, selector: [u8; 4]) -> i32 {
@@ -123,7 +125,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   *)
   Definition invoke (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; code_hash; selector ] =>
+    | [], [ self; code_hash; selector ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
       let* selector := M.alloc selector in
@@ -131,6 +133,5 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_invoke :
-    M.IsAssociatedFunction Self "invoke" invoke [].
+  Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

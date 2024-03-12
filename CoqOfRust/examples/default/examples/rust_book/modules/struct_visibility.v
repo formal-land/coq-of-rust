@@ -25,9 +25,10 @@ Module my.
                 ClosedBox { contents: contents }
             }
     *)
-    Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T in
       match 𝜏, α with
-      | [ Self; T ], [ contents ] =>
+      | [], [ contents ] =>
         let* contents := M.alloc contents in
         let* α0 := M.read contents in
         M.pure
@@ -39,7 +40,7 @@ Module my.
     
     Axiom AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new" new [ T ].
+      M.IsAssociatedFunction (Self T) "new" (new T).
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 

@@ -14,6 +14,9 @@ Module Contains.
 End Contains.
 
 Module Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
+  Definition Self : Ty.t :=
+    Ty.path "generics_associated_types_solution::Container".
+  
   (*
       type A = i32;
   *)
@@ -31,7 +34,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   *)
   Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; number_1; number_2 ] =>
+    | [], [ self; number_1; number_2 ] =>
       let* self := M.alloc self in
       let* number_1 := M.alloc number_1 in
       let* number_2 := M.alloc number_2 in
@@ -69,7 +72,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   *)
   Definition first (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_tuple α0 0)
@@ -83,7 +86,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   *)
   Definition last (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_tuple α0 1)
@@ -97,7 +100,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   *)
   Definition a (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_tuple α0 0)
@@ -117,8 +120,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           ("first", InstanceField.Method first);
           ("last", InstanceField.Method last);
           ("a", InstanceField.Method a)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 (*

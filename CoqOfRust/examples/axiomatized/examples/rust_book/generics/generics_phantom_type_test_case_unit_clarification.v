@@ -8,6 +8,9 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,11 +19,13 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -29,19 +34,20 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 (* Enum Mm *)
@@ -51,6 +57,9 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -59,11 +68,13 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -72,19 +83,20 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 (* Struct
@@ -97,7 +109,12 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
   } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
+  Parameter fmt : forall (Unit : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (Unit : Ty.t),
@@ -108,12 +125,16 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [ Unit ].
+      (* Instance *) [ ("fmt", InstanceField.Method (fmt Unit)) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
+  Parameter clone : forall (Unit : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (Unit : Ty.t),
@@ -124,11 +145,15 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [ Unit ].
+      (* Instance *) [ ("clone", InstanceField.Method (clone Unit)) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
   Axiom Implements :
     forall (Unit : Ty.t),
     M.IsTraitInstance
@@ -138,17 +163,21 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [ Unit ].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
   Definition Output : Ty.t :=
     Ty.apply
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
         [ Unit ].
   
-  Parameter add : (list Ty.t) -> (list Value.t) -> M.
+  Parameter add : forall (Unit : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (Unit : Ty.t),
@@ -160,9 +189,10 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           [ Unit ])
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
-        ]
-      (* Instance polymorphic types *) [ Unit ].
+        [
+          ("Output", InstanceField.Ty Output);
+          ("add", InstanceField.Method (add Unit))
+        ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

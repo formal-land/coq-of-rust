@@ -26,12 +26,15 @@ Module checked.
   } *)
   
   Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
+    Definition Self : Ty.t :=
+      Ty.path "result_chaining_with_question_mark::checked::MathError".
+    
     (*
         Debug
     *)
     Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
       match 𝜏, α with
-      | [ Self ], [ self; f ] =>
+      | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
         let* α0 :=
@@ -67,8 +70,7 @@ Module checked.
         (* Self *)
           (Ty.path "result_chaining_with_question_mark::checked::MathError")
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-        (* Instance polymorphic types *) [].
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
   Axiom MathResult :

@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
+  Definition Self : Ty.t := Ty.path "converting_to_string::Circle".
+  
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
           write!(f, "Circle of radius {}", self.radius)
@@ -16,7 +18,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -51,8 +53,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       "core::fmt::Display"
       (* Self *) (Ty.path "converting_to_string::Circle")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (*

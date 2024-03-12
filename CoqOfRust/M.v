@@ -378,16 +378,14 @@ Parameter IsTraitInstance :
     (trait_name : string)
     (Self : Ty.t)
     (generic_tys : list Ty.t)
-    (instance : Instance.t)
-    (𝜏_prefix : list Ty.t),
+    (instance : Instance.t),
   Prop.
 
 Parameter IsAssociatedFunction :
   forall
     (Self : Ty.t)
     (method_name : string)
-    (method : list Ty.t -> list Value.t -> M)
-    (𝜏_prefix : list Ty.t),
+    (method : list Ty.t -> list Value.t -> M),
   Prop.
 
 Module Option.

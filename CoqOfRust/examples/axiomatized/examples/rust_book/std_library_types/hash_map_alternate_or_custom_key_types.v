@@ -13,16 +13,21 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -30,21 +35,25 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -56,11 +65,13 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
+  Definition Self : Ty.t :=
+    Ty.path "hash_map_alternate_or_custom_key_types::Account".
+  
   Parameter hash : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -68,8 +79,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       "core::hash::Hash"
       (* Self *) (Ty.path "hash_map_alternate_or_custom_key_types::Account")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("hash", InstanceField.Method hash) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 (* Struct

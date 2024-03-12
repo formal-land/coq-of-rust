@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
+  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,11 +18,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       "core::fmt::Debug"
       (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
+  Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -28,8 +31,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       "core::default::Default"
       (* Self *) (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

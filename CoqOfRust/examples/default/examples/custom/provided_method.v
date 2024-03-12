@@ -23,6 +23,8 @@ Module ProvidedAndRequired.
 End ProvidedAndRequired.
 
 Module Impl_provided_method_ProvidedAndRequired_for_i32.
+  Definition Self : Ty.t := Ty.path "i32".
+  
   (*
       fn required(&self) -> i32 {
           *self
@@ -30,7 +32,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
   *)
   Definition required (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read α0
@@ -42,11 +44,12 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
       "provided_method::ProvidedAndRequired"
       (* Self *) (Ty.path "i32")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("required", InstanceField.Method required) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("required", InstanceField.Method required) ].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
 
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
+  Definition Self : Ty.t := Ty.path "u32".
+  
   (*
       fn required(&self) -> i32 {
           *self as i32
@@ -54,7 +57,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
   *)
   Definition required (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 := M.read α0 in
@@ -69,7 +72,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
   *)
   Definition provided (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Integer Integer.I32 0)
     | _, _ => M.impossible
@@ -84,8 +87,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
         [
           ("required", InstanceField.Method required);
           ("provided", InstanceField.Method provided)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (*

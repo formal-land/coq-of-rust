@@ -8,6 +8,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_clone_Unit.
+  Definition Self : Ty.t := Ty.path "clone::Unit".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -15,11 +17,12 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Unit")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
+  Definition Self : Ty.t := Ty.path "clone::Unit".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -27,18 +30,18 @@ Module Impl_core_clone_Clone_for_clone_Unit.
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Unit")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
+  Definition Self : Ty.t := Ty.path "clone::Unit".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "clone::Unit")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_clone_Unit.
 
 (* Struct
@@ -57,6 +60,8 @@ End Impl_core_marker_Copy_for_clone_Unit.
   } *)
 
 Module Impl_core_clone_Clone_for_clone_Pair.
+  Definition Self : Ty.t := Ty.path "clone::Pair".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -64,11 +69,12 @@ Module Impl_core_clone_Clone_for_clone_Pair.
       "core::clone::Clone"
       (* Self *) (Ty.path "clone::Pair")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
+  Definition Self : Ty.t := Ty.path "clone::Pair".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -76,8 +82,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       "core::fmt::Debug"
       (* Self *) (Ty.path "clone::Pair")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

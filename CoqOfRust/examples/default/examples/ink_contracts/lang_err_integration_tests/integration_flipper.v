@@ -15,12 +15,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
+  Definition Self : Ty.t := Ty.path "integration_flipper::FlipperError".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -38,8 +40,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "integration_flipper::FlipperError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 
 Module Impl_integration_flipper_Flipper.
@@ -52,7 +53,7 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ init_value ] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure
@@ -60,7 +61,7 @@ Module Impl_integration_flipper_Flipper.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn new_default() -> Self {
@@ -69,7 +70,7 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_associated_function
           (Ty.path "integration_flipper::Flipper")
@@ -85,7 +86,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default [].
+    M.IsAssociatedFunction Self "new_default" new_default.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
@@ -98,7 +99,7 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition try_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ succeed ] =>
+    | [], [ succeed ] =>
       let* succeed := M.alloc succeed in
       let* α0 := M.read (M.use succeed) in
       let* α1 :=
@@ -119,7 +120,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new [].
+    M.IsAssociatedFunction Self "try_new" try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -128,7 +129,7 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -140,7 +141,7 @@ Module Impl_integration_flipper_Flipper.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -149,14 +150,14 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "value")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   
   (*
       pub fn err_flip(&mut self) -> Result<(), ()> {
@@ -166,7 +167,7 @@ Module Impl_integration_flipper_Flipper.
   *)
   Definition err_flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
@@ -184,5 +185,5 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_err_flip :
-    M.IsAssociatedFunction Self "err_flip" err_flip [].
+    M.IsAssociatedFunction Self "err_flip" err_flip.
 End Impl_integration_flipper_Flipper.

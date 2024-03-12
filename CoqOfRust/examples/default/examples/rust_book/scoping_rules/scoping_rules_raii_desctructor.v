@@ -8,6 +8,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
+  Definition Self : Ty.t := Ty.path "scoping_rules_raii_desctructor::ToDrop".
+  
   (*
       fn drop(&mut self) {
           println!("ToDrop is being dropped");
@@ -15,7 +17,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   *)
   Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* _ :=
@@ -41,8 +43,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       "core::ops::drop::Drop"
       (* Self *) (Ty.path "scoping_rules_raii_desctructor::ToDrop")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("drop", InstanceField.Method drop) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (*

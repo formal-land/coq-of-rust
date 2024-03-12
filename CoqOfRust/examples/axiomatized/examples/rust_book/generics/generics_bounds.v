@@ -14,6 +14,8 @@ End HasArea.
   } *)
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
+  Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -21,8 +23,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       "core::fmt::Debug"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* Struct
@@ -33,6 +34,8 @@ End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   } *)
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
+  Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
+  
   Parameter area : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -40,8 +43,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       "generics_bounds::HasArea"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("area", InstanceField.Method area) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("area", InstanceField.Method area) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Parameter print_debug : (list Ty.t) -> (list Value.t) -> M.

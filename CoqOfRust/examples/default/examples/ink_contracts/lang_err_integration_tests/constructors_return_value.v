@@ -9,12 +9,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_constructors_return_value_AccountId.
+  Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -30,17 +32,18 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_constructors_return_value_AccountId.
 
 Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
+  Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -53,21 +56,23 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_constructors_return_value_AccountId.
 
 Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
+  Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
+  Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
+  
   (*
       fn from(_value: [u8; 32]) -> Self {
           unimplemented!()
@@ -75,7 +80,7 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ _value ] =>
+    | [], [ _value ] =>
       let* _value := M.alloc _value in
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
@@ -90,8 +95,7 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
       (* Self *) (Ty.path "constructors_return_value::AccountId")
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance :
@@ -131,12 +135,15 @@ Axiom ConstructorResult :
   } *)
 
 Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
+  Definition Self : Ty.t :=
+    Ty.path "constructors_return_value::ConstructorError".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -154,8 +161,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructors_return_value::ConstructorError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 
 (* Struct
@@ -174,7 +180,7 @@ Module Impl_constructors_return_value_ReturnFlags.
   *)
   Definition new_with_reverted (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ has_reverted ] =>
+    | [], [ has_reverted ] =>
       let* has_reverted := M.alloc has_reverted in
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
@@ -184,7 +190,7 @@ Module Impl_constructors_return_value_ReturnFlags.
     end.
   
   Axiom AssociatedFunction_new_with_reverted :
-    M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted [].
+    M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted.
 End Impl_constructors_return_value_ReturnFlags.
 
 (*
@@ -214,7 +220,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ init_value ] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
       M.pure
@@ -224,7 +230,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, ConstructorError> {
@@ -237,7 +243,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition try_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ succeed ] =>
+    | [], [ succeed ] =>
       let* succeed := M.alloc succeed in
       let* α0 := M.read (M.use succeed) in
       let* α1 :=
@@ -262,7 +268,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new [].
+    M.IsAssociatedFunction Self "try_new" try_new.
   
   (*
       pub fn revert_new(_init_value: bool) -> Self {
@@ -274,7 +280,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition revert_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ _init_value ] =>
+    | [], [ _init_value ] =>
       let* _init_value := M.alloc _init_value in
       let* α0 :=
         M.get_function
@@ -309,7 +315,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_revert_new :
-    M.IsAssociatedFunction Self "revert_new" revert_new [].
+    M.IsAssociatedFunction Self "revert_new" revert_new.
   
   (*
       pub fn try_revert_new(init_value: bool) -> Result<Self, ConstructorError> {
@@ -327,7 +333,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition try_revert_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ init_value ] =>
+    | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* value :=
         let* α0 := M.read (M.use init_value) in
@@ -385,7 +391,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_try_revert_new :
-    M.IsAssociatedFunction Self "try_revert_new" try_revert_new [].
+    M.IsAssociatedFunction Self "try_revert_new" try_revert_new.
   
   (*
       pub fn get_value(&self) -> bool {
@@ -394,7 +400,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   *)
   Definition get_value (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "value")
@@ -402,5 +408,5 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_get_value :
-    M.IsAssociatedFunction Self "get_value" get_value [].
+    M.IsAssociatedFunction Self "get_value" get_value.
 End Impl_constructors_return_value_ConstructorsReturnValue.

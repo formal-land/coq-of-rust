@@ -25,12 +25,14 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
+  Definition Self : Ty.t := Ty.path "combinators_map::Food".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -65,8 +67,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Food")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 (* Struct
@@ -77,12 +78,14 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
   } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
+  Definition Self : Ty.t := Ty.path "combinators_map::Peeled".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -102,8 +105,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Peeled")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 (* Struct
@@ -114,12 +116,14 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
   } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
+  Definition Self : Ty.t := Ty.path "combinators_map::Chopped".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -139,8 +143,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Chopped")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 (* Struct
@@ -151,12 +154,14 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
   } *)
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
+  Definition Self : Ty.t := Ty.path "combinators_map::Cooked".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -176,8 +181,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_map::Cooked")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 (*

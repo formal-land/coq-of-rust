@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_updated_incrementer_AccountId.
+  Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,11 +18,12 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_updated_incrementer_AccountId.
 
 Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
+  Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -28,18 +31,18 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_updated_incrementer_AccountId.
 
 Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
+  Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "updated_incrementer::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
 Axiom Hash :
@@ -65,7 +68,7 @@ Module Impl_updated_incrementer_Env.
   Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_code_hash :
-    M.IsAssociatedFunction Self "set_code_hash" set_code_hash [].
+    M.IsAssociatedFunction Self "set_code_hash" set_code_hash.
 End Impl_updated_incrementer_Env.
 
 (* Struct
@@ -81,26 +84,26 @@ Module Impl_updated_incrementer_Incrementer.
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter inc : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc [].
+  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   
   Parameter set_code : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_code :
-    M.IsAssociatedFunction Self "set_code" set_code [].
+    M.IsAssociatedFunction Self "set_code" set_code.
 End Impl_updated_incrementer_Incrementer.

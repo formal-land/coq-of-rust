@@ -14,15 +14,15 @@ Module Impl_wildcard_selector_WildcardSelector.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter wildcard : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_wildcard :
-    M.IsAssociatedFunction Self "wildcard" wildcard [].
+    M.IsAssociatedFunction Self "wildcard" wildcard.
   
   Parameter wildcard_complement : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_wildcard_complement :
-    M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement [].
+    M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement.
 End Impl_wildcard_selector_WildcardSelector.

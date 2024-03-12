@@ -9,6 +9,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_contract_ref_AccountId.
+  Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -16,11 +18,12 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "contract_ref::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_contract_ref_AccountId.
 
 Module Impl_core_clone_Clone_for_contract_ref_AccountId.
+  Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -28,18 +31,18 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "contract_ref::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_contract_ref_AccountId.
 
 Module Impl_core_marker_Copy_for_contract_ref_AccountId.
+  Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "contract_ref::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_ref_AccountId.
 
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
@@ -69,6 +72,8 @@ Axiom Hash :
   } *)
 
 Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
+  Definition Self : Ty.t := Ty.path "contract_ref::FlipperError".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -76,8 +81,7 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
       "core::fmt::Debug"
       (* Self *) (Ty.path "contract_ref::FlipperError")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError.
 
 Module Impl_contract_ref_FlipperRef.
@@ -86,33 +90,33 @@ Module Impl_contract_ref_FlipperRef.
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_default :
-    M.IsAssociatedFunction Self "new_default" new_default [].
+    M.IsAssociatedFunction Self "new_default" new_default.
   
   Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new [].
+    M.IsAssociatedFunction Self "try_new" try_new.
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
 End Impl_contract_ref_FlipperRef.
 
 (* Struct
@@ -127,18 +131,18 @@ Module Impl_contract_ref_ContractRef.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_try_new :
-    M.IsAssociatedFunction Self "try_new" try_new [].
+    M.IsAssociatedFunction Self "try_new" try_new.
   
   Parameter flip : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip [].
+  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get [].
+  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
 End Impl_contract_ref_ContractRef.

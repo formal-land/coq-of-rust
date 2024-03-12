@@ -11,6 +11,8 @@ Parameter matching : (list Ty.t) -> (list Value.t) -> M.
   } *)
 
 Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
+  Definition Self : Ty.t := Ty.path "constructor_as_function::Constructor".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -18,8 +20,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       "core::fmt::Debug"
       (* Self *) (Ty.path "constructor_as_function::Constructor")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

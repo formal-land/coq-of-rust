@@ -38,12 +38,14 @@ Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
   } *)
 
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
+  Definition Self : Ty.t := Ty.path "tuples::Matrix".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -75,8 +77,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       "core::fmt::Debug"
       (* Self *) (Ty.path "tuples::Matrix")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (*

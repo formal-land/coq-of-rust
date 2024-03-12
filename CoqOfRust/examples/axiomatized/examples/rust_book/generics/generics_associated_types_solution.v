@@ -14,6 +14,9 @@ Module Contains.
 End Contains.
 
 Module Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
+  Definition Self : Ty.t :=
+    Ty.path "generics_associated_types_solution::Container".
+  
   Definition A : Ty.t := Ty.path "i32".
   
   Definition B : Ty.t := Ty.path "i32".
@@ -39,8 +42,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           ("first", InstanceField.Method first);
           ("last", InstanceField.Method last);
           ("a", InstanceField.Method a)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.

@@ -25,7 +25,7 @@ Module Impl_trait_flipper_Flipper.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -36,10 +36,12 @@ Module Impl_trait_flipper_Flipper.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_trait_flipper_Flipper.
 
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+  Definition Self : Ty.t := Ty.path "trait_flipper::Flipper".
+  
   (*
       fn flip(&mut self) {
           self.value = !self.value;
@@ -47,7 +49,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   *)
   Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 := M.read self in
@@ -66,7 +68,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   *)
   Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "value")
@@ -80,6 +82,5 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

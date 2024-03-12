@@ -8,12 +8,15 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
@@ -29,17 +32,19 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read α0
@@ -52,19 +57,20 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Inch")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 (* Enum Mm *)
@@ -74,12 +80,15 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
@@ -95,17 +104,19 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read α0
@@ -118,19 +129,20 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
+  Definition Self : Ty.t :=
+    Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *)
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Mm")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 (* Struct
@@ -143,12 +155,18 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
   } *)
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (Unit : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self Unit in
     match 𝜏, α with
-    | [ Self; Unit ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -180,17 +198,22 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [ Unit ].
+      (* Instance *) [ ("fmt", InstanceField.Method (fmt Unit)) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (Unit : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self Unit in
     match 𝜏, α with
-    | [ Self; Unit ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_trait_method
@@ -223,11 +246,15 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [ Unit ].
+      (* Instance *) [ ("clone", InstanceField.Method (clone Unit)) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
   Axiom Implements :
     forall (Unit : Ty.t),
     M.IsTraitInstance
@@ -237,11 +264,15 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
           (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
           [ Unit ])
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [ Unit ].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+  Definition Self (Unit : Ty.t) : Ty.t :=
+    Ty.apply
+      (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+      [ Unit ].
+  
   (*
       type Output = Length<Unit>;
   *)
@@ -256,9 +287,10 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           Length(self.0 + rhs.0, PhantomData)
       }
   *)
-  Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition add (Unit : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self Unit in
     match 𝜏, α with
-    | [ Self; Unit ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 := M.read (M.get_struct_tuple self 0) in
@@ -281,9 +313,10 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           [ Unit ])
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
-        ]
-      (* Instance polymorphic types *) [ Unit ].
+        [
+          ("Output", InstanceField.Ty Output);
+          ("add", InstanceField.Method (add Unit))
+        ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (*

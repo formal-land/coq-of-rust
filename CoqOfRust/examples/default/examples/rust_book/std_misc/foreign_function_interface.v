@@ -126,12 +126,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   } *)
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -144,21 +146,23 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
       "core::clone::Clone"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
+  
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
           if self.im < 0. {
@@ -170,7 +174,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
@@ -263,6 +267,5 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       "core::fmt::Debug"
       (* Self *) (Ty.path "foreign_function_interface::Complex")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

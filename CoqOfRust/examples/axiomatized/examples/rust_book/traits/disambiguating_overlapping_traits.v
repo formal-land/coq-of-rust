@@ -20,6 +20,8 @@ End AgeWidget.
   } *)
 
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
+  
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -27,11 +29,12 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
       "disambiguating_overlapping_traits::UsernameWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("get", InstanceField.Method get) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+  Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
+  
   Parameter get : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -39,8 +42,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       "disambiguating_overlapping_traits::AgeWidget"
       (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("get", InstanceField.Method get) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

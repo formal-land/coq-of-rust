@@ -10,6 +10,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_fmt_Debug_for_structures_Person.
+  Definition Self : Ty.t := Ty.path "structures::Person".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -17,8 +19,7 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       "core::fmt::Debug"
       (* Self *) (Ty.path "structures::Person")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_structures_Person.
 
 (* Struct

@@ -23,6 +23,8 @@ Axiom Result :
   } *)
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -30,11 +32,12 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Debug"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -42,18 +45,18 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       "core::fmt::Display"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
+  Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::error::Error"
       (* Self *) (Ty.path "other_uses_of_question_mark::EmptyVec")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.

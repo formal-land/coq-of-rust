@@ -25,6 +25,8 @@ Require Import CoqOfRust.CoqOfRust.
 } *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
+  Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -32,8 +34,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Food")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 (* Enum Day *)
@@ -60,6 +61,8 @@ End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 } *)
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
+  Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
+  
   Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -67,8 +70,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       "core::fmt::Debug"
       (* Self *) (Ty.path "combinators_and_then::Day")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Parameter have_ingredients : (list Ty.t) -> (list Value.t) -> M.

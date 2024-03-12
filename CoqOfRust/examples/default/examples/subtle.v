@@ -9,22 +9,25 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -37,17 +40,18 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       "core::clone::Clone"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -67,8 +71,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       "core::fmt::Debug"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice.
@@ -81,7 +84,7 @@ Module Impl_subtle_Choice.
   *)
   Definition unwrap_u8 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_tuple α0 0)
@@ -89,10 +92,12 @@ Module Impl_subtle_Choice.
     end.
   
   Axiom AssociatedFunction_unwrap_u8 :
-    M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8 [].
+    M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8.
 End Impl_subtle_Choice.
 
 Module Impl_core_convert_From_subtle_Choice_for_bool.
+  Definition Self : Ty.t := Ty.path "bool".
+  
   (*
       fn from(source: Choice) -> bool {
           debug_assert!((source.0 == 0u8) | (source.0 == 1u8));
@@ -101,7 +106,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ source ] =>
+    | [], [ source ] =>
       let* source := M.alloc source in
       let* _ :=
         let* α0 := M.alloc (Value.Bool true) in
@@ -142,11 +147,12 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
       "core::convert::From"
       (* Self *) (Ty.path "bool")
       (* Trait polymorphic types *) [ (* T *) Ty.path "subtle::Choice" ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       type Output = Choice;
   *)
@@ -159,7 +165,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   *)
   Definition bitand (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -182,11 +188,12 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
         [
           ("Output", InstanceField.Ty Output);
           ("bitand", InstanceField.Method bitand)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       fn bitand_assign(&mut self, rhs: Choice) {
           *self = *self & rhs;
@@ -194,7 +201,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   *)
   Definition bitand_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* _ :=
@@ -222,11 +229,12 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       "core::ops::bit::BitAndAssign"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       type Output = Choice;
   *)
@@ -239,7 +247,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   *)
   Definition bitor (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -262,11 +270,12 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
         [
           ("Output", InstanceField.Ty Output);
           ("bitor", InstanceField.Method bitor)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       fn bitor_assign(&mut self, rhs: Choice) {
           *self = *self | rhs;
@@ -274,7 +283,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   *)
   Definition bitor_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* _ :=
@@ -302,11 +311,12 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       "core::ops::bit::BitOrAssign"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       type Output = Choice;
   *)
@@ -319,7 +329,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   *)
   Definition bitxor (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -342,11 +352,12 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
         [
           ("Output", InstanceField.Ty Output);
           ("bitxor", InstanceField.Method bitxor)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       fn bitxor_assign(&mut self, rhs: Choice) {
           *self = *self ^ rhs;
@@ -354,7 +365,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   *)
   Definition bitxor_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* _ :=
@@ -382,11 +393,12 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       "core::ops::bit::BitXorAssign"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       type Output = Choice;
   *)
@@ -399,7 +411,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   *)
   Definition not (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_trait_method
@@ -420,8 +432,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("Output", InstanceField.Ty Output); ("not", InstanceField.Method not)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 (*
@@ -482,6 +493,8 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Module Impl_core_convert_From_u8_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       fn from(input: u8) -> Choice {
           // Our goal is to prevent the compiler from inferring that the value held inside the
@@ -491,7 +504,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
   *)
   Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ input ] =>
+    | [], [ input ] =>
       let* input := M.alloc input in
       let* α0 := M.get_function "subtle::black_box" [] in
       let* α1 := M.read input in
@@ -505,8 +518,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
       "core::convert::From"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
@@ -538,6 +550,8 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_slice_T.
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+  
   (*
       fn ct_eq(&self, _rhs: &[T]) -> Choice {
           let len = self.len();
@@ -559,9 +573,10 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
           x.into()
       }
   *)
-  Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition ct_eq (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self; _rhs ] =>
+    | [], [ self; _rhs ] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
       let* len :=
@@ -711,11 +726,12 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "slice") [ T ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [ T ].
+      (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       fn ct_eq(&self, rhs: &Choice) -> Choice {
           !( *self ^ *rhs)
@@ -723,7 +739,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :=
@@ -753,11 +769,12 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
+  Definition Self : Ty.t := Ty.path "u8".
+  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -773,7 +790,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -821,11 +838,12 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u8")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
+  Definition Self : Ty.t := Ty.path "i8".
+  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -834,7 +852,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -857,11 +875,12 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i8")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
+  Definition Self : Ty.t := Ty.path "u16".
+  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -877,7 +896,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -923,11 +942,12 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u16")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
+  Definition Self : Ty.t := Ty.path "i16".
+  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -936,7 +956,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -959,11 +979,12 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i16")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
+  Definition Self : Ty.t := Ty.path "u32".
+  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -979,7 +1000,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -1025,11 +1046,12 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u32")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
+  Definition Self : Ty.t := Ty.path "i32".
+  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -1038,7 +1060,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -1061,11 +1083,12 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i32")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
+  Definition Self : Ty.t := Ty.path "u64".
+  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -1081,7 +1104,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -1127,11 +1150,12 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "u64")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
+  Definition Self : Ty.t := Ty.path "i64".
+  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -1140,7 +1164,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -1163,11 +1187,12 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "i64")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
+  Definition Self : Ty.t := Ty.path "usize".
+  
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
                   // x == 0 if and only if self == other
@@ -1183,7 +1208,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* x :=
@@ -1229,11 +1254,12 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "usize")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
+  Definition Self : Ty.t := Ty.path "isize".
+  
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
                   // Bitcast to unsigned and call that implementation.
@@ -1242,7 +1268,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
   *)
   Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 :=
@@ -1265,8 +1291,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.path "isize")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
@@ -1336,6 +1361,8 @@ Module ConditionallySelectable.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
+  Definition Self : Ty.t := Ty.path "u8".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1346,7 +1373,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1393,7 +1420,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -1433,7 +1460,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1475,11 +1502,12 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
+  Definition Self : Ty.t := Ty.path "i8".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1490,7 +1518,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1538,7 +1566,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -1579,7 +1607,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1622,11 +1650,12 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
+  Definition Self : Ty.t := Ty.path "u16".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1637,7 +1666,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1684,7 +1713,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -1724,7 +1753,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1766,11 +1795,12 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
+  Definition Self : Ty.t := Ty.path "i16".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1781,7 +1811,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1829,7 +1859,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -1870,7 +1900,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1913,11 +1943,12 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
+  Definition Self : Ty.t := Ty.path "u32".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -1928,7 +1959,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -1975,7 +2006,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -2015,7 +2046,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2057,11 +2088,12 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
+  Definition Self : Ty.t := Ty.path "i32".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -2072,7 +2104,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2120,7 +2152,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -2161,7 +2193,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2204,11 +2236,12 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
+  Definition Self : Ty.t := Ty.path "u64".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -2219,7 +2252,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2266,7 +2299,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -2306,7 +2339,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2348,11 +2381,12 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
+  Definition Self : Ty.t := Ty.path "i64".
+  
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
                   // if choice = 0, mask = (-0) = 0000...0000
@@ -2363,7 +2397,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2411,7 +2445,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   *)
   Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other; choice ] =>
+    | [], [ self; other; choice ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* choice := M.alloc choice in
@@ -2452,7 +2486,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   *)
   Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2495,11 +2529,12 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
           ("conditional_select", InstanceField.Method conditional_select);
           ("conditional_assign", InstanceField.Method conditional_assign);
           ("conditional_swap", InstanceField.Method conditional_swap)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
+  Definition Self : Ty.t := Ty.path "subtle::Choice".
+  
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
           Choice(u8::conditional_select(&a.0, &b.0, choice))
@@ -2507,7 +2542,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   *)
   Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -2531,8 +2566,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       (* Self *) (Ty.path "subtle::Choice")
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("conditional_select", InstanceField.Method conditional_select) ]
-      (* Instance polymorphic types *) [].
+        [ ("conditional_select", InstanceField.Method conditional_select) ].
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 (* Trait *)
@@ -2541,6 +2575,8 @@ Module ConditionallyNegatable.
 End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
+  Definition Self (T : Ty.t) : Ty.t := T.
+  
   (*
       fn conditional_negate(&mut self, choice: Choice) {
           // Need to cast to eliminate mutability
@@ -2548,9 +2584,14 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
           self.conditional_assign(&self_neg, choice);
       }
   *)
-  Definition conditional_negate (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition conditional_negate
+      (T : Ty.t)
+      (𝜏 : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self; choice ] =>
+    | [], [ self; choice ] =>
       let* self := M.alloc self in
       let* choice := M.alloc choice in
       let* self_neg :=
@@ -2586,8 +2627,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
       (* Self *) T
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("conditional_negate", InstanceField.Method conditional_negate) ]
-      (* Instance polymorphic types *) [ T ].
+        [ ("conditional_negate", InstanceField.Method (conditional_negate T)) ].
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 (* Struct
@@ -2598,12 +2638,16 @@ End Impl_subtle_ConditionallyNegatable_for_T.
   } *)
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_trait_method "core::clone::Clone" "clone" [ (* Self *) T ] in
@@ -2629,28 +2673,33 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       "core::clone::Clone"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [ T ].
+      (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  
   Axiom Implements :
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [ T ].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -2683,11 +2732,13 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       "core::fmt::Debug"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [ T ].
+      (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "core::option::Option") [ T ].
+  
   (*
       fn from(source: CtOption<T>) -> Option<T> {
           if source.is_some().unwrap_u8() == 1u8 {
@@ -2697,9 +2748,10 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
           }
       }
   *)
-  Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition from (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ source ] =>
+    | [], [ source ] =>
       let* source := M.alloc source in
       let* α0 :=
         M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
@@ -2729,8 +2781,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       (* Self *) (Ty.apply (Ty.path "core::option::Option") [ T ])
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [ T ].
+      (* Instance *) [ ("from", InstanceField.Method (from T)) ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
@@ -2745,9 +2796,10 @@ Module Impl_subtle_CtOption_T.
           }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition new (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ value; is_some ] =>
+    | [], [ value; is_some ] =>
       let* value := M.alloc value in
       let* is_some := M.alloc is_some in
       let* α0 := M.read value in
@@ -2761,7 +2813,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_new :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "new" new [ T ].
+    M.IsAssociatedFunction (Self T) "new" (new T).
   
   (*
       pub fn expect(self, msg: &str) -> T {
@@ -2770,9 +2822,10 @@ Module Impl_subtle_CtOption_T.
           self.value
       }
   *)
-  Definition expect (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition expect (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self; msg ] =>
+    | [], [ self; msg ] =>
       let* self := M.alloc self in
       let* msg := M.alloc msg in
       let* _ :=
@@ -2848,7 +2901,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_expect :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "expect" expect [ T ].
+    M.IsAssociatedFunction (Self T) "expect" (expect T).
   
   (*
       pub fn unwrap(self) -> T {
@@ -2857,9 +2910,10 @@ Module Impl_subtle_CtOption_T.
           self.value
       }
   *)
-  Definition unwrap (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition unwrap (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
@@ -2915,7 +2969,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_unwrap :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap" unwrap [ T ].
+    M.IsAssociatedFunction (Self T) "unwrap" (unwrap T).
   
   (*
       pub fn unwrap_or(self, def: T) -> T
@@ -2925,9 +2979,10 @@ Module Impl_subtle_CtOption_T.
           T::conditional_select(&def, &self.value, self.is_some)
       }
   *)
-  Definition unwrap_or (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition unwrap_or (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self; def ] =>
+    | [], [ self; def ] =>
       let* self := M.alloc self in
       let* def := M.alloc def in
       let* α0 :=
@@ -2942,7 +2997,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_unwrap_or :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap_or" unwrap_or [ T ].
+    M.IsAssociatedFunction (Self T) "unwrap_or" (unwrap_or T).
   
   (*
       pub fn unwrap_or_else<F>(self, f: F) -> T
@@ -2953,9 +3008,10 @@ Module Impl_subtle_CtOption_T.
           T::conditional_select(&f(), &self.value, self.is_some)
       }
   *)
-  Definition unwrap_or_else (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition unwrap_or_else (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T; F ], [ self; f ] =>
+    | [ F ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -2978,16 +3034,17 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_unwrap_or_else :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap_or_else" unwrap_or_else [ T ].
+    M.IsAssociatedFunction (Self T) "unwrap_or_else" (unwrap_or_else T).
   
   (*
       pub fn is_some(&self) -> Choice {
           self.is_some
       }
   *)
-  Definition is_some (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition is_some (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "is_some")
@@ -2996,16 +3053,17 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_is_some :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "is_some" is_some [ T ].
+    M.IsAssociatedFunction (Self T) "is_some" (is_some T).
   
   (*
       pub fn is_none(&self) -> Choice {
           !self.is_some
       }
   *)
-  Definition is_none (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition is_none (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_trait_method
@@ -3020,7 +3078,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_is_none :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "is_none" is_none [ T ].
+    M.IsAssociatedFunction (Self T) "is_none" (is_none T).
   
   (*
       pub fn map<U, F>(self, f: F) -> CtOption<U>
@@ -3038,9 +3096,10 @@ Module Impl_subtle_CtOption_T.
           )
       }
   *)
-  Definition map (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition map (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T; U; F ], [ self; f ] =>
+    | [ U; F ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -3075,7 +3134,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_map :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "map" map [ T ].
+    M.IsAssociatedFunction (Self T) "map" (map T).
   
   (*
       pub fn and_then<U, F>(self, f: F) -> CtOption<U>
@@ -3093,9 +3152,10 @@ Module Impl_subtle_CtOption_T.
           tmp
       }
   *)
-  Definition and_then (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition and_then (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T; U; F ], [ self; f ] =>
+    | [ U; F ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* tmp :=
@@ -3139,7 +3199,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_and_then :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "and_then" and_then [ T ].
+    M.IsAssociatedFunction (Self T) "and_then" (and_then T).
   
   (*
       pub fn or_else<F>(self, f: F) -> CtOption<T>
@@ -3153,9 +3213,10 @@ Module Impl_subtle_CtOption_T.
           Self::conditional_select(&self, &f, is_none)
       }
   *)
-  Definition or_else (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition or_else (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T; F ], [ self; f ] =>
+    | [ F ], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* is_none :=
@@ -3188,10 +3249,13 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_or_else :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "or_else" or_else [ T ].
+    M.IsAssociatedFunction (Self T) "or_else" (or_else T).
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
           CtOption::new(
@@ -3200,9 +3264,14 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
           )
       }
   *)
-  Definition conditional_select (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition conditional_select
+      (T : Ty.t)
+      (𝜏 : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ a; b; choice ] =>
+    | [], [ a; b; choice ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in
       let* choice := M.alloc choice in
@@ -3250,11 +3319,13 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("conditional_select", InstanceField.Method conditional_select) ]
-      (* Instance polymorphic types *) [ T ].
+        [ ("conditional_select", InstanceField.Method (conditional_select T)) ].
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  
   (*
       fn ct_eq(&self, rhs: &CtOption<T>) -> Choice {
           let a = self.is_some();
@@ -3263,9 +3334,10 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
           (a & b & self.value.ct_eq(&rhs.value)) | (!a & !b)
       }
   *)
-  Definition ct_eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition ct_eq (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match 𝜏, α with
-    | [ Self; T ], [ self; rhs ] =>
+    | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* a :=
@@ -3355,8 +3427,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       "subtle::ConstantTimeEq"
       (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ]
-      (* Instance polymorphic types *) [ T ].
+      (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 (* Trait *)
@@ -3365,6 +3436,8 @@ Module ConstantTimeGreater.
 End ConstantTimeGreater.
 
 Module Impl_subtle_ConstantTimeGreater_for_u8.
+  Definition Self : Ty.t := Ty.path "u8".
+  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3390,7 +3463,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3516,11 +3589,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u8")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
+  Definition Self : Ty.t := Ty.path "u16".
+  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3546,7 +3620,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3676,11 +3750,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u16")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
+  Definition Self : Ty.t := Ty.path "u32".
+  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3706,7 +3781,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3836,11 +3911,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u32")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
+  Definition Self : Ty.t := Ty.path "u64".
+  
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
                   let gtb = self & !other; // All the bits in self that are greater than their corresponding bits in other.
@@ -3866,7 +3942,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
   *)
   Definition ct_gt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; other ] =>
+    | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* gtb :=
@@ -3996,8 +4072,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       "subtle::ConstantTimeGreater"
       (* Self *) (Ty.path "u64")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
@@ -4052,41 +4127,45 @@ Module ConstantTimeLess.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.
+  Definition Self : Ty.t := Ty.path "u8".
+  
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u8")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
+  Definition Self : Ty.t := Ty.path "u16".
+  
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u16")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
+  Definition Self : Ty.t := Ty.path "u32".
+  
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u32")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
+  Definition Self : Ty.t := Ty.path "u64".
+  
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
       (* Self *) (Ty.path "u64")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u64.

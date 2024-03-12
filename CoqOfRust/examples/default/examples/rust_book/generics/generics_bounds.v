@@ -14,12 +14,14 @@ End HasArea.
   } *)
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
+  Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
+  
   (*
   Debug
   *)
   Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; f ] =>
+    | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
@@ -51,8 +53,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       "core::fmt::Debug"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* Struct
@@ -63,6 +64,8 @@ End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   } *)
 
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
+  Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
+  
   (*
       fn area(&self) -> f64 {
           self.length * self.height
@@ -70,7 +73,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   *)
   Definition area (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 := M.read (M.get_struct_record α0 "length") in
@@ -85,8 +88,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       "generics_bounds::HasArea"
       (* Self *) (Ty.path "generics_bounds::Rectangle")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("area", InstanceField.Method area) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("area", InstanceField.Method area) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 (*

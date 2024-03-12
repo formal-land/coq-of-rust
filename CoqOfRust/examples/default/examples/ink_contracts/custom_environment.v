@@ -9,12 +9,14 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_custom_environment_AccountId.
+  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -30,17 +32,18 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_AccountId.
 
 Module Impl_core_clone_Clone_for_custom_environment_AccountId.
+  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
+  
   (*
   Clone
   *)
   Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
@@ -53,18 +56,18 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "custom_environment::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
 
 Module Impl_core_marker_Copy_for_custom_environment_AccountId.
+  Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "custom_environment::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
 
 Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
@@ -83,12 +86,14 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
   } *)
 
 Module Impl_core_default_Default_for_custom_environment_Topics.
+  Definition Self : Ty.t := Ty.path "custom_environment::Topics".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] => M.pure (Value.StructTuple "custom_environment::Topics" [])
+    | [], [] => M.pure (Value.StructTuple "custom_environment::Topics" [])
     | _, _ => M.impossible
     end.
   
@@ -97,8 +102,7 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::Topics")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_Topics.
 
 (* Struct
@@ -116,12 +120,14 @@ End Impl_core_default_Default_for_custom_environment_Topics.
   } *)
 
 Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
+  Definition Self : Ty.t := Ty.path "custom_environment::EventWithTopics".
+  
   (*
   Default
   *)
   Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -170,8 +176,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
       "core::default::Default"
       (* Self *) (Ty.path "custom_environment::EventWithTopics")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 
 (* Enum Event *)
@@ -197,15 +202,14 @@ Module Impl_custom_environment_Env.
   *)
   Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "caller")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -214,7 +218,7 @@ Module Impl_custom_environment_Env.
   *)
   Definition emit_event (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; _event ] =>
+    | [], [ self; _event ] =>
       let* self := M.alloc self in
       let* _event := M.alloc _event in
       let* α0 := M.get_function "core::panicking::panic" [] in
@@ -225,7 +229,7 @@ Module Impl_custom_environment_Env.
     end.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_custom_environment_Env.
 
 Module Impl_custom_environment_Topics.
@@ -238,7 +242,7 @@ Module Impl_custom_environment_Topics.
   *)
   Definition init_env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 := M.get_function "core::panicking::panic" [] in
       let* α1 := M.read (mk_str "not implemented") in
       let* α2 := M.call α0 [ α1 ] in
@@ -247,7 +251,7 @@ Module Impl_custom_environment_Topics.
     end.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   (*
       fn env(&self) -> Env {
@@ -256,7 +260,7 @@ Module Impl_custom_environment_Topics.
   *)
   Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         M.get_associated_function
@@ -266,7 +270,7 @@ Module Impl_custom_environment_Topics.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   (*
       pub fn new() -> Self {
@@ -275,7 +279,7 @@ Module Impl_custom_environment_Topics.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
@@ -285,7 +289,7 @@ Module Impl_custom_environment_Topics.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn trigger(&mut self) {
@@ -295,7 +299,7 @@ Module Impl_custom_environment_Topics.
   *)
   Definition trigger (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
@@ -331,5 +335,5 @@ Module Impl_custom_environment_Topics.
     end.
   
   Axiom AssociatedFunction_trigger :
-    M.IsAssociatedFunction Self "trigger" trigger [].
+    M.IsAssociatedFunction Self "trigger" trigger.
 End Impl_custom_environment_Topics.

@@ -13,7 +13,10 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_core_default_Default_for_erc721_Mapping_K_V.
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Definition Self (K V : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
+  
+  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -21,49 +24,48 @@ Module Impl_core_default_Default_for_erc721_Mapping_K_V.
       "core::default::Default"
       (* Self *) (Ty.apply (Ty.path "erc721::Mapping") [ K; V ])
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [ K; V ].
+      (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_erc721_Mapping_K_V.
 
 Module Impl_erc721_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" contains [ K; V ].
+    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" get [ K; V ].
+    M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" insert [ K; V ].
+    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter remove : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" remove [ K; V ].
+    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" size [ K; V ].
+    M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" take [ K; V ].
+    M.IsAssociatedFunction (Self K V) "take" (take K V).
 End Impl_erc721_Mapping_K_V.
 
 (* Struct
@@ -74,6 +76,8 @@ End Impl_erc721_Mapping_K_V.
   } *)
 
 Module Impl_core_default_Default_for_erc721_AccountId.
+  Definition Self : Ty.t := Ty.path "erc721::AccountId".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -81,11 +85,12 @@ Module Impl_core_default_Default_for_erc721_AccountId.
       "core::default::Default"
       (* Self *) (Ty.path "erc721::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc721_AccountId.
 
 Module Impl_core_clone_Clone_for_erc721_AccountId.
+  Definition Self : Ty.t := Ty.path "erc721::AccountId".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -93,31 +98,34 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
       "core::clone::Clone"
       (* Self *) (Ty.path "erc721::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc721_AccountId.
 
 Module Impl_core_marker_Copy_for_erc721_AccountId.
+  Definition Self : Ty.t := Ty.path "erc721::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "erc721::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_erc721_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
+  Definition Self : Ty.t := Ty.path "erc721::AccountId".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc721::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
+  Definition Self : Ty.t := Ty.path "erc721::AccountId".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -125,11 +133,12 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc721::AccountId")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_AccountId.
 
 Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
+  Definition Self : Ty.t := Ty.path "erc721::AccountId".
+  
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -138,8 +147,7 @@ Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
       (* Self *) (Ty.path "erc721::AccountId")
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-      (* Instance *) [ ("from", InstanceField.Method from) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_u8_for_erc721_AccountId.
 
 Axiom Balance : (Ty.path "erc721::Balance") = (Ty.path "u128").
@@ -183,6 +191,8 @@ Axiom TokenId : (Ty.path "erc721::TokenId") = (Ty.path "u32").
   } *)
 
 Module Impl_core_default_Default_for_erc721_Erc721.
+  Definition Self : Ty.t := Ty.path "erc721::Erc721".
+  
   Parameter default : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -190,8 +200,7 @@ Module Impl_core_default_Default_for_erc721_Erc721.
       "core::default::Default"
       (* Self *) (Ty.path "erc721::Erc721")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc721_Erc721.
 
 (* Enum Error *)
@@ -238,16 +247,19 @@ End Impl_core_default_Default_for_erc721_Erc721.
 } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_Error.
+  Definition Self : Ty.t := Ty.path "erc721::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
       (* Self *) (Ty.path "erc721::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_Error.
 
 Module Impl_core_cmp_PartialEq_for_erc721_Error.
+  Definition Self : Ty.t := Ty.path "erc721::Error".
+  
   Parameter eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -255,21 +267,23 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
       "core::cmp::PartialEq"
       (* Self *) (Ty.path "erc721::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_Error.
 
 Module Impl_core_marker_StructuralEq_for_erc721_Error.
+  Definition Self : Ty.t := Ty.path "erc721::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
       (* Self *) (Ty.path "erc721::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_erc721_Error.
 
 Module Impl_core_cmp_Eq_for_erc721_Error.
+  Definition Self : Ty.t := Ty.path "erc721::Error".
+  
   Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -281,11 +295,12 @@ Module Impl_core_cmp_Eq_for_erc721_Error.
         [
           ("assert_receiver_is_total_eq",
             InstanceField.Method assert_receiver_is_total_eq)
-        ]
-      (* Instance polymorphic types *) [].
+        ].
 End Impl_core_cmp_Eq_for_erc721_Error.
 
 Module Impl_core_clone_Clone_for_erc721_Error.
+  Definition Self : Ty.t := Ty.path "erc721::Error".
+  
   Parameter clone : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
@@ -293,18 +308,18 @@ Module Impl_core_clone_Clone_for_erc721_Error.
       "core::clone::Clone"
       (* Self *) (Ty.path "erc721::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ]
-      (* Instance polymorphic types *) [].
+      (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc721_Error.
 
 Module Impl_core_marker_Copy_for_erc721_Error.
+  Definition Self : Ty.t := Ty.path "erc721::Error".
+  
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
       (* Self *) (Ty.path "erc721::Error")
       (* Trait polymorphic types *) []
-      (* Instance *) []
-      (* Instance polymorphic types *) [].
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_erc721_Error.
 
 (* Struct
@@ -377,13 +392,12 @@ Module Impl_erc721_Env.
   
   Parameter caller : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller :
-    M.IsAssociatedFunction Self "caller" caller [].
+  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
   Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event :
-    M.IsAssociatedFunction Self "emit_event" emit_event [].
+    M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc721_Env.
 
 Module Impl_erc721_Erc721.
@@ -392,111 +406,111 @@ Module Impl_erc721_Erc721.
   Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env :
-    M.IsAssociatedFunction Self "init_env" init_env [].
+    M.IsAssociatedFunction Self "init_env" init_env.
   
   Parameter env : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env [].
+  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   Parameter balance_of_or_zero : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance_of_or_zero :
-    M.IsAssociatedFunction Self "balance_of_or_zero" balance_of_or_zero [].
+    M.IsAssociatedFunction Self "balance_of_or_zero" balance_of_or_zero.
   
   Parameter clear_approval : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_clear_approval :
-    M.IsAssociatedFunction Self "clear_approval" clear_approval [].
+    M.IsAssociatedFunction Self "clear_approval" clear_approval.
   
   Parameter approved_for_all : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approved_for_all :
-    M.IsAssociatedFunction Self "approved_for_all" approved_for_all [].
+    M.IsAssociatedFunction Self "approved_for_all" approved_for_all.
   
   Parameter owner_of : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_owner_of :
-    M.IsAssociatedFunction Self "owner_of" owner_of [].
+    M.IsAssociatedFunction Self "owner_of" owner_of.
   
   Parameter approved_or_owner : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approved_or_owner :
-    M.IsAssociatedFunction Self "approved_or_owner" approved_or_owner [].
+    M.IsAssociatedFunction Self "approved_or_owner" approved_or_owner.
   
   Parameter exists_ : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_exists_ :
-    M.IsAssociatedFunction Self "exists_" exists_ [].
+    M.IsAssociatedFunction Self "exists_" exists_.
   
   Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance_of :
-    M.IsAssociatedFunction Self "balance_of" balance_of [].
+    M.IsAssociatedFunction Self "balance_of" balance_of.
   
   Parameter get_approved : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_approved :
-    M.IsAssociatedFunction Self "get_approved" get_approved [].
+    M.IsAssociatedFunction Self "get_approved" get_approved.
   
   Parameter is_approved_for_all : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_is_approved_for_all :
-    M.IsAssociatedFunction Self "is_approved_for_all" is_approved_for_all [].
+    M.IsAssociatedFunction Self "is_approved_for_all" is_approved_for_all.
   
   Parameter approve_for_all : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approve_for_all :
-    M.IsAssociatedFunction Self "approve_for_all" approve_for_all [].
+    M.IsAssociatedFunction Self "approve_for_all" approve_for_all.
   
   Parameter set_approval_for_all : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_approval_for_all :
-    M.IsAssociatedFunction Self "set_approval_for_all" set_approval_for_all [].
+    M.IsAssociatedFunction Self "set_approval_for_all" set_approval_for_all.
   
   Parameter approve_for : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approve_for :
-    M.IsAssociatedFunction Self "approve_for" approve_for [].
+    M.IsAssociatedFunction Self "approve_for" approve_for.
   
   Parameter approve : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approve :
-    M.IsAssociatedFunction Self "approve" approve [].
+    M.IsAssociatedFunction Self "approve" approve.
   
   Parameter remove_token_from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove_token_from :
-    M.IsAssociatedFunction Self "remove_token_from" remove_token_from [].
+    M.IsAssociatedFunction Self "remove_token_from" remove_token_from.
   
   Parameter add_token_to : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_add_token_to :
-    M.IsAssociatedFunction Self "add_token_to" add_token_to [].
+    M.IsAssociatedFunction Self "add_token_to" add_token_to.
   
   Parameter transfer_token_from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_token_from :
-    M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from [].
+    M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from.
   
   Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer :
-    M.IsAssociatedFunction Self "transfer" transfer [].
+    M.IsAssociatedFunction Self "transfer" transfer.
   
   Parameter transfer_from : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_from :
-    M.IsAssociatedFunction Self "transfer_from" transfer_from [].
+    M.IsAssociatedFunction Self "transfer_from" transfer_from.
   
   Parameter mint : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint [].
+  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
   
   Parameter burn : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn [].
+  Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn.
 End Impl_erc721_Erc721.

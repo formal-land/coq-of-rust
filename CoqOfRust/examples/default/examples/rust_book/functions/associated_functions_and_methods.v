@@ -18,7 +18,7 @@ Module Impl_associated_functions_and_methods_Point.
   *)
   Definition origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [] =>
+    | [], [] =>
       let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read UnsupportedLiteral in
       M.pure
@@ -28,8 +28,7 @@ Module Impl_associated_functions_and_methods_Point.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_origin :
-    M.IsAssociatedFunction Self "origin" origin [].
+  Axiom AssociatedFunction_origin : M.IsAssociatedFunction Self "origin" origin.
   
   (*
       fn new(x: f64, y: f64) -> Point {
@@ -38,7 +37,7 @@ Module Impl_associated_functions_and_methods_Point.
   *)
   Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ x; y ] =>
+    | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
       let* α0 := M.read x in
@@ -50,7 +49,7 @@ Module Impl_associated_functions_and_methods_Point.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new [].
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_associated_functions_and_methods_Point.
 
 (* Struct
@@ -75,15 +74,14 @@ Module Impl_associated_functions_and_methods_Rectangle.
   *)
   Definition get_p1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       M.read (M.get_struct_record α0 "p1")
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_get_p1 :
-    M.IsAssociatedFunction Self "get_p1" get_p1 [].
+  Axiom AssociatedFunction_get_p1 : M.IsAssociatedFunction Self "get_p1" get_p1.
   
   (*
       fn area(&self) -> f64 {
@@ -98,7 +96,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
   *)
   Definition area (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -152,7 +150,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     | _, _ => M.impossible
     end.
   
-  Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area [].
+  Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area.
   
   (*
       fn perimeter(&self) -> f64 {
@@ -164,7 +162,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
   *)
   Definition perimeter (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
@@ -224,7 +222,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     end.
   
   Axiom AssociatedFunction_perimeter :
-    M.IsAssociatedFunction Self "perimeter" perimeter [].
+    M.IsAssociatedFunction Self "perimeter" perimeter.
   
   (*
       fn translate(&mut self, x: f64, y: f64) {
@@ -237,7 +235,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
   *)
   Definition translate (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self; x; y ] =>
+    | [], [ self; x; y ] =>
       let* self := M.alloc self in
       let* x := M.alloc x in
       let* y := M.alloc y in
@@ -279,7 +277,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
     end.
   
   Axiom AssociatedFunction_translate :
-    M.IsAssociatedFunction Self "translate" translate [].
+    M.IsAssociatedFunction Self "translate" translate.
 End Impl_associated_functions_and_methods_Rectangle.
 
 (* Struct
@@ -312,7 +310,7 @@ Module Impl_associated_functions_and_methods_Pair.
   *)
   Definition destroy (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [ Self ], [ self ] =>
+    | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
         match_operator
@@ -371,7 +369,7 @@ Module Impl_associated_functions_and_methods_Pair.
     end.
   
   Axiom AssociatedFunction_destroy :
-    M.IsAssociatedFunction Self "destroy" destroy [].
+    M.IsAssociatedFunction Self "destroy" destroy.
 End Impl_associated_functions_and_methods_Pair.
 
 (*
