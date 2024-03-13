@@ -77,7 +77,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
               M.alloc α0
           ] in
       let* α3 := M.read α2 in
-      M.call α0 [ α1; α3 ]
+      M.call_closure α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -144,9 +144,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "or" in
       let* α2 := M.read no_fruit in
       let* α3 := M.read orange in
-      let* α4 := M.call α1 [ α2; α3 ] in
+      let* α4 := M.call_closure α1 [ α2; α3 ] in
       let* α5 := M.read apple in
-      let* α6 := M.call α0 [ α4; α5 ] in
+      let* α6 := M.call_closure α0 [ α4; α5 ] in
       M.alloc α6 in
     let* _ :=
       let* _ :=
@@ -161,16 +161,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ first_available_fruit ] in
+        let* α6 := M.call_closure α5 [ first_available_fruit ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

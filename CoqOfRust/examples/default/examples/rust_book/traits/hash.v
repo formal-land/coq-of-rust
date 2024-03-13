@@ -32,7 +32,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
             [ (* Self *) Ty.path "u32"; (* H *) __H ] in
         let* α1 := M.read self in
         let* α2 := M.read state in
-        let* α3 := M.call α0 [ M.get_struct_record α1 "id"; α2 ] in
+        let* α3 := M.call_closure α0 [ M.get_struct_record α1 "id"; α2 ] in
         M.alloc α3 in
       let* _ :=
         let* α0 :=
@@ -42,7 +42,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
             [ (* Self *) Ty.path "alloc::string::String"; (* H *) __H ] in
         let* α1 := M.read self in
         let* α2 := M.read state in
-        let* α3 := M.call α0 [ M.get_struct_record α1 "name"; α2 ] in
+        let* α3 := M.call_closure α0 [ M.get_struct_record α1 "name"; α2 ] in
         M.alloc α3 in
       let* α0 :=
         M.get_trait_method
@@ -51,7 +51,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
           [ (* Self *) Ty.path "u64"; (* H *) __H ] in
       let* α1 := M.read self in
       let* α2 := M.read state in
-      let* α3 := M.call α0 [ M.get_struct_record α1 "phone"; α2 ] in
+      let* α3 := M.call_closure α0 [ M.get_struct_record α1 "phone"; α2 ] in
       let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
@@ -81,7 +81,7 @@ Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.path "std::hash::random::DefaultHasher")
           "new" in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -91,14 +91,14 @@ Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) T; (* H *) Ty.path "std::hash::random::DefaultHasher"
           ] in
       let* α1 := M.read t in
-      let* α2 := M.call α0 [ α1; s ] in
+      let* α2 := M.call_closure α0 [ α1; s ] in
       M.alloc α2 in
     let* α0 :=
       M.get_trait_method
         "core::hash::Hasher"
         "finish"
         [ (* Self *) Ty.path "std::hash::random::DefaultHasher" ] in
-    let* α1 := M.call α0 [ s ] in
+    let* α1 := M.call_closure α0 [ s ] in
     let* α0 := M.alloc α1 in
     M.read α0
   | _, _ => M.impossible
@@ -130,7 +130,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "to_string"
           [ (* Self *) Ty.path "str" ] in
       let* α1 := M.read (mk_str "Janet") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
         (Value.StructRecord
           "hash::Person"
@@ -146,7 +146,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "to_string"
           [ (* Self *) Ty.path "str" ] in
       let* α1 := M.read (mk_str "Bob") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
         (Value.StructRecord
           "hash::Person"
@@ -158,10 +158,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
-      let* α1 := M.call α0 [ person1 ] in
+      let* α1 := M.call_closure α0 [ person1 ] in
       let* α2 :=
         M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
-      let* α3 := M.call α2 [ person2 ] in
+      let* α3 := M.call_closure α2 [ person2 ] in
       let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.ne α1 α3)) in
       let* α5 := M.read (M.use α4) in
       if Value.is_true α5 then
@@ -170,7 +170,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.read
             (mk_str
               "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3
       else

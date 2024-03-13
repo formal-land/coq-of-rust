@@ -53,17 +53,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 :=
         M.get_associated_function (Ty.path "std::process::Command") "new" in
       let* α4 := M.read (mk_str "wc") in
-      let* α5 := M.call α3 [ α4 ] in
+      let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.alloc α5 in
       let* α7 :=
         M.get_associated_function (Ty.path "std::process::Stdio") "piped" in
-      let* α8 := M.call α7 [] in
-      let* α9 := M.call α2 [ α6; α8 ] in
+      let* α8 := M.call_closure α7 [] in
+      let* α9 := M.call_closure α2 [ α6; α8 ] in
       let* α10 :=
         M.get_associated_function (Ty.path "std::process::Stdio") "piped" in
-      let* α11 := M.call α10 [] in
-      let* α12 := M.call α1 [ α9; α11 ] in
-      let* α13 := M.call α0 [ α12 ] in
+      let* α11 := M.call_closure α10 [] in
+      let* α12 := M.call_closure α1 [ α9; α11 ] in
+      let* α13 := M.call_closure α0 [ α12 ] in
       let* α14 := M.alloc α13 in
       let* α15 :=
         match_operator
@@ -87,16 +87,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α5 := M.call α4 [ why ] in
+              let* α5 := M.call_closure α4 [ why ] in
               let* α6 := M.alloc (Value.Array [ α5 ]) in
               let* α7 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α3;
                     M.pointer_coercion (* Unsize *) α6
                   ] in
-              let* α8 := M.call α0 [ α7 ] in
+              let* α8 := M.call_closure α0 [ α7 ] in
               let* α9 := M.never_to_any α8 in
               M.alloc α9;
             fun γ =>
@@ -122,14 +122,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "std::process::ChildStdin" ])
           "unwrap" in
       let* α2 := M.read (M.get_struct_record process "stdin") in
-      let* α3 := M.call α1 [ α2 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.alloc α3 in
       let* α5 := M.get_associated_function (Ty.path "str") "as_bytes" in
       let* α6 := M.get_constant "child_processes_pipes::PANGRAM" in
       let* α7 := M.read α6 in
       let* α8 := M.read α7 in
-      let* α9 := M.call α5 [ α8 ] in
-      let* α10 := M.call α0 [ α4; α9 ] in
+      let* α9 := M.call_closure α5 [ α8 ] in
+      let* α10 := M.call_closure α0 [ α4; α9 ] in
       let* α11 := M.alloc α10 in
       match_operator
         α11
@@ -152,16 +152,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
-            let* α5 := M.call α4 [ why ] in
+            let* α5 := M.call_closure α4 [ why ] in
             let* α6 := M.alloc (Value.Array [ α5 ]) in
             let* α7 :=
-              M.call
+              M.call_closure
                 α1
                 [
                   M.pointer_coercion (* Unsize *) α3;
                   M.pointer_coercion (* Unsize *) α6
                 ] in
-            let* α8 := M.call α0 [ α7 ] in
+            let* α8 := M.call_closure α0 [ α7 ] in
             let* α9 := M.never_to_any α8 in
             M.alloc α9;
           fun γ =>
@@ -179,15 +179,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "sent pangram to wc
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple [])
         ] in
     let* s :=
       let* α0 :=
         M.get_associated_function (Ty.path "alloc::string::String") "new" in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 :=
       M.get_trait_method
@@ -201,9 +202,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ Ty.path "std::process::ChildStdout" ])
         "unwrap" in
     let* α2 := M.read (M.get_struct_record process "stdout") in
-    let* α3 := M.call α1 [ α2 ] in
+    let* α3 := M.call_closure α1 [ α2 ] in
     let* α4 := M.alloc α3 in
-    let* α5 := M.call α0 [ α4; s ] in
+    let* α5 := M.call_closure α0 [ α4; s ] in
     let* α6 := M.alloc α5 in
     let* α0 :=
       match_operator
@@ -227,16 +228,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
-            let* α5 := M.call α4 [ why ] in
+            let* α5 := M.call_closure α4 [ why ] in
             let* α6 := M.alloc (Value.Array [ α5 ]) in
             let* α7 :=
-              M.call
+              M.call_closure
                 α1
                 [
                   M.pointer_coercion (* Unsize *) α3;
                   M.pointer_coercion (* Unsize *) α6
                 ] in
-            let* α8 := M.call α0 [ α7 ] in
+            let* α8 := M.call_closure α0 [ α7 ] in
             let* α9 := M.never_to_any α8 in
             M.alloc α9;
           fun γ =>
@@ -258,16 +259,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α5 := M.call α4 [ s ] in
+              let* α5 := M.call_closure α4 [ s ] in
               let* α6 := M.alloc (Value.Array [ α5 ]) in
               let* α7 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α3;
                     M.pointer_coercion (* Unsize *) α6
                   ] in
-              let* α8 := M.call α0 [ α7 ] in
+              let* α8 := M.call_closure α0 [ α7 ] in
               M.alloc α8 in
             M.alloc (Value.Tuple [])
         ] in

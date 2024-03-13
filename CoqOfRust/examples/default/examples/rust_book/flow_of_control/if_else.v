@@ -53,16 +53,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
-            let* α6 := M.call α5 [ n ] in
+            let* α6 := M.call_closure α5 [ n ] in
             let* α7 := M.alloc (Value.Array [ α6 ]) in
             let* α8 :=
-              M.call
+              M.call_closure
                 α1
                 [
                   M.pointer_coercion (* Unsize *) α4;
                   M.pointer_coercion (* Unsize *) α7
                 ] in
-            let* α9 := M.call α0 [ α8 ] in
+            let* α9 := M.call_closure α0 [ α8 ] in
             M.alloc α9 in
           M.alloc (Value.Tuple []) in
         M.alloc (Value.Tuple [])
@@ -85,16 +85,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α6 := M.call α5 [ n ] in
+              let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α7
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
+              let* α9 := M.call_closure α0 [ α8 ] in
               M.alloc α9 in
             M.alloc (Value.Tuple []) in
           M.alloc (Value.Tuple [])
@@ -113,16 +113,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α6 := M.call α5 [ n ] in
+              let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α7
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
+              let* α9 := M.call_closure α0 [ α8 ] in
               M.alloc α9 in
             M.alloc (Value.Tuple []) in
           M.alloc (Value.Tuple []) in
@@ -148,8 +148,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.read (mk_str ", and is a small number, increase ten-fold
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []) in
           let* α0 := M.read n in
@@ -167,8 +168,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.read (mk_str ", and is a big number, halve the number
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []) in
           let* α0 := M.read n in
@@ -189,21 +191,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α7 := M.call α6 [ n ] in
+        let* α7 := M.call_closure α6 [ n ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α9 := M.call α8 [ big_n ] in
+        let* α9 := M.call_closure α8 [ big_n ] in
         let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

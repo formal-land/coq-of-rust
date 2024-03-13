@@ -31,7 +31,7 @@ Module Impl_trait_flipper_Flipper.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructRecord "trait_flipper::Flipper" [ ("value", α1) ])
     | _, _ => M.impossible
     end.

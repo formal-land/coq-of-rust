@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "conditional_compilation::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
@@ -202,7 +202,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         M.get_associated_function
           (Ty.path "conditional_compilation::ConditionalCompilation")
           "init_env" in
-      M.call α0 []
+      M.call_closure α0 []
     | _, _ => M.impossible
     end.
   
@@ -223,7 +223,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure
         (Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
@@ -321,9 +321,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* _ :=
         let* α0 :=
@@ -334,13 +334,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.read self in
         let* α5 := M.read (M.get_struct_record α4 "value") in
         let* α6 := M.read caller in
         let* α7 :=
-          M.call
+          M.call_closure
             α0
             [
               α3;
@@ -386,9 +386,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* block_number :=
         let* α0 :=
@@ -399,9 +399,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* _ :=
         let* α0 := M.read self in
@@ -417,14 +417,14 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.read self in
         let* α5 := M.read (M.get_struct_record α4 "value") in
         let* α6 := M.read caller in
         let* α7 := M.read block_number in
         let* α8 :=
-          M.call
+          M.call_closure
             α0
             [
               α3;
@@ -507,9 +507,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* _ :=
         let* α0 :=
@@ -520,12 +520,12 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
         let* α4 := M.read value in
         let* α5 := M.read caller in
         let* α6 :=
-          M.call
+          M.call_closure
             α0
             [
               α3;

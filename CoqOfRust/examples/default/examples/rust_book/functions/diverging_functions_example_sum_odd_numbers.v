@@ -43,20 +43,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 :=
-          M.call
+          M.call_closure
             (* unimplemented parent_kind *)
             [ Value.Integer Integer.U32 9 ] in
         let* α7 := M.alloc α6 in
-        let* α8 := M.call α5 [ α7 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α11 := M.call α0 [ α10 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -99,7 +99,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 := M.read up_to in
       let* α2 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructRecord
@@ -125,7 +125,7 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "u32" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2

@@ -41,14 +41,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α1 := M.read (mk_str "Alice") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
           "new" in
-      let* α4 := M.call α3 [ Value.Integer Integer.U8 20 ] in
+      let* α4 := M.call_closure α3 [ Value.Integer Integer.U8 20 ] in
       M.alloc
         (Value.StructRecord
           "scoping_rules_ownership_and_rules_partial_moves::main::Person"
@@ -85,16 +85,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
-                let* α6 := M.call α5 [ age ] in
+                let* α6 := M.call_closure α5 [ age ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α4;
                       M.pointer_coercion (* Unsize *) α7
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
+                let* α9 := M.call_closure α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
             let* _ :=
@@ -112,16 +112,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
-                let* α6 := M.call α5 [ name ] in
+                let* α6 := M.call_closure α5 [ name ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α4;
                       M.pointer_coercion (* Unsize *) α7
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
+                let* α9 := M.call_closure α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
             let* _ :=
@@ -140,16 +140,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
-                let* α6 := M.call α5 [ M.get_struct_record person "age" ] in
+                let* α6 :=
+                  M.call_closure α5 [ M.get_struct_record person "age" ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α4;
                       M.pointer_coercion (* Unsize *) α7
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
+                let* α9 := M.call_closure α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple [])
@@ -195,7 +196,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
       let* α5 := M.read (mk_str "age") in
       let* α6 := M.read self in
       let* α7 := M.alloc (M.get_struct_record α6 "age") in
-      M.call
+      M.call_closure
         α0
         [
           α1;

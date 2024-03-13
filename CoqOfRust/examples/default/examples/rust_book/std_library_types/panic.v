@@ -26,7 +26,7 @@ Definition division (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "std::panicking::begin_panic"
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α1 := M.read (mk_str "division by zero") in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
@@ -61,12 +61,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new" in
-      let* α1 := M.call α0 [ Value.Integer Integer.I32 0 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 0 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "panic::division" [] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [ Value.Integer Integer.I32 3; Value.Integer Integer.I32 0 ] in
       M.alloc α1 in
@@ -80,8 +80,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "This point won't be reached!
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

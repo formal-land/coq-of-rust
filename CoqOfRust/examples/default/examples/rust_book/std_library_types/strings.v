@@ -61,16 +61,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ pangram ] in
+        let* α6 := M.call_closure α5 [ pangram ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -83,8 +83,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Words in reverse
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -105,9 +105,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ (* Self *) Ty.path "core::str::iter::SplitWhitespace" ] in
       let* α2 := M.get_associated_function (Ty.path "str") "split_whitespace" in
       let* α3 := M.read pangram in
-      let* α4 := M.call α2 [ α3 ] in
-      let* α5 := M.call α1 [ α4 ] in
-      let* α6 := M.call α0 [ α5 ] in
+      let* α4 := M.call_closure α2 [ α3 ] in
+      let* α5 := M.call_closure α1 [ α4 ] in
+      let* α6 := M.call_closure α0 [ α5 ] in
       let* α7 := M.alloc α6 in
       let* α8 :=
         match_operator
@@ -127,7 +127,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::iter::adapters::rev::Rev")
                             [ Ty.path "core::str::iter::SplitWhitespace" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -160,16 +160,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
                                 "new_display" in
-                            let* α6 := M.call α5 [ word ] in
+                            let* α6 := M.call_closure α5 [ word ] in
                             let* α7 := M.alloc (Value.Array [ α6 ]) in
                             let* α8 :=
-                              M.call
+                              M.call_closure
                                 α1
                                 [
                                   M.pointer_coercion (* Unsize *) α4;
                                   M.pointer_coercion (* Unsize *) α7
                                 ] in
-                            let* α9 := M.call α0 [ α8 ] in
+                            let* α9 := M.call_closure α0 [ α8 ] in
                             M.alloc α9 in
                           M.alloc (Value.Tuple []) in
                         M.alloc (Value.Tuple [])
@@ -191,8 +191,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 := M.get_associated_function (Ty.path "str") "chars" in
       let* α2 := M.read pangram in
-      let* α3 := M.call α1 [ α2 ] in
-      let* α4 := M.call α0 [ α3 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
       let* α0 :=
@@ -209,8 +209,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "alloc::vec::Vec")
                 [ Ty.path "char"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α2 := M.call α1 [ chars ] in
-      let* α3 := M.call α0 [ α2 ] in
+      let* α2 := M.call_closure α1 [ chars ] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -219,12 +219,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "alloc::vec::Vec")
             [ Ty.path "char"; Ty.path "alloc::alloc::Global" ])
           "dedup" in
-      let* α1 := M.call α0 [ chars ] in
+      let* α1 := M.call_closure α0 [ chars ] in
       M.alloc α1 in
     let* string :=
       let* α0 :=
         M.get_associated_function (Ty.path "alloc::string::String") "new" in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -238,7 +238,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "char"; Ty.path "alloc::alloc::Global" ]
           ] in
       let* α1 := M.read chars in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
       let* α4 :=
         match_operator
@@ -258,7 +258,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "alloc::vec::into_iter::IntoIter")
                             [ Ty.path "char"; Ty.path "alloc::alloc::Global" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -281,7 +281,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "alloc::string::String")
                               "push" in
                           let* α1 := M.read c in
-                          let* α2 := M.call α0 [ string; α1 ] in
+                          let* α2 := M.call_closure α0 [ string; α1 ] in
                           M.alloc α2 in
                         let* _ :=
                           let* α0 :=
@@ -289,7 +289,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "alloc::string::String")
                               "push_str" in
                           let* α1 := M.read (mk_str ", ") in
-                          let* α2 := M.call α0 [ string; α1 ] in
+                          let* α2 := M.call_closure α0 [ string; α1 ] in
                           M.alloc α2 in
                         M.alloc (Value.Tuple [])
                     ] in
@@ -307,9 +307,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::ops::deref::Deref"
           "deref"
           [ (* Self *) Ty.path "alloc::string::String" ] in
-      let* α2 := M.call α1 [ string ] in
+      let* α2 := M.call_closure α1 [ string ] in
       let* α3 := M.read chars_to_trim in
-      let* α4 := M.call α0 [ α2; α3 ] in
+      let* α4 := M.call_closure α0 [ α2; α3 ] in
       M.alloc α4 in
     let* _ :=
       let* _ :=
@@ -324,16 +324,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ trimmed_str ] in
+        let* α6 := M.call_closure α5 [ trimmed_str ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* alice :=
@@ -346,7 +346,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α1 := M.read (mk_str "I like dogs") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* bob :=
       let* α0 := M.get_associated_function (Ty.path "str") "replace" in
@@ -355,10 +355,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::ops::deref::Deref"
           "deref"
           [ (* Self *) Ty.path "alloc::string::String" ] in
-      let* α2 := M.call α1 [ alice ] in
+      let* α2 := M.call_closure α1 [ alice ] in
       let* α3 := M.read (mk_str "dog") in
       let* α4 := M.read (mk_str "cat") in
-      let* α5 := M.call α0 [ α2; α3; α4 ] in
+      let* α5 := M.call_closure α0 [ α2; α3; α4 ] in
       M.alloc α5 in
     let* _ :=
       let* _ :=
@@ -373,16 +373,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ alice ] in
+        let* α6 := M.call_closure α5 [ alice ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -398,16 +398,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ bob ] in
+        let* α6 := M.call_closure α5 [ bob ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

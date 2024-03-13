@@ -43,16 +43,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ copied_integer ] in
+        let* α6 := M.call_closure α5 [ copied_integer ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -68,16 +68,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ a_boolean ] in
+        let* α6 := M.call_closure α5 [ a_boolean ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -93,16 +93,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ unit_ ] in
+        let* α6 := M.call_closure α5 [ unit_ ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _unused_variable := M.alloc (Value.Integer Integer.U32 3) in

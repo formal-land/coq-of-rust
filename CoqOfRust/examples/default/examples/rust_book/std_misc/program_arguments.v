@@ -33,8 +33,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ]
           ] in
       let* α1 := M.get_function "std::env::args" [] in
-      let* α2 := M.call α1 [] in
-      let* α3 := M.call α0 [ α2 ] in
+      let* α2 := M.call_closure α1 [] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* _ :=
@@ -63,17 +63,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   ];
               (* Idx *) Ty.path "usize"
             ] in
-        let* α7 := M.call α6 [ args; Value.Integer Integer.Usize 0 ] in
-        let* α8 := M.call α5 [ α7 ] in
+        let* α7 := M.call_closure α6 [ args; Value.Integer Integer.Usize 0 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α11 := M.call α0 [ α10 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -97,10 +97,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
               ])
             "len" in
-        let* α8 := M.call α7 [ args ] in
+        let* α8 := M.call_closure α7 [ args ] in
         let* α9 := BinOp.Panic.sub α8 (Value.Integer Integer.Usize 1) in
         let* α10 := M.alloc α9 in
-        let* α11 := M.call α6 [ α10 ] in
+        let* α11 := M.call_closure α6 [ α10 ] in
         let* α12 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -123,7 +123,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.path "usize" ]
             ] in
         let* α14 :=
-          M.call
+          M.call_closure
             α13
             [
               args;
@@ -132,16 +132,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ ("start", Value.Integer Integer.Usize 1) ]
             ] in
         let* α15 := M.alloc α14 in
-        let* α16 := M.call α12 [ α15 ] in
+        let* α16 := M.call_closure α12 [ α15 ] in
         let* α17 := M.alloc (Value.Array [ α11; α16 ]) in
         let* α18 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α17
             ] in
-        let* α19 := M.call α0 [ α18 ] in
+        let* α19 := M.call_closure α0 [ α18 ] in
         M.alloc α19 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

@@ -154,7 +154,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
           ] in
       let* α2 := M.read self in
       let* α3 := M.read (M.get_struct_record α2 "job") in
-      let* α4 := M.call α1 [ α3 ] in
+      let* α4 := M.call_closure α1 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
         match_operator
@@ -182,7 +182,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                         [ Ty.path "core::convert::Infallible" ]
                   ] in
               let* α1 := M.read residual in
-              let* α2 := M.call α0 [ α1 ] in
+              let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
@@ -197,7 +197,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
               M.pure val
           ] in
       let* α7 := M.read (M.get_struct_record α6 "phone_number") in
-      let* α8 := M.call α0 [ α7 ] in
+      let* α8 := M.call_closure α0 [ α7 ] in
       let* α9 := M.alloc α8 in
       let* α10 :=
         match_operator
@@ -225,7 +225,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                         [ Ty.path "core::convert::Infallible" ]
                   ] in
               let* α1 := M.read residual in
-              let* α2 := M.call α0 [ α1 ] in
+              let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
               let* α4 := M.read α3 in
               let* α5 := M.never_to_any α4 in
@@ -298,7 +298,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.path "unpacking_options_via_question_mark::Person")
           "work_phone_area_code" in
-      let* α1 := M.call α0 [ p ] in
+      let* α1 := M.call_closure α0 [ p ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         M.alloc
@@ -326,7 +326,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -344,7 +344,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;

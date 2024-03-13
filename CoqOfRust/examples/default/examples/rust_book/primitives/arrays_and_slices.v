@@ -25,16 +25,17 @@ Definition analyze_slice (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.read slice in
-        let* α7 := M.call α5 [ α6[M.alloc (Value.Integer Integer.Usize 0)] ] in
+        let* α7 :=
+          M.call_closure α5 [ α6[M.alloc (Value.Integer Integer.Usize 0)] ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -55,18 +56,18 @@ Definition analyze_slice (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
             "len" in
         let* α7 := M.read slice in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -150,16 +151,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ xs[M.alloc (Value.Integer Integer.Usize 0)] ] in
+        let* α6 :=
+          M.call_closure α5 [ xs[M.alloc (Value.Integer Integer.Usize 0)] ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -175,16 +177,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ xs[M.alloc (Value.Integer Integer.Usize 1)] ] in
+        let* α6 :=
+          M.call_closure α5 [ xs[M.alloc (Value.Integer Integer.Usize 1)] ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -204,18 +207,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
             "len" in
-        let* α7 := M.call α6 [ M.pointer_coercion (* Unsize *) xs ] in
+        let* α7 := M.call_closure α6 [ M.pointer_coercion (* Unsize *) xs ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -235,18 +238,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_function
             "core::mem::size_of_val"
             [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ] in
-        let* α7 := M.call α6 [ xs ] in
+        let* α7 := M.call_closure α6 [ xs ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -259,13 +262,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "borrow the whole array as a slice
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* α0 := M.get_function "arrays_and_slices::analyze_slice" [] in
-      let* α1 := M.call α0 [ M.pointer_coercion (* Unsize *) xs ] in
+      let* α1 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) xs ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -278,8 +281,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.read (mk_str "borrow a section of the array as a slice
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -294,7 +297,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
           ] in
       let* α2 :=
-        M.call
+        M.call_closure
           α1
           [
             ys;
@@ -305,7 +308,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ("end_", Value.Integer Integer.Usize 4)
               ]
           ] in
-      let* α3 := M.call α0 [ α2 ] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
     let* empty_array := M.alloc (Value.Array []) in
     let* _ :=
@@ -337,7 +340,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -359,7 +362,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -386,7 +389,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α2 := M.alloc (Value.Array []) in
       let* α3 :=
-        M.call α1 [ α2; Value.StructTuple "core::ops::range::RangeFull" [] ] in
+        M.call_closure
+          α1
+          [ α2; Value.StructTuple "core::ops::range::RangeFull" [] ] in
       let* α4 := M.alloc α3 in
       let* α5 := M.alloc (Value.Tuple [ α0; α4 ]) in
       match_operator
@@ -413,7 +418,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -435,7 +440,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -462,10 +467,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.get_associated_function
         (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
         "len" in
-    let* α2 := M.call α1 [ M.pointer_coercion (* Unsize *) xs ] in
+    let* α2 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) xs ] in
     let* α3 := BinOp.Panic.add α2 (Value.Integer Integer.Usize 1) in
     let* α4 :=
-      M.call
+      M.call_closure
         α0
         [
           Value.StructRecord
@@ -491,7 +496,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::ops::range::Range")
                           [ Ty.path "usize" ]
                     ] in
-                let* α1 := M.call α0 [ iter ] in
+                let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -514,7 +519,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           "get" in
                       let* α1 := M.read i in
                       let* α2 :=
-                        M.call α0 [ M.pointer_coercion (* Unsize *) xs; α1 ] in
+                        M.call_closure
+                          α0
+                          [ M.pointer_coercion (* Unsize *) xs; α1 ] in
                       let* α3 := M.alloc α2 in
                       match_operator
                         α3
@@ -542,21 +549,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::rt::Argument")
                                   "new_display" in
-                              let* α7 := M.call α6 [ i ] in
+                              let* α7 := M.call_closure α6 [ i ] in
                               let* α8 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::rt::Argument")
                                   "new_display" in
-                              let* α9 := M.call α8 [ xval ] in
+                              let* α9 := M.call_closure α8 [ xval ] in
                               let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                               let* α11 :=
-                                M.call
+                                M.call_closure
                                   α1
                                   [
                                     M.pointer_coercion (* Unsize *) α5;
                                     M.pointer_coercion (* Unsize *) α10
                                   ] in
-                              let* α12 := M.call α0 [ α11 ] in
+                              let* α12 := M.call_closure α0 [ α11 ] in
                               M.alloc α12 in
                             M.alloc (Value.Tuple []);
                           fun γ =>
@@ -575,16 +582,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::rt::Argument")
                                   "new_display" in
-                              let* α6 := M.call α5 [ i ] in
+                              let* α6 := M.call_closure α5 [ i ] in
                               let* α7 := M.alloc (Value.Array [ α6 ]) in
                               let* α8 :=
-                                M.call
+                                M.call_closure
                                   α1
                                   [
                                     M.pointer_coercion (* Unsize *) α4;
                                     M.pointer_coercion (* Unsize *) α7
                                   ] in
-                              let* α9 := M.call α0 [ α8 ] in
+                              let* α9 := M.call_closure α0 [ α8 ] in
                               M.alloc α9 in
                             M.alloc (Value.Tuple [])
                         ]

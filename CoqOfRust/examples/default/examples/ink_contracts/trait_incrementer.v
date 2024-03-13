@@ -81,7 +81,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
           (Ty.path "trait_incrementer::Incrementer")
           "inc_by" in
       let* α1 := M.read self in
-      M.call α0 [ α1; Value.Integer Integer.U64 1 ]
+      M.call_closure α0 [ α1; Value.Integer Integer.U64 1 ]
     | _, _ => M.impossible
     end.
   

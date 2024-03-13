@@ -19,7 +19,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* second_number_str := M.alloc second_number_str in
     let* α0 := M.get_associated_function (Ty.path "str") "parse" in
     let* α1 := M.read first_number_str in
-    let* α2 := M.call α0 [ α1 ] in
+    let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
       match_operator
@@ -34,7 +34,7 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* first_number := M.copy γ0_0 in
             let* α0 := M.get_associated_function (Ty.path "str") "parse" in
             let* α1 := M.read second_number_str in
-            let* α2 := M.call α0 [ α1 ] in
+            let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
             match_operator
               α3
@@ -111,16 +111,16 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α6 := M.call α5 [ n ] in
+              let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α7
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
+              let* α9 := M.call_closure α0 [ α8 ] in
               M.alloc α9 in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -144,16 +144,16 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α6 := M.call α5 [ e ] in
+              let* α6 := M.call_closure α5 [ e ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α7
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
+              let* α9 := M.call_closure α0 [ α8 ] in
               M.alloc α9 in
             M.alloc (Value.Tuple [])
         ] in
@@ -179,23 +179,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.get_function "map_in_result_via_match::multiply" [] in
       let* α1 := M.read (mk_str "10") in
       let* α2 := M.read (mk_str "2") in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 := M.get_function "map_in_result_via_match::print" [] in
       let* α1 := M.read twenty in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* tt_ :=
       let* α0 := M.get_function "map_in_result_via_match::multiply" [] in
       let* α1 := M.read (mk_str "t") in
       let* α2 := M.read (mk_str "2") in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 := M.get_function "map_in_result_via_match::print" [] in
       let* α1 := M.read tt_ in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

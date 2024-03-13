@@ -69,7 +69,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;

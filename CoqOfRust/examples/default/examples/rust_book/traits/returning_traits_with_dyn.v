@@ -95,7 +95,7 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ])
             "new" in
         let* α1 :=
-          M.call
+          M.call_closure
             α0
             [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ] in
         M.alloc
@@ -111,7 +111,9 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ])
             "new" in
         let* α1 :=
-          M.call α0 [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ] in
+          M.call_closure
+            α0
+            [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ] in
         M.alloc (M.pointer_coercion (* Unsize *) α1) in
     let* α5 := M.read α4 in
     M.pure
@@ -136,7 +138,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* animal :=
       let* α0 := M.get_function "returning_traits_with_dyn::random_animal" [] in
       let* α1 := M.read random_number in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
@@ -161,18 +163,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ]
             ] in
         let* α7 := M.read animal in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

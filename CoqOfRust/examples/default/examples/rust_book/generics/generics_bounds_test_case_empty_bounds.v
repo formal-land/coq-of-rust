@@ -128,18 +128,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_function
             "generics_bounds_test_case_empty_bounds::red"
             [ Ty.path "generics_bounds_test_case_empty_bounds::Cardinal" ] in
-        let* α7 := M.call α6 [ cardinal ] in
+        let* α7 := M.call_closure α6 [ cardinal ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -159,18 +159,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_function
             "generics_bounds_test_case_empty_bounds::blue"
             [ Ty.path "generics_bounds_test_case_empty_bounds::BlueJay" ] in
-        let* α7 := M.call α6 [ blue_jay ] in
+        let* α7 := M.call_closure α6 [ blue_jay ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

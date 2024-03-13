@@ -56,9 +56,9 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
       let* α9 := M.read student in
-      let* α10 := M.call α8 [ α9 ] in
+      let* α10 := M.call_closure α8 [ α9 ] in
       let* α11 := M.alloc α10 in
-      let* α12 := M.call α7 [ α11 ] in
+      let* α12 := M.call_closure α7 [ α11 ] in
       let* α13 :=
         M.get_associated_function
           (Ty.path "core::fmt::rt::Argument")
@@ -70,9 +70,9 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
       let* α15 := M.read student in
-      let* α16 := M.call α14 [ α15 ] in
+      let* α16 := M.call_closure α14 [ α15 ] in
       let* α17 := M.alloc α16 in
-      let* α18 := M.call α13 [ α17 ] in
+      let* α18 := M.call_closure α13 [ α17 ] in
       let* α19 :=
         M.get_associated_function
           (Ty.path "core::fmt::rt::Argument")
@@ -84,9 +84,9 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
       let* α21 := M.read student in
-      let* α22 := M.call α20 [ α21 ] in
+      let* α22 := M.call_closure α20 [ α21 ] in
       let* α23 := M.alloc α22 in
-      let* α24 := M.call α19 [ α23 ] in
+      let* α24 := M.call_closure α19 [ α23 ] in
       let* α25 :=
         M.get_associated_function
           (Ty.path "core::fmt::rt::Argument")
@@ -98,18 +98,18 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
           [ (* Self *) Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ]
           ] in
       let* α27 := M.read student in
-      let* α28 := M.call α26 [ α27 ] in
+      let* α28 := M.call_closure α26 [ α27 ] in
       let* α29 := M.alloc α28 in
-      let* α30 := M.call α25 [ α29 ] in
+      let* α30 := M.call_closure α25 [ α29 ] in
       let* α31 := M.alloc (Value.Array [ α12; α18; α24; α30 ]) in
       let* α32 :=
-        M.call
+        M.call_closure
           α1
           [
             M.pointer_coercion (* Unsize *) α6;
             M.pointer_coercion (* Unsize *) α31
           ] in
-      let* α33 := M.call α0 [ α32 ] in
+      let* α33 := M.call_closure α0 [ α32 ] in
       M.alloc α33 in
     M.read res
   | _, _ => M.impossible

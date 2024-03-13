@@ -133,16 +133,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α8 := M.read ref_c2 in
                 let* α9 := M.read α8 in
                 let* α10 := M.alloc (BinOp.Pure.eq α7 α9) in
-                let* α11 := M.call α5 [ α10 ] in
+                let* α11 := M.call_closure α5 [ α10 ] in
                 let* α12 := M.alloc (Value.Array [ α11 ]) in
                 let* α13 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α4;
                       M.pointer_coercion (* Unsize *) α12
                     ] in
-                let* α14 := M.call α0 [ α13 ] in
+                let* α14 := M.call_closure α0 [ α13 ] in
                 M.alloc α14 in
               M.alloc (Value.Tuple []) in
             let* point :=
@@ -211,21 +211,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
-                let* α7 := M.call α6 [ M.get_struct_record point "x" ] in
+                let* α7 :=
+                  M.call_closure α6 [ M.get_struct_record point "x" ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
-                let* α9 := M.call α8 [ M.get_struct_record point "y" ] in
+                let* α9 :=
+                  M.call_closure α8 [ M.get_struct_record point "y" ] in
                 let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                 let* α11 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α5;
                       M.pointer_coercion (* Unsize *) α10
                     ] in
-                let* α12 := M.call α0 [ α11 ] in
+                let* α12 := M.call_closure α0 [ α11 ] in
                 M.alloc α12 in
               M.alloc (Value.Tuple []) in
             let* _ :=
@@ -245,22 +247,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
                 let* α7 :=
-                  M.call α6 [ M.get_struct_record mutable_point "x" ] in
+                  M.call_closure α6 [ M.get_struct_record mutable_point "x" ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
                 let* α9 :=
-                  M.call α8 [ M.get_struct_record mutable_point "y" ] in
+                  M.call_closure α8 [ M.get_struct_record mutable_point "y" ] in
                 let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                 let* α11 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α5;
                       M.pointer_coercion (* Unsize *) α10
                     ] in
-                let* α12 := M.call α0 [ α11 ] in
+                let* α12 := M.call_closure α0 [ α11 ] in
                 M.alloc α12 in
               M.alloc (Value.Tuple []) in
             let* mutable_tuple :=
@@ -270,7 +272,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "alloc::boxed::Box")
                     [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
                   "new" in
-              let* α1 := M.call α0 [ Value.Integer Integer.U32 5 ] in
+              let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 5 ] in
               M.alloc (Value.Tuple [ α1; Value.Integer Integer.U32 3 ]) in
             let* _ :=
               match_operator
@@ -300,16 +302,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_debug" in
-                let* α6 := M.call α5 [ mutable_tuple ] in
+                let* α6 := M.call_closure α5 [ mutable_tuple ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α4;
                       M.pointer_coercion (* Unsize *) α7
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
+                let* α9 := M.call_closure α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple [])

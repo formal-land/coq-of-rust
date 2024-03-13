@@ -43,9 +43,9 @@ Module Impl_custom_allocator_CustomAllocator.
           "new" in
       let* α2 := M.read init_value in
       let* α3 := M.alloc (Value.Array [ α2 ]) in
-      let* α4 := M.call α1 [ α3 ] in
+      let* α4 := M.call_closure α1 [ α3 ] in
       let* α5 := M.read α4 in
-      let* α6 := M.call α0 [ M.pointer_coercion (* Unsize *) α5 ] in
+      let* α6 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α5 ] in
       M.pure
         (Value.StructRecord
           "custom_allocator::CustomAllocator"
@@ -72,8 +72,8 @@ Module Impl_custom_allocator_CustomAllocator.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
-      let* α2 := M.call α1 [] in
-      M.call α0 [ α2 ]
+      let* α2 := M.call_closure α1 [] in
+      M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -103,7 +103,7 @@ Module Impl_custom_allocator_CustomAllocator.
             ] in
         let* α1 := M.read self in
         let* α2 :=
-          M.call
+          M.call_closure
             α0
             [ M.get_struct_record α1 "value"; Value.Integer Integer.Usize 0 ] in
         let* α3 :=
@@ -119,7 +119,7 @@ Module Impl_custom_allocator_CustomAllocator.
             ] in
         let* α4 := M.read self in
         let* α5 :=
-          M.call
+          M.call_closure
             α3
             [ M.get_struct_record α4 "value"; Value.Integer Integer.Usize 0 ] in
         let* α6 := M.read α5 in
@@ -153,7 +153,7 @@ Module Impl_custom_allocator_CustomAllocator.
           ] in
       let* α1 := M.read self in
       let* α2 :=
-        M.call
+        M.call_closure
           α0
           [ M.get_struct_record α1 "value"; Value.Integer Integer.Usize 0 ] in
       M.read α2

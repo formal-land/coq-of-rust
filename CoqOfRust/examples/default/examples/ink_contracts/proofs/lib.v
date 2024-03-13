@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.lib.Proofs.lib.
-Require Import CoqOfRust.examples.default.examples.ink_contracts.Lib.
+Require Import CoqOfRust.lib.proofs.lib.
+Require Import CoqOfRust.examples.default.examples.ink_contracts.lib.
 
 Module  Mapping.
 Section Mapping.

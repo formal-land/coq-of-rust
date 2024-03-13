@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.Proofs.M.
-Require CoqOfRust.Simulations.M.
+Require Import CoqOfRust.proofs.M.
+Require CoqOfRust.simulations.M.
 
 (* Proof libraries that we can use everywhere. *)
 Require Export Lia.

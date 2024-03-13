@@ -43,7 +43,9 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       let* α1 := M.read self in
       let* α2 := M.read other in
       let* α3 :=
-        M.call α0 [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ] in
+        M.call_closure
+          α0
+          [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ] in
       LogicalOp.and
         α3
         (let* α0 :=
@@ -56,7 +58,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
             ] in
         let* α1 := M.read self in
         let* α2 := M.read other in
-        M.call α0 [ M.get_struct_tuple α1 1; M.get_struct_tuple α2 1 ])
+        M.call_closure α0 [ M.get_struct_tuple α1 1; M.get_struct_tuple α2 1 ])
     | _, _ => M.impossible
     end.
   
@@ -116,7 +118,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       let* α1 := M.read self in
       let* α2 := M.read other in
       let* α3 :=
-        M.call
+        M.call_closure
           α0
           [ M.get_struct_record α1 "first"; M.get_struct_record α2 "first" ] in
       LogicalOp.and
@@ -131,7 +133,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
             ] in
         let* α1 := M.read self in
         let* α2 := M.read other in
-        M.call
+        M.call_closure
           α0
           [ M.get_struct_record α1 "phantom"; M.get_struct_record α2 "phantom"
           ])

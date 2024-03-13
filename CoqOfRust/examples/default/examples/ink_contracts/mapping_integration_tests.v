@@ -28,13 +28,13 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ K ] ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
           "default"
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ V ] ] in
-      let* α3 := M.call α2 [] in
+      let* α3 := M.call_closure α2 [] in
       M.pure
         (Value.StructRecord
           "mapping_integration_tests::Mapping"
@@ -155,7 +155,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "mapping_integration_tests::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
@@ -266,7 +266,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
                 [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128"
                 ]
           ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure
         (Value.StructRecord
           "mapping_integration_tests::Mappings"
@@ -327,7 +327,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     Ty.path "u128"
                   ]
             ] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.read balances in
       let* α0 :=
@@ -360,9 +360,9 @@ Module Impl_mapping_integration_tests_Mappings.
           M.get_associated_function
             (Ty.path "mapping_integration_tests::Mappings")
             "env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* α0 :=
         M.get_associated_function
@@ -371,7 +371,8 @@ Module Impl_mapping_integration_tests_Mappings.
             [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
           "get" in
       let* α1 := M.read self in
-      let* α2 := M.call α0 [ M.get_struct_record α1 "balances"; caller ] in
+      let* α2 :=
+        M.call_closure α0 [ M.get_struct_record α1 "balances"; caller ] in
       let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
@@ -400,9 +401,9 @@ Module Impl_mapping_integration_tests_Mappings.
           M.get_associated_function
             (Ty.path "mapping_integration_tests::Mappings")
             "env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* α0 :=
         M.get_associated_function
@@ -413,7 +414,8 @@ Module Impl_mapping_integration_tests_Mappings.
       let* α1 := M.read self in
       let* α2 := M.read caller in
       let* α3 := M.read value in
-      let* α4 := M.call α0 [ M.get_struct_record α1 "balances"; α2; α3 ] in
+      let* α4 :=
+        M.call_closure α0 [ M.get_struct_record α1 "balances"; α2; α3 ] in
       let* α0 := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
@@ -441,9 +443,9 @@ Module Impl_mapping_integration_tests_Mappings.
           M.get_associated_function
             (Ty.path "mapping_integration_tests::Mappings")
             "env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* α0 :=
         M.get_associated_function
@@ -453,7 +455,7 @@ Module Impl_mapping_integration_tests_Mappings.
           "size" in
       let* α1 := M.read self in
       let* α2 := M.read caller in
-      let* α3 := M.call α0 [ M.get_struct_record α1 "balances"; α2 ] in
+      let* α3 := M.call_closure α0 [ M.get_struct_record α1 "balances"; α2 ] in
       let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
@@ -481,9 +483,9 @@ Module Impl_mapping_integration_tests_Mappings.
           M.get_associated_function
             (Ty.path "mapping_integration_tests::Mappings")
             "env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* α0 :=
         M.get_associated_function
@@ -492,7 +494,8 @@ Module Impl_mapping_integration_tests_Mappings.
             [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
           "contains" in
       let* α1 := M.read self in
-      let* α2 := M.call α0 [ M.get_struct_record α1 "balances"; caller ] in
+      let* α2 :=
+        M.call_closure α0 [ M.get_struct_record α1 "balances"; caller ] in
       let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
@@ -520,9 +523,9 @@ Module Impl_mapping_integration_tests_Mappings.
           M.get_associated_function
             (Ty.path "mapping_integration_tests::Mappings")
             "env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* _ :=
         let* α0 :=
@@ -534,7 +537,8 @@ Module Impl_mapping_integration_tests_Mappings.
             "remove" in
         let* α1 := M.read self in
         let* α2 := M.read caller in
-        let* α3 := M.call α0 [ M.get_struct_record α1 "balances"; α2 ] in
+        let* α3 :=
+          M.call_closure α0 [ M.get_struct_record α1 "balances"; α2 ] in
         M.alloc α3 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -563,9 +567,9 @@ Module Impl_mapping_integration_tests_Mappings.
           M.get_associated_function
             (Ty.path "mapping_integration_tests::Mappings")
             "env" in
-        let* α2 := M.call α1 [] in
+        let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         M.alloc α4 in
       let* α0 :=
         M.get_associated_function
@@ -575,7 +579,7 @@ Module Impl_mapping_integration_tests_Mappings.
           "take" in
       let* α1 := M.read self in
       let* α2 := M.read caller in
-      let* α3 := M.call α0 [ M.get_struct_record α1 "balances"; α2 ] in
+      let* α3 := M.call_closure α0 [ M.get_struct_record α1 "balances"; α2 ] in
       let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible

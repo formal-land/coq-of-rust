@@ -73,7 +73,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 := M.read empty in
       let* α2 := M.read null in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

@@ -97,9 +97,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "generics_implementation::Val")
             "value" in
-        let* α8 := M.call α7 [ x ] in
+        let* α8 := M.call_closure α7 [ x ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α6 [ α9 ] in
+        let* α10 := M.call_closure α6 [ α9 ] in
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -110,18 +110,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "generics_implementation::GenVal")
               [ Ty.path "i32" ])
             "value" in
-        let* α13 := M.call α12 [ y ] in
+        let* α13 := M.call_closure α12 [ y ] in
         let* α14 := M.alloc α13 in
-        let* α15 := M.call α11 [ α14 ] in
+        let* α15 := M.call_closure α11 [ α14 ] in
         let* α16 := M.alloc (Value.Array [ α10; α15 ]) in
         let* α17 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α16
             ] in
-        let* α18 := M.call α0 [ α17 ] in
+        let* α18 := M.call_closure α0 [ α17 ] in
         M.alloc α18 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

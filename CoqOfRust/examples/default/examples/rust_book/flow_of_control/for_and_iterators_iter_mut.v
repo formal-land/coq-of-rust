@@ -40,9 +40,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.read (mk_str "Frank") in
       let* α4 := M.read (mk_str "Ferris") in
       let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-      let* α6 := M.call α1 [ α5 ] in
+      let* α6 := M.call_closure α1 [ α5 ] in
       let* α7 := M.read α6 in
-      let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
+      let* α8 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α7 ] in
       M.alloc α8 in
     let* _ :=
       let* α0 :=
@@ -74,9 +74,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::alloc::Global"
                 ]
           ] in
-      let* α3 := M.call α2 [ names ] in
-      let* α4 := M.call α1 [ α3 ] in
-      let* α5 := M.call α0 [ α4 ] in
+      let* α3 := M.call_closure α2 [ names ] in
+      let* α4 := M.call_closure α1 [ α3 ] in
+      let* α5 := M.call_closure α0 [ α4 ] in
       let* α6 := M.alloc α5 in
       let* α7 :=
         match_operator
@@ -96,7 +96,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::slice::iter::IterMut")
                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -147,16 +147,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ names ] in
+        let* α6 := M.call_closure α5 [ names ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

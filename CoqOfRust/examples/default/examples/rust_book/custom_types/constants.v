@@ -56,16 +56,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α6 := M.get_constant "constants::LANGUAGE" in
         let* α7 := M.read α6 in
-        let* α8 := M.call α5 [ α7 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α11 := M.call α0 [ α10 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -82,16 +82,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.get_constant "constants::THRESHOLD" in
-        let* α7 := M.call α5 [ α6 ] in
+        let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -108,14 +108,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α7 := M.call α6 [ n ] in
+        let* α7 := M.call_closure α6 [ n ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α9 := M.get_function "constants::is_big" [] in
         let* α10 := M.read n in
-        let* α11 := M.call α9 [ α10 ] in
+        let* α11 := M.call_closure α9 [ α10 ] in
         let* α12 := M.alloc α11 in
         let* α13 := M.read (M.use α12) in
         let* α14 :=
@@ -124,16 +124,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           else
             let* α0 := M.read (mk_str "small") in
             M.alloc α0 in
-        let* α15 := M.call α8 [ α14 ] in
+        let* α15 := M.call_closure α8 [ α14 ] in
         let* α16 := M.alloc (Value.Array [ α7; α15 ]) in
         let* α17 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α16
             ] in
-        let* α18 := M.call α0 [ α17 ] in
+        let* α18 := M.call_closure α0 [ α17 ] in
         M.alloc α18 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

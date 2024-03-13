@@ -22,8 +22,8 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "unwrap" in
       let* α1 := M.get_associated_function (Ty.path "std::fs::File") "open" in
       let* α2 := M.read filename in
-      let* α3 := M.call α1 [ α2 ] in
-      let* α4 := M.call α0 [ α3 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
       M.alloc α4 in
     let* α0 :=
       M.get_trait_method
@@ -42,8 +42,8 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ Ty.path "std::fs::File" ])
         "new" in
     let* α2 := M.read file in
-    let* α3 := M.call α1 [ α2 ] in
-    let* α4 := M.call α0 [ α3 ] in
+    let* α3 := M.call_closure α1 [ α2 ] in
+    let* α4 := M.call_closure α0 [ α3 ] in
     let* α0 := M.return_ α4 in
     let* α1 := M.read α0 in
     M.never_to_any α1
@@ -71,8 +71,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "to_string"
           [ (* Self *) Ty.path "str" ] in
       let* α2 := M.read (mk_str "./hosts") in
-      let* α3 := M.call α1 [ α2 ] in
-      let* α4 := M.call α0 [ α3 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
       M.alloc α4 in
     let* α0 :=
       M.get_trait_method
@@ -89,7 +89,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               ]
         ] in
     let* α1 := M.read lines in
-    let* α2 := M.call α0 [ α1 ] in
+    let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
       match_operator
@@ -114,7 +114,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               [ Ty.path "std::fs::File" ]
                           ]
                     ] in
-                let* α1 := M.call α0 [ iter ] in
+                let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -157,18 +157,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 ])
                               "unwrap" in
                           let* α7 := M.read line in
-                          let* α8 := M.call α6 [ α7 ] in
+                          let* α8 := M.call_closure α6 [ α7 ] in
                           let* α9 := M.alloc α8 in
-                          let* α10 := M.call α5 [ α9 ] in
+                          let* α10 := M.call_closure α5 [ α9 ] in
                           let* α11 := M.alloc (Value.Array [ α10 ]) in
                           let* α12 :=
-                            M.call
+                            M.call_closure
                               α1
                               [
                                 M.pointer_coercion (* Unsize *) α4;
                                 M.pointer_coercion (* Unsize *) α11
                               ] in
-                          let* α13 := M.call α0 [ α12 ] in
+                          let* α13 := M.call_closure α0 [ α12 ] in
                           M.alloc α13 in
                         M.alloc (Value.Tuple []) in
                       M.alloc (Value.Tuple [])

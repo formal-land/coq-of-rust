@@ -82,7 +82,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
       let* α1 := M.read (mk_str "green") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* print :=
       M.alloc
@@ -109,16 +109,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
                           "new_display" in
-                      let* α6 := M.call α5 [ color ] in
+                      let* α6 := M.call_closure α5 [ color ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=
-                        M.call
+                        M.call_closure
                           α1
                           [
                             M.pointer_coercion (* Unsize *) α4;
                             M.pointer_coercion (* Unsize *) α7
                           ] in
-                      let* α9 := M.call α0 [ α8 ] in
+                      let* α9 := M.call_closure α0 [ α8 ] in
                       M.alloc α9 in
                     let* α0 := M.alloc (Value.Tuple []) in
                     M.read α0
@@ -134,7 +134,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
             (* Args *) Ty.tuple []
           ] in
-      let* α1 := M.call α0 [ print; Value.Tuple [] ] in
+      let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
       M.alloc α1 in
     let* _reborrow := M.alloc color in
     let* _ :=
@@ -146,7 +146,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
             (* Args *) Ty.tuple []
           ] in
-      let* α1 := M.call α0 [ print; Value.Tuple [] ] in
+      let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
       M.alloc α1 in
     let* _color_moved := M.copy color in
     let* count := M.alloc (Value.Integer Integer.I32 0) in
@@ -182,16 +182,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
                             "new_display" in
-                        let* α6 := M.call α5 [ count ] in
+                        let* α6 := M.call_closure α5 [ count ] in
                         let* α7 := M.alloc (Value.Array [ α6 ]) in
                         let* α8 :=
-                          M.call
+                          M.call_closure
                             α1
                             [
                               M.pointer_coercion (* Unsize *) α4;
                               M.pointer_coercion (* Unsize *) α7
                             ] in
-                        let* α9 := M.call α0 [ α8 ] in
+                        let* α9 := M.call_closure α0 [ α8 ] in
                         M.alloc α9 in
                       M.alloc (Value.Tuple []) in
                     let* α0 := M.alloc (Value.Tuple []) in
@@ -208,7 +208,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
             (* Args *) Ty.tuple []
           ] in
-      let* α1 := M.call α0 [ inc; Value.Tuple [] ] in
+      let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -219,7 +219,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
             (* Args *) Ty.tuple []
           ] in
-      let* α1 := M.call α0 [ inc; Value.Tuple [] ] in
+      let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
       M.alloc α1 in
     let* _count_reborrowed := M.alloc count in
     let* movable :=
@@ -229,7 +229,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new" in
-      let* α1 := M.call α0 [ Value.Integer Integer.I32 3 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
       M.alloc α1 in
     let* consume :=
       M.alloc
@@ -257,16 +257,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
                             "new_debug" in
-                        let* α6 := M.call α5 [ movable ] in
+                        let* α6 := M.call_closure α5 [ movable ] in
                         let* α7 := M.alloc (Value.Array [ α6 ]) in
                         let* α8 :=
-                          M.call
+                          M.call_closure
                             α1
                             [
                               M.pointer_coercion (* Unsize *) α4;
                               M.pointer_coercion (* Unsize *) α7
                             ] in
-                        let* α9 := M.call α0 [ α8 ] in
+                        let* α9 := M.call_closure α0 [ α8 ] in
                         M.alloc α9 in
                       M.alloc (Value.Tuple []) in
                     let* _ :=
@@ -279,7 +279,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                           ] in
                       let* α1 := M.read movable in
-                      let* α2 := M.call α0 [ α1 ] in
+                      let* α2 := M.call_closure α0 [ α1 ] in
                       M.alloc α2 in
                     let* α0 := M.alloc (Value.Tuple []) in
                     M.read α0
@@ -296,7 +296,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Args *) Ty.tuple []
           ] in
       let* α1 := M.read consume in
-      let* α2 := M.call α0 [ α1; Value.Tuple [] ] in
+      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

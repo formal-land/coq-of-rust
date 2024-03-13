@@ -90,11 +90,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Value.Integer Integer.I32 2;
               Value.Integer Integer.I32 3
             ]) in
-      let* α5 := M.call α3 [ α4 ] in
+      let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.read α5 in
-      let* α7 := M.call α2 [ M.pointer_coercion (* Unsize *) α6 ] in
-      let* α8 := M.call α1 [ α7 ] in
-      let* α9 := M.call α0 [ α8 ] in
+      let* α7 := M.call_closure α2 [ M.pointer_coercion (* Unsize *) α6 ] in
+      let* α8 := M.call_closure α1 [ α7 ] in
+      let* α9 := M.call_closure α0 [ α8 ] in
       M.alloc α9 in
     let* b :=
       let* α0 :=
@@ -142,11 +142,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Value.Integer Integer.I32 3;
               Value.Integer Integer.I32 4
             ]) in
-      let* α5 := M.call α3 [ α4 ] in
+      let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.read α5 in
-      let* α7 := M.call α2 [ M.pointer_coercion (* Unsize *) α6 ] in
-      let* α8 := M.call α1 [ α7 ] in
-      let* α9 := M.call α0 [ α8 ] in
+      let* α7 := M.call_closure α2 [ M.pointer_coercion (* Unsize *) α6 ] in
+      let* α8 := M.call_closure α1 [ α7 ] in
+      let* α9 := M.call_closure α0 [ α8 ] in
       M.alloc α9 in
     let* _ :=
       let* α0 :=
@@ -155,13 +155,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "std::collections::hash::set::HashSet")
             [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
           "insert" in
-      let* α1 := M.call α0 [ a; Value.Integer Integer.I32 4 ] in
+      let* α1 := M.call_closure α0 [ a; Value.Integer Integer.I32 4 ] in
       let* α2 := M.alloc (UnOp.Pure.not α1) in
       let* α3 := M.read (M.use α2) in
       if Value.is_true α3 then
         let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "assertion failed: a.insert(4)") in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
@@ -174,13 +174,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
           "contains" in
       let* α1 := M.alloc (Value.Integer Integer.I32 4) in
-      let* α2 := M.call α0 [ a; α1 ] in
+      let* α2 := M.call_closure α0 [ a; α1 ] in
       let* α3 := M.alloc (UnOp.Pure.not α2) in
       let* α4 := M.read (M.use α3) in
       if Value.is_true α4 then
         let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "assertion failed: a.contains(&4)") in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
@@ -192,7 +192,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "std::collections::hash::set::HashSet")
             [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
           "insert" in
-      let* α1 := M.call α0 [ b; Value.Integer Integer.I32 5 ] in
+      let* α1 := M.call_closure α0 [ b; Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -207,16 +207,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ a ] in
+        let* α6 := M.call_closure α5 [ a ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -232,16 +232,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ b ] in
+        let* α6 := M.call_closure α5 [ b ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -280,19 +280,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
             "union" in
-        let* α8 := M.call α7 [ a; b ] in
-        let* α9 := M.call α6 [ α8 ] in
+        let* α8 := M.call_closure α7 [ a; b ] in
+        let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
-        let* α11 := M.call α5 [ α10 ] in
+        let* α11 := M.call_closure α5 [ α10 ] in
         let* α12 := M.alloc (Value.Array [ α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -331,19 +331,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
             "difference" in
-        let* α8 := M.call α7 [ a; b ] in
-        let* α9 := M.call α6 [ α8 ] in
+        let* α8 := M.call_closure α7 [ a; b ] in
+        let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
-        let* α11 := M.call α5 [ α10 ] in
+        let* α11 := M.call_closure α5 [ α10 ] in
         let* α12 := M.alloc (Value.Array [ α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -382,19 +382,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
             "intersection" in
-        let* α8 := M.call α7 [ a; b ] in
-        let* α9 := M.call α6 [ α8 ] in
+        let* α8 := M.call_closure α7 [ a; b ] in
+        let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
-        let* α11 := M.call α5 [ α10 ] in
+        let* α11 := M.call_closure α5 [ α10 ] in
         let* α12 := M.alloc (Value.Array [ α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -433,19 +433,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
             "symmetric_difference" in
-        let* α8 := M.call α7 [ a; b ] in
-        let* α9 := M.call α6 [ α8 ] in
+        let* α8 := M.call_closure α7 [ a; b ] in
+        let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
-        let* α11 := M.call α5 [ α10 ] in
+        let* α11 := M.call_closure α5 [ α10 ] in
         let* α12 := M.alloc (Value.Array [ α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

@@ -23,16 +23,16 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ x ] in
+        let* α6 := M.call_closure α5 [ x ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -83,21 +83,21 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α7 := M.call α6 [ x ] in
+        let* α7 := M.call_closure α6 [ x ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α9 := M.call α8 [ y ] in
+        let* α9 := M.call_closure α8 [ y ] in
         let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -143,34 +143,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
-      let* α1 := M.call α0 [ x ] in
+      let* α1 := M.call_closure α0 [ x ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_lifetimes_functions::print_multi" [] in
-      let* α1 := M.call α0 [ x; y ] in
+      let* α1 := M.call_closure α0 [ x; y ] in
       M.alloc α1 in
     let* z :=
       let* α0 :=
         M.get_function "scoping_rules_lifetimes_functions::pass_x" [] in
-      let* α1 := M.call α0 [ x; y ] in
+      let* α1 := M.call_closure α0 [ x; y ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
       let* α1 := M.read z in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* t := M.alloc (Value.Integer Integer.I32 3) in
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_lifetimes_functions::add_one" [] in
-      let* α1 := M.call α0 [ t ] in
+      let* α1 := M.call_closure α0 [ t ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_lifetimes_functions::print_one" [] in
-      let* α1 := M.call α0 [ t ] in
+      let* α1 := M.call_closure α0 [ t ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

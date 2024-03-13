@@ -58,7 +58,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
               M.alloc α0
           ] in
       let* α3 := M.read α2 in
-      M.call α0 [ α1; α3 ]
+      M.call_closure α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -96,7 +96,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       let* α2 := M.read (mk_str "Peeled") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -134,7 +134,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       let* α2 := M.read (mk_str "Chopped") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -172,7 +172,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       let* α2 := M.read (mk_str "Cooked") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -273,7 +273,7 @@ Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ Ty.path "combinators_map::Chopped" ])
         "map" in
     let* α1 := M.read chopped in
-    M.call
+    M.call_closure
       α0
       [
         α1;
@@ -332,7 +332,7 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
         "map" in
     let* α3 := M.read food in
     let* α4 :=
-      M.call
+      M.call_closure
         α2
         [
           α3;
@@ -354,7 +354,7 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
               end)
         ] in
     let* α5 :=
-      M.call
+      M.call_closure
         α1
         [
           α4;
@@ -380,7 +380,7 @@ Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
               | _ => M.impossible
               end)
         ] in
-    M.call
+    M.call_closure
       α0
       [
         α5;
@@ -445,16 +445,16 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_debug" in
-              let* α6 := M.call α5 [ food ] in
+              let* α6 := M.call_closure α5 [ food ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α7
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
+              let* α9 := M.call_closure α0 [ α8 ] in
               M.alloc α9 in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -467,8 +467,9 @@ Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "Oh no! It wasn't edible.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple [])
         ] in
@@ -512,38 +513,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.get_function "combinators_map::chop" [] in
       let* α2 := M.get_function "combinators_map::peel" [] in
       let* α3 := M.read apple in
-      let* α4 := M.call α2 [ α3 ] in
-      let* α5 := M.call α1 [ α4 ] in
-      let* α6 := M.call α0 [ α5 ] in
+      let* α4 := M.call_closure α2 [ α3 ] in
+      let* α5 := M.call_closure α1 [ α4 ] in
+      let* α6 := M.call_closure α0 [ α5 ] in
       M.alloc α6 in
     let* cooked_carrot :=
       let* α0 := M.get_function "combinators_map::cook" [] in
       let* α1 := M.get_function "combinators_map::chop" [] in
       let* α2 := M.get_function "combinators_map::peel" [] in
       let* α3 := M.read carrot in
-      let* α4 := M.call α2 [ α3 ] in
-      let* α5 := M.call α1 [ α4 ] in
-      let* α6 := M.call α0 [ α5 ] in
+      let* α4 := M.call_closure α2 [ α3 ] in
+      let* α5 := M.call_closure α1 [ α4 ] in
+      let* α6 := M.call_closure α0 [ α5 ] in
       M.alloc α6 in
     let* cooked_potato :=
       let* α0 := M.get_function "combinators_map::process" [] in
       let* α1 := M.read potato in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "combinators_map::eat" [] in
       let* α1 := M.read cooked_apple in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "combinators_map::eat" [] in
       let* α1 := M.read cooked_carrot in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "combinators_map::eat" [] in
       let* α1 := M.read cooked_potato in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

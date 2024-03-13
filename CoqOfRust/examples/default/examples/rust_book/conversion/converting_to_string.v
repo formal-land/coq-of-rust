@@ -35,16 +35,16 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
           (Ty.path "core::fmt::rt::Argument")
           "new_display" in
       let* α6 := M.read self in
-      let* α7 := M.call α5 [ M.get_struct_record α6 "radius" ] in
+      let* α7 := M.call_closure α5 [ M.get_struct_record α6 "radius" ] in
       let* α8 := M.alloc (Value.Array [ α7 ]) in
       let* α9 :=
-        M.call
+        M.call_closure
           α2
           [
             M.pointer_coercion (* Unsize *) α4;
             M.pointer_coercion (* Unsize *) α8
           ] in
-      M.call α0 [ α1; α9 ]
+      M.call_closure α0 [ α1; α9 ]
     | _, _ => M.impossible
     end.
   
@@ -76,7 +76,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "alloc::string::ToString"
           "to_string"
           [ (* Self *) Ty.path "converting_to_string::Circle" ] in
-      let* α1 := M.call α0 [ circle ] in
+      let* α1 := M.call_closure α0 [ circle ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

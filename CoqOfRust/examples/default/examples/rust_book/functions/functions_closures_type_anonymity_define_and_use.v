@@ -19,7 +19,7 @@ Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::Fn"
           "call"
           [ (* Self *) F; (* Args *) Ty.tuple [] ] in
-      let* α1 := M.call α0 [ f; Value.Tuple [] ] in
+      let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
@@ -66,16 +66,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
                           "new_display" in
-                      let* α6 := M.call α5 [ x ] in
+                      let* α6 := M.call_closure α5 [ x ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=
-                        M.call
+                        M.call_closure
                           α1
                           [
                             M.pointer_coercion (* Unsize *) α4;
                             M.pointer_coercion (* Unsize *) α7
                           ] in
-                      let* α9 := M.call α0 [ α8 ] in
+                      let* α9 := M.call_closure α0 [ α8 ] in
                       M.alloc α9 in
                     let* α0 := M.alloc (Value.Tuple []) in
                     M.read α0
@@ -88,7 +88,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "functions_closures_type_anonymity_define_and_use::apply"
           [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
       let* α1 := M.read print in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

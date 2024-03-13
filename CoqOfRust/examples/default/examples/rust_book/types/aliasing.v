@@ -47,12 +47,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α8 := M.call α7 [ nanoseconds ] in
+        let* α8 := M.call_closure α7 [ nanoseconds ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α10 := M.call α9 [ inches ] in
+        let* α10 := M.call_closure α9 [ inches ] in
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -61,16 +61,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α13 := M.read inches in
         let* α14 := BinOp.Panic.add α12 α13 in
         let* α15 := M.alloc α14 in
-        let* α16 := M.call α11 [ α15 ] in
+        let* α16 := M.call_closure α11 [ α15 ] in
         let* α17 := M.alloc (Value.Array [ α8; α10; α16 ]) in
         let* α18 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α6;
               M.pointer_coercion (* Unsize *) α17
             ] in
-        let* α19 := M.call α0 [ α18 ] in
+        let* α19 := M.call_closure α0 [ α18 ] in
         M.alloc α19 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

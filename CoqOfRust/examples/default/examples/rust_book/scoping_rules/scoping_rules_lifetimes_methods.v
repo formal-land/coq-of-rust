@@ -60,16 +60,16 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.read self in
-          let* α7 := M.call α5 [ M.get_struct_tuple α6 0 ] in
+          let* α7 := M.call_closure α5 [ M.get_struct_tuple α6 0 ] in
           let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α8
               ] in
-          let* α10 := M.call α0 [ α9 ] in
+          let* α10 := M.call_closure α0 [ α9 ] in
           M.alloc α10 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -101,14 +101,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.path "scoping_rules_lifetimes_methods::Owner")
           "add_one" in
-      let* α1 := M.call α0 [ owner ] in
+      let* α1 := M.call_closure α0 [ owner ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "scoping_rules_lifetimes_methods::Owner")
           "print" in
-      let* α1 := M.call α0 [ owner ] in
+      let* α1 := M.call_closure α0 [ owner ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

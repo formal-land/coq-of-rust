@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "basic_contract_caller::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
@@ -178,7 +178,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       let* other_contract :=
         let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3 in
       let* α0 := M.read other_contract in
@@ -209,14 +209,16 @@ Module Impl_basic_contract_caller_BasicContractCaller.
             (Ty.path "basic_contract_caller::OtherContract")
             "flip" in
         let* α1 := M.read self in
-        let* α2 := M.call α0 [ M.get_struct_record α1 "other_contract" ] in
+        let* α2 :=
+          M.call_closure α0 [ M.get_struct_record α1 "other_contract" ] in
         M.alloc α2 in
       let* α0 :=
         M.get_associated_function
           (Ty.path "basic_contract_caller::OtherContract")
           "get" in
       let* α1 := M.read self in
-      let* α2 := M.call α0 [ M.get_struct_record α1 "other_contract" ] in
+      let* α2 :=
+        M.call_closure α0 [ M.get_struct_record α1 "other_contract" ] in
       let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible

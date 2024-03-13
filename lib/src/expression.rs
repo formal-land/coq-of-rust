@@ -745,7 +745,7 @@ impl Expr {
                         concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                     ]),
                     CallKind::Closure => nest([
-                        text("M.call"),
+                        text("M.call_closure"),
                         line(),
                         func.to_doc(true),
                         line(),

@@ -93,7 +93,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "std::hash::random::RandomState"
             ])
           "new" in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -108,7 +108,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "insert" in
       let* α1 := M.read (mk_str "Daniel") in
       let* α2 := M.read (mk_str "798-1364") in
-      let* α3 := M.call α0 [ contacts; α1; α2 ] in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -123,7 +123,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "insert" in
       let* α1 := M.read (mk_str "Ashley") in
       let* α2 := M.read (mk_str "645-7689") in
-      let* α3 := M.call α0 [ contacts; α1; α2 ] in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -138,7 +138,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "insert" in
       let* α1 := M.read (mk_str "Katie") in
       let* α2 := M.read (mk_str "435-8291") in
-      let* α3 := M.call α0 [ contacts; α1; α2 ] in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -153,7 +153,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "insert" in
       let* α1 := M.read (mk_str "Robert") in
       let* α2 := M.read (mk_str "956-1745") in
-      let* α3 := M.call α0 [ contacts; α1; α2 ] in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -166,7 +166,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "std::hash::random::RandomState"
             ])
           "get" in
-      let* α1 := M.call α0 [ contacts; mk_str "Daniel" ] in
+      let* α1 := M.call_closure α0 [ contacts; mk_str "Daniel" ] in
       let* α2 := M.alloc α1 in
       match_operator
         α2
@@ -195,18 +195,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "new_display" in
               let* α6 := M.get_function "hash_map::call" [] in
               let* α7 := M.read number in
-              let* α8 := M.call α6 [ α7 ] in
+              let* α8 := M.call_closure α6 [ α7 ] in
               let* α9 := M.alloc α8 in
-              let* α10 := M.call α5 [ α9 ] in
+              let* α10 := M.call_closure α5 [ α9 ] in
               let* α11 := M.alloc (Value.Array [ α10 ]) in
               let* α12 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α11
                   ] in
-              let* α13 := M.call α0 [ α12 ] in
+              let* α13 := M.call_closure α0 [ α12 ] in
               M.alloc α13 in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -219,8 +219,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "Don't have Daniel's number.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple [])
         ] in
@@ -237,7 +238,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "insert" in
       let* α1 := M.read (mk_str "Daniel") in
       let* α2 := M.read (mk_str "164-6743") in
-      let* α3 := M.call α0 [ contacts; α1; α2 ] in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -250,7 +251,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "std::hash::random::RandomState"
             ])
           "get" in
-      let* α1 := M.call α0 [ contacts; mk_str "Ashley" ] in
+      let* α1 := M.call_closure α0 [ contacts; mk_str "Ashley" ] in
       let* α2 := M.alloc α1 in
       match_operator
         α2
@@ -279,18 +280,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   "new_display" in
               let* α6 := M.get_function "hash_map::call" [] in
               let* α7 := M.read number in
-              let* α8 := M.call α6 [ α7 ] in
+              let* α8 := M.call_closure α6 [ α7 ] in
               let* α9 := M.alloc α8 in
-              let* α10 := M.call α5 [ α9 ] in
+              let* α10 := M.call_closure α5 [ α9 ] in
               let* α11 := M.alloc (Value.Array [ α10 ]) in
               let* α12 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α11
                   ] in
-              let* α13 := M.call α0 [ α12 ] in
+              let* α13 := M.call_closure α0 [ α12 ] in
               M.alloc α13 in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -303,8 +304,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "Don't have Ashley's number.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple [])
         ] in
@@ -319,7 +321,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "std::hash::random::RandomState"
             ])
           "remove" in
-      let* α1 := M.call α0 [ contacts; mk_str "Ashley" ] in
+      let* α1 := M.call_closure α0 [ contacts; mk_str "Ashley" ] in
       M.alloc α1 in
     let* α0 :=
       M.get_trait_method
@@ -344,8 +346,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.path "std::hash::random::RandomState"
           ])
         "iter" in
-    let* α2 := M.call α1 [ contacts ] in
-    let* α3 := M.call α0 [ α2 ] in
+    let* α2 := M.call_closure α1 [ contacts ] in
+    let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 :=
       match_operator
@@ -368,7 +370,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.apply (Ty.path "&") [ Ty.path "str" ]
                           ]
                     ] in
-                let* α1 := M.call α0 [ iter ] in
+                let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -406,25 +408,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
                               "new_display" in
-                          let* α7 := M.call α6 [ contact ] in
+                          let* α7 := M.call_closure α6 [ contact ] in
                           let* α8 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
                               "new_display" in
                           let* α9 := M.get_function "hash_map::call" [] in
                           let* α10 := M.read number in
-                          let* α11 := M.call α9 [ α10 ] in
+                          let* α11 := M.call_closure α9 [ α10 ] in
                           let* α12 := M.alloc α11 in
-                          let* α13 := M.call α8 [ α12 ] in
+                          let* α13 := M.call_closure α8 [ α12 ] in
                           let* α14 := M.alloc (Value.Array [ α7; α13 ]) in
                           let* α15 :=
-                            M.call
+                            M.call_closure
                               α1
                               [
                                 M.pointer_coercion (* Unsize *) α5;
                                 M.pointer_coercion (* Unsize *) α14
                               ] in
-                          let* α16 := M.call α0 [ α15 ] in
+                          let* α16 := M.call_closure α0 [ α15 ] in
                           M.alloc α16 in
                         M.alloc (Value.Tuple []) in
                       M.alloc (Value.Tuple [])

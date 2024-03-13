@@ -36,7 +36,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
           "write_str" in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "FooBar") in
-      M.call α0 [ α1; α2 ]
+      M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -71,7 +71,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
           "write_str" in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "BarFoo") in
-      M.call α0 [ α1; α2 ]
+      M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -113,8 +113,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
           let* α2 := M.read (mk_str "> Foo.add(Bar) was called
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* α0 :=
@@ -164,8 +164,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
           let* α2 := M.read (mk_str "> Bar.add(Foo) was called
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* α0 :=
@@ -216,23 +216,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Rhs *) Ty.path "operator_overloading::Bar"
             ] in
         let* α7 :=
-          M.call
+          M.call_closure
             α6
             [
               Value.StructTuple "operator_overloading::Foo" [];
               Value.StructTuple "operator_overloading::Bar" []
             ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -257,23 +257,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Rhs *) Ty.path "operator_overloading::Foo"
             ] in
         let* α7 :=
-          M.call
+          M.call_closure
             α6
             [
               Value.StructTuple "operator_overloading::Bar" [];
               Value.StructTuple "operator_overloading::Foo" []
             ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

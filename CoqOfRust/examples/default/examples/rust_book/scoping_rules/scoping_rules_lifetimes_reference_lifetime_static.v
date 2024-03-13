@@ -65,16 +65,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
-          let* α6 := M.call α5 [ static_string ] in
+          let* α6 := M.call_closure α5 [ static_string ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α7
               ] in
-          let* α9 := M.call α0 [ α8 ] in
+          let* α9 := M.call_closure α0 [ α8 ] in
           M.alloc α9 in
         M.alloc (Value.Tuple []) in
       M.alloc (Value.Tuple []) in
@@ -85,7 +85,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_function
             "scoping_rules_lifetimes_reference_lifetime_static::coerce_static"
             [] in
-        let* α1 := M.call α0 [ lifetime_num ] in
+        let* α1 := M.call_closure α0 [ lifetime_num ] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
@@ -102,16 +102,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
-          let* α6 := M.call α5 [ coerced_static ] in
+          let* α6 := M.call_closure α5 [ coerced_static ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α7
               ] in
-          let* α9 := M.call α0 [ α8 ] in
+          let* α9 := M.call_closure α0 [ α8 ] in
           M.alloc α9 in
         M.alloc (Value.Tuple []) in
       M.alloc (Value.Tuple []) in
@@ -132,16 +132,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_constant
             "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
         let* α7 := M.read α6 in
-        let* α8 := M.call α5 [ α7 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α11 := M.call α0 [ α10 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

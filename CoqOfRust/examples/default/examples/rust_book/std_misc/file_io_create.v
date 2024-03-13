@@ -37,17 +37,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* path :=
       let* α0 := M.get_associated_function (Ty.path "std::path::Path") "new" in
       let* α1 := M.read (mk_str "lorem_ipsum.txt") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* display :=
       let* α0 :=
         M.get_associated_function (Ty.path "std::path::Path") "display" in
       let* α1 := M.read path in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* file :=
       let* α0 := M.get_associated_function (Ty.path "std::fs::File") "create" in
-      let* α1 := M.call α0 [ path ] in
+      let* α1 := M.call_closure α0 [ path ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         match_operator
@@ -72,21 +72,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α6 := M.call α5 [ display ] in
+              let* α6 := M.call_closure α5 [ display ] in
               let* α7 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α8 := M.call α7 [ why ] in
+              let* α8 := M.call_closure α7 [ why ] in
               let* α9 := M.alloc (Value.Array [ α6; α8 ]) in
               let* α10 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α9
                   ] in
-              let* α11 := M.call α0 [ α10 ] in
+              let* α11 := M.call_closure α0 [ α10 ] in
               let* α12 := M.never_to_any α11 in
               M.alloc α12;
             fun γ =>
@@ -108,8 +108,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.get_constant "file_io_create::LOREM_IPSUM" in
     let* α3 := M.read α2 in
     let* α4 := M.read α3 in
-    let* α5 := M.call α1 [ α4 ] in
-    let* α6 := M.call α0 [ file; α5 ] in
+    let* α5 := M.call_closure α1 [ α4 ] in
+    let* α6 := M.call_closure α0 [ file; α5 ] in
     let* α7 := M.alloc α6 in
     let* α0 :=
       match_operator
@@ -134,21 +134,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
-            let* α6 := M.call α5 [ display ] in
+            let* α6 := M.call_closure α5 [ display ] in
             let* α7 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
-            let* α8 := M.call α7 [ why ] in
+            let* α8 := M.call_closure α7 [ why ] in
             let* α9 := M.alloc (Value.Array [ α6; α8 ]) in
             let* α10 :=
-              M.call
+              M.call_closure
                 α1
                 [
                   M.pointer_coercion (* Unsize *) α4;
                   M.pointer_coercion (* Unsize *) α9
                 ] in
-            let* α11 := M.call α0 [ α10 ] in
+            let* α11 := M.call_closure α0 [ α10 ] in
             let* α12 := M.never_to_any α11 in
             M.alloc α12;
           fun γ =>
@@ -171,16 +171,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α6 := M.call α5 [ display ] in
+              let* α6 := M.call_closure α5 [ display ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α7
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
+              let* α9 := M.call_closure α0 [ α8 ] in
               M.alloc α9 in
             M.alloc (Value.Tuple [])
         ] in

@@ -64,8 +64,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                 Ty.path "alloc::string::String"
               ]
           ] in
-      let* α2 := M.call α1 [] in
-      let* α3 := M.call α0 [ α2 ] in
+      let* α2 := M.call_closure α1 [] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       let* α4 := M.alloc α3 in
       let* α5 :=
         match_operator
@@ -92,21 +92,21 @@ Module Impl_wildcard_selector_WildcardSelector.
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug" in
-                  let* α7 := M.call α6 [ _selector ] in
+                  let* α7 := M.call_closure α6 [ _selector ] in
                   let* α8 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display" in
-                  let* α9 := M.call α8 [ _message ] in
+                  let* α9 := M.call_closure α8 [ _message ] in
                   let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                   let* α11 :=
-                    M.call
+                    M.call_closure
                       α1
                       [
                         M.pointer_coercion (* Unsize *) α5;
                         M.pointer_coercion (* Unsize *) α10
                       ] in
-                  let* α12 := M.call α0 [ α11 ] in
+                  let* α12 := M.call_closure α0 [ α11 ] in
                   M.alloc α12 in
                 M.alloc (Value.Tuple []) in
               M.alloc (Value.Tuple [])
@@ -143,16 +143,16 @@ Module Impl_wildcard_selector_WildcardSelector.
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
-          let* α6 := M.call α5 [ _message ] in
+          let* α6 := M.call_closure α5 [ _message ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α7
               ] in
-          let* α9 := M.call α0 [ α8 ] in
+          let* α9 := M.call_closure α0 [ α8 ] in
           M.alloc α9 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in

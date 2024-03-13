@@ -19,8 +19,8 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "called `function()`
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -47,8 +47,8 @@ Module cool.
           let* α2 := M.read (mk_str "called `cool::function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -76,8 +76,8 @@ Module my.
           let* α2 := M.read (mk_str "called `my::function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -104,8 +104,9 @@ Module my.
             let* α2 := M.read (mk_str "called `my::cool::function()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -152,29 +153,29 @@ Module my.
           let* α2 := M.read (mk_str "called `my::indirect_call()`, that
 > ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 := M.get_function "super_and_self::my::function" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
         let* α0 := M.get_function "super_and_self::my::function" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
         let* α0 := M.get_function "super_and_self::my::cool::function" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
         let* α0 := M.get_function "super_and_self::function" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
         let* α0 := M.get_function "super_and_self::cool::function" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -192,7 +193,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "super_and_self::my::indirect_call" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

@@ -21,8 +21,9 @@ Module foo.
             let* α2 := M.read (mk_str "foo::gre::bar
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -50,13 +51,13 @@ Module foo.
           let* α2 := M.read (mk_str "foo::bar
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 := M.get_function "module_duplicate::foo::gre::f_foo_gre" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -74,7 +75,7 @@ Definition f (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "module_duplicate::foo::f_foo" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

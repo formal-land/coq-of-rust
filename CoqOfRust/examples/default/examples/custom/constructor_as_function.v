@@ -62,7 +62,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       let* α2 := M.read (mk_str "Constructor") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -155,16 +155,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Value.Integer Integer.I32 2;
               Value.Integer Integer.I32 3
             ]) in
-      let* α6 := M.call α4 [ α5 ] in
+      let* α6 := M.call_closure α4 [ α5 ] in
       let* α7 := M.read α6 in
-      let* α8 := M.call α3 [ M.pointer_coercion (* Unsize *) α7 ] in
-      let* α9 := M.call α2 [ α8 ] in
+      let* α8 := M.call_closure α3 [ M.pointer_coercion (* Unsize *) α7 ] in
+      let* α9 := M.call_closure α2 [ α8 ] in
       let* α10 :=
-        M.call
+        M.call_closure
           α1
           [ α9; M.constructor_as_closure "constructor_as_function::Constructor"
           ] in
-      let* α11 := M.call α0 [ α10 ] in
+      let* α11 := M.call_closure α0 [ α10 ] in
       M.alloc α11 in
     let* _ :=
       let* _ :=
@@ -179,16 +179,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ v ] in
+        let* α6 := M.call_closure α5 [ v ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

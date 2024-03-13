@@ -14,7 +14,7 @@ Definition cos (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* z := M.alloc z in
     let* α0 := M.get_function "foreign_function_interface::ccosf" [] in
     let* α1 := M.read z in
-    M.call α0 [ α1 ]
+    M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
   end.
 
@@ -45,7 +45,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* z_sqrt :=
       let* α0 := M.get_function "foreign_function_interface::csqrtf" [] in
       let* α1 := M.read z in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
@@ -61,21 +61,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α7 := M.call α6 [ z ] in
+        let* α7 := M.call_closure α6 [ z ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α9 := M.call α8 [ z_sqrt ] in
+        let* α9 := M.call_closure α8 [ z_sqrt ] in
         let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -92,25 +92,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α7 := M.call α6 [ z ] in
+        let* α7 := M.call_closure α6 [ z ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
         let* α9 := M.get_function "foreign_function_interface::cos" [] in
         let* α10 := M.read z in
-        let* α11 := M.call α9 [ α10 ] in
+        let* α11 := M.call_closure α9 [ α10 ] in
         let* α12 := M.alloc α11 in
-        let* α13 := M.call α8 [ α12 ] in
+        let* α13 := M.call_closure α8 [ α12 ] in
         let* α14 := M.alloc (Value.Array [ α7; α13 ]) in
         let* α15 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α14
             ] in
-        let* α16 := M.call α0 [ α15 ] in
+        let* α16 := M.call_closure α0 [ α15 ] in
         M.alloc α16 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -202,7 +202,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α8 := M.read self in
-          let* α9 := M.call α7 [ M.get_struct_record α8 "re" ] in
+          let* α9 := M.call_closure α7 [ M.get_struct_record α8 "re" ] in
           let* α10 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
@@ -211,16 +211,16 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           let* α12 := M.read (M.get_struct_record α11 "im") in
           let* α13 := UnOp.Panic.neg α12 in
           let* α14 := M.alloc α13 in
-          let* α15 := M.call α10 [ α14 ] in
+          let* α15 := M.call_closure α10 [ α14 ] in
           let* α16 := M.alloc (Value.Array [ α9; α15 ]) in
           let* α17 :=
-            M.call
+            M.call_closure
               α2
               [
                 M.pointer_coercion (* Unsize *) α6;
                 M.pointer_coercion (* Unsize *) α16
               ] in
-          let* α18 := M.call α0 [ α1; α17 ] in
+          let* α18 := M.call_closure α0 [ α1; α17 ] in
           M.alloc α18
         else
           let* α0 :=
@@ -241,22 +241,22 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α8 := M.read self in
-          let* α9 := M.call α7 [ M.get_struct_record α8 "re" ] in
+          let* α9 := M.call_closure α7 [ M.get_struct_record α8 "re" ] in
           let* α10 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α11 := M.read self in
-          let* α12 := M.call α10 [ M.get_struct_record α11 "im" ] in
+          let* α12 := M.call_closure α10 [ M.get_struct_record α11 "im" ] in
           let* α13 := M.alloc (Value.Array [ α9; α12 ]) in
           let* α14 :=
-            M.call
+            M.call_closure
               α2
               [
                 M.pointer_coercion (* Unsize *) α6;
                 M.pointer_coercion (* Unsize *) α13
               ] in
-          let* α15 := M.call α0 [ α1; α14 ] in
+          let* α15 := M.call_closure α0 [ α1; α14 ] in
           M.alloc α15 in
       M.read α5
     | _, _ => M.impossible

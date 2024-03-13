@@ -48,7 +48,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "to_string"
           [ (* Self *) Ty.path "str" ] in
       let* α1 := M.read (mk_str "Rc examples") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
@@ -60,8 +60,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "--- rc_a is created ---
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* rc_a :=
@@ -72,7 +72,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
           "new" in
       let* α1 := M.read rc_examples in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
@@ -94,18 +94,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
               ])
             "strong_count" in
-        let* α7 := M.call α6 [ rc_a ] in
+        let* α7 := M.call_closure α6 [ rc_a ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -119,8 +119,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "--- rc_a is cloned to rc_b ---
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* rc_b :=
@@ -137,7 +137,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ]
             ] in
-        let* α1 := M.call α0 [ rc_a ] in
+        let* α1 := M.call_closure α0 [ rc_a ] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
@@ -163,18 +163,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::alloc::Global"
                 ])
               "strong_count" in
-          let* α7 := M.call α6 [ rc_b ] in
+          let* α7 := M.call_closure α6 [ rc_b ] in
           let* α8 := M.alloc α7 in
-          let* α9 := M.call α5 [ α8 ] in
+          let* α9 := M.call_closure α5 [ α8 ] in
           let* α10 := M.alloc (Value.Array [ α9 ]) in
           let* α11 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α10
               ] in
-          let* α12 := M.call α0 [ α11 ] in
+          let* α12 := M.call_closure α0 [ α11 ] in
           M.alloc α12 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -201,18 +201,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::alloc::Global"
                 ])
               "strong_count" in
-          let* α7 := M.call α6 [ rc_a ] in
+          let* α7 := M.call_closure α6 [ rc_a ] in
           let* α8 := M.alloc α7 in
-          let* α9 := M.call α5 [ α8 ] in
+          let* α9 := M.call_closure α5 [ α8 ] in
           let* α10 := M.alloc (Value.Array [ α9 ]) in
           let* α11 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α10
               ] in
-          let* α12 := M.call α0 [ α11 ] in
+          let* α12 := M.call_closure α0 [ α11 ] in
           M.alloc α12 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -250,18 +250,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "alloc::alloc::Global"
                     ]
               ] in
-          let* α7 := M.call α6 [ rc_a; rc_b ] in
+          let* α7 := M.call_closure α6 [ rc_a; rc_b ] in
           let* α8 := M.alloc α7 in
-          let* α9 := M.call α5 [ α8 ] in
+          let* α9 := M.call_closure α5 [ α8 ] in
           let* α10 := M.alloc (Value.Array [ α9 ]) in
           let* α11 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α10
               ] in
-          let* α12 := M.call α0 [ α11 ] in
+          let* α12 := M.call_closure α0 [ α11 ] in
           M.alloc α12 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -294,19 +294,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "alloc::alloc::Global"
                     ]
               ] in
-          let* α8 := M.call α7 [ rc_a ] in
-          let* α9 := M.call α6 [ α8 ] in
+          let* α8 := M.call_closure α7 [ rc_a ] in
+          let* α9 := M.call_closure α6 [ α8 ] in
           let* α10 := M.alloc α9 in
-          let* α11 := M.call α5 [ α10 ] in
+          let* α11 := M.call_closure α5 [ α10 ] in
           let* α12 := M.alloc (Value.Array [ α11 ]) in
           let* α13 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α12
               ] in
-          let* α14 := M.call α0 [ α13 ] in
+          let* α14 := M.call_closure α0 [ α13 ] in
           M.alloc α14 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -324,16 +324,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
-          let* α6 := M.call α5 [ rc_b ] in
+          let* α6 := M.call_closure α5 [ rc_b ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α7
               ] in
-          let* α9 := M.call α0 [ α8 ] in
+          let* α9 := M.call_closure α0 [ α8 ] in
           M.alloc α9 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -346,8 +346,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "--- rc_b is dropped out of scope ---
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       M.alloc (Value.Tuple []) in
@@ -371,18 +371,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
               ])
             "strong_count" in
-        let* α7 := M.call α6 [ rc_a ] in
+        let* α7 := M.call_closure α6 [ rc_a ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -395,8 +395,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "--- rc_a is dropped out of scope ---
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

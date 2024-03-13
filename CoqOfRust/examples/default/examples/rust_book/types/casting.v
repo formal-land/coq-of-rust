@@ -106,26 +106,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α8 := M.call α7 [ decimal ] in
+        let* α8 := M.call_closure α7 [ decimal ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α10 := M.call α9 [ integer ] in
+        let* α10 := M.call_closure α9 [ integer ] in
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α12 := M.call α11 [ character ] in
+        let* α12 := M.call_closure α11 [ character ] in
         let* α13 := M.alloc (Value.Array [ α8; α10; α12 ]) in
         let* α14 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α6;
               M.pointer_coercion (* Unsize *) α13
             ] in
-        let* α15 := M.call α0 [ α14 ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
         M.alloc α15 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -142,16 +142,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.alloc (Value.Integer Integer.U16 1000) in
-        let* α7 := M.call α5 [ M.use α6 ] in
+        let* α7 := M.call_closure α5 [ M.use α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -168,16 +168,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.alloc (Value.Integer Integer.U8 1000) in
-        let* α7 := M.call α5 [ M.use α6 ] in
+        let* α7 := M.call_closure α5 [ M.use α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -194,16 +194,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.alloc (M.rust_cast (Value.Integer Integer.I8 (-1))) in
-        let* α7 := M.call α5 [ α6 ] in
+        let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -224,16 +224,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Value.Integer Integer.I32 1000)
             (Value.Integer Integer.I32 256) in
         let* α7 := M.alloc α6 in
-        let* α8 := M.call α5 [ α7 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α11 := M.call α0 [ α10 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -250,16 +250,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.alloc (Value.Integer Integer.I16 128) in
-        let* α7 := M.call α5 [ M.use α6 ] in
+        let* α7 := M.call_closure α5 [ M.use α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -276,16 +276,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.alloc (Value.Integer Integer.I8 128) in
-        let* α7 := M.call α5 [ M.use α6 ] in
+        let* α7 := M.call_closure α5 [ M.use α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -302,16 +302,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.alloc (Value.Integer Integer.U8 1000) in
-        let* α7 := M.call α5 [ M.use α6 ] in
+        let* α7 := M.call_closure α5 [ M.use α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -328,16 +328,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α6 := M.alloc (Value.Integer Integer.I8 232) in
-        let* α7 := M.call α5 [ M.use α6 ] in
+        let* α7 := M.call_closure α5 [ M.use α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α8
             ] in
-        let* α10 := M.call α0 [ α9 ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
         M.alloc α10 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -355,16 +355,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α6 := M.read UnsupportedLiteral in
         let* α7 := M.alloc (M.rust_cast α6) in
-        let* α8 := M.call α5 [ α7 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α11 := M.call α0 [ α10 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -382,16 +382,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α6 := M.read UnsupportedLiteral in
         let* α7 := M.alloc (M.rust_cast α6) in
-        let* α8 := M.call α5 [ α7 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
         let* α9 := M.alloc (Value.Array [ α8 ]) in
         let* α10 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α9
             ] in
-        let* α11 := M.call α0 [ α10 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -410,16 +410,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 := M.get_constant "core::f32::NAN" in
         let* α7 := M.read α6 in
         let* α8 := M.alloc (M.rust_cast α7) in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -438,18 +438,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function (Ty.path "f32") "to_int_unchecked" in
         let* α7 := M.read UnsupportedLiteral in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -468,18 +468,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function (Ty.path "f32") "to_int_unchecked" in
         let* α7 := M.read UnsupportedLiteral in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -499,18 +499,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function (Ty.path "f32") "to_int_unchecked" in
         let* α7 := M.get_constant "core::f32::NAN" in
         let* α8 := M.read α7 in
-        let* α9 := M.call α6 [ α8 ] in
+        let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
-        let* α11 := M.call α5 [ α10 ] in
+        let* α11 := M.call_closure α5 [ α10 ] in
         let* α12 := M.alloc (Value.Array [ α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

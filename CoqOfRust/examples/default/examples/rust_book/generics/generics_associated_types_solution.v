@@ -48,7 +48,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           ] in
       let* α1 := M.read self in
       let* α2 := M.alloc (M.get_struct_tuple α1 0) in
-      let* α3 := M.call α0 [ α2; number_1 ] in
+      let* α3 := M.call_closure α0 [ α2; number_1 ] in
       LogicalOp.and
         α3
         (let* α0 :=
@@ -61,7 +61,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             ] in
         let* α1 := M.read self in
         let* α2 := M.alloc (M.get_struct_tuple α1 1) in
-        M.call α0 [ α2; number_2 ])
+        M.call_closure α0 [ α2; number_2 ])
     | _, _ => M.impossible
     end.
   
@@ -138,14 +138,14 @@ Definition difference (𝜏 : list Ty.t) (α : list Value.t) : M :=
         "last"
         [ (* Self *) C ] in
     let* α1 := M.read container in
-    let* α2 := M.call α0 [ α1 ] in
+    let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 :=
       M.get_trait_method
         "generics_associated_types_solution::Contains"
         "first"
         [ (* Self *) C ] in
     let* α4 := M.read container in
-    let* α5 := M.call α3 [ α4 ] in
+    let* α5 := M.call_closure α3 [ α4 ] in
     BinOp.Panic.sub α2 α5
   | _, _ => M.impossible
   end.
@@ -165,7 +165,7 @@ Definition get_a (𝜏 : list Ty.t) (α : list Value.t) : M :=
         "a"
         [ (* Self *) C ] in
     let* α1 := M.read container in
-    M.call α0 [ α1 ]
+    M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
   end.
 
@@ -216,13 +216,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α8 := M.alloc number_1 in
-        let* α9 := M.call α7 [ α8 ] in
+        let* α9 := M.call_closure α7 [ α8 ] in
         let* α10 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α11 := M.alloc number_2 in
-        let* α12 := M.call α10 [ α11 ] in
+        let* α12 := M.call_closure α10 [ α11 ] in
         let* α13 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -233,18 +233,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "contains"
             [ (* Self *) Ty.path "generics_associated_types_solution::Container"
             ] in
-        let* α15 := M.call α14 [ container; number_1; number_2 ] in
+        let* α15 := M.call_closure α14 [ container; number_1; number_2 ] in
         let* α16 := M.alloc α15 in
-        let* α17 := M.call α13 [ α16 ] in
+        let* α17 := M.call_closure α13 [ α16 ] in
         let* α18 := M.alloc (Value.Array [ α9; α12; α17 ]) in
         let* α19 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α6;
               M.pointer_coercion (* Unsize *) α18
             ] in
-        let* α20 := M.call α0 [ α19 ] in
+        let* α20 := M.call_closure α0 [ α19 ] in
         M.alloc α20 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -266,18 +266,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "first"
             [ (* Self *) Ty.path "generics_associated_types_solution::Container"
             ] in
-        let* α7 := M.call α6 [ container ] in
+        let* α7 := M.call_closure α6 [ container ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -299,18 +299,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "last"
             [ (* Self *) Ty.path "generics_associated_types_solution::Container"
             ] in
-        let* α7 := M.call α6 [ container ] in
+        let* α7 := M.call_closure α6 [ container ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -330,18 +330,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_function
             "generics_associated_types_solution::difference"
             [ Ty.path "generics_associated_types_solution::Container" ] in
-        let* α7 := M.call α6 [ container ] in
+        let* α7 := M.call_closure α6 [ container ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

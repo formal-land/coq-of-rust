@@ -35,7 +35,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u32" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructRecord "set_code_hash::Incrementer" [ ("count", α1) ])
     | _, _ => M.impossible
     end.
@@ -64,7 +64,7 @@ Module Impl_set_code_hash_Incrementer.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "set_code_hash::Incrementer" ] in
-      M.call α0 []
+      M.call_closure α0 []
     | _, _ => M.impossible
     end.
   
@@ -108,16 +108,16 @@ Module Impl_set_code_hash_Incrementer.
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.read self in
-          let* α7 := M.call α5 [ M.get_struct_record α6 "count" ] in
+          let* α7 := M.call_closure α5 [ M.get_struct_record α6 "count" ] in
           let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α8
               ] in
-          let* α10 := M.call α0 [ α9 ] in
+          let* α10 := M.call_closure α0 [ α9 ] in
           M.alloc α10 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -167,9 +167,9 @@ Module Impl_set_code_hash_Incrementer.
           M.get_function
             "set_code_hash::set_code_hash"
             [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
-        let* α2 := M.call α1 [ code_hash ] in
+        let* α2 := M.call_closure α1 [ code_hash ] in
         let* α3 :=
-          M.call
+          M.call_closure
             α0
             [
               α2;
@@ -191,7 +191,7 @@ Module Impl_set_code_hash_Incrementer.
                             M.read
                               (mk_str
                                 "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                          let* α2 := M.call α0 [ α1 ] in
+                          let* α2 := M.call_closure α0 [ α1 ] in
                           M.never_to_any α2
                       ]
                   | _ => M.impossible
@@ -213,16 +213,16 @@ Module Impl_set_code_hash_Incrementer.
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_debug" in
-          let* α6 := M.call α5 [ code_hash ] in
+          let* α6 := M.call_closure α5 [ code_hash ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α7
               ] in
-          let* α9 := M.call α0 [ α8 ] in
+          let* α9 := M.call_closure α0 [ α8 ] in
           M.alloc α9 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in

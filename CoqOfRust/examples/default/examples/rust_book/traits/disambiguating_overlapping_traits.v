@@ -37,7 +37,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
           "clone"
           [ (* Self *) Ty.path "alloc::string::String" ] in
       let* α1 := M.read self in
-      M.call α0 [ M.get_struct_record α1 "username" ]
+      M.call_closure α0 [ M.get_struct_record α1 "username" ]
     | _, _ => M.impossible
     end.
   
@@ -102,7 +102,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "to_owned"
           [ (* Self *) Ty.path "str" ] in
       let* α1 := M.read (mk_str "rustacean") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
         (Value.StructRecord
           "disambiguating_overlapping_traits::Form"
@@ -113,7 +113,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "disambiguating_overlapping_traits::UsernameWidget"
           "get"
           [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
-      let* α1 := M.call α0 [ form ] in
+      let* α1 := M.call_closure α0 [ form ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -122,7 +122,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "to_string"
           [ (* Self *) Ty.path "str" ] in
       let* α1 := M.read (mk_str "rustacean") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α3; username ]) in
       match_operator
@@ -143,7 +143,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -161,7 +161,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -182,7 +182,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "disambiguating_overlapping_traits::AgeWidget"
           "get"
           [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
-      let* α1 := M.call α0 [ form ] in
+      let* α1 := M.call_closure α0 [ form ] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.alloc (Value.Integer Integer.U8 28) in
@@ -213,7 +213,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;

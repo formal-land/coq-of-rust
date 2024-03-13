@@ -23,16 +23,16 @@ Definition eat_box_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ boxed_i32 ] in
+        let* α6 := M.call_closure α5 [ boxed_i32 ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -62,16 +62,16 @@ Definition borrow_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ borrowed_i32 ] in
+        let* α6 := M.call_closure α5 [ borrowed_i32 ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -118,17 +118,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
           "new" in
-      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* stacked_i32 := M.alloc (Value.Integer Integer.I32 6) in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
       let* α1 := M.read boxed_i32 in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
-      let* α1 := M.call α0 [ stacked_i32 ] in
+      let* α1 := M.call_closure α0 [ stacked_i32 ] in
       M.alloc α1 in
     let* _ :=
       let* _ref_to_i32 :=
@@ -137,13 +137,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
         let* α1 := M.read _ref_to_i32 in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_borrowing::eat_box_i32" [] in
       let* α1 := M.read boxed_i32 in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

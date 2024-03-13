@@ -40,7 +40,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "i32" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure
         (Value.StructRecord
           "call_builder_delegate::CallBuilderDelegateTest"

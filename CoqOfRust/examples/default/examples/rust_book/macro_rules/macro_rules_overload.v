@@ -25,12 +25,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α8 := M.call α7 [ mk_str "1i32 + 1 == 2i32" ] in
+        let* α8 := M.call_closure α7 [ mk_str "1i32 + 1 == 2i32" ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α10 := M.call α9 [ mk_str "2i32 * 2 == 4i32" ] in
+        let* α10 := M.call_closure α9 [ mk_str "2i32 * 2 == 4i32" ] in
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -48,16 +48,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Value.Integer Integer.I32 2) in
             M.pure (BinOp.Pure.eq α12 (Value.Integer Integer.I32 4))) in
         let* α14 := M.alloc α13 in
-        let* α15 := M.call α11 [ α14 ] in
+        let* α15 := M.call_closure α11 [ α14 ] in
         let* α16 := M.alloc (Value.Array [ α8; α10; α15 ]) in
         let* α17 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α6;
               M.pointer_coercion (* Unsize *) α16
             ] in
-        let* α18 := M.call α0 [ α17 ] in
+        let* α18 := M.call_closure α0 [ α17 ] in
         M.alloc α18 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -75,12 +75,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α8 := M.call α7 [ mk_str "true" ] in
+        let* α8 := M.call_closure α7 [ mk_str "true" ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α10 := M.call α9 [ mk_str "false" ] in
+        let* α10 := M.call_closure α9 [ mk_str "false" ] in
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
@@ -88,16 +88,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α12 :=
           LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
         let* α13 := M.alloc α12 in
-        let* α14 := M.call α11 [ α13 ] in
+        let* α14 := M.call_closure α11 [ α13 ] in
         let* α15 := M.alloc (Value.Array [ α8; α10; α14 ]) in
         let* α16 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α6;
               M.pointer_coercion (* Unsize *) α15
             ] in
-        let* α17 := M.call α0 [ α16 ] in
+        let* α17 := M.call_closure α0 [ α16 ] in
         M.alloc α17 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

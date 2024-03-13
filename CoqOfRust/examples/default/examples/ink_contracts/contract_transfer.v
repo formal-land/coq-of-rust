@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "contract_transfer::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
@@ -161,7 +161,7 @@ Module Impl_contract_transfer_GiveMe.
         M.get_associated_function
           (Ty.path "contract_transfer::GiveMe")
           "init_env" in
-      M.call α0 []
+      M.call_closure α0 []
     | _, _ => M.impossible
     end.
   
@@ -216,16 +216,16 @@ Module Impl_contract_transfer_GiveMe.
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
-          let* α6 := M.call α5 [ value ] in
+          let* α6 := M.call_closure α5 [ value ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α7
               ] in
-          let* α9 := M.call α0 [ α8 ] in
+          let* α9 := M.call_closure α0 [ α8 ] in
           M.alloc α9 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -252,20 +252,20 @@ Module Impl_contract_transfer_GiveMe.
               (Ty.path "contract_transfer::GiveMe")
               "env" in
           let* α8 := M.read self in
-          let* α9 := M.call α7 [ α8 ] in
+          let* α9 := M.call_closure α7 [ α8 ] in
           let* α10 := M.alloc α9 in
-          let* α11 := M.call α6 [ α10 ] in
+          let* α11 := M.call_closure α6 [ α10 ] in
           let* α12 := M.alloc α11 in
-          let* α13 := M.call α5 [ α12 ] in
+          let* α13 := M.call_closure α5 [ α12 ] in
           let* α14 := M.alloc (Value.Array [ α13 ]) in
           let* α15 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α14
               ] in
-          let* α16 := M.call α0 [ α15 ] in
+          let* α16 := M.call_closure α0 [ α15 ] in
           M.alloc α16 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -279,9 +279,9 @@ Module Impl_contract_transfer_GiveMe.
             (Ty.path "contract_transfer::GiveMe")
             "env" in
         let* α3 := M.read self in
-        let* α4 := M.call α2 [ α3 ] in
+        let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
-        let* α6 := M.call α1 [ α5 ] in
+        let* α6 := M.call_closure α1 [ α5 ] in
         let* α7 := M.alloc (UnOp.Pure.not (BinOp.Pure.le α0 α6)) in
         let* α8 := M.read (M.use α7) in
         if Value.is_true α8 then
@@ -290,7 +290,7 @@ Module Impl_contract_transfer_GiveMe.
               "std::panicking::begin_panic"
               [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
           let* α1 := M.read (mk_str "insufficient funds!") in
-          let* α2 := M.call α0 [ α1 ] in
+          let* α2 := M.call_closure α0 [ α1 ] in
           let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
@@ -308,20 +308,20 @@ Module Impl_contract_transfer_GiveMe.
       let* α2 :=
         M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" in
       let* α3 := M.read self in
-      let* α4 := M.call α2 [ α3 ] in
+      let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
         M.get_associated_function (Ty.path "contract_transfer::Env") "caller" in
       let* α7 :=
         M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" in
       let* α8 := M.read self in
-      let* α9 := M.call α7 [ α8 ] in
+      let* α9 := M.call_closure α7 [ α8 ] in
       let* α10 := M.alloc α9 in
-      let* α11 := M.call α6 [ α10 ] in
+      let* α11 := M.call_closure α6 [ α10 ] in
       let* α12 := M.read value in
-      let* α13 := M.call α1 [ α5; α11; α12 ] in
+      let* α13 := M.call_closure α1 [ α5; α11; α12 ] in
       let* α14 := M.alloc α13 in
-      let* α15 := M.call α0 [ α14 ] in
+      let* α15 := M.call_closure α0 [ α14 ] in
       let* α16 := M.alloc α15 in
       let* α17 := M.read (M.use α16) in
       let* α0 :=
@@ -334,7 +334,7 @@ Module Impl_contract_transfer_GiveMe.
             M.read
               (mk_str
                 "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.") in
-          let* α2 := M.call α0 [ α1 ] in
+          let* α2 := M.call_closure α0 [ α1 ] in
           let* α3 := M.never_to_any α2 in
           M.alloc α3
         else
@@ -380,20 +380,20 @@ Module Impl_contract_transfer_GiveMe.
               (Ty.path "contract_transfer::GiveMe")
               "env" in
           let* α8 := M.read self in
-          let* α9 := M.call α7 [ α8 ] in
+          let* α9 := M.call_closure α7 [ α8 ] in
           let* α10 := M.alloc α9 in
-          let* α11 := M.call α6 [ α10 ] in
+          let* α11 := M.call_closure α6 [ α10 ] in
           let* α12 := M.alloc α11 in
-          let* α13 := M.call α5 [ α12 ] in
+          let* α13 := M.call_closure α5 [ α12 ] in
           let* α14 := M.alloc (Value.Array [ α13 ]) in
           let* α15 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α14
               ] in
-          let* α16 := M.call α0 [ α15 ] in
+          let* α16 := M.call_closure α0 [ α15 ] in
           M.alloc α16 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -406,9 +406,9 @@ Module Impl_contract_transfer_GiveMe.
             (Ty.path "contract_transfer::GiveMe")
             "env" in
         let* α2 := M.read self in
-        let* α3 := M.call α1 [ α2 ] in
+        let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 :=
           M.alloc
             (UnOp.Pure.not
@@ -420,7 +420,7 @@ Module Impl_contract_transfer_GiveMe.
               "std::panicking::begin_panic"
               [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
           let* α1 := M.read (mk_str "payment was not ten") in
-          let* α2 := M.call α0 [ α1 ] in
+          let* α2 := M.call_closure α0 [ α1 ] in
           let* α3 := M.never_to_any α2 in
           M.alloc α3
         else

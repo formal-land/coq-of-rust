@@ -45,7 +45,7 @@ Module tests.
       let* _ :=
         let* α0 := M.get_function "unit_testing::add" [] in
         let* α1 :=
-          M.call
+          M.call_closure
             α0
             [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
@@ -77,7 +77,7 @@ Module tests.
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
                 let* α4 :=
-                  M.call
+                  M.call_closure
                     α0
                     [
                       α1;
@@ -110,7 +110,7 @@ Module tests.
       let* _ :=
         let* α0 := M.get_function "unit_testing::bad_add" [] in
         let* α1 :=
-          M.call
+          M.call_closure
             α0
             [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
@@ -142,7 +142,7 @@ Module tests.
                 let* α2 := M.read left_val in
                 let* α3 := M.read right_val in
                 let* α4 :=
-                  M.call
+                  M.call_closure
                     α0
                     [
                       α1;

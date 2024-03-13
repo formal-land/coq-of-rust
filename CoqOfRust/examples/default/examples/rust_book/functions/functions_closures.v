@@ -93,21 +93,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
         let* α7 :=
-          M.call
+          M.call_closure
             α6
             [ closure_annotated; Value.Tuple [ Value.Integer Integer.I32 1 ]
             ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -133,20 +133,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.path "i32" ]
             ] in
         let* α7 :=
-          M.call
+          M.call_closure
             α6
             [ closure_inferred; Value.Tuple [ Value.Integer Integer.I32 1 ] ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* one :=
@@ -182,18 +182,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Self *) Ty.function [ Ty.tuple [] ] (Ty.path "i32");
               (* Args *) Ty.tuple []
             ] in
-        let* α7 := M.call α6 [ one; Value.Tuple [] ] in
+        let* α7 := M.call_closure α6 [ one; Value.Tuple [] ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

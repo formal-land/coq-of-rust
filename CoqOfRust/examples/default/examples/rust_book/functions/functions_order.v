@@ -46,7 +46,7 @@ Module Impl_functions_order_SomeType.
             (Ty.path "functions_order::SomeType")
             "meth2" in
         let* α1 := M.read self in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -90,7 +90,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
           "some_trait_bar"
           [ (* Self *) Ty.path "functions_order::SomeType" ] in
       let* α1 := M.read self in
-      M.call α0 [ α1 ]
+      M.call_closure α0 [ α1 ]
     | _, _ => M.impossible
     end.
   
@@ -163,7 +163,7 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read b in
       let* α2 :=
         M.alloc (Value.StructTuple "functions_order::OtherType" [ α1 ]) in
-      let* α3 := M.call α0 [ α2 ] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -174,7 +174,7 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read u in
       let* α2 :=
         M.alloc (Value.StructTuple "functions_order::SomeType" [ α1 ]) in
-      let* α3 := M.call α0 [ α2 ] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
@@ -202,7 +202,7 @@ Module inner_mod.
     | [], [] =>
       let* _ :=
         let* α0 := M.get_function "functions_order::inner_mod::tar" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -230,7 +230,7 @@ Module inner_mod.
         let* _ :=
           let* α0 :=
             M.get_function "functions_order::inner_mod::nested_mod::tack" [] in
-          let* α1 := M.call α0 [] in
+          let* α1 := M.call_closure α0 [] in
           M.alloc α1 in
         let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
@@ -261,11 +261,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "functions_order::foo" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "functions_order::inner_mod::bar" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -273,7 +273,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.path "functions_order::SomeType")
           "meth1" in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructTuple

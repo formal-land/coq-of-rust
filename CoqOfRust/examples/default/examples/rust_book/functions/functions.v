@@ -55,7 +55,7 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* n := M.alloc n in
     let* α0 := M.get_function "functions::is_divisible_by" [] in
     let* α1 := M.read n in
-    let* α2 := M.call α0 [ α1; Value.Integer Integer.U32 15 ] in
+    let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 15 ] in
     let* α3 := M.alloc α2 in
     let* α4 := M.read (M.use α3) in
     let* α5 :=
@@ -70,15 +70,16 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "fizzbuzz
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         M.alloc (Value.Tuple [])
       else
         let* α0 := M.get_function "functions::is_divisible_by" [] in
         let* α1 := M.read n in
-        let* α2 := M.call α0 [ α1; Value.Integer Integer.U32 3 ] in
+        let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 3 ] in
         let* α3 := M.alloc α2 in
         let* α4 := M.read (M.use α3) in
         if Value.is_true α4 then
@@ -92,15 +93,16 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "fizz
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []) in
           M.alloc (Value.Tuple [])
         else
           let* α0 := M.get_function "functions::is_divisible_by" [] in
           let* α1 := M.read n in
-          let* α2 := M.call α0 [ α1; Value.Integer Integer.U32 5 ] in
+          let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 5 ] in
           let* α3 := M.alloc α2 in
           let* α4 := M.read (M.use α3) in
           if Value.is_true α4 then
@@ -114,8 +116,9 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read (mk_str "buzz
 ") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
-                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
+                let* α4 :=
+                  M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call_closure α0 [ α4 ] in
                 M.alloc α5 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple [])
@@ -135,16 +138,16 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
-                let* α6 := M.call α5 [ n ] in
+                let* α6 := M.call_closure α5 [ n ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α4;
                       M.pointer_coercion (* Unsize *) α7
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
+                let* α9 := M.call_closure α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple []) in
@@ -180,8 +183,8 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
           [ Ty.path "u32" ])
         "new" in
     let* α2 := M.read n in
-    let* α3 := M.call α1 [ Value.Integer Integer.U32 1; α2 ] in
-    let* α4 := M.call α0 [ α3 ] in
+    let* α3 := M.call_closure α1 [ Value.Integer Integer.U32 1; α2 ] in
+    let* α4 := M.call_closure α0 [ α3 ] in
     let* α5 := M.alloc α4 in
     let* α6 :=
       match_operator
@@ -201,7 +204,7 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::ops::range::RangeInclusive")
                           [ Ty.path "u32" ]
                     ] in
-                let* α1 := M.call α0 [ iter ] in
+                let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
                   α2
@@ -221,7 +224,7 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* _ :=
                         let* α0 := M.get_function "functions::fizzbuzz" [] in
                         let* α1 := M.read n in
-                        let* α2 := M.call α0 [ α1 ] in
+                        let* α2 := M.call_closure α0 [ α1 ] in
                         M.alloc α2 in
                       M.alloc (Value.Tuple [])
                   ] in
@@ -242,7 +245,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "functions::fizzbuzz_to" [] in
-      let* α1 := M.call α0 [ Value.Integer Integer.U32 100 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 100 ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

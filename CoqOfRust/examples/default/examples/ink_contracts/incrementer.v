@@ -42,8 +42,8 @@ Module Impl_incrementer_Incrementer.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "i32" ] in
-      let* α2 := M.call α1 [] in
-      M.call α0 [ α2 ]
+      let* α2 := M.call_closure α1 [] in
+      M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   

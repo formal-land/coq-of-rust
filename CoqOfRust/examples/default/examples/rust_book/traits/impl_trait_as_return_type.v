@@ -59,7 +59,7 @@ Definition combine_vecs_explicit_return_type
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
         ] in
     let* α3 := M.read v in
-    let* α4 := M.call α2 [ α3 ] in
+    let* α4 := M.call_closure α2 [ α3 ] in
     let* α5 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
@@ -71,9 +71,9 @@ Definition combine_vecs_explicit_return_type
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
         ] in
     let* α6 := M.read u in
-    let* α7 := M.call α5 [ α6 ] in
-    let* α8 := M.call α1 [ α4; α7 ] in
-    M.call α0 [ α8 ]
+    let* α7 := M.call_closure α5 [ α6 ] in
+    let* α8 := M.call_closure α1 [ α4; α7 ] in
+    M.call_closure α0 [ α8 ]
   | _, _ => M.impossible
   end.
 
@@ -129,7 +129,7 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
         ] in
     let* α3 := M.read v in
-    let* α4 := M.call α2 [ α3 ] in
+    let* α4 := M.call_closure α2 [ α3 ] in
     let* α5 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
@@ -141,9 +141,9 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
         ] in
     let* α6 := M.read u in
-    let* α7 := M.call α5 [ α6 ] in
-    let* α8 := M.call α1 [ α4; α7 ] in
-    M.call α0 [ α8 ]
+    let* α7 := M.call_closure α5 [ α6 ] in
+    let* α8 := M.call_closure α1 [ α4; α7 ] in
+    M.call_closure α0 [ α8 ]
   | _, _ => M.impossible
   end.
 
@@ -187,9 +187,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Value.Integer Integer.I32 2;
               Value.Integer Integer.I32 3
             ]) in
-      let* α3 := M.call α1 [ α2 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.read α3 in
-      let* α5 := M.call α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
       M.alloc α5 in
     let* v2 :=
       let* α0 :=
@@ -209,15 +209,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.Array
             [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 5 ]) in
-      let* α3 := M.call α1 [ α2 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.read α3 in
-      let* α5 := M.call α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
       M.alloc α5 in
     let* v3 :=
       let* α0 := M.get_function "impl_trait_as_return_type::combine_vecs" [] in
       let* α1 := M.read v1 in
       let* α2 := M.read v2 in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* α0 :=
@@ -230,7 +230,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ v3 ] in
+      let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
@@ -253,7 +253,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -271,7 +271,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -297,7 +297,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ v3 ] in
+      let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
@@ -320,7 +320,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -338,7 +338,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -364,7 +364,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ v3 ] in
+      let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
@@ -387,7 +387,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -405,7 +405,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -431,7 +431,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ v3 ] in
+      let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
@@ -454,7 +454,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -472,7 +472,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -498,7 +498,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator"
           "next"
           [ (* Self *) _ ] in
-      let* α2 := M.call α1 [ v3 ] in
+      let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
       match_operator
@@ -521,7 +521,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -539,7 +539,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -564,8 +564,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "all done
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

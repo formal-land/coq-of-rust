@@ -43,8 +43,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Let's count until infinity!
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* α0 :=
@@ -69,8 +69,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α2 := M.read (mk_str "three
 ") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
-                let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                let* α5 := M.call α0 [ α4 ] in
+                let* α4 :=
+                  M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call_closure α0 [ α4 ] in
                 M.alloc α5 in
               M.alloc (Value.Tuple []) in
             let* α0 := M.continue in
@@ -94,16 +95,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display" in
-            let* α6 := M.call α5 [ count ] in
+            let* α6 := M.call_closure α5 [ count ] in
             let* α7 := M.alloc (Value.Array [ α6 ]) in
             let* α8 :=
-              M.call
+              M.call_closure
                 α1
                 [
                   M.pointer_coercion (* Unsize *) α4;
                   M.pointer_coercion (* Unsize *) α7
                 ] in
-            let* α9 := M.call α0 [ α8 ] in
+            let* α9 := M.call_closure α0 [ α8 ] in
             M.alloc α9 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.read count in
@@ -120,8 +121,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "OK, that's enough
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []) in
           let* α0 := M.break in

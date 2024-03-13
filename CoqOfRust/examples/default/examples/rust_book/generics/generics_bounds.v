@@ -35,7 +35,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
       let* α5 := M.read (mk_str "height") in
       let* α6 := M.read self in
       let* α7 := M.alloc (M.get_struct_record α6 "height") in
-      M.call
+      M.call_closure
         α0
         [
           α1;
@@ -113,16 +113,16 @@ Definition print_debug (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ t ] in
+        let* α6 := M.call_closure α5 [ t ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -142,7 +142,7 @@ Definition area (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method "generics_bounds::HasArea" "area" [ (* Self *) T ] in
     let* α1 := M.read t in
-    M.call α0 [ α1 ]
+    M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
   end.
 
@@ -188,7 +188,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_function
           "generics_bounds::print_debug"
           [ Ty.path "generics_bounds::Rectangle" ] in
-      let* α1 := M.call α0 [ rectangle ] in
+      let* α1 := M.call_closure α0 [ rectangle ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
@@ -208,18 +208,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "generics_bounds::HasArea"
             "area"
             [ (* Self *) Ty.path "generics_bounds::Rectangle" ] in
-        let* α7 := M.call α6 [ rectangle ] in
+        let* α7 := M.call_closure α6 [ rectangle ] in
         let* α8 := M.alloc α7 in
-        let* α9 := M.call α5 [ α8 ] in
+        let* α9 := M.call_closure α5 [ α8 ] in
         let* α10 := M.alloc (Value.Array [ α9 ]) in
         let* α11 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α10
             ] in
-        let* α12 := M.call α0 [ α11 ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
         M.alloc α12 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

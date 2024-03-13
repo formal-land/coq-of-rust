@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       let* α2 := M.read (mk_str "EvenNumber") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -157,7 +157,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.path "try_from_and_try_into::EvenNumber";
             (* T *) Ty.path "i32"
           ] in
-      let* α1 := M.call α0 [ Value.Integer Integer.I32 8 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 8 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         M.alloc
@@ -195,7 +195,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -219,7 +219,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -243,7 +243,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.path "try_from_and_try_into::EvenNumber";
             (* T *) Ty.path "i32"
           ] in
-      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
         M.alloc
@@ -275,7 +275,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -299,7 +299,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -323,7 +323,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.path "i32";
             (* T *) Ty.path "try_from_and_try_into::EvenNumber"
           ] in
-      let* α1 := M.call α0 [ Value.Integer Integer.I32 8 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 8 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -362,7 +362,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -386,7 +386,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -410,7 +410,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.path "i32";
             (* T *) Ty.path "try_from_and_try_into::EvenNumber"
           ] in
-      let* α1 := M.call α0 [ Value.Integer Integer.I32 5 ] in
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
@@ -443,7 +443,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
-            let* α3 := M.call α0 [ α1; α2 ] in
+            let* α3 := M.call_closure α0 [ α1; α2 ] in
             let* α4 := M.alloc (UnOp.Pure.not α3) in
             let* α5 := M.read (M.use α4) in
             if Value.is_true α5 then
@@ -467,7 +467,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;

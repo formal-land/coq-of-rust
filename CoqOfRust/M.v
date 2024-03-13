@@ -311,28 +311,25 @@ Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
+  | CallClosure (closure : Value.t) (args : list Value.t) (k : A -> t A)
   | Loop (body : t A) (k : A -> t A)
-  | Impossible
-  (** This constructor is not strictly necessary, but is used as a marker for
-      functions calls in the generated code, to help the tactics to recognize
-      points where we can compose lemma about functions. *)
-  | Call (f : Value.t) (args : list Value.t) (k : Value.t -> t A).
+  | Impossible.
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
+  Arguments CallClosure {_}.
   Arguments Loop {_}.
   Arguments Impossible {_}.
-  Arguments Call {_}.
 
   Fixpoint let_ {A : Set} (e1 : t A) (e2 : A -> t A) : t A :=
     match e1 with
     | Pure v => e2 v
     | CallPrimitive primitive k =>
       CallPrimitive primitive (fun v => let_ (k v) e2)
+    | CallClosure f args k =>
+      CallClosure f args (fun v => let_ (k v) e2)
     | Loop body k =>
       Loop body (fun v => let_ (k v) e2)
     | Impossible => Impossible
-    | Call f args k =>
-      Call f args (fun v => let_ (k v) e2)
     end.
 End LowM.
 
@@ -470,8 +467,8 @@ Definition break_match : M :=
 Definition panic (message : string) : M :=
   raise (Exception.Panic message).
 
-Definition call (f : Value.t) (args : list Value.t) : M :=
-  LowM.Call f args pure.
+Definition call_closure (f : Value.t) (args : list Value.t) : M :=
+  LowM.CallClosure f args LowM.Pure.
 
 Definition call_primitive (primitive : Primitive.t) : M :=
   LowM.CallPrimitive primitive (fun result =>

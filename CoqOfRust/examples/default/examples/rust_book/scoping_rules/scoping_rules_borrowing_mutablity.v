@@ -87,22 +87,22 @@ Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α7 := M.read book in
-        let* α8 := M.call α6 [ M.get_struct_record α7 "title" ] in
+        let* α8 := M.call_closure α6 [ M.get_struct_record α7 "title" ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α10 := M.read book in
-        let* α11 := M.call α9 [ M.get_struct_record α10 "year" ] in
+        let* α11 := M.call_closure α9 [ M.get_struct_record α10 "year" ] in
         let* α12 := M.alloc (Value.Array [ α8; α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -140,22 +140,22 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α7 := M.read book in
-        let* α8 := M.call α6 [ M.get_struct_record α7 "title" ] in
+        let* α8 := M.call_closure α6 [ M.get_struct_record α7 "title" ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
         let* α10 := M.read book in
-        let* α11 := M.call α9 [ M.get_struct_record α10 "year" ] in
+        let* α11 := M.call_closure α9 [ M.get_struct_record α10 "year" ] in
         let* α12 := M.alloc (Value.Array [ α8; α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α5;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -209,17 +209,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
-      let* α1 := M.call α0 [ immutabook ] in
+      let* α1 := M.call_closure α0 [ immutabook ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
-      let* α1 := M.call α0 [ mutabook ] in
+      let* α1 := M.call_closure α0 [ mutabook ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function "scoping_rules_borrowing_mutablity::new_edition" [] in
-      let* α1 := M.call α0 [ mutabook ] in
+      let* α1 := M.call_closure α0 [ mutabook ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

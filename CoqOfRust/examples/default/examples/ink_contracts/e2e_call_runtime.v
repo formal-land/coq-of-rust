@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "e2e_call_runtime::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
@@ -145,7 +145,7 @@ Module Impl_e2e_call_runtime_Contract.
         M.get_associated_function
           (Ty.path "e2e_call_runtime::Contract")
           "init_env" in
-      M.call α0 []
+      M.call_closure α0 []
     | _, _ => M.impossible
     end.
   
@@ -180,9 +180,9 @@ Module Impl_e2e_call_runtime_Contract.
           (Ty.path "e2e_call_runtime::Contract")
           "env" in
       let* α2 := M.read self in
-      let* α3 := M.call α1 [ α2 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.alloc α3 in
-      M.call α0 [ α4 ]
+      M.call_closure α0 [ α4 ]
     | _, _ => M.impossible
     end.
   

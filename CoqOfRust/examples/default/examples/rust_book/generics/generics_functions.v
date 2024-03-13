@@ -85,7 +85,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.get_function "generics_functions::reg_fn" [] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructTuple
@@ -96,7 +96,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.get_function "generics_functions::gen_spec_t" [] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructTuple
@@ -107,7 +107,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.get_function "generics_functions::gen_spec_i32" [] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructTuple
@@ -119,7 +119,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_function "generics_functions::generic" [ Ty.path "char" ] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructTuple
@@ -131,7 +131,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_function "generics_functions::generic" [ Ty.path "char" ] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructTuple

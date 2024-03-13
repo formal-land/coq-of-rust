@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "call_builder::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
@@ -155,7 +155,7 @@ Module Impl_call_builder_CallBuilderTest.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "call_builder::CallBuilderTest" ] in
-      M.call α0 []
+      M.call_closure α0 []
     | _, _ => M.impossible
     end.
   
@@ -189,7 +189,7 @@ Module Impl_call_builder_CallBuilderTest.
       let* result :=
         let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3 in
       let* α0 :=
@@ -232,16 +232,16 @@ Module Impl_call_builder_CallBuilderTest.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "none" in
-              let* α5 := M.call α4 [] in
+              let* α5 := M.call_closure α4 [] in
               let* α6 := M.alloc α5 in
               let* α7 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α3;
                     M.pointer_coercion (* Unsize *) α6
                   ] in
-              let* α8 := M.call α0 [ α7 ] in
+              let* α8 := M.call_closure α0 [ α7 ] in
               let* α9 := M.never_to_any α8 in
               M.alloc α9
           ] in

@@ -46,9 +46,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Value.Integer Integer.I32 2;
               Value.Integer Integer.I32 3
             ]) in
-      let* α3 := M.call α1 [ α2 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.read α3 in
-      let* α5 := M.call α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
       M.alloc α5 in
     let* contains :=
       M.alloc
@@ -76,9 +76,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "alloc::vec::Vec")
                               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                         ] in
-                    let* α2 := M.call α1 [ haystack ] in
+                    let* α2 := M.call_closure α1 [ haystack ] in
                     let* α3 := M.read needle in
-                    M.call α0 [ α2; α3 ]
+                    M.call_closure α0 [ α2; α3 ]
                 ]
             | _ => M.impossible
             end)) in
@@ -107,18 +107,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
             ] in
         let* α7 := M.alloc (Value.Integer Integer.I32 1) in
-        let* α8 := M.call α6 [ contains; Value.Tuple [ α7 ] ] in
+        let* α8 := M.call_closure α6 [ contains; Value.Tuple [ α7 ] ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -146,18 +146,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (* Args *) Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
             ] in
         let* α7 := M.alloc (Value.Integer Integer.I32 4) in
-        let* α8 := M.call α6 [ contains; Value.Tuple [ α7 ] ] in
+        let* α8 := M.call_closure α6 [ contains; Value.Tuple [ α7 ] ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

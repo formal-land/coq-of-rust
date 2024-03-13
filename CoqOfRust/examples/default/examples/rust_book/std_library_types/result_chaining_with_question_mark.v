@@ -60,7 +60,7 @@ Module checked.
                 M.alloc α0
             ] in
         let* α3 := M.read α2 in
-        M.call α0 [ α1; α3 ]
+        M.call_closure α0 [ α1; α3 ]
       | _, _ => M.impossible
       end.
     
@@ -149,7 +149,7 @@ Module checked.
         else
           let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" in
           let* α1 := M.read x in
-          let* α2 := M.call α0 [ α1 ] in
+          let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
       M.read α4
     | _, _ => M.impossible
@@ -185,7 +185,7 @@ Module checked.
         else
           let* α0 := M.get_associated_function (Ty.path "f64") "ln" in
           let* α1 := M.read x in
-          let* α2 := M.call α0 [ α1 ] in
+          let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
       M.read α4
     | _, _ => M.impossible
@@ -228,8 +228,8 @@ Module checked.
             [] in
         let* α2 := M.read x in
         let* α3 := M.read y in
-        let* α4 := M.call α1 [ α2; α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ α2; α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
           match_operator
@@ -265,7 +265,7 @@ Module checked.
                           ]
                     ] in
                 let* α1 := M.read residual in
-                let* α2 := M.call α0 [ α1 ] in
+                let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.return_ α2 in
                 let* α4 := M.read α3 in
                 let* α5 := M.never_to_any α4 in
@@ -298,8 +298,8 @@ Module checked.
         let* α1 :=
           M.get_function "result_chaining_with_question_mark::checked::ln" [] in
         let* α2 := M.read ratio in
-        let* α3 := M.call α1 [ α2 ] in
-        let* α4 := M.call α0 [ α3 ] in
+        let* α3 := M.call_closure α1 [ α2 ] in
+        let* α4 := M.call_closure α0 [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
           match_operator
@@ -335,7 +335,7 @@ Module checked.
                           ]
                     ] in
                 let* α1 := M.read residual in
-                let* α2 := M.call α0 [ α1 ] in
+                let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.return_ α2 in
                 let* α4 := M.read α3 in
                 let* α5 := M.never_to_any α4 in
@@ -353,7 +353,7 @@ Module checked.
       let* α0 :=
         M.get_function "result_chaining_with_question_mark::checked::sqrt" [] in
       let* α1 := M.read ln in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
@@ -383,7 +383,7 @@ Module checked.
         M.get_function "result_chaining_with_question_mark::checked::op_" [] in
       let* α1 := M.read x in
       let* α2 := M.read y in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       let* α4 := M.alloc α3 in
       let* α5 :=
         match_operator
@@ -413,7 +413,7 @@ Module checked.
                         M.read (mk_str "square root of negative number") in
                       M.alloc α0
                   ] in
-              let* α2 := M.call α0 [ α1 ] in
+              let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
               M.alloc α3;
             fun γ =>
@@ -437,16 +437,16 @@ Module checked.
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
                     "new_display" in
-                let* α6 := M.call α5 [ value ] in
+                let* α6 := M.call_closure α5 [ value ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
-                  M.call
+                  M.call_closure
                     α1
                     [
                       M.pointer_coercion (* Unsize *) α4;
                       M.pointer_coercion (* Unsize *) α7
                     ] in
-                let* α9 := M.call α0 [ α8 ] in
+                let* α9 := M.call_closure α0 [ α8 ] in
                 M.alloc α9 in
               M.alloc (Value.Tuple [])
           ] in
@@ -468,7 +468,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_function "result_chaining_with_question_mark::checked::op" [] in
       let* α1 := M.read UnsupportedLiteral in
       let* α2 := M.read UnsupportedLiteral in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

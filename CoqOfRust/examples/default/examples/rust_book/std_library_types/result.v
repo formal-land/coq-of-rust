@@ -59,7 +59,7 @@ Module checked.
                 M.alloc α0
             ] in
         let* α3 := M.read α2 in
-        M.call α0 [ α1; α3 ]
+        M.call_closure α0 [ α1; α3 ]
       | _, _ => M.impossible
       end.
     
@@ -147,7 +147,7 @@ Module checked.
         else
           let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" in
           let* α1 := M.read x in
-          let* α2 := M.call α0 [ α1 ] in
+          let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
       M.read α4
     | _, _ => M.impossible
@@ -183,7 +183,7 @@ Module checked.
         else
           let* α0 := M.get_associated_function (Ty.path "f64") "ln" in
           let* α1 := M.read x in
-          let* α2 := M.call α0 [ α1 ] in
+          let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
       M.read α4
     | _, _ => M.impossible
@@ -213,7 +213,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 := M.get_function "result::checked::div" [] in
     let* α1 := M.read x in
     let* α2 := M.read y in
-    let* α3 := M.call α0 [ α1; α2 ] in
+    let* α3 := M.call_closure α0 [ α1; α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 :=
       match_operator
@@ -237,16 +237,16 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug" in
-            let* α5 := M.call α4 [ why ] in
+            let* α5 := M.call_closure α4 [ why ] in
             let* α6 := M.alloc (Value.Array [ α5 ]) in
             let* α7 :=
-              M.call
+              M.call_closure
                 α1
                 [
                   M.pointer_coercion (* Unsize *) α3;
                   M.pointer_coercion (* Unsize *) α6
                 ] in
-            let* α8 := M.call α0 [ α7 ] in
+            let* α8 := M.call_closure α0 [ α7 ] in
             let* α9 := M.never_to_any α8 in
             M.alloc α9;
           fun γ =>
@@ -258,7 +258,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* ratio := M.copy γ0_0 in
             let* α0 := M.get_function "result::checked::ln" [] in
             let* α1 := M.read ratio in
-            let* α2 := M.call α0 [ α1 ] in
+            let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
             match_operator
               α3
@@ -281,16 +281,16 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_debug" in
-                  let* α5 := M.call α4 [ why ] in
+                  let* α5 := M.call_closure α4 [ why ] in
                   let* α6 := M.alloc (Value.Array [ α5 ]) in
                   let* α7 :=
-                    M.call
+                    M.call_closure
                       α1
                       [
                         M.pointer_coercion (* Unsize *) α3;
                         M.pointer_coercion (* Unsize *) α6
                       ] in
-                  let* α8 := M.call α0 [ α7 ] in
+                  let* α8 := M.call_closure α0 [ α7 ] in
                   let* α9 := M.never_to_any α8 in
                   M.alloc α9;
                 fun γ =>
@@ -302,7 +302,7 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* ln := M.copy γ0_0 in
                   let* α0 := M.get_function "result::checked::sqrt" [] in
                   let* α1 := M.read ln in
-                  let* α2 := M.call α0 [ α1 ] in
+                  let* α2 := M.call_closure α0 [ α1 ] in
                   let* α3 := M.alloc α2 in
                   match_operator
                     α3
@@ -326,16 +326,16 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
                             "new_debug" in
-                        let* α5 := M.call α4 [ why ] in
+                        let* α5 := M.call_closure α4 [ why ] in
                         let* α6 := M.alloc (Value.Array [ α5 ]) in
                         let* α7 :=
-                          M.call
+                          M.call_closure
                             α1
                             [
                               M.pointer_coercion (* Unsize *) α3;
                               M.pointer_coercion (* Unsize *) α6
                             ] in
-                        let* α8 := M.call α0 [ α7 ] in
+                        let* α8 := M.call_closure α0 [ α7 ] in
                         let* α9 := M.never_to_any α8 in
                         M.alloc α9;
                       fun γ =>
@@ -378,18 +378,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 := M.get_function "result::op" [] in
         let* α7 := M.read UnsupportedLiteral in
         let* α8 := M.read UnsupportedLiteral in
-        let* α9 := M.call α6 [ α7; α8 ] in
+        let* α9 := M.call_closure α6 [ α7; α8 ] in
         let* α10 := M.alloc α9 in
-        let* α11 := M.call α5 [ α10 ] in
+        let* α11 := M.call_closure α5 [ α10 ] in
         let* α12 := M.alloc (Value.Array [ α11 ]) in
         let* α13 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α12
             ] in
-        let* α14 := M.call α0 [ α13 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

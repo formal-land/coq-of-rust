@@ -112,12 +112,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* chunked_data :=
       let* α0 := M.get_associated_function (Ty.path "str") "split_whitespace" in
       let* α1 := M.read data in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
@@ -136,8 +136,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "enumerate"
           [ (* Self *) Ty.path "core::str::iter::SplitWhitespace" ] in
       let* α2 := M.read chunked_data in
-      let* α3 := M.call α1 [ α2 ] in
-      let* α4 := M.call α0 [ α3 ] in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
         match_operator
@@ -158,7 +158,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               "core::iter::adapters::enumerate::Enumerate")
                             [ Ty.path "core::str::iter::SplitWhitespace" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -195,21 +195,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
                                 "new_display" in
-                            let* α7 := M.call α6 [ i ] in
+                            let* α7 := M.call_closure α6 [ i ] in
                             let* α8 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
                                 "new_display" in
-                            let* α9 := M.call α8 [ data_segment ] in
+                            let* α9 := M.call_closure α8 [ data_segment ] in
                             let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                             let* α11 :=
-                              M.call
+                              M.call_closure
                                 α1
                                 [
                                   M.pointer_coercion (* Unsize *) α5;
                                   M.pointer_coercion (* Unsize *) α10
                                 ] in
-                            let* α12 := M.call α0 [ α11 ] in
+                            let* α12 := M.call_closure α0 [ α11 ] in
                             M.alloc α12 in
                           M.alloc (Value.Tuple []) in
                         let* _ :=
@@ -232,7 +232,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 Ty.path "u32"
                               ] in
                           let* α2 :=
-                            M.call
+                            M.call_closure
                               α1
                               [
                                 M.closure
@@ -289,9 +289,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   (Ty.path "str")
                                                   "chars" in
                                               let* α3 := M.read data_segment in
-                                              let* α4 := M.call α2 [ α3 ] in
+                                              let* α4 :=
+                                                M.call_closure α2 [ α3 ] in
                                               let* α5 :=
-                                                M.call
+                                                M.call_closure
                                                   α1
                                                   [
                                                     α4;
@@ -325,7 +326,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                                 let* α2 :=
                                                                   M.read c in
                                                                 let* α3 :=
-                                                                  M.call
+                                                                  M.call_closure
                                                                     α1
                                                                     [
                                                                       α2;
@@ -337,14 +338,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                                   M.read
                                                                     (mk_str
                                                                       "should be a digit") in
-                                                                M.call
+                                                                M.call_closure
                                                                   α0
                                                                   [ α3; α4 ]
                                                             ]
                                                         | _ => M.impossible
                                                         end)
                                                   ] in
-                                              let* α6 := M.call α0 [ α5 ] in
+                                              let* α6 :=
+                                                M.call_closure α0 [ α5 ] in
                                               M.alloc α6 in
                                             let* _ :=
                                               let* _ :=
@@ -375,19 +377,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                     (Ty.path
                                                       "core::fmt::rt::Argument")
                                                     "new_display" in
-                                                let* α7 := M.call α6 [ i ] in
+                                                let* α7 :=
+                                                  M.call_closure α6 [ i ] in
                                                 let* α8 :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::rt::Argument")
                                                     "new_display" in
                                                 let* α9 :=
-                                                  M.call α8 [ result ] in
+                                                  M.call_closure
+                                                    α8
+                                                    [ result ] in
                                                 let* α10 :=
                                                   M.alloc
                                                     (Value.Array [ α7; α9 ]) in
                                                 let* α11 :=
-                                                  M.call
+                                                  M.call_closure
                                                     α1
                                                     [
                                                       M.pointer_coercion
@@ -397,7 +402,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                         (* Unsize *)
                                                         α10
                                                     ] in
-                                                let* α12 := M.call α0 [ α11 ] in
+                                                let* α12 :=
+                                                  M.call_closure α0 [ α11 ] in
                                                 M.alloc α12 in
                                               M.alloc (Value.Tuple []) in
                                             M.read result
@@ -405,7 +411,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     | _ => M.impossible
                                     end)
                               ] in
-                          let* α3 := M.call α0 [ children; α2 ] in
+                          let* α3 := M.call_closure α0 [ children; α2 ] in
                           M.alloc α3 in
                         M.alloc (Value.Tuple [])
                     ] in
@@ -486,9 +492,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ]
           ] in
       let* α3 := M.read children in
-      let* α4 := M.call α2 [ α3 ] in
+      let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 :=
-        M.call
+        M.call_closure
           α1
           [
             α4;
@@ -523,13 +529,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               [ Ty.path "u32" ])
                             "join" in
                         let* α2 := M.read c in
-                        let* α3 := M.call α1 [ α2 ] in
-                        M.call α0 [ α3 ]
+                        let* α3 := M.call_closure α1 [ α2 ] in
+                        M.call_closure α0 [ α3 ]
                     ]
                 | _ => M.impossible
                 end)
           ] in
-      let* α6 := M.call α0 [ α5 ] in
+      let* α6 := M.call_closure α0 [ α5 ] in
       M.alloc α6 in
     let* _ :=
       let* _ :=
@@ -544,16 +550,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ final_result ] in
+        let* α6 := M.call_closure α5 [ final_result ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

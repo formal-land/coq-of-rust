@@ -37,7 +37,7 @@ Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "call_once"
           [ (* Self *) F; (* Args *) Ty.tuple [] ] in
       let* α1 := M.read f in
-      let* α2 := M.call α0 [ α1; Value.Tuple [] ] in
+      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

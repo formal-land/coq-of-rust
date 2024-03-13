@@ -36,16 +36,16 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
               (Ty.path "core::fmt::rt::Argument")
               "new_display" in
           let* α6 := M.read self in
-          let* α7 := M.call α5 [ M.get_struct_record α6 "name" ] in
+          let* α7 := M.call_closure α5 [ M.get_struct_record α6 "name" ] in
           let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
-            M.call
+            M.call_closure
               α1
               [
                 M.pointer_coercion (* Unsize *) α4;
                 M.pointer_coercion (* Unsize *) α8
               ] in
-          let* α10 := M.call α0 [ α9 ] in
+          let* α10 := M.call_closure α0 [ α9 ] in
           M.alloc α10 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -119,8 +119,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Exiting block B
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         M.alloc (Value.Tuple []) in
@@ -134,8 +135,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "Just exited block B
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -148,8 +149,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α2 := M.read (mk_str "Exiting block A
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       M.alloc (Value.Tuple []) in
@@ -163,15 +164,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "Just exited block A
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* α0 :=
         M.get_function "core::mem::drop" [ Ty.path "drop::Droppable" ] in
       let* α1 := M.read _a in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
@@ -183,8 +184,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "end of the main function
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

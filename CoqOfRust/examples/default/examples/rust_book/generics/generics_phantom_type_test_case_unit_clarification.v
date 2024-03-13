@@ -178,7 +178,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* α3 := M.read self in
       let* α4 := M.read self in
       let* α5 := M.alloc (M.get_struct_tuple α4 1) in
-      M.call
+      M.call_closure
         α0
         [
           α1;
@@ -221,7 +221,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
           "clone"
           [ (* Self *) Ty.path "f64" ] in
       let* α1 := M.read self in
-      let* α2 := M.call α0 [ M.get_struct_tuple α1 0 ] in
+      let* α2 := M.call_closure α0 [ M.get_struct_tuple α1 0 ] in
       let* α3 :=
         M.get_trait_method
           "core::clone::Clone"
@@ -229,7 +229,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
           [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ]
           ] in
       let* α4 := M.read self in
-      let* α5 := M.call α3 [ M.get_struct_tuple α4 1 ] in
+      let* α5 := M.call_closure α3 [ M.get_struct_tuple α4 1 ] in
       M.pure
         (Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
@@ -382,7 +382,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 := M.read one_foot in
       let* α2 := M.read one_foot in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       M.alloc α3 in
     let* two_meters :=
       let* α0 :=
@@ -409,7 +409,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 := M.read one_meter in
       let* α2 := M.read one_meter in
-      let* α3 := M.call α0 [ α1; α2 ] in
+      let* α3 := M.call_closure α0 [ α1; α2 ] in
       M.alloc α3 in
     let* _ :=
       let* _ :=
@@ -424,16 +424,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ M.get_struct_tuple two_feet 0 ] in
+        let* α6 := M.call_closure α5 [ M.get_struct_tuple two_feet 0 ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -449,16 +449,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ M.get_struct_tuple two_meters 0 ] in
+        let* α6 := M.call_closure α5 [ M.get_struct_tuple two_meters 0 ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

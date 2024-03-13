@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
           "write_str" in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "FlipperError") in
-      M.call α0 [ α1; α2 ]
+      M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -80,8 +80,8 @@ Module Impl_integration_flipper_Flipper.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "bool" ] in
-      let* α2 := M.call α1 [] in
-      M.call α0 [ α2 ]
+      let* α2 := M.call_closure α1 [] in
+      M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -108,7 +108,7 @@ Module Impl_integration_flipper_Flipper.
             M.get_associated_function
               (Ty.path "integration_flipper::Flipper")
               "new" in
-          let* α1 := M.call α0 [ Value.Bool true ] in
+          let* α1 := M.call_closure α0 [ Value.Bool true ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
           M.alloc
@@ -175,7 +175,7 @@ Module Impl_integration_flipper_Flipper.
             (Ty.path "integration_flipper::Flipper")
             "flip" in
         let* α1 := M.read self in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* α0 :=
         M.alloc

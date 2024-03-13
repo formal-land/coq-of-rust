@@ -41,9 +41,9 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::alloc::Global"
                 ]
           ] in
-      let* α3 := M.call α2 [ vec ] in
-      let* α4 := M.call α1 [ α3 ] in
-      let* α5 := M.call α0 [ α4 ] in
+      let* α3 := M.call_closure α2 [ vec ] in
+      let* α4 := M.call_closure α1 [ α3 ] in
+      let* α5 := M.call_closure α0 [ α4 ] in
       M.alloc α5 in
     let* α0 :=
       M.get_associated_function
@@ -54,8 +54,8 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α1 := M.get_associated_function (Ty.path "str") "parse" in
     let* α2 := M.read first in
     let* α3 := M.read α2 in
-    let* α4 := M.call α1 [ α3 ] in
-    let* α5 := M.call α0 [ α4 ] in
+    let* α4 := M.call_closure α1 [ α3 ] in
+    let* α5 := M.call_closure α0 [ α4 ] in
     let* α6 := BinOp.Panic.mul (Value.Integer Integer.I32 2) α5 in
     let* α0 := M.alloc α6 in
     M.read α0
@@ -102,9 +102,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.read (mk_str "93") in
       let* α4 := M.read (mk_str "18") in
       let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-      let* α6 := M.call α1 [ α5 ] in
+      let* α6 := M.call_closure α1 [ α5 ] in
       let* α7 := M.read α6 in
-      let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
+      let* α8 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α7 ] in
       M.alloc α8 in
     let* empty :=
       let* α0 :=
@@ -116,7 +116,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "alloc::alloc::Global"
             ])
           "new" in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* strings :=
       let* α0 :=
@@ -140,9 +140,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.read (mk_str "93") in
       let* α4 := M.read (mk_str "18") in
       let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-      let* α6 := M.call α1 [ α5 ] in
+      let* α6 := M.call_closure α1 [ α5 ] in
       let* α7 := M.read α6 in
-      let* α8 := M.call α0 [ M.pointer_coercion (* Unsize *) α7 ] in
+      let* α8 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α7 ] in
       M.alloc α8 in
     let* _ :=
       let* _ :=
@@ -159,18 +159,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read numbers in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -188,18 +188,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read empty in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -217,18 +217,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_display" in
         let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read strings in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α10 ]) in
         let* α12 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α11
             ] in
-        let* α13 := M.call α0 [ α12 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
         M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

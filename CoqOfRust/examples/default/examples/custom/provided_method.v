@@ -13,7 +13,7 @@ Module ProvidedAndRequired.
           "required"
           [ (* Self *) Self ] in
       let* α1 := M.read self in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       BinOp.Panic.add (Value.Integer Integer.I32 42) α2
     | _, _ => M.impossible
     end.
@@ -108,7 +108,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "provided_method::ProvidedAndRequired"
           "provided"
           [ (* Self *) Ty.path "i32" ] in
-      let* α1 := M.call α0 [ x ] in
+      let* α1 := M.call_closure α0 [ x ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc (Value.Integer Integer.I32 47) in
       let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
@@ -138,7 +138,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;
@@ -160,7 +160,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           "provided_method::ProvidedAndRequired"
           "provided"
           [ (* Self *) Ty.path "u32" ] in
-      let* α1 := M.call α0 [ y ] in
+      let* α1 := M.call_closure α0 [ y ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc (Value.Integer Integer.I32 0) in
       let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
@@ -190,7 +190,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read left_val in
               let* α3 := M.read right_val in
               let* α4 :=
-                M.call
+                M.call_closure
                   α0
                   [
                     α1;

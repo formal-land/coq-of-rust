@@ -33,8 +33,9 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "some
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -47,8 +48,9 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "nothing
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple [])
         ] in
@@ -91,14 +93,14 @@ Module tests.
           M.get_associated_function (Ty.path "std::fs::OpenOptions") "append" in
         let* α4 :=
           M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" in
-        let* α5 := M.call α4 [] in
+        let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
-        let* α7 := M.call α3 [ α6; Value.Bool true ] in
-        let* α8 := M.call α2 [ α7; Value.Bool true ] in
+        let* α7 := M.call_closure α3 [ α6; Value.Bool true ] in
+        let* α8 := M.call_closure α2 [ α7; Value.Bool true ] in
         let* α9 := M.read (mk_str "ferris.txt") in
-        let* α10 := M.call α1 [ α8; α9 ] in
+        let* α10 := M.call_closure α1 [ α8; α9 ] in
         let* α11 := M.read (mk_str "Failed to open ferris.txt") in
-        let* α12 := M.call α0 [ α10; α11 ] in
+        let* α12 := M.call_closure α0 [ α10; α11 ] in
         M.alloc α12 in
       let* α0 :=
         M.get_trait_method
@@ -109,7 +111,7 @@ Module tests.
               Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
           ] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructRecord
@@ -138,7 +140,7 @@ Module tests.
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "i32" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -173,11 +175,11 @@ Module tests.
                               "as_bytes" in
                           let* α3 := M.read (mk_str "Ferris
 ") in
-                          let* α4 := M.call α2 [ α3 ] in
-                          let* α5 := M.call α1 [ file; α4 ] in
+                          let* α4 := M.call_closure α2 [ α3 ] in
+                          let* α5 := M.call_closure α1 [ file; α4 ] in
                           let* α6 :=
                             M.read (mk_str "Could not write to ferris.txt") in
-                          let* α7 := M.call α0 [ α5; α6 ] in
+                          let* α7 := M.call_closure α0 [ α5; α6 ] in
                           M.alloc α7 in
                         M.alloc (Value.Tuple [])
                     ] in
@@ -221,14 +223,14 @@ Module tests.
           M.get_associated_function (Ty.path "std::fs::OpenOptions") "append" in
         let* α4 :=
           M.get_associated_function (Ty.path "std::fs::OpenOptions") "new" in
-        let* α5 := M.call α4 [] in
+        let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
-        let* α7 := M.call α3 [ α6; Value.Bool true ] in
-        let* α8 := M.call α2 [ α7; Value.Bool true ] in
+        let* α7 := M.call_closure α3 [ α6; Value.Bool true ] in
+        let* α8 := M.call_closure α2 [ α7; Value.Bool true ] in
         let* α9 := M.read (mk_str "ferris.txt") in
-        let* α10 := M.call α1 [ α8; α9 ] in
+        let* α10 := M.call_closure α1 [ α8; α9 ] in
         let* α11 := M.read (mk_str "Failed to open ferris.txt") in
-        let* α12 := M.call α0 [ α10; α11 ] in
+        let* α12 := M.call_closure α0 [ α10; α11 ] in
         M.alloc α12 in
       let* α0 :=
         M.get_trait_method
@@ -239,7 +241,7 @@ Module tests.
               Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
           ] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructRecord
@@ -268,7 +270,7 @@ Module tests.
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "i32" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -303,11 +305,11 @@ Module tests.
                               "as_bytes" in
                           let* α3 := M.read (mk_str "Corro
 ") in
-                          let* α4 := M.call α2 [ α3 ] in
-                          let* α5 := M.call α1 [ file; α4 ] in
+                          let* α4 := M.call_closure α2 [ α3 ] in
+                          let* α5 := M.call_closure α1 [ file; α4 ] in
                           let* α6 :=
                             M.read (mk_str "Could not write to ferris.txt") in
-                          let* α7 := M.call α0 [ α5; α6 ] in
+                          let* α7 := M.call_closure α0 [ α5; α6 ] in
                           M.alloc α7 in
                         M.alloc (Value.Tuple [])
                     ] in

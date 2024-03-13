@@ -36,7 +36,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             ])
           "new" in
       let* α1 := M.read (mk_str "the same apple") in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
@@ -48,7 +48,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
           ] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructRecord
@@ -77,7 +77,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::ops::range::Range")
                             [ Ty.path "i32" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -107,7 +107,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                       Ty.path "alloc::alloc::Global"
                                     ]
                               ] in
-                          let* α1 := M.call α0 [ apple ] in
+                          let* α1 := M.call_closure α0 [ apple ] in
                           M.alloc α1 in
                         let* _ :=
                           let* α0 :=
@@ -118,7 +118,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 Ty.tuple []
                               ] in
                           let* α1 :=
-                            M.call
+                            M.call_closure
                               α0
                               [
                                 M.closure
@@ -154,12 +154,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                       "core::fmt::rt::Argument")
                                                     "new_debug" in
                                                 let* α6 :=
-                                                  M.call α5 [ apple ] in
+                                                  M.call_closure α5 [ apple ] in
                                                 let* α7 :=
                                                   M.alloc
                                                     (Value.Array [ α6 ]) in
                                                 let* α8 :=
-                                                  M.call
+                                                  M.call_closure
                                                     α1
                                                     [
                                                       M.pointer_coercion
@@ -169,7 +169,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                         (* Unsize *)
                                                         α7
                                                     ] in
-                                                let* α9 := M.call α0 [ α8 ] in
+                                                let* α9 :=
+                                                  M.call_closure α0 [ α8 ] in
                                                 M.alloc α9 in
                                               M.alloc (Value.Tuple []) in
                                             let* α0 :=
@@ -191,8 +192,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.path "core::time::Duration")
           "from_secs" in
-      let* α2 := M.call α1 [ Value.Integer Integer.U64 1 ] in
-      let* α3 := M.call α0 [ α2 ] in
+      let* α2 := M.call_closure α1 [ Value.Integer Integer.U64 1 ] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

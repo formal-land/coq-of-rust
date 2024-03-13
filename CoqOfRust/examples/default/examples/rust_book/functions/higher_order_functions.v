@@ -64,8 +64,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               "Find the sum of all the squared odd numbers under 1000
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* upper := M.alloc (Value.Integer Integer.U32 1000) in
@@ -80,7 +80,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ]
           ] in
       let* α1 :=
-        M.call
+        M.call_closure
           α0
           [
             Value.StructRecord
@@ -106,7 +106,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::ops::range::RangeFrom")
                             [ Ty.path "u32" ]
                       ] in
-                  let* α1 := M.call α0 [ iter ] in
+                  let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
                     α2
@@ -143,7 +143,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                               "higher_order_functions::is_odd"
                               [] in
                           let* α1 := M.read n_squared in
-                          let* α2 := M.call α0 [ α1 ] in
+                          let* α2 := M.call_closure α0 [ α1 ] in
                           let* α3 := M.alloc α2 in
                           let* α4 := M.read (M.use α3) in
                           if Value.is_true α4 then
@@ -173,16 +173,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ acc ] in
+        let* α6 := M.call_closure α5 [ acc ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* sum_of_squared_odd_numbers :=
@@ -277,7 +277,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* F *) Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
           ] in
       let* α4 :=
-        M.call
+        M.call_closure
           α3
           [
             Value.StructRecord
@@ -301,7 +301,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 end)
           ] in
       let* α5 :=
-        M.call
+        M.call_closure
           α2
           [
             α4;
@@ -324,7 +324,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 end)
           ] in
       let* α6 :=
-        M.call
+        M.call_closure
           α1
           [
             α5;
@@ -342,12 +342,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 :=
                           M.get_function "higher_order_functions::is_odd" [] in
                         let* α1 := M.read n_squared in
-                        M.call α0 [ α1 ]
+                        M.call_closure α0 [ α1 ]
                     ]
                 | _ => M.impossible
                 end)
           ] in
-      let* α7 := M.call α0 [ α6 ] in
+      let* α7 := M.call_closure α0 [ α6 ] in
       M.alloc α7 in
     let* _ :=
       let* _ :=
@@ -362,16 +362,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ sum_of_squared_odd_numbers ] in
+        let* α6 := M.call_closure α5 [ sum_of_squared_odd_numbers ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

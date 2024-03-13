@@ -20,8 +20,8 @@ Module my_mod.
           let* α2 := M.read (mk_str "called `my_mod::private_function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -47,8 +47,8 @@ Module my_mod.
           let* α2 := M.read (mk_str "called `my_mod::function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -76,13 +76,13 @@ Module my_mod.
             M.read (mk_str "called `my_mod::indirect_access()`, that
 > ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 := M.get_function "visibility::my_mod::private_function" [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -108,8 +108,9 @@ Module my_mod.
             let* α2 := M.read (mk_str "called `my_mod::nested::function()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -136,8 +137,9 @@ Module my_mod.
               M.read (mk_str "called `my_mod::nested::private_function()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -170,8 +172,9 @@ Module my_mod.
                   "called `my_mod::nested::public_function_in_my_mod()`, that
 > ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* _ :=
@@ -179,7 +182,7 @@ Module my_mod.
             M.get_function
               "visibility::my_mod::nested::public_function_in_nested"
               [] in
-          let* α1 := M.call α0 [] in
+          let* α1 := M.call_closure α0 [] in
           M.alloc α1 in
         let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
@@ -210,8 +213,9 @@ Module my_mod.
                   "called `my_mod::nested::public_function_in_nested()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -243,8 +247,9 @@ Module my_mod.
                   "called `my_mod::nested::public_function_in_super_mod()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -280,8 +285,8 @@ Module my_mod.
                 "called `my_mod::call_public_function_in_my_mod()`, that
 > ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -289,7 +294,7 @@ Module my_mod.
           M.get_function
             "visibility::my_mod::nested::public_function_in_my_mod"
             [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
@@ -300,8 +305,8 @@ Module my_mod.
               "new_const" in
           let* α2 := M.read (mk_str "> ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* _ :=
@@ -309,7 +314,7 @@ Module my_mod.
           M.get_function
             "visibility::my_mod::nested::public_function_in_super_mod"
             [] in
-        let* α1 := M.call α0 [] in
+        let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -335,8 +340,8 @@ Module my_mod.
             M.read (mk_str "called `my_mod::public_function_in_crate()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call α0 [ α4 ] in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
           M.alloc α5 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -364,8 +369,9 @@ Module my_mod.
               M.read (mk_str "called `my_mod::private_nested::function()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -394,8 +400,9 @@ Module my_mod.
                   "called `my_mod::private_nested::restricted_function()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
-            let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call α0 [ α4 ] in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
             M.alloc α5 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
@@ -423,8 +430,8 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α2 := M.read (mk_str "called `function()`
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call α0 [ α4 ] in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -477,31 +484,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "visibility::function" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "visibility::my_mod::function" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "visibility::my_mod::indirect_access" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "visibility::my_mod::nested::function" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function
           "visibility::my_mod::call_public_function_in_my_mod"
           [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function "visibility::my_mod::public_function_in_crate" [] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

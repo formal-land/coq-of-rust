@@ -64,7 +64,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
           [ (* Self *) Ty.path "f64"; (* Rhs *) Ty.path "f64" ] in
       let* α1 := M.read self in
       let* α2 := M.read other in
-      M.call α0 [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ]
+      M.call_closure α0 [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ]
     | _, _ => M.impossible
     end.
   
@@ -102,7 +102,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       let* α2 := M.read (mk_str "Inches") in
       let* α3 := M.read self in
       let* α4 := M.alloc (M.get_struct_tuple α3 0) in
-      M.call α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
   
@@ -206,16 +206,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_debug" in
-        let* α6 := M.call α5 [ foot ] in
+        let* α6 := M.call_closure α5 [ foot ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* meter :=
@@ -232,9 +232,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           ] in
       let* α1 :=
         M.get_associated_function (Ty.path "derive::Inches") "to_centimeters" in
-      let* α2 := M.call α1 [ foot ] in
+      let* α2 := M.call_closure α1 [ foot ] in
       let* α3 := M.alloc α2 in
-      let* α4 := M.call α0 [ α3; meter ] in
+      let* α4 := M.call_closure α0 [ α3; meter ] in
       let* α5 := M.alloc α4 in
       let* α6 := M.read (M.use α5) in
       let* α7 :=
@@ -257,16 +257,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ cmp ] in
+        let* α6 := M.call_closure α5 [ cmp ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in

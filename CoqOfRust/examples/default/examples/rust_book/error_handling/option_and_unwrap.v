@@ -34,8 +34,9 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "Yuck! Too sugary.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -59,16 +60,16 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display" in
-              let* α6 := M.call α5 [ inner ] in
+              let* α6 := M.call_closure α5 [ inner ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
-                M.call
+                M.call_closure
                   α1
                   [
                     M.pointer_coercion (* Unsize *) α4;
                     M.pointer_coercion (* Unsize *) α7
                   ] in
-              let* α9 := M.call α0 [ α8 ] in
+              let* α9 := M.call_closure α0 [ α8 ] in
               M.alloc α9 in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -81,8 +82,9 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α2 := M.read (mk_str "No drink? Oh well.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
-              let* α4 := M.call α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call α0 [ α4 ] in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
               M.alloc α5 in
             M.alloc (Value.Tuple [])
         ] in
@@ -113,7 +115,7 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "unwrap" in
       let* α1 := M.read drink in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
@@ -124,7 +126,7 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
             (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
           ] in
-      let* α1 := M.call α0 [ inside; mk_str "lemonade" ] in
+      let* α1 := M.call_closure α0 [ inside; mk_str "lemonade" ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.read (M.use α2) in
       if Value.is_true α3 then
@@ -133,7 +135,7 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "std::panicking::begin_panic"
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
-        let* α2 := M.call α0 [ α1 ] in
+        let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
         M.alloc α3
       else
@@ -151,16 +153,16 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
             "new_display" in
-        let* α6 := M.call α5 [ inside ] in
+        let* α6 := M.call_closure α5 [ inside ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
-          M.call
+          M.call_closure
             α1
             [
               M.pointer_coercion (* Unsize *) α4;
               M.pointer_coercion (* Unsize *) α7
             ] in
-        let* α9 := M.call α0 [ α8 ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -198,17 +200,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::give_adult" [] in
       let* α1 := M.read water in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::give_adult" [] in
       let* α1 := M.read lemonade in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::give_adult" [] in
       let* α1 := M.read void in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* coffee :=
       let* α0 := M.read (mk_str "coffee") in
@@ -218,12 +220,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::drink" [] in
       let* α1 := M.read coffee in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::drink" [] in
       let* α1 := M.read nothing in
-      let* α2 := M.call α0 [ α1 ] in
+      let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

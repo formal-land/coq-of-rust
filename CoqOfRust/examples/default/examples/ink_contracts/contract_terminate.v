@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
           "core::default::Default"
           "default"
           [ (* Self *) Ty.path "u128" ] in
-      let* α1 := M.call α0 [] in
+      let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "contract_terminate::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
@@ -139,7 +139,7 @@ Module Impl_contract_terminate_JustTerminate.
         M.get_associated_function
           (Ty.path "contract_terminate::JustTerminate")
           "init_env" in
-      M.call α0 []
+      M.call_closure α0 []
     | _, _ => M.impossible
     end.
   
@@ -178,7 +178,7 @@ Module Impl_contract_terminate_JustTerminate.
             (Ty.path "contract_terminate::JustTerminate")
             "env" in
         let* α2 := M.read self in
-        let* α3 := M.call α1 [ α2 ] in
+        let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.get_associated_function
@@ -189,10 +189,10 @@ Module Impl_contract_terminate_JustTerminate.
             (Ty.path "contract_terminate::JustTerminate")
             "env" in
         let* α7 := M.read self in
-        let* α8 := M.call α6 [ α7 ] in
+        let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
-        let* α10 := M.call α5 [ α9 ] in
-        let* α11 := M.call α0 [ α4; α10 ] in
+        let* α10 := M.call_closure α5 [ α9 ] in
+        let* α11 := M.call_closure α0 [ α4; α10 ] in
         M.alloc α11 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
