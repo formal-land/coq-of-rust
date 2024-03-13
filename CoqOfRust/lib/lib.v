@@ -98,14 +98,13 @@ Module Integer.
     | Integer.Isize => Z.modulo (z + 2^63) 2^64 - 2^63
     end.
 
-  Definition normalize_with_error (kind : Integer.t) (z : Z) :
-      Value.t + string :=
+  Definition normalize_with_error (kind : Integer.t) (z : Z) : Z + string :=
     if z <? min kind then
       inr "underflow"
     else if max kind <? z then
       inr "overflow"
     else
-      inl (Value.Integer kind z).
+      inl z.
 End Integer.
 
 Module UnOp.
@@ -175,7 +174,10 @@ Module BinOp.
         Value.t + string :=
       match v1, v2 with
       | Value.Integer kind z1, Value.Integer _ z2 =>
-        Integer.normalize_with_error kind (bin_op z1 z2)
+        match Integer.normalize_with_error kind (bin_op z1 z2) with
+        | inl v => inl (Value.Integer kind v)
+        | inr err => inr err
+        end
       | _, _ => inr "expected integers"
       end.
 

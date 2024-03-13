@@ -8,9 +8,9 @@ Section Mapping.
 
   Parameter to_value :
     forall
-      (x : t K V)
       (K_to_value : K -> Value.t)
-      (V_to_value : V -> Value.t),
+      (V_to_value : V -> Value.t)
+      (x : t K V),
       Value.t.
 
   Parameter empty : t K V.
