@@ -144,7 +144,7 @@ Definition balance_of_impl
     (storage : erc20.Erc20.t)
     (owner : erc20.AccountId.t) :
     erc20.Balance.t :=
-  match simulations.lib.Mapping.get storage.(erc20.Erc20.balances) owner with
+  match simulations.lib.Mapping.get owner storage.(erc20.Erc20.balances) with
   | Some balance => balance
   | None => 0
   end.
@@ -162,8 +162,8 @@ Definition allowance_impl
     erc20.Balance.t :=
   match
     simulations.lib.Mapping.get
-      storage.(erc20.Erc20.allowances)
       (owner, spender)
+      storage.(erc20.Erc20.allowances)
   with
   | Some allowance => allowance
   | None => 0

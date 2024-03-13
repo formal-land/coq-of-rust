@@ -15,7 +15,7 @@ Section Mapping.
 
   Parameter empty : t K V.
 
-  Parameter get : t K V -> K -> option V.
+  Parameter get : K -> t K V -> option V.
 
   Parameter insert : K -> V -> t K V -> t K V.
 
