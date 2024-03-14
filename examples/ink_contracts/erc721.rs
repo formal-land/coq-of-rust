@@ -13,7 +13,7 @@ impl<K, V> Mapping<K, V> {
         unimplemented!()
     }
 
-    fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
+    fn insert(&mut self, _key: K, _value: V) {
         unimplemented!()
     }
 
