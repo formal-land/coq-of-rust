@@ -20,6 +20,26 @@ End Env.
 Definition env (env : erc721.Env.t) : erc721.Env.t :=
   env.
 
+Module AccountId.
+  Definition eq (x y : erc721.AccountId.t) : bool.t :=
+    BinOp.Pure.eq (erc721.AccountId.x0 x) (erc721.AccountId.x0 y).
+
+  Definition neq (x y : erc721.AccountId.t) : bool.t :=
+    negb (eq x y).
+
+  Definition option_eq (x y : core.option.Option.t erc721.AccountId.t) : bool.t :=
+    match x, y with
+    | core.option.Option.Some x, core.option.Option.Some y => eq x y
+    | core.option.Option.None, core.option.Option.None => true
+    | _, _ => false
+    end.
+
+  Definition option_neq (x y : core.option.Option.t erc721.AccountId.t) : bool.t :=
+    negb (option_eq x y).
+
+  Parameter from : array u8.t -> erc721.AccountId.t.
+End AccountId.
+
 (** ** Simulations that only read the state. *)
 
 Definition balance_of_or_zero
