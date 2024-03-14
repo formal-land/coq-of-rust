@@ -107,10 +107,58 @@ Definition is_approved_for_all
 
 (** ** Simulations modifying the state. *)
 
+Module State.
+  Definition t : Set := erc721.Erc721.t * list erc721.Event.t.
+End State.
+
+Definition clear_approval
+    (token_id : ltac:(erc721.TokenId)) :
+    MS? State.t unit :=
+  letS? '(storage, events) := readS? in
+  let storage' :=
+    storage <|
+      erc721.Erc721.token_approvals :=
+        Lib.Mapping.remove token_id storage.(erc721.Erc721.token_approvals)
+    |> in
+  letS? _ := writeS? (storage', events) in
+  returnS? tt.
+
+Definition approve_for_all
+    (env : erc721.Env.t)
+    (to : erc721.AccountId.t)
+    (approved : bool.t) :
+    MS? State.t (core.result.Result.t unit erc721.Error.t) :=
+  let caller := Env.caller env in
+  if AccountId.eq to caller
+  then
+    letS? '(storage, events) := readS? in
+    let event := erc721.Event.ApprovalForAll {|
+      erc721.ApprovalForAll.owner := caller;
+      erc721.ApprovalForAll.operator := to;
+      erc721.ApprovalForAll.approved := approved
+    |} in
+    letS? _ := writeS? (
+      storage <| erc721.Erc721.operator_approvals :=
+        if approved
+        then
+          Lib.Mapping.insert (caller, to) tt storage.(erc721.Erc721.operator_approvals)
+        else
+          Lib.Mapping.remove (caller, to) storage.(erc721.Erc721.operator_approvals)
+      |>,
+      event :: events
+    ) in
+    returnS? (result.Result.Ok tt)
+  else
+    returnS? (result.Result.Err erc721.Error.NotApproved). 
+
+Definition set_approval_for_all
+    (env : erc721.Env.t)
+    (to : erc721.AccountId.t)
+    (approved : bool.t) :
+    MS? State.t (core.result.Result.t unit erc721.Error.t) :=
+  approve_for_all env to approved.
+
 (* TODO: *)
-(* clear_approval *)
-(* approve_for_all *)
-(* set_approval_for_all *)
 (* approve_for *)
 (* approve *)
 (* remove_token_from *)
