@@ -68,9 +68,17 @@ Definition approved_or_owner
     (storage : erc721.Erc721.t)
     (from : core.option.Option.t erc721.AccountId.t)
     (token_id : ltac:(erc721.TokenId)) :
-    bool.t.
-  (* let owner := owner_of storage token_id in *)
-Admitted.
+    bool.t :=
+  let owner := owner_of storage token_id in
+  (AccountId.option_neq
+    from
+    (option.Option.Some (AccountId.from (repeat (u8.Make 0) 32)))
+  && (AccountId.option_eq from owner
+    || AccountId.option_eq
+        from
+        (Lib.Mapping.get token_id storage.(erc721.Erc721.token_approvals))
+    (* || approved_for_all storage owner from *)
+    ))%bool.
 
 Definition exists_
     (storage : erc721.Erc721.t)
