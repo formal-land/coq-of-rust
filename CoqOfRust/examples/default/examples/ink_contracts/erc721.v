@@ -640,12 +640,14 @@ Section Impl_erc721_Env_t.
           unimplemented!()
       }
   *)
-  Definition emit_event (self : ref Self) (_event : erc721.Event.t) : M unit :=
-    let* self := M.alloc self in
-    let* _event := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+  Definition emit_event
+      (self : ref Self)
+      (event : erc721.Event.t)
+      : M unit :=
+    let* env : erc721.Env.t * ref (list erc721.Event.t) := M.read_env in
+    let ref_events := snd env in
+    let* events := M.read ref_events in
+    M.write ref_events (event :: events).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -664,9 +666,8 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition init_env : M erc721.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    let* env : erc721.Env.t * ref (list erc721.Event.t) := M.read_env in
+    M.pure (fst env).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
