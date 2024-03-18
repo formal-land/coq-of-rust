@@ -73,9 +73,9 @@ Require CoqOfRust.core.cell.
 Require CoqOfRust.core.char.
 Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
-Require CoqOfRust.core.convert.
+Require CoqOfRust.core.convert.*)
 Require CoqOfRust.core.default.
-Require CoqOfRust.core.error.
+(*Require CoqOfRust.core.error.
 Require CoqOfRust.core.f32.
 Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.hash.
@@ -103,9 +103,9 @@ Module core.
   Export CoqOfRust.core.char.
   Export CoqOfRust.core.clone.
   Export CoqOfRust.core.cmp.
-  Export CoqOfRust.core.convert.
+  Export CoqOfRust.core.convert.*)
   Export CoqOfRust.core.default.
-  Export CoqOfRust.core.error.
+  (*Export CoqOfRust.core.error.
   Export CoqOfRust.core.f32.
   Export CoqOfRust.core.fmt.
   Export CoqOfRust.core.hash.

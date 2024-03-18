@@ -48,6 +48,11 @@ Definition IsTraitMethod
     (method : list Ty.t -> list Value.t -> M) :
     Prop :=
   exists (instance : Instance.t),
+  M.IsTraitInstance
+    trait_name
+    self_ty
+    trait_tys
+    instance /\
   List.assoc instance method_name = Some (InstanceField.Method method).
 
 Module Run.

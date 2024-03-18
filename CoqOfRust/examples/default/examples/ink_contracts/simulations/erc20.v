@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
-
+Require CoqOfRust.core.simulations.default.
 Require CoqOfRust.core.simulations.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
 Require Import CoqOfRust.simulations.M.
@@ -18,6 +18,12 @@ Module Balance.
     φ '(Make x) := Value.Integer Integer.U128 x;
   }.
 End Balance.
+
+Module Impl_Default_for_Balance.
+  Global Instance I : core.simulations.default.Default.Trait Balance.t := {
+    default := Balance.Make 0;
+  }.
+End Impl_Default_for_Balance.
 
 Module AccountId.
   Inductive t : Set :=

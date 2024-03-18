@@ -1,5 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.lib.proofs.lib.
+Require Import CoqOfRust.simulations.M.
+Require CoqOfRust.core.simulations.option.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
 Require CoqOfRust.examples.default.examples.ink_contracts.lib.
 
@@ -7,6 +9,28 @@ Module  Mapping.
 Section Mapping.
   Context {K V : Set}.
   Context (K_eq_neq : forall (k1 k2 : K), k1 = k2 \/ k1 <> k2).
+  Context `(ToValue K) `(ToValue V).
+
+  (** ** Simulations with the implementation on [Value.t]. *)
+  Axiom run_empty :
+    lib.Mapping.empty =
+    φ (simulations.lib.Mapping.empty (K := K) (V := V)).
+
+  Axiom run_get : forall (key : K) (m : simulations.lib.Mapping.t K V),
+    lib.Mapping.get (φ key) (φ m) =
+    φ (simulations.lib.Mapping.get key m).
+
+  Axiom run_insert :
+    forall (key : K) (value : V) (m : simulations.lib.Mapping.t K V),
+    lib.Mapping.insert (φ key) (φ value) (φ m) =
+    φ (simulations.lib.Mapping.insert key value m).
+
+  Axiom run_sum :
+    forall (f : Value.t -> Z) (m : simulations.lib.Mapping.t K V),
+    lib.Mapping.sum f (φ m) =
+    simulations.lib.Mapping.sum (fun v => f (φ v)) m.
+
+  (** ** [empty] rule *)
 
   Axiom get_empty : forall (key : K),
     simulations.lib.Mapping.get (K := K) (V := V)
@@ -117,15 +141,16 @@ Section Mapping.
     P k v ->
     Forall P (simulations.lib.Mapping.insert k v m).
   Proof.
-    unfold Forall.
+    intros * H_m H_k_v.
+    unfold Forall in *.
     intros.
     destruct (K_eq_neq k0 k).
     { subst.
-      rewrite get_insert_eq in H1.
+      rewrite get_insert_eq in *.
       congruence.
     }
-    { rewrite get_insert_neq in H1 by congruence.
-      now apply H.
+    { rewrite get_insert_neq in * by congruence.
+      now apply H_m.
     }
   Qed.
 End Mapping.
