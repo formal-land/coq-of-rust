@@ -35,7 +35,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Tell me about ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -43,7 +46,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.tuple [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32" ] ] in
         let* α6 := M.call_closure α5 [ triple ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -61,9 +65,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         triple
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
-            let* γ0_2 := M.get_tuple_field γ 2 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
@@ -74,7 +78,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "First is `0`, `y` is ") in
               let* α3 := M.read (mk_str ", and `z` is ") in
               let* α4 := M.read (mk_str "
@@ -83,12 +88,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α6 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.path "i32" ] in
               let* α7 := M.call_closure α6 [ y ] in
               let* α8 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.path "i32" ] in
               let* α9 := M.call_closure α8 [ z ] in
               let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
               let* α11 :=
@@ -102,9 +109,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α12 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
-            let* γ0_2 := M.get_tuple_field γ 2 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 1) in
@@ -113,7 +120,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 :=
                 M.read (mk_str "First is `1` and the rest doesn't matter
 ") in
@@ -124,9 +132,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α5 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
-            let* γ0_2 := M.get_tuple_field γ 2 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_2 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 2) in
@@ -135,7 +143,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 :=
                 M.read (mk_str "last is `2` and the rest doesn't matter
 ") in
@@ -146,9 +155,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α5 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
-            let* γ0_2 := M.get_tuple_field γ 2 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_2 := M.get_tuple_field γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 3) in
@@ -160,7 +169,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 :=
                 M.read
                   (mk_str
@@ -178,7 +188,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "It doesn't matter what they are
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in

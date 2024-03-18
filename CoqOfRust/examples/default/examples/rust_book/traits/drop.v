@@ -26,7 +26,8 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "> Dropping ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -34,9 +35,13 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
           let* α6 := M.read self in
-          let* α7 := M.call_closure α5 [ M.get_struct_record α6 "name" ] in
+          let* α7 :=
+            M.call_closure
+              α5
+              [ M.get_struct_record_field α6 "drop::Droppable" "name" ] in
           let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
             M.call_closure
@@ -115,7 +120,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 := M.read (mk_str "Exiting block B
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -131,7 +137,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "Just exited block B
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -145,7 +152,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "Exiting block A
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -160,7 +168,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "Just exited block A
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -180,7 +189,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "end of the main function
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in

@@ -20,8 +20,10 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "contract_transfer::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -92,7 +94,7 @@ Module Impl_contract_transfer_Env.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "caller")
+      M.read (M.get_struct_record_field α0 "contract_transfer::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -160,7 +162,8 @@ Module Impl_contract_transfer_GiveMe.
       let* α0 :=
         M.get_associated_function
           (Ty.path "contract_transfer::GiveMe")
-          "init_env" in
+          "init_env"
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -207,7 +210,8 @@ Module Impl_contract_transfer_GiveMe.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "requested value: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -215,7 +219,8 @@ Module Impl_contract_transfer_GiveMe.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "u128" ] in
           let* α6 := M.call_closure α5 [ value ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
@@ -234,7 +239,8 @@ Module Impl_contract_transfer_GiveMe.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "contract balance: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -242,15 +248,18 @@ Module Impl_contract_transfer_GiveMe.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "u128" ] in
           let* α6 :=
             M.get_associated_function
               (Ty.path "contract_transfer::Env")
-              "balance" in
+              "balance"
+              [] in
           let* α7 :=
             M.get_associated_function
               (Ty.path "contract_transfer::GiveMe")
-              "env" in
+              "env"
+              [] in
           let* α8 := M.read self in
           let* α9 := M.call_closure α7 [ α8 ] in
           let* α10 := M.alloc α9 in
@@ -273,11 +282,13 @@ Module Impl_contract_transfer_GiveMe.
         let* α1 :=
           M.get_associated_function
             (Ty.path "contract_transfer::Env")
-            "balance" in
+            "balance"
+            [] in
         let* α2 :=
           M.get_associated_function
             (Ty.path "contract_transfer::GiveMe")
-            "env" in
+            "env"
+            [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
@@ -300,20 +311,31 @@ Module Impl_contract_transfer_GiveMe.
           (Ty.apply
             (Ty.path "core::result::Result")
             [ Ty.tuple []; Ty.tuple [] ])
-          "is_err" in
+          "is_err"
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "contract_transfer::Env")
-          "transfer" in
+          "transfer"
+          [] in
       let* α2 :=
-        M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" in
+        M.get_associated_function
+          (Ty.path "contract_transfer::GiveMe")
+          "env"
+          [] in
       let* α3 := M.read self in
       let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
-        M.get_associated_function (Ty.path "contract_transfer::Env") "caller" in
+        M.get_associated_function
+          (Ty.path "contract_transfer::Env")
+          "caller"
+          [] in
       let* α7 :=
-        M.get_associated_function (Ty.path "contract_transfer::GiveMe") "env" in
+        M.get_associated_function
+          (Ty.path "contract_transfer::GiveMe")
+          "env"
+          [] in
       let* α8 := M.read self in
       let* α9 := M.call_closure α7 [ α8 ] in
       let* α10 := M.alloc α9 in
@@ -362,7 +384,8 @@ Module Impl_contract_transfer_GiveMe.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "received payment: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -370,15 +393,18 @@ Module Impl_contract_transfer_GiveMe.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "u128" ] in
           let* α6 :=
             M.get_associated_function
               (Ty.path "contract_transfer::Env")
-              "transferred_value" in
+              "transferred_value"
+              [] in
           let* α7 :=
             M.get_associated_function
               (Ty.path "contract_transfer::GiveMe")
-              "env" in
+              "env"
+              [] in
           let* α8 := M.read self in
           let* α9 := M.call_closure α7 [ α8 ] in
           let* α10 := M.alloc α9 in
@@ -400,11 +426,13 @@ Module Impl_contract_transfer_GiveMe.
         let* α0 :=
           M.get_associated_function
             (Ty.path "contract_transfer::Env")
-            "transferred_value" in
+            "transferred_value"
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "contract_transfer::GiveMe")
-            "env" in
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in

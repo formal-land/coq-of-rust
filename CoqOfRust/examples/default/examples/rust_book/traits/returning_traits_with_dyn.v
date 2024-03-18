@@ -93,7 +93,8 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "returning_traits_with_dyn::Sheep";
                 Ty.path "alloc::alloc::Global"
               ])
-            "new" in
+            "new"
+            [] in
         let* α1 :=
           M.call_closure
             α0
@@ -109,7 +110,8 @@ Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "returning_traits_with_dyn::Cow";
                 Ty.path "alloc::alloc::Global"
               ])
-            "new" in
+            "new"
+            [] in
         let* α1 :=
           M.call_closure
             α0
@@ -144,7 +146,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 :=
           M.read (mk_str "You've randomly chosen an animal, and it says ") in
         let* α3 := M.read (mk_str "
@@ -153,15 +158,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α6 :=
           M.get_trait_method
             "returning_traits_with_dyn::Animal"
+            (Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ])
+            []
             "noise"
-            [
-              (* Self *)
-                Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ]
-            ] in
+            [] in
         let* α7 := M.read animal in
         let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in

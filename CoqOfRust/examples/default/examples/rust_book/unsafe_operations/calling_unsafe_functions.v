@@ -22,7 +22,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -31,7 +32,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "array") [ Ty.path "u32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 :=
         M.alloc
           (Value.Array
@@ -51,7 +53,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
             [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-          "as_ptr" in
+          "as_ptr"
+          [] in
       let* α1 := M.call_closure α0 [ some_vector ] in
       M.alloc α1 in
     let* length :=
@@ -60,7 +63,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
             [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-          "len" in
+          "len"
+          [] in
       let* α1 := M.call_closure α0 [ some_vector ] in
       M.alloc α1 in
     let* my_slice :=
@@ -76,7 +80,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
             [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-          "as_slice" in
+          "as_slice"
+          [] in
       let* α1 := M.call_closure α0 [ some_vector ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc (Value.Tuple [ α2; my_slice ]) in
@@ -84,24 +89,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α3
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
-                "eq"
+                (Ty.apply
+                  (Ty.path "&")
+                  [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ])
                 [
-                  (* Self *)
-                    Ty.apply
-                      (Ty.path "&")
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
-                  (* Rhs *)
-                    Ty.apply
-                      (Ty.path "&")
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
-                ] in
+                  Ty.apply
+                    (Ty.path "&")
+                    [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                ]
+                "eq"
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in

@@ -63,7 +63,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 :=
                 M.read
                   (mk_str
@@ -82,7 +83,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "page unloaded
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -103,7 +105,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "pressed '") in
               let* α3 := M.read (mk_str "'.
 ") in
@@ -111,7 +114,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "char" ] in
               let* α6 := M.call_closure α5 [ c ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -136,7 +140,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "pasted """) in
               let* α3 := M.read (mk_str """.
 ") in
@@ -144,7 +149,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "alloc::string::String" ] in
               let* α6 := M.call_closure α5 [ s ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -176,7 +182,8 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "clicked at x=") in
                 let* α3 := M.read (mk_str ", y=") in
                 let* α4 := M.read (mk_str ".
@@ -185,12 +192,14 @@ Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "i64" ] in
                 let* α7 := M.call_closure α6 [ x ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "i64" ] in
                 let* α9 := M.call_closure α8 [ y ] in
                 let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                 let* α11 :=
@@ -237,8 +246,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::borrow::ToOwned"
+          (Ty.path "str")
+          []
           "to_owned"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "my text") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc (Value.StructTuple "enums::WebEvent::Paste" [ α2 ]) in

@@ -20,8 +20,10 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "basic_contract_caller::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -121,8 +123,18 @@ Module Impl_basic_contract_caller_OtherContract.
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field
+              α1
+              "basic_contract_caller::OtherContract"
+              "value") in
+        M.assign
+          (M.get_struct_record_field
+            α0
+            "basic_contract_caller::OtherContract"
+            "value")
+          (UnOp.Pure.not α2) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
@@ -140,7 +152,11 @@ Module Impl_basic_contract_caller_OtherContract.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "value")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "basic_contract_caller::OtherContract"
+          "value")
     | _, _ => M.impossible
     end.
   
@@ -207,18 +223,34 @@ Module Impl_basic_contract_caller_BasicContractCaller.
         let* α0 :=
           M.get_associated_function
             (Ty.path "basic_contract_caller::OtherContract")
-            "flip" in
+            "flip"
+            [] in
         let* α1 := M.read self in
         let* α2 :=
-          M.call_closure α0 [ M.get_struct_record α1 "other_contract" ] in
+          M.call_closure
+            α0
+            [
+              M.get_struct_record_field
+                α1
+                "basic_contract_caller::BasicContractCaller"
+                "other_contract"
+            ] in
         M.alloc α2 in
       let* α0 :=
         M.get_associated_function
           (Ty.path "basic_contract_caller::OtherContract")
-          "get" in
+          "get"
+          [] in
       let* α1 := M.read self in
       let* α2 :=
-        M.call_closure α0 [ M.get_struct_record α1 "other_contract" ] in
+        M.call_closure
+          α0
+          [
+            M.get_struct_record_field
+              α1
+              "basic_contract_caller::BasicContractCaller"
+              "other_contract"
+          ] in
       let* α0 := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible

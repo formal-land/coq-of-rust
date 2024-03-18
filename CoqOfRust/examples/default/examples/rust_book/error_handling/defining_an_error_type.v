@@ -21,7 +21,8 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "write_str" in
+          "write_str"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "DoubleError") in
       M.call_closure α0 [ α1; α2 ]
@@ -81,12 +82,14 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "write_fmt" in
+          "write_fmt"
+          [] in
       let* α1 := M.read f in
       let* α2 :=
         M.get_associated_function
           (Ty.path "core::fmt::Arguments")
-          "new_const" in
+          "new_const"
+          [] in
       let* α3 := M.read (mk_str "invalid first item to double") in
       let* α4 := M.alloc (Value.Array [ α3 ]) in
       let* α5 := M.call_closure α2 [ M.pointer_coercion (* Unsize *) α4 ] in
@@ -127,33 +130,49 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
             Ty.path "defining_an_error_type::DoubleError"
           ])
-        "and_then" in
+        "and_then"
+        [
+          Ty.path "i32";
+          Ty.function
+            [
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                ]
+            ]
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ])
+        ] in
     let* α1 :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           ])
-        "ok_or" in
+        "ok_or"
+        [ Ty.path "defining_an_error_type::DoubleError" ] in
     let* α2 :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "slice")
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-        "first" in
+        "first"
+        [] in
     let* α3 :=
       M.get_trait_method
         "core::ops::deref::Deref"
+        (Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [
+            Ty.apply (Ty.path "&") [ Ty.path "str" ];
+            Ty.path "alloc::alloc::Global"
+          ])
+        []
         "deref"
-        [
-          (* Self *)
-            Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [
-                Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                Ty.path "alloc::alloc::Global"
-              ]
-        ] in
+        [] in
     let* α4 := M.call_closure α3 [ vec ] in
     let* α5 := M.call_closure α2 [ α4 ] in
     let* α6 :=
@@ -182,7 +201,13 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "i32";
                             Ty.path "defining_an_error_type::DoubleError"
                           ])
-                        "map" in
+                        "map"
+                        [
+                          Ty.path "i32";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "i32" ] ]
+                            (Ty.path "i32")
+                        ] in
                     let* α1 :=
                       M.get_associated_function
                         (Ty.apply
@@ -191,9 +216,21 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "i32";
                             Ty.path "core::num::error::ParseIntError"
                           ])
-                        "map_err" in
+                        "map_err"
+                        [
+                          Ty.path "defining_an_error_type::DoubleError";
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [ Ty.path "core::num::error::ParseIntError" ]
+                            ]
+                            (Ty.path "defining_an_error_type::DoubleError")
+                        ] in
                     let* α2 :=
-                      M.get_associated_function (Ty.path "str") "parse" in
+                      M.get_associated_function
+                        (Ty.path "str")
+                        "parse"
+                        [ Ty.path "i32" ] in
                     let* α3 := M.read s in
                     let* α4 := M.read α3 in
                     let* α5 := M.call_closure α2 [ α4 ] in
@@ -276,7 +313,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "The first doubled is ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -284,7 +322,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -309,7 +348,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Error: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -317,7 +357,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "defining_an_error_type::DoubleError" ] in
               let* α6 := M.call_closure α5 [ e ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -355,7 +396,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -366,7 +408,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 := M.read (mk_str "42") in
       let* α3 := M.read (mk_str "93") in
       let* α4 := M.read (mk_str "18") in
@@ -384,7 +427,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* strings :=
@@ -393,7 +437,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -404,7 +449,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 := M.read (mk_str "tofu") in
       let* α3 := M.read (mk_str "93") in
       let* α4 := M.read (mk_str "18") in

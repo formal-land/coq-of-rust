@@ -66,7 +66,8 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 := M.read (mk_str "fizzbuzz
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -89,7 +90,8 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "fizz
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -112,7 +114,8 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_const" in
+                    "new_const"
+                    [] in
                 let* α2 := M.read (mk_str "buzz
 ") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -129,7 +132,8 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -137,7 +141,8 @@ Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "u32" ] in
                 let* α6 := M.call_closure α5 [ n ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
@@ -169,19 +174,19 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
+        (Ty.apply
+          (Ty.path "core::ops::range::RangeInclusive")
+          [ Ty.path "u32" ])
+        []
         "into_iter"
-        [
-          (* Self *)
-            Ty.apply
-              (Ty.path "core::ops::range::RangeInclusive")
-              [ Ty.path "u32" ]
-        ] in
+        [] in
     let* α1 :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "core::ops::range::RangeInclusive")
           [ Ty.path "u32" ])
-        "new" in
+        "new"
+        [] in
     let* α2 := M.read n in
     let* α3 := M.call_closure α1 [ Value.Integer Integer.U32 1; α2 ] in
     let* α4 := M.call_closure α0 [ α3 ] in
@@ -197,13 +202,12 @@ Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
+                    (Ty.apply
+                      (Ty.path "core::ops::range::RangeInclusive")
+                      [ Ty.path "u32" ])
+                    []
                     "next"
-                    [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "core::ops::range::RangeInclusive")
-                          [ Ty.path "u32" ]
-                    ] in
+                    [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator

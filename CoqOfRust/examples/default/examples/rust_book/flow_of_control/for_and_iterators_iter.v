@@ -25,7 +25,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -36,7 +37,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 := M.read (mk_str "Bob") in
       let* α3 := M.read (mk_str "Frank") in
       let* α4 := M.read (mk_str "Ferris") in
@@ -49,32 +51,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "core::slice::iter::Iter")
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::slice::iter::Iter")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-          ] in
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "iter" in
+          "iter"
+          [] in
       let* α2 :=
         M.get_trait_method
           "core::ops::deref::Deref"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
           "deref"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                  Ty.path "alloc::alloc::Global"
-                ]
-          ] in
+          [] in
       let* α3 := M.call_closure α2 [ names ] in
       let* α4 := M.call_closure α1 [ α3 ] in
       let* α5 := M.call_closure α0 [ α4 ] in
@@ -90,13 +91,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::slice::iter::Iter")
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -125,7 +125,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::Arguments")
-                                    "new_const" in
+                                    "new_const"
+                                    [] in
                                 let* α2 :=
                                   M.read
                                     (mk_str
@@ -146,7 +147,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::Arguments")
-                                    "new_v1" in
+                                    "new_v1"
+                                    [] in
                                 let* α2 := M.read (mk_str "Hello ") in
                                 let* α3 := M.read (mk_str "
 ") in
@@ -154,7 +156,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 let* α5 :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::rt::Argument")
-                                    "new_display" in
+                                    "new_display"
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            [ Ty.path "str" ]
+                                        ]
+                                    ] in
                                 let* α6 := M.call_closure α5 [ name ] in
                                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                                 let* α8 :=
@@ -176,7 +187,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "names: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -184,7 +198,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α6 := M.call_closure α5 [ names ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

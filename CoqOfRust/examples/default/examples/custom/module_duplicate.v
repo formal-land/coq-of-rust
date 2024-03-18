@@ -17,7 +17,8 @@ Module foo.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 := M.read (mk_str "foo::gre::bar
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -47,7 +48,8 @@ Module foo.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "foo::bar
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in

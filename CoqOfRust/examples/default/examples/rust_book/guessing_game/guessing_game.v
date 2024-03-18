@@ -59,7 +59,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "Guess the number!
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -79,7 +80,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 := M.read (mk_str "Please input your guess.
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -90,7 +92,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           M.alloc (Value.Tuple []) in
         let* guess :=
           let* α0 :=
-            M.get_associated_function (Ty.path "alloc::string::String") "new" in
+            M.get_associated_function
+              (Ty.path "alloc::string::String")
+              "new"
+              [] in
           let* α1 := M.call_closure α0 [] in
           M.alloc α1 in
         let* _ :=
@@ -99,11 +104,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.apply
                 (Ty.path "core::result::Result")
                 [ Ty.path "usize"; Ty.path "std::io::error::Error" ])
-              "expect" in
+              "expect"
+              [] in
           let* α1 :=
             M.get_associated_function
               (Ty.path "std::io::stdio::Stdin")
-              "read_line" in
+              "read_line"
+              [] in
           let* α2 := M.get_function "std::io::stdio::stdin" [] in
           let* α3 := M.call_closure α2 [] in
           let* α4 := M.alloc α3 in
@@ -112,13 +119,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α7 := M.call_closure α0 [ α5; α6 ] in
           M.alloc α7 in
         let* guess :=
-          let* α0 := M.get_associated_function (Ty.path "str") "parse" in
-          let* α1 := M.get_associated_function (Ty.path "str") "trim" in
+          let* α0 :=
+            M.get_associated_function
+              (Ty.path "str")
+              "parse"
+              [ Ty.path "u32" ] in
+          let* α1 := M.get_associated_function (Ty.path "str") "trim" [] in
           let* α2 :=
             M.get_trait_method
               "core::ops::deref::Deref"
+              (Ty.path "alloc::string::String")
+              []
               "deref"
-              [ (* Self *) Ty.path "alloc::string::String" ] in
+              [] in
           let* α3 := M.call_closure α2 [ guess ] in
           let* α4 := M.call_closure α1 [ α3 ] in
           let* α5 := M.call_closure α0 [ α4 ] in
@@ -153,7 +166,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_v1" in
+                "new_v1"
+                [] in
             let* α2 := M.read (mk_str "You guessed: ") in
             let* α3 := M.read (mk_str "
 ") in
@@ -161,7 +175,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α5 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
-                "new_display" in
+                "new_display"
+                [ Ty.path "u32" ] in
             let* α6 := M.call_closure α5 [ guess ] in
             let* α7 := M.alloc (Value.Array [ α6 ]) in
             let* α8 :=
@@ -175,10 +190,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc α9 in
           M.alloc (Value.Tuple []) in
         let* α0 :=
-          M.get_trait_method
-            "core::cmp::Ord"
-            "cmp"
-            [ (* Self *) Ty.path "u32" ] in
+          M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "cmp" [] in
         let* α1 := M.call_closure α0 [ guess; secret_number ] in
         let* α2 := M.alloc α1 in
         match_operator
@@ -190,7 +202,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_const" in
+                    "new_const"
+                    [] in
                 let* α2 := M.read (mk_str "Too small!
 ") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -205,7 +218,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_const" in
+                    "new_const"
+                    [] in
                 let* α2 := M.read (mk_str "Too big!
 ") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -221,7 +235,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
-                      "new_const" in
+                      "new_const"
+                      [] in
                   let* α2 := M.read (mk_str "You win!
 ") in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in

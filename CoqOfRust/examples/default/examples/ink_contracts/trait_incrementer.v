@@ -51,7 +51,11 @@ Module Impl_trait_incrementer_Incrementer.
       let* _ :=
         let* β :=
           let* α0 := M.read self in
-          M.pure (M.get_struct_record α0 "value") in
+          M.pure
+            (M.get_struct_record_field
+              α0
+              "trait_incrementer::Incrementer"
+              "value") in
         let* α0 := M.read β in
         let* α1 := M.read delta in
         let* α2 := BinOp.Panic.add α0 α1 in
@@ -79,7 +83,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       let* α0 :=
         M.get_associated_function
           (Ty.path "trait_incrementer::Incrementer")
-          "inc_by" in
+          "inc_by"
+          [] in
       let* α1 := M.read self in
       M.call_closure α0 [ α1; Value.Integer Integer.U64 1 ]
     | _, _ => M.impossible
@@ -95,7 +100,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "value")
+      M.read
+        (M.get_struct_record_field α0 "trait_incrementer::Incrementer" "value")
     | _, _ => M.impossible
     end.
   
@@ -124,7 +130,10 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       let* _ :=
         let* α0 := M.read self in
         M.assign
-          (M.get_struct_record α0 "value")
+          (M.get_struct_record_field
+            α0
+            "trait_incrementer::Incrementer"
+            "value")
           (Value.Integer Integer.U64 0) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0

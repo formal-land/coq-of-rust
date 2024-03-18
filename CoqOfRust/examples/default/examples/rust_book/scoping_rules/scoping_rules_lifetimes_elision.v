@@ -14,7 +14,10 @@ Definition elided_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "`elided_input`: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -22,7 +25,8 @@ Definition elided_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α6 := M.call_closure α5 [ x ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -53,7 +57,10 @@ Definition annotated_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "`annotated_input`: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -61,7 +68,8 @@ Definition annotated_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α6 := M.call_closure α5 [ x ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -134,7 +142,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "`elided_pass`: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -142,7 +153,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α6 :=
           M.get_function "scoping_rules_lifetimes_elision::elided_pass" [] in
         let* α7 := M.call_closure α6 [ x ] in
@@ -163,7 +175,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "`annotated_pass`: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -171,7 +186,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α6 :=
           M.get_function "scoping_rules_lifetimes_elision::annotated_pass" [] in
         let* α7 := M.call_closure α6 [ x ] in

@@ -1,4 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.simulations.M.
 
 Module  Mapping.
 Section Mapping.
@@ -6,12 +7,13 @@ Section Mapping.
 
   Context {K V : Set}.
 
-  Parameter to_value :
-    forall
-      (K_to_value : K -> Value.t)
-      (V_to_value : V -> Value.t)
-      (x : t K V),
-      Value.t.
+  #[refine]
+  Global Instance IsToValue (_ : ToValue K) (_ : ToValue V) :
+      ToValue (t K V) := {
+    Φ := Ty.apply (Ty.path "erc20::Mapping") [ Φ K; Φ V ];
+    φ x := _;
+  }.
+  Admitted.
 
   Parameter empty : t K V.
 

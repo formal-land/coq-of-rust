@@ -22,21 +22,25 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_struct_field2_finish" in
+          "debug_struct_field2_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Point") in
       let* α3 := M.read (mk_str "x") in
       let* α4 := M.read self in
       let* α5 := M.read (mk_str "y") in
       let* α6 := M.read self in
-      let* α7 := M.alloc (M.get_struct_record α6 "y") in
+      let* α7 :=
+        M.alloc (M.get_struct_record_field α6 "box_stack_heap::Point" "y") in
       M.call_closure
         α0
         [
           α1;
           α2;
           α3;
-          M.pointer_coercion (* Unsize *) (M.get_struct_record α4 "x");
+          M.pointer_coercion
+            (* Unsize *)
+            (M.get_struct_record_field α4 "box_stack_heap::Point" "x");
           α5;
           M.pointer_coercion (* Unsize *) α7
         ]
@@ -125,7 +129,8 @@ Definition boxed_origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply
           (Ty.path "alloc::boxed::Box")
           [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ])
-        "new" in
+        "new"
+        [] in
     let* α1 := M.read UnsupportedLiteral in
     let* α2 := M.read UnsupportedLiteral in
     M.call_closure
@@ -218,7 +223,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "box_stack_heap::Rectangle";
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.get_function "box_stack_heap::origin" [] in
       let* α2 := M.call_closure α1 [] in
       let* α3 := M.read UnsupportedLiteral in
@@ -244,7 +250,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.get_function "box_stack_heap::origin" [] in
       let* α2 := M.call_closure α1 [] in
       let* α3 := M.call_closure α0 [ α2 ] in
@@ -263,7 +270,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.get_function "box_stack_heap::boxed_origin" [] in
       let* α2 := M.call_closure α1 [] in
       let* α3 := M.call_closure α0 [ α2 ] in
@@ -272,7 +280,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Point occupies ") in
         let* α3 := M.read (mk_str " bytes on the stack
 ") in
@@ -280,7 +291,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_function
             "core::mem::size_of_val"
@@ -303,7 +315,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Rectangle occupies ") in
         let* α3 := M.read (mk_str " bytes on the stack
 ") in
@@ -311,7 +326,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_function
             "core::mem::size_of_val"
@@ -334,7 +350,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Boxed point occupies ") in
         let* α3 := M.read (mk_str " bytes on the stack
 ") in
@@ -342,7 +361,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_function
             "core::mem::size_of_val"
@@ -372,7 +392,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Boxed rectangle occupies ") in
         let* α3 := M.read (mk_str " bytes on the stack
 ") in
@@ -380,7 +403,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_function
             "core::mem::size_of_val"
@@ -410,7 +434,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Boxed box occupies ") in
         let* α3 := M.read (mk_str " bytes on the stack
 ") in
@@ -418,7 +445,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_function
             "core::mem::size_of_val"
@@ -456,7 +484,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Unboxed point occupies ") in
         let* α3 := M.read (mk_str " bytes on the stack
 ") in
@@ -464,7 +495,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_function
             "core::mem::size_of_val"

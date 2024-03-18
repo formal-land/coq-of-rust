@@ -35,30 +35,33 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [ (* Self *) A; (* Rhs *) A ] in
+      let* α0 := M.get_trait_method "core::cmp::PartialEq" A [ A ] "eq" [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
       let* α3 :=
         M.call_closure
           α0
-          [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ] in
+          [
+            M.get_struct_tuple_field α1 "generics_phantom_type::PhantomTuple" 0;
+            M.get_struct_tuple_field α2 "generics_phantom_type::PhantomTuple" 0
+          ] in
       LogicalOp.and
         α3
         (let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.apply (Ty.path "core::marker::PhantomData") [ B ])
+            [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ]
             "eq"
-            [
-              (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
-              (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
-        M.call_closure α0 [ M.get_struct_tuple α1 1; M.get_struct_tuple α2 1 ])
+        M.call_closure
+          α0
+          [
+            M.get_struct_tuple_field α1 "generics_phantom_type::PhantomTuple" 1;
+            M.get_struct_tuple_field α2 "generics_phantom_type::PhantomTuple" 1
+          ])
     | _, _ => M.impossible
     end.
   
@@ -110,32 +113,44 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          "eq"
-          [ (* Self *) A; (* Rhs *) A ] in
+      let* α0 := M.get_trait_method "core::cmp::PartialEq" A [ A ] "eq" [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
       let* α3 :=
         M.call_closure
           α0
-          [ M.get_struct_record α1 "first"; M.get_struct_record α2 "first" ] in
+          [
+            M.get_struct_record_field
+              α1
+              "generics_phantom_type::PhantomStruct"
+              "first";
+            M.get_struct_record_field
+              α2
+              "generics_phantom_type::PhantomStruct"
+              "first"
+          ] in
       LogicalOp.and
         α3
         (let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.apply (Ty.path "core::marker::PhantomData") [ B ])
+            [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ]
             "eq"
-            [
-              (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ];
-              (* Rhs *) Ty.apply (Ty.path "core::marker::PhantomData") [ B ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
         M.call_closure
           α0
-          [ M.get_struct_record α1 "phantom"; M.get_struct_record α2 "phantom"
+          [
+            M.get_struct_record_field
+              α1
+              "generics_phantom_type::PhantomStruct"
+              "phantom";
+            M.get_struct_record_field
+              α2
+              "generics_phantom_type::PhantomStruct"
+              "phantom"
           ])
     | _, _ => M.impossible
     end.

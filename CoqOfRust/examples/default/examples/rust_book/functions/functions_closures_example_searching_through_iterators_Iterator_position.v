@@ -23,7 +23,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -32,7 +33,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "array") [ Ty.path "i32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 :=
         M.alloc
           (Value.Array
@@ -52,29 +54,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ])
+          []
           "position"
           [
-            (* Self *)
-              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ];
-            (* P *)
-              Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
-                (Ty.path "bool")
+            Ty.function
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+              (Ty.path "bool")
           ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "iter" in
+          "iter"
+          [] in
       let* α2 :=
         M.get_trait_method
           "core::ops::deref::Deref"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "deref"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ] in
+          [] in
       let* α3 := M.call_closure α2 [ vec ] in
       let* α4 := M.call_closure α1 [ α3 ] in
       let* α5 := M.alloc α4 in
@@ -114,24 +115,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
+                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
+                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ]
+                ]
                 "eq"
-                [
-                  (* Self *)
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.path "usize" ];
-                  (* Rhs *)
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.path "usize" ]
-                ] in
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -175,24 +170,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "position"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::into_iter::IntoIter")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-            (* P *) Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool")
-          ] in
+          [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool") ] in
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ] in
+          [] in
       let* α2 := M.read vec in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.alloc α3 in
@@ -225,24 +217,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
+                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
+                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ]
+                ]
                 "eq"
-                [
-                  (* Self *)
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.path "usize" ];
-                  (* Rhs *)
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      [ Ty.path "usize" ]
-                ] in
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in

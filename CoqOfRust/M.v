@@ -2,6 +2,10 @@
 Require Import Coq.Strings.String.
 Require Import Coq.ZArith.ZArith.
 
+(* Proof libraries that we can use everywhere. *)
+Require Export Lia.
+From Hammer Require Export Tactics.
+
 Import List.ListNotations.
 
 Local Open Scope list.
@@ -304,7 +308,13 @@ Module Primitive.
   | StateWrite {Address : Set} (address : Address) (value : Value.t)
   | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
-  | GetAssociatedFunction (ty : Ty.t) (name : string).
+  | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
+  | GetTraitMethod
+    (trait : string)
+    (self_ty : Ty.t)
+    (trait_tys : list Ty.t)
+    (method : string)
+    (generic_tys : list Ty.t).
 End Primitive.
 
 Module LowM.
@@ -516,10 +526,23 @@ Parameter get_constant : string -> M.
 Definition get_function (path : string) (generic_tys : list Ty.t) : M :=
   call_primitive (Primitive.GetFunction path generic_tys).
 
-Definition get_associated_function (ty : Ty.t) (name : string) : M :=
-  call_primitive (Primitive.GetAssociatedFunction ty name).
+Definition get_associated_function
+  (ty : Ty.t)
+  (name : string)
+  (generic_tys : list Ty.t) :
+  M :=
+  call_primitive (Primitive.GetAssociatedFunction ty name generic_tys).
 
-Parameter get_trait_method : string -> string -> list Ty.t -> M.
+Definition get_trait_method
+    (trait : string)
+    (self_ty : Ty.t)
+    (trait_tys : list Ty.t)
+    (method : string)
+    (generic_tys : list Ty.t) :
+    M :=
+  call_primitive (Primitive.GetTraitMethod
+    trait self_ty trait_tys method generic_tys
+  ).
 
 Definition catch (body : M) (handler : Exception.t -> M) : M :=
   let- result := body in
@@ -587,15 +610,9 @@ Definition never_to_any (x : Value.t) : M :=
 Definition use (x : Value.t) : Value.t :=
   x.
 
-Parameter get_struct_tuple : Value.t -> Z -> Value.t.
-
-Parameter get_struct_record : Value.t -> string -> Value.t.
-
-Parameter pointer_coercion : Value.t -> Value.t.
-
-Parameter assign : Value.t -> Value.t -> M.
-
-Definition get_tuple_field (value : Value.t) (index : Z) : M :=
+(** An error should not occur, but the code is still there for typing and
+    debugging reasons. *)
+Definition get_tuple_field (value : Value.t) (index : Z) : Value.t :=
   match value with
   | Value.Pointer pointer =>
     match pointer with
@@ -603,23 +620,146 @@ Definition get_tuple_field (value : Value.t) (index : Z) : M :=
       match value with
       | Value.Tuple fields =>
         match List.nth_error fields (Z.to_nat index) with
-        | Some field => pure (Value.Pointer (Pointer.Immediate field))
-        | None => M.impossible (* Tuple indexes are statically checked *)
+        | Some field => Value.Pointer (Pointer.Immediate field)
+        | None => Value.Error "invalid tuple index"
         end
-      | _ => M.impossible
+      | _ => Value.Error "expected a tuple"
       end
     | Pointer.Mutable address path =>
       let new_path := path ++ [Pointer.Index.Tuple index] in
-      M.pure (Value.Pointer (Pointer.Mutable address new_path))
+      Value.Pointer (Pointer.Mutable address new_path)
+    end
+  | _ => Value.Error "expected an address"
+  end.
+
+(** An error should not occur, but the code is still there for typing and
+    debugging reasons. *)
+Definition get_struct_tuple_field
+    (value : Value.t) (constructor : string) (index : Z) :
+    Value.t :=
+  match value with
+  | Value.Pointer pointer =>
+    match pointer with
+    | Pointer.Immediate value =>
+      match value with
+      | Value.StructTuple current_constructor fields =>
+        if String.eqb current_constructor constructor then
+          match List.nth_error fields (Z.to_nat index) with
+          | Some value => Value.Pointer (Pointer.Immediate value)
+          | None => Value.Error "field not found"
+          end
+        else
+          Value.Error "different values of constructor"
+      | _ => Value.Error "not a struct tuple"
+      end
+    | Pointer.Mutable address path =>
+      let new_path := path ++ [Pointer.Index.StructTuple constructor index] in
+      Value.Pointer (Pointer.Mutable address new_path)
+    end
+  | _ => Value.Error "expected an address"
+  end.
+
+(** An error should not occur, but the code is still there for typing and
+    debugging reasons. *)
+Definition get_struct_record_field
+    (value : Value.t) (constructor field : string) :
+    Value.t :=
+  match value with
+  | Value.Pointer (Pointer.Immediate value) =>
+    match value with
+    | Value.StructRecord current_constructor fields =>
+      if String.eqb current_constructor constructor then
+        match List.assoc fields field with
+        | Some value => Value.Pointer (Pointer.Immediate value)
+        | None => Value.Error "field not found"
+        end
+      else
+        Value.Error "different values of constructor"
+    | _ => Value.Error "not a struct record"
+    end
+  | Value.Pointer (Pointer.Mutable address path) =>
+    let new_path := path ++ [Pointer.Index.StructRecord constructor field] in
+    Value.Pointer (Pointer.Mutable address new_path)
+  | _ => Value.Error "expected an address"
+  end.
+
+Parameter pointer_coercion : Value.t -> Value.t.
+
+Parameter assign : Value.t -> Value.t -> M.
+
+Definition get_struct_tuple_field_or_break_match
+    (value : Value.t) (constructor : string) (index : Z) :
+    M :=
+  match value with
+  | Value.Pointer pointer =>
+    match pointer with
+    | Pointer.Immediate value =>
+      match value with
+      | Value.StructTuple current_constructor fields =>
+        if String.eqb current_constructor constructor then
+          match List.nth_error fields (Z.to_nat index) with
+          | Some value => pure (Value.Pointer (Pointer.Immediate value))
+          | None => M.impossible
+          end
+        else
+          break_match
+      | _ => M.impossible
+      end
+    | Pointer.Mutable address path =>
+      match Value.read_path value path with
+      | None => M.impossible
+      | Some value =>
+        match value with
+        | Value.StructTuple current_constructor fields =>
+          if String.eqb current_constructor constructor then
+            let new_path :=
+              path ++ [Pointer.Index.StructTuple constructor index] in
+            pure (Value.Pointer (Pointer.Mutable address new_path))
+          else
+            break_match
+        | _ => M.impossible
+        end
+      end
     end
   | _ => M.impossible
   end.
 
-Parameter get_struct_record_field_or_break_match :
-  Value.t -> string -> string -> M.
-
-Parameter get_struct_tuple_field_or_break_match :
-  Value.t -> string -> Z -> M.
+Definition get_struct_record_field_or_break_match
+    (value : Value.t) (constructor field : string) :
+    M :=
+  match value with
+  | Value.Pointer pointer =>
+    match pointer with
+    | Pointer.Immediate value =>
+      match value with
+      | Value.StructRecord current_constructor fields =>
+        if String.eqb current_constructor constructor then
+          match List.assoc fields field with
+          | Some value => pure (Value.Pointer (Pointer.Immediate value))
+          | None => M.impossible
+          end
+        else
+          break_match
+      | _ => M.impossible
+      end
+    | Pointer.Mutable address path =>
+      match Value.read_path value path with
+      | None => M.impossible
+      | Some value =>
+        match value with
+        | Value.StructRecord current_constructor fields =>
+          if String.eqb current_constructor constructor then
+            let new_path :=
+              path ++ [Pointer.Index.StructRecord constructor field] in
+            pure (Value.Pointer (Pointer.Mutable address new_path))
+          else
+            break_match
+        | _ => M.impossible
+        end
+      end
+    end
+  | _ => M.impossible
+  end.
 
 Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   if Value.eqb value expected_value then

@@ -18,13 +18,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "core::result::Result")
             [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ])
-          "unwrap" in
+          "unwrap"
+          [] in
       let* α1 :=
-        M.get_associated_function (Ty.path "std::process::Command") "spawn" in
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "spawn"
+          [] in
       let* α2 :=
-        M.get_associated_function (Ty.path "std::process::Command") "arg" in
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "arg"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α3 :=
-        M.get_associated_function (Ty.path "std::process::Command") "new" in
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "new"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α4 := M.read (mk_str "sleep") in
       let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.alloc α5 in
@@ -42,9 +52,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "std::process::ExitStatus";
               Ty.path "std::io::error::Error"
             ])
-          "unwrap" in
+          "unwrap"
+          [] in
       let* α1 :=
-        M.get_associated_function (Ty.path "std::process::Child") "wait" in
+        M.get_associated_function (Ty.path "std::process::Child") "wait" [] in
       let* α2 := M.call_closure α1 [ child ] in
       let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
@@ -54,7 +65,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "reached end of main
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in

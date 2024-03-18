@@ -17,7 +17,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* number_str := M.copy (mk_str "10") in
     let* number :=
-      let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+      let* α0 :=
+        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
       let* α1 := M.read number_str in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -53,7 +54,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -61,7 +65,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.call_closure α5 [ number ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

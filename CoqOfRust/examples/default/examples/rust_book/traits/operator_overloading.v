@@ -33,7 +33,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "write_str" in
+          "write_str"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "FooBar") in
       M.call_closure α0 [ α1; α2 ]
@@ -68,7 +69,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "write_str" in
+          "write_str"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "BarFoo") in
       M.call_closure α0 [ α1; α2 ]
@@ -109,7 +111,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "> Foo.add(Bar) was called
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -160,7 +163,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "> Bar.add(Foo) was called
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -198,7 +202,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Foo + Bar = ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -206,15 +213,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.path "operator_overloading::FooBar" ] in
         let* α6 :=
           M.get_trait_method
             "core::ops::arith::Add"
+            (Ty.path "operator_overloading::Foo")
+            [ Ty.path "operator_overloading::Bar" ]
             "add"
-            [
-              (* Self *) Ty.path "operator_overloading::Foo";
-              (* Rhs *) Ty.path "operator_overloading::Bar"
-            ] in
+            [] in
         let* α7 :=
           M.call_closure
             α6
@@ -239,7 +246,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Bar + Foo = ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -247,15 +257,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.path "operator_overloading::BarFoo" ] in
         let* α6 :=
           M.get_trait_method
             "core::ops::arith::Add"
+            (Ty.path "operator_overloading::Bar")
+            [ Ty.path "operator_overloading::Foo" ]
             "add"
-            [
-              (* Self *) Ty.path "operator_overloading::Bar";
-              (* Rhs *) Ty.path "operator_overloading::Foo"
-            ] in
+            [] in
         let* α7 :=
           M.call_closure
             α6

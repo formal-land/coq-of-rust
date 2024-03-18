@@ -10,8 +10,10 @@ Module ProvidedAndRequired.
       let* α0 :=
         M.get_trait_method
           "provided_method::ProvidedAndRequired"
+          Self
+          []
           "required"
-          [ (* Self *) Self ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.call_closure α0 [ α1 ] in
       BinOp.Panic.add (Value.Integer Integer.I32 42) α2
@@ -106,8 +108,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "provided_method::ProvidedAndRequired"
+          (Ty.path "i32")
+          []
           "provided"
-          [ (* Self *) Ty.path "i32" ] in
+          [] in
       let* α1 := M.call_closure α0 [ x ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc (Value.Integer Integer.I32 47) in
@@ -116,8 +120,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 := M.read left_val in
@@ -158,8 +162,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "provided_method::ProvidedAndRequired"
+          (Ty.path "u32")
+          []
           "provided"
-          [ (* Self *) Ty.path "u32" ] in
+          [] in
       let* α1 := M.call_closure α0 [ y ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.alloc (Value.Integer Integer.I32 0) in
@@ -168,8 +174,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 := M.read left_val in

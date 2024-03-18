@@ -40,7 +40,8 @@ Module checked.
         let* α0 :=
           M.get_associated_function
             (Ty.path "core::fmt::Formatter")
-            "write_str" in
+            "write_str"
+            [] in
         let* α1 := M.read f in
         let* α2 :=
           match_operator
@@ -147,7 +148,7 @@ Module checked.
                   []
               ])
         else
-          let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" in
+          let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
           let* α1 := M.read x in
           let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
@@ -183,7 +184,7 @@ Module checked.
                   []
               ])
         else
-          let* α0 := M.get_associated_function (Ty.path "f64") "ln" in
+          let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
           let* α1 := M.read x in
           let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
@@ -211,17 +212,15 @@ Module checked.
         let* α0 :=
           M.get_trait_method
             "core::ops::try_trait::Try"
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [
+                Ty.path "f64";
+                Ty.path "result_chaining_with_question_mark::checked::MathError"
+              ])
+            []
             "branch"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [
-                    Ty.path "f64";
-                    Ty.path
-                      "result_chaining_with_question_mark::checked::MathError"
-                  ]
-            ] in
+            [] in
         let* α1 :=
           M.get_function
             "result_chaining_with_question_mark::checked::div"
@@ -245,25 +244,24 @@ Module checked.
                 let* α0 :=
                   M.get_trait_method
                     "core::ops::try_trait::FromResidual"
-                    "from_residual"
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "f64";
+                        Ty.path
+                          "result_chaining_with_question_mark::checked::MathError"
+                      ])
                     [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "f64";
-                            Ty.path
-                              "result_chaining_with_question_mark::checked::MathError"
-                          ];
-                      (* R *)
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "core::convert::Infallible";
-                            Ty.path
-                              "result_chaining_with_question_mark::checked::MathError"
-                          ]
-                    ] in
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path
+                            "result_chaining_with_question_mark::checked::MathError"
+                        ]
+                    ]
+                    "from_residual"
+                    [] in
                 let* α1 := M.read residual in
                 let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.return_ α2 in
@@ -284,17 +282,15 @@ Module checked.
         let* α0 :=
           M.get_trait_method
             "core::ops::try_trait::Try"
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [
+                Ty.path "f64";
+                Ty.path "result_chaining_with_question_mark::checked::MathError"
+              ])
+            []
             "branch"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [
-                    Ty.path "f64";
-                    Ty.path
-                      "result_chaining_with_question_mark::checked::MathError"
-                  ]
-            ] in
+            [] in
         let* α1 :=
           M.get_function "result_chaining_with_question_mark::checked::ln" [] in
         let* α2 := M.read ratio in
@@ -315,25 +311,24 @@ Module checked.
                 let* α0 :=
                   M.get_trait_method
                     "core::ops::try_trait::FromResidual"
-                    "from_residual"
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "f64";
+                        Ty.path
+                          "result_chaining_with_question_mark::checked::MathError"
+                      ])
                     [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "f64";
-                            Ty.path
-                              "result_chaining_with_question_mark::checked::MathError"
-                          ];
-                      (* R *)
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "core::convert::Infallible";
-                            Ty.path
-                              "result_chaining_with_question_mark::checked::MathError"
-                          ]
-                    ] in
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path
+                            "result_chaining_with_question_mark::checked::MathError"
+                        ]
+                    ]
+                    "from_residual"
+                    [] in
                 let* α1 := M.read residual in
                 let* α2 := M.call_closure α0 [ α1 ] in
                 let* α3 := M.return_ α2 in
@@ -428,7 +423,8 @@ Module checked.
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -436,7 +432,8 @@ Module checked.
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "f64" ] in
                 let* α6 := M.call_closure α5 [ value ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=

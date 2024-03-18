@@ -34,10 +34,19 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
       let* α0 :=
         M.get_trait_method
           "core::clone::Clone"
+          (Ty.path "alloc::string::String")
+          []
           "clone"
-          [ (* Self *) Ty.path "alloc::string::String" ] in
+          [] in
       let* α1 := M.read self in
-      M.call_closure α0 [ M.get_struct_record α1 "username" ]
+      M.call_closure
+        α0
+        [
+          M.get_struct_record_field
+            α1
+            "disambiguating_overlapping_traits::Form"
+            "username"
+        ]
     | _, _ => M.impossible
     end.
   
@@ -62,7 +71,11 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "age")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "disambiguating_overlapping_traits::Form"
+          "age")
     | _, _ => M.impossible
     end.
   
@@ -99,8 +112,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::borrow::ToOwned"
+          (Ty.path "str")
+          []
           "to_owned"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "rustacean") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
@@ -111,16 +126,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "disambiguating_overlapping_traits::UsernameWidget"
+          (Ty.path "disambiguating_overlapping_traits::Form")
+          []
           "get"
-          [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
+          [] in
       let* α1 := M.call_closure α0 [ form ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
           "alloc::string::ToString"
+          (Ty.path "str")
+          []
           "to_string"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "rustacean") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
@@ -129,18 +148,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
+                (Ty.path "alloc::string::String")
+                [ Ty.path "alloc::string::String" ]
                 "eq"
-                [
-                  (* Self *) Ty.path "alloc::string::String";
-                  (* Rhs *) Ty.path "alloc::string::String"
-                ] in
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -180,8 +198,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "disambiguating_overlapping_traits::AgeWidget"
+          (Ty.path "disambiguating_overlapping_traits::Form")
+          []
           "get"
-          [ (* Self *) Ty.path "disambiguating_overlapping_traits::Form" ] in
+          [] in
       let* α1 := M.call_closure α0 [ form ] in
       M.alloc α1 in
     let* _ :=
@@ -191,8 +211,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 := M.read left_val in

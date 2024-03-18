@@ -167,7 +167,7 @@ fn build_inner_match(
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalInteger(index)),
                             ],
-                            kind: CallKind::Effectful,
+                            kind: CallKind::Pure,
                         }),
                         body,
                     })
@@ -335,7 +335,7 @@ pub(crate) fn compile_expr<'a>(
             let value = compile_expr(env, thir, value);
 
             Rc::new(Expr::Call {
-                func: Rc::new(Expr::AssociatedFunction {
+                func: Rc::new(Expr::GetAssociatedFunction {
                     ty: Rc::new(CoqType::Application {
                         func: Rc::new(CoqType::Path {
                             path: Rc::new(Path::new(&["alloc", "boxed", "Box"])),
@@ -348,6 +348,7 @@ pub(crate) fn compile_expr<'a>(
                         ],
                     }),
                     func: "new".to_string(),
+                    generic_tys: vec![],
                 }),
                 args: vec![value],
                 kind: CallKind::Closure,
@@ -566,20 +567,21 @@ pub(crate) fn compile_expr<'a>(
                     let name = variant.fields.get(*name).unwrap().name.to_string();
                     let is_name_a_number = name.chars().all(|c| c.is_ascii_digit());
                     let getter_name = if is_name_a_number {
-                        "M.get_struct_tuple"
+                        "M.get_struct_tuple_field"
                     } else {
-                        "M.get_struct_record"
+                        "M.get_struct_record_field"
                     };
-                    let name_as_index = if is_name_a_number {
-                        name
+                    let constructor_name = compile_def_id(env, adt_def.did()).to_string();
+                    let constructor = Rc::new(Expr::InternalString(constructor_name));
+                    let index = if is_name_a_number {
+                        Expr::local_var(&name)
                     } else {
-                        format!("\"{name}\"")
+                        Rc::new(Expr::InternalString(name))
                     };
-                    let index = Expr::local_var(&name_as_index);
 
                     Rc::new(Expr::Call {
                         func: Expr::local_var(getter_name),
-                        args: vec![base, index],
+                        args: vec![base, constructor, index],
                         kind: CallKind::Pure,
                     })
                 }
@@ -812,43 +814,57 @@ pub(crate) fn compile_expr<'a>(
 
                 Rc::new(match parent_kind {
                     DefKind::Impl { .. } => {
+                        let parent_generics = env.tcx.generics_of(parent);
+                        let nb_parent_generics = parent_generics.params.len();
                         let parent_type =
                             env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
                         let ty = compile_type(env, &parent_type);
                         let func = symbol.unwrap().to_string();
-                        Expr::AssociatedFunction { ty, func }
-                    }
-                    DefKind::Trait => {
-                        let generics = env.tcx.generics_of(def_id);
-                        let parent_path = compile_def_id(env, parent);
-                        let parent_generics = env.tcx.generics_of(parent);
-                        let self_and_generic_tys = [
-                            parent_generics
-                                .params
-                                .iter()
-                                .map(|param| param.name.to_string())
-                                .collect::<Vec<_>>(),
-                            generics
-                                .params
-                                .iter()
-                                .map(|param| param.name.to_string())
-                                .collect::<Vec<_>>(),
-                        ]
-                        .concat()
-                        .into_iter()
-                        .zip(generic_args.iter())
-                        .filter_map(|(param, generic_arg)| {
-                            generic_arg
+                        // We remove [nb_parent_generics] elements from the start of [generic_args]
+                        // as these are already inferred from the `Self` type.
+                        let generic_tys = generic_args
+                            .iter()
+                            .skip(nb_parent_generics)
+                            .filter_map(|generic_arg| generic_arg
                                 .as_type()
                                 .as_ref()
-                                .map(|ty| (param, compile_type(env, ty)))
-                        })
-                        .collect::<Vec<_>>();
+                                .map(|ty| compile_type(env, ty)))
+                            .collect();
 
-                        Expr::TraitMethod {
+                        Expr::GetAssociatedFunction { ty, func, generic_tys }
+                    }
+                    DefKind::Trait => {
+                        let parent_generics = env.tcx.generics_of(parent);
+                        let nb_parent_generics = parent_generics.params.len();
+                        let parent_path = compile_def_id(env, parent);
+                        let self_ty_and_trait_tys = generic_args
+                            .iter()
+                            .take(nb_parent_generics)
+                            .filter_map(|generic_arg| generic_arg
+                                .as_type()
+                                .as_ref()
+                                .map(|ty| compile_type(env, ty)))
+                            .collect::<Vec<_>>();
+                        let (self_ty, trait_tys) = match self_ty_and_trait_tys.as_slice() {
+                            [self_ty, trait_tys @ ..] => (self_ty.clone(), trait_tys.to_vec()),
+                            _ => panic!("Expected at least one element"),
+                        };
+                        let method_name = symbol.unwrap().to_string();
+                        let generic_tys = generic_args
+                            .iter()
+                            .skip(nb_parent_generics)
+                            .filter_map(|generic_arg| generic_arg
+                                .as_type()
+                                .as_ref()
+                                .map(|ty| compile_type(env, ty)))
+                            .collect::<Vec<_>>();
+
+                        Expr::GetTraitMethod {
                             trait_name: parent_path,
-                            method_name: symbol.unwrap().to_string(),
-                            self_and_generic_tys,
+                            self_ty,
+                            trait_tys,
+                            method_name,
+                            generic_tys,
                         }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {

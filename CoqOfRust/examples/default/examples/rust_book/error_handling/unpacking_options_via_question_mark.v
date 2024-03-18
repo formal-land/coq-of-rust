@@ -135,25 +135,28 @@ Module Impl_unpacking_options_via_question_mark_Person.
       let* α0 :=
         M.get_trait_method
           "core::ops::try_trait::Try"
+          (Ty.apply
+            (Ty.path "core::option::Option")
+            [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ])
+          []
           "branch"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
-          ] in
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::try_trait::Try"
+          (Ty.apply
+            (Ty.path "core::option::Option")
+            [ Ty.path "unpacking_options_via_question_mark::Job" ])
+          []
           "branch"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "unpacking_options_via_question_mark::Job" ]
-          ] in
+          [] in
       let* α2 := M.read self in
-      let* α3 := M.read (M.get_struct_record α2 "job") in
+      let* α3 :=
+        M.read
+          (M.get_struct_record_field
+            α2
+            "unpacking_options_via_question_mark::Person"
+            "job") in
       let* α4 := M.call_closure α1 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
@@ -170,17 +173,14 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
+                  (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
                   [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [ Ty.path "u8" ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [ Ty.path "core::convert::Infallible" ]
-                  ] in
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "core::convert::Infallible" ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -196,7 +196,12 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* val := M.copy γ0_0 in
               M.pure val
           ] in
-      let* α7 := M.read (M.get_struct_record α6 "phone_number") in
+      let* α7 :=
+        M.read
+          (M.get_struct_record_field
+            α6
+            "unpacking_options_via_question_mark::Job"
+            "phone_number") in
       let* α8 := M.call_closure α0 [ α7 ] in
       let* α9 := M.alloc α8 in
       let* α10 :=
@@ -213,17 +218,14 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
+                  (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
                   [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [ Ty.path "u8" ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        [ Ty.path "core::convert::Infallible" ]
-                  ] in
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "core::convert::Infallible" ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -239,7 +241,11 @@ Module Impl_unpacking_options_via_question_mark_Person.
               let* val := M.copy γ0_0 in
               M.pure val
           ] in
-      M.read (M.get_struct_record α10 "area_code")
+      M.read
+        (M.get_struct_record_field
+          α10
+          "unpacking_options_via_question_mark::PhoneNumber"
+          "area_code")
     | _, _ => M.impossible
     end.
   
@@ -297,7 +303,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "unpacking_options_via_question_mark::Person")
-          "work_phone_area_code" in
+          "work_phone_area_code"
+          [] in
       let* α1 := M.call_closure α0 [ p ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -310,20 +317,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
+                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
+                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] ]
                 "eq"
-                [
-                  (* Self *)
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ];
-                  (* Rhs *)
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
-                ] in
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in

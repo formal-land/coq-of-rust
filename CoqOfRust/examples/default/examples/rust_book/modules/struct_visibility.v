@@ -82,7 +82,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "The open box contains: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -90,9 +93,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α6 :=
-          M.call_closure α5 [ M.get_struct_record open_box "contents" ] in
+          M.call_closure
+            α5
+            [
+              M.get_struct_record_field
+                open_box
+                "struct_visibility::my::OpenBox"
+                "contents"
+            ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call_closure
@@ -110,7 +121,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "struct_visibility::my::ClosedBox")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.read (mk_str "classified information") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in

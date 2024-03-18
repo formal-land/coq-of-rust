@@ -20,8 +20,10 @@ Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnOnce"
+          F
+          [ Ty.tuple [] ]
           "call_once"
-          [ (* Self *) F; (* Args *) Ty.tuple [] ] in
+          [] in
       let* α1 := M.read f in
       let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
       M.alloc α2 in
@@ -46,8 +48,10 @@ Definition apply_to_3 (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::ops::function::Fn"
+        F
+        [ Ty.tuple [ Ty.path "i32" ] ]
         "call"
-        [ (* Self *) F; (* Args *) Ty.tuple [ Ty.path "i32" ] ] in
+        [] in
     M.call_closure α0 [ f; Value.Tuple [ Value.Integer Integer.I32 3 ] ]
   | _, _ => M.impossible
   end.
@@ -95,8 +99,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::borrow::ToOwned"
+          (Ty.path "str")
+          []
           "to_owned"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "goodbye") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -117,7 +123,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_v1" in
+                            "new_v1"
+                            [] in
                         let* α2 := M.read (mk_str "I said ") in
                         let* α3 := M.read (mk_str ".
 ") in
@@ -125,7 +132,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α5 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
-                            "new_display" in
+                            "new_display"
+                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                         let* α6 := M.call_closure α5 [ greeting ] in
                         let* α7 := M.alloc (Value.Array [ α6 ]) in
                         let* α8 :=
@@ -142,7 +150,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α0 :=
                         M.get_associated_function
                           (Ty.path "alloc::string::String")
-                          "push_str" in
+                          "push_str"
+                          [] in
                       let* α1 := M.read (mk_str "!!!") in
                       let* α2 := M.call_closure α0 [ farewell; α1 ] in
                       M.alloc α2 in
@@ -152,7 +161,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_v1" in
+                            "new_v1"
+                            [] in
                         let* α2 := M.read (mk_str "Then I screamed ") in
                         let* α3 := M.read (mk_str ".
 ") in
@@ -160,7 +170,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α5 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
-                            "new_display" in
+                            "new_display"
+                            [ Ty.path "alloc::string::String" ] in
                         let* α6 := M.call_closure α5 [ farewell ] in
                         let* α7 := M.alloc (Value.Array [ α6 ]) in
                         let* α8 :=
@@ -179,7 +190,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_const" in
+                            "new_const"
+                            [] in
                         let* α2 := M.read (mk_str "Now I can sleep. zzzzz
 ") in
                         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -232,7 +244,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "3 doubled: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -240,7 +255,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_function
             "functions_closures_as_input_parameters::apply_to_3"

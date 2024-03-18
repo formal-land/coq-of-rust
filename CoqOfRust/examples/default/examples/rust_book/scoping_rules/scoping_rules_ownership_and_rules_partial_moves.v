@@ -35,11 +35,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::From"
+          (Ty.path "alloc::string::String")
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           "from"
-          [
-            (* Self *) Ty.path "alloc::string::String";
-            (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
-          ] in
+          [] in
       let* α1 := M.read (mk_str "Alice") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 :=
@@ -47,7 +46,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
-          "new" in
+          "new"
+          [] in
       let* α4 := M.call_closure α3 [ Value.Integer Integer.U8 20 ] in
       M.alloc
         (Value.StructRecord
@@ -76,7 +76,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "The person's age is ") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -84,7 +85,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ]
+                    ] in
                 let* α6 := M.call_closure α5 [ age ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
@@ -103,7 +113,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "The person's name is ") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -111,7 +122,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "alloc::string::String" ] in
                 let* α6 := M.call_closure α5 [ name ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
@@ -130,7 +142,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 :=
                   M.read (mk_str "The person's age from person struct is ") in
                 let* α3 := M.read (mk_str "
@@ -139,9 +152,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ] in
                 let* α6 :=
-                  M.call_closure α5 [ M.get_struct_record person "age" ] in
+                  M.call_closure
+                    α5
+                    [
+                      M.get_struct_record_field
+                        person
+                        "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                        "age"
+                    ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=
                   M.call_closure
@@ -188,21 +213,32 @@ Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_m
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_struct_field2_finish" in
+          "debug_struct_field2_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Person") in
       let* α3 := M.read (mk_str "name") in
       let* α4 := M.read self in
       let* α5 := M.read (mk_str "age") in
       let* α6 := M.read self in
-      let* α7 := M.alloc (M.get_struct_record α6 "age") in
+      let* α7 :=
+        M.alloc
+          (M.get_struct_record_field
+            α6
+            "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+            "age") in
       M.call_closure
         α0
         [
           α1;
           α2;
           α3;
-          M.pointer_coercion (* Unsize *) (M.get_struct_record α4 "name");
+          M.pointer_coercion
+            (* Unsize *)
+            (M.get_struct_record_field
+              α4
+              "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+              "name");
           α5;
           M.pointer_coercion (* Unsize *) α7
         ]

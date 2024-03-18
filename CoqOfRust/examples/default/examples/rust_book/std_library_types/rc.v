@@ -45,8 +45,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::string::ToString"
+          (Ty.path "str")
+          []
           "to_string"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "Rc examples") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -56,7 +58,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "--- rc_a is created ---
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -70,7 +73,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::rc::Rc")
             [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.read rc_examples in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -78,7 +82,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -86,14 +93,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::rc::Rc")
               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
               ])
-            "strong_count" in
+            "strong_count"
+            [] in
         let* α7 := M.call_closure α6 [ rc_a ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in
@@ -115,7 +124,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "--- rc_a is cloned to rc_b ---
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -127,16 +137,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α0 :=
           M.get_trait_method
             "core::clone::Clone"
+            (Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
+              ])
+            []
             "clone"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "alloc::rc::Rc")
-                  [
-                    Ty.path "alloc::string::String";
-                    Ty.path "alloc::alloc::Global"
-                  ]
-            ] in
+            [] in
         let* α1 := M.call_closure α0 [ rc_a ] in
         M.alloc α1 in
       let* _ :=
@@ -145,7 +152,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "Reference Count of rc_b: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -153,7 +161,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "usize" ] in
           let* α6 :=
             M.get_associated_function
               (Ty.apply
@@ -162,7 +171,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::string::String";
                   Ty.path "alloc::alloc::Global"
                 ])
-              "strong_count" in
+              "strong_count"
+              [] in
           let* α7 := M.call_closure α6 [ rc_b ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call_closure α5 [ α8 ] in
@@ -183,7 +193,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -191,7 +202,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "usize" ] in
           let* α6 :=
             M.get_associated_function
               (Ty.apply
@@ -200,7 +212,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   Ty.path "alloc::string::String";
                   Ty.path "alloc::alloc::Global"
                 ])
-              "strong_count" in
+              "strong_count"
+              [] in
           let* α7 := M.call_closure α6 [ rc_a ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call_closure α5 [ α8 ] in
@@ -221,7 +234,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "rc_a and rc_b are equal: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -229,27 +243,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "bool" ] in
           let* α6 :=
             M.get_trait_method
               "core::cmp::PartialEq"
-              "eq"
+              (Ty.apply
+                (Ty.path "alloc::rc::Rc")
+                [
+                  Ty.path "alloc::string::String";
+                  Ty.path "alloc::alloc::Global"
+                ])
               [
-                (* Self *)
-                  Ty.apply
-                    (Ty.path "alloc::rc::Rc")
-                    [
-                      Ty.path "alloc::string::String";
-                      Ty.path "alloc::alloc::Global"
-                    ];
-                (* Rhs *)
-                  Ty.apply
-                    (Ty.path "alloc::rc::Rc")
-                    [
-                      Ty.path "alloc::string::String";
-                      Ty.path "alloc::alloc::Global"
-                    ]
-              ] in
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ]
+              ]
+              "eq"
+              [] in
           let* α7 := M.call_closure α6 [ rc_a; rc_b ] in
           let* α8 := M.alloc α7 in
           let* α9 := M.call_closure α5 [ α8 ] in
@@ -270,7 +284,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "Length of the value inside rc_a: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -278,22 +293,25 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "usize" ] in
           let* α6 :=
-            M.get_associated_function (Ty.path "alloc::string::String") "len" in
+            M.get_associated_function
+              (Ty.path "alloc::string::String")
+              "len"
+              [] in
           let* α7 :=
             M.get_trait_method
               "core::ops::deref::Deref"
+              (Ty.apply
+                (Ty.path "alloc::rc::Rc")
+                [
+                  Ty.path "alloc::string::String";
+                  Ty.path "alloc::alloc::Global"
+                ])
+              []
               "deref"
-              [
-                (* Self *)
-                  Ty.apply
-                    (Ty.path "alloc::rc::Rc")
-                    [
-                      Ty.path "alloc::string::String";
-                      Ty.path "alloc::alloc::Global"
-                    ]
-              ] in
+              [] in
           let* α8 := M.call_closure α7 [ rc_a ] in
           let* α9 := M.call_closure α6 [ α8 ] in
           let* α10 := M.alloc α9 in
@@ -315,7 +333,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "Value of rc_b: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -323,7 +342,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ]
+              ] in
           let* α6 := M.call_closure α5 [ rc_b ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
@@ -342,7 +369,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "--- rc_b is dropped out of scope ---
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -355,7 +383,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -363,14 +394,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::rc::Rc")
               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
               ])
-            "strong_count" in
+            "strong_count"
+            [] in
         let* α7 := M.call_closure α6 [ rc_a ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in
@@ -391,7 +424,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "--- rc_a is dropped out of scope ---
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in

@@ -60,8 +60,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α2
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* tx := M.copy γ0_0 in
             let* rx := M.copy γ0_1 in
             let* children :=
@@ -75,20 +75,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         [ Ty.tuple [] ];
                       Ty.path "alloc::alloc::Global"
                     ])
-                  "new" in
+                  "new"
+                  [] in
               let* α1 := M.call_closure α0 [] in
               M.alloc α1 in
             let* _ :=
               let* α0 :=
                 M.get_trait_method
                   "core::iter::traits::collect::IntoIterator"
+                  (Ty.apply
+                    (Ty.path "core::ops::range::Range")
+                    [ Ty.path "i32" ])
+                  []
                   "into_iter"
-                  [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::ops::range::Range")
-                        [ Ty.path "i32" ]
-                  ] in
+                  [] in
               let* α1 := M.get_constant "channels::NTHREADS" in
               let* α2 := M.read α1 in
               let* α3 := M.read α2 in
@@ -112,13 +112,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α0 :=
                             M.get_trait_method
                               "core::iter::traits::iterator::Iterator"
+                              (Ty.apply
+                                (Ty.path "core::ops::range::Range")
+                                [ Ty.path "i32" ])
+                              []
                               "next"
-                              [
-                                (* Self *)
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    [ Ty.path "i32" ]
-                              ] in
+                              [] in
                           let* α1 := M.call_closure α0 [ iter ] in
                           let* α2 := M.alloc α1 in
                           match_operator
@@ -140,13 +139,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                   let* α0 :=
                                     M.get_trait_method
                                       "core::clone::Clone"
+                                      (Ty.apply
+                                        (Ty.path "std::sync::mpsc::Sender")
+                                        [ Ty.path "i32" ])
+                                      []
                                       "clone"
-                                      [
-                                        (* Self *)
-                                          Ty.apply
-                                            (Ty.path "std::sync::mpsc::Sender")
-                                            [ Ty.path "i32" ]
-                                      ] in
+                                      [] in
                                   let* α1 := M.call_closure α0 [ tx ] in
                                   M.alloc α1 in
                                 let* child :=
@@ -186,14 +184,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                                 [ Ty.path "i32"
                                                                 ]
                                                             ])
-                                                          "unwrap" in
+                                                          "unwrap"
+                                                          [] in
                                                       let* α1 :=
                                                         M.get_associated_function
                                                           (Ty.apply
                                                             (Ty.path
                                                               "std::sync::mpsc::Sender")
                                                             [ Ty.path "i32" ])
-                                                          "send" in
+                                                          "send"
+                                                          [] in
                                                       let* α2 := M.read id in
                                                       let* α3 :=
                                                         M.call_closure
@@ -214,7 +214,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function
                                                             (Ty.path
                                                               "core::fmt::Arguments")
-                                                            "new_v1" in
+                                                            "new_v1"
+                                                            [] in
                                                         let* α2 :=
                                                           M.read
                                                             (mk_str
@@ -232,7 +233,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function
                                                             (Ty.path
                                                               "core::fmt::rt::Argument")
-                                                            "new_display" in
+                                                            "new_display"
+                                                            [ Ty.path "i32" ] in
                                                         let* α6 :=
                                                           M.call_closure
                                                             α5
@@ -279,7 +281,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                             [ Ty.tuple [] ];
                                           Ty.path "alloc::alloc::Global"
                                         ])
-                                      "push" in
+                                      "push"
+                                      [] in
                                   let* α1 := M.read child in
                                   let* α2 :=
                                     M.call_closure α0 [ children; α1 ] in
@@ -300,7 +303,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         [ Ty.path "i32"; Ty.path "std::sync::mpsc::RecvError" ];
                       Ty.path "alloc::alloc::Global"
                     ])
-                  "with_capacity" in
+                  "with_capacity"
+                  [] in
               let* α1 := M.get_constant "channels::NTHREADS" in
               let* α2 := M.read α1 in
               let* α3 := M.read α2 in
@@ -310,13 +314,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 :=
                 M.get_trait_method
                   "core::iter::traits::collect::IntoIterator"
+                  (Ty.apply
+                    (Ty.path "core::ops::range::Range")
+                    [ Ty.path "i32" ])
+                  []
                   "into_iter"
-                  [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::ops::range::Range")
-                        [ Ty.path "i32" ]
-                  ] in
+                  [] in
               let* α1 := M.get_constant "channels::NTHREADS" in
               let* α2 := M.read α1 in
               let* α3 := M.read α2 in
@@ -340,13 +343,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α0 :=
                             M.get_trait_method
                               "core::iter::traits::iterator::Iterator"
+                              (Ty.apply
+                                (Ty.path "core::ops::range::Range")
+                                [ Ty.path "i32" ])
+                              []
                               "next"
-                              [
-                                (* Self *)
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    [ Ty.path "i32" ]
-                              ] in
+                              [] in
                           let* α1 := M.call_closure α0 [ iter ] in
                           let* α2 := M.alloc α1 in
                           match_operator
@@ -378,13 +380,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                             ];
                                           Ty.path "alloc::alloc::Global"
                                         ])
-                                      "push" in
+                                      "push"
+                                      [] in
                                   let* α1 :=
                                     M.get_associated_function
                                       (Ty.apply
                                         (Ty.path "std::sync::mpsc::Receiver")
                                         [ Ty.path "i32" ])
-                                      "recv" in
+                                      "recv"
+                                      [] in
                                   let* α2 := M.call_closure α1 [ rx ] in
                                   let* α3 := M.call_closure α0 [ ids; α2 ] in
                                   M.alloc α3 in
@@ -397,18 +401,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 :=
                 M.get_trait_method
                   "core::iter::traits::collect::IntoIterator"
-                  "into_iter"
-                  [
-                    (* Self *)
+                  (Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    [
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        [
-                          Ty.apply
-                            (Ty.path "std::thread::JoinHandle")
-                            [ Ty.tuple [] ];
-                          Ty.path "alloc::alloc::Global"
-                        ]
-                  ] in
+                        (Ty.path "std::thread::JoinHandle")
+                        [ Ty.tuple [] ];
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  []
+                  "into_iter"
+                  [] in
               let* α1 := M.read children in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.alloc α2 in
@@ -423,18 +426,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α0 :=
                             M.get_trait_method
                               "core::iter::traits::iterator::Iterator"
-                              "next"
-                              [
-                                (* Self *)
+                              (Ty.apply
+                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                [
                                   Ty.apply
-                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                    [
-                                      Ty.apply
-                                        (Ty.path "std::thread::JoinHandle")
-                                        [ Ty.tuple [] ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ]
-                              ] in
+                                    (Ty.path "std::thread::JoinHandle")
+                                    [ Ty.tuple [] ];
+                                  Ty.path "alloc::alloc::Global"
+                                ])
+                              []
+                              "next"
+                              [] in
                           let* α1 := M.call_closure α0 [ iter ] in
                           let* α2 := M.alloc α1 in
                           match_operator
@@ -468,13 +470,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                               Ty.path "alloc::alloc::Global"
                                             ]
                                         ])
-                                      "expect" in
+                                      "expect"
+                                      [] in
                                   let* α1 :=
                                     M.get_associated_function
                                       (Ty.apply
                                         (Ty.path "std::thread::JoinHandle")
                                         [ Ty.tuple [] ])
-                                      "join" in
+                                      "join"
+                                      [] in
                                   let* α2 := M.read child in
                                   let* α3 := M.call_closure α1 [ α2 ] in
                                   let* α4 :=
@@ -494,7 +498,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -502,7 +507,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_debug" in
+                    "new_debug"
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "i32";
+                              Ty.path "std::sync::mpsc::RecvError"
+                            ];
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ] in
                 let* α6 := M.call_closure α5 [ ids ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=

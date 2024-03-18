@@ -17,7 +17,8 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ first_number_str; second_number_str ] =>
     let* first_number_str := M.alloc first_number_str in
     let* second_number_str := M.alloc second_number_str in
-    let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+    let* α0 :=
+      M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
     let* α1 := M.read first_number_str in
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
@@ -32,7 +33,11 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "core::result::Result::Ok"
                 0 in
             let* first_number := M.copy γ0_0 in
-            let* α0 := M.get_associated_function (Ty.path "str") "parse" in
+            let* α0 :=
+              M.get_associated_function
+                (Ty.path "str")
+                "parse"
+                [ Ty.path "i32" ] in
             let* α1 := M.read second_number_str in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
@@ -102,7 +107,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "n is ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -110,7 +116,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -135,7 +142,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Error: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -143,7 +151,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "core::num::error::ParseIntError" ] in
               let* α6 := M.call_closure α5 [ e ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=

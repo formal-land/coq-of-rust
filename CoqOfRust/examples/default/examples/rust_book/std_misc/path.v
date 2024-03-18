@@ -31,24 +31,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* path :=
-      let* α0 := M.get_associated_function (Ty.path "std::path::Path") "new" in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "std::path::Path")
+          "new"
+          [ Ty.path "str" ] in
       let* α1 := M.read (mk_str ".") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _display :=
       let* α0 :=
-        M.get_associated_function (Ty.path "std::path::Path") "display" in
+        M.get_associated_function (Ty.path "std::path::Path") "display" [] in
       let* α1 := M.read path in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* new_path :=
-      let* α0 := M.get_associated_function (Ty.path "std::path::Path") "join" in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "std::path::Path")
+          "join"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 :=
         M.get_trait_method
           "core::ops::deref::Deref"
+          (Ty.path "std::path::PathBuf")
+          []
           "deref"
-          [ (* Self *) Ty.path "std::path::PathBuf" ] in
-      let* α2 := M.get_associated_function (Ty.path "std::path::Path") "join" in
+          [] in
+      let* α2 :=
+        M.get_associated_function
+          (Ty.path "std::path::Path")
+          "join"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α3 := M.read path in
       let* α4 := M.read (mk_str "a") in
       let* α5 := M.call_closure α2 [ α3; α4 ] in
@@ -59,13 +73,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α9 in
     let* _ :=
       let* α0 :=
-        M.get_associated_function (Ty.path "std::path::PathBuf") "push" in
+        M.get_associated_function
+          (Ty.path "std::path::PathBuf")
+          "push"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "c") in
       let* α2 := M.call_closure α0 [ new_path; α1 ] in
       M.alloc α2 in
     let* _ :=
       let* α0 :=
-        M.get_associated_function (Ty.path "std::path::PathBuf") "push" in
+        M.get_associated_function
+          (Ty.path "std::path::PathBuf")
+          "push"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "myfile.tar.gz") in
       let* α2 := M.call_closure α0 [ new_path; α1 ] in
       M.alloc α2 in
@@ -73,16 +93,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "std::path::PathBuf")
-          "set_file_name" in
+          "set_file_name"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.read (mk_str "package.tgz") in
       let* α2 := M.call_closure α0 [ new_path; α1 ] in
       M.alloc α2 in
-    let* α0 := M.get_associated_function (Ty.path "std::path::Path") "to_str" in
+    let* α0 :=
+      M.get_associated_function (Ty.path "std::path::Path") "to_str" [] in
     let* α1 :=
       M.get_trait_method
         "core::ops::deref::Deref"
+        (Ty.path "std::path::PathBuf")
+        []
         "deref"
-        [ (* Self *) Ty.path "std::path::PathBuf" ] in
+        [] in
     let* α2 := M.call_closure α1 [ new_path ] in
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
@@ -112,7 +136,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "new path is ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -120,7 +145,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α6 := M.call_closure α5 [ s ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=

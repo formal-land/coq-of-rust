@@ -20,7 +20,7 @@ Module Impl_example05_Foo.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read (M.get_struct_tuple self 0) in
+      let* α0 := M.read (M.get_struct_tuple_field self "example05::Foo" 0) in
       BinOp.Panic.add α0 (Value.Integer Integer.U32 1)
     | _, _ => M.impossible
     end.
@@ -41,7 +41,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc
         (Value.StructTuple "example05::Foo" [ Value.Integer Integer.U32 0 ]) in
     let* _ :=
-      let* α0 := M.get_associated_function (Ty.path "example05::Foo") "plus1" in
+      let* α0 :=
+        M.get_associated_function (Ty.path "example05::Foo") "plus1" [] in
       let* α1 := M.read foo in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in

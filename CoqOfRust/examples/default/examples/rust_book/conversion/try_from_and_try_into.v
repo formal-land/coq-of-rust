@@ -22,11 +22,14 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field1_finish" in
+          "debug_tuple_field1_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "EvenNumber") in
       let* α3 := M.read self in
-      let* α4 := M.alloc (M.get_struct_tuple α3 0) in
+      let* α4 :=
+        M.alloc
+          (M.get_struct_tuple_field α3 "try_from_and_try_into::EvenNumber" 0) in
       M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
@@ -62,9 +65,13 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
-      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α1 :=
+        M.read
+          (M.get_struct_tuple_field α0 "try_from_and_try_into::EvenNumber" 0) in
       let* α2 := M.read other in
-      let* α3 := M.read (M.get_struct_tuple α2 0) in
+      let* α3 :=
+        M.read
+          (M.get_struct_tuple_field α2 "try_from_and_try_into::EvenNumber" 0) in
       M.pure (BinOp.Pure.eq α1 α3)
     | _, _ => M.impossible
     end.
@@ -152,11 +159,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::TryFrom"
+          (Ty.path "try_from_and_try_into::EvenNumber")
+          [ Ty.path "i32" ]
           "try_from"
-          [
-            (* Self *) Ty.path "try_from_and_try_into::EvenNumber";
-            (* T *) Ty.path "i32"
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 8 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -173,26 +179,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
-                "eq"
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
                 [
-                  (* Self *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                  (* Rhs *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                ] in
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                ]
+                "eq"
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -238,11 +241,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::TryFrom"
+          (Ty.path "try_from_and_try_into::EvenNumber")
+          [ Ty.path "i32" ]
           "try_from"
-          [
-            (* Self *) Ty.path "try_from_and_try_into::EvenNumber";
-            (* T *) Ty.path "i32"
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -253,26 +255,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α4
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
-                "eq"
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
                 [
-                  (* Self *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                  (* Rhs *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                ] in
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                ]
+                "eq"
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -318,11 +317,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::TryInto"
+          (Ty.path "i32")
+          [ Ty.path "try_from_and_try_into::EvenNumber" ]
           "try_into"
-          [
-            (* Self *) Ty.path "i32";
-            (* T *) Ty.path "try_from_and_try_into::EvenNumber"
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 8 ] in
       M.alloc α1 in
     let* _ :=
@@ -340,26 +338,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
-                "eq"
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
                 [
-                  (* Self *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                  (* Rhs *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                ] in
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                ]
+                "eq"
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -405,11 +400,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::TryInto"
+          (Ty.path "i32")
+          [ Ty.path "try_from_and_try_into::EvenNumber" ]
           "try_into"
-          [
-            (* Self *) Ty.path "i32";
-            (* T *) Ty.path "try_from_and_try_into::EvenNumber"
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* _ :=
@@ -421,26 +415,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         α1
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
             let* α0 :=
               M.get_trait_method
                 "core::cmp::PartialEq"
-                "eq"
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
                 [
-                  (* Self *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                  (* Rhs *)
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                ] in
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                ]
+                "eq"
+                [] in
             let* α1 := M.read left_val in
             let* α2 := M.read right_val in
             let* α3 := M.call_closure α0 [ α1; α2 ] in

@@ -84,19 +84,19 @@ Require CoqOfRust.core.iter.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.mem.
 Require CoqOfRust.core.num.
-Require CoqOfRust.core.ops.
+Require CoqOfRust.core.ops.*)
 Require CoqOfRust.core.option.
-Require CoqOfRust.core.panic.
+(*Require CoqOfRust.core.panic.
 Require CoqOfRust.core.panicking.
 Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.ptr.
 Require CoqOfRust.core.result.
 Require CoqOfRust.core.slice.
 Require CoqOfRust.core.str.
-Require CoqOfRust.core.time.
+Require CoqOfRust.core.time.*)
 
 Module core.
-  Export CoqOfRust.core.alloc.
+  (*Export CoqOfRust.core.alloc.
   Export CoqOfRust.core.any.
   Export CoqOfRust.core.array.
   Export CoqOfRust.core.cell.
@@ -114,17 +114,17 @@ Module core.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.mem.
   Export CoqOfRust.core.num.
-  Export CoqOfRust.core.ops.
+  Export CoqOfRust.core.ops.*)
   Export CoqOfRust.core.option.
-  Export CoqOfRust.core.panic.
+  (*Export CoqOfRust.core.panic.
   Export CoqOfRust.core.panicking.
   Export CoqOfRust.core.primitive.
   Export CoqOfRust.core.ptr.
   Export CoqOfRust.core.result.
   Export CoqOfRust.core.slice.
   Export CoqOfRust.core.str.
-  Export CoqOfRust.core.time.
-End core. *)
+  Export CoqOfRust.core.time.*)
+End core.
 
 (* Require CoqOfRust.std.arch.
 Require CoqOfRust.std.ascii.

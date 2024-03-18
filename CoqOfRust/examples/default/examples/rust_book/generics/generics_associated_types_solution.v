@@ -41,26 +41,34 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       let* α0 :=
         M.get_trait_method
           "core::cmp::PartialEq"
+          (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
           "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
-          ] in
+          [] in
       let* α1 := M.read self in
-      let* α2 := M.alloc (M.get_struct_tuple α1 0) in
+      let* α2 :=
+        M.alloc
+          (M.get_struct_tuple_field
+            α1
+            "generics_associated_types_solution::Container"
+            0) in
       let* α3 := M.call_closure α0 [ α2; number_1 ] in
       LogicalOp.and
         α3
         (let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
             "eq"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
-            ] in
+            [] in
         let* α1 := M.read self in
-        let* α2 := M.alloc (M.get_struct_tuple α1 1) in
+        let* α2 :=
+          M.alloc
+            (M.get_struct_tuple_field
+              α1
+              "generics_associated_types_solution::Container"
+              1) in
         M.call_closure α0 [ α2; number_2 ])
     | _, _ => M.impossible
     end.
@@ -75,7 +83,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_tuple α0 0)
+      M.read
+        (M.get_struct_tuple_field
+          α0
+          "generics_associated_types_solution::Container"
+          0)
     | _, _ => M.impossible
     end.
   
@@ -89,7 +101,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_tuple α0 1)
+      M.read
+        (M.get_struct_tuple_field
+          α0
+          "generics_associated_types_solution::Container"
+          1)
     | _, _ => M.impossible
     end.
   
@@ -103,7 +119,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_tuple α0 0)
+      M.read
+        (M.get_struct_tuple_field
+          α0
+          "generics_associated_types_solution::Container"
+          0)
     | _, _ => M.impossible
     end.
   
@@ -135,15 +155,19 @@ Definition difference (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "generics_associated_types_solution::Contains"
+        C
+        []
         "last"
-        [ (* Self *) C ] in
+        [] in
     let* α1 := M.read container in
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 :=
       M.get_trait_method
         "generics_associated_types_solution::Contains"
+        C
+        []
         "first"
-        [ (* Self *) C ] in
+        [] in
     let* α4 := M.read container in
     let* α5 := M.call_closure α3 [ α4 ] in
     BinOp.Panic.sub α2 α5
@@ -162,8 +186,10 @@ Definition get_a (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "generics_associated_types_solution::Contains"
+        C
+        []
         "a"
-        [ (* Self *) C ] in
+        [] in
     let* α1 := M.read container in
     M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
@@ -204,7 +230,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Does container contain ") in
         let* α3 := M.read (mk_str " and ") in
         let* α4 := M.read (mk_str ": ") in
@@ -214,25 +243,29 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α8 := M.alloc number_1 in
         let* α9 := M.call_closure α7 [ α8 ] in
         let* α10 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α11 := M.alloc number_2 in
         let* α12 := M.call_closure α10 [ α11 ] in
         let* α13 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "bool" ] in
         let* α14 :=
           M.get_trait_method
             "generics_associated_types_solution::Contains"
+            (Ty.path "generics_associated_types_solution::Container")
+            []
             "contains"
-            [ (* Self *) Ty.path "generics_associated_types_solution::Container"
-            ] in
+            [] in
         let* α15 := M.call_closure α14 [ container; number_1; number_2 ] in
         let* α16 := M.alloc α15 in
         let* α17 := M.call_closure α13 [ α16 ] in
@@ -251,7 +284,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "First number: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -259,13 +295,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_trait_method
             "generics_associated_types_solution::Contains"
+            (Ty.path "generics_associated_types_solution::Container")
+            []
             "first"
-            [ (* Self *) Ty.path "generics_associated_types_solution::Container"
-            ] in
+            [] in
         let* α7 := M.call_closure α6 [ container ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in
@@ -284,7 +322,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Last number: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -292,13 +333,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_trait_method
             "generics_associated_types_solution::Contains"
+            (Ty.path "generics_associated_types_solution::Container")
+            []
             "last"
-            [ (* Self *) Ty.path "generics_associated_types_solution::Container"
-            ] in
+            [] in
         let* α7 := M.call_closure α6 [ container ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in
@@ -317,7 +360,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "The difference is: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -325,7 +371,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_function
             "generics_associated_types_solution::difference"

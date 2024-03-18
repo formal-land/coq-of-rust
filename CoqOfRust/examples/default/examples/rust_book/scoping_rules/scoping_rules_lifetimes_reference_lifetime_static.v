@@ -56,7 +56,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "static_string: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -64,7 +65,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
           let* α6 := M.call_closure α5 [ static_string ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
@@ -93,7 +95,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "coerced_static: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -101,7 +104,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
           let* α6 := M.call_closure α5 [ coerced_static ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
@@ -119,7 +123,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "NUM: ") in
         let* α3 := M.read (mk_str " stays accessible!
 ") in
@@ -127,7 +134,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_constant
             "scoping_rules_lifetimes_reference_lifetime_static::NUM" in

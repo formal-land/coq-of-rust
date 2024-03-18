@@ -34,8 +34,10 @@ Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnOnce"
+          F
+          [ Ty.tuple [] ]
           "call_once"
-          [ (* Self *) F; (* Args *) Ty.tuple [] ] in
+          [] in
       let* α1 := M.read f in
       let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
       M.alloc α2 in

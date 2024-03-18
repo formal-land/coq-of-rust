@@ -28,7 +28,7 @@ Module Impl_generics_implementation_Val.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.pure (M.get_struct_record α0 "val")
+      M.pure (M.get_struct_record_field α0 "generics_implementation::Val" "val")
     | _, _ => M.impossible
     end.
   
@@ -50,7 +50,11 @@ Module Impl_generics_implementation_GenVal_T.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.pure (M.get_struct_record α0 "gen_val")
+      M.pure
+        (M.get_struct_record_field
+          α0
+          "generics_implementation::GenVal"
+          "gen_val")
     | _, _ => M.impossible
     end.
   
@@ -83,7 +87,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str ", ") in
         let* α4 := M.read (mk_str "
@@ -92,24 +99,28 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ] in
         let* α7 :=
           M.get_associated_function
             (Ty.path "generics_implementation::Val")
-            "value" in
+            "value"
+            [] in
         let* α8 := M.call_closure α7 [ x ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call_closure α6 [ α9 ] in
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α12 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "generics_implementation::GenVal")
               [ Ty.path "i32" ])
-            "value" in
+            "value"
+            [] in
         let* α13 := M.call_closure α12 [ y ] in
         let* α14 := M.alloc α13 in
         let* α15 := M.call_closure α11 [ α14 ] in

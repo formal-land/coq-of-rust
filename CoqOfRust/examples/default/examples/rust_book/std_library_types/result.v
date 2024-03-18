@@ -39,7 +39,8 @@ Module checked.
         let* α0 :=
           M.get_associated_function
             (Ty.path "core::fmt::Formatter")
-            "write_str" in
+            "write_str"
+            [] in
         let* α1 := M.read f in
         let* α2 :=
           match_operator
@@ -145,7 +146,7 @@ Module checked.
                   []
               ])
         else
-          let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" in
+          let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
           let* α1 := M.read x in
           let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
@@ -181,7 +182,7 @@ Module checked.
                   []
               ])
         else
-          let* α0 := M.get_associated_function (Ty.path "f64") "ln" in
+          let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
           let* α1 := M.read x in
           let* α2 := M.call_closure α0 [ α1 ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
@@ -230,13 +231,15 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_v1" in
+                "new_v1"
+                [] in
             let* α2 := M.read (mk_str "") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
             let* α4 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
-                "new_debug" in
+                "new_debug"
+                [ Ty.path "result::checked::MathError" ] in
             let* α5 := M.call_closure α4 [ why ] in
             let* α6 := M.alloc (Value.Array [ α5 ]) in
             let* α7 :=
@@ -274,13 +277,15 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
+                      "new_v1"
+                      [] in
                   let* α2 := M.read (mk_str "") in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   let* α4 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
-                      "new_debug" in
+                      "new_debug"
+                      [ Ty.path "result::checked::MathError" ] in
                   let* α5 := M.call_closure α4 [ why ] in
                   let* α6 := M.alloc (Value.Array [ α5 ]) in
                   let* α7 :=
@@ -319,13 +324,15 @@ Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_v1" in
+                            "new_v1"
+                            [] in
                         let* α2 := M.read (mk_str "") in
                         let* α3 := M.alloc (Value.Array [ α2 ]) in
                         let* α4 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
-                            "new_debug" in
+                            "new_debug"
+                            [ Ty.path "result::checked::MathError" ] in
                         let* α5 := M.call_closure α4 [ why ] in
                         let* α6 := M.alloc (Value.Array [ α5 ]) in
                         let* α7 :=
@@ -366,7 +373,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -374,7 +384,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "f64" ] in
         let* α6 := M.get_function "result::op" [] in
         let* α7 := M.read UnsupportedLiteral in
         let* α8 := M.read UnsupportedLiteral in

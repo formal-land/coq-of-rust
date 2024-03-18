@@ -30,7 +30,8 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "Yuck! Too sugary.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -51,7 +52,8 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "") in
               let* α3 := M.read (mk_str "? How nice.
 ") in
@@ -59,7 +61,8 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α6 := M.call_closure α5 [ inner ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -78,7 +81,8 @@ Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "No drink? Oh well.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -113,7 +117,8 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "unwrap" in
+          "unwrap"
+          [] in
       let* α1 := M.read drink in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -121,11 +126,10 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::cmp::PartialEq"
+          (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ inside; mk_str "lemonade" ] in
       let* α2 := M.alloc α1 in
       let* α3 := M.read (M.use α2) in
@@ -144,7 +148,10 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "I love ") in
         let* α3 := M.read (mk_str "s!!!!!
 ") in
@@ -152,7 +159,8 @@ Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α6 := M.call_closure α5 [ inside ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

@@ -45,8 +45,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "i32")
+          [ Ty.path "into::Number" ]
           "into"
-          [ (* Self *) Ty.path "i32"; (* T *) Ty.path "into::Number" ] in
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

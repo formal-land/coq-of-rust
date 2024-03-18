@@ -37,7 +37,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "Tell me what type of person you are
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -61,7 +62,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 :=
                 M.read (mk_str "I haven't celebrated my first birthday yet
 ") in
@@ -78,7 +80,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "I'm a child of age ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -86,7 +89,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.path "u32" ] in
               let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -106,7 +110,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "I'm a teen of age ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -114,7 +119,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.path "u32" ] in
               let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -134,7 +140,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "I'm an old person of age ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -142,7 +149,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.path "u32" ] in
               let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=

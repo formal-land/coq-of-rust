@@ -14,8 +14,10 @@ Definition call_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::Fn"
+          F
+          [ Ty.tuple [] ]
           "call"
-          [ (* Self *) F; (* Args *) Ty.tuple [] ] in
+          [] in
       let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -37,7 +39,8 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "I'm a function!
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -78,7 +81,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_const" in
+                          "new_const"
+                          [] in
                       let* α2 := M.read (mk_str "I'm a closure!
 ") in
                       let* α3 := M.alloc (Value.Array [ α2 ]) in

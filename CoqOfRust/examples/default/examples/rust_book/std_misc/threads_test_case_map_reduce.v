@@ -111,11 +111,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* chunked_data :=
-      let* α0 := M.get_associated_function (Ty.path "str") "split_whitespace" in
+      let* α0 :=
+        M.get_associated_function (Ty.path "str") "split_whitespace" [] in
       let* α1 := M.read data in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -123,18 +125,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+            [ Ty.path "core::str::iter::SplitWhitespace" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                [ Ty.path "core::str::iter::SplitWhitespace" ]
-          ] in
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.path "core::str::iter::SplitWhitespace")
+          []
           "enumerate"
-          [ (* Self *) Ty.path "core::str::iter::SplitWhitespace" ] in
+          [] in
       let* α2 := M.read chunked_data in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -150,14 +153,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                        [ Ty.path "core::str::iter::SplitWhitespace" ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path
-                              "core::iter::adapters::enumerate::Enumerate")
-                            [ Ty.path "core::str::iter::SplitWhitespace" ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -174,8 +175,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             γ
                             "core::option::Option::Some"
                             0 in
-                        let* γ1_0 := M.get_tuple_field γ0_0 0 in
-                        let* γ1_1 := M.get_tuple_field γ0_0 1 in
+                        let γ1_0 := M.get_tuple_field γ0_0 0 in
+                        let γ1_1 := M.get_tuple_field γ0_0 1 in
                         let* i := M.copy γ1_0 in
                         let* data_segment := M.copy γ1_1 in
                         let* _ :=
@@ -185,7 +186,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
-                                "new_v1" in
+                                "new_v1"
+                                [] in
                             let* α2 := M.read (mk_str "data segment ") in
                             let* α3 := M.read (mk_str " is """) in
                             let* α4 := M.read (mk_str """
@@ -194,12 +196,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α6 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
-                                "new_display" in
+                                "new_display"
+                                [ Ty.path "usize" ] in
                             let* α7 := M.call_closure α6 [ i ] in
                             let* α8 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
-                                "new_display" in
+                                "new_display"
+                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                             let* α9 := M.call_closure α8 [ data_segment ] in
                             let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                             let* α11 :=
@@ -223,7 +227,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     [ Ty.path "u32" ];
                                   Ty.path "alloc::alloc::Global"
                                 ])
-                              "push" in
+                              "push"
+                              [] in
                           let* α1 :=
                             M.get_function
                               "std::thread::spawn"
@@ -248,46 +253,43 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                               let* α0 :=
                                                 M.get_trait_method
                                                   "core::iter::traits::iterator::Iterator"
-                                                  "sum"
-                                                  [
-                                                    (* Self *)
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "core::iter::adapters::map::Map")
-                                                        [
-                                                          Ty.path
-                                                            "core::str::iter::Chars";
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.path "char"
-                                                                ]
-                                                            ]
-                                                            (Ty.path "u32")
-                                                        ];
-                                                    (* S *) Ty.path "u32"
-                                                  ] in
-                                              let* α1 :=
-                                                M.get_trait_method
-                                                  "core::iter::traits::iterator::Iterator"
-                                                  "map"
-                                                  [
-                                                    (* Self *)
+                                                  (Ty.apply
+                                                    (Ty.path
+                                                      "core::iter::adapters::map::Map")
+                                                    [
                                                       Ty.path
                                                         "core::str::iter::Chars";
-                                                    (* B *) Ty.path "u32";
-                                                    (* F *)
                                                       Ty.function
                                                         [
                                                           Ty.tuple
                                                             [ Ty.path "char" ]
                                                         ]
                                                         (Ty.path "u32")
+                                                    ])
+                                                  []
+                                                  "sum"
+                                                  [ Ty.path "u32" ] in
+                                              let* α1 :=
+                                                M.get_trait_method
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  (Ty.path
+                                                    "core::str::iter::Chars")
+                                                  []
+                                                  "map"
+                                                  [
+                                                    Ty.path "u32";
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [ Ty.path "char" ]
+                                                      ]
+                                                      (Ty.path "u32")
                                                   ] in
                                               let* α2 :=
                                                 M.get_associated_function
                                                   (Ty.path "str")
-                                                  "chars" in
+                                                  "chars"
+                                                  [] in
                                               let* α3 := M.read data_segment in
                                               let* α4 :=
                                                 M.call_closure α2 [ α3 ] in
@@ -317,12 +319,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                                         Ty.path
                                                                           "u32"
                                                                       ])
-                                                                    "expect" in
+                                                                    "expect"
+                                                                    [] in
                                                                 let* α1 :=
                                                                   M.get_associated_function
                                                                     (Ty.path
                                                                       "char")
-                                                                    "to_digit" in
+                                                                    "to_digit"
+                                                                    [] in
                                                                 let* α2 :=
                                                                   M.read c in
                                                                 let* α3 :=
@@ -358,7 +362,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::Arguments")
-                                                    "new_v1" in
+                                                    "new_v1"
+                                                    [] in
                                                 let* α2 :=
                                                   M.read
                                                     (mk_str
@@ -376,14 +381,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::rt::Argument")
-                                                    "new_display" in
+                                                    "new_display"
+                                                    [ Ty.path "usize" ] in
                                                 let* α7 :=
                                                   M.call_closure α6 [ i ] in
                                                 let* α8 :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::rt::Argument")
-                                                    "new_display" in
+                                                    "new_display"
+                                                    [ Ty.path "u32" ] in
                                                 let* α9 :=
                                                   M.call_closure
                                                     α8
@@ -422,39 +429,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          "sum"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::iter::adapters::map::Map")
-                [
-                  Ty.apply
-                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                    [
-                      Ty.apply
-                        (Ty.path "std::thread::JoinHandle")
-                        [ Ty.path "u32" ];
-                      Ty.path "alloc::alloc::Global"
-                    ];
-                  Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "std::thread::JoinHandle")
-                            [ Ty.path "u32" ]
-                        ]
-                    ]
-                    (Ty.path "u32")
-                ];
-            (* S *) Ty.path "u32"
-          ] in
-      let* α1 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          "map"
-          [
-            (* Self *)
+          (Ty.apply
+            (Ty.path "core::iter::adapters::map::Map")
+            [
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
                 [
@@ -463,8 +440,6 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "u32" ];
                   Ty.path "alloc::alloc::Global"
                 ];
-            (* B *) Ty.path "u32";
-            (* F *)
               Ty.function
                 [
                   Ty.tuple
@@ -475,22 +450,46 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ]
                 ]
                 (Ty.path "u32")
+            ])
+          []
+          "sum"
+          [ Ty.path "u32" ] in
+      let* α1 :=
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [
+              Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
+          "map"
+          [
+            Ty.path "u32";
+            Ty.function
+              [
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "std::thread::JoinHandle")
+                      [ Ty.path "u32" ]
+                  ]
+              ]
+              (Ty.path "u32")
           ] in
       let* α2 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [
+              Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.path "u32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.apply
-                    (Ty.path "std::thread::JoinHandle")
-                    [ Ty.path "u32" ];
-                  Ty.path "alloc::alloc::Global"
-                ]
-          ] in
+          [] in
       let* α3 := M.read children in
       let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 :=
@@ -521,13 +520,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     Ty.path "alloc::alloc::Global"
                                   ]
                               ])
-                            "unwrap" in
+                            "unwrap"
+                            [] in
                         let* α1 :=
                           M.get_associated_function
                             (Ty.apply
                               (Ty.path "std::thread::JoinHandle")
                               [ Ty.path "u32" ])
-                            "join" in
+                            "join"
+                            [] in
                         let* α2 := M.read c in
                         let* α3 := M.call_closure α1 [ α2 ] in
                         M.call_closure α0 [ α3 ]
@@ -541,7 +542,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Final sum result: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -549,7 +553,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α6 := M.call_closure α5 [ final_result ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

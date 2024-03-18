@@ -18,14 +18,14 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::try_trait::Try"
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+          []
           "branch"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ]
-          ] in
-      let* α1 := M.get_associated_function (Ty.path "std::fs::File") "open" in
+          [] in
+      let* α1 :=
+        M.get_associated_function (Ty.path "std::fs::File") "open" [ P ] in
       let* α2 := M.read filename in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -44,30 +44,28 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
-                  [
-                    (* Self *)
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "std::io::Lines")
                         [
                           Ty.apply
-                            (Ty.path "std::io::Lines")
-                            [
-                              Ty.apply
-                                (Ty.path
-                                  "std::io::buffered::bufreader::BufReader")
-                                [ Ty.path "std::fs::File" ]
-                            ];
-                          Ty.path "std::io::error::Error"
+                            (Ty.path "std::io::buffered::bufreader::BufReader")
+                            [ Ty.path "std::fs::File" ]
                         ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "core::convert::Infallible";
-                          Ty.path "std::io::error::Error"
-                        ]
-                  ] in
+                      Ty.path "std::io::error::Error"
+                    ])
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "core::convert::Infallible";
+                        Ty.path "std::io::error::Error"
+                      ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -87,19 +85,19 @@ Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "std::io::BufRead"
+        (Ty.apply
+          (Ty.path "std::io::buffered::bufreader::BufReader")
+          [ Ty.path "std::fs::File" ])
+        []
         "lines"
-        [
-          (* Self *)
-            Ty.apply
-              (Ty.path "std::io::buffered::bufreader::BufReader")
-              [ Ty.path "std::fs::File" ]
-        ] in
+        [] in
     let* α1 :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "std::io::buffered::bufreader::BufReader")
           [ Ty.path "std::fs::File" ])
-        "new" in
+        "new"
+        [] in
     let* α2 := M.read file in
     let* α3 := M.call_closure α1 [ α2 ] in
     let* α4 := M.call_closure α0 [ α3 ] in
@@ -145,17 +143,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α0 :=
               M.get_trait_method
                 "core::iter::traits::collect::IntoIterator"
-                "into_iter"
-                [
-                  (* Self *)
+                (Ty.apply
+                  (Ty.path "std::io::Lines")
+                  [
                     Ty.apply
-                      (Ty.path "std::io::Lines")
-                      [
-                        Ty.apply
-                          (Ty.path "std::io::buffered::bufreader::BufReader")
-                          [ Ty.path "std::fs::File" ]
-                      ]
-                ] in
+                      (Ty.path "std::io::buffered::bufreader::BufReader")
+                      [ Ty.path "std::fs::File" ]
+                  ])
+                []
+                "into_iter"
+                [] in
             let* α1 := M.read lines in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
@@ -170,18 +167,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α0 :=
                           M.get_trait_method
                             "core::iter::traits::iterator::Iterator"
-                            "next"
-                            [
-                              (* Self *)
+                            (Ty.apply
+                              (Ty.path "std::io::Lines")
+                              [
                                 Ty.apply
-                                  (Ty.path "std::io::Lines")
-                                  [
-                                    Ty.apply
-                                      (Ty.path
-                                        "std::io::buffered::bufreader::BufReader")
-                                      [ Ty.path "std::fs::File" ]
-                                  ]
-                            ] in
+                                  (Ty.path
+                                    "std::io::buffered::bufreader::BufReader")
+                                  [ Ty.path "std::fs::File" ]
+                              ])
+                            []
+                            "next"
+                            [] in
                         let* α1 := M.call_closure α0 [ iter ] in
                         let* α2 := M.alloc α1 in
                         match_operator
@@ -218,7 +214,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                         let* α1 :=
                                           M.get_associated_function
                                             (Ty.path "core::fmt::Arguments")
-                                            "new_v1" in
+                                            "new_v1"
+                                            [] in
                                         let* α2 := M.read (mk_str "") in
                                         let* α3 := M.read (mk_str "
 ") in
@@ -227,7 +224,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                         let* α5 :=
                                           M.get_associated_function
                                             (Ty.path "core::fmt::rt::Argument")
-                                            "new_display" in
+                                            "new_display"
+                                            [ Ty.path "alloc::string::String"
+                                            ] in
                                         let* α6 := M.call_closure α5 [ ip ] in
                                         let* α7 :=
                                           M.alloc (Value.Array [ α6 ]) in

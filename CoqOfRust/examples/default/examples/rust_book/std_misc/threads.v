@@ -33,18 +33,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ]
-          ] in
+          [] in
       let* α1 := M.get_constant "threads::NTHREADS" in
       let* α2 := M.read α1 in
       let* α3 :=
@@ -67,13 +67,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::ops::range::Range")
+                        [ Ty.path "u32" ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::ops::range::Range")
-                            [ Ty.path "u32" ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -102,7 +101,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                     [ Ty.tuple [] ];
                                   Ty.path "alloc::alloc::Global"
                                 ])
-                              "push" in
+                              "push"
+                              [] in
                           let* α1 :=
                             M.get_function
                               "std::thread::spawn"
@@ -133,7 +133,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::Arguments")
-                                                    "new_v1" in
+                                                    "new_v1"
+                                                    [] in
                                                 let* α2 :=
                                                   M.read
                                                     (mk_str
@@ -148,7 +149,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::rt::Argument")
-                                                    "new_display" in
+                                                    "new_display"
+                                                    [ Ty.path "u32" ] in
                                                 let* α6 :=
                                                   M.call_closure α5 [ i ] in
                                                 let* α7 :=
@@ -186,16 +188,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
+        (Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [
+            Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
+            Ty.path "alloc::alloc::Global"
+          ])
+        []
         "into_iter"
-        [
-          (* Self *)
-            Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [
-                Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
-                Ty.path "alloc::alloc::Global"
-              ]
-        ] in
+        [] in
     let* α1 := M.read children in
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
@@ -210,18 +211,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
-                    "next"
-                    [
-                      (* Self *)
+                    (Ty.apply
+                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      [
                         Ty.apply
-                          (Ty.path "alloc::vec::into_iter::IntoIter")
-                          [
-                            Ty.apply
-                              (Ty.path "std::thread::JoinHandle")
-                              [ Ty.tuple [] ];
-                            Ty.path "alloc::alloc::Global"
-                          ]
-                    ] in
+                          (Ty.path "std::thread::JoinHandle")
+                          [ Ty.tuple [] ];
+                        Ty.path "alloc::alloc::Global"
+                      ])
+                    []
+                    "next"
+                    [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
@@ -244,7 +244,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           (Ty.apply
                             (Ty.path "std::thread::JoinHandle")
                             [ Ty.tuple [] ])
-                          "join" in
+                          "join"
+                          [] in
                       let* α1 := M.read child in
                       let* α2 := M.call_closure α0 [ α1 ] in
                       let* α3 := M.alloc α2 in

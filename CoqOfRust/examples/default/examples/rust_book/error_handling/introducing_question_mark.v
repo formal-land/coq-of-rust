@@ -18,14 +18,14 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::try_trait::Try"
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+          []
           "branch"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-          ] in
-      let* α1 := M.get_associated_function (Ty.path "str") "parse" in
+          [] in
+      let* α1 :=
+        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
       let* α2 := M.read first_number_str in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -44,23 +44,20 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                    ])
                   [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "i32";
-                          Ty.path "core::num::error::ParseIntError"
-                        ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "core::convert::Infallible";
-                          Ty.path "core::num::error::ParseIntError"
-                        ]
-                  ] in
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "core::convert::Infallible";
+                        Ty.path "core::num::error::ParseIntError"
+                      ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -81,14 +78,14 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::try_trait::Try"
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+          []
           "branch"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-          ] in
-      let* α1 := M.get_associated_function (Ty.path "str") "parse" in
+          [] in
+      let* α1 :=
+        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
       let* α2 := M.read second_number_str in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -107,23 +104,20 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                    ])
                   [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "i32";
-                          Ty.path "core::num::error::ParseIntError"
-                        ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "core::convert::Infallible";
-                          Ty.path "core::num::error::ParseIntError"
-                        ]
-                  ] in
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "core::convert::Infallible";
+                        Ty.path "core::num::error::ParseIntError"
+                      ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -176,7 +170,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "n is ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -184,7 +179,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -209,7 +205,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Error: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -217,7 +214,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "core::num::error::ParseIntError" ] in
               let* α6 := M.call_closure α5 [ e ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=

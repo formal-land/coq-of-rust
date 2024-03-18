@@ -57,11 +57,12 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field1_finish" in
+          "debug_tuple_field1_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Choice") in
       let* α3 := M.read self in
-      let* α4 := M.alloc (M.get_struct_tuple α3 0) in
+      let* α4 := M.alloc (M.get_struct_tuple_field α3 "subtle::Choice" 0) in
       M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
@@ -87,7 +88,7 @@ Module Impl_subtle_Choice.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_tuple α0 0)
+      M.read (M.get_struct_tuple_field α0 "subtle::Choice" 0)
     | _, _ => M.impossible
     end.
   
@@ -113,8 +114,10 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
         let* α1 := M.read (M.use α0) in
         if Value.is_true α1 then
           let* _ :=
-            let* α0 := M.read (M.get_struct_tuple source 0) in
-            let* α1 := M.read (M.get_struct_tuple source 0) in
+            let* α0 :=
+              M.read (M.get_struct_tuple_field source "subtle::Choice" 0) in
+            let* α1 :=
+              M.read (M.get_struct_tuple_field source "subtle::Choice" 0) in
             let* α2 :=
               M.alloc
                 (UnOp.Pure.not
@@ -136,7 +139,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
           M.alloc (Value.Tuple [])
         else
           M.alloc (Value.Tuple []) in
-      let* α0 := M.read (M.get_struct_tuple source 0) in
+      let* α0 := M.read (M.get_struct_tuple_field source "subtle::Choice" 0) in
       let* α0 := M.alloc (BinOp.Pure.ne α0 (Value.Integer Integer.U8 0)) in
       M.read α0
     | _, _ => M.impossible
@@ -171,10 +174,12 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read (M.get_struct_tuple self 0) in
-      let* α2 := M.read (M.get_struct_tuple rhs 0) in
+          [] in
+      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
+      let* α2 := M.read (M.get_struct_tuple_field rhs "subtle::Choice" 0) in
       M.call_closure α0 [ BinOp.Pure.bit_and α1 α2 ]
     | _, _ => M.impossible
     end.
@@ -209,11 +214,10 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.path "subtle::Choice")
+            [ Ty.path "subtle::Choice" ]
             "bitand"
-            [
-              (* Self *) Ty.path "subtle::Choice";
-              (* Rhs *) Ty.path "subtle::Choice"
-            ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.read α2 in
         let* α4 := M.read rhs in
@@ -253,10 +257,12 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read (M.get_struct_tuple self 0) in
-      let* α2 := M.read (M.get_struct_tuple rhs 0) in
+          [] in
+      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
+      let* α2 := M.read (M.get_struct_tuple_field rhs "subtle::Choice" 0) in
       M.call_closure α0 [ BinOp.Pure.bit_or α1 α2 ]
     | _, _ => M.impossible
     end.
@@ -291,11 +297,10 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::BitOr"
+            (Ty.path "subtle::Choice")
+            [ Ty.path "subtle::Choice" ]
             "bitor"
-            [
-              (* Self *) Ty.path "subtle::Choice";
-              (* Rhs *) Ty.path "subtle::Choice"
-            ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.read α2 in
         let* α4 := M.read rhs in
@@ -335,10 +340,12 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read (M.get_struct_tuple self 0) in
-      let* α2 := M.read (M.get_struct_tuple rhs 0) in
+          [] in
+      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
+      let* α2 := M.read (M.get_struct_tuple_field rhs "subtle::Choice" 0) in
       M.call_closure α0 [ BinOp.Pure.bit_xor α1 α2 ]
     | _, _ => M.impossible
     end.
@@ -373,11 +380,10 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::BitXor"
+            (Ty.path "subtle::Choice")
+            [ Ty.path "subtle::Choice" ]
             "bitxor"
-            [
-              (* Self *) Ty.path "subtle::Choice";
-              (* Rhs *) Ty.path "subtle::Choice"
-            ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.read α2 in
         let* α4 := M.read rhs in
@@ -416,9 +422,11 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
-      let* α1 := M.read (M.get_struct_tuple self 0) in
+          [] in
+      let* α1 := M.read (M.get_struct_tuple_field self "subtle::Choice" 0) in
       M.call_closure
         α0
         [ BinOp.Pure.bit_and (Value.Integer Integer.U8 1) (UnOp.Pure.not α1) ]
@@ -531,13 +539,12 @@ Module ConstantTimeEq.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::Not"
+          (Ty.path "subtle::Choice")
+          []
           "not"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 :=
-        M.get_trait_method
-          "subtle::ConstantTimeEq"
-          "ct_eq"
-          [ (* Self *) Self ] in
+        M.get_trait_method "subtle::ConstantTimeEq" Self [] "ct_eq" [] in
       let* α2 := M.read self in
       let* α3 := M.read other in
       let* α4 := M.call_closure α1 [ α2; α3 ] in
@@ -581,14 +588,20 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       let* _rhs := M.alloc _rhs in
       let* len :=
         let* α0 :=
-          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "len" in
+          M.get_associated_function
+            (Ty.apply (Ty.path "slice") [ T ])
+            "len"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* _ :=
         let* α0 := M.read len in
         let* α1 :=
-          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "len" in
+          M.get_associated_function
+            (Ty.apply (Ty.path "slice") [ T ])
+            "len"
+            [] in
         let* α2 := M.read _rhs in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc (BinOp.Pure.ne α0 α3) in
@@ -597,8 +610,10 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
           let* α0 :=
             M.get_trait_method
               "core::convert::From"
+              (Ty.path "subtle::Choice")
+              [ Ty.path "u8" ]
               "from"
-              [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
+              [] in
           let* α1 := M.call_closure α0 [ Value.Integer Integer.U8 0 ] in
           let* α2 := M.return_ α1 in
           let* α3 := M.read α2 in
@@ -611,30 +626,34 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
         let* α0 :=
           M.get_trait_method
             "core::iter::traits::collect::IntoIterator"
+            (Ty.apply
+              (Ty.path "core::iter::adapters::zip::Zip")
+              [
+                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+              ])
+            []
             "into_iter"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::iter::adapters::zip::Zip")
-                  [
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-                  ]
-            ] in
+            [] in
         let* α1 :=
           M.get_trait_method
             "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::slice::iter::Iter") [ T ])
+            []
             "zip"
-            [
-              (* Self *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-              (* U *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
-            ] in
+            [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ] in
         let* α2 :=
-          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "iter" in
+          M.get_associated_function
+            (Ty.apply (Ty.path "slice") [ T ])
+            "iter"
+            [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 :=
-          M.get_associated_function (Ty.apply (Ty.path "slice") [ T ]) "iter" in
+          M.get_associated_function
+            (Ty.apply (Ty.path "slice") [ T ])
+            "iter"
+            [] in
         let* α6 := M.read _rhs in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.call_closure α1 [ α4; α7 ] in
@@ -651,20 +670,15 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                     let* α0 :=
                       M.get_trait_method
                         "core::iter::traits::iterator::Iterator"
+                        (Ty.apply
+                          (Ty.path "core::iter::adapters::zip::Zip")
+                          [
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+                          ])
+                        []
                         "next"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::zip::Zip")
-                              [
-                                Ty.apply
-                                  (Ty.path "core::slice::iter::Iter")
-                                  [ T ];
-                                Ty.apply
-                                  (Ty.path "core::slice::iter::Iter")
-                                  [ T ]
-                              ]
-                        ] in
+                        [] in
                     let* α1 := M.call_closure α0 [ iter ] in
                     let* α2 := M.alloc α1 in
                     match_operator
@@ -681,8 +695,8 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                               γ
                               "core::option::Option::Some"
                               0 in
-                          let* γ1_0 := M.get_tuple_field γ0_0 0 in
-                          let* γ1_1 := M.get_tuple_field γ0_0 1 in
+                          let γ1_0 := M.get_tuple_field γ0_0 0 in
+                          let γ1_1 := M.get_tuple_field γ0_0 1 in
                           let* ai := M.copy γ1_0 in
                           let* bi := M.copy γ1_1 in
                           let* _ :=
@@ -691,12 +705,15 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "subtle::Choice")
-                                "unwrap_u8" in
+                                "unwrap_u8"
+                                [] in
                             let* α2 :=
                               M.get_trait_method
                                 "subtle::ConstantTimeEq"
+                                T
+                                []
                                 "ct_eq"
-                                [ (* Self *) T ] in
+                                [] in
                             let* α3 := M.read ai in
                             let* α4 := M.read bi in
                             let* α5 := M.call_closure α2 [ α3; α4 ] in
@@ -711,8 +728,10 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 := M.read x in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α0 := M.alloc α2 in
@@ -745,16 +764,17 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::Not"
+          (Ty.path "subtle::Choice")
+          []
           "not"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "subtle::Choice" ]
           "bitxor"
-          [
-            (* Self *) Ty.path "subtle::Choice";
-            (* Rhs *) Ty.path "subtle::Choice"
-          ] in
+          [] in
       let* α2 := M.read self in
       let* α3 := M.read α2 in
       let* α4 := M.read rhs in
@@ -797,18 +817,17 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitXor"
+            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
             "bitxor"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u8" ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
         let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u8") "wrapping_neg" in
+        let* α1 := M.get_associated_function (Ty.path "u8") "wrapping_neg" [] in
         let* α2 := M.read x in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 :=
@@ -820,8 +839,10 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 := M.read y in
       let* α2 := M.alloc (Value.Integer Integer.U8 1) in
       let* α3 := M.read (M.use α2) in
@@ -858,8 +879,10 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
       let* α0 :=
         M.get_trait_method
           "subtle::ConstantTimeEq"
+          (Ty.path "u8")
+          []
           "ct_eq"
-          [ (* Self *) Ty.path "u8" ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read α1 in
       let* α3 := M.alloc (M.rust_cast α2) in
@@ -903,18 +926,18 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitXor"
+            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
             "bitxor"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u16" ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
         let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u16") "wrapping_neg" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "u16") "wrapping_neg" [] in
         let* α2 := M.read x in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 :=
@@ -926,8 +949,10 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 := M.read y in
       let* α2 := M.alloc (Value.Integer Integer.U16 1) in
       let* α3 := M.read (M.use α2) in
@@ -962,8 +987,10 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
       let* α0 :=
         M.get_trait_method
           "subtle::ConstantTimeEq"
+          (Ty.path "u16")
+          []
           "ct_eq"
-          [ (* Self *) Ty.path "u16" ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read α1 in
       let* α3 := M.alloc (M.rust_cast α2) in
@@ -1007,18 +1034,18 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitXor"
+            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
             "bitxor"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u32" ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
         let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u32") "wrapping_neg" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "u32") "wrapping_neg" [] in
         let* α2 := M.read x in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 :=
@@ -1030,8 +1057,10 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 := M.read y in
       let* α2 := M.alloc (Value.Integer Integer.U32 1) in
       let* α3 := M.read (M.use α2) in
@@ -1066,8 +1095,10 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
       let* α0 :=
         M.get_trait_method
           "subtle::ConstantTimeEq"
+          (Ty.path "u32")
+          []
           "ct_eq"
-          [ (* Self *) Ty.path "u32" ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read α1 in
       let* α3 := M.alloc (M.rust_cast α2) in
@@ -1111,18 +1142,18 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitXor"
+            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
             "bitxor"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u64" ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
         let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "u64") "wrapping_neg" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "u64") "wrapping_neg" [] in
         let* α2 := M.read x in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 :=
@@ -1134,8 +1165,10 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 := M.read y in
       let* α2 := M.alloc (Value.Integer Integer.U64 1) in
       let* α3 := M.read (M.use α2) in
@@ -1170,8 +1203,10 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
       let* α0 :=
         M.get_trait_method
           "subtle::ConstantTimeEq"
+          (Ty.path "u64")
+          []
           "ct_eq"
-          [ (* Self *) Ty.path "u64" ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read α1 in
       let* α3 := M.alloc (M.rust_cast α2) in
@@ -1215,18 +1250,18 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitXor"
+            (Ty.apply (Ty.path "&") [ Ty.path "usize" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ]
             "bitxor"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "usize" ];
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "usize" ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* y :=
         let* α0 := M.read x in
-        let* α1 := M.get_associated_function (Ty.path "usize") "wrapping_neg" in
+        let* α1 :=
+          M.get_associated_function (Ty.path "usize") "wrapping_neg" [] in
         let* α2 := M.read x in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.get_function "core::mem::size_of" [ Ty.path "usize" ] in
@@ -1238,8 +1273,10 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
       let* α0 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.path "u8")
+          [ Ty.path "subtle::Choice" ]
           "into"
-          [ (* Self *) Ty.path "u8"; (* T *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 := M.read y in
       let* α2 := M.alloc (Value.Integer Integer.Usize 1) in
       let* α3 := M.read (M.use α2) in
@@ -1274,8 +1311,10 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
       let* α0 :=
         M.get_trait_method
           "subtle::ConstantTimeEq"
+          (Ty.path "usize")
+          []
           "ct_eq"
-          [ (* Self *) Ty.path "usize" ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read α1 in
       let* α3 := M.alloc (M.rust_cast α2) in
@@ -1307,8 +1346,10 @@ Module ConditionallySelectable.
         let* α1 :=
           M.get_trait_method
             "subtle::ConditionallySelectable"
+            Self
+            []
             "conditional_select"
-            [ (* Self *) Self ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.read other in
         let* α4 := M.read choice in
@@ -1334,8 +1375,10 @@ Module ConditionallySelectable.
         let* α0 :=
           M.get_trait_method
             "subtle::ConditionallySelectable"
+            Self
+            []
             "conditional_assign"
-            [ (* Self *) Self ] in
+            [] in
         let* α1 := M.read a in
         let* α2 := M.read b in
         let* α3 := M.read choice in
@@ -1345,8 +1388,10 @@ Module ConditionallySelectable.
         let* α0 :=
           M.get_trait_method
             "subtle::ConditionallySelectable"
+            Self
+            []
             "conditional_assign"
-            [ (* Self *) Self ] in
+            [] in
         let* α1 := M.read b in
         let* α2 := M.read choice in
         let* α3 := M.call_closure α0 [ α1; t; α2 ] in
@@ -1379,28 +1424,26 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
+          [ Ty.path "u8" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
-            (* Rhs *) Ty.path "u8"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u8" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -1426,7 +1469,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -1466,7 +1509,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -1524,7 +1567,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -1532,21 +1575,19 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i8" ])
+          [ Ty.path "i8" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i8" ];
-            (* Rhs *) Ty.path "i8"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i8" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i8" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i8" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -1572,7 +1613,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -1613,7 +1654,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -1672,28 +1713,26 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
+          [ Ty.path "u16" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
-            (* Rhs *) Ty.path "u16"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u16" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -1719,7 +1758,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -1759,7 +1798,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -1817,7 +1856,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -1825,21 +1864,19 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i16" ])
+          [ Ty.path "i16" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i16" ];
-            (* Rhs *) Ty.path "i16"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i16" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i16" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i16" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -1865,7 +1902,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -1906,7 +1943,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -1965,28 +2002,26 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
+          [ Ty.path "u32" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
-            (* Rhs *) Ty.path "u32"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u32" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -2012,7 +2047,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -2052,7 +2087,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -2110,7 +2145,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -2118,21 +2153,19 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
+          [ Ty.path "i32" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-            (* Rhs *) Ty.path "i32"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -2158,7 +2191,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -2199,7 +2232,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -2258,28 +2291,26 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
+          [ Ty.path "u64" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
-            (* Rhs *) Ty.path "u64"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u64" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -2305,7 +2336,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -2345,7 +2376,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         M.alloc (M.rust_cast α2) in
@@ -2403,7 +2434,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -2411,21 +2442,19 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i64" ])
+          [ Ty.path "i64" ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i64" ];
-            (* Rhs *) Ty.path "i64"
-          ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read mask in
       let* α3 :=
         M.get_trait_method
           "core::ops::bit::BitXor"
+          (Ty.apply (Ty.path "&") [ Ty.path "i64" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ]
           "bitxor"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i64" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i64" ]
-          ] in
+          [] in
       let* α4 := M.read a in
       let* α5 := M.read b in
       let* α6 := M.call_closure α3 [ α4; α5 ] in
@@ -2451,7 +2480,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -2492,7 +2521,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
       let* choice := M.alloc choice in
       let* mask :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
         let* α1 := M.call_closure α0 [ choice ] in
         let* α2 := UnOp.Panic.neg (M.rust_cast α1) in
         let* α3 := M.alloc α2 in
@@ -2549,15 +2578,21 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       let* α0 :=
         M.get_trait_method
           "subtle::ConditionallySelectable"
+          (Ty.path "u8")
+          []
           "conditional_select"
-          [ (* Self *) Ty.path "u8" ] in
+          [] in
       let* α1 := M.read a in
       let* α2 := M.read b in
       let* α3 := M.read choice in
       let* α4 :=
         M.call_closure
           α0
-          [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0; α3 ] in
+          [
+            M.get_struct_tuple_field α1 "subtle::Choice" 0;
+            M.get_struct_tuple_field α2 "subtle::Choice" 0;
+            α3
+          ] in
       M.pure (Value.StructTuple "subtle::Choice" [ α4 ])
     | _, _ => M.impossible
     end.
@@ -2600,8 +2635,10 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
         let* α0 :=
           M.get_trait_method
             "core::ops::arith::Neg"
+            (Ty.apply (Ty.path "&") [ T ])
+            []
             "neg"
-            [ (* Self *) Ty.apply (Ty.path "&") [ T ] ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.alloc α1 in
         let* α3 := M.read (M.use α2) in
@@ -2611,8 +2648,10 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
         let* α0 :=
           M.get_trait_method
             "subtle::ConditionallySelectable"
+            T
+            []
             "conditional_assign"
-            [ (* Self *) T ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read choice in
         let* α3 := M.call_closure α0 [ α1; self_neg; α2 ] in
@@ -2651,17 +2690,24 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 :=
-        M.get_trait_method "core::clone::Clone" "clone" [ (* Self *) T ] in
+      let* α0 := M.get_trait_method "core::clone::Clone" T [] "clone" [] in
       let* α1 := M.read self in
-      let* α2 := M.call_closure α0 [ M.get_struct_record α1 "value" ] in
+      let* α2 :=
+        M.call_closure
+          α0
+          [ M.get_struct_record_field α1 "subtle::CtOption" "value" ] in
       let* α3 :=
         M.get_trait_method
           "core::clone::Clone"
+          (Ty.path "subtle::Choice")
+          []
           "clone"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α4 := M.read self in
-      let* α5 := M.call_closure α3 [ M.get_struct_record α4 "is_some" ] in
+      let* α5 :=
+        M.call_closure
+          α3
+          [ M.get_struct_record_field α4 "subtle::CtOption" "is_some" ] in
       M.pure
         (Value.StructRecord
           "subtle::CtOption"
@@ -2707,21 +2753,25 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_struct_field2_finish" in
+          "debug_struct_field2_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "CtOption") in
       let* α3 := M.read (mk_str "value") in
       let* α4 := M.read self in
       let* α5 := M.read (mk_str "is_some") in
       let* α6 := M.read self in
-      let* α7 := M.alloc (M.get_struct_record α6 "is_some") in
+      let* α7 :=
+        M.alloc (M.get_struct_record_field α6 "subtle::CtOption" "is_some") in
       M.call_closure
         α0
         [
           α1;
           α2;
           α3;
-          M.pointer_coercion (* Unsize *) (M.get_struct_record α4 "value");
+          M.pointer_coercion
+            (* Unsize *)
+            (M.get_struct_record_field α4 "subtle::CtOption" "value");
           α5;
           M.pointer_coercion (* Unsize *) α7
         ]
@@ -2756,11 +2806,12 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     | [], [ source ] =>
       let* source := M.alloc source in
       let* α0 :=
-        M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
+        M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-          "is_some" in
+          "is_some"
+          [] in
       let* α2 := M.call_closure α1 [ source ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -2768,7 +2819,9 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
       let* α6 := M.read (M.use α5) in
       let* α7 :=
         if Value.is_true α6 then
-          let* α0 := M.read (M.get_struct_record source "value") in
+          let* α0 :=
+            M.read
+              (M.get_struct_record_field source "subtle::CtOption" "value") in
           M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ])
         else
           M.alloc (Value.StructTuple "core::option::Option::None" []) in
@@ -2832,8 +2885,11 @@ Module Impl_subtle_CtOption_T.
       let* msg := M.alloc msg in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
-        let* α1 := M.call_closure α0 [ M.get_struct_record self "is_some" ] in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
+        let* α1 :=
+          M.call_closure
+            α0
+            [ M.get_struct_record_field self "subtle::CtOption" "is_some" ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.U8 1) in
         let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
@@ -2841,8 +2897,8 @@ Module Impl_subtle_CtOption_T.
           α4
           [
             fun γ =>
-              let* γ0_0 := M.get_tuple_field γ 0 in
-              let* γ0_1 := M.get_tuple_field γ 1 in
+              let γ0_0 := M.get_tuple_field γ 0 in
+              let γ0_1 := M.get_tuple_field γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
               let* α0 := M.read left_val in
@@ -2865,13 +2921,15 @@ Module Impl_subtle_CtOption_T.
                 let* α4 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α5 := M.read (mk_str "") in
                 let* α6 := M.alloc (Value.Array [ α5 ]) in
                 let* α7 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                 let* α8 := M.call_closure α7 [ msg ] in
                 let* α9 := M.alloc (Value.Array [ α8 ]) in
                 let* α10 :=
@@ -2897,7 +2955,7 @@ Module Impl_subtle_CtOption_T.
               else
                 M.alloc (Value.Tuple [])
           ] in
-      M.read (M.get_struct_record self "value")
+      M.read (M.get_struct_record_field self "subtle::CtOption" "value")
     | _, _ => M.impossible
     end.
   
@@ -2919,8 +2977,11 @@ Module Impl_subtle_CtOption_T.
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" in
-        let* α1 := M.call_closure α0 [ M.get_struct_record self "is_some" ] in
+          M.get_associated_function (Ty.path "subtle::Choice") "unwrap_u8" [] in
+        let* α1 :=
+          M.call_closure
+            α0
+            [ M.get_struct_record_field self "subtle::CtOption" "is_some" ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.U8 1) in
         let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
@@ -2928,8 +2989,8 @@ Module Impl_subtle_CtOption_T.
           α4
           [
             fun γ =>
-              let* γ0_0 := M.get_tuple_field γ 0 in
-              let* γ0_1 := M.get_tuple_field γ 1 in
+              let γ0_0 := M.get_tuple_field γ 0 in
+              let γ0_1 := M.get_tuple_field γ 1 in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
               let* α0 := M.read left_val in
@@ -2965,7 +3026,7 @@ Module Impl_subtle_CtOption_T.
               else
                 M.alloc (Value.Tuple [])
           ] in
-      M.read (M.get_struct_record self "value")
+      M.read (M.get_struct_record_field self "subtle::CtOption" "value")
     | _, _ => M.impossible
     end.
   
@@ -2990,10 +3051,15 @@ Module Impl_subtle_CtOption_T.
       let* α0 :=
         M.get_trait_method
           "subtle::ConditionallySelectable"
+          T
+          []
           "conditional_select"
-          [ (* Self *) T ] in
-      let* α1 := M.read (M.get_struct_record self "is_some") in
-      M.call_closure α0 [ def; M.get_struct_record self "value"; α1 ]
+          [] in
+      let* α1 :=
+        M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
+      M.call_closure
+        α0
+        [ def; M.get_struct_record_field self "subtle::CtOption" "value"; α1 ]
     | _, _ => M.impossible
     end.
   
@@ -3019,18 +3085,25 @@ Module Impl_subtle_CtOption_T.
       let* α0 :=
         M.get_trait_method
           "subtle::ConditionallySelectable"
+          T
+          []
           "conditional_select"
-          [ (* Self *) T ] in
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::function::FnOnce"
+          F
+          [ Ty.tuple [] ]
           "call_once"
-          [ (* Self *) F; (* Args *) Ty.tuple [] ] in
+          [] in
       let* α2 := M.read f in
       let* α3 := M.call_closure α1 [ α2; Value.Tuple [] ] in
       let* α4 := M.alloc α3 in
-      let* α5 := M.read (M.get_struct_record self "is_some") in
-      M.call_closure α0 [ α4; M.get_struct_record self "value"; α5 ]
+      let* α5 :=
+        M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
+      M.call_closure
+        α0
+        [ α4; M.get_struct_record_field self "subtle::CtOption" "value"; α5 ]
     | _, _ => M.impossible
     end.
   
@@ -3049,7 +3122,7 @@ Module Impl_subtle_CtOption_T.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "is_some")
+      M.read (M.get_struct_record_field α0 "subtle::CtOption" "is_some")
     | _, _ => M.impossible
     end.
   
@@ -3070,10 +3143,13 @@ Module Impl_subtle_CtOption_T.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::Not"
+          (Ty.path "subtle::Choice")
+          []
           "not"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α1 := M.read self in
-      let* α2 := M.read (M.get_struct_record α1 "is_some") in
+      let* α2 :=
+        M.read (M.get_struct_record_field α1 "subtle::CtOption" "is_some") in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
@@ -3107,30 +3183,37 @@ Module Impl_subtle_CtOption_T.
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "subtle::CtOption") [ U ])
-          "new" in
+          "new"
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::function::FnOnce"
+          F
+          [ Ty.tuple [ T ] ]
           "call_once"
-          [ (* Self *) F; (* Args *) Ty.tuple [ T ] ] in
+          [] in
       let* α2 := M.read f in
       let* α3 :=
         M.get_trait_method
           "subtle::ConditionallySelectable"
+          T
+          []
           "conditional_select"
-          [ (* Self *) T ] in
+          [] in
       let* α4 :=
-        M.get_trait_method
-          "core::default::Default"
-          "default"
-          [ (* Self *) T ] in
+        M.get_trait_method "core::default::Default" T [] "default" [] in
       let* α5 := M.call_closure α4 [] in
       let* α6 := M.alloc α5 in
-      let* α7 := M.read (M.get_struct_record self "is_some") in
+      let* α7 :=
+        M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
       let* α8 :=
-        M.call_closure α3 [ α6; M.get_struct_record self "value"; α7 ] in
+        M.call_closure
+          α3
+          [ α6; M.get_struct_record_field self "subtle::CtOption" "value"; α7
+          ] in
       let* α9 := M.call_closure α1 [ α2; Value.Tuple [ α8 ] ] in
-      let* α10 := M.read (M.get_struct_record self "is_some") in
+      let* α10 :=
+        M.read (M.get_struct_record_field self "subtle::CtOption" "is_some") in
       M.call_closure α0 [ α9; α10 ]
     | _, _ => M.impossible
     end.
@@ -3165,38 +3248,48 @@ Module Impl_subtle_CtOption_T.
         let* α0 :=
           M.get_trait_method
             "core::ops::function::FnOnce"
+            F
+            [ Ty.tuple [ T ] ]
             "call_once"
-            [ (* Self *) F; (* Args *) Ty.tuple [ T ] ] in
+            [] in
         let* α1 := M.read f in
         let* α2 :=
           M.get_trait_method
             "subtle::ConditionallySelectable"
+            T
+            []
             "conditional_select"
-            [ (* Self *) T ] in
+            [] in
         let* α3 :=
-          M.get_trait_method
-            "core::default::Default"
-            "default"
-            [ (* Self *) T ] in
+          M.get_trait_method "core::default::Default" T [] "default" [] in
         let* α4 := M.call_closure α3 [] in
         let* α5 := M.alloc α4 in
-        let* α6 := M.read (M.get_struct_record self "is_some") in
+        let* α6 :=
+          M.read
+            (M.get_struct_record_field self "subtle::CtOption" "is_some") in
         let* α7 :=
-          M.call_closure α2 [ α5; M.get_struct_record self "value"; α6 ] in
+          M.call_closure
+            α2
+            [ α5; M.get_struct_record_field self "subtle::CtOption" "value"; α6
+            ] in
         let* α8 := M.call_closure α0 [ α1; Value.Tuple [ α7 ] ] in
         M.alloc α8 in
       let* _ :=
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAndAssign"
+            (Ty.path "subtle::Choice")
+            [ Ty.path "subtle::Choice" ]
             "bitand_assign"
-            [
-              (* Self *) Ty.path "subtle::Choice";
-              (* Rhs *) Ty.path "subtle::Choice"
-            ] in
-        let* α1 := M.read (M.get_struct_record self "is_some") in
+            [] in
+        let* α1 :=
+          M.read
+            (M.get_struct_record_field self "subtle::CtOption" "is_some") in
         let* α2 :=
-          M.call_closure α0 [ M.get_struct_record tmp "is_some"; α1 ] in
+          M.call_closure
+            α0
+            [ M.get_struct_record_field tmp "subtle::CtOption" "is_some"; α1
+            ] in
         M.alloc α2 in
       M.read tmp
     | _, _ => M.impossible
@@ -3228,23 +3321,28 @@ Module Impl_subtle_CtOption_T.
         let* α0 :=
           M.get_associated_function
             (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-            "is_none" in
+            "is_none"
+            [] in
         let* α1 := M.call_closure α0 [ self ] in
         M.alloc α1 in
       let* f :=
         let* α0 :=
           M.get_trait_method
             "core::ops::function::FnOnce"
+            F
+            [ Ty.tuple [] ]
             "call_once"
-            [ (* Self *) F; (* Args *) Ty.tuple [] ] in
+            [] in
         let* α1 := M.read f in
         let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
         M.alloc α2 in
       let* α0 :=
         M.get_trait_method
           "subtle::ConditionallySelectable"
+          (Ty.apply (Ty.path "subtle::CtOption") [ T ])
+          []
           "conditional_select"
-          [ (* Self *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ] in
+          [] in
       let* α1 := M.read is_none in
       let* α2 := M.call_closure α0 [ self; f; α1 ] in
       let* α0 := M.alloc α2 in
@@ -3283,25 +3381,33 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-          "new" in
+          "new"
+          [] in
       let* α1 :=
         M.get_trait_method
           "subtle::ConditionallySelectable"
+          T
+          []
           "conditional_select"
-          [ (* Self *) T ] in
+          [] in
       let* α2 := M.read a in
       let* α3 := M.read b in
       let* α4 := M.read choice in
       let* α5 :=
         M.call_closure
           α1
-          [ M.get_struct_record α2 "value"; M.get_struct_record α3 "value"; α4
+          [
+            M.get_struct_record_field α2 "subtle::CtOption" "value";
+            M.get_struct_record_field α3 "subtle::CtOption" "value";
+            α4
           ] in
       let* α6 :=
         M.get_trait_method
           "subtle::ConditionallySelectable"
+          (Ty.path "subtle::Choice")
+          []
           "conditional_select"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α7 := M.read a in
       let* α8 := M.read b in
       let* α9 := M.read choice in
@@ -3309,8 +3415,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
         M.call_closure
           α6
           [
-            M.get_struct_record α7 "is_some";
-            M.get_struct_record α8 "is_some";
+            M.get_struct_record_field α7 "subtle::CtOption" "is_some";
+            M.get_struct_record_field α8 "subtle::CtOption" "is_some";
             α9
           ] in
       M.call_closure α0 [ α5; α10 ]
@@ -3349,7 +3455,8 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
         let* α0 :=
           M.get_associated_function
             (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-            "is_some" in
+            "is_some"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -3357,66 +3464,69 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
         let* α0 :=
           M.get_associated_function
             (Ty.apply (Ty.path "subtle::CtOption") [ T ])
-            "is_some" in
+            "is_some"
+            [] in
         let* α1 := M.read rhs in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitOr"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "subtle::Choice" ]
           "bitor"
-          [
-            (* Self *) Ty.path "subtle::Choice";
-            (* Rhs *) Ty.path "subtle::Choice"
-          ] in
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::bit::BitAnd"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "subtle::Choice" ]
           "bitand"
-          [
-            (* Self *) Ty.path "subtle::Choice";
-            (* Rhs *) Ty.path "subtle::Choice"
-          ] in
+          [] in
       let* α2 :=
         M.get_trait_method
           "core::ops::bit::BitAnd"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "subtle::Choice" ]
           "bitand"
-          [
-            (* Self *) Ty.path "subtle::Choice";
-            (* Rhs *) Ty.path "subtle::Choice"
-          ] in
+          [] in
       let* α3 := M.read a in
       let* α4 := M.read b in
       let* α5 := M.call_closure α2 [ α3; α4 ] in
-      let* α6 :=
-        M.get_trait_method "subtle::ConstantTimeEq" "ct_eq" [ (* Self *) T ] in
+      let* α6 := M.get_trait_method "subtle::ConstantTimeEq" T [] "ct_eq" [] in
       let* α7 := M.read self in
       let* α8 := M.read rhs in
       let* α9 :=
         M.call_closure
           α6
-          [ M.get_struct_record α7 "value"; M.get_struct_record α8 "value" ] in
+          [
+            M.get_struct_record_field α7 "subtle::CtOption" "value";
+            M.get_struct_record_field α8 "subtle::CtOption" "value"
+          ] in
       let* α10 := M.call_closure α1 [ α5; α9 ] in
       let* α11 :=
         M.get_trait_method
           "core::ops::bit::BitAnd"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "subtle::Choice" ]
           "bitand"
-          [
-            (* Self *) Ty.path "subtle::Choice";
-            (* Rhs *) Ty.path "subtle::Choice"
-          ] in
+          [] in
       let* α12 :=
         M.get_trait_method
           "core::ops::bit::Not"
+          (Ty.path "subtle::Choice")
+          []
           "not"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α13 := M.read a in
       let* α14 := M.call_closure α12 [ α13 ] in
       let* α15 :=
         M.get_trait_method
           "core::ops::bit::Not"
+          (Ty.path "subtle::Choice")
+          []
           "not"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α16 := M.read b in
       let* α17 := M.call_closure α15 [ α16 ] in
       let* α18 := M.call_closure α11 [ α14; α17 ] in
@@ -3475,17 +3585,18 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
+            [ Ty.path "u8" ]
             "bitand"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ];
-              (* Rhs *) Ty.path "u8"
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] in
+            [] in
         let* α3 := M.read other in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.call_closure α0 [ α1; α4 ] in
@@ -3494,16 +3605,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.path "u8")
+            [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
             "bitand"
-            [
-              (* Self *) Ty.path "u8";
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u8" ]
-            ] in
+            [] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u8" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.read other in
@@ -3578,8 +3690,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
       let* α0 :=
         M.get_trait_method
           "core::convert::From"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "u8" ]
           "from"
-          [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
+          [] in
       let* α1 := M.read bit in
       let* α2 := M.alloc (BinOp.Pure.bit_and α1 (Value.Integer Integer.U8 1)) in
       let* α3 := M.read (M.use α2) in
@@ -3632,17 +3746,18 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
+            [ Ty.path "u16" ]
             "bitand"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ];
-              (* Rhs *) Ty.path "u16"
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] in
+            [] in
         let* α3 := M.read other in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.call_closure α0 [ α1; α4 ] in
@@ -3651,16 +3766,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.path "u16")
+            [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
             "bitand"
-            [
-              (* Self *) Ty.path "u16";
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u16" ]
-            ] in
+            [] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u16" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.read other in
@@ -3737,8 +3853,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
       let* α0 :=
         M.get_trait_method
           "core::convert::From"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "u8" ]
           "from"
-          [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
+          [] in
       let* α1 := M.read bit in
       let* α2 :=
         M.call_closure
@@ -3793,17 +3911,18 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
+            [ Ty.path "u32" ]
             "bitand"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ];
-              (* Rhs *) Ty.path "u32"
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] in
+            [] in
         let* α3 := M.read other in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.call_closure α0 [ α1; α4 ] in
@@ -3812,16 +3931,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.path "u32")
+            [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
             "bitand"
-            [
-              (* Self *) Ty.path "u32";
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u32" ]
-            ] in
+            [] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.read other in
@@ -3898,8 +4018,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
       let* α0 :=
         M.get_trait_method
           "core::convert::From"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "u8" ]
           "from"
-          [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
+          [] in
       let* α1 := M.read bit in
       let* α2 :=
         M.call_closure
@@ -3954,17 +4076,18 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
+            [ Ty.path "u64" ]
             "bitand"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ];
-              (* Rhs *) Ty.path "u64"
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ] ] in
+            [] in
         let* α3 := M.read other in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.call_closure α0 [ α1; α4 ] in
@@ -3973,16 +4096,17 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
         let* α0 :=
           M.get_trait_method
             "core::ops::bit::BitAnd"
+            (Ty.path "u64")
+            [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
             "bitand"
-            [
-              (* Self *) Ty.path "u64";
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "u64" ]
-            ] in
+            [] in
         let* α1 :=
           M.get_trait_method
             "core::ops::bit::Not"
+            (Ty.apply (Ty.path "&") [ Ty.path "u64" ])
+            []
             "not"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "u64" ] ] in
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.read other in
@@ -4059,8 +4183,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
       let* α0 :=
         M.get_trait_method
           "core::convert::From"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "u8" ]
           "from"
-          [ (* Self *) Ty.path "subtle::Choice"; (* T *) Ty.path "u8" ] in
+          [] in
       let* α1 := M.read bit in
       let* α2 :=
         M.call_closure
@@ -4090,21 +4216,19 @@ Module ConstantTimeLess.
       let* α0 :=
         M.get_trait_method
           "core::ops::bit::BitAnd"
+          (Ty.path "subtle::Choice")
+          [ Ty.path "subtle::Choice" ]
           "bitand"
-          [
-            (* Self *) Ty.path "subtle::Choice";
-            (* Rhs *) Ty.path "subtle::Choice"
-          ] in
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::bit::Not"
+          (Ty.path "subtle::Choice")
+          []
           "not"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α2 :=
-        M.get_trait_method
-          "subtle::ConstantTimeGreater"
-          "ct_gt"
-          [ (* Self *) Self ] in
+        M.get_trait_method "subtle::ConstantTimeGreater" Self [] "ct_gt" [] in
       let* α3 := M.read self in
       let* α4 := M.read other in
       let* α5 := M.call_closure α2 [ α3; α4 ] in
@@ -4112,13 +4236,12 @@ Module ConstantTimeLess.
       let* α7 :=
         M.get_trait_method
           "core::ops::bit::Not"
+          (Ty.path "subtle::Choice")
+          []
           "not"
-          [ (* Self *) Ty.path "subtle::Choice" ] in
+          [] in
       let* α8 :=
-        M.get_trait_method
-          "subtle::ConstantTimeEq"
-          "ct_eq"
-          [ (* Self *) Self ] in
+        M.get_trait_method "subtle::ConstantTimeEq" Self [] "ct_eq" [] in
       let* α9 := M.read self in
       let* α10 := M.read other in
       let* α11 := M.call_closure α8 [ α9; α10 ] in

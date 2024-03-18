@@ -28,7 +28,8 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "write_str" in
+          "write_str"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "FlipperError") in
       M.call_closure α0 [ α1; α2 ]
@@ -74,12 +75,15 @@ Module Impl_integration_flipper_Flipper.
       let* α0 :=
         M.get_associated_function
           (Ty.path "integration_flipper::Flipper")
-          "new" in
+          "new"
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "bool")
+          []
           "default"
-          [ (* Self *) Ty.path "bool" ] in
+          [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
@@ -107,7 +111,8 @@ Module Impl_integration_flipper_Flipper.
           let* α0 :=
             M.get_associated_function
               (Ty.path "integration_flipper::Flipper")
-              "new" in
+              "new"
+              [] in
           let* α1 := M.call_closure α0 [ Value.Bool true ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
@@ -134,8 +139,15 @@ Module Impl_integration_flipper_Flipper.
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field
+              α1
+              "integration_flipper::Flipper"
+              "value") in
+        M.assign
+          (M.get_struct_record_field α0 "integration_flipper::Flipper" "value")
+          (UnOp.Pure.not α2) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
@@ -153,7 +165,8 @@ Module Impl_integration_flipper_Flipper.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "value")
+      M.read
+        (M.get_struct_record_field α0 "integration_flipper::Flipper" "value")
     | _, _ => M.impossible
     end.
   
@@ -173,7 +186,8 @@ Module Impl_integration_flipper_Flipper.
         let* α0 :=
           M.get_associated_function
             (Ty.path "integration_flipper::Flipper")
-            "flip" in
+            "flip"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in

@@ -26,14 +26,18 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ])
+          []
           "default"
-          [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ K ] ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+          []
           "default"
-          [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ V ] ] in
+          [] in
       let* α3 := M.call_closure α2 [] in
       M.pure
         (Value.StructRecord "dns::Mapping" [ ("_key", α1); ("_value", α3) ])
@@ -150,8 +154,10 @@ Module Impl_core_default_Default_for_dns_AccountId.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "dns::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -223,9 +229,9 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
-      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α1 := M.read (M.get_struct_tuple_field α0 "dns::AccountId" 0) in
       let* α2 := M.read other in
-      let* α3 := M.read (M.get_struct_tuple α2 0) in
+      let* α3 := M.read (M.get_struct_tuple_field α2 "dns::AccountId" 0) in
       M.pure (BinOp.Pure.eq α1 α3)
     | _, _ => M.impossible
     end.
@@ -348,7 +354,7 @@ Module Impl_dns_Env.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "caller")
+      M.read (M.get_struct_record_field α0 "dns::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -400,11 +406,10 @@ Definition zero_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::convert::Into"
+        (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+        [ Ty.path "dns::AccountId" ]
         "into"
-        [
-          (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-          (* T *) Ty.path "dns::AccountId"
-        ] in
+        [] in
     M.call_closure α0 [ repeat (Value.Integer Integer.U8 0) 32 ]
   | _, _ => M.impossible
   end.
@@ -438,7 +443,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "new" in
+            "new"
+            [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
@@ -450,12 +456,15 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "insert" in
+            "insert"
+            [] in
         let* α1 :=
           M.get_trait_method
             "core::default::Default"
+            (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+            []
             "default"
-            [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+            [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.get_function "dns::zero_address" [] in
         let* α4 := M.call_closure α3 [] in
@@ -470,7 +479,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "new" in
+            "new"
+            [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
@@ -482,12 +492,15 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "insert" in
+            "insert"
+            [] in
         let* α1 :=
           M.get_trait_method
             "core::default::Default"
+            (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+            []
             "default"
-            [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+            [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.get_function "dns::zero_address" [] in
         let* α4 := M.call_closure α3 [] in
@@ -659,7 +672,8 @@ Module Impl_dns_DomainNameService.
       let* α0 :=
         M.get_associated_function
           (Ty.path "dns::DomainNameService")
-          "init_env" in
+          "init_env"
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -677,8 +691,10 @@ Module Impl_dns_DomainNameService.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "dns::DomainNameService")
+          []
           "default"
-          [ (* Self *) Ty.path "dns::DomainNameService" ] in
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -705,9 +721,12 @@ Module Impl_dns_DomainNameService.
       let* self := M.alloc self in
       let* name := M.alloc name in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
+        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -722,10 +741,19 @@ Module Impl_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "contains" in
+            "contains"
+            [] in
         let* α1 := M.read self in
         let* α2 :=
-          M.call_closure α0 [ M.get_struct_record α1 "name_to_owner"; name ] in
+          M.call_closure
+            α0
+            [
+              M.get_struct_record_field
+                α1
+                "dns::DomainNameService"
+                "name_to_owner";
+              name
+            ] in
         let* α3 := M.alloc α2 in
         let* α4 := M.read (M.use α3) in
         if Value.is_true α4 then
@@ -748,20 +776,31 @@ Module Impl_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "insert" in
+            "insert"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read name in
         let* α3 := M.read caller in
         let* α4 :=
           M.call_closure
             α0
-            [ M.get_struct_record α1 "name_to_owner"; α2; α3 ] in
+            [
+              M.get_struct_record_field
+                α1
+                "dns::DomainNameService"
+                "name_to_owner";
+              α2;
+              α3
+            ] in
         M.alloc α4 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "dns::Env") "emit_event" in
+          M.get_associated_function (Ty.path "dns::Env") "emit_event" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -808,7 +847,8 @@ Module Impl_dns_DomainNameService.
           (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "dns::AccountId" ])
-          "unwrap_or" in
+          "unwrap_or"
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -817,12 +857,26 @@ Module Impl_dns_DomainNameService.
               Ty.apply (Ty.path "array") [ Ty.path "u8" ];
               Ty.path "dns::AccountId"
             ])
-          "get" in
+          "get"
+          [] in
       let* α2 := M.read self in
       let* α3 :=
-        M.call_closure α1 [ M.get_struct_record α2 "name_to_owner"; name ] in
+        M.call_closure
+          α1
+          [
+            M.get_struct_record_field
+              α2
+              "dns::DomainNameService"
+              "name_to_owner";
+            name
+          ] in
       let* α4 := M.read self in
-      let* α5 := M.read (M.get_struct_record α4 "default_address") in
+      let* α5 :=
+        M.read
+          (M.get_struct_record_field
+            α4
+            "dns::DomainNameService"
+            "default_address") in
       M.call_closure α0 [ α3; α5 ]
     | _, _ => M.impossible
     end.
@@ -857,9 +911,12 @@ Module Impl_dns_DomainNameService.
       let* name := M.alloc name in
       let* new_address := M.alloc new_address in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
+        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -869,7 +926,8 @@ Module Impl_dns_DomainNameService.
         let* α0 :=
           M.get_associated_function
             (Ty.path "dns::DomainNameService")
-            "get_owner_or_default" in
+            "get_owner_or_default"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read name in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -878,11 +936,10 @@ Module Impl_dns_DomainNameService.
         let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.path "dns::AccountId")
+            [ Ty.path "dns::AccountId" ]
             "ne"
-            [
-              (* Self *) Ty.path "dns::AccountId";
-              (* Rhs *) Ty.path "dns::AccountId"
-            ] in
+            [] in
         let* α1 := M.call_closure α0 [ caller; owner ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.read (M.use α2) in
@@ -906,12 +963,19 @@ Module Impl_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "get" in
+            "get"
+            [] in
         let* α1 := M.read self in
         let* α2 :=
           M.call_closure
             α0
-            [ M.get_struct_record α1 "name_to_address"; name ] in
+            [
+              M.get_struct_record_field
+                α1
+                "dns::DomainNameService"
+                "name_to_address";
+              name
+            ] in
         M.alloc α2 in
       let* _ :=
         let* α0 :=
@@ -922,20 +986,31 @@ Module Impl_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "insert" in
+            "insert"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read name in
         let* α3 := M.read new_address in
         let* α4 :=
           M.call_closure
             α0
-            [ M.get_struct_record α1 "name_to_address"; α2; α3 ] in
+            [
+              M.get_struct_record_field
+                α1
+                "dns::DomainNameService"
+                "name_to_address";
+              α2;
+              α3
+            ] in
         M.alloc α4 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "dns::Env") "emit_event" in
+          M.get_associated_function (Ty.path "dns::Env") "emit_event" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -1000,9 +1075,12 @@ Module Impl_dns_DomainNameService.
       let* name := M.alloc name in
       let* to := M.alloc to in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" in
+        let* α0 := M.get_associated_function (Ty.path "dns::Env") "caller" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -1012,7 +1090,8 @@ Module Impl_dns_DomainNameService.
         let* α0 :=
           M.get_associated_function
             (Ty.path "dns::DomainNameService")
-            "get_owner_or_default" in
+            "get_owner_or_default"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read name in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -1021,11 +1100,10 @@ Module Impl_dns_DomainNameService.
         let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.path "dns::AccountId")
+            [ Ty.path "dns::AccountId" ]
             "ne"
-            [
-              (* Self *) Ty.path "dns::AccountId";
-              (* Rhs *) Ty.path "dns::AccountId"
-            ] in
+            [] in
         let* α1 := M.call_closure α0 [ caller; owner ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.read (M.use α2) in
@@ -1049,10 +1127,19 @@ Module Impl_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "get" in
+            "get"
+            [] in
         let* α1 := M.read self in
         let* α2 :=
-          M.call_closure α0 [ M.get_struct_record α1 "name_to_owner"; name ] in
+          M.call_closure
+            α0
+            [
+              M.get_struct_record_field
+                α1
+                "dns::DomainNameService"
+                "name_to_owner";
+              name
+            ] in
         M.alloc α2 in
       let* _ :=
         let* α0 :=
@@ -1063,20 +1150,31 @@ Module Impl_dns_DomainNameService.
                 Ty.apply (Ty.path "array") [ Ty.path "u8" ];
                 Ty.path "dns::AccountId"
               ])
-            "insert" in
+            "insert"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read name in
         let* α3 := M.read to in
         let* α4 :=
           M.call_closure
             α0
-            [ M.get_struct_record α1 "name_to_owner"; α2; α3 ] in
+            [
+              M.get_struct_record_field
+                α1
+                "dns::DomainNameService"
+                "name_to_owner";
+              α2;
+              α3
+            ] in
         M.alloc α4 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "dns::Env") "emit_event" in
+          M.get_associated_function (Ty.path "dns::Env") "emit_event" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "dns::DomainNameService") "env" in
+          M.get_associated_function
+            (Ty.path "dns::DomainNameService")
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -1130,7 +1228,8 @@ Module Impl_dns_DomainNameService.
           (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "dns::AccountId" ])
-          "unwrap_or" in
+          "unwrap_or"
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -1139,12 +1238,26 @@ Module Impl_dns_DomainNameService.
               Ty.apply (Ty.path "array") [ Ty.path "u8" ];
               Ty.path "dns::AccountId"
             ])
-          "get" in
+          "get"
+          [] in
       let* α2 := M.read self in
       let* α3 :=
-        M.call_closure α1 [ M.get_struct_record α2 "name_to_address"; name ] in
+        M.call_closure
+          α1
+          [
+            M.get_struct_record_field
+              α2
+              "dns::DomainNameService"
+              "name_to_address";
+            name
+          ] in
       let* α4 := M.read self in
-      let* α5 := M.read (M.get_struct_record α4 "default_address") in
+      let* α5 :=
+        M.read
+          (M.get_struct_record_field
+            α4
+            "dns::DomainNameService"
+            "default_address") in
       M.call_closure α0 [ α3; α5 ]
     | _, _ => M.impossible
     end.
@@ -1165,7 +1278,8 @@ Module Impl_dns_DomainNameService.
       let* α0 :=
         M.get_associated_function
           (Ty.path "dns::DomainNameService")
-          "get_address_or_default" in
+          "get_address_or_default"
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read name in
       M.call_closure α0 [ α1; α2 ]
@@ -1188,7 +1302,8 @@ Module Impl_dns_DomainNameService.
       let* α0 :=
         M.get_associated_function
           (Ty.path "dns::DomainNameService")
-          "get_owner_or_default" in
+          "get_owner_or_default"
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read name in
       M.call_closure α0 [ α1; α2 ]

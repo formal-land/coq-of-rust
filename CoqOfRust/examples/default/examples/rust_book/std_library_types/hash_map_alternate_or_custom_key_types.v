@@ -39,33 +39,47 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
       let* α0 :=
         M.get_trait_method
           "core::cmp::PartialEq"
+          (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           "eq"
-          [
-            (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
-            (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
-          ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
       let* α3 :=
         M.call_closure
           α0
-          [ M.get_struct_record α1 "username"; M.get_struct_record α2 "username"
+          [
+            M.get_struct_record_field
+              α1
+              "hash_map_alternate_or_custom_key_types::Account"
+              "username";
+            M.get_struct_record_field
+              α2
+              "hash_map_alternate_or_custom_key_types::Account"
+              "username"
           ] in
       LogicalOp.and
         α3
         (let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
             "eq"
-            [
-              (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ];
-              (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
-            ] in
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
         M.call_closure
           α0
-          [ M.get_struct_record α1 "password"; M.get_struct_record α2 "password"
+          [
+            M.get_struct_record_field
+              α1
+              "hash_map_alternate_or_custom_key_types::Account"
+              "password";
+            M.get_struct_record_field
+              α2
+              "hash_map_alternate_or_custom_key_types::Account"
+              "password"
           ])
     | _, _ => M.impossible
     end.
@@ -145,23 +159,42 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         let* α0 :=
           M.get_trait_method
             "core::hash::Hash"
+            (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+            []
             "hash"
-            [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ]; (* H *) __H
-            ] in
+            [ __H ] in
         let* α1 := M.read self in
         let* α2 := M.read state in
         let* α3 :=
-          M.call_closure α0 [ M.get_struct_record α1 "username"; α2 ] in
+          M.call_closure
+            α0
+            [
+              M.get_struct_record_field
+                α1
+                "hash_map_alternate_or_custom_key_types::Account"
+                "username";
+              α2
+            ] in
         M.alloc α3 in
       let* α0 :=
         M.get_trait_method
           "core::hash::Hash"
+          (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+          []
           "hash"
-          [ (* Self *) Ty.apply (Ty.path "&") [ Ty.path "str" ]; (* H *) __H
-          ] in
+          [ __H ] in
       let* α1 := M.read self in
       let* α2 := M.read state in
-      let* α3 := M.call_closure α0 [ M.get_struct_record α1 "password"; α2 ] in
+      let* α3 :=
+        M.call_closure
+          α0
+          [
+            M.get_struct_record_field
+              α1
+              "hash_map_alternate_or_custom_key_types::Account"
+              "password";
+            α2
+          ] in
       let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
@@ -224,7 +257,10 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Username: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -232,7 +268,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α6 := M.call_closure α5 [ username ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -249,7 +286,10 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Password: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -257,7 +297,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α6 := M.call_closure α5 [ password ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -276,7 +317,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "Attempting logon...
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -300,7 +342,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
             Ty.path "std::hash::random::RandomState"
           ])
-        "get" in
+        "get"
+        [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ] in
     let* α1 := M.read accounts in
     let* α2 := M.call_closure α0 [ α1; logon ] in
     let* α3 := M.alloc α2 in
@@ -321,7 +364,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_const" in
+                    "new_const"
+                    [] in
                 let* α2 := M.read (mk_str "Successful logon!
 ") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -336,7 +380,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "Name: ") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -344,10 +389,18 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                 let* α6 := M.read account_info in
                 let* α7 :=
-                  M.call_closure α5 [ M.get_struct_record α6 "name" ] in
+                  M.call_closure
+                    α5
+                    [
+                      M.get_struct_record_field
+                        α6
+                        "hash_map_alternate_or_custom_key_types::AccountInfo"
+                        "name"
+                    ] in
                 let* α8 := M.alloc (Value.Array [ α7 ]) in
                 let* α9 :=
                   M.call_closure
@@ -365,7 +418,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "Email: ") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -373,10 +427,18 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                 let* α6 := M.read account_info in
                 let* α7 :=
-                  M.call_closure α5 [ M.get_struct_record α6 "email" ] in
+                  M.call_closure
+                    α5
+                    [
+                      M.get_struct_record_field
+                        α6
+                        "hash_map_alternate_or_custom_key_types::AccountInfo"
+                        "email"
+                    ] in
                 let* α8 := M.alloc (Value.Array [ α7 ]) in
                 let* α9 :=
                   M.call_closure
@@ -395,7 +457,8 @@ Definition try_logon (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "Login failed!
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -443,7 +506,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
               Ty.path "std::hash::random::RandomState"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* account :=
@@ -470,7 +534,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
               Ty.path "std::hash::random::RandomState"
             ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.read account in
       let* α2 := M.read account_info in
       let* α3 := M.call_closure α0 [ accounts; α1; α2 ] in

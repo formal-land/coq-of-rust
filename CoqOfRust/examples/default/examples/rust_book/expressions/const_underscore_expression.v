@@ -32,7 +32,11 @@ Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      M.read (M.get_struct_record self "test")
+      M.read
+        (M.get_struct_record_field
+          self
+          "const_underscore_expression::Bar"
+          "test")
     | _, _ => M.impossible
     end.
   

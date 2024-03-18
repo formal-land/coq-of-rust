@@ -20,8 +20,10 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "custom_environment::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -131,32 +133,42 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α3 := M.call_closure α2 [] in
       let* α4 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α5 := M.call_closure α4 [] in
       let* α6 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α7 := M.call_closure α6 [] in
       let* α8 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α9 := M.call_closure α8 [] in
       M.pure
         (Value.StructRecord
@@ -205,7 +217,7 @@ Module Impl_custom_environment_Env.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "caller")
+      M.read (M.get_struct_record_field α0 "custom_environment::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -247,7 +259,8 @@ Module Impl_custom_environment_Topics.
       let* α0 :=
         M.get_associated_function
           (Ty.path "custom_environment::Topics")
-          "init_env" in
+          "init_env"
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -265,8 +278,10 @@ Module Impl_custom_environment_Topics.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "custom_environment::Topics")
+          []
           "default"
-          [ (* Self *) Ty.path "custom_environment::Topics" ] in
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -287,19 +302,23 @@ Module Impl_custom_environment_Topics.
         let* α0 :=
           M.get_associated_function
             (Ty.path "custom_environment::Env")
-            "emit_event" in
+            "emit_event"
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "custom_environment::Topics")
-            "env" in
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
           M.get_trait_method
             "core::default::Default"
+            (Ty.path "custom_environment::EventWithTopics")
+            []
             "default"
-            [ (* Self *) Ty.path "custom_environment::EventWithTopics" ] in
+            [] in
         let* α6 := M.call_closure α5 [] in
         let* α7 :=
           M.call_closure

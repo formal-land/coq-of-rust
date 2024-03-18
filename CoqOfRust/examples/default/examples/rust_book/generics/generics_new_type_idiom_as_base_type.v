@@ -23,7 +23,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Value.StructTuple
           "generics_new_type_idiom_as_base_type::Years"
           [ Value.Integer Integer.I64 42 ]) in
-    let* years_as_primitive_1 := M.copy (M.get_struct_tuple years 0) in
+    let* years_as_primitive_1 :=
+      M.copy
+        (M.get_struct_tuple_field
+          years
+          "generics_new_type_idiom_as_base_type::Years"
+          0) in
     let* α0 :=
       match_operator
         years

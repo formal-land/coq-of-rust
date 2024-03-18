@@ -21,26 +21,27 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "&")
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
             ])
-          "unwrap" in
+          "unwrap"
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "first" in
+          "first"
+          [] in
       let* α2 :=
         M.get_trait_method
           "core::ops::deref::Deref"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
           "deref"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                  Ty.path "alloc::alloc::Global"
-                ]
-          ] in
+          [] in
       let* α3 := M.call_closure α2 [ vec ] in
       let* α4 := M.call_closure α1 [ α3 ] in
       let* α5 := M.call_closure α0 [ α4 ] in
@@ -50,8 +51,10 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply
           (Ty.path "core::result::Result")
           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
-        "unwrap" in
-    let* α1 := M.get_associated_function (Ty.path "str") "parse" in
+        "unwrap"
+        [] in
+    let* α1 :=
+      M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
     let* α2 := M.read first in
     let* α3 := M.read α2 in
     let* α4 := M.call_closure α1 [ α3 ] in
@@ -86,7 +89,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -97,7 +101,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 := M.read (mk_str "42") in
       let* α3 := M.read (mk_str "93") in
       let* α4 := M.read (mk_str "18") in
@@ -115,7 +120,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* strings :=
@@ -124,7 +130,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -135,7 +142,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 := M.read (mk_str "tofu") in
       let* α3 := M.read (mk_str "93") in
       let* α4 := M.read (mk_str "18") in
@@ -148,7 +156,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "The first doubled is ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -156,7 +167,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read numbers in
         let* α8 := M.call_closure α6 [ α7 ] in
@@ -177,7 +189,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "The first doubled is ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -185,7 +200,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read empty in
         let* α8 := M.call_closure α6 [ α7 ] in
@@ -206,7 +222,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "The first doubled is ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -214,7 +233,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.get_function "multiple_error_types::double_first" [] in
         let* α7 := M.read strings in
         let* α8 := M.call_closure α6 [ α7 ] in

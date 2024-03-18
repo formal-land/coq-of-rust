@@ -74,7 +74,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "closure_annotated: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -82,16 +85,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_trait_method
             "core::ops::function::Fn"
+            (Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"))
+            [ Ty.tuple [ Ty.path "i32" ] ]
             "call"
-            [
-              (* Self *)
-                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32");
-              (* Args *) Ty.tuple [ Ty.path "i32" ]
-            ] in
+            [] in
         let* α7 :=
           M.call_closure
             α6
@@ -114,7 +116,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "closure_inferred: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -122,16 +127,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_trait_method
             "core::ops::function::Fn"
+            (Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"))
+            [ Ty.tuple [ Ty.path "i32" ] ]
             "call"
-            [
-              (* Self *)
-                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32");
-              (* Args *) Ty.tuple [ Ty.path "i32" ]
-            ] in
+            [] in
         let* α7 :=
           M.call_closure
             α6
@@ -165,7 +169,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "closure returning one: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -173,15 +180,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 :=
           M.get_trait_method
             "core::ops::function::Fn"
+            (Ty.function [ Ty.tuple [] ] (Ty.path "i32"))
+            [ Ty.tuple [] ]
             "call"
-            [
-              (* Self *) Ty.function [ Ty.tuple [] ] (Ty.path "i32");
-              (* Args *) Ty.tuple []
-            ] in
+            [] in
         let* α7 := M.call_closure α6 [ one; Value.Tuple [] ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in

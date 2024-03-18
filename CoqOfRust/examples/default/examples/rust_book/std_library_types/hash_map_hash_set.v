@@ -48,31 +48,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "collect"
           [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::into_iter::IntoIter")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-            (* B *)
-              Ty.apply
-                (Ty.path "std::collections::hash::set::HashSet")
-                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
+            Ty.apply
+              (Ty.path "std::collections::hash::set::HashSet")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
           ] in
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ] in
+          [] in
       let* α2 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α3 :=
         M.get_associated_function
           (Ty.apply
@@ -81,7 +80,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "array") [ Ty.path "i32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α4 :=
         M.alloc
           (Value.Array
@@ -100,31 +100,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "collect"
           [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::into_iter::IntoIter")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-            (* B *)
-              Ty.apply
-                (Ty.path "std::collections::hash::set::HashSet")
-                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
+            Ty.apply
+              (Ty.path "std::collections::hash::set::HashSet")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
           ] in
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ] in
+          [] in
       let* α2 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α3 :=
         M.get_associated_function
           (Ty.apply
@@ -133,7 +132,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "array") [ Ty.path "i32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α4 :=
         M.alloc
           (Value.Array
@@ -154,7 +154,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::set::HashSet")
             [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.call_closure α0 [ a; Value.Integer Integer.I32 4 ] in
       let* α2 := M.alloc (UnOp.Pure.not α1) in
       let* α3 := M.read (M.use α2) in
@@ -172,7 +173,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::set::HashSet")
             [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-          "contains" in
+          "contains"
+          [ Ty.path "i32" ] in
       let* α1 := M.alloc (Value.Integer Integer.I32 4) in
       let* α2 := M.call_closure α0 [ a; α1 ] in
       let* α3 := M.alloc (UnOp.Pure.not α2) in
@@ -191,14 +193,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "std::collections::hash::set::HashSet")
             [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.call_closure α0 [ b; Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "A: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -206,7 +212,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "std::collections::hash::set::HashSet")
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
+            ] in
         let* α6 := M.call_closure α5 [ a ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -223,7 +234,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "B: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -231,7 +245,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "std::collections::hash::set::HashSet")
+                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
+            ] in
         let* α6 := M.call_closure α5 [ b ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -248,7 +267,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Union: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -256,30 +278,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α6 :=
           M.get_trait_method
             "core::iter::traits::iterator::Iterator"
+            (Ty.apply
+              (Ty.path "std::collections::hash::set::Union")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
+            []
             "collect"
             [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "std::collections::hash::set::Union")
-                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
-              (* B *)
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [
-                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-                    Ty.path "alloc::alloc::Global"
-                  ]
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
             ] in
         let* α7 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-            "union" in
+            "union"
+            [] in
         let* α8 := M.call_closure α7 [ a; b ] in
         let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
@@ -299,7 +329,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Difference: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -307,30 +340,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α6 :=
           M.get_trait_method
             "core::iter::traits::iterator::Iterator"
+            (Ty.apply
+              (Ty.path "std::collections::hash::set::Difference")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
+            []
             "collect"
             [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "std::collections::hash::set::Difference")
-                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
-              (* B *)
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [
-                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-                    Ty.path "alloc::alloc::Global"
-                  ]
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
             ] in
         let* α7 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-            "difference" in
+            "difference"
+            [] in
         let* α8 := M.call_closure α7 [ a; b ] in
         let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
@@ -350,7 +391,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Intersection: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -358,30 +402,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α6 :=
           M.get_trait_method
             "core::iter::traits::iterator::Iterator"
+            (Ty.apply
+              (Ty.path "std::collections::hash::set::Intersection")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
+            []
             "collect"
             [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "std::collections::hash::set::Intersection")
-                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
-              (* B *)
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [
-                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-                    Ty.path "alloc::alloc::Global"
-                  ]
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
             ] in
         let* α7 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-            "intersection" in
+            "intersection"
+            [] in
         let* α8 := M.call_closure α7 [ a; b ] in
         let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in
@@ -401,7 +453,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Symmetric Difference: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -409,30 +464,38 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α6 :=
           M.get_trait_method
             "core::iter::traits::iterator::Iterator"
+            (Ty.apply
+              (Ty.path "std::collections::hash::set::SymmetricDifference")
+              [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
+            []
             "collect"
             [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "std::collections::hash::set::SymmetricDifference")
-                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ];
-              (* B *)
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  [
-                    Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-                    Ty.path "alloc::alloc::Global"
-                  ]
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ]
             ] in
         let* α7 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
               [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-            "symmetric_difference" in
+            "symmetric_difference"
+            [] in
         let* α8 := M.call_closure α7 [ a; b ] in
         let* α9 := M.call_closure α6 [ α8 ] in
         let* α10 := M.alloc α9 in

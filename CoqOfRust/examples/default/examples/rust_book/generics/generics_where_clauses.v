@@ -29,7 +29,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "") in
           let* α3 := M.read (mk_str "
 ") in
@@ -37,7 +38,8 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_debug" in
+              "new_debug"
+              [ Ty.apply (Ty.path "core::option::Option") [ T ] ] in
           let* α6 := M.read self in
           let* α7 :=
             M.alloc (Value.StructTuple "core::option::Option::Some" [ α6 ]) in
@@ -82,7 +84,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -91,7 +94,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "array") [ Ty.path "i32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 :=
         M.alloc
           (Value.Array
@@ -108,13 +112,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "generics_where_clauses::PrintInOption"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "print_in_option"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ] in
+          [] in
       let* α1 := M.read vec in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in

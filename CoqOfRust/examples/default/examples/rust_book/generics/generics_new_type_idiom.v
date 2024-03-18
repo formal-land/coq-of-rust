@@ -28,7 +28,9 @@ Module Impl_generics_new_type_idiom_Years.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α1 :=
+        M.read
+          (M.get_struct_tuple_field α0 "generics_new_type_idiom::Years" 0) in
       let* α2 := BinOp.Panic.mul α1 (Value.Integer Integer.I64 365) in
       M.pure (Value.StructTuple "generics_new_type_idiom::Days" [ α2 ])
     | _, _ => M.impossible
@@ -51,7 +53,9 @@ Module Impl_generics_new_type_idiom_Days.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α1 :=
+        M.read
+          (M.get_struct_tuple_field α0 "generics_new_type_idiom::Days" 0) in
       let* α2 := BinOp.Panic.div α1 (Value.Integer Integer.I64 365) in
       M.pure (Value.StructTuple "generics_new_type_idiom::Years" [ α2 ])
     | _, _ => M.impossible
@@ -71,7 +75,8 @@ Definition old_enough (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ age ] =>
     let* age := M.alloc age in
     let* α0 := M.read age in
-    let* α1 := M.read (M.get_struct_tuple α0 0) in
+    let* α1 :=
+      M.read (M.get_struct_tuple_field α0 "generics_new_type_idiom::Years" 0) in
     M.pure (BinOp.Pure.ge α1 (Value.Integer Integer.I64 18))
   | _, _ => M.impossible
   end.
@@ -97,14 +102,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "generics_new_type_idiom::Years")
-          "to_days" in
+          "to_days"
+          [] in
       let* α1 := M.call_closure α0 [ age ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Old enough ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -112,7 +121,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "bool" ] in
         let* α6 := M.get_function "generics_new_type_idiom::old_enough" [] in
         let* α7 := M.call_closure α6 [ age ] in
         let* α8 := M.alloc α7 in
@@ -132,7 +142,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Old enough ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -140,12 +153,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "bool" ] in
         let* α6 := M.get_function "generics_new_type_idiom::old_enough" [] in
         let* α7 :=
           M.get_associated_function
             (Ty.path "generics_new_type_idiom::Days")
-            "to_years" in
+            "to_years"
+            [] in
         let* α8 := M.call_closure α7 [ age_days ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call_closure α6 [ α9 ] in

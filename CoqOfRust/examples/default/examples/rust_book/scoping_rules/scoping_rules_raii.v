@@ -18,7 +18,8 @@ Definition create_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -57,7 +58,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* _ :=
@@ -67,18 +69,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.apply
               (Ty.path "alloc::boxed::Box")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-            "new" in
+            "new"
+            [] in
         let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 4 ] in
         M.alloc α1 in
       M.alloc (Value.Tuple []) in
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
+        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+        []
         "into_iter"
-        [
-          (* Self *)
-            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ]
-        ] in
+        [] in
     let* α1 :=
       M.call_closure
         α0
@@ -102,13 +104,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
+                    (Ty.apply
+                      (Ty.path "core::ops::range::Range")
+                      [ Ty.path "u32" ])
+                    []
                     "next"
-                    [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "core::ops::range::Range")
-                          [ Ty.path "u32" ]
-                    ] in
+                    [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator

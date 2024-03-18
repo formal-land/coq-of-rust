@@ -23,7 +23,11 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       let* _ :=
         let* β :=
           let* α0 := M.read self in
-          M.pure (M.get_struct_tuple α0 0) in
+          M.pure
+            (M.get_struct_tuple_field
+              α0
+              "scoping_rules_lifetimes_methods::Owner"
+              0) in
         let* α0 := M.read β in
         let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
         M.assign β α1 in
@@ -50,7 +54,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "`print`: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -58,9 +63,18 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "i32" ] in
           let* α6 := M.read self in
-          let* α7 := M.call_closure α5 [ M.get_struct_tuple α6 0 ] in
+          let* α7 :=
+            M.call_closure
+              α5
+              [
+                M.get_struct_tuple_field
+                  α6
+                  "scoping_rules_lifetimes_methods::Owner"
+                  0
+              ] in
           let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
             M.call_closure
@@ -100,14 +114,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "scoping_rules_lifetimes_methods::Owner")
-          "add_one" in
+          "add_one"
+          [] in
       let* α1 := M.call_closure α0 [ owner ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "scoping_rules_lifetimes_methods::Owner")
-          "print" in
+          "print"
+          [] in
       let* α1 := M.call_closure α0 [ owner ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

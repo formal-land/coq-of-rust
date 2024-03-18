@@ -31,9 +31,9 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
-      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α1 := M.read (M.get_struct_tuple_field α0 "derive::Centimeters" 0) in
       let* α2 := M.read other in
-      let* α3 := M.read (M.get_struct_tuple α2 0) in
+      let* α3 := M.read (M.get_struct_tuple_field α2 "derive::Centimeters" 0) in
       M.pure (BinOp.Pure.eq α1 α3)
     | _, _ => M.impossible
     end.
@@ -60,11 +60,18 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       let* α0 :=
         M.get_trait_method
           "core::cmp::PartialOrd"
+          (Ty.path "f64")
+          [ Ty.path "f64" ]
           "partial_cmp"
-          [ (* Self *) Ty.path "f64"; (* Rhs *) Ty.path "f64" ] in
+          [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
-      M.call_closure α0 [ M.get_struct_tuple α1 0; M.get_struct_tuple α2 0 ]
+      M.call_closure
+        α0
+        [
+          M.get_struct_tuple_field α1 "derive::Centimeters" 0;
+          M.get_struct_tuple_field α2 "derive::Centimeters" 0
+        ]
     | _, _ => M.impossible
     end.
   
@@ -97,11 +104,12 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field1_finish" in
+          "debug_tuple_field1_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Inches") in
       let* α3 := M.read self in
-      let* α4 := M.alloc (M.get_struct_tuple α3 0) in
+      let* α4 := M.alloc (M.get_struct_tuple_field α3 "derive::Inches" 0) in
       M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
@@ -197,7 +205,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "One foot equals ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -205,7 +216,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.path "derive::Inches" ] in
         let* α6 := M.call_closure α5 [ foot ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -225,13 +237,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::cmp::PartialOrd"
+          (Ty.path "derive::Centimeters")
+          [ Ty.path "derive::Centimeters" ]
           "lt"
-          [
-            (* Self *) Ty.path "derive::Centimeters";
-            (* Rhs *) Ty.path "derive::Centimeters"
-          ] in
+          [] in
       let* α1 :=
-        M.get_associated_function (Ty.path "derive::Inches") "to_centimeters" in
+        M.get_associated_function
+          (Ty.path "derive::Inches")
+          "to_centimeters"
+          [] in
       let* α2 := M.call_closure α1 [ foot ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.call_closure α0 [ α3; meter ] in
@@ -248,7 +262,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "One foot is ") in
         let* α3 := M.read (mk_str " than one meter.
 ") in
@@ -256,7 +273,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α6 := M.call_closure α5 [ cmp ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

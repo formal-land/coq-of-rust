@@ -76,14 +76,17 @@ pub(crate) enum Expr {
         generic_tys: Vec<Rc<CoqType>>,
     },
     Constructor(Path),
-    TraitMethod {
+    GetTraitMethod {
         trait_name: Path,
+        self_ty: Rc<CoqType>,
+        trait_tys: Vec<Rc<CoqType>>,
         method_name: String,
-        self_and_generic_tys: Vec<(String, Rc<CoqType>)>,
+        generic_tys: Vec<Rc<CoqType>>,
     },
-    AssociatedFunction {
+    GetAssociatedFunction {
         ty: Rc<CoqType>,
         func: String,
+        generic_tys: Vec<Rc<CoqType>>,
     },
     Literal(Rc<Literal>),
     Call {
@@ -337,19 +340,23 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::GetConst(_) => (expr, fresh_vars),
         Expr::GetFunction { .. } => (expr, fresh_vars),
         Expr::Constructor(_) => (pure(expr), fresh_vars),
-        Expr::TraitMethod {
+        Expr::GetTraitMethod {
             trait_name,
+            self_ty,
+            trait_tys,
             method_name,
-            self_and_generic_tys,
+            generic_tys,
         } => (
-            Rc::new(Expr::TraitMethod {
+            Rc::new(Expr::GetTraitMethod {
                 trait_name: trait_name.clone(),
+                self_ty: self_ty.clone(),
+                trait_tys: trait_tys.clone(),
                 method_name: method_name.clone(),
-                self_and_generic_tys: self_and_generic_tys.clone(),
+                generic_tys: generic_tys.clone(),
             }),
             fresh_vars,
         ),
-        Expr::AssociatedFunction { .. } => (expr, fresh_vars),
+        Expr::GetAssociatedFunction { .. } => (expr, fresh_vars),
         Expr::Literal { .. } => (pure(expr), fresh_vars),
         Expr::Call { func, args, kind } => {
             let kind = *kind;
@@ -699,10 +706,12 @@ impl Expr {
                 ]),
             ),
             Expr::Constructor(path) => path.to_doc(),
-            Expr::TraitMethod {
+            Expr::GetTraitMethod {
                 trait_name,
+                self_ty,
+                trait_tys,
                 method_name,
-                self_and_generic_tys,
+                generic_tys,
             } => paren(
                 with_paren,
                 nest([
@@ -710,32 +719,41 @@ impl Expr {
                     line(),
                     text(format!("\"{trait_name}\"")),
                     line(),
+                    self_ty.to_coq().to_doc(true),
+                    line(),
+                    list(
+                        trait_tys
+                            .iter()
+                            .map(|trait_ty| trait_ty.to_coq().to_doc(false))
+                            .collect(),
+                    ),
+                    line(),
                     text(format!("\"{method_name}\"")),
                     line(),
                     list(
-                        self_and_generic_tys
+                        generic_tys
                             .iter()
-                            .map(|(name, ty)| {
-                                nest([
-                                    text(format!("(* {name} *)")),
-                                    line(),
-                                    ty.to_coq().to_doc(false),
-                                ])
-                            })
+                            .map(|ty| ty.to_coq().to_doc(false))
                             .collect(),
                     ),
                 ]),
             ),
-            Expr::AssociatedFunction { ty, func } => paren(
-                with_paren,
-                nest([
-                    text("M.get_associated_function"),
-                    line(),
-                    ty.to_coq().to_doc(true),
-                    line(),
-                    text(format!("\"{func}\"")),
-                ]),
-            ),
+            Expr::GetAssociatedFunction {
+                ty,
+                func,
+                generic_tys,
+            } => coq::Expression::just_name("M.get_associated_function")
+                .apply_many(&[
+                    ty.to_coq(),
+                    coq::Expression::String(func.to_string()),
+                    coq::Expression::List {
+                        exprs: generic_tys
+                            .iter()
+                            .map(|generic_ty| generic_ty.to_coq())
+                            .collect(),
+                    },
+                ])
+                .to_doc(with_paren),
             Expr::Literal(literal) => literal.to_doc(with_paren),
             Expr::Call { func, args, kind } => paren(
                 with_paren,

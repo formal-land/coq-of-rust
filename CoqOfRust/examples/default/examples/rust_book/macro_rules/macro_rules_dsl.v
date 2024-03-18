@@ -28,7 +28,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "1 + 2 = ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -36,7 +37,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "usize" ] in
           let* α6 := M.call_closure α5 [ val ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=
@@ -65,7 +67,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "(1 + 2) * (3 / 4) = ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -73,7 +78,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "usize" ] in
         let* α6 := M.call_closure α5 [ val ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

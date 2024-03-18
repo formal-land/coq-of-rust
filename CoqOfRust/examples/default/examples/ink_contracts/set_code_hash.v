@@ -33,8 +33,10 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u32")
+          []
           "default"
-          [ (* Self *) Ty.path "u32" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructRecord "set_code_hash::Incrementer" [ ("count", α1) ])
     | _, _ => M.impossible
@@ -62,8 +64,10 @@ Module Impl_set_code_hash_Incrementer.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "set_code_hash::Incrementer")
+          []
           "default"
-          [ (* Self *) Ty.path "set_code_hash::Incrementer" ] in
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -86,7 +90,11 @@ Module Impl_set_code_hash_Incrementer.
       let* _ :=
         let* β :=
           let* α0 := M.read self in
-          M.pure (M.get_struct_record α0 "count") in
+          M.pure
+            (M.get_struct_record_field
+              α0
+              "set_code_hash::Incrementer"
+              "count") in
         let* α0 := M.read β in
         let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
         M.assign β α1 in
@@ -96,7 +104,8 @@ Module Impl_set_code_hash_Incrementer.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "The new count is ") in
           let* α3 :=
             M.read
@@ -106,9 +115,18 @@ Module Impl_set_code_hash_Incrementer.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "u32" ] in
           let* α6 := M.read self in
-          let* α7 := M.call_closure α5 [ M.get_struct_record α6 "count" ] in
+          let* α7 :=
+            M.call_closure
+              α5
+              [
+                M.get_struct_record_field
+                  α6
+                  "set_code_hash::Incrementer"
+                  "count"
+              ] in
           let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
             M.call_closure
@@ -137,7 +155,7 @@ Module Impl_set_code_hash_Incrementer.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "count")
+      M.read (M.get_struct_record_field α0 "set_code_hash::Incrementer" "count")
     | _, _ => M.impossible
     end.
   
@@ -162,7 +180,12 @@ Module Impl_set_code_hash_Incrementer.
             (Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "set_code_hash::Error" ])
-            "unwrap_or_else" in
+            "unwrap_or_else"
+            [
+              Ty.function
+                [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ]
+                (Ty.tuple [])
+            ] in
         let* α1 :=
           M.get_function
             "set_code_hash::set_code_hash"
@@ -204,7 +227,8 @@ Module Impl_set_code_hash_Incrementer.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "Switched code hash to ") in
           let* α3 := M.read (mk_str ".
 ") in
@@ -212,7 +236,8 @@ Module Impl_set_code_hash_Incrementer.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_debug" in
+              "new_debug"
+              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
           let* α6 := M.call_closure α5 [ code_hash ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=

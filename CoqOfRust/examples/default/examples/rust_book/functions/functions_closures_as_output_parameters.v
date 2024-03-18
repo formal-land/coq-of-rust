@@ -15,8 +15,10 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::borrow::ToOwned"
+          (Ty.path "str")
+          []
           "to_owned"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "Fn") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -36,7 +38,8 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
+                          "new_v1"
+                          [] in
                       let* α2 := M.read (mk_str "This is a: ") in
                       let* α3 := M.read (mk_str "
 ") in
@@ -44,7 +47,8 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α5 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
+                          "new_display"
+                          [ Ty.path "alloc::string::String" ] in
                       let* α6 := M.call_closure α5 [ text ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=
@@ -81,8 +85,10 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::borrow::ToOwned"
+          (Ty.path "str")
+          []
           "to_owned"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "FnMut") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -102,7 +108,8 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
+                          "new_v1"
+                          [] in
                       let* α2 := M.read (mk_str "This is a: ") in
                       let* α3 := M.read (mk_str "
 ") in
@@ -110,7 +117,8 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α5 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
+                          "new_display"
+                          [ Ty.path "alloc::string::String" ] in
                       let* α6 := M.call_closure α5 [ text ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=
@@ -147,8 +155,10 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::borrow::ToOwned"
+          (Ty.path "str")
+          []
           "to_owned"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "FnOnce") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -168,7 +178,8 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
+                          "new_v1"
+                          [] in
                       let* α2 := M.read (mk_str "This is a: ") in
                       let* α3 := M.read (mk_str "
 ") in
@@ -176,7 +187,8 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α5 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
+                          "new_display"
+                          [ Ty.path "alloc::string::String" ] in
                       let* α6 := M.call_closure α5 [ text ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=
@@ -238,24 +250,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::Fn"
+          _
+          [ Ty.tuple [] ]
           "call"
-          [ (* Self *) _; (* Args *) Ty.tuple [] ] in
+          [] in
       let* α1 := M.call_closure α0 [ fn_plain; Value.Tuple [] ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnMut"
+          _
+          [ Ty.tuple [] ]
           "call_mut"
-          [ (* Self *) _; (* Args *) Ty.tuple [] ] in
+          [] in
       let* α1 := M.call_closure α0 [ fn_mut; Value.Tuple [] ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnOnce"
+          _
+          [ Ty.tuple [] ]
           "call_once"
-          [ (* Self *) _; (* Args *) Ty.tuple [] ] in
+          [] in
       let* α1 := M.read fn_once in
       let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
       M.alloc α2 in

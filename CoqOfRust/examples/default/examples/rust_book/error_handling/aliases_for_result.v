@@ -27,8 +27,17 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply
           (Ty.path "core::result::Result")
           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
-        "and_then" in
-    let* α1 := M.get_associated_function (Ty.path "str") "parse" in
+        "and_then"
+        [
+          Ty.path "i32";
+          Ty.function
+            [ Ty.tuple [ Ty.path "i32" ] ]
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+        ] in
+    let* α1 :=
+      M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
     let* α2 := M.read first_number_str in
     let* α3 := M.call_closure α1 [ α2 ] in
     M.call_closure
@@ -53,9 +62,18 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "i32";
                             Ty.path "core::num::error::ParseIntError"
                           ])
-                        "map" in
+                        "map"
+                        [
+                          Ty.path "i32";
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "i32" ] ]
+                            (Ty.path "i32")
+                        ] in
                     let* α1 :=
-                      M.get_associated_function (Ty.path "str") "parse" in
+                      M.get_associated_function
+                        (Ty.path "str")
+                        "parse"
+                        [ Ty.path "i32" ] in
                     let* α2 := M.read second_number_str in
                     let* α3 := M.call_closure α1 [ α2 ] in
                     M.call_closure
@@ -114,7 +132,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "n is ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -122,7 +141,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ n ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -147,7 +167,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Error: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -155,7 +176,8 @@ Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "core::num::error::ParseIntError" ] in
               let* α6 := M.call_closure α5 [ e ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=

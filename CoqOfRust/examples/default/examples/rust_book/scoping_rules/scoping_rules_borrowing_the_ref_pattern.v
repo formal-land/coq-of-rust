@@ -119,7 +119,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "ref_c1 equals ref_c2: ") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -127,7 +128,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "bool" ] in
                 let* α6 := M.read ref_c1 in
                 let* α7 := M.read α6 in
                 let* α8 := M.read ref_c2 in
@@ -201,7 +203,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "point is (") in
                 let* α3 := M.read (mk_str ", ") in
                 let* α4 := M.read (mk_str ")
@@ -210,15 +213,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "i32" ] in
                 let* α7 :=
-                  M.call_closure α6 [ M.get_struct_record point "x" ] in
+                  M.call_closure
+                    α6
+                    [
+                      M.get_struct_record_field
+                        point
+                        "scoping_rules_borrowing_the_ref_pattern::Point"
+                        "x"
+                    ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "i32" ] in
                 let* α9 :=
-                  M.call_closure α8 [ M.get_struct_record point "y" ] in
+                  M.call_closure
+                    α8
+                    [
+                      M.get_struct_record_field
+                        point
+                        "scoping_rules_borrowing_the_ref_pattern::Point"
+                        "y"
+                    ] in
                 let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                 let* α11 :=
                   M.call_closure
@@ -236,7 +255,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "mutable_point is (") in
                 let* α3 := M.read (mk_str ", ") in
                 let* α4 := M.read (mk_str ")
@@ -245,15 +265,31 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "i32" ] in
                 let* α7 :=
-                  M.call_closure α6 [ M.get_struct_record mutable_point "x" ] in
+                  M.call_closure
+                    α6
+                    [
+                      M.get_struct_record_field
+                        mutable_point
+                        "scoping_rules_borrowing_the_ref_pattern::Point"
+                        "x"
+                    ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "i32" ] in
                 let* α9 :=
-                  M.call_closure α8 [ M.get_struct_record mutable_point "y" ] in
+                  M.call_closure
+                    α8
+                    [
+                      M.get_struct_record_field
+                        mutable_point
+                        "scoping_rules_borrowing_the_ref_pattern::Point"
+                        "y"
+                    ] in
                 let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                 let* α11 :=
                   M.call_closure
@@ -271,7 +307,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (Ty.apply
                     (Ty.path "alloc::boxed::Box")
                     [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
-                  "new" in
+                  "new"
+                  [] in
               let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 5 ] in
               M.alloc (Value.Tuple [ α1; Value.Integer Integer.U32 3 ]) in
             let* _ :=
@@ -279,8 +316,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 mutable_tuple
                 [
                   fun γ =>
-                    let* γ0_0 := M.get_tuple_field γ 0 in
-                    let* γ0_1 := M.get_tuple_field γ 1 in
+                    let γ0_0 := M.get_tuple_field γ 0 in
+                    let γ0_1 := M.get_tuple_field γ 1 in
                     let* last := M.alloc γ0_1 in
                     let* _ :=
                       let* α0 := M.read last in
@@ -293,7 +330,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "tuple is ") in
                 let* α3 := M.read (mk_str "
 ") in
@@ -301,7 +339,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_debug" in
+                    "new_debug"
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
+                          Ty.path "u32"
+                        ]
+                    ] in
                 let* α6 := M.call_closure α5 [ mutable_tuple ] in
                 let* α7 := M.alloc (Value.Array [ α6 ]) in
                 let* α8 :=

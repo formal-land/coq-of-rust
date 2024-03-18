@@ -25,7 +25,8 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "ToDrop is being dropped
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -63,7 +64,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "Made a ToDrop!
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in

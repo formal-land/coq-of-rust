@@ -70,14 +70,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "31 days
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
         let* α4 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "none" in
+            "none"
+            [] in
         let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -94,14 +98,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Alice, this is Bob. Bob, this is Alice
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
         let* α4 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "none" in
+            "none"
+            [] in
         let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -118,7 +126,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 :=
           M.read (mk_str "the quick brown fox jumps over the lazy dog
 ") in
@@ -126,7 +137,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α4 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "none" in
+            "none"
+            [] in
         let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -143,14 +155,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Base 10:               69420
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
         let* α4 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "none" in
+            "none"
+            [] in
         let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -167,7 +183,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Base 2 (binary):       ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -175,85 +194,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_binary" in
-        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
-        let* α7 := M.call_closure α5 [ α6 ] in
-        let* α8 := M.alloc (Value.Array [ α7 ]) in
-        let* α9 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α8
-            ] in
-        let* α10 := M.call_closure α0 [ α9 ] in
-        M.alloc α10 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
-        let* α2 := M.read (mk_str "Base 8 (octal):        ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-        let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_octal" in
-        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
-        let* α7 := M.call_closure α5 [ α6 ] in
-        let* α8 := M.alloc (Value.Array [ α7 ]) in
-        let* α9 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α8
-            ] in
-        let* α10 := M.call_closure α0 [ α9 ] in
-        M.alloc α10 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
-        let* α2 := M.read (mk_str "Base 16 (hexadecimal): ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-        let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_lower_hex" in
-        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
-        let* α7 := M.call_closure α5 [ α6 ] in
-        let* α8 := M.alloc (Value.Array [ α7 ]) in
-        let* α9 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α8
-            ] in
-        let* α10 := M.call_closure α0 [ α9 ] in
-        M.alloc α10 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
-        let* α2 := M.read (mk_str "Base 16 (hexadecimal): ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-        let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_upper_hex" in
+            "new_binary"
+            [ Ty.path "i32" ] in
         let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -273,7 +215,98 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted" in
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 8 (octal):        ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_octal"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 16 (hexadecimal): ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_lower_hex"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 16 (hexadecimal): ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_upper_hex"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -281,14 +314,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.alloc (Value.Integer Integer.I32 1) in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Placeholder")
-            "new" in
+            "new"
+            [] in
         let* α10 :=
           M.call_closure
             α9
@@ -306,7 +341,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α12 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::UnsafeArg")
-            "new" in
+            "new"
+            [] in
         let* α13 := M.call_closure α12 [] in
         let* α14 :=
           M.call_closure
@@ -326,7 +362,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted" in
+            "new_v1_formatted"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -334,14 +371,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.alloc (Value.Integer Integer.I32 1) in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Placeholder")
-            "new" in
+            "new"
+            [] in
         let* α10 :=
           M.call_closure
             α9
@@ -359,7 +398,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α12 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::UnsafeArg")
-            "new" in
+            "new"
+            [] in
         let* α13 := M.call_closure α12 [] in
         let* α14 :=
           M.call_closure
@@ -379,7 +419,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted" in
+            "new_v1_formatted"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -387,20 +428,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.alloc (Value.Integer Integer.I32 1) in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "from_usize" in
+            "from_usize"
+            [] in
         let* α9 := M.alloc (Value.Integer Integer.Usize 5) in
         let* α10 := M.call_closure α8 [ α9 ] in
         let* α11 := M.alloc (Value.Array [ α7; α10 ]) in
         let* α12 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Placeholder")
-            "new" in
+            "new"
+            [] in
         let* α13 :=
           M.call_closure
             α12
@@ -418,7 +462,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α15 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::UnsafeArg")
-            "new" in
+            "new"
+            [] in
         let* α16 := M.call_closure α15 [] in
         let* α17 :=
           M.call_closure
@@ -436,14 +481,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "My name is Bond, James Bond
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
         let* α4 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "none" in
+            "none"
+            [] in
         let* α5 := M.call_closure α4 [] in
         let* α6 := M.alloc α5 in
         let* α7 :=
@@ -464,7 +513,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted" in
+            "new_v1_formatted"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -472,18 +522,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "f64" ] in
         let* α6 := M.call_closure α5 [ number ] in
         let* α7 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "from_usize" in
+            "from_usize"
+            [] in
         let* α8 := M.call_closure α7 [ width ] in
         let* α9 := M.alloc (Value.Array [ α6; α8 ]) in
         let* α10 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Placeholder")
-            "new" in
+            "new"
+            [] in
         let* α11 :=
           M.call_closure
             α10
@@ -501,7 +554,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α13 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::UnsafeArg")
-            "new" in
+            "new"
+            [] in
         let* α14 := M.call_closure α13 [] in
         let* α15 :=
           M.call_closure

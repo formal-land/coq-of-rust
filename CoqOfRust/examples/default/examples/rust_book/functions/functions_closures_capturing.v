@@ -76,11 +76,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::From"
+          (Ty.path "alloc::string::String")
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           "from"
-          [
-            (* Self *) Ty.path "alloc::string::String";
-            (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
-          ] in
+          [] in
       let* α1 := M.read (mk_str "green") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -100,7 +99,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
+                          "new_v1"
+                          [] in
                       let* α2 := M.read (mk_str "`color`: ") in
                       let* α3 := M.read (mk_str "
 ") in
@@ -108,7 +108,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α5 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_display" in
+                          "new_display"
+                          [ Ty.path "alloc::string::String" ] in
                       let* α6 := M.call_closure α5 [ color ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=
@@ -129,11 +130,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::Fn"
+          (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
+          [ Ty.tuple [] ]
           "call"
-          [
-            (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
-            (* Args *) Ty.tuple []
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
       M.alloc α1 in
     let* _reborrow := M.alloc color in
@@ -141,11 +141,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::Fn"
+          (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
+          [ Ty.tuple [] ]
           "call"
-          [
-            (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
-            (* Args *) Ty.tuple []
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
       M.alloc α1 in
     let* _color_moved := M.copy color in
@@ -173,7 +172,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_v1" in
+                            "new_v1"
+                            [] in
                         let* α2 := M.read (mk_str "`count`: ") in
                         let* α3 := M.read (mk_str "
 ") in
@@ -181,7 +181,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α5 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
-                            "new_display" in
+                            "new_display"
+                            [ Ty.path "i32" ] in
                         let* α6 := M.call_closure α5 [ count ] in
                         let* α7 := M.alloc (Value.Array [ α6 ]) in
                         let* α8 :=
@@ -203,22 +204,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnMut"
+          (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
+          [ Ty.tuple [] ]
           "call_mut"
-          [
-            (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
-            (* Args *) Ty.tuple []
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnMut"
+          (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
+          [ Ty.tuple [] ]
           "call_mut"
-          [
-            (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
-            (* Args *) Ty.tuple []
-          ] in
+          [] in
       let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
       M.alloc α1 in
     let* _count_reborrowed := M.alloc count in
@@ -228,7 +227,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
       M.alloc α1 in
     let* consume :=
@@ -248,7 +248,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_v1" in
+                            "new_v1"
+                            [] in
                         let* α2 := M.read (mk_str "`movable`: ") in
                         let* α3 := M.read (mk_str "
 ") in
@@ -256,7 +257,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α5 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::rt::Argument")
-                            "new_debug" in
+                            "new_debug"
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                [ Ty.path "i32"; Ty.path "alloc::alloc::Global"
+                                ]
+                            ] in
                         let* α6 := M.call_closure α5 [ movable ] in
                         let* α7 := M.alloc (Value.Array [ α6 ]) in
                         let* α8 :=
@@ -290,11 +297,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnOnce"
+          (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
+          [ Ty.tuple [] ]
           "call_once"
-          [
-            (* Self *) Ty.function [ Ty.tuple [] ] (Ty.tuple []);
-            (* Args *) Ty.tuple []
-          ] in
+          [] in
       let* α1 := M.read consume in
       let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
       M.alloc α2 in

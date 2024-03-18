@@ -14,7 +14,10 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "`print_one`: x is ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -22,7 +25,8 @@ Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α6 := M.call_closure α5 [ x ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -73,7 +77,10 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "`print_multi`: x is ") in
         let* α3 := M.read (mk_str ", y is ") in
         let* α4 := M.read (mk_str "
@@ -82,12 +89,14 @@ Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α7 := M.call_closure α6 [ x ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
         let* α9 := M.call_closure α8 [ y ] in
         let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=

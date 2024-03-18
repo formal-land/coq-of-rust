@@ -33,7 +33,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -41,7 +44,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α6 :=
           M.call_closure
             (* unimplemented parent_kind *)
@@ -92,11 +96,10 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ]
-          ] in
+          [] in
       let* α1 := M.read up_to in
       let* α2 :=
         M.call_closure
@@ -118,13 +121,12 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::ops::range::Range")
+                        [ Ty.path "u32" ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::ops::range::Range")
-                            [ Ty.path "u32" ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator

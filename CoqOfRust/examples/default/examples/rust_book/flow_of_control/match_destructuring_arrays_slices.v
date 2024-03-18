@@ -69,7 +69,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "array[0] = 0, array[1] = ") in
               let* α3 := M.read (mk_str ", array[2] = ") in
               let* α4 := M.read (mk_str "
@@ -78,12 +79,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α6 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α7 := M.call_closure α6 [ second ] in
               let* α8 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α9 := M.call_closure α8 [ third ] in
               let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
               let* α11 :=
@@ -109,7 +112,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "array[0] = 1, array[2] = ") in
               let* α3 := M.read (mk_str " and array[1] was ignored
 ") in
@@ -117,7 +121,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ third ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -145,7 +150,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "array[0] = -1, array[1] = ") in
               let* α3 :=
                 M.read (mk_str " and all the other ones were ignored
@@ -154,7 +160,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ second ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -181,7 +188,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "array[0] = 3, array[1] = ") in
               let* α3 := M.read (mk_str " and the other elements were ") in
               let* α4 := M.read (mk_str "
@@ -190,12 +198,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α6 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α7 := M.call_closure α6 [ second ] in
               let* α8 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ] in
               let* α9 := M.call_closure α8 [ tail ] in
               let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
               let* α11 :=
@@ -214,7 +224,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "array[0] = ") in
               let* α3 := M.read (mk_str ", middle = ") in
               let* α4 := M.read (mk_str ", array[2] = ") in
@@ -224,17 +235,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α7 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α8 := M.call_closure α7 [ first ] in
               let* α9 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ] in
               let* α10 := M.call_closure α9 [ middle ] in
               let* α11 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α12 := M.call_closure α11 [ last ] in
               let* α13 := M.alloc (Value.Array [ α8; α10; α12 ]) in
               let* α14 :=

@@ -53,7 +53,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                 ];
               Ty.tuple []
             ])
-          "unwrap" in
+          "unwrap"
+          [] in
       let* α1 :=
         M.get_function
           "wildcard_selector::decode_input"
@@ -72,8 +73,8 @@ Module Impl_wildcard_selector_WildcardSelector.
           α4
           [
             fun γ =>
-              let* γ0_0 := M.get_tuple_field γ 0 in
-              let* γ0_1 := M.get_tuple_field γ 1 in
+              let γ0_0 := M.get_tuple_field γ 0 in
+              let γ0_1 := M.get_tuple_field γ 1 in
               let* _selector := M.copy γ0_0 in
               let* _message := M.copy γ0_1 in
               let* _ :=
@@ -82,7 +83,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                   let* α1 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::Arguments")
-                      "new_v1" in
+                      "new_v1"
+                      [] in
                   let* α2 := M.read (mk_str "Wildcard selector: ") in
                   let* α3 := M.read (mk_str ", message: ") in
                   let* α4 := M.read (mk_str "
@@ -91,12 +93,14 @@ Module Impl_wildcard_selector_WildcardSelector.
                   let* α6 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
-                      "new_debug" in
+                      "new_debug"
+                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
                   let* α7 := M.call_closure α6 [ _selector ] in
                   let* α8 :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
-                      "new_display" in
+                      "new_display"
+                      [ Ty.path "alloc::string::String" ] in
                   let* α9 := M.call_closure α8 [ _message ] in
                   let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                   let* α11 :=
@@ -134,7 +138,8 @@ Module Impl_wildcard_selector_WildcardSelector.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "Wildcard complement message: ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -142,7 +147,8 @@ Module Impl_wildcard_selector_WildcardSelector.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "alloc::string::String" ] in
           let* α6 := M.call_closure α5 [ _message ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=

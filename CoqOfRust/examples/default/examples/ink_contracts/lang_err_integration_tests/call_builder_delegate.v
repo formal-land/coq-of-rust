@@ -38,8 +38,10 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "i32")
+          []
           "default"
-          [ (* Self *) Ty.path "i32" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure
         (Value.StructRecord

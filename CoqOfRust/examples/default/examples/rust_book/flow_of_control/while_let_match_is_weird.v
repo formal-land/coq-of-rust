@@ -59,7 +59,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
-                        "new_const" in
+                        "new_const"
+                        [] in
                     let* α2 := M.read (mk_str "Greater than 9, quit!
 ") in
                     let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -82,7 +83,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α1 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::Arguments")
-                        "new_v1" in
+                        "new_v1"
+                        [] in
                     let* α2 := M.read (mk_str "`i` is `") in
                     let* α3 := M.read (mk_str "`. Try again.
 ") in
@@ -90,7 +92,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α5 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
-                        "new_debug" in
+                        "new_debug"
+                        [ Ty.path "i32" ] in
                     let* α6 := M.call_closure α5 [ i ] in
                     let* α7 := M.alloc (Value.Array [ α6 ]) in
                     let* α8 :=

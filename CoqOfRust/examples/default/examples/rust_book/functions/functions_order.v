@@ -44,7 +44,8 @@ Module Impl_functions_order_SomeType.
         let* α0 :=
           M.get_associated_function
             (Ty.path "functions_order::SomeType")
-            "meth2" in
+            "meth2"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -87,8 +88,10 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       let* α0 :=
         M.get_trait_method
           "functions_order::SomeTrait"
+          (Ty.path "functions_order::SomeType")
+          []
           "some_trait_bar"
-          [ (* Self *) Ty.path "functions_order::SomeType" ] in
+          [] in
       let* α1 := M.read self in
       M.call_closure α0 [ α1 ]
     | _, _ => M.impossible
@@ -158,8 +161,10 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "functions_order::SomeTrait"
+          (Ty.path "functions_order::OtherType")
+          []
           "some_trait_foo"
-          [ (* Self *) Ty.path "functions_order::OtherType" ] in
+          [] in
       let* α1 := M.read b in
       let* α2 :=
         M.alloc (Value.StructTuple "functions_order::OtherType" [ α1 ]) in
@@ -169,8 +174,10 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "functions_order::SomeTrait"
+          (Ty.path "functions_order::SomeType")
+          []
           "some_trait_foo"
-          [ (* Self *) Ty.path "functions_order::SomeType" ] in
+          [] in
       let* α1 := M.read u in
       let* α2 :=
         M.alloc (Value.StructTuple "functions_order::SomeType" [ α1 ]) in
@@ -271,7 +278,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "functions_order::SomeType")
-          "meth1" in
+          "meth1"
+          [] in
       let* α1 :=
         M.call_closure
           α0

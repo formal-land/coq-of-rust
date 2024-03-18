@@ -18,8 +18,8 @@ Definition matching (𝜏 : list Ty.t) (α : list Value.t) : M :=
         tuple
         [
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
@@ -28,8 +28,8 @@ Definition matching (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
             M.alloc (Value.Integer Integer.I32 0);
           fun γ =>
-            let* γ0_0 := M.get_tuple_field γ 0 in
-            let* γ0_1 := M.get_tuple_field γ 1 in
+            let γ0_0 := M.get_tuple_field γ 0 in
+            let γ0_1 := M.get_tuple_field γ 1 in
             M.alloc (Value.Integer Integer.I32 1)
         ] in
     M.read α0
@@ -57,11 +57,17 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field1_finish" in
+          "debug_tuple_field1_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Constructor") in
       let* α3 := M.read self in
-      let* α4 := M.alloc (M.get_struct_tuple α3 0) in
+      let* α4 :=
+        M.alloc
+          (M.get_struct_tuple_field
+            α3
+            "constructor_as_function::Constructor"
+            0) in
       M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
     | _, _ => M.impossible
     end.
@@ -88,56 +94,54 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "core::iter::adapters::map::Map")
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+              Ty.function
+                [ Ty.path "i32" ]
+                (Ty.path "constructor_as_function::Constructor")
+            ])
+          []
           "collect"
           [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::iter::adapters::map::Map")
-                [
-                  Ty.apply
-                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-                  Ty.function
-                    [ Ty.path "i32" ]
-                    (Ty.path "constructor_as_function::Constructor")
-                ];
-            (* B *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.path "constructor_as_function::Constructor";
-                  Ty.path "alloc::alloc::Global"
-                ]
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [
+                Ty.path "constructor_as_function::Constructor";
+                Ty.path "alloc::alloc::Global"
+              ]
           ] in
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "map"
           [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::into_iter::IntoIter")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-            (* B *) Ty.path "constructor_as_function::Constructor";
-            (* F *)
-              Ty.function
-                [ Ty.path "i32" ]
-                (Ty.path "constructor_as_function::Constructor")
+            Ty.path "constructor_as_function::Constructor";
+            Ty.function
+              [ Ty.path "i32" ]
+              (Ty.path "constructor_as_function::Constructor")
           ] in
       let* α2 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-          ] in
+          [] in
       let* α3 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α4 :=
         M.get_associated_function
           (Ty.apply
@@ -146,7 +150,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "array") [ Ty.path "i32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α5 :=
         M.alloc
           (Value.Array
@@ -170,7 +175,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -178,7 +186,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.path "constructor_as_function::Constructor";
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α6 := M.call_closure α5 [ v ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

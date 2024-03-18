@@ -57,7 +57,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 :=
           M.read
             (mk_str
@@ -74,11 +75,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ]
-          ] in
+          [] in
       let* α1 :=
         M.call_closure
           α0
@@ -99,13 +99,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::ops::range::RangeFrom")
+                        [ Ty.path "u32" ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::ops::range::RangeFrom")
-                            [ Ty.path "u32" ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -164,7 +163,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "imperative style: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -172,7 +174,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α6 := M.call_closure α5 [ acc ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -189,42 +192,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          "sum"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::iter::adapters::filter::Filter")
-                [
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::take_while::TakeWhile")
-                    [
-                      Ty.apply
-                        (Ty.path "core::iter::adapters::map::Map")
-                        [
-                          Ty.apply
-                            (Ty.path "core::ops::range::RangeFrom")
-                            [ Ty.path "u32" ];
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "u32" ] ]
-                            (Ty.path "u32")
-                        ];
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
-                        ]
-                        (Ty.path "bool")
-                    ];
-                  Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
-                    (Ty.path "bool")
-                ];
-            (* S *) Ty.path "u32"
-          ] in
-      let* α1 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          "filter"
-          [
-            (* Self *)
+          (Ty.apply
+            (Ty.path "core::iter::adapters::filter::Filter")
+            [
               Ty.apply
                 (Ty.path "core::iter::adapters::take_while::TakeWhile")
                 [
@@ -240,17 +210,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                     (Ty.path "bool")
                 ];
-            (* P *)
               Ty.function
                 [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                 (Ty.path "bool")
-          ] in
-      let* α2 :=
+            ])
+          []
+          "sum"
+          [ Ty.path "u32" ] in
+      let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          "take_while"
-          [
-            (* Self *)
+          (Ty.apply
+            (Ty.path "core::iter::adapters::take_while::TakeWhile")
+            [
               Ty.apply
                 (Ty.path "core::iter::adapters::map::Map")
                 [
@@ -259,22 +231,44 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "u32" ];
                   Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                 ];
-            (* P *)
               Ty.function
                 [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
                 (Ty.path "bool")
+            ])
+          []
+          "filter"
+          [
+            Ty.function
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+              (Ty.path "bool")
+          ] in
+      let* α2 :=
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "core::iter::adapters::map::Map")
+            [
+              Ty.apply
+                (Ty.path "core::ops::range::RangeFrom")
+                [ Ty.path "u32" ];
+              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+            ])
+          []
+          "take_while"
+          [
+            Ty.function
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+              (Ty.path "bool")
           ] in
       let* α3 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ])
+          []
           "map"
           [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::ops::range::RangeFrom")
-                [ Ty.path "u32" ];
-            (* B *) Ty.path "u32";
-            (* F *) Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+            Ty.path "u32";
+            Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
           ] in
       let* α4 :=
         M.call_closure
@@ -353,7 +347,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "functional style: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -361,7 +358,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α6 := M.call_closure α5 [ sum_of_squared_odd_numbers ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

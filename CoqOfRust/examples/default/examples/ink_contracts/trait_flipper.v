@@ -29,8 +29,10 @@ Module Impl_trait_flipper_Flipper.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "bool")
+          []
           "default"
-          [ (* Self *) Ty.path "bool" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructRecord "trait_flipper::Flipper" [ ("value", α1) ])
     | _, _ => M.impossible
@@ -54,8 +56,12 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field α1 "trait_flipper::Flipper" "value") in
+        M.assign
+          (M.get_struct_record_field α0 "trait_flipper::Flipper" "value")
+          (UnOp.Pure.not α2) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
@@ -71,7 +77,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "value")
+      M.read (M.get_struct_record_field α0 "trait_flipper::Flipper" "value")
     | _, _ => M.impossible
     end.
   

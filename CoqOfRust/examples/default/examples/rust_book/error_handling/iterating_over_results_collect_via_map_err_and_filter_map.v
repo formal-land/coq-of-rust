@@ -23,7 +23,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "slice")
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -34,7 +35,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 := M.read (mk_str "42") in
       let* α3 := M.read (mk_str "tofu") in
       let* α4 := M.read (mk_str "93") in
@@ -54,63 +56,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.path "core::num::error::ParseIntError";
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* numbers :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          "collect"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::iter::adapters::filter_map::FilterMap")
-                [
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::map::Map")
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::vec::into_iter::IntoIter")
-                        [
-                          Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                          Ty.path "alloc::alloc::Global"
-                        ];
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                        ]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          [
-                            Ty.path "u8";
-                            Ty.path "core::num::error::ParseIntError"
-                          ])
-                    ];
-                  Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            [
-                              Ty.path "u8";
-                              Ty.path "core::num::error::ParseIntError"
-                            ]
-                        ]
-                    ]
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
-                ];
-            (* B *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-          ] in
-      let* α1 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          "filter_map"
-          [
-            (* Self *)
+          (Ty.apply
+            (Ty.path "core::iter::adapters::filter_map::FilterMap")
+            [
               Ty.apply
                 (Ty.path "core::iter::adapters::map::Map")
                 [
@@ -127,8 +83,6 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError"
                       ])
                 ];
-            (* B *) Ty.path "u8";
-            (* F *)
               Ty.function
                 [
                   Ty.tuple
@@ -142,43 +96,81 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ]
                 ]
                 (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
+            ])
+          []
+          "collect"
+          [
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α2 :=
+      let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          "map"
-          [
-            (* Self *)
+          (Ty.apply
+            (Ty.path "core::iter::adapters::map::Map")
+            [
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
                 [
                   Ty.apply (Ty.path "&") [ Ty.path "str" ];
                   Ty.path "alloc::alloc::Global"
                 ];
-            (* B *)
-              Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ];
-            (* F *)
               Ty.function
                 [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
                 (Ty.apply
                   (Ty.path "core::result::Result")
                   [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ])
+            ])
+          []
+          "filter_map"
+          [
+            Ty.path "u8";
+            Ty.function
+              [
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError"
+                      ]
+                  ]
+              ]
+              (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
+          ] in
+      let* α2 :=
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
+          "map"
+          [
+            Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ];
+            Ty.function
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ])
           ] in
       let* α3 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                [
-                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                  Ty.path "alloc::alloc::Global"
-                ]
-          ] in
+          [] in
       let* α4 := M.read strings in
       let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 :=
@@ -197,7 +189,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         let* s := M.copy γ in
                         let* α0 :=
-                          M.get_associated_function (Ty.path "str") "parse" in
+                          M.get_associated_function
+                            (Ty.path "str")
+                            "parse"
+                            [ Ty.path "u8" ] in
                         let* α1 := M.read s in
                         M.call_closure α0 [ α1 ]
                     ]
@@ -224,7 +219,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               [ Ty.path "u8"; Ty.tuple [] ])
-                            "ok" in
+                            "ok"
+                            [] in
                         let* α1 :=
                           M.get_associated_function
                             (Ty.apply
@@ -233,7 +229,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 Ty.path "u8";
                                 Ty.path "core::num::error::ParseIntError"
                               ])
-                            "map_err" in
+                            "map_err"
+                            [
+                              Ty.tuple [];
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [ Ty.path "core::num::error::ParseIntError"
+                                    ]
+                                ]
+                                (Ty.tuple [])
+                            ] in
                         let* α2 := M.read r in
                         let* α3 :=
                           M.call_closure
@@ -259,7 +265,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                     "core::num::error::ParseIntError";
                                                   Ty.path "alloc::alloc::Global"
                                                 ])
-                                              "push" in
+                                              "push"
+                                              [] in
                                           let* α1 := M.read e in
                                           M.call_closure α0 [ errors; α1 ]
                                       ]
@@ -277,7 +284,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Numbers: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -285,7 +295,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+            ] in
         let* α6 := M.call_closure α5 [ numbers ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -302,7 +317,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Errors: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -310,7 +328,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.path "core::num::error::ParseIntError";
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
         let* α6 := M.call_closure α5 [ errors ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

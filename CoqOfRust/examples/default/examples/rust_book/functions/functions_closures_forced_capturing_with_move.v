@@ -28,7 +28,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-          "into_vec" in
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
@@ -37,7 +38,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "array") [ Ty.path "i32" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 :=
         M.alloc
           (Value.Array
@@ -65,17 +67,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_associated_function
                         (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
-                        "contains" in
+                        "contains"
+                        [] in
                     let* α1 :=
                       M.get_trait_method
                         "core::ops::deref::Deref"
+                        (Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+                        []
                         "deref"
-                        [
-                          (* Self *)
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                        ] in
+                        [] in
                     let* α2 := M.call_closure α1 [ haystack ] in
                     let* α3 := M.read needle in
                     M.call_closure α0 [ α2; α3 ]
@@ -86,7 +88,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -94,18 +99,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "bool" ] in
         let* α6 :=
           M.get_trait_method
             "core::ops::function::Fn"
+            (Ty.function
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+              (Ty.path "bool"))
+            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
             "call"
-            [
-              (* Self *)
-                Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
-                  (Ty.path "bool");
-              (* Args *) Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-            ] in
+            [] in
         let* α7 := M.alloc (Value.Integer Integer.I32 1) in
         let* α8 := M.call_closure α6 [ contains; Value.Tuple [ α7 ] ] in
         let* α9 := M.alloc α8 in
@@ -125,7 +129,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -133,18 +140,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "bool" ] in
         let* α6 :=
           M.get_trait_method
             "core::ops::function::Fn"
+            (Ty.function
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+              (Ty.path "bool"))
+            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
             "call"
-            [
-              (* Self *)
-                Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
-                  (Ty.path "bool");
-              (* Args *) Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-            ] in
+            [] in
         let* α7 := M.alloc (Value.Integer Integer.I32 4) in
         let* α8 := M.call_closure α6 [ contains; Value.Tuple [ α7 ] ] in
         let* α9 := M.alloc α8 in

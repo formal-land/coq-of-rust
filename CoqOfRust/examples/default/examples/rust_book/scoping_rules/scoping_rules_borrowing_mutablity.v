@@ -76,7 +76,10 @@ Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "I immutably borrowed ") in
         let* α3 := M.read (mk_str " - ") in
         let* α4 := M.read (mk_str " edition
@@ -85,15 +88,33 @@ Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α7 := M.read book in
-        let* α8 := M.call_closure α6 [ M.get_struct_record α7 "title" ] in
+        let* α8 :=
+          M.call_closure
+            α6
+            [
+              M.get_struct_record_field
+                α7
+                "scoping_rules_borrowing_mutablity::Book"
+                "title"
+            ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α10 := M.read book in
-        let* α11 := M.call_closure α9 [ M.get_struct_record α10 "year" ] in
+        let* α11 :=
+          M.call_closure
+            α9
+            [
+              M.get_struct_record_field
+                α10
+                "scoping_rules_borrowing_mutablity::Book"
+                "year"
+            ] in
         let* α12 := M.alloc (Value.Array [ α8; α11 ]) in
         let* α13 :=
           M.call_closure
@@ -123,13 +144,19 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 := M.read book in
       M.assign
-        (M.get_struct_record α0 "year")
+        (M.get_struct_record_field
+          α0
+          "scoping_rules_borrowing_mutablity::Book"
+          "year")
         (Value.Integer Integer.U32 2014) in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "I mutably borrowed ") in
         let* α3 := M.read (mk_str " - ") in
         let* α4 := M.read (mk_str " edition
@@ -138,15 +165,33 @@ Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
         let* α7 := M.read book in
-        let* α8 := M.call_closure α6 [ M.get_struct_record α7 "title" ] in
+        let* α8 :=
+          M.call_closure
+            α6
+            [
+              M.get_struct_record_field
+                α7
+                "scoping_rules_borrowing_mutablity::Book"
+                "title"
+            ] in
         let* α9 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α10 := M.read book in
-        let* α11 := M.call_closure α9 [ M.get_struct_record α10 "year" ] in
+        let* α11 :=
+          M.call_closure
+            α9
+            [
+              M.get_struct_record_field
+                α10
+                "scoping_rules_borrowing_mutablity::Book"
+                "year"
+            ] in
         let* α12 := M.alloc (Value.Array [ α8; α11 ]) in
         let* α13 :=
           M.call_closure

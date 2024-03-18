@@ -14,11 +14,10 @@ Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::ops::arith::Mul"
+        (Ty.apply (Ty.path "&") [ Ty.path "i32" ])
+        [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
         "mul"
-        [
-          (* Self *) Ty.apply (Ty.path "&") [ Ty.path "i32" ];
-          (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "i32" ]
-        ] in
+        [] in
     let* α1 := M.read first in
     let* α2 := M.read second in
     M.call_closure α0 [ α1; α2 ]
@@ -63,7 +62,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "The product is ") in
           let* α3 := M.read (mk_str "
 ") in
@@ -71,7 +71,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "i32" ] in
           let* α6 :=
             M.get_function "scoping_rules_lifetimes_coercion::multiply" [] in
           let* α7 := M.call_closure α6 [ first; second ] in
@@ -94,7 +95,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "") in
           let* α3 := M.read (mk_str " is the first
 ") in
@@ -102,7 +104,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
           let* α6 :=
             M.get_function
               "scoping_rules_lifetimes_coercion::choose_first"

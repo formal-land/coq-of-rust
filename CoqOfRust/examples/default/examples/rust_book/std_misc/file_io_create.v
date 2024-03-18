@@ -35,18 +35,30 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [], [] =>
     let* path :=
-      let* α0 := M.get_associated_function (Ty.path "std::path::Path") "new" in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "std::path::Path")
+          "new"
+          [ Ty.path "str" ] in
       let* α1 := M.read (mk_str "lorem_ipsum.txt") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* display :=
       let* α0 :=
-        M.get_associated_function (Ty.path "std::path::Path") "display" in
+        M.get_associated_function (Ty.path "std::path::Path") "display" [] in
       let* α1 := M.read path in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* file :=
-      let* α0 := M.get_associated_function (Ty.path "std::fs::File") "create" in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.path "std::fs::File")
+          "create"
+          [
+            Ty.apply
+              (Ty.path "&")
+              [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+          ] in
       let* α1 := M.call_closure α0 [ path ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
@@ -64,19 +76,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "couldn't create ") in
               let* α3 := M.read (mk_str ": ") in
               let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "std::path::Display" ] in
               let* α6 := M.call_closure α5 [ display ] in
               let* α7 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "std::io::error::Error" ] in
               let* α8 := M.call_closure α7 [ why ] in
               let* α9 := M.alloc (Value.Array [ α6; α8 ]) in
               let* α10 :=
@@ -102,9 +117,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "std::io::Write"
+        (Ty.path "std::fs::File")
+        []
         "write_all"
-        [ (* Self *) Ty.path "std::fs::File" ] in
-    let* α1 := M.get_associated_function (Ty.path "str") "as_bytes" in
+        [] in
+    let* α1 := M.get_associated_function (Ty.path "str") "as_bytes" [] in
     let* α2 := M.get_constant "file_io_create::LOREM_IPSUM" in
     let* α3 := M.read α2 in
     let* α4 := M.read α3 in
@@ -126,19 +143,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_v1" in
+                "new_v1"
+                [] in
             let* α2 := M.read (mk_str "couldn't write to ") in
             let* α3 := M.read (mk_str ": ") in
             let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
             let* α5 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
-                "new_display" in
+                "new_display"
+                [ Ty.path "std::path::Display" ] in
             let* α6 := M.call_closure α5 [ display ] in
             let* α7 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
-                "new_display" in
+                "new_display"
+                [ Ty.path "std::io::error::Error" ] in
             let* α8 := M.call_closure α7 [ why ] in
             let* α9 := M.alloc (Value.Array [ α6; α8 ]) in
             let* α10 :=
@@ -162,7 +182,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "successfully wrote to ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -170,7 +191,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "std::path::Display" ] in
               let* α6 := M.call_closure α5 [ display ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=

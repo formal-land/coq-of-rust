@@ -20,8 +20,10 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "contract_ref::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -110,7 +112,8 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "write_str" in
+          "write_str"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "FlipperError") in
       M.call_closure α0 [ α1; α2 ]
@@ -150,7 +153,8 @@ Module Impl_contract_ref_FlipperRef.
       let* α0 :=
         M.get_associated_function
           (Ty.path "contract_ref::FlipperRef")
-          "init_env" in
+          "init_env"
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -182,12 +186,17 @@ Module Impl_contract_ref_FlipperRef.
     match 𝜏, α with
     | [], [] =>
       let* α0 :=
-        M.get_associated_function (Ty.path "contract_ref::FlipperRef") "new" in
+        M.get_associated_function
+          (Ty.path "contract_ref::FlipperRef")
+          "new"
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "bool")
+          []
           "default"
-          [ (* Self *) Ty.path "bool" ] in
+          [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
@@ -215,7 +224,8 @@ Module Impl_contract_ref_FlipperRef.
           let* α0 :=
             M.get_associated_function
               (Ty.path "contract_ref::FlipperRef")
-              "new" in
+              "new"
+              [] in
           let* α1 := M.call_closure α0 [ Value.Bool true ] in
           M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
         else
@@ -242,8 +252,12 @@ Module Impl_contract_ref_FlipperRef.
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "value") in
-        M.assign (M.get_struct_record α0 "value") (UnOp.Pure.not α2) in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field α1 "contract_ref::FlipperRef" "value") in
+        M.assign
+          (M.get_struct_record_field α0 "contract_ref::FlipperRef" "value")
+          (UnOp.Pure.not α2) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
     | _, _ => M.impossible
@@ -261,7 +275,7 @@ Module Impl_contract_ref_FlipperRef.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "value")
+      M.read (M.get_struct_record_field α0 "contract_ref::FlipperRef" "value")
     | _, _ => M.impossible
     end.
   
@@ -296,7 +310,7 @@ Module Impl_contract_ref_ContractRef.
       let* version := M.alloc version in
       let* flipper_code_hash := M.alloc flipper_code_hash in
       let* salt :=
-        let* α0 := M.get_associated_function (Ty.path "u32") "to_le_bytes" in
+        let* α0 := M.get_associated_function (Ty.path "u32") "to_le_bytes" [] in
         let* α1 := M.read version in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -304,7 +318,8 @@ Module Impl_contract_ref_ContractRef.
         let* α0 :=
           M.get_associated_function
             (Ty.path "contract_ref::FlipperRef")
-            "new_default" in
+            "new_default"
+            [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.read flipper in
@@ -344,7 +359,7 @@ Module Impl_contract_ref_ContractRef.
       let* flipper_code_hash := M.alloc flipper_code_hash in
       let* succeed := M.alloc succeed in
       let* salt :=
-        let* α0 := M.get_associated_function (Ty.path "u32") "to_le_bytes" in
+        let* α0 := M.get_associated_function (Ty.path "u32") "to_le_bytes" [] in
         let* α1 := M.read version in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -357,11 +372,13 @@ Module Impl_contract_ref_ContractRef.
                 Ty.path "contract_ref::FlipperRef";
                 Ty.path "contract_ref::FlipperError"
               ])
-            "unwrap" in
+            "unwrap"
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "contract_ref::FlipperRef")
-            "try_new" in
+            "try_new"
+            [] in
         let* α2 := M.read succeed in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.call_closure α0 [ α3 ] in
@@ -392,9 +409,14 @@ Module Impl_contract_ref_ContractRef.
         let* α0 :=
           M.get_associated_function
             (Ty.path "contract_ref::FlipperRef")
-            "flip" in
+            "flip"
+            [] in
         let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ M.get_struct_record α1 "flipper" ] in
+        let* α2 :=
+          M.call_closure
+            α0
+            [ M.get_struct_record_field α1 "contract_ref::ContractRef" "flipper"
+            ] in
         M.alloc α2 in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -413,9 +435,14 @@ Module Impl_contract_ref_ContractRef.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_associated_function (Ty.path "contract_ref::FlipperRef") "get" in
+        M.get_associated_function
+          (Ty.path "contract_ref::FlipperRef")
+          "get"
+          [] in
       let* α1 := M.read self in
-      M.call_closure α0 [ M.get_struct_record α1 "flipper" ]
+      M.call_closure
+        α0
+        [ M.get_struct_record_field α1 "contract_ref::ContractRef" "flipper" ]
     | _, _ => M.impossible
     end.
   

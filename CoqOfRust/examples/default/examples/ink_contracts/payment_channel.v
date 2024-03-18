@@ -20,8 +20,10 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "payment_channel::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -93,9 +95,11 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
       let* self := M.alloc self in
       let* other := M.alloc other in
       let* α0 := M.read self in
-      let* α1 := M.read (M.get_struct_tuple α0 0) in
+      let* α1 :=
+        M.read (M.get_struct_tuple_field α0 "payment_channel::AccountId" 0) in
       let* α2 := M.read other in
-      let* α3 := M.read (M.get_struct_tuple α2 0) in
+      let* α3 :=
+        M.read (M.get_struct_tuple_field α2 "payment_channel::AccountId" 0) in
       M.pure (BinOp.Pure.eq α1 α3)
     | _, _ => M.impossible
     end.
@@ -369,7 +373,7 @@ Module Impl_payment_channel_Env.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "caller")
+      M.read (M.get_struct_record_field α0 "payment_channel::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -652,7 +656,8 @@ Module Impl_payment_channel_PaymentChannel.
       let* α0 :=
         M.get_associated_function
           (Ty.path "payment_channel::PaymentChannel")
-          "init_env" in
+          "init_env"
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -684,11 +689,13 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_associated_function
             (Ty.path "payment_channel::Env")
-            "account_id" in
+            "account_id"
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -699,8 +706,10 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "core::default::Default"
+            (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+            []
             "default"
-            [ (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+            [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
@@ -720,7 +729,12 @@ Module Impl_payment_channel_PaymentChannel.
             (Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "payment_channel::Error" ])
-            "unwrap_or_else" in
+            "unwrap_or_else"
+            [
+              Ty.function
+                [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                (Ty.tuple [])
+            ] in
         let* α1 := M.get_function "payment_channel::ecdsa_recover" [] in
         let* α2 := M.call_closure α1 [ signature; message; pub_key ] in
         let* α3 :=
@@ -757,8 +771,10 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "payment_channel::CryptoHash"
+            (Ty.path "payment_channel::Blake2x256")
+            []
             "hash"
-            [ (* Self *) Ty.path "payment_channel::Blake2x256" ] in
+            [] in
         let* α1 :=
           M.call_closure
             α0
@@ -767,24 +783,31 @@ Module Impl_payment_channel_PaymentChannel.
       let* α0 :=
         M.get_trait_method
           "core::cmp::PartialEq"
+          (Ty.path "payment_channel::AccountId")
+          [ Ty.path "payment_channel::AccountId" ]
           "eq"
-          [
-            (* Self *) Ty.path "payment_channel::AccountId";
-            (* Rhs *) Ty.path "payment_channel::AccountId"
-          ] in
+          [] in
       let* α1 := M.read self in
       let* α2 :=
         M.get_trait_method
           "core::convert::Into"
+          (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+          [ Ty.path "payment_channel::AccountId" ]
           "into"
-          [
-            (* Self *) Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-            (* T *) Ty.path "payment_channel::AccountId"
-          ] in
+          [] in
       let* α3 := M.read signature_account_id in
       let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 := M.alloc α4 in
-      let* α6 := M.call_closure α0 [ M.get_struct_record α1 "recipient"; α5 ] in
+      let* α6 :=
+        M.call_closure
+          α0
+          [
+            M.get_struct_record_field
+              α1
+              "payment_channel::PaymentChannel"
+              "recipient";
+            α5
+          ] in
       let* α0 := M.alloc α6 in
       M.read α0
     | _, _ => M.impossible
@@ -810,11 +833,15 @@ Module Impl_payment_channel_PaymentChannel.
       let* recipient := M.alloc recipient in
       let* close_duration := M.alloc close_duration in
       let* α0 :=
-        M.get_associated_function (Ty.path "payment_channel::Env") "caller" in
+        M.get_associated_function
+          (Ty.path "payment_channel::Env")
+          "caller"
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "payment_channel::PaymentChannel")
-          "init_env" in
+          "init_env"
+          [] in
       let* α2 := M.call_closure α1 [] in
       let* α3 := M.alloc α2 in
       let* α4 := M.call_closure α0 [ α3 ] in
@@ -867,17 +894,20 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.path "payment_channel::AccountId")
+            [ Ty.path "payment_channel::AccountId" ]
             "ne"
-            [
-              (* Self *) Ty.path "payment_channel::AccountId";
-              (* Rhs *) Ty.path "payment_channel::AccountId"
-            ] in
+            [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "payment_channel::Env") "caller" in
+          M.get_associated_function
+            (Ty.path "payment_channel::Env")
+            "caller"
+            [] in
         let* α2 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
@@ -885,7 +915,15 @@ Module Impl_payment_channel_PaymentChannel.
         let* α7 := M.alloc α6 in
         let* α8 := M.read self in
         let* α9 :=
-          M.call_closure α0 [ α7; M.get_struct_record α8 "recipient" ] in
+          M.call_closure
+            α0
+            [
+              α7;
+              M.get_struct_record_field
+                α8
+                "payment_channel::PaymentChannel"
+                "recipient"
+            ] in
         let* α10 := M.alloc α9 in
         let* α11 := M.read (M.use α10) in
         if Value.is_true α11 then
@@ -906,7 +944,12 @@ Module Impl_payment_channel_PaymentChannel.
       let* _ :=
         let* α0 := M.read amount in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "withdrawn") in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field
+              α1
+              "payment_channel::PaymentChannel"
+              "withdrawn") in
         let* α3 := M.alloc (BinOp.Pure.lt α0 α2) in
         let* α4 := M.read (M.use α3) in
         if Value.is_true α4 then
@@ -928,7 +971,8 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "is_signature_valid" in
+            "is_signature_valid"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read amount in
         let* α3 := M.read signature in
@@ -954,35 +998,52 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "core::ops::try_trait::Try"
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ])
+            []
             "branch"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
-            ] in
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "payment_channel::Error" ])
-            "map_err" in
+            "map_err"
+            [
+              Ty.path "payment_channel::Error";
+              Ty.function
+                [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                (Ty.path "payment_channel::Error")
+            ] in
         let* α2 :=
           M.get_associated_function
             (Ty.path "payment_channel::Env")
-            "transfer" in
+            "transfer"
+            [] in
         let* α3 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α4 := M.read self in
         let* α5 := M.call_closure α3 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 := M.read self in
-        let* α8 := M.read (M.get_struct_record α7 "recipient") in
+        let* α8 :=
+          M.read
+            (M.get_struct_record_field
+              α7
+              "payment_channel::PaymentChannel"
+              "recipient") in
         let* α9 := M.read amount in
         let* α10 := M.read self in
-        let* α11 := M.read (M.get_struct_record α10 "withdrawn") in
+        let* α11 :=
+          M.read
+            (M.get_struct_record_field
+              α10
+              "payment_channel::PaymentChannel"
+              "withdrawn") in
         let* α12 := BinOp.Panic.sub α9 α11 in
         let* α13 := M.call_closure α2 [ α6; α8; α12 ] in
         let* α14 :=
@@ -1022,20 +1083,19 @@ Module Impl_payment_channel_PaymentChannel.
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.tuple []; Ty.path "payment_channel::Error" ])
                   [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [ Ty.tuple []; Ty.path "payment_channel::Error" ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "core::convert::Infallible";
-                          Ty.path "payment_channel::Error"
-                        ]
-                  ] in
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "core::convert::Infallible";
+                        Ty.path "payment_channel::Error"
+                      ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -1079,17 +1139,17 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "core::ops::try_trait::Try"
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ])
+            []
             "branch"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
-            ] in
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "close_inner" in
+            "close_inner"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.read amount in
         let* α4 := M.read signature in
@@ -1109,20 +1169,19 @@ Module Impl_payment_channel_PaymentChannel.
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.tuple []; Ty.path "payment_channel::Error" ])
                   [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [ Ty.tuple []; Ty.path "payment_channel::Error" ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "core::convert::Infallible";
-                          Ty.path "payment_channel::Error"
-                        ]
-                  ] in
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "core::convert::Infallible";
+                        Ty.path "payment_channel::Error"
+                      ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -1142,16 +1201,23 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_associated_function
             (Ty.path "payment_channel::Env")
-            "terminate_contract" in
+            "terminate_contract"
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 := M.read self in
-        let* α6 := M.read (M.get_struct_record α5 "sender") in
+        let* α6 :=
+          M.read
+            (M.get_struct_record_field
+              α5
+              "payment_channel::PaymentChannel"
+              "sender") in
         let* α7 := M.call_closure α0 [ α4; α6 ] in
         M.alloc α7 in
       let* α0 :=
@@ -1191,24 +1257,36 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.path "payment_channel::AccountId")
+            [ Ty.path "payment_channel::AccountId" ]
             "ne"
-            [
-              (* Self *) Ty.path "payment_channel::AccountId";
-              (* Rhs *) Ty.path "payment_channel::AccountId"
-            ] in
+            [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "payment_channel::Env") "caller" in
+          M.get_associated_function
+            (Ty.path "payment_channel::Env")
+            "caller"
+            [] in
         let* α2 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 := M.call_closure α1 [ α5 ] in
         let* α7 := M.alloc α6 in
         let* α8 := M.read self in
-        let* α9 := M.call_closure α0 [ α7; M.get_struct_record α8 "sender" ] in
+        let* α9 :=
+          M.call_closure
+            α0
+            [
+              α7;
+              M.get_struct_record_field
+                α8
+                "payment_channel::PaymentChannel"
+                "sender"
+            ] in
         let* α10 := M.alloc α9 in
         let* α11 := M.read (M.use α10) in
         if Value.is_true α11 then
@@ -1230,11 +1308,13 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_associated_function
             (Ty.path "payment_channel::Env")
-            "block_timestamp" in
+            "block_timestamp"
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -1243,24 +1323,36 @@ Module Impl_payment_channel_PaymentChannel.
       let* expiration :=
         let* α0 := M.read now in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "close_duration") in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field
+              α1
+              "payment_channel::PaymentChannel"
+              "close_duration") in
         let* α3 := BinOp.Panic.add α0 α2 in
         M.alloc α3 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
             (Ty.path "payment_channel::Env")
-            "emit_event" in
+            "emit_event"
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 := M.read expiration in
         let* α6 := M.read self in
-        let* α7 := M.read (M.get_struct_record α6 "close_duration") in
+        let* α7 :=
+          M.read
+            (M.get_struct_record_field
+              α6
+              "payment_channel::PaymentChannel"
+              "close_duration") in
         let* α8 :=
           M.call_closure
             α0
@@ -1279,7 +1371,10 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 := M.read self in
         let* α1 := M.read expiration in
         M.assign
-          (M.get_struct_record α0 "expiration")
+          (M.get_struct_record_field
+            α0
+            "payment_channel::PaymentChannel"
+            "expiration")
           (Value.StructTuple "core::option::Option::Some" [ α1 ]) in
       let* α0 :=
         M.alloc
@@ -1318,7 +1413,10 @@ Module Impl_payment_channel_PaymentChannel.
       let* α0 := M.read self in
       let* α1 :=
         match_operator
-          (M.get_struct_record α0 "expiration")
+          (M.get_struct_record_field
+            α0
+            "payment_channel::PaymentChannel"
+            "expiration")
           [
             fun γ =>
               let* γ0_0 :=
@@ -1331,11 +1429,13 @@ Module Impl_payment_channel_PaymentChannel.
                 let* α0 :=
                   M.get_associated_function
                     (Ty.path "payment_channel::Env")
-                    "block_timestamp" in
+                    "block_timestamp"
+                    [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "payment_channel::PaymentChannel")
-                    "env" in
+                    "env"
+                    [] in
                 let* α2 := M.read self in
                 let* α3 := M.call_closure α1 [ α2 ] in
                 let* α4 := M.alloc α3 in
@@ -1365,16 +1465,23 @@ Module Impl_payment_channel_PaymentChannel.
                 let* α0 :=
                   M.get_associated_function
                     (Ty.path "payment_channel::Env")
-                    "terminate_contract" in
+                    "terminate_contract"
+                    [] in
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "payment_channel::PaymentChannel")
-                    "env" in
+                    "env"
+                    [] in
                 let* α2 := M.read self in
                 let* α3 := M.call_closure α1 [ α2 ] in
                 let* α4 := M.alloc α3 in
                 let* α5 := M.read self in
-                let* α6 := M.read (M.get_struct_record α5 "sender") in
+                let* α6 :=
+                  M.read
+                    (M.get_struct_record_field
+                      α5
+                      "payment_channel::PaymentChannel"
+                      "sender") in
                 let* α7 := M.call_closure α0 [ α4; α6 ] in
                 M.alloc α7 in
               M.alloc
@@ -1431,17 +1538,20 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
+            (Ty.path "payment_channel::AccountId")
+            [ Ty.path "payment_channel::AccountId" ]
             "ne"
-            [
-              (* Self *) Ty.path "payment_channel::AccountId";
-              (* Rhs *) Ty.path "payment_channel::AccountId"
-            ] in
+            [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "payment_channel::Env") "caller" in
+          M.get_associated_function
+            (Ty.path "payment_channel::Env")
+            "caller"
+            [] in
         let* α2 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
@@ -1449,7 +1559,15 @@ Module Impl_payment_channel_PaymentChannel.
         let* α7 := M.alloc α6 in
         let* α8 := M.read self in
         let* α9 :=
-          M.call_closure α0 [ α7; M.get_struct_record α8 "recipient" ] in
+          M.call_closure
+            α0
+            [
+              α7;
+              M.get_struct_record_field
+                α8
+                "payment_channel::PaymentChannel"
+                "recipient"
+            ] in
         let* α10 := M.alloc α9 in
         let* α11 := M.read (M.use α10) in
         if Value.is_true α11 then
@@ -1471,7 +1589,8 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "is_signature_valid" in
+            "is_signature_valid"
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read amount in
         let* α3 := M.read signature in
@@ -1496,7 +1615,12 @@ Module Impl_payment_channel_PaymentChannel.
       let* _ :=
         let* α0 := M.read amount in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "withdrawn") in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field
+              α1
+              "payment_channel::PaymentChannel"
+              "withdrawn") in
         let* α3 := M.alloc (BinOp.Pure.lt α0 α2) in
         let* α4 := M.read (M.use α3) in
         if Value.is_true α4 then
@@ -1517,13 +1641,22 @@ Module Impl_payment_channel_PaymentChannel.
       let* amount_to_withdraw :=
         let* α0 := M.read amount in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "withdrawn") in
+        let* α2 :=
+          M.read
+            (M.get_struct_record_field
+              α1
+              "payment_channel::PaymentChannel"
+              "withdrawn") in
         let* α3 := BinOp.Panic.sub α0 α2 in
         M.alloc α3 in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
-          M.pure (M.get_struct_record α0 "withdrawn") in
+          M.pure
+            (M.get_struct_record_field
+              α0
+              "payment_channel::PaymentChannel"
+              "withdrawn") in
         let* α0 := M.read β in
         let* α1 := M.read amount_to_withdraw in
         let* α2 := BinOp.Panic.add α0 α1 in
@@ -1532,32 +1665,44 @@ Module Impl_payment_channel_PaymentChannel.
         let* α0 :=
           M.get_trait_method
             "core::ops::try_trait::Try"
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.tuple []; Ty.path "payment_channel::Error" ])
+            []
             "branch"
-            [
-              (* Self *)
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.tuple []; Ty.path "payment_channel::Error" ]
-            ] in
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "payment_channel::Error" ])
-            "map_err" in
+            "map_err"
+            [
+              Ty.path "payment_channel::Error";
+              Ty.function
+                [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                (Ty.path "payment_channel::Error")
+            ] in
         let* α2 :=
           M.get_associated_function
             (Ty.path "payment_channel::Env")
-            "transfer" in
+            "transfer"
+            [] in
         let* α3 :=
           M.get_associated_function
             (Ty.path "payment_channel::PaymentChannel")
-            "env" in
+            "env"
+            [] in
         let* α4 := M.read self in
         let* α5 := M.call_closure α3 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 := M.read self in
-        let* α8 := M.read (M.get_struct_record α7 "recipient") in
+        let* α8 :=
+          M.read
+            (M.get_struct_record_field
+              α7
+              "payment_channel::PaymentChannel"
+              "recipient") in
         let* α9 := M.read amount_to_withdraw in
         let* α10 := M.call_closure α2 [ α6; α8; α9 ] in
         let* α11 :=
@@ -1597,20 +1742,19 @@ Module Impl_payment_channel_PaymentChannel.
               let* α0 :=
                 M.get_trait_method
                   "core::ops::try_trait::FromResidual"
-                  "from_residual"
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.tuple []; Ty.path "payment_channel::Error" ])
                   [
-                    (* Self *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [ Ty.tuple []; Ty.path "payment_channel::Error" ];
-                    (* R *)
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        [
-                          Ty.path "core::convert::Infallible";
-                          Ty.path "payment_channel::Error"
-                        ]
-                  ] in
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "core::convert::Infallible";
+                        Ty.path "payment_channel::Error"
+                      ]
+                  ]
+                  "from_residual"
+                  [] in
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
@@ -1646,7 +1790,11 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "sender")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "payment_channel::PaymentChannel"
+          "sender")
     | _, _ => M.impossible
     end.
   
@@ -1663,7 +1811,11 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "recipient")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "payment_channel::PaymentChannel"
+          "recipient")
     | _, _ => M.impossible
     end.
   
@@ -1680,7 +1832,11 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "expiration")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "payment_channel::PaymentChannel"
+          "expiration")
     | _, _ => M.impossible
     end.
   
@@ -1697,7 +1853,11 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "withdrawn")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "payment_channel::PaymentChannel"
+          "withdrawn")
     | _, _ => M.impossible
     end.
   
@@ -1714,7 +1874,11 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "close_duration")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "payment_channel::PaymentChannel"
+          "close_duration")
     | _, _ => M.impossible
     end.
   
@@ -1731,11 +1895,15 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_associated_function (Ty.path "payment_channel::Env") "balance" in
+        M.get_associated_function
+          (Ty.path "payment_channel::Env")
+          "balance"
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "payment_channel::PaymentChannel")
-          "env" in
+          "env"
+          [] in
       let* α2 := M.read self in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.alloc α3 in

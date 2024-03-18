@@ -172,18 +172,29 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_tuple_field2_finish" in
+          "debug_tuple_field2_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Length") in
       let* α3 := M.read self in
       let* α4 := M.read self in
-      let* α5 := M.alloc (M.get_struct_tuple α4 1) in
+      let* α5 :=
+        M.alloc
+          (M.get_struct_tuple_field
+            α4
+            "generics_phantom_type_test_case_unit_clarification::Length"
+            1) in
       M.call_closure
         α0
         [
           α1;
           α2;
-          M.pointer_coercion (* Unsize *) (M.get_struct_tuple α3 0);
+          M.pointer_coercion
+            (* Unsize *)
+            (M.get_struct_tuple_field
+              α3
+              "generics_phantom_type_test_case_unit_clarification::Length"
+              0);
           M.pointer_coercion (* Unsize *) α5
         ]
     | _, _ => M.impossible
@@ -216,20 +227,34 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_trait_method
-          "core::clone::Clone"
-          "clone"
-          [ (* Self *) Ty.path "f64" ] in
+        M.get_trait_method "core::clone::Clone" (Ty.path "f64") [] "clone" [] in
       let* α1 := M.read self in
-      let* α2 := M.call_closure α0 [ M.get_struct_tuple α1 0 ] in
+      let* α2 :=
+        M.call_closure
+          α0
+          [
+            M.get_struct_tuple_field
+              α1
+              "generics_phantom_type_test_case_unit_clarification::Length"
+              0
+          ] in
       let* α3 :=
         M.get_trait_method
           "core::clone::Clone"
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ])
+          []
           "clone"
-          [ (* Self *) Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ]
-          ] in
+          [] in
       let* α4 := M.read self in
-      let* α5 := M.call_closure α3 [ M.get_struct_tuple α4 1 ] in
+      let* α5 :=
+        M.call_closure
+          α3
+          [
+            M.get_struct_tuple_field
+              α4
+              "generics_phantom_type_test_case_unit_clarification::Length"
+              1
+          ] in
       M.pure
         (Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
@@ -293,8 +318,18 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
     | [], [ self; rhs ] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
-      let* α0 := M.read (M.get_struct_tuple self 0) in
-      let* α1 := M.read (M.get_struct_tuple rhs 0) in
+      let* α0 :=
+        M.read
+          (M.get_struct_tuple_field
+            self
+            "generics_phantom_type_test_case_unit_clarification::Length"
+            0) in
+      let* α1 :=
+        M.read
+          (M.get_struct_tuple_field
+            rhs
+            "generics_phantom_type_test_case_unit_clarification::Length"
+            0) in
       let* α2 := BinOp.Panic.add α0 α1 in
       M.pure
         (Value.StructTuple
@@ -361,25 +396,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::arith::Add"
-          "add"
+          (Ty.apply
+            (Ty.path
+              "generics_phantom_type_test_case_unit_clarification::Length")
+            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch"
+            ])
           [
-            (* Self *)
-              Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [
-                  Ty.path
-                    "generics_phantom_type_test_case_unit_clarification::Inch"
-                ];
-            (* Rhs *)
-              Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [
-                  Ty.path
-                    "generics_phantom_type_test_case_unit_clarification::Inch"
-                ]
-          ] in
+            Ty.apply
+              (Ty.path
+                "generics_phantom_type_test_case_unit_clarification::Length")
+              [
+                Ty.path
+                  "generics_phantom_type_test_case_unit_clarification::Inch"
+              ]
+          ]
+          "add"
+          [] in
       let* α1 := M.read one_foot in
       let* α2 := M.read one_foot in
       let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -388,25 +420,20 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::arith::Add"
-          "add"
+          (Ty.apply
+            (Ty.path
+              "generics_phantom_type_test_case_unit_clarification::Length")
+            [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm"
+            ])
           [
-            (* Self *)
-              Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [
-                  Ty.path
-                    "generics_phantom_type_test_case_unit_clarification::Mm"
-                ];
-            (* Rhs *)
-              Ty.apply
-                (Ty.path
-                  "generics_phantom_type_test_case_unit_clarification::Length")
-                [
-                  Ty.path
-                    "generics_phantom_type_test_case_unit_clarification::Mm"
-                ]
-          ] in
+            Ty.apply
+              (Ty.path
+                "generics_phantom_type_test_case_unit_clarification::Length")
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm"
+              ]
+          ]
+          "add"
+          [] in
       let* α1 := M.read one_meter in
       let* α2 := M.read one_meter in
       let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -415,7 +442,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "one foot + one_foot = ") in
         let* α3 := M.read (mk_str " in
 ") in
@@ -423,8 +453,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
-        let* α6 := M.call_closure α5 [ M.get_struct_tuple two_feet 0 ] in
+            "new_debug"
+            [ Ty.path "f64" ] in
+        let* α6 :=
+          M.call_closure
+            α5
+            [
+              M.get_struct_tuple_field
+                two_feet
+                "generics_phantom_type_test_case_unit_clarification::Length"
+                0
+            ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call_closure
@@ -440,7 +479,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "one meter + one_meter = ") in
         let* α3 := M.read (mk_str " mm
 ") in
@@ -448,8 +490,17 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
-        let* α6 := M.call_closure α5 [ M.get_struct_tuple two_meters 0 ] in
+            "new_debug"
+            [ Ty.path "f64" ] in
+        let* α6 :=
+          M.call_closure
+            α5
+            [
+              M.get_struct_tuple_field
+                two_meters
+                "generics_phantom_type_test_case_unit_clarification::Length"
+                0
+            ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call_closure

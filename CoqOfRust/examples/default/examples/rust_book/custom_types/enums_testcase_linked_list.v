@@ -67,7 +67,8 @@ Module Impl_enums_testcase_linked_list_List.
               Ty.path "enums_testcase_linked_list::List";
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α2 := M.read self in
       let* α3 := M.call_closure α1 [ α2 ] in
       M.pure
@@ -120,7 +121,8 @@ Module Impl_enums_testcase_linked_list_List.
               let* α0 :=
                 M.get_associated_function
                   (Ty.path "enums_testcase_linked_list::List")
-                  "len" in
+                  "len"
+                  [] in
               let* α1 := M.read tail in
               let* α2 := M.read α1 in
               let* α3 := M.call_closure α0 [ α2 ] in
@@ -175,23 +177,27 @@ Module Impl_enums_testcase_linked_list_List.
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "") in
                 let* α3 := M.read (mk_str ", ") in
                 let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                 let* α5 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "u32" ] in
                 let* α6 := M.call_closure α5 [ head ] in
                 let* α7 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_display" in
+                    "new_display"
+                    [ Ty.path "alloc::string::String" ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "enums_testcase_linked_list::List")
-                    "stringify" in
+                    "stringify"
+                    [] in
                 let* α9 := M.read tail in
                 let* α10 := M.read α9 in
                 let* α11 := M.call_closure α8 [ α10 ] in
@@ -214,7 +220,8 @@ Module Impl_enums_testcase_linked_list_List.
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_const" in
+                    "new_const"
+                    [] in
                 let* α2 := M.read (mk_str "Nil") in
                 let* α3 := M.alloc (Value.Array [ α2 ]) in
                 let* α4 :=
@@ -253,14 +260,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "enums_testcase_linked_list::List")
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "enums_testcase_linked_list::List")
-          "prepend" in
+          "prepend"
+          [] in
       let* α1 := M.read list in
       let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 1 ] in
       M.assign list α2 in
@@ -268,7 +277,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "enums_testcase_linked_list::List")
-          "prepend" in
+          "prepend"
+          [] in
       let* α1 := M.read list in
       let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 2 ] in
       M.assign list α2 in
@@ -276,7 +286,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "enums_testcase_linked_list::List")
-          "prepend" in
+          "prepend"
+          [] in
       let* α1 := M.read list in
       let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 3 ] in
       M.assign list α2 in
@@ -284,7 +295,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "linked list has length: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -292,11 +306,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α6 :=
           M.get_associated_function
             (Ty.path "enums_testcase_linked_list::List")
-            "len" in
+            "len"
+            [] in
         let* α7 := M.call_closure α6 [ list ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in
@@ -315,7 +331,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -323,11 +342,13 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "alloc::string::String" ] in
         let* α6 :=
           M.get_associated_function
             (Ty.path "enums_testcase_linked_list::List")
-            "stringify" in
+            "stringify"
+            [] in
         let* α7 := M.call_closure α6 [ list ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in

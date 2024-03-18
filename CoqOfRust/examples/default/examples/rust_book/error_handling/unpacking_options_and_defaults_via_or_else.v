@@ -49,7 +49,8 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "write_str" in
+          "write_str"
+          [] in
       let* α1 := M.read f in
       let* α2 :=
         match_operator
@@ -141,7 +142,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_const" in
+                            "new_const"
+                            [] in
                         let* α2 :=
                           M.read (mk_str "Providing kiwi as fallback
 ") in
@@ -183,7 +185,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                         let* α1 :=
                           M.get_associated_function
                             (Ty.path "core::fmt::Arguments")
-                            "new_const" in
+                            "new_const"
+                            [] in
                         let* α2 :=
                           M.read (mk_str "Providing lemon as fallback
 ") in
@@ -214,13 +217,27 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-          "or_else" in
+          "or_else"
+          [
+            Ty.function
+              [ Ty.tuple [] ]
+              (Ty.apply
+                (Ty.path "core::option::Option")
+                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
+          ] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
-          "or_else" in
+          "or_else"
+          [
+            Ty.function
+              [ Ty.tuple [] ]
+              (Ty.apply
+                (Ty.path "core::option::Option")
+                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ])
+          ] in
       let* α2 := M.read no_fruit in
       let* α3 := M.read get_kiwi_as_fallback in
       let* α4 := M.call_closure α1 [ α2; α3 ] in
@@ -231,7 +248,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "first_available_fruit: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -239,7 +259,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "core::option::Option")
+                [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]
+            ] in
         let* α6 := M.call_closure α5 [ first_available_fruit ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

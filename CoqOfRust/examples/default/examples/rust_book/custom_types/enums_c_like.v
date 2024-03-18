@@ -64,7 +64,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "zero is ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -72,7 +75,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 0)) in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -90,7 +94,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "one is ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -98,7 +105,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "i32" ] in
         let* α6 := M.alloc (M.rust_cast (Value.Integer Integer.Isize 1)) in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -118,7 +126,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted" in
+            "new_v1_formatted"
+            [] in
         let* α2 := M.read (mk_str "roses are #") in
         let* α3 := M.read (mk_str "
 ") in
@@ -126,7 +135,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_lower_hex" in
+            "new_lower_hex"
+            [ Ty.path "i32" ] in
         let* α6 := M.get_constant "enums_c_like::Color::Red_discriminant" in
         let* α7 := BinOp.Panic.add α6 (Value.Integer Integer.Isize 0) in
         let* α8 := M.alloc (M.rust_cast α7) in
@@ -135,7 +145,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Placeholder")
-            "new" in
+            "new"
+            [] in
         let* α12 :=
           M.call_closure
             α11
@@ -153,7 +164,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α14 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::UnsafeArg")
-            "new" in
+            "new"
+            [] in
         let* α15 := M.call_closure α14 [] in
         let* α16 :=
           M.call_closure
@@ -173,7 +185,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_v1_formatted" in
+            "new_v1_formatted"
+            [] in
         let* α2 := M.read (mk_str "violets are #") in
         let* α3 := M.read (mk_str "
 ") in
@@ -181,7 +194,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_lower_hex" in
+            "new_lower_hex"
+            [ Ty.path "i32" ] in
         let* α6 := M.get_constant "enums_c_like::Color::Blue_discriminant" in
         let* α7 := BinOp.Panic.add α6 (Value.Integer Integer.Isize 0) in
         let* α8 := M.alloc (M.rust_cast α7) in
@@ -190,7 +204,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α11 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Placeholder")
-            "new" in
+            "new"
+            [] in
         let* α12 :=
           M.call_closure
             α11
@@ -208,7 +223,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α14 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::UnsafeArg")
-            "new" in
+            "new"
+            [] in
         let* α15 := M.call_closure α14 [] in
         let* α16 :=
           M.call_closure

@@ -45,22 +45,34 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* process :=
       let* α0 :=
-        M.get_associated_function (Ty.path "std::process::Command") "spawn" in
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "spawn"
+          [] in
       let* α1 :=
-        M.get_associated_function (Ty.path "std::process::Command") "stdout" in
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "stdout"
+          [ Ty.path "std::process::Stdio" ] in
       let* α2 :=
-        M.get_associated_function (Ty.path "std::process::Command") "stdin" in
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "stdin"
+          [ Ty.path "std::process::Stdio" ] in
       let* α3 :=
-        M.get_associated_function (Ty.path "std::process::Command") "new" in
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "new"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α4 := M.read (mk_str "wc") in
       let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.alloc α5 in
       let* α7 :=
-        M.get_associated_function (Ty.path "std::process::Stdio") "piped" in
+        M.get_associated_function (Ty.path "std::process::Stdio") "piped" [] in
       let* α8 := M.call_closure α7 [] in
       let* α9 := M.call_closure α2 [ α6; α8 ] in
       let* α10 :=
-        M.get_associated_function (Ty.path "std::process::Stdio") "piped" in
+        M.get_associated_function (Ty.path "std::process::Stdio") "piped" [] in
       let* α11 := M.call_closure α10 [] in
       let* α12 := M.call_closure α1 [ α9; α11 ] in
       let* α13 := M.call_closure α0 [ α12 ] in
@@ -80,13 +92,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "couldn't spawn wc: ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "std::io::error::Error" ] in
               let* α5 := M.call_closure α4 [ why ] in
               let* α6 := M.alloc (Value.Array [ α5 ]) in
               let* α7 :=
@@ -113,18 +127,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "std::io::Write"
+          (Ty.path "std::process::ChildStdin")
+          []
           "write_all"
-          [ (* Self *) Ty.path "std::process::ChildStdin" ] in
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::option::Option")
             [ Ty.path "std::process::ChildStdin" ])
-          "unwrap" in
-      let* α2 := M.read (M.get_struct_record process "stdin") in
+          "unwrap"
+          [] in
+      let* α2 :=
+        M.read
+          (M.get_struct_record_field process "std::process::Child" "stdin") in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.alloc α3 in
-      let* α5 := M.get_associated_function (Ty.path "str") "as_bytes" in
+      let* α5 := M.get_associated_function (Ty.path "str") "as_bytes" [] in
       let* α6 := M.get_constant "child_processes_pipes::PANGRAM" in
       let* α7 := M.read α6 in
       let* α8 := M.read α7 in
@@ -145,13 +164,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_v1" in
+                "new_v1"
+                [] in
             let* α2 := M.read (mk_str "couldn't write to wc stdin: ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
             let* α4 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
-                "new_display" in
+                "new_display"
+                [ Ty.path "std::io::error::Error" ] in
             let* α5 := M.call_closure α4 [ why ] in
             let* α6 := M.alloc (Value.Array [ α5 ]) in
             let* α7 :=
@@ -175,7 +196,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "sent pangram to wc
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -187,21 +209,26 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* s :=
       let* α0 :=
-        M.get_associated_function (Ty.path "alloc::string::String") "new" in
+        M.get_associated_function (Ty.path "alloc::string::String") "new" [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 :=
       M.get_trait_method
         "std::io::Read"
+        (Ty.path "std::process::ChildStdout")
+        []
         "read_to_string"
-        [ (* Self *) Ty.path "std::process::ChildStdout" ] in
+        [] in
     let* α1 :=
       M.get_associated_function
         (Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "std::process::ChildStdout" ])
-        "unwrap" in
-    let* α2 := M.read (M.get_struct_record process "stdout") in
+        "unwrap"
+        [] in
+    let* α2 :=
+      M.read
+        (M.get_struct_record_field process "std::process::Child" "stdout") in
     let* α3 := M.call_closure α1 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 := M.call_closure α0 [ α4; s ] in
@@ -221,13 +248,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_v1" in
+                "new_v1"
+                [] in
             let* α2 := M.read (mk_str "couldn't read wc stdout: ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
             let* α4 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
-                "new_display" in
+                "new_display"
+                [ Ty.path "std::io::error::Error" ] in
             let* α5 := M.call_closure α4 [ why ] in
             let* α6 := M.alloc (Value.Array [ α5 ]) in
             let* α7 :=
@@ -251,14 +280,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "wc responded with:
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "alloc::string::String" ] in
               let* α5 := M.call_closure α4 [ s ] in
               let* α6 := M.alloc (Value.Array [ α5 ]) in
               let* α7 :=

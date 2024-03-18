@@ -16,7 +16,10 @@ Definition destroy_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Destroying a box that contains ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -24,7 +27,12 @@ Definition destroy_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            ] in
         let* α6 := M.call_closure α5 [ c ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -88,7 +96,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "x is ") in
         let* α3 := M.read (mk_str ", and y is ") in
         let* α4 := M.read (mk_str "
@@ -97,12 +108,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α7 := M.call_closure α6 [ x ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [ Ty.path "u32" ] in
         let* α9 := M.call_closure α8 [ y ] in
         let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
@@ -121,14 +134,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
             [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "a contains: ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -136,7 +153,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
+            "new_display"
+            [
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            ] in
         let* α6 := M.call_closure α5 [ a ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=

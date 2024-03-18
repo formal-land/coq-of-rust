@@ -34,7 +34,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "alloc::alloc::Global"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.read (mk_str "the same apple") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -42,11 +43,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
-          ] in
+          [] in
       let* α1 :=
         M.call_closure
           α0
@@ -70,13 +70,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::ops::range::Range")
+                        [ Ty.path "i32" ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::ops::range::Range")
-                            [ Ty.path "i32" ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -97,16 +96,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α0 :=
                             M.get_trait_method
                               "core::clone::Clone"
+                              (Ty.apply
+                                (Ty.path "alloc::sync::Arc")
+                                [
+                                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ])
+                              []
                               "clone"
-                              [
-                                (* Self *)
-                                  Ty.apply
-                                    (Ty.path "alloc::sync::Arc")
-                                    [
-                                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ]
-                              ] in
+                              [] in
                           let* α1 := M.call_closure α0 [ apple ] in
                           M.alloc α1 in
                         let* _ :=
@@ -140,7 +138,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::Arguments")
-                                                    "new_v1" in
+                                                    "new_v1"
+                                                    [] in
                                                 let* α2 := M.read (mk_str "") in
                                                 let* α3 :=
                                                   M.read (mk_str "
@@ -152,7 +151,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function
                                                     (Ty.path
                                                       "core::fmt::rt::Argument")
-                                                    "new_debug" in
+                                                    "new_debug"
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::sync::Arc")
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            [ Ty.path "str" ];
+                                                          Ty.path
+                                                            "alloc::alloc::Global"
+                                                        ]
+                                                    ] in
                                                 let* α6 :=
                                                   M.call_closure α5 [ apple ] in
                                                 let* α7 :=
@@ -191,7 +202,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.get_associated_function
           (Ty.path "core::time::Duration")
-          "from_secs" in
+          "from_secs"
+          [] in
       let* α2 := M.call_closure α1 [ Value.Integer Integer.U64 1 ] in
       let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in

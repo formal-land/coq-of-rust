@@ -16,7 +16,8 @@ Module my_mod.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "called `my_mod::private_function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -43,7 +44,8 @@ Module my_mod.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "called `my_mod::function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -71,7 +73,8 @@ Module my_mod.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 :=
             M.read (mk_str "called `my_mod::indirect_access()`, that
 > ") in
@@ -104,7 +107,8 @@ Module my_mod.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 := M.read (mk_str "called `my_mod::nested::function()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -132,7 +136,8 @@ Module my_mod.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 :=
               M.read (mk_str "called `my_mod::nested::private_function()`
 ") in
@@ -165,7 +170,8 @@ Module my_mod.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 :=
               M.read
                 (mk_str
@@ -206,7 +212,8 @@ Module my_mod.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 :=
               M.read
                 (mk_str
@@ -240,7 +247,8 @@ Module my_mod.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 :=
               M.read
                 (mk_str
@@ -278,7 +286,8 @@ Module my_mod.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 :=
             M.read
               (mk_str
@@ -302,7 +311,8 @@ Module my_mod.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "> ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
           let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
@@ -335,7 +345,8 @@ Module my_mod.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 :=
             M.read (mk_str "called `my_mod::public_function_in_crate()`
 ") in
@@ -364,7 +375,8 @@ Module my_mod.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 :=
               M.read (mk_str "called `my_mod::private_nested::function()`
 ") in
@@ -393,7 +405,8 @@ Module my_mod.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 :=
               M.read
                 (mk_str
@@ -426,7 +439,8 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "called `function()`
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in

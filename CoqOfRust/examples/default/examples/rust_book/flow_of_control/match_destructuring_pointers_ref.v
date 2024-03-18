@@ -71,7 +71,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Got a value via destructuring: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -79,7 +80,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ val ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -105,7 +107,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Got a value via dereferencing: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -113,7 +116,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_debug" in
+                  "new_debug"
+                  [ Ty.path "i32" ] in
               let* α6 := M.call_closure α5 [ val ] in
               let* α7 := M.alloc (Value.Array [ α6 ]) in
               let* α8 :=
@@ -148,7 +152,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
+                          "new_v1"
+                          [] in
                       let* α2 :=
                         M.read (mk_str "Got a reference to a value: ") in
                       let* α3 := M.read (mk_str "
@@ -157,7 +162,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α5 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_debug" in
+                          "new_debug"
+                          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
                       let* α6 := M.call_closure α5 [ r ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=
@@ -188,7 +194,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
+                          "new_v1"
+                          [] in
                       let* α2 := M.read (mk_str "We added 10. `mut_value`: ") in
                       let* α3 := M.read (mk_str "
 ") in
@@ -196,7 +203,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α5 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_debug" in
+                          "new_debug"
+                          [ Ty.apply (Ty.path "&mut") [ Ty.path "i32" ] ] in
                       let* α6 := M.call_closure α5 [ m ] in
                       let* α7 := M.alloc (Value.Array [ α6 ]) in
                       let* α8 :=

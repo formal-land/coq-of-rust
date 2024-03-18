@@ -20,8 +20,10 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
+          (Ty.path "u128")
+          []
           "default"
-          [ (* Self *) Ty.path "u128" ] in
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "updated_incrementer::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -133,7 +135,8 @@ Module Impl_updated_incrementer_Incrementer.
       let* α0 :=
         M.get_associated_function
           (Ty.path "updated_incrementer::Incrementer")
-          "init_env" in
+          "init_env"
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -181,7 +184,11 @@ Module Impl_updated_incrementer_Incrementer.
       let* _ :=
         let* β :=
           let* α0 := M.read self in
-          M.pure (M.get_struct_record α0 "count") in
+          M.pure
+            (M.get_struct_record_field
+              α0
+              "updated_incrementer::Incrementer"
+              "count") in
         let* α0 := M.read β in
         let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 4) in
         M.assign β α1 in
@@ -191,7 +198,8 @@ Module Impl_updated_incrementer_Incrementer.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "The new count is ") in
           let* α3 :=
             M.read
@@ -202,9 +210,18 @@ Module Impl_updated_incrementer_Incrementer.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_display" in
+              "new_display"
+              [ Ty.path "u32" ] in
           let* α6 := M.read self in
-          let* α7 := M.call_closure α5 [ M.get_struct_record α6 "count" ] in
+          let* α7 :=
+            M.call_closure
+              α5
+              [
+                M.get_struct_record_field
+                  α6
+                  "updated_incrementer::Incrementer"
+                  "count"
+              ] in
           let* α8 := M.alloc (Value.Array [ α7 ]) in
           let* α9 :=
             M.call_closure
@@ -233,7 +250,11 @@ Module Impl_updated_incrementer_Incrementer.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
-      M.read (M.get_struct_record α0 "count")
+      M.read
+        (M.get_struct_record_field
+          α0
+          "updated_incrementer::Incrementer"
+          "count")
     | _, _ => M.impossible
     end.
   
@@ -258,15 +279,22 @@ Module Impl_updated_incrementer_Incrementer.
             (Ty.apply
               (Ty.path "core::result::Result")
               [ Ty.tuple []; Ty.path "updated_incrementer::Error" ])
-            "unwrap_or_else" in
+            "unwrap_or_else"
+            [
+              Ty.function
+                [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
+                (Ty.tuple [])
+            ] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "updated_incrementer::Env")
-            "set_code_hash" in
+            "set_code_hash"
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
         let* α2 :=
           M.get_associated_function
             (Ty.path "updated_incrementer::Incrementer")
-            "env" in
+            "env"
+            [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
@@ -307,7 +335,8 @@ Module Impl_updated_incrementer_Incrementer.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_v1" in
+              "new_v1"
+              [] in
           let* α2 := M.read (mk_str "Switched code hash to ") in
           let* α3 := M.read (mk_str ".
 ") in
@@ -315,7 +344,8 @@ Module Impl_updated_incrementer_Incrementer.
           let* α5 :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
-              "new_debug" in
+              "new_debug"
+              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
           let* α6 := M.call_closure α5 [ code_hash ] in
           let* α7 := M.alloc (Value.Array [ α6 ]) in
           let* α8 :=

@@ -28,30 +28,45 @@ Module Impl_core_hash_Hash_for_hash_Person.
         let* α0 :=
           M.get_trait_method
             "core::hash::Hash"
+            (Ty.path "u32")
+            []
             "hash"
-            [ (* Self *) Ty.path "u32"; (* H *) __H ] in
+            [ __H ] in
         let* α1 := M.read self in
         let* α2 := M.read state in
-        let* α3 := M.call_closure α0 [ M.get_struct_record α1 "id"; α2 ] in
+        let* α3 :=
+          M.call_closure
+            α0
+            [ M.get_struct_record_field α1 "hash::Person" "id"; α2 ] in
         M.alloc α3 in
       let* _ :=
         let* α0 :=
           M.get_trait_method
             "core::hash::Hash"
+            (Ty.path "alloc::string::String")
+            []
             "hash"
-            [ (* Self *) Ty.path "alloc::string::String"; (* H *) __H ] in
+            [ __H ] in
         let* α1 := M.read self in
         let* α2 := M.read state in
-        let* α3 := M.call_closure α0 [ M.get_struct_record α1 "name"; α2 ] in
+        let* α3 :=
+          M.call_closure
+            α0
+            [ M.get_struct_record_field α1 "hash::Person" "name"; α2 ] in
         M.alloc α3 in
       let* α0 :=
         M.get_trait_method
           "core::hash::Hash"
+          (Ty.path "u64")
+          []
           "hash"
-          [ (* Self *) Ty.path "u64"; (* H *) __H ] in
+          [ __H ] in
       let* α1 := M.read self in
       let* α2 := M.read state in
-      let* α3 := M.call_closure α0 [ M.get_struct_record α1 "phone"; α2 ] in
+      let* α3 :=
+        M.call_closure
+          α0
+          [ M.get_struct_record_field α1 "hash::Person" "phone"; α2 ] in
       let* α0 := M.alloc α3 in
       M.read α0
     | _, _ => M.impossible
@@ -80,24 +95,28 @@ Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_associated_function
           (Ty.path "std::hash::random::DefaultHasher")
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
           "core::hash::Hash"
+          T
+          []
           "hash"
-          [ (* Self *) T; (* H *) Ty.path "std::hash::random::DefaultHasher"
-          ] in
+          [ Ty.path "std::hash::random::DefaultHasher" ] in
       let* α1 := M.read t in
       let* α2 := M.call_closure α0 [ α1; s ] in
       M.alloc α2 in
     let* α0 :=
       M.get_trait_method
         "core::hash::Hasher"
+        (Ty.path "std::hash::random::DefaultHasher")
+        []
         "finish"
-        [ (* Self *) Ty.path "std::hash::random::DefaultHasher" ] in
+        [] in
     let* α1 := M.call_closure α0 [ s ] in
     let* α0 := M.alloc α1 in
     M.read α0
@@ -127,8 +146,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::string::ToString"
+          (Ty.path "str")
+          []
           "to_string"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "Janet") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc
@@ -143,8 +164,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "alloc::string::ToString"
+          (Ty.path "str")
+          []
           "to_string"
-          [ (* Self *) Ty.path "str" ] in
+          [] in
       let* α1 := M.read (mk_str "Bob") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc

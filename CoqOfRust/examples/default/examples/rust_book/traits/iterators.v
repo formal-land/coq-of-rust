@@ -34,19 +34,25 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       let* self := M.alloc self in
       let* current :=
         let* α0 := M.read self in
-        M.copy (M.get_struct_record α0 "curr") in
+        M.copy (M.get_struct_record_field α0 "iterators::Fibonacci" "curr") in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read self in
-        let* α2 := M.read (M.get_struct_record α1 "next") in
-        M.assign (M.get_struct_record α0 "curr") α2 in
+        let* α2 :=
+          M.read (M.get_struct_record_field α1 "iterators::Fibonacci" "next") in
+        M.assign
+          (M.get_struct_record_field α0 "iterators::Fibonacci" "curr")
+          α2 in
       let* _ :=
         let* α0 := M.read self in
         let* α1 := M.read current in
         let* α2 := M.read self in
-        let* α3 := M.read (M.get_struct_record α2 "next") in
+        let* α3 :=
+          M.read (M.get_struct_record_field α2 "iterators::Fibonacci" "next") in
         let* α4 := BinOp.Panic.add α1 α3 in
-        M.assign (M.get_struct_record α0 "next") α4 in
+        M.assign
+          (M.get_struct_record_field α0 "iterators::Fibonacci" "next")
+          α4 in
       let* α0 := M.read current in
       let* α0 :=
         M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
@@ -138,7 +144,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "Four consecutive `next` calls on 0..3
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -150,7 +157,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "> ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -158,120 +168,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ] in
         let* α6 :=
           M.get_trait_method
             "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+            []
             "next"
-            [
-              (* Self *)
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
-            ] in
-        let* α7 := M.call_closure α6 [ sequence ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
-        let* α2 := M.read (mk_str "> ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-        let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
-        let* α6 :=
-          M.get_trait_method
-            "core::iter::traits::iterator::Iterator"
-            "next"
-            [
-              (* Self *)
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
-            ] in
-        let* α7 := M.call_closure α6 [ sequence ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
-        let* α2 := M.read (mk_str "> ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-        let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
-        let* α6 :=
-          M.get_trait_method
-            "core::iter::traits::iterator::Iterator"
-            "next"
-            [
-              (* Self *)
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
-            ] in
-        let* α7 := M.call_closure α6 [ sequence ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
-      M.alloc (Value.Tuple []) in
-    let* _ :=
-      let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
-        let* α2 := M.read (mk_str "> ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-        let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
-        let* α6 :=
-          M.get_trait_method
-            "core::iter::traits::iterator::Iterator"
-            "next"
-            [
-              (* Self *)
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
-            ] in
+            [] in
         let* α7 := M.call_closure α6 [ sequence ] in
         let* α8 := M.alloc α7 in
         let* α9 := M.call_closure α5 [ α8 ] in
@@ -292,7 +197,122 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "> ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug"
+            [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+            []
+            "next"
+            [] in
+        let* α7 := M.call_closure α6 [ sequence ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α5 [ α8 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "> ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug"
+            [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+            []
+            "next"
+            [] in
+        let* α7 := M.call_closure α6 [ sequence ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α5 [ α8 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "> ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug"
+            [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+            []
+            "next"
+            [] in
+        let* α7 := M.call_closure α6 [ sequence ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α5 [ α8 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "Iterate through 0..3 using `for`
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -304,11 +324,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ]
-          ] in
+          [] in
       let* α1 :=
         M.call_closure
           α0
@@ -332,13 +351,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::ops::range::Range")
+                        [ Ty.path "i32" ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::ops::range::Range")
-                            [ Ty.path "i32" ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -363,7 +381,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
-                                "new_v1" in
+                                "new_v1"
+                                [] in
                             let* α2 := M.read (mk_str "> ") in
                             let* α3 := M.read (mk_str "
 ") in
@@ -371,7 +390,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α5 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
-                                "new_display" in
+                                "new_display"
+                                [ Ty.path "i32" ] in
                             let* α6 := M.call_closure α5 [ i ] in
                             let* α7 := M.alloc (Value.Array [ α6 ]) in
                             let* α8 :=
@@ -395,7 +415,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 :=
           M.read
             (mk_str "The first four terms of the Fibonacci sequence are: 
@@ -409,18 +430,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "core::iter::adapters::take::Take")
+            [ Ty.path "iterators::Fibonacci" ])
+          []
           "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::iter::adapters::take::Take")
-                [ Ty.path "iterators::Fibonacci" ]
-          ] in
+          [] in
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.path "iterators::Fibonacci")
+          []
           "take"
-          [ (* Self *) Ty.path "iterators::Fibonacci" ] in
+          [] in
       let* α2 := M.get_function "iterators::fibonacci" [] in
       let* α3 := M.call_closure α2 [] in
       let* α4 := M.call_closure α1 [ α3; Value.Integer Integer.Usize 4 ] in
@@ -437,13 +459,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
+                      (Ty.apply
+                        (Ty.path "core::iter::adapters::take::Take")
+                        [ Ty.path "iterators::Fibonacci" ])
+                      []
                       "next"
-                      [
-                        (* Self *)
-                          Ty.apply
-                            (Ty.path "core::iter::adapters::take::Take")
-                            [ Ty.path "iterators::Fibonacci" ]
-                      ] in
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -468,7 +489,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
-                                "new_v1" in
+                                "new_v1"
+                                [] in
                             let* α2 := M.read (mk_str "> ") in
                             let* α3 := M.read (mk_str "
 ") in
@@ -476,7 +498,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α5 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
-                                "new_display" in
+                                "new_display"
+                                [ Ty.path "u32" ] in
                             let* α6 := M.call_closure α5 [ i ] in
                             let* α7 := M.alloc (Value.Array [ α6 ]) in
                             let* α8 :=
@@ -500,7 +523,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 :=
           M.read
             (mk_str "The next four terms of the Fibonacci sequence are: 
@@ -514,32 +538,32 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
-          "into_iter"
-          [
-            (* Self *)
-              Ty.apply
-                (Ty.path "core::iter::adapters::take::Take")
-                [
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::skip::Skip")
-                    [ Ty.path "iterators::Fibonacci" ]
-                ]
-          ] in
-      let* α1 :=
-        M.get_trait_method
-          "core::iter::traits::iterator::Iterator"
-          "take"
-          [
-            (* Self *)
+          (Ty.apply
+            (Ty.path "core::iter::adapters::take::Take")
+            [
               Ty.apply
                 (Ty.path "core::iter::adapters::skip::Skip")
                 [ Ty.path "iterators::Fibonacci" ]
-          ] in
+            ])
+          []
+          "into_iter"
+          [] in
+      let* α1 :=
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "core::iter::adapters::skip::Skip")
+            [ Ty.path "iterators::Fibonacci" ])
+          []
+          "take"
+          [] in
       let* α2 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
+          (Ty.path "iterators::Fibonacci")
+          []
           "skip"
-          [ (* Self *) Ty.path "iterators::Fibonacci" ] in
+          [] in
       let* α3 := M.get_function "iterators::fibonacci" [] in
       let* α4 := M.call_closure α3 [] in
       let* α5 := M.call_closure α2 [ α4; Value.Integer Integer.Usize 4 ] in
@@ -557,17 +581,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      "next"
-                      [
-                        (* Self *)
+                      (Ty.apply
+                        (Ty.path "core::iter::adapters::take::Take")
+                        [
                           Ty.apply
-                            (Ty.path "core::iter::adapters::take::Take")
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::skip::Skip")
-                                [ Ty.path "iterators::Fibonacci" ]
-                            ]
-                      ] in
+                            (Ty.path "core::iter::adapters::skip::Skip")
+                            [ Ty.path "iterators::Fibonacci" ]
+                        ])
+                      []
+                      "next"
+                      [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
                   match_operator
@@ -592,7 +615,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
-                                "new_v1" in
+                                "new_v1"
+                                [] in
                             let* α2 := M.read (mk_str "> ") in
                             let* α3 := M.read (mk_str "
 ") in
@@ -600,7 +624,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             let* α5 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
-                                "new_display" in
+                                "new_display"
+                                [ Ty.path "u32" ] in
                             let* α6 := M.call_closure α5 [ i ] in
                             let* α7 := M.alloc (Value.Array [ α6 ]) in
                             let* α8 :=
@@ -631,7 +656,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "Iterate the following array ") in
         let* α3 := M.read (mk_str "
 ") in
@@ -639,7 +667,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "&")
+                [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
+            ] in
         let* α6 := M.alloc array_ in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
@@ -656,15 +689,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
+        (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ])
+        []
         "into_iter"
-        [
-          (* Self *)
-            Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ]
-        ] in
+        [] in
     let* α1 :=
       M.get_associated_function
         (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
-        "iter" in
+        "iter"
+        [] in
     let* α2 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) array_ ] in
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
@@ -679,13 +712,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
+                    (Ty.apply
+                      (Ty.path "core::slice::iter::Iter")
+                      [ Ty.path "u32" ])
+                    []
                     "next"
-                    [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "core::slice::iter::Iter")
-                          [ Ty.path "u32" ]
-                    ] in
+                    [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
@@ -710,7 +742,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
-                              "new_v1" in
+                              "new_v1"
+                              [] in
                           let* α2 := M.read (mk_str "> ") in
                           let* α3 := M.read (mk_str "
 ") in
@@ -718,7 +751,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α5 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
-                              "new_display" in
+                              "new_display"
+                              [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] in
                           let* α6 := M.call_closure α5 [ i ] in
                           let* α7 := M.alloc (Value.Array [ α6 ]) in
                           let* α8 :=

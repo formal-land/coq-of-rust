@@ -1,3 +1,4 @@
+Require Import Coq.Strings.String.
 Require Import CoqOfRust.M.
 Require CoqOfRust.simulations.M.
 
@@ -39,21 +40,31 @@ Module State.
   End Valid.
 End State.
 
+Definition IsTraitMethod
+    (trait_name : string)
+    (self_ty : Ty.t)
+    (trait_tys : list Ty.t)
+    (method_name : string)
+    (method : list Ty.t -> list Value.t -> M) :
+    Prop :=
+  exists (instance : Instance.t),
+  List.assoc instance method_name = Some (InstanceField.Method method).
+
 Module Run.
   Reserved Notation "{{ env , state | e ⇓ result | state' }}".
 
-  Inductive t `{State.Trait} {A : Set} (env : Value.t)
+  Inductive t `{State.Trait} (env : Value.t)
       (* Be aware of the order of parameters: the result and final state are at
          the beginning. This is due to the way polymorphic types for inductive
          work in Coq, and the fact that the result is always the same as we are
          in continuation passing style. *)
-      (result : A) (state' : State) :
-      LowM.t A -> State -> Prop :=
+      (result : Value.t + Exception.t) (state' : State) :
+      M -> State -> Prop :=
   | Pure :
     {{ env, state' | LowM.Pure result ⇓ result | state' }}
   | CallPrimitiveStateAllocImmediate
       (state : State) (v : Value.t)
-      (k : Value.t -> LowM.t A) :
+      (k : Value.t -> M) :
     {{ env, state |
       k (Value.Pointer (Pointer.Immediate v)) ⇓ result
     | state' }} ->
@@ -63,7 +74,7 @@ Module Run.
   | CallPrimitiveStateAllocMutable
       (address : Address) (v : Value.t)
       (state : State)
-      (k : Value.t -> LowM.t A) :
+      (k : Value.t -> M) :
     let r := Value.Pointer (Pointer.Mutable address []) in
     State.read address state = None ->
     State.alloc_write address state v = Some state' ->
@@ -74,7 +85,7 @@ Module Run.
   | CallPrimitiveStateRead
       (address : Address) (v : Value.t)
       (state : State)
-      (k : Value.t -> LowM.t A) :
+      (k : Value.t -> M) :
     State.read address state = Some v ->
     {{ env, state | k v ⇓ result | state' }} ->
     {{ env, state |
@@ -83,30 +94,71 @@ Module Run.
   | CallPrimitiveStateWrite
       (address : Address) (v : Value.t)
       (state state_inter : State)
-      (k : Value.t -> LowM.t A) :
+      (k : Value.t -> M) :
     State.alloc_write address state v = Some state_inter ->
     {{ env, state_inter | k (Value.Tuple []) ⇓ result | state' }} ->
     {{ env, state |
       LowM.CallPrimitive (Primitive.StateWrite address v) k ⇓ result
     | state' }}
   | CallPrimitiveEnvRead
-      (state : State) (k : Value.t -> LowM.t A) :
+      (state : State) (k : Value.t -> M) :
     {{ env, state | k env ⇓ result | state' }} ->
     {{ env, state |
       LowM.CallPrimitive Primitive.EnvRead k ⇓ result
     | state' }}
+  | CallPrimitiveGetAssociatedFunction
+      (state : State)
+      (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
+      (associated_function : list Ty.t -> list Value.t -> M)
+      (k : Value.t -> M) :
+    let closure :=
+      Value.Closure (existS (Value.t, M) (associated_function generic_tys)) in
+    M.IsAssociatedFunction ty name associated_function ->
+    {{ env, state | k closure ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive
+        (Primitive.GetAssociatedFunction ty name generic_tys) k ⇓
+        result
+    | state' }}
+  | CallPrimitiveGetTraitMethod
+      (state : State)
+      (trait_name : string) (self_ty : Ty.t) (trait_tys : list Ty.t)
+      (method_name : string) (generic_tys : list Ty.t)
+      (method : list Ty.t -> list Value.t -> M)
+      (k : Value.t -> M) :
+    let closure :=
+      Value.Closure (existS (Value.t, M) (method generic_tys)) in
+    IsTraitMethod trait_name self_ty trait_tys method_name method ->
+    {{ env, state | k closure ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive
+        (Primitive.GetTraitMethod
+          trait_name
+          self_ty
+          trait_tys
+          method_name
+          generic_tys)
+        k ⇓
+        result
+    | state' }}
   | CallClosure
       (state state_inter : State)
-      (f : list Value.t -> LowM.t A) (args : list Value.t)
-      (value : A)
-      (k : A -> LowM.t A) :
-    let closure := Value.Closure (existS (Value.t, LowM.t A) f) in
+      (f : list Value.t -> M) (args : list Value.t)
+      (value : Value.t + Exception.t)
+      (k : Value.t + Exception.t -> M) :
+    let closure := Value.Closure (existS (Value.t, M) f) in
     {{ env, state | f args ⇓ value | state_inter }} ->
     {{ env, state_inter | k value ⇓ result | state' }} ->
     {{ env, state | LowM.CallClosure closure args k ⇓ result | state' }}
 
   where "{{ env , state | e ⇓ result | state' }}" :=
-      (t env result state' e state).
+    (t env result state' e state).
+
+  Definition pure (e : M) (result : Value.t + Exception.t) : Prop :=
+    forall
+      (State Address : Set) `(State.Trait State Address)
+      (state : State) (env : Value.t),
+    {{ env, state | e ⇓ result | state }}.
 End Run.
 
 (** Simplify the usual case of read of immediate value. *)

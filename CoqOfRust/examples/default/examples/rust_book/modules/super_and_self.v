@@ -15,7 +15,8 @@ Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α1 :=
           M.get_associated_function
             (Ty.path "core::fmt::Arguments")
-            "new_const" in
+            "new_const"
+            [] in
         let* α2 := M.read (mk_str "called `function()`
 ") in
         let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -43,7 +44,8 @@ Module cool.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "called `cool::function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -72,7 +74,8 @@ Module my.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "called `my::function()`
 ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -100,7 +103,8 @@ Module my.
             let* α1 :=
               M.get_associated_function
                 (Ty.path "core::fmt::Arguments")
-                "new_const" in
+                "new_const"
+                [] in
             let* α2 := M.read (mk_str "called `my::cool::function()`
 ") in
             let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -149,7 +153,8 @@ Module my.
           let* α1 :=
             M.get_associated_function
               (Ty.path "core::fmt::Arguments")
-              "new_const" in
+              "new_const"
+              [] in
           let* α2 := M.read (mk_str "called `my::indirect_call()`, that
 > ") in
           let* α3 := M.alloc (Value.Array [ α2 ]) in

@@ -2,10 +2,6 @@ Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.proofs.M.
 Require CoqOfRust.simulations.M.
 
-(* Proof libraries that we can use everywhere. *)
-Require Export Lia.
-From Hammer Require Export Tactics.
-
 Import simulations.M.Notations.
 
 (*** Destruct the matched value in an expression [e]. *)

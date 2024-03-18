@@ -66,11 +66,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "generics_traits::DoubleDrop"
+          (Ty.path "generics_traits::Empty")
+          [ Ty.path "generics_traits::Null" ]
           "double_drop"
-          [
-            (* Self *) Ty.path "generics_traits::Empty";
-            (* T *) Ty.path "generics_traits::Null"
-          ] in
+          [] in
       let* α1 := M.read empty in
       let* α2 := M.read null in
       let* α3 := M.call_closure α0 [ α1; α2 ] in

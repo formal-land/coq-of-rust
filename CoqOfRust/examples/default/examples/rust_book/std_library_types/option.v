@@ -63,7 +63,8 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "") in
               let* α3 := M.read (mk_str " / ") in
               let* α4 := M.read (mk_str " failed!
@@ -72,12 +73,14 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α6 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α7 := M.call_closure α6 [ dividend ] in
               let* α8 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α9 := M.call_closure α8 [ divisor ] in
               let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
               let* α11 :=
@@ -102,7 +105,8 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "") in
               let* α3 := M.read (mk_str " / ") in
               let* α4 := M.read (mk_str " = ") in
@@ -112,17 +116,20 @@ Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α7 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α8 := M.call_closure α7 [ dividend ] in
               let* α9 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α10 := M.call_closure α9 [ divisor ] in
               let* α11 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.path "i32" ] in
               let* α12 := M.call_closure α11 [ quotient ] in
               let* α13 := M.alloc (Value.Array [ α8; α10; α12 ]) in
               let* α14 :=
@@ -189,7 +196,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str " unwraps to ") in
         let* α4 := M.read (mk_str "
@@ -198,16 +208,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ] ] in
         let* α7 := M.call_closure α6 [ optional_float ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.path "f32" ] in
         let* α9 :=
           M.get_associated_function
             (Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ])
-            "unwrap" in
+            "unwrap"
+            [] in
         let* α10 := M.read optional_float in
         let* α11 := M.call_closure α9 [ α10 ] in
         let* α12 := M.alloc α11 in
@@ -227,7 +240,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str " unwraps to ") in
         let* α4 := M.read (mk_str "
@@ -236,16 +252,19 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ] in
         let* α7 := M.call_closure α6 [ none ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.path "i32" ] in
         let* α9 :=
           M.get_associated_function
             (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-            "unwrap" in
+            "unwrap"
+            [] in
         let* α10 := M.read none in
         let* α11 := M.call_closure α9 [ α10 ] in
         let* α12 := M.alloc α11 in

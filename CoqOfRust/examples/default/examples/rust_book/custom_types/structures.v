@@ -23,21 +23,25 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       let* α0 :=
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
-          "debug_struct_field2_finish" in
+          "debug_struct_field2_finish"
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Person") in
       let* α3 := M.read (mk_str "name") in
       let* α4 := M.read self in
       let* α5 := M.read (mk_str "age") in
       let* α6 := M.read self in
-      let* α7 := M.alloc (M.get_struct_record α6 "age") in
+      let* α7 :=
+        M.alloc (M.get_struct_record_field α6 "structures::Person" "age") in
       M.call_closure
         α0
         [
           α1;
           α2;
           α3;
-          M.pointer_coercion (* Unsize *) (M.get_struct_record α4 "name");
+          M.pointer_coercion
+            (* Unsize *)
+            (M.get_struct_record_field α4 "structures::Person" "name");
           α5;
           M.pointer_coercion (* Unsize *) α7
         ]
@@ -144,11 +148,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::convert::From"
+          (Ty.path "alloc::string::String")
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           "from"
-          [
-            (* Self *) Ty.path "alloc::string::String";
-            (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ]
-          ] in
+          [] in
       let* α1 := M.read (mk_str "Peter") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -164,7 +167,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "") in
         let* α3 := M.read (mk_str "
 ") in
@@ -172,7 +178,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α5 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_debug" in
+            "new_debug"
+            [ Ty.path "structures::Person" ] in
         let* α6 := M.call_closure α5 [ peter ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
@@ -194,7 +201,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "point coordinates: (") in
         let* α3 := M.read (mk_str ", ") in
         let* α4 := M.read (mk_str ")
@@ -203,13 +213,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
-        let* α7 := M.call_closure α6 [ M.get_struct_record point "x" ] in
+            "new_display"
+            [ Ty.path "f32" ] in
+        let* α7 :=
+          M.call_closure
+            α6
+            [ M.get_struct_record_field point "structures::Point" "x" ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
-        let* α9 := M.call_closure α8 [ M.get_struct_record point "y" ] in
+            "new_display"
+            [ Ty.path "f32" ] in
+        let* α9 :=
+          M.call_closure
+            α8
+            [ M.get_struct_record_field point "structures::Point" "y" ] in
         let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
           M.call_closure
@@ -229,7 +247,10 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" in
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
         let* α2 := M.read (mk_str "second point: (") in
         let* α3 := M.read (mk_str ", ") in
         let* α4 := M.read (mk_str ")
@@ -238,13 +259,23 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α6 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
-        let* α7 := M.call_closure α6 [ M.get_struct_record bottom_right "x" ] in
+            "new_display"
+            [ Ty.path "f32" ] in
+        let* α7 :=
+          M.call_closure
+            α6
+            [ M.get_struct_record_field bottom_right "structures::Point" "x"
+            ] in
         let* α8 :=
           M.get_associated_function
             (Ty.path "core::fmt::rt::Argument")
-            "new_display" in
-        let* α9 := M.call_closure α8 [ M.get_struct_record bottom_right "y" ] in
+            "new_display"
+            [ Ty.path "f32" ] in
+        let* α9 :=
+          M.call_closure
+            α8
+            [ M.get_struct_record_field bottom_right "structures::Point" "y"
+            ] in
         let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
         let* α11 :=
           M.call_closure
@@ -300,7 +331,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α1 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::Arguments")
-                    "new_v1" in
+                    "new_v1"
+                    [] in
                 let* α2 := M.read (mk_str "pair contains ") in
                 let* α3 := M.read (mk_str " and ") in
                 let* α4 := M.read (mk_str "
@@ -309,13 +341,21 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α6 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_debug" in
-                let* α7 := M.call_closure α6 [ M.get_struct_tuple pair 0 ] in
+                    "new_debug"
+                    [ Ty.path "i32" ] in
+                let* α7 :=
+                  M.call_closure
+                    α6
+                    [ M.get_struct_tuple_field pair "structures::Pair" 0 ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
-                    "new_debug" in
-                let* α9 := M.call_closure α8 [ M.get_struct_tuple pair 1 ] in
+                    "new_debug"
+                    [ Ty.path "f32" ] in
+                let* α9 :=
+                  M.call_closure
+                    α8
+                    [ M.get_struct_tuple_field pair "structures::Pair" 1 ] in
                 let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                 let* α11 :=
                   M.call_closure
@@ -349,7 +389,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α1 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::Arguments")
-                          "new_v1" in
+                          "new_v1"
+                          [] in
                       let* α2 := M.read (mk_str "pair contains ") in
                       let* α3 := M.read (mk_str " and ") in
                       let* α4 := M.read (mk_str "
@@ -358,12 +399,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                       let* α6 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_debug" in
+                          "new_debug"
+                          [ Ty.path "i32" ] in
                       let* α7 := M.call_closure α6 [ integer ] in
                       let* α8 :=
                         M.get_associated_function
                           (Ty.path "core::fmt::rt::Argument")
-                          "new_debug" in
+                          "new_debug"
+                          [ Ty.path "f32" ] in
                       let* α9 := M.call_closure α8 [ decimal ] in
                       let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                       let* α11 :=

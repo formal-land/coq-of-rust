@@ -92,7 +92,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "new" in
+          "new"
+          [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
@@ -105,7 +106,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.read (mk_str "Daniel") in
       let* α2 := M.read (mk_str "798-1364") in
       let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
@@ -120,7 +122,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.read (mk_str "Ashley") in
       let* α2 := M.read (mk_str "645-7689") in
       let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
@@ -135,7 +138,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.read (mk_str "Katie") in
       let* α2 := M.read (mk_str "435-8291") in
       let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
@@ -150,7 +154,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.read (mk_str "Robert") in
       let* α2 := M.read (mk_str "956-1745") in
       let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
@@ -165,7 +170,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "get" in
+          "get"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.call_closure α0 [ contacts; mk_str "Daniel" ] in
       let* α2 := M.alloc α1 in
       match_operator
@@ -184,7 +190,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Calling Daniel: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -192,7 +199,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α6 := M.get_function "hash_map::call" [] in
               let* α7 := M.read number in
               let* α8 := M.call_closure α6 [ α7 ] in
@@ -215,7 +223,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "Don't have Daniel's number.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -235,7 +244,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "insert" in
+          "insert"
+          [] in
       let* α1 := M.read (mk_str "Daniel") in
       let* α2 := M.read (mk_str "164-6743") in
       let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
@@ -250,7 +260,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "get" in
+          "get"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.call_closure α0 [ contacts; mk_str "Ashley" ] in
       let* α2 := M.alloc α1 in
       match_operator
@@ -269,7 +280,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_v1" in
+                  "new_v1"
+                  [] in
               let* α2 := M.read (mk_str "Calling Ashley: ") in
               let* α3 := M.read (mk_str "
 ") in
@@ -277,7 +289,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α5 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
-                  "new_display" in
+                  "new_display"
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α6 := M.get_function "hash_map::call" [] in
               let* α7 := M.read number in
               let* α8 := M.call_closure α6 [ α7 ] in
@@ -300,7 +313,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               let* α1 :=
                 M.get_associated_function
                   (Ty.path "core::fmt::Arguments")
-                  "new_const" in
+                  "new_const"
+                  [] in
               let* α2 := M.read (mk_str "Don't have Ashley's number.
 ") in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -320,22 +334,22 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               Ty.apply (Ty.path "&") [ Ty.path "str" ];
               Ty.path "std::hash::random::RandomState"
             ])
-          "remove" in
+          "remove"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.call_closure α0 [ contacts; mk_str "Ashley" ] in
       M.alloc α1 in
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
+        (Ty.apply
+          (Ty.path "std::collections::hash::map::Iter")
+          [
+            Ty.apply (Ty.path "&") [ Ty.path "str" ];
+            Ty.apply (Ty.path "&") [ Ty.path "str" ]
+          ])
+        []
         "into_iter"
-        [
-          (* Self *)
-            Ty.apply
-              (Ty.path "std::collections::hash::map::Iter")
-              [
-                Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                Ty.apply (Ty.path "&") [ Ty.path "str" ]
-              ]
-        ] in
+        [] in
     let* α1 :=
       M.get_associated_function
         (Ty.apply
@@ -345,7 +359,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             Ty.apply (Ty.path "&") [ Ty.path "str" ];
             Ty.path "std::hash::random::RandomState"
           ])
-        "iter" in
+        "iter"
+        [] in
     let* α2 := M.call_closure α1 [ contacts ] in
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
@@ -360,16 +375,15 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
+                    (Ty.apply
+                      (Ty.path "std::collections::hash::map::Iter")
+                      [
+                        Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                        Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                      ])
+                    []
                     "next"
-                    [
-                      (* Self *)
-                        Ty.apply
-                          (Ty.path "std::collections::hash::map::Iter")
-                          [
-                            Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                            Ty.apply (Ty.path "&") [ Ty.path "str" ]
-                          ]
-                    ] in
+                    [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
                 match_operator
@@ -386,8 +400,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           γ
                           "core::option::Option::Some"
                           0 in
-                      let* γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let* γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.get_tuple_field γ0_0 0 in
+                      let γ1_1 := M.get_tuple_field γ0_0 1 in
                       let* contact := M.copy γ1_0 in
                       let* γ1_1 := M.read γ1_1 in
                       let* number := M.copy γ1_1 in
@@ -398,7 +412,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α1 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::Arguments")
-                              "new_v1" in
+                              "new_v1"
+                              [] in
                           let* α2 := M.read (mk_str "Calling ") in
                           let* α3 := M.read (mk_str ": ") in
                           let* α4 := M.read (mk_str "
@@ -407,12 +422,18 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                           let* α6 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
-                              "new_display" in
+                              "new_display"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                              ] in
                           let* α7 := M.call_closure α6 [ contact ] in
                           let* α8 :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
-                              "new_display" in
+                              "new_display"
+                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                           let* α9 := M.get_function "hash_map::call" [] in
                           let* α10 := M.read number in
                           let* α11 := M.call_closure α9 [ α10 ] in
