@@ -156,6 +156,7 @@ enum TopLevelItem {
         name: String,
         body: Rc<TopLevel>,
     },
+    ForeignModule,
     Impl {
         generic_tys: Vec<String>,
         self_ty: Rc<CoqType>,
@@ -404,7 +405,14 @@ fn compile_top_level_item_without_local_items<'a>(
             })]
         }
         ItemKind::ForeignMod { .. } => {
-            vec![Rc::new(TopLevelItem::Error("ForeignMod".to_string()))]
+            emit_warning_with_note(
+                env,
+                &item.span,
+                "Foreign modules are not supported",
+                "We will work on it! 🐣",
+            );
+
+            vec![Rc::new(TopLevelItem::ForeignModule)]
         }
         ItemKind::GlobalAsm(_) => vec![Rc::new(TopLevelItem::Error("GlobalAsm".to_string()))],
         ItemKind::TyAlias(ty, generics) => vec![Rc::new(TopLevelItem::TypeAlias {
@@ -1094,6 +1102,7 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
             name: name.clone(),
             body: mt_top_level(body.clone()),
         }),
+        TopLevelItem::ForeignModule => item,
         TopLevelItem::Impl {
             generic_tys,
             self_ty,
@@ -1412,26 +1421,63 @@ impl FunDefinition {
 impl ImplItemKind {
     fn to_coq<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> coq::TopLevel<'a> {
         match self {
-            ImplItemKind::Const { ty, body } => {
-                coq::TopLevel::concat(&[coq::TopLevel::new(&[match body {
+            ImplItemKind::Const { ty, body } => coq::TopLevel::new(&[
+                coq::TopLevelItem::Comment(ty.to_coq()),
+                match body {
                     None => coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
-                        &coq::DefinitionKind::Assumption { ty: ty.to_coq() },
-                    )),
-                    Some(body) => coq::TopLevelItem::Definition(coq::Definition::new(
-                        name,
-                        &coq::DefinitionKind::Alias {
-                            args: vec![],
-                            ty: Some(ty.to_coq()),
-                            body: coq::Expression::Code(nest([
-                                text("M.run"),
-                                line(),
-                                body.to_doc(true),
-                            ])),
+                        &coq::DefinitionKind::Assumption {
+                            ty: coq::Expression::PiType {
+                                args: vec![coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Simple {
+                                        idents: generic_tys.clone(),
+                                        ty: Some(coq::Expression::just_name("Ty.t")),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                )],
+                                image: Rc::new(coq::Expression::just_name("Value.t")),
+                            },
                         },
                     )),
-                }])])
-            }
+                    Some(body) => {
+                        let body = coq::Expression::just_name("M.run")
+                            .apply(&coq::Expression::Code(body.to_doc(false)));
+
+                        coq::TopLevelItem::Definition(coq::Definition::new(
+                            name,
+                            &coq::DefinitionKind::Alias {
+                                args: vec![coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Simple {
+                                        idents: generic_tys.clone(),
+                                        ty: Some(coq::Expression::just_name("Ty.t")),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                )],
+                                ty: Some(coq::Expression::just_name("Value.t")),
+                                body: if !generic_tys.is_empty() {
+                                    coq::Expression::Let {
+                                        name: "Self".to_string(),
+                                        ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
+                                        value: Rc::new(
+                                            coq::Expression::just_name("Self").apply_many(
+                                                &generic_tys
+                                                    .iter()
+                                                    .map(|generic_ty| {
+                                                        coq::Expression::just_name(generic_ty)
+                                                    })
+                                                    .collect_vec(),
+                                            ),
+                                        ),
+                                        body: Rc::new(body),
+                                    }
+                                } else {
+                                    body
+                                },
+                            },
+                        ))
+                    }
+                },
+            ]),
             ImplItemKind::Definition { definition, .. } => {
                 coq::TopLevel::new(&[coq::TopLevelItem::Code(definition.to_doc(
                     name,
@@ -1658,6 +1704,10 @@ impl TopLevelItem {
                 ))])
                 .to_doc()
             }
+            TopLevelItem::ForeignModule => coq::TopLevel::new(&[coq::TopLevelItem::Comment(
+                coq::Expression::Message("Unhandled foreign module here".to_string()),
+            )])
+            .to_doc(),
             TopLevelItem::TypeAlias {
                 name,
                 path,
@@ -1827,7 +1877,17 @@ impl TopLevelItem {
                                 ])),
                                 coq::TopLevelItem::Line,
                                 coq::TopLevelItem::Definition(coq::Definition::new(
-                                    &format!("AssociatedFunction_{name}"),
+                                    &match kind.as_ref() {
+                                        ImplItemKind::Const { .. } => {
+                                            format!("AssociatedConstant_{name}")
+                                        }
+                                        ImplItemKind::Definition { .. } => {
+                                            format!("AssociatedFunction_{name}")
+                                        }
+                                        ImplItemKind::Type { .. } => {
+                                            format!("AssociatedType_{name}")
+                                        }
+                                    },
                                     &coq::DefinitionKind::Axiom {
                                         ty: coq::Expression::PiType {
                                             args: vec![coq::ArgDecl::of_ty_params(
@@ -1835,9 +1895,17 @@ impl TopLevelItem {
                                                 coq::ArgSpecKind::Explicit,
                                             )],
                                             image: Rc::new(
-                                                coq::Expression::just_name(
-                                                    "M.IsAssociatedFunction",
-                                                )
+                                                coq::Expression::just_name(match kind.as_ref() {
+                                                    ImplItemKind::Const { .. } => {
+                                                        "M.IsAssociatedConstant"
+                                                    }
+                                                    ImplItemKind::Definition { .. } => {
+                                                        "M.IsAssociatedFunction"
+                                                    }
+                                                    ImplItemKind::Type { .. } => {
+                                                        "M.IsAssociatedType"
+                                                    }
+                                                })
                                                 .apply_many(&[
                                                     coq::Expression::just_name("Self").apply_many(
                                                         &generic_tys

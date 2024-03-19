@@ -10,29 +10,5 @@ warning: This kind of constant in patterns is not yet supported.
 13 |                 false => continue,
    |                 ^^^^^
 
-warning: We do not support this kind of expression
-  --> examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:21:9
-   |
-21 |         sum_odd_numbers(9)
-   |         ^^^^^^^^^^^^^^^
-   |
-   = note: Please report 🙏
-           
-           parent_kind: Fn
-           expression: Expr {
-               kind: ZstLiteral {
-                   user_ty: None,
-               },
-               ty: FnDef(
-                   DefId(0:4 ~ diverging_functions_example_sum_odd_numbers[39b3]::main::sum_odd_numbers),
-                   [
-                   ],
-               ),
-               temp_lifetime: Some(
-                   Node(27),
-               ),
-               span: examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:21:9: 21:24 (#0),
-           }
-
-warning: 3 warnings emitted
+warning: 2 warnings emitted
 

@@ -391,8 +391,15 @@ Parameter IsTraitInstance :
 Parameter IsAssociatedFunction :
   forall
     (Self : Ty.t)
-    (method_name : string)
-    (method : list Ty.t -> list Value.t -> M),
+    (function_name : string)
+    (function : list Ty.t -> list Value.t -> M),
+  Prop.
+
+Parameter IsAssociatedConstant :
+  forall
+    (Self : Ty.t)
+    (constant_name : string)
+    (constant : Value.t),
   Prop.
 
 Module Option.

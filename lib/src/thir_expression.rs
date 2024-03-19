@@ -896,6 +896,26 @@ pub(crate) fn compile_expr<'a>(
                             kind: CallKind::Pure,
                         }
                     }
+                    DefKind::AssocFn => {
+                        let parent_symbol = env.tcx.def_key(parent).get_opt_name().unwrap();
+
+                        Expr::GetAssociatedFunction {
+                            ty: Rc::new(CoqType::Var("Self".to_string())),
+                            func: format!("{}.{}", symbol.unwrap(), parent_symbol),
+                            generic_tys: vec![],
+                        }
+                    }
+                    DefKind::Fn => {
+                        let parent_path = compile_def_id(env, parent);
+                        let mut segments = parent_path.segments.clone();
+                        let last_segment = segments.pop().unwrap();
+                        segments.push(format!("{}.{}", last_segment, symbol.unwrap()));
+
+                        Expr::GetFunction {
+                            func: Path { segments },
+                            generic_tys: vec![],
+                        }
+                    }
                     _ => {
                         emit_warning_with_note(
                             env,
