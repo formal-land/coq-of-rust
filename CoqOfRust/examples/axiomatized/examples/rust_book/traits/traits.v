@@ -53,12 +53,15 @@ Module Impl_traits_Animal_for_traits_Sheep.
         ].
 End Impl_traits_Animal_for_traits_Sheep.
 
-Module Impl_traits_Sheep_2.
+Module Wrap_Impl_traits_Sheep_2.
+Module Impl_traits_Sheep.
   Definition Self : Ty.t := Ty.path "traits::Sheep".
   
   Parameter shear : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear.
-End Impl_traits_Sheep_2.
+End Impl_traits_Sheep.
+End Wrap_Impl_traits_Sheep_2.
+Import Wrap_Impl_traits_Sheep_2.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

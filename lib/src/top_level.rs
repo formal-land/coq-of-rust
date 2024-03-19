@@ -160,8 +160,6 @@ enum TopLevelItem {
     Impl {
         generic_tys: Vec<String>,
         self_ty: Rc<CoqType>,
-        /// We use a counter to disambiguate several impls for the same type
-        counter: u64,
         items: Vec<Rc<ImplItem>>,
     },
     Trait {
@@ -623,18 +621,11 @@ fn compile_top_level_item_without_local_items<'a>(
                         items,
                     })]
                 }
-                None => {
-                    let counter_entry = env.impl_counter.entry(self_ty.to_name());
-                    let counter = *counter_entry
-                        .and_modify(|counter| *counter += 1)
-                        .or_insert(1);
-                    vec![Rc::new(TopLevelItem::Impl {
-                        generic_tys,
-                        self_ty,
-                        counter,
-                        items,
-                    })]
-                }
+                None => vec![Rc::new(TopLevelItem::Impl {
+                    generic_tys,
+                    self_ty,
+                    items,
+                })],
             }
         }
     }
@@ -972,7 +963,6 @@ fn compile_trait_item_body<'a>(
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
     let mut env = Env {
-        impl_counter: HashMap::new(),
         tcx: *tcx,
         axiomatize: opts.axiomatize,
         axiomatize_public: opts.axiomatize_public,
@@ -1106,12 +1096,10 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
         TopLevelItem::Impl {
             generic_tys,
             self_ty,
-            counter,
             items,
         } => Rc::new(TopLevelItem::Impl {
             generic_tys: generic_tys.clone(),
             self_ty: self_ty.clone(),
-            counter: *counter,
             items: items
                 .iter()
                 .map(|item| {
@@ -1280,141 +1268,128 @@ impl FunDefinition {
         name: &'a str,
         snippet: &'a Option<Rc<Snippet>>,
         generic_tys: Vec<String>,
-    ) -> coq::TopLevel<'a> {
-        coq::TopLevel::new(
-            &[
-                match snippet {
-                    Some(snippet) => snippet.to_coq(),
-                    None => vec![],
-                },
-                match &self.signature_and_body.body {
-                    None => vec![coq::TopLevelItem::Definition(coq::Definition::new(
+    ) -> Vec<coq::TopLevelItem<'a>> {
+        [
+            match snippet {
+                Some(snippet) => snippet.to_coq(),
+                None => vec![],
+            },
+            match &self.signature_and_body.body {
+                None => vec![coq::TopLevelItem::Definition(coq::Definition::new(
+                    name,
+                    &coq::DefinitionKind::Assumption {
+                        ty: coq::Expression::PiType {
+                            args: vec![coq::ArgDecl::new(
+                                &coq::ArgDeclVar::Simple {
+                                    idents: generic_tys.clone(),
+                                    ty: Some(coq::Expression::just_name("Ty.t")),
+                                },
+                                coq::ArgSpecKind::Explicit,
+                            )],
+                            image: Rc::new(coq::Expression::FunctionType {
+                                domains: vec![
+                                    coq::Expression::just_name("list")
+                                        .apply(&coq::Expression::just_name("Ty.t")),
+                                    coq::Expression::just_name("list")
+                                        .apply(&coq::Expression::just_name("Value.t")),
+                                ],
+                                image: Rc::new(coq::Expression::just_name("M")),
+                            }),
+                        },
+                    },
+                ))],
+                Some(body) => {
+                    let body = coq::Expression::Match {
+                        scrutinees: vec![
+                            coq::Expression::just_name("𝜏"),
+                            coq::Expression::just_name("α"),
+                        ],
+                        arms: vec![
+                            (
+                                vec![
+                                    coq::Expression::List {
+                                        exprs: self
+                                            .ty_params
+                                            .iter()
+                                            .map(|ty_param| coq::Expression::just_name(ty_param))
+                                            .collect(),
+                                    },
+                                    coq::Expression::List {
+                                        exprs: self
+                                            .signature_and_body
+                                            .args
+                                            .iter()
+                                            .map(|(name, _)| coq::Expression::just_name(name))
+                                            .collect(),
+                                    },
+                                ],
+                                coq::Expression::Code(body.to_doc(false)),
+                            ),
+                            (
+                                vec![coq::Expression::Wild, coq::Expression::Wild],
+                                coq::Expression::just_name("M.impossible"),
+                            ),
+                        ],
+                    };
+
+                    vec![coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
-                        &coq::DefinitionKind::Assumption {
-                            ty: coq::Expression::PiType {
-                                args: vec![coq::ArgDecl::new(
+                        &coq::DefinitionKind::Alias {
+                            args: vec![
+                                coq::ArgDecl::new(
                                     &coq::ArgDeclVar::Simple {
                                         idents: generic_tys.clone(),
                                         ty: Some(coq::Expression::just_name("Ty.t")),
                                     },
                                     coq::ArgSpecKind::Explicit,
-                                )],
-                                image: Rc::new(coq::Expression::FunctionType {
-                                    domains: vec![
-                                        coq::Expression::just_name("list")
-                                            .apply(&coq::Expression::just_name("Ty.t")),
-                                        coq::Expression::just_name("list")
-                                            .apply(&coq::Expression::just_name("Value.t")),
-                                    ],
-                                    image: Rc::new(coq::Expression::just_name("M")),
-                                }),
+                                ),
+                                coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Simple {
+                                        idents: vec!["𝜏".to_string()],
+                                        ty: Some(
+                                            coq::Expression::just_name("list")
+                                                .apply(&coq::Expression::just_name("Ty.t")),
+                                        ),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                ),
+                                coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Simple {
+                                        idents: vec!["α".to_string()],
+                                        ty: Some(
+                                            coq::Expression::just_name("list")
+                                                .apply(&coq::Expression::just_name("Value.t")),
+                                        ),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                ),
+                            ],
+                            ty: Some(coq::Expression::just_name("M")),
+                            body: if !generic_tys.is_empty() {
+                                coq::Expression::Let {
+                                    name: "Self".to_string(),
+                                    ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
+                                    value: Rc::new(
+                                        coq::Expression::just_name("Self").apply_many(
+                                            &generic_tys
+                                                .iter()
+                                                .map(|generic_ty| {
+                                                    coq::Expression::just_name(generic_ty)
+                                                })
+                                                .collect_vec(),
+                                        ),
+                                    ),
+                                    body: Rc::new(body),
+                                }
+                            } else {
+                                body
                             },
                         },
-                    ))],
-                    Some(body) => {
-                        let body = coq::Expression::Match {
-                            scrutinees: vec![
-                                coq::Expression::just_name("𝜏"),
-                                coq::Expression::just_name("α"),
-                            ],
-                            arms: vec![
-                                (
-                                    vec![
-                                        coq::Expression::List {
-                                            exprs: self
-                                                .ty_params
-                                                .iter()
-                                                .map(|ty_param| {
-                                                    coq::Expression::just_name(ty_param)
-                                                })
-                                                .collect(),
-                                        },
-                                        coq::Expression::List {
-                                            exprs: self
-                                                .signature_and_body
-                                                .args
-                                                .iter()
-                                                .map(|(name, _)| coq::Expression::just_name(name))
-                                                .collect(),
-                                        },
-                                    ],
-                                    coq::Expression::Code(body.to_doc(false)),
-                                ),
-                                (
-                                    vec![coq::Expression::Wild, coq::Expression::Wild],
-                                    coq::Expression::just_name("M.impossible"),
-                                ),
-                            ],
-                        };
-
-                        vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                            name,
-                            &coq::DefinitionKind::Alias {
-                                args: vec![
-                                    coq::ArgDecl::new(
-                                        &coq::ArgDeclVar::Simple {
-                                            idents: generic_tys.clone(),
-                                            ty: Some(coq::Expression::just_name("Ty.t")),
-                                        },
-                                        coq::ArgSpecKind::Explicit,
-                                    ),
-                                    coq::ArgDecl::new(
-                                        &coq::ArgDeclVar::Simple {
-                                            idents: vec!["𝜏".to_string()],
-                                            ty: Some(
-                                                coq::Expression::just_name("list")
-                                                    .apply(&coq::Expression::just_name("Ty.t")),
-                                            ),
-                                        },
-                                        coq::ArgSpecKind::Explicit,
-                                    ),
-                                    coq::ArgDecl::new(
-                                        &coq::ArgDeclVar::Simple {
-                                            idents: vec!["α".to_string()],
-                                            ty: Some(
-                                                coq::Expression::just_name("list")
-                                                    .apply(&coq::Expression::just_name("Value.t")),
-                                            ),
-                                        },
-                                        coq::ArgSpecKind::Explicit,
-                                    ),
-                                ],
-                                ty: Some(coq::Expression::just_name("M")),
-                                body: if !generic_tys.is_empty() {
-                                    coq::Expression::Let {
-                                        name: "Self".to_string(),
-                                        ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
-                                        value: Rc::new(
-                                            coq::Expression::just_name("Self").apply_many(
-                                                &generic_tys
-                                                    .iter()
-                                                    .map(|generic_ty| {
-                                                        coq::Expression::just_name(generic_ty)
-                                                    })
-                                                    .collect_vec(),
-                                            ),
-                                        ),
-                                        body: Rc::new(body),
-                                    }
-                                } else {
-                                    body
-                                },
-                            },
-                        ))]
-                    }
-                },
-            ]
-            .concat(),
-        )
-    }
-
-    fn to_doc<'a>(
-        &'a self,
-        name: &'a str,
-        snippet: &'a Option<Rc<Snippet>>,
-        generic_tys: Vec<String>,
-    ) -> Doc<'a> {
-        self.to_coq(name, snippet, generic_tys).to_doc()
+                    ))]
+                }
+            },
+        ]
+        .concat()
     }
 }
 
@@ -1479,11 +1454,7 @@ impl ImplItemKind {
                 },
             ]),
             ImplItemKind::Definition { definition, .. } => {
-                coq::TopLevel::new(&[coq::TopLevelItem::Code(definition.to_doc(
-                    name,
-                    &None,
-                    generic_tys,
-                ))])
+                coq::TopLevel::new(&definition.to_coq(name, &None, generic_tys))
             }
             ImplItemKind::Type { ty } => {
                 coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
@@ -1501,10 +1472,6 @@ impl ImplItemKind {
     fn to_doc<'a>(&'a self, name: &'a str, generic_tys: Vec<String>) -> Doc {
         self.to_coq(name, generic_tys).to_doc()
     }
-}
-
-struct ToDocContext {
-    previous_module_names: Vec<String>,
 }
 
 impl Snippet {
@@ -1659,18 +1626,17 @@ impl TypeStructStruct {
 }
 
 impl TopLevelItem {
-    fn to_doc(&self, to_doc_context: ToDocContext) -> Doc {
+    fn to_coq(&self) -> Vec<coq::TopLevelItem> {
         match self {
             TopLevelItem::Const { name, value } => match value {
-                None => coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
+                None => vec![coq::TopLevelItem::Definition(coq::Definition::new(
                     name,
                     &coq::DefinitionKind::Assumption {
                         ty: coq::Expression::just_name("Value.t"),
                     },
-                ))])
-                .to_doc(),
+                ))],
                 Some(value) => {
-                    coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
+                    vec![coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
                         &coq::DefinitionKind::Alias {
                             args: vec![],
@@ -1681,39 +1647,29 @@ impl TopLevelItem {
                                 value.to_doc(true),
                             ])),
                         },
-                    ))])
-                    .to_doc()
+                    ))]
                 }
             },
             TopLevelItem::Definition {
                 name,
                 snippet,
                 definition,
-            } => definition.to_doc(name, snippet, vec![]),
+            } => definition.to_coq(name, snippet, vec![]),
             TopLevelItem::Module { name, body } => {
-                let nb_previous_occurrences_of_module_name = to_doc_context
-                    .previous_module_names
-                    .iter()
-                    .filter(|&current_name| current_name == name)
-                    .count();
-
-                coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new_with_repeat(
+                vec![coq::TopLevelItem::Module(coq::Module::new(
                     name,
-                    nb_previous_occurrences_of_module_name,
-                    coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
-                ))])
-                .to_doc()
+                    body.to_coq(),
+                ))]
             }
-            TopLevelItem::ForeignModule => coq::TopLevel::new(&[coq::TopLevelItem::Comment(
+            TopLevelItem::ForeignModule => vec![coq::TopLevelItem::Comment(
                 coq::Expression::Message("Unhandled foreign module here".to_string()),
-            )])
-            .to_doc(),
+            )],
             TopLevelItem::TypeAlias {
                 name,
                 path,
                 ty,
                 ty_params,
-            } => coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
+            } => vec![coq::TopLevelItem::Definition(coq::Definition::new(
                 name,
                 &coq::DefinitionKind::Axiom {
                     ty: coq::Expression::PiType {
@@ -1738,13 +1694,12 @@ impl TopLevelItem {
                         }),
                     },
                 },
-            ))])
-            .to_doc(),
+            ))],
             TopLevelItem::TypeEnum {
                 name,
                 ty_params,
                 variants,
-            } => coq::TopLevel::new(&[
+            } => vec![
                 coq::TopLevelItem::Comment(coq::Expression::Message(format!("Enum {name}"))),
                 coq::TopLevelItem::Comment(coq::Expression::Record {
                     fields: vec![
@@ -1772,17 +1727,14 @@ impl TopLevelItem {
                         },
                     ],
                 }),
-            ])
-            .to_doc(),
-            TopLevelItem::TypeStructStruct(tss) => {
-                coq::TopLevelItem::Comment(tss.to_coq()).to_doc()
-            }
+            ],
+            TopLevelItem::TypeStructStruct(tss) => vec![coq::TopLevelItem::Comment(tss.to_coq())],
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
                 fields,
-            } => coq::TopLevelItem::Comment(coq::Expression::just_name("StructTuple").apply(
-                &coq::Expression::Record {
+            } => vec![coq::TopLevelItem::Comment(
+                coq::Expression::just_name("StructTuple").apply(&coq::Expression::Record {
                     fields: vec![
                         coq::Field {
                             name: "name".to_string(),
@@ -1808,17 +1760,13 @@ impl TopLevelItem {
                             name: "fields".to_string(),
                             args: vec![],
                             body: coq::Expression::List {
-                                exprs: fields
-                                    .iter()
-                                    .map(|ty| ty.to_coq())
-                                    .collect(),
+                                exprs: fields.iter().map(|ty| ty.to_coq()).collect(),
                             },
                         },
                     ],
-                },
-            ))
-            .to_doc(),
-            TopLevelItem::TypeStructUnit { name, ty_params } => coq::TopLevelItem::Comment(
+                }),
+            )],
+            TopLevelItem::TypeStructUnit { name, ty_params } => vec![coq::TopLevelItem::Comment(
                 coq::Expression::just_name("StructTuple").apply(&coq::Expression::Record {
                     fields: vec![
                         coq::Field {
@@ -1843,20 +1791,13 @@ impl TopLevelItem {
                         },
                     ],
                 }),
-            )
-            .to_doc(),
+            )],
             TopLevelItem::Impl {
                 generic_tys,
                 self_ty,
-                counter,
                 items,
             } => {
-                let message = self_ty.to_name();
-                let module_name = if *counter != 1 {
-                    format!("Impl_{message}_{counter}")
-                } else {
-                    format!("Impl_{message}")
-                };
+                let module_name = format!("Impl_{}", self_ty.to_name());
                 let items_coq = items
                     .iter()
                     .flat_map(|item| {
@@ -1939,7 +1880,7 @@ impl TopLevelItem {
                     })
                     .collect_vec();
 
-                coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
+                vec![coq::TopLevelItem::Module(coq::Module::new(
                     &module_name,
                     coq::TopLevel::concat(&[
                         coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
@@ -1955,15 +1896,14 @@ impl TopLevelItem {
                         ))]),
                         coq::TopLevel::new(&items_coq),
                     ]),
-                ))])
-                .to_doc()
+                ))]
             }
             TopLevelItem::Trait {
                 name,
                 path,
                 ty_params,
                 body,
-            } => coq::TopLevel::new(&[
+            } => vec![
                 coq::TopLevelItem::Comment(coq::Expression::Message("Trait".to_string())),
                 coq::TopLevelItem::Module(coq::Module::new(
                     name,
@@ -1972,16 +1912,14 @@ impl TopLevelItem {
                             .iter()
                             .flat_map(|(name, item)| match item.as_ref() {
                                 TraitItem::DefinitionWithDefault(fun_definition) => [
-                                    fun_definition
-                                        .to_coq(
-                                            name,
-                                            &None,
-                                            ty_params
-                                                .iter()
-                                                .map(|(ty_param, _)| ty_param.clone())
-                                                .collect(),
-                                        )
-                                        .items,
+                                    fun_definition.to_coq(
+                                        name,
+                                        &None,
+                                        ty_params
+                                            .iter()
+                                            .map(|(ty_param, _)| ty_param.clone())
+                                            .collect(),
+                                    ),
                                     vec![
                                         coq::TopLevelItem::Line,
                                         coq::TopLevelItem::Definition(coq::Definition::new(
@@ -2004,8 +1942,7 @@ impl TopLevelItem {
                             .collect_vec(),
                     ),
                 )),
-            ])
-            .to_doc(),
+            ],
             TopLevelItem::TraitImpl {
                 generic_tys,
                 self_ty,
@@ -2061,7 +1998,7 @@ impl TopLevelItem {
                     })
                     .collect_vec();
 
-                coq::Module::new(
+                vec![coq::TopLevelItem::Module(coq::Module::new(
                     &module_name,
                     coq::TopLevel::new(
                         &[
@@ -2156,39 +2093,30 @@ impl TopLevelItem {
                         ]
                         .concat(),
                     ),
-                )
-                .to_doc()
+                ))]
             }
-            TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),
+            TopLevelItem::Error(message) => vec![coq::TopLevelItem::Comment(
+                coq::Expression::just_name("Error")
+                    .apply(&coq::Expression::Message(message.clone())),
+            )],
         }
     }
 }
 
 impl TopLevel {
-    fn to_doc(&self) -> Doc {
-        // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
-        // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
-        // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
-        // in order to have all required data for printing instance for DoubleColon Class
-
-        // We go through whole tree and if we face TraitImpl, we need to save previous item too
-        // (the one for which Impl is being printed), in order to have all the extra_data
-
-        let mut previous_module_names: Vec<String> = vec![];
-
-        intersperse(
-            self.0.iter().map(|item| {
-                let to_doc_context = ToDocContext {
-                    previous_module_names: previous_module_names.clone(),
-                };
-                let doc = item.to_doc(to_doc_context);
-                if let TopLevelItem::Module { name, .. } = item.as_ref() {
-                    previous_module_names.push(name.to_owned());
-                };
-                doc
-            }),
-            [hardline(), hardline()],
+    fn to_coq(&self) -> coq::TopLevel {
+        coq::TopLevel::new(
+            &itertools::Itertools::intersperse(
+                self.0.iter().map(|item| item.to_coq()),
+                vec![coq::TopLevelItem::Line],
+            )
+            .flatten()
+            .collect_vec(),
         )
+    }
+
+    fn to_doc(&self) -> Doc {
+        self.to_coq().to_doc()
     }
 
     pub fn to_pretty(&self, width: usize) -> String {

@@ -3,14 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter create_fn : (list Ty.t) -> (list Value.t) -> M.
 
-Error OpaqueTy.
+(* Error OpaqueTy *)
 
 Parameter create_fnmut : (list Ty.t) -> (list Value.t) -> M.
 
-Error OpaqueTy.
+(* Error OpaqueTy *)
 
 Parameter create_fnonce : (list Ty.t) -> (list Value.t) -> M.
 
-Error OpaqueTy.
+(* Error OpaqueTy *)
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

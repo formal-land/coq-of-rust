@@ -229,7 +229,8 @@ Module Impl_erc20_Erc20.
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
 End Impl_erc20_Erc20.
 
-Module Impl_erc20_Erc20_2.
+Module Wrap_Impl_erc20_Erc20_2.
+Module Impl_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "erc20::Erc20".
   
   Parameter new : (list Ty.t) -> (list Value.t) -> M.
@@ -280,4 +281,6 @@ Module Impl_erc20_Erc20_2.
   
   Axiom AssociatedFunction_transfer_from :
     M.IsAssociatedFunction Self "transfer_from" transfer_from.
-End Impl_erc20_Erc20_2.
+End Impl_erc20_Erc20.
+End Wrap_Impl_erc20_Erc20_2.
+Import Wrap_Impl_erc20_Erc20_2.

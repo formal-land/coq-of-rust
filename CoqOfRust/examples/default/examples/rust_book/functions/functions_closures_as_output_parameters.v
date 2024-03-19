@@ -69,7 +69,7 @@ Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-Error OpaqueTy.
+(* Error OpaqueTy *)
 
 (*
 fn create_fnmut() -> impl FnMut() {
@@ -139,7 +139,7 @@ Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-Error OpaqueTy.
+(* Error OpaqueTy *)
 
 (*
 fn create_fnonce() -> impl FnOnce() {
@@ -209,7 +209,7 @@ Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-Error OpaqueTy.
+(* Error OpaqueTy *)
 
 (*
 fn main() {

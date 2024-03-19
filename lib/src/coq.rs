@@ -1,3 +1,5 @@
+use rpds::HashTrieMap;
+
 use crate::path::Path;
 use crate::render::{
     self, concat, curly_brackets, group, hardline, intersperse, line, list, nest, nil,
@@ -27,10 +29,6 @@ pub(crate) enum TopLevelItem<'a> {
 /// a coq module
 pub(crate) struct Module<'a> {
     name: String,
-    /// To prevent a collision, in case a module with the same name is already
-    /// declared. In this case, we do the appropriate `Import` to complete the
-    /// previous module.
-    nb_repeat: usize,
     items: TopLevel<'a>,
 }
 
@@ -243,7 +241,29 @@ impl<'a> TopLevel<'a> {
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()])
+        self.items
+            .iter()
+            .enumerate()
+            .fold(
+                (HashTrieMap::new(), nil()),
+                |(previous_module_names, doc), (index, item)| {
+                    let doc = concat([
+                        doc,
+                        if index != 0 { hardline() } else { nil() },
+                        item.to_doc(previous_module_names.clone()),
+                    ]);
+                    let previous_module_names = match item {
+                        TopLevelItem::Module(module) => previous_module_names.insert(
+                            module.name.clone(),
+                            *previous_module_names.get(&module.name).unwrap_or(&0) + 1,
+                        ),
+                        _ => previous_module_names,
+                    };
+
+                    (previous_module_names, doc)
+                },
+            )
+            .1
     }
 
     /// joins a list of lists of items into one list
@@ -255,7 +275,7 @@ impl<'a> TopLevel<'a> {
 }
 
 impl<'a> TopLevelItem<'a> {
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
+    pub(crate) fn to_doc(&self, previous_module_names: HashTrieMap<String, u64>) -> Doc<'a> {
         match self {
             TopLevelItem::Code(code) => code.to_owned(),
             TopLevelItem::Comment(expression) => {
@@ -263,7 +283,7 @@ impl<'a> TopLevelItem<'a> {
             }
             TopLevelItem::Definition(definition) => definition.to_doc(),
             TopLevelItem::Line => nil(),
-            TopLevelItem::Module(module) => module.to_doc(),
+            TopLevelItem::Module(module) => module.to_doc(previous_module_names),
         }
     }
 }
@@ -273,27 +293,19 @@ impl<'a> Module<'a> {
     pub(crate) fn new(name: &str, items: TopLevel<'a>) -> Self {
         Module {
             name: name.to_string(),
-            nb_repeat: 0,
             items,
         }
     }
 
-    pub(crate) fn new_with_repeat(name: &str, nb_repeat: usize, items: TopLevel<'a>) -> Self {
-        Module {
-            name: name.to_string(),
-            nb_repeat,
-            items,
-        }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
+    pub(crate) fn to_doc(&self, previous_module_names: HashTrieMap<String, u64>) -> Doc<'a> {
         let items = self.items.to_doc();
         let inner_module = render::enclose("Module", self.name.to_owned(), true, items);
+        let nb_repeat = *previous_module_names.get(&self.name).unwrap_or(&0);
 
-        if self.nb_repeat == 0 {
+        if nb_repeat == 0 {
             inner_module
         } else {
-            let wrap_name = format!("Wrap_{}_{}", self.name, self.nb_repeat);
+            let wrap_name = format!("Wrap_{}_{}", self.name, nb_repeat + 1);
 
             concat([
                 render::enclose("Module", wrap_name.clone(), false, inner_module),

@@ -5,9 +5,7 @@ old_stdlib/std/iter_type.v
 old_stdlib/std/iter.v
 old_stdlib/std/net.v
 examples/axiomatized/examples/custom/provided_method.v
-examples/axiomatized/examples/rust_book/functions/functions_closures_as_output_parameters.v
 examples/axiomatized/examples/rust_book/generics/generics_phantom_type_test_case_unit_clarification.v
-examples/axiomatized/examples/rust_book/traits/impl_trait_as_return_type.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 examples/default/examples/custom/provided_method.v
