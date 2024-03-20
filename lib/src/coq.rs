@@ -85,7 +85,6 @@ pub(crate) enum Expression<'a> {
         parameters: Vec<Expression<'a>>,
         body: Rc<Expression<'a>>,
     },
-    #[allow(dead_code)]
     Let {
         name: String,
         ty: Option<Rc<Expression<'a>>>,
@@ -154,15 +153,6 @@ pub(crate) enum Expression<'a> {
     },
     /// Comment next to an expression
     Comment(String, Rc<Expression<'a>>),
-    /// a dependent sum of types
-    /// (like `Sigma (x : A), B(x)`, defined in CoqOfRust.lib.Notations)
-    #[allow(dead_code)]
-    SigmaType {
-        /// a list of arguments of `Sigma`
-        args: Vec<ArgDecl<'a>>,
-        /// the expression for the resulting type
-        image: Rc<Expression<'a>>,
-    },
     /// `as` expression in patterns
     As(Rc<Expression<'a>>, Rc<Expression<'a>>),
     /// An integer
@@ -586,19 +576,6 @@ impl<'a> Expression<'a> {
                 line(),
                 expr.to_doc(with_paren),
             ]),
-            Self::SigmaType { args, image } => paren(
-                with_paren,
-                concat([
-                    nest([
-                        text("Sigma"),
-                        line(),
-                        intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
-                        text(","),
-                    ]),
-                    line(),
-                    image.to_doc(false),
-                ]),
-            ),
             Self::As(expr, ty) => paren(
                 with_paren,
                 nest([expr.to_doc(true), text(" as"), line(), ty.to_doc(true)]),

@@ -198,7 +198,7 @@ Module Value.
     end.
 
   (** Update the part of a value at a certain [path], and return [None] if the
-      is of invalid shape. *)
+      path is of invalid shape. *)
   Fixpoint write_value
       (value : Value.t) (path : Pointer.Path.t) (update : Value.t) :
       option Value.t :=
