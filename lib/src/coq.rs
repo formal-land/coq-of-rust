@@ -163,6 +163,8 @@ pub(crate) enum Expression<'a> {
         /// the expression for the resulting type
         image: Rc<Expression<'a>>,
     },
+    /// `as` expression in patterns
+    As(Rc<Expression<'a>>, Rc<Expression<'a>>),
     /// An integer
     U128(u128),
     /// a string in quotes
@@ -597,6 +599,10 @@ impl<'a> Expression<'a> {
                     image.to_doc(false),
                 ]),
             ),
+            Self::As(expr, ty) => paren(
+                with_paren,
+                nest([expr.to_doc(true), text(" as"), line(), ty.to_doc(true)]),
+            ),
             Self::U128(u) => text(u.to_string()),
             Self::String(string) => text(format!("\"{string}\"")),
             Self::Message(string) => text(string.clone()),
@@ -685,6 +691,21 @@ impl<'a> Expression<'a> {
         match expr {
             None => Expression::just_name("None"),
             Some(expr) => Expression::just_name("Some").apply(&to_coq(expr)),
+        }
+    }
+
+    /// A pattern for a name, taking into account names that are known
+    /// constructors in Coq.
+    pub(crate) fn name_pattern(name: &str) -> Self {
+        let known_constructors = ["I", "inl", "inr", "None", "O", "Some", "S"];
+
+        if known_constructors.contains(&name) {
+            Expression::As(
+                Rc::new(Expression::Wild),
+                Rc::new(Expression::just_name(name)),
+            )
+        } else {
+            Expression::just_name(name)
         }
     }
 }

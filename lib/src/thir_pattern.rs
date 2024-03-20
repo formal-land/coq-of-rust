@@ -131,6 +131,16 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                             },
                         ))));
                     }
+                    rustc_middle::ty::TyKind::Bool => {
+                        let bool_value = constant.try_to_scalar().unwrap().to_bool().unwrap();
+
+                        return Rc::new(Pattern::Literal(Rc::new(Literal::Bool(bool_value))));
+                    }
+                    rustc_middle::ty::TyKind::Char => {
+                        let char_value = constant.try_to_scalar().unwrap().to_char().unwrap();
+
+                        return Rc::new(Pattern::Literal(Rc::new(Literal::Char(char_value))));
+                    }
                     // TODO: handle other kinds of constants
                     _ => {}
                 }

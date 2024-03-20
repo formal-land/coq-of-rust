@@ -224,7 +224,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          _
+          Ty.associated
           []
           "next"
           [] in
@@ -290,7 +290,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          _
+          Ty.associated
           []
           "next"
           [] in
@@ -356,7 +356,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          _
+          Ty.associated
           []
           "next"
           [] in
@@ -422,7 +422,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          _
+          Ty.associated
           []
           "next"
           [] in
@@ -488,7 +488,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          _
+          Ty.associated
           []
           "next"
           [] in

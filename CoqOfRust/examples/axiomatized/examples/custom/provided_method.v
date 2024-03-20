@@ -6,7 +6,10 @@ Module ProvidedAndRequired.
   Parameter provided : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom ProvidedMethod_provided :
-    M.IsProvidedMethod "provided_method::ProvidedAndRequired" provided.
+    M.IsProvidedMethod
+      "provided_method::ProvidedAndRequired"
+      "provided"
+      provided.
 End ProvidedAndRequired.
 
 Module Impl_provided_method_ProvidedAndRequired_for_i32.

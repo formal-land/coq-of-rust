@@ -14,7 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module Animal.
-  Definition talk (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition talk (Self : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
@@ -67,7 +67,7 @@ Module Animal.
     | _, _ => M.impossible
     end.
   
-  Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" talk.
+  Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" "talk" talk.
 End Animal.
 
 Module Impl_traits_Sheep.

@@ -98,10 +98,7 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         TyKind::Tuple(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, &ty)).collect(),
         )),
-        TyKind::Alias(_, _) => {
-            // These types are generally too complex to represent in Coq.
-            Rc::new(CoqType::Infer)
-        }
+        TyKind::Alias(_, _) => Rc::new(CoqType::Associated),
         TyKind::Param(param) => Rc::new(CoqType::Var(param.name.to_string())),
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),

@@ -222,8 +222,16 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         match_operator
           boolean
           [
-            fun γ => M.alloc (Value.Integer Integer.I32 0);
-            fun γ => M.alloc (Value.Integer Integer.I32 1)
+            fun γ =>
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool false) in
+              M.alloc (Value.Integer Integer.I32 0);
+            fun γ =>
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.alloc (Value.Integer Integer.I32 1)
           ] in
       M.copy α0 in
     let* _ :=

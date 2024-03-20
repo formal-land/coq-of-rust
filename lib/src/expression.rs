@@ -811,7 +811,7 @@ impl Expr {
                                     vec![coq::Expression::List {
                                         exprs: args
                                             .iter()
-                                            .map(|(name, _)| coq::Expression::just_name(name))
+                                            .map(|(name, _)| coq::Expression::name_pattern(name))
                                             .collect(),
                                     }],
                                     coq::Expression::Code(body.to_doc(false)),

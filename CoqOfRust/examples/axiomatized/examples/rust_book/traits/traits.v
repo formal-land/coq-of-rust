@@ -16,7 +16,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Animal.
   Parameter talk : (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" talk.
+  Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" "talk" talk.
 End Animal.
 
 Module Impl_traits_Sheep.

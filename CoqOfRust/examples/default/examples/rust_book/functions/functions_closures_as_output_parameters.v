@@ -250,7 +250,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::Fn"
-          _
+          Ty.associated
           [ Ty.tuple [] ]
           "call"
           [] in
@@ -260,7 +260,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnMut"
-          _
+          Ty.associated
           [ Ty.tuple [] ]
           "call_mut"
           [] in
@@ -270,7 +270,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::ops::function::FnOnce"
-          _
+          Ty.associated
           [ Ty.tuple [] ]
           "call_once"
           [] in

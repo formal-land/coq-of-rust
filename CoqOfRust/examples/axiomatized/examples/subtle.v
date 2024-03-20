@@ -200,7 +200,7 @@ Module ConstantTimeEq.
   Parameter ct_ne : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom ProvidedMethod_ct_ne :
-    M.IsProvidedMethod "subtle::ConstantTimeEq" ct_ne.
+    M.IsProvidedMethod "subtle::ConstantTimeEq" "ct_ne" ct_ne.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_slice_T.
@@ -365,11 +365,17 @@ Module ConditionallySelectable.
   Parameter conditional_assign : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom ProvidedMethod_conditional_assign :
-    M.IsProvidedMethod "subtle::ConditionallySelectable" conditional_assign.
+    M.IsProvidedMethod
+      "subtle::ConditionallySelectable"
+      "conditional_assign"
+      conditional_assign.
   Parameter conditional_swap : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom ProvidedMethod_conditional_swap :
-    M.IsProvidedMethod "subtle::ConditionallySelectable" conditional_swap.
+    M.IsProvidedMethod
+      "subtle::ConditionallySelectable"
+      "conditional_swap"
+      conditional_swap.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
@@ -812,7 +818,7 @@ Module ConstantTimeLess.
   Parameter ct_lt : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom ProvidedMethod_ct_lt :
-    M.IsProvidedMethod "subtle::ConstantTimeLess" ct_lt.
+    M.IsProvidedMethod "subtle::ConstantTimeLess" "ct_lt" ct_lt.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.

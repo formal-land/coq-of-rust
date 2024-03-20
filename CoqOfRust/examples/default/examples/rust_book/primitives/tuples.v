@@ -170,7 +170,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display"
             [ Ty.path "u8" ] in
-        let* α6 := M.call_closure α5 [ (* Unknown Field *) ] in
+        let* α6 := M.call_closure α5 [ M.get_tuple_field long_tuple 0 ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call_closure
@@ -199,7 +199,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_display"
             [ Ty.path "u16" ] in
-        let* α6 := M.call_closure α5 [ (* Unknown Field *) ] in
+        let* α6 := M.call_closure α5 [ M.get_tuple_field long_tuple 1 ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call_closure

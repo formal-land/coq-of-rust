@@ -586,9 +586,12 @@ pub(crate) fn compile_expr<'a>(
                     })
                 }
                 None => {
-                    emit_warning_with_note(env, &expr.span, "Unknown Field", "Please report 🙏");
-
-                    Rc::new(Expr::Message("Unknown Field".to_string()))
+                    // We assume that we are in the case of a tuple.
+                    Rc::new(Expr::Call {
+                        func: Expr::local_var("M.get_tuple_field"),
+                        args: vec![base, Rc::new(Expr::InternalInteger(name.as_usize()))],
+                        kind: CallKind::Pure,
+                    })
                 }
             }
         }

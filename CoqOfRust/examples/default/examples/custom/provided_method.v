@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module ProvidedAndRequired.
-  Definition provided (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition provided (Self : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [ self ] =>
       let* self := M.alloc self in
@@ -21,7 +21,10 @@ Module ProvidedAndRequired.
     end.
   
   Axiom ProvidedMethod_provided :
-    M.IsProvidedMethod "provided_method::ProvidedAndRequired" provided.
+    M.IsProvidedMethod
+      "provided_method::ProvidedAndRequired"
+      "provided"
+      provided.
 End ProvidedAndRequired.
 
 Module Impl_provided_method_ProvidedAndRequired_for_i32.

@@ -531,7 +531,7 @@ End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
 Module ConstantTimeEq.
-  Definition ct_ne (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition ct_ne (Self : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
@@ -553,7 +553,7 @@ Module ConstantTimeEq.
     end.
   
   Axiom ProvidedMethod_ct_ne :
-    M.IsProvidedMethod "subtle::ConstantTimeEq" ct_ne.
+    M.IsProvidedMethod "subtle::ConstantTimeEq" "ct_ne" ct_ne.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_slice_T.
@@ -1335,7 +1335,11 @@ End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
 Module ConditionallySelectable.
-  Definition conditional_assign (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition conditional_assign
+      (Self : Ty.t)
+      (𝜏 : list Ty.t)
+      (α : list Value.t)
+      : M :=
     match 𝜏, α with
     | [], [ self; other; choice ] =>
       let* self := M.alloc self in
@@ -1361,8 +1365,15 @@ Module ConditionallySelectable.
     end.
   
   Axiom ProvidedMethod_conditional_assign :
-    M.IsProvidedMethod "subtle::ConditionallySelectable" conditional_assign.
-  Definition conditional_swap (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    M.IsProvidedMethod
+      "subtle::ConditionallySelectable"
+      "conditional_assign"
+      conditional_assign.
+  Definition conditional_swap
+      (Self : Ty.t)
+      (𝜏 : list Ty.t)
+      (α : list Value.t)
+      : M :=
     match 𝜏, α with
     | [], [ a; b; choice ] =>
       let* a := M.alloc a in
@@ -1402,7 +1413,10 @@ Module ConditionallySelectable.
     end.
   
   Axiom ProvidedMethod_conditional_swap :
-    M.IsProvidedMethod "subtle::ConditionallySelectable" conditional_swap.
+    M.IsProvidedMethod
+      "subtle::ConditionallySelectable"
+      "conditional_swap"
+      conditional_swap.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
@@ -4208,7 +4222,7 @@ End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
 Module ConstantTimeLess.
-  Definition ct_lt (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition ct_lt (Self : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
@@ -4251,7 +4265,7 @@ Module ConstantTimeLess.
     end.
   
   Axiom ProvidedMethod_ct_lt :
-    M.IsProvidedMethod "subtle::ConstantTimeLess" ct_lt.
+    M.IsProvidedMethod "subtle::ConstantTimeLess" "ct_lt" ct_lt.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.

@@ -172,7 +172,7 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
       (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
       [ Unit ].
   
-  Definition Output : Ty.t :=
+  Definition Output (Unit : Ty.t) : Ty.t :=
     Ty.apply
         (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
         [ Unit ].
@@ -190,7 +190,7 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
       (* Trait polymorphic types *) []
       (* Instance *)
         [
-          ("Output", InstanceField.Ty Output);
+          ("Output", InstanceField.Ty (Output Unit));
           ("add", InstanceField.Method (add Unit))
         ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.

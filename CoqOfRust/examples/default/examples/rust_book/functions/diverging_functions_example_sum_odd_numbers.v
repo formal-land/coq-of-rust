@@ -158,8 +158,19 @@ Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
                             match_operator
                               α2
                               [
-                                fun γ => M.pure i;
                                 fun γ =>
+                                  let* _ :=
+                                    let* α0 := M.read γ in
+                                    M.is_constant_or_break_match
+                                      α0
+                                      (Value.Bool true) in
+                                  M.pure i;
+                                fun γ =>
+                                  let* _ :=
+                                    let* α0 := M.read γ in
+                                    M.is_constant_or_break_match
+                                      α0
+                                      (Value.Bool false) in
                                   let* α0 := M.continue in
                                   let* α1 := M.read α0 in
                                   let* α2 := M.never_to_any α1 in

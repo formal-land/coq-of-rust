@@ -24,6 +24,7 @@ pub(crate) enum CoqType {
     Tuple(Vec<Rc<CoqType>>),
     // TODO: add the type parameters for the traits
     Dyn(Vec<Path>),
+    Associated,
     Infer,
 }
 
@@ -177,6 +178,7 @@ impl CoqType {
                         .collect(),
                 })
             }
+            CoqType::Associated => coq::Expression::just_name("Ty.associated"),
             CoqType::Infer => coq::Expression::Wild,
         }
     }
@@ -185,7 +187,7 @@ impl CoqType {
     pub(crate) fn to_name(&self) -> String {
         match self {
             CoqType::Var(name) => name.clone(),
-            CoqType::Path { path, .. } => path.to_name(),
+            CoqType::Path { path, .. } => path.to_name().replace('&', "ref_"),
             CoqType::Application { func, args } => {
                 let mut name = func.to_name();
                 for arg in args {
@@ -219,6 +221,7 @@ impl CoqType {
                 }
                 name
             }
+            CoqType::Associated => "associated_type".to_string(),
             CoqType::Infer => "inferred_type".to_string(),
         }
     }

@@ -37,6 +37,10 @@ Module Ty.
   (** As parameter: a list of traits, described by their absolute name and their
       list of type parameters, excluding `Self`. *)
   Parameter dyn : list (string * list t) -> t.
+
+  (** This primitive is for associated types; it will require additional
+      parameters. *)
+  Parameter associated : t.
 End Ty.
 
 Module List.
@@ -400,6 +404,13 @@ Parameter IsAssociatedConstant :
     (Self : Ty.t)
     (constant_name : string)
     (constant : Value.t),
+  Prop.
+
+Parameter IsProvidedMethod :
+  forall
+    (trait_name : string)
+    (method_name : string)
+    (method : Ty.t -> list Ty.t -> list Value.t -> M),
   Prop.
 
 Module Option.
