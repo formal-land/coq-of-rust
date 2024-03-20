@@ -1,8 +1,6 @@
 # <img src="logo.png" alt= "logo" width="120px" height="120px" style="vertical-align: middle;"> <span style="vertical-align: middle;">coq-of-rust</span>
 
 > Check 100% of execution cases of Rust programs 🦀 to make applications with no bugs!
->
-> From the space industry 🚀🛰️🪐👨‍🚀
 
 Formal verification enables the making of software without bugs by showing that it follows a precise specification in all execution cases, in contrast to testing, which only covers a finite amount of cases.
 
