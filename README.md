@@ -32,10 +32,14 @@ fn add_one(x: u32) -> u32 {
 ```
 Running `coq-of-rust`, it translates in Coq to:
 ```coq
-Definition add_one (x : u32.t) : M u32.t :=
-  let* x := M.alloc x in
-  let* α0 : u32.t := M.read x in
-  BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t).
+Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [ x ] =>
+    let* x := M.alloc x in
+    let* α0 := M.read x in
+    BinOp.Panic.add α0 (Value.Integer Integer.U32 1)
+  | _, _ => M.impossible
+  end.
 ```
 Functions such as&nbsp;`BinOp.Panic.add` are part of the standard library for Rust in Coq that we provide. We can then express and verify specifications on the code in Coq.
 
