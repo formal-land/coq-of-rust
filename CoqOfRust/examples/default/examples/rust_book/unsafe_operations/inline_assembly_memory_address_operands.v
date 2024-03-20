@@ -12,8 +12,11 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.pure tt.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] => M.pure (Value.Tuple [])
+  | _, _ => M.impossible
+  end.
 
 (*
     fn load_fpu_control_word(control: u16) {
@@ -22,8 +25,12 @@ Definition main : M unit := M.pure tt.
         }
     }
 *)
-Definition load_fpu_control_word (control : u16.t) : M unit :=
-  let* control := M.alloc control in
-  let _ : M.Val unit := InlineAssembly in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition load_fpu_control_word (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [ control ] =>
+    let* control := M.alloc control in
+    let _ := InlineAssembly in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

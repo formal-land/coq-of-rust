@@ -26,268 +26,450 @@ fn main() {
     println!("One million is written as {}", 1_000_000u32);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "1 + 2 = ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "1 + 2 = ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : u32.t :=
-        BinOp.Panic.add ((Integer.of_Z 1) : u32.t) ((Integer.of_Z 2) : u32.t) in
-      let* α4 : M.Val u32.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "1 - 2 = ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "u32" ] in
+        let* α6 :=
+          BinOp.Panic.add
+            (Value.Integer Integer.U32 1)
+            (Value.Integer Integer.U32 2) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call_closure α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
+            ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "1 - 2 = ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : i32.t :=
-        BinOp.Panic.sub ((Integer.of_Z 1) : i32.t) ((Integer.of_Z 2) : i32.t) in
-      let* α4 : M.Val i32.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "true AND false is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 :=
+          BinOp.Panic.sub
+            (Value.Integer Integer.I32 1)
+            (Value.Integer Integer.I32 2) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call_closure α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
+            ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "true AND false is ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.and true false) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "true OR false is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "bool" ] in
+        let* α6 :=
+          LogicalOp.and (Value.Bool true) (M.pure (Value.Bool false)) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call_closure α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
+            ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "true OR false is ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.or true false) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "NOT true is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "bool" ] in
+        let* α6 := LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call_closure α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
+            ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "NOT true is ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not true) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "0011 AND 0101 is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "bool" ] in
+        let* α6 := M.alloc (UnOp.Pure.not (Value.Bool true)) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
+        let* α2 := M.read (mk_str "0011 AND 0101 is ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val u32.t :=
-        M.alloc
-          (BinOp.Pure.bit_and
-            ((Integer.of_Z 3) : u32.t)
-            ((Integer.of_Z 5) : u32.t)) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_binary"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.rt.Placeholder.t :=
-        M.call
-          (core.fmt.rt.Placeholder.t::["new"]
-            ((Integer.of_Z 0) : usize.t)
-            " "%char
-            core.fmt.rt.Alignment.Unknown
-            ((Integer.of_Z 8) : u32.t)
-            core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is ((Integer.of_Z 4) : usize.t))) in
-      let* α7 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.rt.UnsafeArg.t :=
-        M.call core.fmt.rt.UnsafeArg.t::["new"] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1_formatted"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))
-            (pointer_coercion "Unsize" (borrow α7))
-            α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "0011 OR 0101 is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_binary"
+            [ Ty.path "u32" ] in
+        let* α6 :=
+          M.alloc
+            (BinOp.Pure.bit_and
+              (Value.Integer Integer.U32 3)
+              (Value.Integer Integer.U32 5)) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new"
+            [] in
+        let* α10 :=
+          M.call_closure
+            α9
+            [
+              Value.Integer Integer.Usize 0;
+              Value.UnicodeChar 32;
+              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+              Value.Integer Integer.U32 8;
+              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ Value.Integer Integer.Usize 4 ]
+            ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
+        let* α12 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new"
+            [] in
+        let* α13 := M.call_closure α12 [] in
+        let* α14 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8;
+              M.pointer_coercion (* Unsize *) α11;
+              α13
+            ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
+        let* α2 := M.read (mk_str "0011 OR 0101 is ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val u32.t :=
-        M.alloc
-          (BinOp.Pure.bit_or
-            ((Integer.of_Z 3) : u32.t)
-            ((Integer.of_Z 5) : u32.t)) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_binary"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.rt.Placeholder.t :=
-        M.call
-          (core.fmt.rt.Placeholder.t::["new"]
-            ((Integer.of_Z 0) : usize.t)
-            " "%char
-            core.fmt.rt.Alignment.Unknown
-            ((Integer.of_Z 8) : u32.t)
-            core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is ((Integer.of_Z 4) : usize.t))) in
-      let* α7 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.rt.UnsafeArg.t :=
-        M.call core.fmt.rt.UnsafeArg.t::["new"] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1_formatted"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))
-            (pointer_coercion "Unsize" (borrow α7))
-            α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "0011 XOR 0101 is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_binary"
+            [ Ty.path "u32" ] in
+        let* α6 :=
+          M.alloc
+            (BinOp.Pure.bit_or
+              (Value.Integer Integer.U32 3)
+              (Value.Integer Integer.U32 5)) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new"
+            [] in
+        let* α10 :=
+          M.call_closure
+            α9
+            [
+              Value.Integer Integer.Usize 0;
+              Value.UnicodeChar 32;
+              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+              Value.Integer Integer.U32 8;
+              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ Value.Integer Integer.Usize 4 ]
+            ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
+        let* α12 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new"
+            [] in
+        let* α13 := M.call_closure α12 [] in
+        let* α14 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8;
+              M.pointer_coercion (* Unsize *) α11;
+              α13
+            ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
+        let* α2 := M.read (mk_str "0011 XOR 0101 is ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val u32.t :=
-        M.alloc
-          (BinOp.Pure.bit_xor
-            ((Integer.of_Z 3) : u32.t)
-            ((Integer.of_Z 5) : u32.t)) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_binary"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.rt.Placeholder.t :=
-        M.call
-          (core.fmt.rt.Placeholder.t::["new"]
-            ((Integer.of_Z 0) : usize.t)
-            " "%char
-            core.fmt.rt.Alignment.Unknown
-            ((Integer.of_Z 8) : u32.t)
-            core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is ((Integer.of_Z 4) : usize.t))) in
-      let* α7 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.rt.UnsafeArg.t :=
-        M.call core.fmt.rt.UnsafeArg.t::["new"] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1_formatted"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))
-            (pointer_coercion "Unsize" (borrow α7))
-            α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "1 << 5 is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_binary"
+            [ Ty.path "u32" ] in
+        let* α6 :=
+          M.alloc
+            (BinOp.Pure.bit_xor
+              (Value.Integer Integer.U32 3)
+              (Value.Integer Integer.U32 5)) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new"
+            [] in
+        let* α10 :=
+          M.call_closure
+            α9
+            [
+              Value.Integer Integer.Usize 0;
+              Value.UnicodeChar 32;
+              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+              Value.Integer Integer.U32 8;
+              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ Value.Integer Integer.Usize 4 ]
+            ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
+        let* α12 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new"
+            [] in
+        let* α13 := M.call_closure α12 [] in
+        let* α14 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8;
+              M.pointer_coercion (* Unsize *) α11;
+              α13
+            ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "1 << 5 is ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : u32.t :=
-        BinOp.Panic.shl ((Integer.of_Z 1) : u32.t) ((Integer.of_Z 5) : i32.t) in
-      let* α4 : M.Val u32.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "0x80 >> 2 is 0x") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "u32" ] in
+        let* α6 :=
+          BinOp.Panic.shl
+            (Value.Integer Integer.U32 1)
+            (Value.Integer Integer.I32 5) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call_closure α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
+            ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "0x80 >> 2 is 0x") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : u32.t :=
-        BinOp.Panic.shr
-          ((Integer.of_Z 128) : u32.t)
-          ((Integer.of_Z 2) : i32.t) in
-      let* α4 : M.Val u32.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_lower_hex"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "One million is written as 1000000
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_lower_hex"
+            [ Ty.path "u32" ] in
+        let* α6 :=
+          BinOp.Panic.shr
+            (Value.Integer Integer.U32 128)
+            (Value.Integer Integer.I32 2) in
+        let* α7 := M.alloc α6 in
+        let* α8 := M.call_closure α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
+            ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "One million is written as 1000000
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : array core.fmt.rt.Argument.t :=
-        M.call core.fmt.rt.Argument.t::["none"] in
-      let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
-      let* α4 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α1))
-            (pointer_coercion "Unsize" (borrow α3))) in
-      let* α5 : unit := M.call (std.io.stdio._print α4) in
-      M.alloc α5 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "none"
+            [] in
+        let* α5 := M.call_closure α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α3;
+              M.pointer_coercion (* Unsize *) α6
+            ] in
+        let* α8 := M.call_closure α0 [ α7 ] in
+        M.alloc α8 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

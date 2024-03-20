@@ -12,20 +12,25 @@ where
     f();
 }
 *)
-Definition apply {F : Set} (f : F) : M unit :=
-  let* f := M.alloc f in
-  let* _ : M.Val unit :=
-    let* α0 : F -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnOnce.call_once
-          (Self := F)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : F := M.read f in
-    let* α2 : unit := M.call (α0 α1 tt) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [ F ], [ f ] =>
+    let* f := M.alloc f in
+    let* _ :=
+      let* α0 :=
+        M.get_trait_method
+          "core::ops::function::FnOnce"
+          F
+          [ Ty.tuple [] ]
+          "call_once"
+          [] in
+      let* α1 := M.read f in
+      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn apply_to_3<F>(f: F) -> i32
@@ -36,12 +41,20 @@ where
     f(3)
 }
 *)
-Definition apply_to_3 {F : Set} (f : F) : M i32.t :=
-  let* f := M.alloc f in
-  let* α0 : (ref F) -> i32.t -> M _ :=
-    ltac:(M.get_method (fun ℐ =>
-      core.ops.function.Fn.call (Self := F) (Args := i32.t) (Trait := ℐ))) in
-  M.call (α0 (borrow f) ((Integer.of_Z 3) : i32.t)).
+Definition apply_to_3 (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [ F ], [ f ] =>
+    let* f := M.alloc f in
+    let* α0 :=
+      M.get_trait_method
+        "core::ops::function::Fn"
+        F
+        [ Ty.tuple [ Ty.path "i32" ] ]
+        "call"
+        [] in
+    M.call_closure α0 [ f; Value.Tuple [ Value.Integer Integer.I32 3 ] ]
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -78,133 +91,192 @@ fn main() {
     println!("3 doubled: {}", apply_to_3(double));
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* greeting : M.Val (ref str.t) := M.copy (mk_str "hello") in
-  let* farewell : M.Val alloc.string.String.t :=
-    let* α0 : (ref str.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "goodbye") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* diary : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "I said ") in
-                  let* α1 : ref str.t := M.read (mk_str ".
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* greeting := M.copy (mk_str "hello") in
+    let* farewell :=
+      let* α0 :=
+        M.get_trait_method
+          "alloc::borrow::ToOwned"
+          (Ty.path "str")
+          []
+          "to_owned"
+          [] in
+      let* α1 := M.read (mk_str "goodbye") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* diary :=
+      M.alloc
+        (M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* _ :=
+                      let* _ :=
+                        let* α0 := M.get_function "std::io::stdio::_print" [] in
+                        let* α1 :=
+                          M.get_associated_function
+                            (Ty.path "core::fmt::Arguments")
+                            "new_v1"
+                            [] in
+                        let* α2 := M.read (mk_str "I said ") in
+                        let* α3 := M.read (mk_str ".
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow greeting)) in
-                  let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α3 ] in
-                  let* α5 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : unit := M.call (std.io.stdio._print α5) in
-                  M.alloc α6 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "!!!") in
-                let* α1 : unit :=
-                  M.call
-                    (alloc.string.String.t::["push_str"]
-                      (borrow_mut farewell)
-                      α0) in
-                M.alloc α1 in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "Then I screamed ") in
-                  let* α1 : ref str.t := M.read (mk_str ".
+                        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                        let* α5 :=
+                          M.get_associated_function
+                            (Ty.path "core::fmt::rt::Argument")
+                            "new_display"
+                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                        let* α6 := M.call_closure α5 [ greeting ] in
+                        let* α7 := M.alloc (Value.Array [ α6 ]) in
+                        let* α8 :=
+                          M.call_closure
+                            α1
+                            [
+                              M.pointer_coercion (* Unsize *) α4;
+                              M.pointer_coercion (* Unsize *) α7
+                            ] in
+                        let* α9 := M.call_closure α0 [ α8 ] in
+                        M.alloc α9 in
+                      M.alloc (Value.Tuple []) in
+                    let* _ :=
+                      let* α0 :=
+                        M.get_associated_function
+                          (Ty.path "alloc::string::String")
+                          "push_str"
+                          [] in
+                      let* α1 := M.read (mk_str "!!!") in
+                      let* α2 := M.call_closure α0 [ farewell; α1 ] in
+                      M.alloc α2 in
+                    let* _ :=
+                      let* _ :=
+                        let* α0 := M.get_function "std::io::stdio::_print" [] in
+                        let* α1 :=
+                          M.get_associated_function
+                            (Ty.path "core::fmt::Arguments")
+                            "new_v1"
+                            [] in
+                        let* α2 := M.read (mk_str "Then I screamed ") in
+                        let* α3 := M.read (mk_str ".
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow farewell)) in
-                  let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α3 ] in
-                  let* α5 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : unit := M.call (std.io.stdio._print α5) in
-                  M.alloc α6 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t :=
-                    M.read (mk_str "Now I can sleep. zzzzz
+                        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                        let* α5 :=
+                          M.get_associated_function
+                            (Ty.path "core::fmt::rt::Argument")
+                            "new_display"
+                            [ Ty.path "alloc::string::String" ] in
+                        let* α6 := M.call_closure α5 [ farewell ] in
+                        let* α7 := M.alloc (Value.Array [ α6 ]) in
+                        let* α8 :=
+                          M.call_closure
+                            α1
+                            [
+                              M.pointer_coercion (* Unsize *) α4;
+                              M.pointer_coercion (* Unsize *) α7
+                            ] in
+                        let* α9 := M.call_closure α0 [ α8 ] in
+                        M.alloc α9 in
+                      M.alloc (Value.Tuple []) in
+                    let* _ :=
+                      let* _ :=
+                        let* α0 := M.get_function "std::io::stdio::_print" [] in
+                        let* α1 :=
+                          M.get_associated_function
+                            (Ty.path "core::fmt::Arguments")
+                            "new_const"
+                            [] in
+                        let* α2 := M.read (mk_str "Now I can sleep. zzzzz
 ") in
-                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                  let* α2 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_const"]
-                        (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : unit := M.call (std.io.stdio._print α2) in
-                  M.alloc α3 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* α0 : alloc.string.String.t := M.read farewell in
-                let* α1 : unit := M.call (core.mem.drop α0) in
-                M.alloc α1 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  let* _ : M.Val unit :=
-    let* α0 : unit -> M unit := M.read diary in
-    let* α1 : unit :=
-      M.call (functions_closures_as_input_parameters.apply α0) in
-    M.alloc α1 in
-  let* double : M.Val (i32.t -> M i32.t) :=
-    M.alloc
-      (fun (α0 : i32.t) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* x := M.copy γ in
-              let* α0 : i32.t := M.read x in
-              BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α0) :
-              M i32.t
-          ]) :
-        M i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "3 doubled: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+                        let* α3 := M.alloc (Value.Array [ α2 ]) in
+                        let* α4 :=
+                          M.call_closure
+                            α1
+                            [ M.pointer_coercion (* Unsize *) α3 ] in
+                        let* α5 := M.call_closure α0 [ α4 ] in
+                        M.alloc α5 in
+                      M.alloc (Value.Tuple []) in
+                    let* _ :=
+                      let* α0 :=
+                        M.get_function
+                          "core::mem::drop"
+                          [ Ty.path "alloc::string::String" ] in
+                      let* α1 := M.read farewell in
+                      let* α2 := M.call_closure α0 [ α1 ] in
+                      M.alloc α2 in
+                    let* α0 := M.alloc (Value.Tuple []) in
+                    M.read α0
+                ]
+            | _ => M.impossible
+            end)) in
+    let* _ :=
+      let* α0 :=
+        M.get_function
+          "functions_closures_as_input_parameters::apply"
+          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
+      let* α1 := M.read diary in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* double :=
+      M.alloc
+        (M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* x := M.copy γ in
+                    let* α0 := M.read x in
+                    BinOp.Panic.mul (Value.Integer Integer.I32 2) α0
+                ]
+            | _ => M.impossible
+            end)) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "3 doubled: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : i32.t -> M i32.t := M.read double in
-      let* α4 : i32.t :=
-        M.call (functions_closures_as_input_parameters.apply_to_3 α3) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 :=
+          M.get_function
+            "functions_closures_as_input_parameters::apply_to_3"
+            [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ] in
+        let* α7 := M.read double in
+        let* α8 := M.call_closure α6 [ α7 ] in
+        let* α9 := M.alloc α8 in
+        let* α10 := M.call_closure α5 [ α9 ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
+        let* α12 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α11
+            ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
+        M.alloc α13 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

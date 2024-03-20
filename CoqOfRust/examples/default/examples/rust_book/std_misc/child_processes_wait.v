@@ -9,47 +9,72 @@ fn main() {
     println!("reached end of main");
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* child : M.Val std.process.Child.t :=
-    let* α0 : ref str.t := M.read (mk_str "sleep") in
-    let* α1 : std.process.Command.t :=
-      M.call (std.process.Command.t::["new"] α0) in
-    let* α2 : M.Val std.process.Command.t := M.alloc α1 in
-    let* α3 : ref str.t := M.read (mk_str "5") in
-    let* α4 : mut_ref std.process.Command.t :=
-      M.call (std.process.Command.t::["arg"] (borrow_mut α2) α3) in
-    let* α5 : core.result.Result.t std.process.Child.t std.io.error.Error.t :=
-      M.call (std.process.Command.t::["spawn"] α4) in
-    let* α6 : std.process.Child.t :=
-      M.call
-        ((core.result.Result.t
-              std.process.Child.t
-              std.io.error.Error.t)::["unwrap"]
-          α5) in
-    M.alloc α6 in
-  let* _result : M.Val std.process.ExitStatus.t :=
-    let* α0 :
-        core.result.Result.t std.process.ExitStatus.t std.io.error.Error.t :=
-      M.call (std.process.Child.t::["wait"] (borrow_mut child)) in
-    let* α1 : std.process.ExitStatus.t :=
-      M.call
-        ((core.result.Result.t
-              std.process.ExitStatus.t
-              std.io.error.Error.t)::["unwrap"]
-          α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "reached end of main
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* child :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ])
+          "unwrap"
+          [] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "spawn"
+          [] in
+      let* α2 :=
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "arg"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+      let* α3 :=
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "new"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+      let* α4 := M.read (mk_str "sleep") in
+      let* α5 := M.call_closure α3 [ α4 ] in
+      let* α6 := M.alloc α5 in
+      let* α7 := M.read (mk_str "5") in
+      let* α8 := M.call_closure α2 [ α6; α7 ] in
+      let* α9 := M.call_closure α1 [ α8 ] in
+      let* α10 := M.call_closure α0 [ α9 ] in
+      M.alloc α10 in
+    let* _result :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [
+              Ty.path "std::process::ExitStatus";
+              Ty.path "std::io::error::Error"
+            ])
+          "unwrap"
+          [] in
+      let* α1 :=
+        M.get_associated_function (Ty.path "std::process::Child") "wait" [] in
+      let* α2 := M.call_closure α1 [ child ] in
+      let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            [] in
+        let* α2 := M.read (mk_str "reached end of main
+") in
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

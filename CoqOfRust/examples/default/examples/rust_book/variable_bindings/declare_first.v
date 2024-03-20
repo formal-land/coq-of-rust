@@ -26,53 +26,79 @@ fn main() {
     println!("another binding: {}", another_binding);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* a_binding := M.copy (DeclaredButUndefinedVariable (A := i32.t)) in
-  let* _ : M.Val unit :=
-    let* x : M.Val i32.t := M.alloc ((Integer.of_Z 2) : i32.t) in
-    let* _ : M.Val unit :=
-      let* α0 : i32.t := M.read x in
-      let* α1 : i32.t := M.read x in
-      let* α2 : i32.t := BinOp.Panic.mul α0 α1 in
-      assign a_binding α2 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "a binding: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* a_binding := M.copy Value.DeclaredButUndefined in
+    let* _ :=
+      let* x := M.alloc (Value.Integer Integer.I32 2) in
+      let* _ :=
+        let* α0 := M.read x in
+        let* α1 := M.read x in
+        let* α2 := BinOp.Panic.mul α0 α1 in
+        M.assign a_binding α2 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "a binding: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow a_binding)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* another_binding := M.copy (DeclaredButUndefinedVariable (A := i32.t)) in
-  let* _ : M.Val unit := assign another_binding ((Integer.of_Z 1) : i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "another binding: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 := M.call_closure α5 [ a_binding ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* another_binding := M.copy Value.DeclaredButUndefined in
+    let* _ := M.assign another_binding (Value.Integer Integer.I32 1) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "another binding: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow another_binding)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 := M.call_closure α5 [ another_binding ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

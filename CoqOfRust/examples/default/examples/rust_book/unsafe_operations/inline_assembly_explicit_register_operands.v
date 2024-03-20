@@ -11,9 +11,12 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* cmd : M.Val i32.t := M.alloc ((Integer.of_Z 209) : i32.t) in
-  let _ : M.Val unit := InlineAssembly in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* cmd := M.alloc (Value.Integer Integer.I32 209) in
+    let _ := InlineAssembly in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

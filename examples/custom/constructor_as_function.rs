@@ -1,3 +1,10 @@
+fn matching(tuple: (i32, i32)) -> i32 {
+    match tuple {
+        (0, 0) => 0,
+        (_, _) => 1,
+    }
+}
+
 #[derive(Debug)]
 struct Constructor(i32);
 

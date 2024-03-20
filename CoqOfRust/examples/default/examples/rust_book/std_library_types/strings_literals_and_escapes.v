@@ -23,76 +23,113 @@ fn main() {
     println!("{}", long_string);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* byte_escape : M.Val (ref str.t) := M.copy (mk_str "I'm writing Rust!") in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "What are you doing? (\x3F means ?) ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* byte_escape := M.copy (mk_str "I'm writing Rust!") in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "What are you doing? (\x3F means ?) ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow byte_escape)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* unicode_codepoint : M.Val (ref str.t) :=
-    M.copy (mk_str (String.String "029" "")) in
-  let* character_name : M.Val (ref str.t) :=
-    M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Unicode character ") in
-      let* α1 : ref str.t := M.read (mk_str " (U+211D) is called ") in
-      let* α2 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        let* α6 := M.call_closure α5 [ byte_escape ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* unicode_codepoint := M.copy (mk_str (String.String "029" "")) in
+    let* character_name := M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Unicode character ") in
+        let* α3 := M.read (mk_str " (U+211D) is called ") in
+        let* α4 := M.read (mk_str "
 ") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow unicode_codepoint)) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow character_name)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* long_string : M.Val (ref str.t) :=
-    M.copy
-      (mk_str
-        "String literals
+        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+        let* α6 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        let* α7 := M.call_closure α6 [ unicode_codepoint ] in
+        let* α8 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        let* α9 := M.call_closure α8 [ character_name ] in
+        let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α5;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* long_string :=
+      M.copy
+        (mk_str
+          "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!") in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow long_string)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        let* α6 := M.call_closure α5 [ long_string ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

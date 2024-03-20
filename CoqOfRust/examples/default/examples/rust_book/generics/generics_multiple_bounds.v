@@ -7,44 +7,72 @@ fn compare_prints<T: Debug + Display>(t: &T) {
     println!("Display: `{}`", t);
 }
 *)
-Definition compare_prints {T : Set} (t : ref T) : M unit :=
-  let* t := M.alloc t in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Debug: `") in
-      let* α1 : ref str.t := M.read (mk_str "`
+Definition compare_prints (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [ T ], [ t ] =>
+    let* t := M.alloc t in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Debug: `") in
+        let* α3 := M.read (mk_str "`
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow t)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Display: `") in
-      let* α1 : ref str.t := M.read (mk_str "`
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug"
+            [ Ty.apply (Ty.path "&") [ T ] ] in
+        let* α6 := M.call_closure α5 [ t ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Display: `") in
+        let* α3 := M.read (mk_str "`
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow t)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ T ] ] in
+        let* α6 := M.call_closure α5 [ t ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
@@ -52,45 +80,73 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
     println!("u: `{:?}`", u);
 }
 *)
-Definition compare_types {T U : Set} (t : ref T) (u : ref U) : M unit :=
-  let* t := M.alloc t in
-  let* u := M.alloc u in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "t: `") in
-      let* α1 : ref str.t := M.read (mk_str "`
+Definition compare_types (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [ T; U ], [ t; u ] =>
+    let* t := M.alloc t in
+    let* u := M.alloc u in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "t: `") in
+        let* α3 := M.read (mk_str "`
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow t)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "u: `") in
-      let* α1 : ref str.t := M.read (mk_str "`
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug"
+            [ Ty.apply (Ty.path "&") [ T ] ] in
+        let* α6 := M.call_closure α5 [ t ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "u: `") in
+        let* α3 := M.read (mk_str "`
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow u)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug"
+            [ Ty.apply (Ty.path "&") [ U ] ] in
+        let* α6 := M.call_closure α5 [ u ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -105,39 +161,66 @@ fn main() {
     compare_types(&array, &vec);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* string : M.Val (ref str.t) := M.copy (mk_str "words") in
-  let* array_ : M.Val (array i32.t) :=
-    M.alloc
-      [
-        (Integer.of_Z 1) : i32.t;
-        (Integer.of_Z 2) : i32.t;
-        (Integer.of_Z 3) : i32.t
-      ] in
-  let* vec : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val (array i32.t) :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* string := M.copy (mk_str "words") in
+    let* array_ :=
       M.alloc
-        [
-          (Integer.of_Z 1) : i32.t;
-          (Integer.of_Z 2) : i32.t;
-          (Integer.of_Z 3) : i32.t
-        ] in
-    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
-      M.read α1 in
-    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
-    M.alloc α3 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call (generics_multiple_bounds.compare_prints (borrow string)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (generics_multiple_bounds.compare_types (borrow array_) (borrow vec)) in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        (Value.Array
+          [
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
+          ]) in
+    let* vec :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new"
+          [] in
+      let* α2 :=
+        M.alloc
+          (Value.Array
+            [
+              Value.Integer Integer.I32 1;
+              Value.Integer Integer.I32 2;
+              Value.Integer Integer.I32 3
+            ]) in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      M.alloc α5 in
+    let* _ :=
+      let* α0 :=
+        M.get_function
+          "generics_multiple_bounds::compare_prints"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+      let* α1 := M.call_closure α0 [ string ] in
+      M.alloc α1 in
+    let* _ :=
+      let* α0 :=
+        M.get_function
+          "generics_multiple_bounds::compare_types"
+          [
+            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+          ] in
+      let* α1 := M.call_closure α0 [ array_; vec ] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

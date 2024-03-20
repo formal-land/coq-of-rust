@@ -10,137 +10,101 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 *)
-Definition read_lines
-    {P : Set}
-    (filename : P)
-    :
-      M
-        ltac:(std.io.error.Result
-          (std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) :=
-  let* filename := M.alloc filename in
-  let return_ :=
-    M.return_
-      (R :=
-        ltac:(std.io.error.Result
-          (std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) in
-  M.catch_return
-    (let* file : M.Val std.fs.File.t :=
-      let* α0 :
-          (core.result.Result.t std.fs.File.t std.io.error.Error.t) ->
-            M (core.ops.control_flow.ControlFlow.t _ _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.try_trait.Try.branch
-            (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
-            (Trait := ℐ))) in
-      let* α1 : P := M.read filename in
-      let* α2 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.File.t::["open"] α1) in
-      let* α3 :
-          core.ops.control_flow.ControlFlow.t
-            (core.result.Result.t
-              core.convert.Infallible.t
-              std.io.error.Error.t)
-            std.fs.File.t :=
-        M.call (α0 α2) in
-      let* α4 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                std.io.error.Error.t)
-              std.fs.File.t) :=
-        M.alloc α3 in
-      let* α5 : M.Val std.fs.File.t :=
+Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [ P ], [ filename ] =>
+    let* filename := M.alloc filename in
+    let* file :=
+      let* α0 :=
+        M.get_trait_method
+          "core::ops::try_trait::Try"
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ])
+          []
+          "branch"
+          [] in
+      let* α1 :=
+        M.get_associated_function (Ty.path "std::fs::File") "open" [ P ] in
+      let* α2 := M.read filename in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
+      let* α5 := M.alloc α4 in
+      let* α6 :=
         match_operator
-          α4
+          α5
           [
             fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                let* residual := M.copy γ0_0 in
-                let* α0 :
-                    (core.result.Result.t
-                        core.convert.Infallible.t
-                        std.io.error.Error.t)
-                      ->
-                      M
-                        (core.result.Result.t
-                          (std.io.Lines.t
-                            (std.io.buffered.bufreader.BufReader.t
-                              std.fs.File.t))
-                          std.io.error.Error.t) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.ops.try_trait.FromResidual.from_residual
-                      (Self :=
-                        core.result.Result.t
-                          (std.io.Lines.t
-                            (std.io.buffered.bufreader.BufReader.t
-                              std.fs.File.t))
-                          std.io.error.Error.t)
-                      (R :=
-                        core.result.Result.t
-                          core.convert.Infallible.t
-                          std.io.error.Error.t)
-                      (Trait := ℐ))) in
-                let* α1 :
-                    core.result.Result.t
-                      core.convert.Infallible.t
-                      std.io.error.Error.t :=
-                  M.read residual in
-                let* α2 :
-                    core.result.Result.t
-                      (std.io.Lines.t
-                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                      std.io.error.Error.t :=
-                  M.call (α0 α1) in
-                let* α3 : M.Val never.t := return_ α2 in
-                let* α4 := M.read α3 in
-                let* α5 : std.fs.File.t := never_to_any α4 in
-                M.alloc α5
-              | _ => M.break_match
-              end) :
-              M (M.Val std.fs.File.t);
+              let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Break"
+                  0 in
+              let* residual := M.copy γ0_0 in
+              let* α0 :=
+                M.get_trait_method
+                  "core::ops::try_trait::FromResidual"
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [
+                      Ty.apply
+                        (Ty.path "std::io::Lines")
+                        [
+                          Ty.apply
+                            (Ty.path "std::io::buffered::bufreader::BufReader")
+                            [ Ty.path "std::fs::File" ]
+                        ];
+                      Ty.path "std::io::error::Error"
+                    ])
+                  [
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [
+                        Ty.path "core::convert::Infallible";
+                        Ty.path "std::io::error::Error"
+                      ]
+                  ]
+                  "from_residual"
+                  [] in
+              let* α1 := M.read residual in
+              let* α2 := M.call_closure α0 [ α1 ] in
+              let* α3 := M.return_ α2 in
+              let* α4 := M.read α3 in
+              let* α5 := M.never_to_any α4 in
+              M.alloc α5;
             fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 :=
-                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                let* val := M.copy γ0_0 in
-                M.pure val
-              | _ => M.break_match
-              end) :
-              M (M.Val std.fs.File.t)
+              let* γ0_0 :=
+                M.get_struct_tuple_field_or_break_match
+                  γ
+                  "core::ops::control_flow::ControlFlow::Continue"
+                  0 in
+              let* val := M.copy γ0_0 in
+              M.pure val
           ] in
-      M.copy α5 in
-    let* α0 :
-        (std.io.buffered.bufreader.BufReader.t std.fs.File.t) ->
-          M
-            (std.io.Lines.t
-              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-      ltac:(M.get_method (fun ℐ =>
-        std.io.BufRead.lines
-          (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-          (Trait := ℐ))) in
-    let* α1 : std.fs.File.t := M.read file in
-    let* α2 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
-      M.call
-        ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α1) in
-    let* α3 :
-        std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-      M.call (α0 α2) in
-    let* α0 :
-        M.Val
-          (core.result.Result.t
-            (std.io.Lines.t
-              (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-            std.io.error.Error.t) :=
-      M.alloc (core.result.Result.Ok α3) in
-    M.read α0).
+      M.copy α6 in
+    let* α0 :=
+      M.get_trait_method
+        "std::io::BufRead"
+        (Ty.apply
+          (Ty.path "std::io::buffered::bufreader::BufReader")
+          [ Ty.path "std::fs::File" ])
+        []
+        "lines"
+        [] in
+    let* α1 :=
+      M.get_associated_function
+        (Ty.apply
+          (Ty.path "std::io::buffered::bufreader::BufReader")
+          [ Ty.path "std::fs::File" ])
+        "new"
+        [] in
+    let* α2 := M.read file in
+    let* α3 := M.call_closure α1 [ α2 ] in
+    let* α4 := M.call_closure α0 [ α3 ] in
+    let* α0 := M.alloc (Value.StructTuple "core::result::Result::Ok" [ α4 ]) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -155,168 +119,138 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* α0 : ref str.t := M.read (mk_str "./hosts") in
-  let* α1 :
-      core.result.Result.t
-        (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-        std.io.error.Error.t :=
-    M.call (file_io_read_lines_efficient_method.read_lines α0) in
-  let* α2 :
-      M.Val
-        (core.result.Result.t
-          (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-          std.io.error.Error.t) :=
-    M.alloc α1 in
-  let* α3 : M.Val unit :=
-    match_operator
-      α2
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.result.Result.Ok _ =>
-            let γ0_0 := core.result.Result.Get_Ok_0 γ in
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* α0 :=
+      M.get_function
+        "file_io_read_lines_efficient_method::read_lines"
+        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+    let* α1 := M.read (mk_str "./hosts") in
+    let* α2 := M.call_closure α0 [ α1 ] in
+    let* α3 := M.alloc α2 in
+    let* α4 :=
+      match_operator
+        α3
+        [
+          fun γ =>
+            let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "core::result::Result::Ok"
+                0 in
             let* lines := M.copy γ0_0 in
-            let* α0 :
-                (std.io.Lines.t
-                    (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                  ->
-                  M _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.iter.traits.collect.IntoIterator.into_iter
-                  (Self :=
-                    std.io.Lines.t
-                      (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                  (Trait := ℐ))) in
-            let* α1 :
-                std.io.Lines.t
-                  (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-              M.read lines in
-            let* α2 :
-                std.io.Lines.t
-                  (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-              M.call (α0 α1) in
-            let* α3 :
-                M.Val
-                  (std.io.Lines.t
-                    (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-              M.alloc α2 in
-            let* α4 : M.Val unit :=
+            let* α0 :=
+              M.get_trait_method
+                "core::iter::traits::collect::IntoIterator"
+                (Ty.apply
+                  (Ty.path "std::io::Lines")
+                  [
+                    Ty.apply
+                      (Ty.path "std::io::buffered::bufreader::BufReader")
+                      [ Ty.path "std::fs::File" ]
+                  ])
+                []
+                "into_iter"
+                [] in
+            let* α1 := M.read lines in
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.alloc α2 in
+            let* α4 :=
               match_operator
                 α3
                 [
                   fun γ =>
-                    (let* iter := M.copy γ in
+                    let* iter := M.copy γ in
                     M.loop
-                      (let* _ : M.Val unit :=
-                        let* α0 :
-                            (mut_ref
-                                (std.io.Lines.t
-                                  (std.io.buffered.bufreader.BufReader.t
-                                    std.fs.File.t)))
-                              ->
-                              M (core.option.Option.t _) :=
-                          ltac:(M.get_method (fun ℐ =>
-                            core.iter.traits.iterator.Iterator.next
-                              (Self :=
-                                std.io.Lines.t
-                                  (std.io.buffered.bufreader.BufReader.t
-                                    std.fs.File.t))
-                              (Trait := ℐ))) in
-                        let* α1 :
-                            core.option.Option.t
-                              (core.result.Result.t
-                                alloc.string.String.t
-                                std.io.error.Error.t) :=
-                          M.call (α0 (borrow_mut iter)) in
-                        let* α2 :
-                            M.Val
-                              (core.option.Option.t
-                                (core.result.Result.t
-                                  alloc.string.String.t
-                                  std.io.error.Error.t)) :=
-                          M.alloc α1 in
+                      (let* _ :=
+                        let* α0 :=
+                          M.get_trait_method
+                            "core::iter::traits::iterator::Iterator"
+                            (Ty.apply
+                              (Ty.path "std::io::Lines")
+                              [
+                                Ty.apply
+                                  (Ty.path
+                                    "std::io::buffered::bufreader::BufReader")
+                                  [ Ty.path "std::fs::File" ]
+                              ])
+                            []
+                            "next"
+                            [] in
+                        let* α1 := M.call_closure α0 [ iter ] in
+                        let* α2 := M.alloc α1 in
                         match_operator
                           α2
                           [
                             fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.None =>
-                                let* α0 : M.Val never.t := M.break in
-                                let* α1 := M.read α0 in
-                                let* α2 : unit := never_to_any α1 in
-                                M.alloc α2
-                              | _ => M.break_match
-                              end) :
-                              M (M.Val unit);
+                              let* α0 := M.break in
+                              let* α1 := M.read α0 in
+                              let* α2 := M.never_to_any α1 in
+                              M.alloc α2;
                             fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.Some _ =>
-                                let γ0_0 := core.option.Option.Get_Some_0 γ in
-                                let* line := M.copy γ0_0 in
-                                match_operator
-                                  line
-                                  [
-                                    fun γ =>
-                                      (let* α0 := M.read γ in
-                                      match α0 with
-                                      | core.result.Result.Ok _ =>
-                                        let γ0_0 :=
-                                          core.result.Result.Get_Ok_0 γ in
-                                        let* ip := M.copy γ0_0 in
-                                        let* _ : M.Val unit :=
-                                          let* _ : M.Val unit :=
-                                            let* α0 : ref str.t :=
-                                              M.read (mk_str "") in
-                                            let* α1 : ref str.t :=
-                                              M.read (mk_str "
+                              let* γ0_0 :=
+                                M.get_struct_tuple_field_or_break_match
+                                  γ
+                                  "core::option::Option::Some"
+                                  0 in
+                              let* line := M.copy γ0_0 in
+                              match_operator
+                                line
+                                [
+                                  fun γ =>
+                                    let* γ0_0 :=
+                                      M.get_struct_tuple_field_or_break_match
+                                        γ
+                                        "core::result::Result::Ok"
+                                        0 in
+                                    let* ip := M.copy γ0_0 in
+                                    let* _ :=
+                                      let* _ :=
+                                        let* α0 :=
+                                          M.get_function
+                                            "std::io::stdio::_print"
+                                            [] in
+                                        let* α1 :=
+                                          M.get_associated_function
+                                            (Ty.path "core::fmt::Arguments")
+                                            "new_v1"
+                                            [] in
+                                        let* α2 := M.read (mk_str "") in
+                                        let* α3 := M.read (mk_str "
 ") in
-                                            let* α2 :
-                                                M.Val (array (ref str.t)) :=
-                                              M.alloc [ α0; α1 ] in
-                                            let* α3 : core.fmt.rt.Argument.t :=
-                                              M.call
-                                                (core.fmt.rt.Argument.t::["new_display"]
-                                                  (borrow ip)) in
-                                            let* α4 :
-                                                M.Val
-                                                  (array
-                                                    core.fmt.rt.Argument.t) :=
-                                              M.alloc [ α3 ] in
-                                            let* α5 : core.fmt.Arguments.t :=
-                                              M.call
-                                                (core.fmt.Arguments.t::["new_v1"]
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α2))
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α4))) in
-                                            let* α6 : unit :=
-                                              M.call (std.io.stdio._print α5) in
-                                            M.alloc α6 in
-                                          M.alloc tt in
-                                        M.alloc tt
-                                      | _ => M.break_match
-                                      end) :
-                                      M (M.Val unit);
-                                    fun γ => (M.alloc tt) : M (M.Val unit)
-                                  ]
-                              | _ => M.break_match
-                              end) :
-                              M (M.Val unit)
+                                        let* α4 :=
+                                          M.alloc (Value.Array [ α2; α3 ]) in
+                                        let* α5 :=
+                                          M.get_associated_function
+                                            (Ty.path "core::fmt::rt::Argument")
+                                            "new_display"
+                                            [ Ty.path "alloc::string::String"
+                                            ] in
+                                        let* α6 := M.call_closure α5 [ ip ] in
+                                        let* α7 :=
+                                          M.alloc (Value.Array [ α6 ]) in
+                                        let* α8 :=
+                                          M.call_closure
+                                            α1
+                                            [
+                                              M.pointer_coercion
+                                                (* Unsize *)
+                                                α4;
+                                              M.pointer_coercion (* Unsize *) α7
+                                            ] in
+                                        let* α9 := M.call_closure α0 [ α8 ] in
+                                        M.alloc α9 in
+                                      M.alloc (Value.Tuple []) in
+                                    M.alloc (Value.Tuple []);
+                                  fun γ => M.alloc (Value.Tuple [])
+                                ]
                           ] in
-                      M.alloc tt)) :
-                    M (M.Val unit)
+                      M.alloc (Value.Tuple []))
                 ] in
-            M.pure (use α4)
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ => (M.alloc tt) : M (M.Val unit)
-      ] in
-  M.read α3.
+            M.pure (M.use α4);
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
+    M.read α4
+  | _, _ => M.impossible
+  end.

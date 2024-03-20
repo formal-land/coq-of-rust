@@ -2,44 +2,55 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
-  Module MathError.
-    Inductive t : Set :=
-    | DivisionByZero
-    | NonPositiveLogarithm
-    | NegativeSquareRoot.
-  End MathError.
+  (* Enum MathError *)
+  (* {
+    ty_params := [];
+    variants :=
+      [
+        {
+          name := "DivisionByZero";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "NonPositiveLogarithm";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "NegativeSquareRoot";
+          item := StructTuple [];
+          discriminant := None;
+        }
+      ];
+  } *)
   
-  Module  Impl_core_fmt_Debug_for_result_checked_MathError_t.
-  Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
-    Definition Self : Set := result.checked.MathError.t.
+  Module Impl_core_fmt_Debug_for_result_checked_MathError.
+    Definition Self : Ty.t := Ty.path "result::checked::MathError".
     
-    Parameter fmt :
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter.t) ->
-          M ltac:(core.fmt.Result).
+    Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
     
-    Global Instance AssociatedFunction_fmt :
-      Notations.DoubleColon Self "fmt" := {
-      Notations.double_colon := fmt;
-    }.
-    
-    Global Instance ℐ : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_result_checked_MathError_t.
-  End Impl_core_fmt_Debug_for_result_checked_MathError_t.
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        (* Self *) (Ty.path "result::checked::MathError")
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_result_checked_MathError.
   
-  Ltac MathResult :=
-    exact (core.result.Result.t f64.t result.checked.MathError.t).
+  Axiom MathResult :
+    (Ty.path "result::checked::MathResult") =
+      (Ty.apply
+        (Ty.path "core::result::Result")
+        [ Ty.path "f64"; Ty.path "result::checked::MathError" ]).
   
-  Parameter div : f64.t -> f64.t -> M ltac:(result.checked.MathResult).
+  Parameter div : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter sqrt : f64.t -> M ltac:(result.checked.MathResult).
+  Parameter sqrt : (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter ln : f64.t -> M ltac:(result.checked.MathResult).
+  Parameter ln : (list Ty.t) -> (list Value.t) -> M.
 End checked.
 
-Parameter op : f64.t -> f64.t -> M f64.t.
+Parameter op : (list Ty.t) -> (list Value.t) -> M.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : (list Ty.t) -> (list Value.t) -> M.

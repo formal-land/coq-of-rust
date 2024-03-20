@@ -6,31 +6,30 @@ fn decode_input<T>() -> Result<T, ()> {
     unimplemented!()
 }
 *)
-Definition decode_input {T : Set} : M (core.result.Result.t T unit) :=
-  let* α0 : ref str.t := M.read (mk_str "not implemented") in
-  let* α1 : never.t := M.call (core.panicking.panic α0) in
-  never_to_any α1.
+Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
 
-Module  WildcardSelector.
-Section WildcardSelector.
-  Inductive t : Set := Build.
-End WildcardSelector.
-End WildcardSelector.
+(* StructTuple
+  {
+    name := "WildcardSelector";
+    ty_params := [];
+  } *)
 
-Module  Impl_wildcard_selector_WildcardSelector_t.
-Section Impl_wildcard_selector_WildcardSelector_t.
-  Definition Self : Set := wildcard_selector.WildcardSelector.t.
+Module Impl_wildcard_selector_WildcardSelector.
+  Definition Self : Ty.t := Ty.path "wildcard_selector::WildcardSelector".
   
   (*
       pub fn new() -> Self {
           Self {}
       }
   *)
-  Definition new : M Self := M.pure wildcard_selector.WildcardSelector.Build.
+  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      M.pure (Value.StructTuple "wildcard_selector::WildcardSelector" [])
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
   (*
       pub fn wildcard(&mut self) {
@@ -38,103 +37,135 @@ Section Impl_wildcard_selector_WildcardSelector_t.
           println!("Wildcard selector: {:?}, message: {}", _selector, _message);
       }
   *)
-  Definition wildcard (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* α0 :
-        core.result.Result.t ((array u8.t) * alloc.string.String.t) unit :=
-      M.call wildcard_selector.decode_input in
-    let* α1 : (array u8.t) * alloc.string.String.t :=
-      M.call
-        ((core.result.Result.t
-              ((array u8.t) * alloc.string.String.t)
-              unit)::["unwrap"]
-          α0) in
-    let* α2 : M.Val ((array u8.t) * alloc.string.String.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
-      match_operator
-        α2
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | (_, _) =>
-              let γ0_0 := Tuple.Access.left γ in
-              let γ0_1 := Tuple.Access.right γ in
+  Definition wildcard (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                  Ty.path "alloc::string::String"
+                ];
+              Ty.tuple []
+            ])
+          "unwrap"
+          [] in
+      let* α1 :=
+        M.get_function
+          "wildcard_selector::decode_input"
+          [
+            Ty.tuple
+              [
+                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                Ty.path "alloc::string::String"
+              ]
+          ] in
+      let* α2 := M.call_closure α1 [] in
+      let* α3 := M.call_closure α0 [ α2 ] in
+      let* α4 := M.alloc α3 in
+      let* α5 :=
+        match_operator
+          α4
+          [
+            fun γ =>
+              let γ0_0 := M.get_tuple_field γ 0 in
+              let γ0_1 := M.get_tuple_field γ 1 in
               let* _selector := M.copy γ0_0 in
               let* _message := M.copy γ0_1 in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t :=
-                    M.read (mk_str "Wildcard selector: ") in
-                  let* α1 : ref str.t := M.read (mk_str ", message: ") in
-                  let* α2 : ref str.t := M.read (mk_str "
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_v1"
+                      [] in
+                  let* α2 := M.read (mk_str "Wildcard selector: ") in
+                  let* α3 := M.read (mk_str ", message: ") in
+                  let* α4 := M.read (mk_str "
 ") in
-                  let* α3 : M.Val (array (ref str.t)) :=
-                    M.alloc [ α0; α1; α2 ] in
-                  let* α4 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_debug"]
-                        (borrow _selector)) in
-                  let* α5 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow _message)) in
-                  let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α4; α5 ] in
-                  let* α7 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α3))
-                        (pointer_coercion "Unsize" (borrow α6))) in
-                  let* α8 : unit := M.call (std.io.stdio._print α7) in
-                  M.alloc α8 in
-                M.alloc tt in
-              M.alloc tt
-            end) :
-            M (M.Val unit)
-        ] in
-    M.read α3.
+                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                  let* α6 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_debug"
+                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+                  let* α7 := M.call_closure α6 [ _selector ] in
+                  let* α8 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display"
+                      [ Ty.path "alloc::string::String" ] in
+                  let* α9 := M.call_closure α8 [ _message ] in
+                  let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
+                  let* α11 :=
+                    M.call_closure
+                      α1
+                      [
+                        M.pointer_coercion (* Unsize *) α5;
+                        M.pointer_coercion (* Unsize *) α10
+                      ] in
+                  let* α12 := M.call_closure α0 [ α11 ] in
+                  M.alloc α12 in
+                M.alloc (Value.Tuple []) in
+              M.alloc (Value.Tuple [])
+          ] in
+      M.read α5
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_wildcard :
-    Notations.DoubleColon Self "wildcard" := {
-    Notations.double_colon := wildcard;
-  }.
+  Axiom AssociatedFunction_wildcard :
+    M.IsAssociatedFunction Self "wildcard" wildcard.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
           println!("Wildcard complement message: {}", _message);
       }
   *)
-  Definition wildcard_complement
-      (self : mut_ref Self)
-      (_message : alloc.string.String.t)
-      : M unit :=
-    let* self := M.alloc self in
-    let* _message := M.alloc _message in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t :=
-          M.read (mk_str "Wildcard complement message: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+  Definition wildcard_complement (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [ self; _message ] =>
+      let* self := M.alloc self in
+      let* _message := M.alloc _message in
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1"
+              [] in
+          let* α2 := M.read (mk_str "Wildcard complement message: ") in
+          let* α3 := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow _message)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+          let* α5 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display"
+              [ Ty.path "alloc::string::String" ] in
+          let* α6 := M.call_closure α5 [ _message ] in
+          let* α7 := M.alloc (Value.Array [ α6 ]) in
+          let* α8 :=
+            M.call_closure
+              α1
+              [
+                M.pointer_coercion (* Unsize *) α4;
+                M.pointer_coercion (* Unsize *) α7
+              ] in
+          let* α9 := M.call_closure α0 [ α8 ] in
+          M.alloc α9 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_wildcard_complement :
-    Notations.DoubleColon Self "wildcard_complement" := {
-    Notations.double_colon := wildcard_complement;
-  }.
-End Impl_wildcard_selector_WildcardSelector_t.
-End Impl_wildcard_selector_WildcardSelector_t.
+  Axiom AssociatedFunction_wildcard_complement :
+    M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement.
+End Impl_wildcard_selector_WildcardSelector.

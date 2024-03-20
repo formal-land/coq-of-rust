@@ -2,51 +2,30 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
-  Module  OpenBox.
-  Section OpenBox.
-    Context (T : Set).
-    
-    Record t : Set := {
-      contents : T;
-    }.
-    
-    Definition Get_contents :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>)).
-  End OpenBox.
-  End OpenBox.
+  (* StructRecord
+    {
+      name := "OpenBox";
+      ty_params := [ ("T", None) ];
+      fields := [ ("contents", T) ];
+    } *)
   
-  Module  ClosedBox.
-  Section ClosedBox.
-    Context (T : Set).
-    
-    Record t : Set := {
-      contents : T;
-    }.
-    
-    Definition Get_contents :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>)).
-  End ClosedBox.
-  End ClosedBox.
+  (* StructRecord
+    {
+      name := "ClosedBox";
+      ty_params := [ ("T", None) ];
+      fields := [ ("contents", T) ];
+    } *)
   
-  Module  Impl_struct_visibility_my_ClosedBox_t_T.
-  Section Impl_struct_visibility_my_ClosedBox_t_T.
-    Context {T : Set}.
+  Module Impl_struct_visibility_my_ClosedBox_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [ T ].
     
-    Definition Self : Set := struct_visibility.my.ClosedBox.t T.
+    Parameter new : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
     
-    Parameter new : T -> M (struct_visibility.my.ClosedBox.t T).
-    
-    Global Instance AssociatedFunction_new :
-      Notations.DoubleColon Self "new" := {
-      Notations.double_colon := new;
-    }.
-  End Impl_struct_visibility_my_ClosedBox_t_T.
-  End Impl_struct_visibility_my_ClosedBox_t_T.
+    Axiom AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction (Self T) "new" (new T).
+  End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : (list Ty.t) -> (list Value.t) -> M.

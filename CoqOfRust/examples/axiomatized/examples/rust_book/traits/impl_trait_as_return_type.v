@@ -2,27 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter combine_vecs_explicit_return_type :
-    (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      M
-        (core.iter.adapters.cycle.Cycle.t
-          (core.iter.adapters.chain.Chain.t
-            (alloc.vec.into_iter.IntoIter.t
-              i32.t
-              alloc.vec.into_iter.IntoIter.Default.A)
-            (alloc.vec.into_iter.IntoIter.t
-              i32.t
-              alloc.vec.into_iter.IntoIter.Default.A))).
+    (list Ty.t) -> (list Value.t) -> M.
 
-Parameter combine_vecs_ret_ty :
-    Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
-    unit.
-Parameter combine_vecs :
-    (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      M _ (* OpaqueTy *).
+Parameter combine_vecs : (list Ty.t) -> (list Value.t) -> M.
 
-Error OpaqueTy.
+(* Error OpaqueTy *)
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : (list Ty.t) -> (list Value.t) -> M.

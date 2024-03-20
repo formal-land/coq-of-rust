@@ -8,23 +8,28 @@ fn main() {
     "unparsable".parse::<u32>();
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-    let* α0 : ref str.t := M.read (mk_str "12") in
-    let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-      M.call (str.t::["parse"] α0) in
-    M.alloc α1 in
-  let* _ :
-      M.Val (core.result.Result.t bool.t core.str.error.ParseBoolError.t) :=
-    let* α0 : ref str.t := M.read (mk_str "true") in
-    let* α1 : core.result.Result.t bool.t core.str.error.ParseBoolError.t :=
-      M.call (str.t::["parse"] α0) in
-    M.alloc α1 in
-  let* _ : M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
-    let* α0 : ref str.t := M.read (mk_str "unparsable") in
-    let* α1 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
-      M.call (str.t::["parse"] α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* α0 :=
+        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "i32" ] in
+      let* α1 := M.read (mk_str "12") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* _ :=
+      let* α0 :=
+        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "bool" ] in
+      let* α1 := M.read (mk_str "true") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* _ :=
+      let* α0 :=
+        M.get_associated_function (Ty.path "str") "parse" [ Ty.path "u32" ] in
+      let* α1 := M.read (mk_str "unparsable") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

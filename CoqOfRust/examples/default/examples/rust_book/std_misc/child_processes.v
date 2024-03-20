@@ -19,117 +19,204 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* output : M.Val std.process.Output.t :=
-    let* α0 : ref str.t := M.read (mk_str "rustc") in
-    let* α1 : std.process.Command.t :=
-      M.call (std.process.Command.t::["new"] α0) in
-    let* α2 : M.Val std.process.Command.t := M.alloc α1 in
-    let* α3 : ref str.t := M.read (mk_str "--version") in
-    let* α4 : mut_ref std.process.Command.t :=
-      M.call (std.process.Command.t::["arg"] (borrow_mut α2) α3) in
-    let* α5 : core.result.Result.t std.process.Output.t std.io.error.Error.t :=
-      M.call (std.process.Command.t::["output"] α4) in
-    let* α6 : std.process.Output.t :=
-      M.call
-        ((core.result.Result.t
-              std.process.Output.t
-              std.io.error.Error.t)::["unwrap_or_else"]
-          α5
-          (fun (α0 : std.io.error.Error.t) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* e := M.copy γ in
-                  let* α0 : ref str.t :=
-                    M.read (mk_str "failed to execute process: ") in
-                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                  let* α2 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
-                  let* α3 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α2 ] in
-                  let* α4 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α1))
-                        (pointer_coercion "Unsize" (borrow α3))) in
-                  let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
-                  never_to_any α5) :
-                  M std.process.Output.t
-              ]) :
-            M std.process.Output.t)) in
-    M.alloc α6 in
-  let* α0 : bool.t :=
-    M.call
-      (std.process.ExitStatus.t::["success"]
-        (borrow (std.process.Output.Get_status output))) in
-  let* α1 : M.Val bool.t := M.alloc α0 in
-  let* α2 : bool.t := M.read (use α1) in
-  let* α0 : M.Val unit :=
-    if α2 then
-      let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 :
-            (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) -> M (ref _) :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.deref.Deref.deref
-              (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-              (Trait := ℐ))) in
-        let* α1 : ref (slice u8.t) :=
-          M.call (α0 (borrow (std.process.Output.Get_stdout output))) in
-        let* α2 : alloc.borrow.Cow.t str.t :=
-          M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
-        M.alloc α2 in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "rustc succeeded and stdout was:
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* output :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ])
+          "unwrap_or_else"
+          [
+            Ty.function
+              [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+              (Ty.path "std::process::Output")
+          ] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "output"
+          [] in
+      let* α2 :=
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "arg"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+      let* α3 :=
+        M.get_associated_function
+          (Ty.path "std::process::Command")
+          "new"
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+      let* α4 := M.read (mk_str "rustc") in
+      let* α5 := M.call_closure α3 [ α4 ] in
+      let* α6 := M.alloc α5 in
+      let* α7 := M.read (mk_str "--version") in
+      let* α8 := M.call_closure α2 [ α6; α7 ] in
+      let* α9 := M.call_closure α1 [ α8 ] in
+      let* α10 :=
+        M.call_closure
+          α0
+          [
+            α9;
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* e := M.copy γ in
+                        let* α0 :=
+                          M.get_function "core::panicking::panic_fmt" [] in
+                        let* α1 :=
+                          M.get_associated_function
+                            (Ty.path "core::fmt::Arguments")
+                            "new_v1"
+                            [] in
+                        let* α2 :=
+                          M.read (mk_str "failed to execute process: ") in
+                        let* α3 := M.alloc (Value.Array [ α2 ]) in
+                        let* α4 :=
+                          M.get_associated_function
+                            (Ty.path "core::fmt::rt::Argument")
+                            "new_display"
+                            [ Ty.path "std::io::error::Error" ] in
+                        let* α5 := M.call_closure α4 [ e ] in
+                        let* α6 := M.alloc (Value.Array [ α5 ]) in
+                        let* α7 :=
+                          M.call_closure
+                            α1
+                            [
+                              M.pointer_coercion (* Unsize *) α3;
+                              M.pointer_coercion (* Unsize *) α6
+                            ] in
+                        let* α8 := M.call_closure α0 [ α7 ] in
+                        M.never_to_any α8
+                    ]
+                | _ => M.impossible
+                end)
+          ] in
+      M.alloc α10 in
+    let* α0 :=
+      M.get_associated_function
+        (Ty.path "std::process::ExitStatus")
+        "success"
+        [] in
+    let* α1 :=
+      M.call_closure
+        α0
+        [ M.get_struct_record_field output "std::process::Output" "status" ] in
+    let* α2 := M.alloc α1 in
+    let* α3 := M.read (M.use α2) in
+    let* α0 :=
+      if Value.is_true α3 then
+        let* s :=
+          let* α0 :=
+            M.get_associated_function
+              (Ty.path "alloc::string::String")
+              "from_utf8_lossy"
+              [] in
+          let* α1 :=
+            M.get_trait_method
+              "core::ops::deref::Deref"
+              (Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+              []
+              "deref"
+              [] in
+          let* α2 :=
+            M.call_closure
+              α1
+              [ M.get_struct_record_field output "std::process::Output" "stdout"
+              ] in
+          let* α3 := M.call_closure α0 [ α2 ] in
+          M.alloc α3 in
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_v1"
+                [] in
+            let* α2 := M.read (mk_str "rustc succeeded and stdout was:
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.rt.Argument.t :=
-            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-          let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α2 ] in
-          let* α4 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α1))
-                (pointer_coercion "Unsize" (borrow α3))) in
-          let* α5 : unit := M.call (std.io.stdio._print α4) in
-          M.alloc α5 in
-        M.alloc tt in
-      M.alloc tt
-    else
-      let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 :
-            (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) -> M (ref _) :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.deref.Deref.deref
-              (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-              (Trait := ℐ))) in
-        let* α1 : ref (slice u8.t) :=
-          M.call (α0 (borrow (std.process.Output.Get_stderr output))) in
-        let* α2 : alloc.borrow.Cow.t str.t :=
-          M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
-        M.alloc α2 in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "rustc failed and stderr was:
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ] in
+            let* α5 := M.call_closure α4 [ s ] in
+            let* α6 := M.alloc (Value.Array [ α5 ]) in
+            let* α7 :=
+              M.call_closure
+                α1
+                [
+                  M.pointer_coercion (* Unsize *) α3;
+                  M.pointer_coercion (* Unsize *) α6
+                ] in
+            let* α8 := M.call_closure α0 [ α7 ] in
+            M.alloc α8 in
+          M.alloc (Value.Tuple []) in
+        M.alloc (Value.Tuple [])
+      else
+        let* s :=
+          let* α0 :=
+            M.get_associated_function
+              (Ty.path "alloc::string::String")
+              "from_utf8_lossy"
+              [] in
+          let* α1 :=
+            M.get_trait_method
+              "core::ops::deref::Deref"
+              (Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+              []
+              "deref"
+              [] in
+          let* α2 :=
+            M.call_closure
+              α1
+              [ M.get_struct_record_field output "std::process::Output" "stderr"
+              ] in
+          let* α3 := M.call_closure α0 [ α2 ] in
+          M.alloc α3 in
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_v1"
+                [] in
+            let* α2 := M.read (mk_str "rustc failed and stderr was:
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.rt.Argument.t :=
-            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-          let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α2 ] in
-          let* α4 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α1))
-                (pointer_coercion "Unsize" (borrow α3))) in
-          let* α5 : unit := M.call (std.io.stdio._print α4) in
-          M.alloc α5 in
-        M.alloc tt in
-      M.alloc tt in
-  M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ] in
+            let* α5 := M.call_closure α4 [ s ] in
+            let* α6 := M.alloc (Value.Array [ α5 ]) in
+            let* α7 :=
+              M.call_closure
+                α1
+                [
+                  M.pointer_coercion (* Unsize *) α3;
+                  M.pointer_coercion (* Unsize *) α6
+                ] in
+            let* α8 := M.call_closure α0 [ α7 ] in
+            M.alloc α8 in
+          M.alloc (Value.Tuple []) in
+        M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

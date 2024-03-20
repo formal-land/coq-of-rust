@@ -7,17 +7,23 @@ fn main() {
     say_hello!()
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : ref str.t := M.read (mk_str "Hello!
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* α0 := M.get_function "std::io::stdio::_print" [] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.path "core::fmt::Arguments")
+          "new_const"
+          [] in
+      let* α2 := M.read (mk_str "Hello!
 ") in
-    let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-    let* α2 : core.fmt.Arguments.t :=
-      M.call
-        (core.fmt.Arguments.t::["new_const"]
-          (pointer_coercion "Unsize" (borrow α1))) in
-    let* α3 : unit := M.call (std.io.stdio._print α2) in
-    M.alloc α3 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+      let* α3 := M.alloc (Value.Array [ α2 ]) in
+      let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+      let* α5 := M.call_closure α0 [ α4 ] in
+      M.alloc α5 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

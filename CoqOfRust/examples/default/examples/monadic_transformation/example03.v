@@ -7,29 +7,48 @@ fn main() {
     vec![5, 6, 7, 8];
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
-    M.alloc
-      ((Integer.of_Z 1) : i32.t,
-        (Integer.of_Z 2) : i32.t,
-        (Integer.of_Z 3) : i32.t,
-        (Integer.of_Z 4) : i32.t) in
-  let* _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val (array i32.t) :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
       M.alloc
-        [
-          (Integer.of_Z 5) : i32.t;
-          (Integer.of_Z 6) : i32.t;
-          (Integer.of_Z 7) : i32.t;
-          (Integer.of_Z 8) : i32.t
-        ] in
-    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
-      M.read α1 in
-    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
-    M.alloc α3 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        (Value.Tuple
+          [
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3;
+            Value.Integer Integer.I32 4
+          ]) in
+    let* _ :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new"
+          [] in
+      let* α2 :=
+        M.alloc
+          (Value.Array
+            [
+              Value.Integer Integer.I32 5;
+              Value.Integer Integer.I32 6;
+              Value.Integer Integer.I32 7;
+              Value.Integer Integer.I32 8
+            ]) in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      M.alloc α5 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

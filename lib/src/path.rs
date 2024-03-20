@@ -3,7 +3,6 @@ use crate::render::*;
 use rustc_hir::{
     def::{DefKind, Res},
     definitions::DefPathData,
-    QPath,
 };
 use std::fmt;
 use std::vec;
@@ -25,17 +24,6 @@ impl Path {
         Path {
             segments: vec![to_valid_coq_name(name)],
         }
-    }
-
-    fn prefix_last_by_impl(&mut self) {
-        let last = self.segments.pop().unwrap();
-        self.segments.push(format!("Impl{last}"));
-    }
-
-    pub(crate) fn suffix_last_with_dot_t(&self) -> Self {
-        let mut path = self.clone();
-        path.segments.push("t".to_string());
-        path
     }
 
     pub(crate) fn new<S: ToString>(segments: &[S]) -> Self {
@@ -115,54 +103,6 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
         return compile_def_id(env, def_id);
     }
     compile_path_without_env(path)
-}
-
-pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
-    match qpath {
-        QPath::Resolved(_, path) => compile_path(env, path),
-        QPath::TypeRelative(ty, segment) => {
-            let ty = match ty.kind {
-                rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => match path.res {
-                    // SelfTyAlias and SelfTyParam are only local aliases (named `Self`)
-                    // and cannot be used directly in qualified paths in Coq
-                    Res::SelfTyAlias { .. } | Res::SelfTyParam { .. } => None,
-                    Res::Def(DefKind::TyParam, _) => Some((compile_path(env, path), true)),
-                    // the rest of paths should refer to implementations of types,
-                    // so we prepend their names with `Impl_`
-                    _ => {
-                        let mut path = compile_path(env, path);
-                        path.prefix_last_by_impl();
-                        Some((path, false))
-                    }
-                },
-                _ => Some((Path::local("ComplexTypePath"), false)),
-            };
-            match ty {
-                Some((path, is_param)) => {
-                    if is_param {
-                        Path {
-                            segments: vec![format!(
-                                "{}::type[\"{}\"]",
-                                to_valid_coq_name(&path.to_string()),
-                                to_valid_coq_name(segment.ident.name.as_str()),
-                            )],
-                        }
-                    } else {
-                        Path {
-                            segments: vec![
-                                to_valid_coq_name(&path.to_string()),
-                                to_valid_coq_name(segment.ident.name.as_str()),
-                            ],
-                        }
-                    }
-                }
-                None => Path {
-                    segments: vec![to_valid_coq_name(segment.ident.name.as_str())],
-                },
-            }
-        }
-        QPath::LangItem(_, _) => Path::local("LangItem"),
-    }
 }
 
 #[allow(dead_code)]

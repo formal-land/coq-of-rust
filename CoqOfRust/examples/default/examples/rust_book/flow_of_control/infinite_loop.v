@@ -29,90 +29,114 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* count : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Let's count until infinity!
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* count := M.alloc (Value.Integer Integer.U32 0) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            [] in
+        let* α2 := M.read (mk_str "Let's count until infinity!
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit :=
-    M.loop
-      (let* _ : M.Val unit :=
-        let β : M.Val u32.t := count in
-        let* α0 := M.read β in
-        let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t) in
-        assign β α1 in
-      let* _ : M.Val unit :=
-        let* α0 : u32.t := M.read count in
-        let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 3) : u32.t)) in
-        let* α2 : bool.t := M.read (use α1) in
-        if α2 then
-          let* _ : M.Val unit :=
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "three
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* α0 :=
+      M.loop
+        (let* _ :=
+          let β := count in
+          let* α0 := M.read β in
+          let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
+          M.assign β α1 in
+        let* _ :=
+          let* α0 := M.read count in
+          let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 3)) in
+          let* α2 := M.read (M.use α1) in
+          if Value.is_true α2 then
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const"
+                    [] in
+                let* α2 := M.read (mk_str "three
 ") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt in
-          let* α0 : M.Val never.t := M.continue in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 :=
+                  M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call_closure α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple []) in
+            let* α0 := M.continue in
+            let* α1 := M.read α0 in
+            let* α2 := M.never_to_any α1 in
+            M.alloc α2
+          else
+            M.alloc (Value.Tuple []) in
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_v1"
+                [] in
+            let* α2 := M.read (mk_str "") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            let* α5 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "u32" ] in
+            let* α6 := M.call_closure α5 [ count ] in
+            let* α7 := M.alloc (Value.Array [ α6 ]) in
+            let* α8 :=
+              M.call_closure
+                α1
+                [
+                  M.pointer_coercion (* Unsize *) α4;
+                  M.pointer_coercion (* Unsize *) α7
+                ] in
+            let* α9 := M.call_closure α0 [ α8 ] in
+            M.alloc α9 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.read count in
+        let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 5)) in
+        let* α2 := M.read (M.use α1) in
+        if Value.is_true α2 then
+          let* _ :=
+            let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  [] in
+              let* α2 := M.read (mk_str "OK, that's enough
+") in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              let* α4 :=
+                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+              let* α5 := M.call_closure α0 [ α4 ] in
+              M.alloc α5 in
+            M.alloc (Value.Tuple []) in
+          let* α0 := M.break in
           let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
+          let* α2 := M.never_to_any α1 in
           M.alloc α2
         else
-          M.alloc tt in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "") in
-          let* α1 : ref str.t := M.read (mk_str "
-") in
-          let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-          let* α3 : core.fmt.rt.Argument.t :=
-            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow count)) in
-          let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-          let* α5 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 : unit := M.call (std.io.stdio._print α5) in
-          M.alloc α6 in
-        M.alloc tt in
-      let* α0 : u32.t := M.read count in
-      let* α1 : M.Val bool.t :=
-        M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 5) : u32.t)) in
-      let* α2 : bool.t := M.read (use α1) in
-      if α2 then
-        let* _ : M.Val unit :=
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "OK, that's enough
-") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt in
-        let* α0 : M.Val never.t := M.break in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt) in
-  M.read α0.
+          M.alloc (Value.Tuple [])) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

@@ -20,7 +20,7 @@ fn compile_poly_fn_sig<'a>(env: &Env<'a>, sig: &rustc_middle::ty::PolyFnSig<'a>)
 pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> Rc<CoqType> {
     match ty.kind() {
         TyKind::Bool | TyKind::Char | TyKind::Int(_) | TyKind::Uint(_) | TyKind::Float(_) => {
-            CoqType::path(&[&ty.to_string(), "t"])
+            CoqType::path(&[&ty.to_string()])
         }
         TyKind::Adt(adt_def, substs) => {
             let path = compile_def_id(env, adt_def.did());
@@ -33,27 +33,33 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
                 .collect();
             Rc::new(CoqType::Application {
                 func: Rc::new(CoqType::Path {
-                    path: Rc::new(path.suffix_last_with_dot_t()),
+                    path: Rc::new(path),
                 }),
                 args,
-                is_alias: false,
             })
         }
         // Foreign(DefId),
-        TyKind::Str => CoqType::path(&["str", "t"]),
+        TyKind::Str => CoqType::path(&["str"]),
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
             args: vec![compile_type(env, ty)],
-            is_alias: false,
         }),
         TyKind::Slice(ty) => Rc::new(CoqType::Application {
             func: CoqType::path(&["slice"]),
             args: vec![compile_type(env, ty)],
-            is_alias: false,
         }),
-        TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) | TyKind::Ref(_, ty, mutbl) => {
-            CoqType::make_ref(mutbl, compile_type(env, ty))
+        TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) => {
+            let ptr_name = match mutbl {
+                rustc_hir::Mutability::Mut => "*mut",
+                rustc_hir::Mutability::Not => "*const",
+            };
+
+            Rc::new(CoqType::Application {
+                func: CoqType::path(&[ptr_name]),
+                args: vec![compile_type(env, ty)],
+            })
         }
+        TyKind::Ref(_, ty, mutbl) => CoqType::make_ref(mutbl, compile_type(env, ty)),
         TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, fn_sig),
         TyKind::Dynamic(existential_predicates, _, _) => {
             let traits = existential_predicates
@@ -88,14 +94,11 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         }
         // Generator(DefId, &'tcx List<GenericArg<'tcx>>, Movability),
         // GeneratorWitness(DefId, &'tcx List<GenericArg<'tcx>>),
-        TyKind::Never => CoqType::path(&["never", "t"]),
+        TyKind::Never => CoqType::path(&["never"]),
         TyKind::Tuple(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, &ty)).collect(),
         )),
-        TyKind::Alias(_, _) => {
-            // These types are generally too complex to represent in Coq.
-            Rc::new(CoqType::Infer)
-        }
+        TyKind::Alias(_, _) => Rc::new(CoqType::Associated),
         TyKind::Param(param) => Rc::new(CoqType::Var(param.name.to_string())),
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),

@@ -6,37 +6,52 @@ fn call_me<F: Fn()>(f: F) {
     f();
 }
 *)
-Definition call_me {F : Set} (f : F) : M unit :=
-  let* f := M.alloc f in
-  let* _ : M.Val unit :=
-    let* α0 : (ref F) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.Fn.call (Self := F) (Args := unit) (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow f) tt) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition call_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [ F ], [ f ] =>
+    let* f := M.alloc f in
+    let* _ :=
+      let* α0 :=
+        M.get_trait_method
+          "core::ops::function::Fn"
+          F
+          [ Ty.tuple [] ]
+          "call"
+          [] in
+      let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn function() {
     println!("I'm a function!");
 }
 *)
-Definition function : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "I'm a function!
+Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            [] in
+        let* α2 := M.read (mk_str "I'm a function!
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -47,40 +62,59 @@ fn main() {
     call_me(function);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* closure : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "I'm a closure!
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* closure :=
+      M.alloc
+        (M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* _ :=
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α1 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_const"
+                          [] in
+                      let* α2 := M.read (mk_str "I'm a closure!
 ") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : unit := M.call (std.io.stdio._print α2) in
-                M.alloc α3 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  let* _ : M.Val unit :=
-    let* α0 : unit -> M unit := M.read closure in
-    let* α1 : unit := M.call (functions_closures_input_functions.call_me α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (functions_closures_input_functions.call_me
-          functions_closures_input_functions.function) in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+                      let* α3 := M.alloc (Value.Array [ α2 ]) in
+                      let* α4 :=
+                        M.call_closure
+                          α1
+                          [ M.pointer_coercion (* Unsize *) α3 ] in
+                      let* α5 := M.call_closure α0 [ α4 ] in
+                      M.alloc α5 in
+                    let* α0 := M.alloc (Value.Tuple []) in
+                    M.read α0
+                ]
+            | _ => M.impossible
+            end)) in
+    let* _ :=
+      let* α0 :=
+        M.get_function
+          "functions_closures_input_functions::call_me"
+          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
+      let* α1 := M.read closure in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* _ :=
+      let* α0 :=
+        M.get_function
+          "functions_closures_input_functions::call_me"
+          [ Ty.function [] (Ty.tuple []) ] in
+      let* α1 :=
+        M.get_function "functions_closures_input_functions::function" [] in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

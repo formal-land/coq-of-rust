@@ -8,122 +8,171 @@ fn main() {
     println!("Results: {:?}", numbers);
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "tofu") in
-    let* α1 : ref str.t := M.read (mk_str "93") in
-    let* α2 : ref str.t := M.read (mk_str "18") in
-    let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-    let* α4 :
-        M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
-      M.read α4 in
-    let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
-    M.alloc α6 in
-  let* numbers :
-      M.Val
-        (alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t) :=
-    let* α0 :
-        (core.iter.adapters.map.Map.t
-            (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-            ((ref str.t) ->
-              M (core.result.Result.t i32.t core.num.error.ParseIntError.t)))
-          ->
-          M
-            (alloc.vec.Vec.t
-              (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              alloc.alloc.Global.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.collect
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              ((ref str.t) ->
-                M (core.result.Result.t i32.t core.num.error.ParseIntError.t)))
-          (B :=
-            alloc.vec.Vec.t
-              (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α1 :
-        (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) ->
-          ((ref str.t) ->
-            M (core.result.Result.t i32.t core.num.error.ParseIntError.t))
-          ->
-          M
-            (core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              ((ref str.t) ->
-                M
-                  (core.result.Result.t
-                    i32.t
-                    core.num.error.ParseIntError.t))) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.map
-          (Self :=
-            alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          (B := core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          (F :=
-            (ref str.t) ->
-              M (core.result.Result.t i32.t core.num.error.ParseIntError.t))
-          (Trait := ℐ))) in
-    let* α2 : (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α3 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.read strings in
-    let* α4 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
-      M.call (α2 α3) in
-    let* α5 :
-        core.iter.adapters.map.Map.t
-          (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          ((ref str.t) ->
-            M (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
-      M.call
-        (α1
-          α4
-          (fun (α0 : ref str.t) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* strings :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "slice")
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new"
+          [] in
+      let* α2 := M.read (mk_str "tofu") in
+      let* α3 := M.read (mk_str "93") in
+      let* α4 := M.read (mk_str "18") in
+      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+      let* α6 := M.call_closure α1 [ α5 ] in
+      let* α7 := M.read α6 in
+      let* α8 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α7 ] in
+      M.alloc α8 in
+    let* numbers :=
+      let* α0 :=
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "core::iter::adapters::map::Map")
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                [
+                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.function
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+            ])
+          []
+          "collect"
+          [
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
               [
-                fun γ =>
-                  (let* s := M.copy γ in
-                  let* α0 : ref str.t := M.read s in
-                  M.call (str.t::["parse"] α0)) :
-                  M (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              ]) :
-            M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
-    let* α6 :
-        alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t :=
-      M.call (α0 α5) in
-    M.alloc α6 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Results: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow numbers)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                Ty.path "alloc::alloc::Global"
+              ]
+          ] in
+      let* α1 :=
+        M.get_trait_method
+          "core::iter::traits::iterator::Iterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
+          "map"
+          [
+            Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+            Ty.function
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+          ] in
+      let* α2 :=
+        M.get_trait_method
+          "core::iter::traits::collect::IntoIterator"
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [
+              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          []
+          "into_iter"
+          [] in
+      let* α3 := M.read strings in
+      let* α4 := M.call_closure α2 [ α3 ] in
+      let* α5 :=
+        M.call_closure
+          α1
+          [
+            α4;
+            M.closure
+              (fun γ =>
+                match γ with
+                | [ α0 ] =>
+                  let* α0 := M.alloc α0 in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* s := M.copy γ in
+                        let* α0 :=
+                          M.get_associated_function
+                            (Ty.path "str")
+                            "parse"
+                            [ Ty.path "i32" ] in
+                        let* α1 := M.read s in
+                        M.call_closure α0 [ α1 ]
+                    ]
+                | _ => M.impossible
+                end)
+          ] in
+      let* α6 := M.call_closure α0 [ α5 ] in
       M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Results: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_debug"
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+            ] in
+        let* α6 := M.call_closure α5 [ numbers ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

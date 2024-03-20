@@ -6,10 +6,15 @@ fn gen_range() -> u32 {
     todo!()
 }
 *)
-Definition gen_range : M u32.t :=
-  let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
-  let* α1 : never.t := M.call (core.panicking.panic α0) in
-  never_to_any α1.
+Definition gen_range (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* α0 := M.get_function "core::panicking::panic" [] in
+    let* α1 := M.read (mk_str "not yet implemented") in
+    let* α2 := M.call_closure α0 [ α1 ] in
+    M.never_to_any α2
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -45,181 +50,206 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Guess the number!
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            [] in
+        let* α2 := M.read (mk_str "Guess the number!
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* secret_number : M.Val u32.t :=
-    let* α0 : u32.t := M.call guessing_game.gen_range in
-    M.alloc α0 in
-  let* α0 : M.Val unit :=
-    M.loop
-      (let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "Please input your guess.
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* secret_number :=
+      let* α0 := M.get_function "guessing_game::gen_range" [] in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
+    let* α0 :=
+      M.loop
+        (let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 := M.read (mk_str "Please input your guess.
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* guess : M.Val alloc.string.String.t :=
-        let* α0 : alloc.string.String.t :=
-          M.call alloc.string.String.t::["new"] in
-        M.alloc α0 in
-      let* _ : M.Val usize.t :=
-        let* α0 : std.io.stdio.Stdin.t := M.call std.io.stdio.stdin in
-        let* α1 : M.Val std.io.stdio.Stdin.t := M.alloc α0 in
-        let* α2 : core.result.Result.t usize.t std.io.error.Error.t :=
-          M.call
-            (std.io.stdio.Stdin.t::["read_line"]
-              (borrow α1)
-              (borrow_mut guess)) in
-        let* α3 : ref str.t := M.read (mk_str "Failed to read line") in
-        let* α4 : usize.t :=
-          M.call
-            ((core.result.Result.t usize.t std.io.error.Error.t)::["expect"]
-              α2
-              α3) in
-        M.alloc α4 in
-      let* guess : M.Val u32.t :=
-        let* α0 : (ref alloc.string.String.t) -> M (ref _) :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.deref.Deref.deref
-              (Self := alloc.string.String.t)
-              (Trait := ℐ))) in
-        let* α1 : ref str.t := M.call (α0 (borrow guess)) in
-        let* α2 : ref str.t := M.call (str.t::["trim"] α1) in
-        let* α3 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α2) in
-        let* α4 :
-            M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
-          M.alloc α3 in
-        let* α5 : M.Val u32.t :=
-          match_operator
-            α4
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.result.Result.Ok _ =>
-                  let γ0_0 := core.result.Result.Get_Ok_0 γ in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* guess :=
+          let* α0 :=
+            M.get_associated_function
+              (Ty.path "alloc::string::String")
+              "new"
+              [] in
+          let* α1 := M.call_closure α0 [] in
+          M.alloc α1 in
+        let* _ :=
+          let* α0 :=
+            M.get_associated_function
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                [ Ty.path "usize"; Ty.path "std::io::error::Error" ])
+              "expect"
+              [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "std::io::stdio::Stdin")
+              "read_line"
+              [] in
+          let* α2 := M.get_function "std::io::stdio::stdin" [] in
+          let* α3 := M.call_closure α2 [] in
+          let* α4 := M.alloc α3 in
+          let* α5 := M.call_closure α1 [ α4; guess ] in
+          let* α6 := M.read (mk_str "Failed to read line") in
+          let* α7 := M.call_closure α0 [ α5; α6 ] in
+          M.alloc α7 in
+        let* guess :=
+          let* α0 :=
+            M.get_associated_function
+              (Ty.path "str")
+              "parse"
+              [ Ty.path "u32" ] in
+          let* α1 := M.get_associated_function (Ty.path "str") "trim" [] in
+          let* α2 :=
+            M.get_trait_method
+              "core::ops::deref::Deref"
+              (Ty.path "alloc::string::String")
+              []
+              "deref"
+              [] in
+          let* α3 := M.call_closure α2 [ guess ] in
+          let* α4 := M.call_closure α1 [ α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
+          let* α6 := M.alloc α5 in
+          let* α7 :=
+            match_operator
+              α6
+              [
+                fun γ =>
+                  let* γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match
+                      γ
+                      "core::result::Result::Ok"
+                      0 in
                   let* num := M.copy γ0_0 in
-                  M.pure num
-                | _ => M.break_match
-                end) :
-                M (M.Val u32.t);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.result.Result.Err _ =>
-                  let γ0_0 := core.result.Result.Get_Err_0 γ in
-                  let* α0 : M.Val never.t := M.continue in
+                  M.pure num;
+                fun γ =>
+                  let* γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match
+                      γ
+                      "core::result::Result::Err"
+                      0 in
+                  let* α0 := M.continue in
                   let* α1 := M.read α0 in
-                  let* α2 : u32.t := never_to_any α1 in
+                  let* α2 := M.never_to_any α1 in
                   M.alloc α2
-                | _ => M.break_match
-                end) :
-                M (M.Val u32.t)
-            ] in
-        M.copy α5 in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "You guessed: ") in
-          let* α1 : ref str.t := M.read (mk_str "
+              ] in
+          M.copy α7 in
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_v1"
+                [] in
+            let* α2 := M.read (mk_str "You guessed: ") in
+            let* α3 := M.read (mk_str "
 ") in
-          let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-          let* α3 : core.fmt.rt.Argument.t :=
-            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow guess)) in
-          let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-          let* α5 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α2))
-                (pointer_coercion "Unsize" (borrow α4))) in
-          let* α6 : unit := M.call (std.io.stdio._print α5) in
-          M.alloc α6 in
-        M.alloc tt in
-      let* α0 : (ref u32.t) -> (ref u32.t) -> M core.cmp.Ordering.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.cmp.Ord.cmp (Self := u32.t) (Trait := ℐ))) in
-      let* α1 : core.cmp.Ordering.t :=
-        M.call (α0 (borrow guess) (borrow secret_number)) in
-      let* α2 : M.Val core.cmp.Ordering.t := M.alloc α1 in
-      match_operator
-        α2
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | core.cmp.Ordering.Less =>
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "Too small!
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            let* α5 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "u32" ] in
+            let* α6 := M.call_closure α5 [ guess ] in
+            let* α7 := M.alloc (Value.Array [ α6 ]) in
+            let* α8 :=
+              M.call_closure
+                α1
+                [
+                  M.pointer_coercion (* Unsize *) α4;
+                  M.pointer_coercion (* Unsize *) α7
+                ] in
+            let* α9 := M.call_closure α0 [ α8 ] in
+            M.alloc α9 in
+          M.alloc (Value.Tuple []) in
+        let* α0 :=
+          M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "cmp" [] in
+        let* α1 := M.call_closure α0 [ guess; secret_number ] in
+        let* α2 := M.alloc α1 in
+        match_operator
+          α2
+          [
+            fun γ =>
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const"
+                    [] in
+                let* α2 := M.read (mk_str "Too small!
 ") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : unit := M.call (std.io.stdio._print α2) in
-                M.alloc α3 in
-              M.alloc tt
-            | _ => M.break_match
-            end) :
-            M (M.Val unit);
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | core.cmp.Ordering.Greater =>
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "Too big!
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 :=
+                  M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call_closure α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple []);
+            fun γ =>
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const"
+                    [] in
+                let* α2 := M.read (mk_str "Too big!
 ") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : unit := M.call (std.io.stdio._print α2) in
-                M.alloc α3 in
-              M.alloc tt
-            | _ => M.break_match
-            end) :
-            M (M.Val unit);
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | core.cmp.Ordering.Equal =>
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "You win!
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                let* α4 :=
+                  M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                let* α5 := M.call_closure α0 [ α4 ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple []);
+            fun γ =>
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const"
+                      [] in
+                  let* α2 := M.read (mk_str "You win!
 ") in
-                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                  let* α2 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_const"]
-                        (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : unit := M.call (std.io.stdio._print α2) in
-                  M.alloc α3 in
-                M.alloc tt in
-              let* α0 : M.Val never.t := M.break in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  let* α4 :=
+                    M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+                  let* α5 := M.call_closure α0 [ α4 ] in
+                  M.alloc α5 in
+                M.alloc (Value.Tuple []) in
+              let* α0 := M.break in
               let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
+              let* α2 := M.never_to_any α1 in
               M.alloc α2
-            | _ => M.break_match
-            end) :
-            M (M.Val unit)
-        ]) in
-  M.read α0.
+          ]) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

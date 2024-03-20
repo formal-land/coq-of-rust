@@ -28,314 +28,460 @@ fn main() {
     println!("2 in array2: {}", array2.into_iter().any(|x| *x == 2));
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* vec1 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val (array i32.t) :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* vec1 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new"
+          [] in
+      let* α2 :=
+        M.alloc
+          (Value.Array
+            [
+              Value.Integer Integer.I32 1;
+              Value.Integer Integer.I32 2;
+              Value.Integer Integer.I32 3
+            ]) in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      M.alloc α5 in
+    let* vec2 :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          "into_vec"
+          [ Ty.path "alloc::alloc::Global" ] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          "new"
+          [] in
+      let* α2 :=
+        M.alloc
+          (Value.Array
+            [
+              Value.Integer Integer.I32 4;
+              Value.Integer Integer.I32 5;
+              Value.Integer Integer.I32 6
+            ]) in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.read α3 in
+      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
+      M.alloc α5 in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "2 in vec1: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "bool" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ])
+            []
+            "any"
+            [
+              Ty.function
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                (Ty.path "bool")
+            ] in
+        let* α7 :=
+          M.get_associated_function
+            (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+            "iter"
+            [] in
+        let* α8 :=
+          M.get_trait_method
+            "core::ops::deref::Deref"
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            []
+            "deref"
+            [] in
+        let* α9 := M.call_closure α8 [ vec1 ] in
+        let* α10 := M.call_closure α7 [ α9 ] in
+        let* α11 := M.alloc α10 in
+        let* α12 :=
+          M.call_closure
+            α6
+            [
+              α11;
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          let* γ := M.read γ in
+                          let* x := M.copy γ in
+                          let* α0 := M.read x in
+                          M.pure
+                            (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
+                      ]
+                  | _ => M.impossible
+                  end)
+            ] in
+        let* α13 := M.alloc α12 in
+        let* α14 := M.call_closure α5 [ α13 ] in
+        let* α15 := M.alloc (Value.Array [ α14 ]) in
+        let* α16 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α15
+            ] in
+        let* α17 := M.call_closure α0 [ α16 ] in
+        M.alloc α17 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "2 in vec2: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "bool" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            (Ty.apply
+              (Ty.path "alloc::vec::into_iter::IntoIter")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            []
+            "any"
+            [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool") ] in
+        let* α7 :=
+          M.get_trait_method
+            "core::iter::traits::collect::IntoIterator"
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            []
+            "into_iter"
+            [] in
+        let* α8 := M.read vec2 in
+        let* α9 := M.call_closure α7 [ α8 ] in
+        let* α10 := M.alloc α9 in
+        let* α11 :=
+          M.call_closure
+            α6
+            [
+              α10;
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          let* x := M.copy γ in
+                          let* α0 := M.read x in
+                          M.pure
+                            (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
+                      ]
+                  | _ => M.impossible
+                  end)
+            ] in
+        let* α12 := M.alloc α11 in
+        let* α13 := M.call_closure α5 [ α12 ] in
+        let* α14 := M.alloc (Value.Array [ α13 ]) in
+        let* α15 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α14
+            ] in
+        let* α16 := M.call_closure α0 [ α15 ] in
+        M.alloc α16 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "vec1 len: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "usize" ] in
+        let* α6 :=
+          M.get_associated_function
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            "len"
+            [] in
+        let* α7 := M.call_closure α6 [ vec1 ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α5 [ α8 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "First element of vec1 is: ") in
+        let* α3 := M.read (mk_str "
+") in
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::ops::index::Index"
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+            [ Ty.path "usize" ]
+            "index"
+            [] in
+        let* α7 := M.call_closure α6 [ vec1; Value.Integer Integer.Usize 0 ] in
+        let* α8 := M.call_closure α5 [ α7 ] in
+        let* α9 := M.alloc (Value.Array [ α8 ]) in
+        let* α10 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9
+            ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
+      M.alloc (Value.Tuple []) in
+    let* array1 :=
       M.alloc
-        [
-          (Integer.of_Z 1) : i32.t;
-          (Integer.of_Z 2) : i32.t;
-          (Integer.of_Z 3) : i32.t
-        ] in
-    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
-      M.read α1 in
-    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
-    M.alloc α3 in
-  let* vec2 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val (array i32.t) :=
+        (Value.Array
+          [
+            Value.Integer Integer.I32 1;
+            Value.Integer Integer.I32 2;
+            Value.Integer Integer.I32 3
+          ]) in
+    let* array2 :=
       M.alloc
-        [
-          (Integer.of_Z 4) : i32.t;
-          (Integer.of_Z 5) : i32.t;
-          (Integer.of_Z 6) : i32.t
-        ] in
-    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
-      M.read α1 in
-    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
-    M.alloc α3 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "2 in vec1: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        (Value.Array
+          [
+            Value.Integer Integer.I32 4;
+            Value.Integer Integer.I32 5;
+            Value.Integer Integer.I32 6
+          ]) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "2 in array1: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
-            ((ref i32.t) -> M bool.t) ->
-            M bool.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.any
-            (Self := core.slice.iter.Iter.t i32.t)
-            (F := (ref i32.t) -> M bool.t)
-            (Trait := ℐ))) in
-      let* α4 :
-          (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) -> M (ref _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-            (Trait := ℐ))) in
-      let* α5 : ref (slice i32.t) := M.call (α4 (borrow vec1)) in
-      let* α6 : core.slice.iter.Iter.t i32.t :=
-        M.call ((slice i32.t)::["iter"] α5) in
-      let* α7 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α6 in
-      let* α8 : bool.t :=
-        M.call
-          (α3
-            (borrow_mut α7)
-            (fun (α0 : ref i32.t) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* γ :=
-                      let* α0 := M.read γ in
-                      M.pure (deref α0) in
-                    let* x := M.copy γ in
-                    let* α0 : i32.t := M.read x in
-                    M.pure (BinOp.Pure.eq α0 ((Integer.of_Z 2) : i32.t))) :
-                    M bool.t
-                ]) :
-              M bool.t)) in
-      let* α9 : M.Val bool.t := M.alloc α8 in
-      let* α10 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
-      let* α12 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α11))) in
-      let* α13 : unit := M.call (std.io.stdio._print α12) in
-      M.alloc α13 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "2 in vec2: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "bool" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ])
+            []
+            "any"
+            [
+              Ty.function
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                (Ty.path "bool")
+            ] in
+        let* α7 :=
+          M.get_associated_function
+            (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+            "iter"
+            [] in
+        let* α8 :=
+          M.call_closure α7 [ M.pointer_coercion (* Unsize *) array1 ] in
+        let* α9 := M.alloc α8 in
+        let* α10 :=
+          M.call_closure
+            α6
+            [
+              α9;
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          let* γ := M.read γ in
+                          let* x := M.copy γ in
+                          let* α0 := M.read x in
+                          M.pure
+                            (BinOp.Pure.eq α0 (Value.Integer Integer.I32 2))
+                      ]
+                  | _ => M.impossible
+                  end)
+            ] in
+        let* α11 := M.alloc α10 in
+        let* α12 := M.call_closure α5 [ α11 ] in
+        let* α13 := M.alloc (Value.Array [ α12 ]) in
+        let* α14 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α13
+            ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "2 in array2: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
-            ->
-            (i32.t -> M bool.t) ->
-            M bool.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.any
-            (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-            (F := i32.t -> M bool.t)
-            (Trait := ℐ))) in
-      let* α4 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-            (Trait := ℐ))) in
-      let* α5 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read vec2 in
-      let* α6 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
-        M.call (α4 α5) in
-      let* α7 :
-          M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
-        M.alloc α6 in
-      let* α8 : bool.t :=
-        M.call
-          (α3
-            (borrow_mut α7)
-            (fun (α0 : i32.t) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* x := M.copy γ in
-                    let* α0 : i32.t := M.read x in
-                    M.pure (BinOp.Pure.eq α0 ((Integer.of_Z 2) : i32.t))) :
-                    M bool.t
-                ]) :
-              M bool.t)) in
-      let* α9 : M.Val bool.t := M.alloc α8 in
-      let* α10 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
-      let* α12 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α11))) in
-      let* α13 : unit := M.call (std.io.stdio._print α12) in
-      M.alloc α13 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "vec1 len: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : usize.t :=
-        M.call
-          ((alloc.vec.Vec.t i32.t alloc.alloc.Global.t)::["len"]
-            (borrow vec1)) in
-      let* α4 : M.Val usize.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "First element of vec1 is: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) ->
-            usize.t ->
-            M (ref _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.index.Index.index
-            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-            (Idx := usize.t)
-            (Trait := ℐ))) in
-      let* α4 : ref i32.t :=
-        M.call (α3 (borrow vec1) ((Integer.of_Z 0) : usize.t)) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] α4) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* array1 : M.Val (array i32.t) :=
-    M.alloc
-      [
-        (Integer.of_Z 1) : i32.t;
-        (Integer.of_Z 2) : i32.t;
-        (Integer.of_Z 3) : i32.t
-      ] in
-  let* array2 : M.Val (array i32.t) :=
-    M.alloc
-      [
-        (Integer.of_Z 4) : i32.t;
-        (Integer.of_Z 5) : i32.t;
-        (Integer.of_Z 6) : i32.t
-      ] in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "2 in array1: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
-            ((ref i32.t) -> M bool.t) ->
-            M bool.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.any
-            (Self := core.slice.iter.Iter.t i32.t)
-            (F := (ref i32.t) -> M bool.t)
-            (Trait := ℐ))) in
-      let* α4 : core.slice.iter.Iter.t i32.t :=
-        M.call
-          ((slice i32.t)::["iter"]
-            (pointer_coercion "Unsize" (borrow array1))) in
-      let* α5 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α4 in
-      let* α6 : bool.t :=
-        M.call
-          (α3
-            (borrow_mut α5)
-            (fun (α0 : ref i32.t) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* γ :=
-                      let* α0 := M.read γ in
-                      M.pure (deref α0) in
-                    let* x := M.copy γ in
-                    let* α0 : i32.t := M.read x in
-                    M.pure (BinOp.Pure.eq α0 ((Integer.of_Z 2) : i32.t))) :
-                    M bool.t
-                ]) :
-              M bool.t)) in
-      let* α7 : M.Val bool.t := M.alloc α6 in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-      let* α10 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α9))) in
-      let* α11 : unit := M.call (std.io.stdio._print α10) in
-      M.alloc α11 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "2 in array2: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
-            ((ref i32.t) -> M bool.t) ->
-            M bool.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.any
-            (Self := core.slice.iter.Iter.t i32.t)
-            (F := (ref i32.t) -> M bool.t)
-            (Trait := ℐ))) in
-      let* α4 : (ref (array i32.t)) -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self := ref (array i32.t))
-            (Trait := ℐ))) in
-      let* α5 : core.slice.iter.Iter.t i32.t := M.call (α4 (borrow array2)) in
-      let* α6 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α5 in
-      let* α7 : bool.t :=
-        M.call
-          (α3
-            (borrow_mut α6)
-            (fun (α0 : ref i32.t) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* x := M.copy γ in
-                    let* α0 : ref i32.t := M.read x in
-                    let* α1 : i32.t := M.read (deref α0) in
-                    M.pure (BinOp.Pure.eq α1 ((Integer.of_Z 2) : i32.t))) :
-                    M bool.t
-                ]) :
-              M bool.t)) in
-      let* α8 : M.Val bool.t := M.alloc α7 in
-      let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
-      let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α10))) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "bool" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::iter::traits::iterator::Iterator"
+            (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ])
+            []
+            "any"
+            [
+              Ty.function
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                (Ty.path "bool")
+            ] in
+        let* α7 :=
+          M.get_trait_method
+            "core::iter::traits::collect::IntoIterator"
+            (Ty.apply
+              (Ty.path "&")
+              [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ])
+            []
+            "into_iter"
+            [] in
+        let* α8 := M.call_closure α7 [ array2 ] in
+        let* α9 := M.alloc α8 in
+        let* α10 :=
+          M.call_closure
+            α6
+            [
+              α9;
+              M.closure
+                (fun γ =>
+                  match γ with
+                  | [ α0 ] =>
+                    let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          let* x := M.copy γ in
+                          let* α0 := M.read x in
+                          let* α1 := M.read α0 in
+                          M.pure
+                            (BinOp.Pure.eq α1 (Value.Integer Integer.I32 2))
+                      ]
+                  | _ => M.impossible
+                  end)
+            ] in
+        let* α11 := M.alloc α10 in
+        let* α12 := M.call_closure α5 [ α11 ] in
+        let* α13 := M.alloc (Value.Array [ α12 ]) in
+        let* α14 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α13
+            ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

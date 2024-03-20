@@ -30,123 +30,180 @@ fn main() {
     println!("closure returning one: {}", one());
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* outer_var : M.Val i32.t := M.alloc ((Integer.of_Z 42) : i32.t) in
-  let* closure_annotated : M.Val (i32.t -> M i32.t) :=
-    M.alloc
-      (fun (α0 : i32.t) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* i := M.copy γ in
-              let* α0 : i32.t := M.read i in
-              let* α1 : i32.t := M.read outer_var in
-              BinOp.Panic.add α0 α1) :
-              M i32.t
-          ]) :
-        M i32.t) in
-  let* closure_inferred : M.Val (i32.t -> M i32.t) :=
-    M.alloc
-      (fun (α0 : i32.t) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* i := M.copy γ in
-              let* α0 : i32.t := M.read i in
-              let* α1 : i32.t := M.read outer_var in
-              BinOp.Panic.add α0 α1) :
-              M i32.t
-          ]) :
-        M i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "closure_annotated: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* outer_var := M.alloc (Value.Integer Integer.I32 42) in
+    let* closure_annotated :=
+      M.alloc
+        (M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* i := M.copy γ in
+                    let* α0 := M.read i in
+                    let* α1 := M.read outer_var in
+                    BinOp.Panic.add α0 α1
+                ]
+            | _ => M.impossible
+            end)) in
+    let* closure_inferred :=
+      M.alloc
+        (M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    let* i := M.copy γ in
+                    let* α0 := M.read i in
+                    let* α1 := M.read outer_var in
+                    BinOp.Panic.add α0 α1
+                ]
+            | _ => M.impossible
+            end)) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "closure_annotated: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : (ref (i32.t -> M i32.t)) -> i32.t -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.Fn.call
-            (Self := i32.t -> M i32.t)
-            (Args := i32.t)
-            (Trait := ℐ))) in
-      let* α4 : i32.t :=
-        M.call (α3 (borrow closure_annotated) ((Integer.of_Z 1) : i32.t)) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "closure_inferred: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::ops::function::Fn"
+            (Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"))
+            [ Ty.tuple [ Ty.path "i32" ] ]
+            "call"
+            [] in
+        let* α7 :=
+          M.call_closure
+            α6
+            [ closure_annotated; Value.Tuple [ Value.Integer Integer.I32 1 ]
+            ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α5 [ α8 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "closure_inferred: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : (ref (i32.t -> M i32.t)) -> i32.t -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.Fn.call
-            (Self := i32.t -> M i32.t)
-            (Args := i32.t)
-            (Trait := ℐ))) in
-      let* α4 : i32.t :=
-        M.call (α3 (borrow closure_inferred) ((Integer.of_Z 1) : i32.t)) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* one : M.Val (unit -> M i32.t) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [ fun γ => (M.pure ((Integer.of_Z 1) : i32.t)) : M i32.t ]) :
-        M i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "closure returning one: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::ops::function::Fn"
+            (Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"))
+            [ Ty.tuple [ Ty.path "i32" ] ]
+            "call"
+            [] in
+        let* α7 :=
+          M.call_closure
+            α6
+            [ closure_inferred; Value.Tuple [ Value.Integer Integer.I32 1 ] ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α5 [ α8 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* one :=
+      M.alloc
+        (M.closure
+          (fun γ =>
+            match γ with
+            | [ α0 ] =>
+              let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [ fun γ => M.pure (Value.Integer Integer.I32 1) ]
+            | _ => M.impossible
+            end)) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "closure returning one: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : (ref (unit -> M i32.t)) -> unit -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.Fn.call
-            (Self := unit -> M i32.t)
-            (Args := unit)
-            (Trait := ℐ))) in
-      let* α4 : i32.t := M.call (α3 (borrow one) tt) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 :=
+          M.get_trait_method
+            "core::ops::function::Fn"
+            (Ty.function [ Ty.tuple [] ] (Ty.path "i32"))
+            [ Ty.tuple [] ]
+            "call"
+            [] in
+        let* α7 := M.call_closure α6 [ one; Value.Tuple [] ] in
+        let* α8 := M.alloc α7 in
+        let* α9 := M.call_closure α5 [ α8 ] in
+        let* α10 := M.alloc (Value.Array [ α9 ]) in
+        let* α11 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α10
+            ] in
+        let* α12 := M.call_closure α0 [ α11 ] in
+        M.alloc α12 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

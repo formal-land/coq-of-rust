@@ -7,43 +7,56 @@ Module my_mod.
           println!("called `my_mod::private_function()`");
       }
   *)
-  Definition private_function : M unit :=
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::private_function()`
+  Definition private_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              [] in
+          let* α2 := M.read (mk_str "called `my_mod::private_function()`
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
   (*
       pub fn function() {
           println!("called `my_mod::function()`");
       }
   *)
-  Definition function : M unit :=
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "called `my_mod::function()`
+  Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              [] in
+          let* α2 := M.read (mk_str "called `my_mod::function()`
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
   (*
       pub fn indirect_access() {
@@ -51,25 +64,33 @@ Module my_mod.
           private_function();
       }
   *)
-  Definition indirect_access : M unit :=
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::indirect_access()`, that
+  Definition indirect_access (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              [] in
+          let* α2 :=
+            M.read (mk_str "called `my_mod::indirect_access()`, that
 > ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* α0 : unit := M.call visibility.my_mod.private_function in
-      M.alloc α0 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* α0 := M.get_function "visibility::my_mod::private_function" [] in
+        let* α1 := M.call_closure α0 [] in
+        M.alloc α1 in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
   Module nested.
     (*
@@ -77,45 +98,59 @@ Module my_mod.
                 println!("called `my_mod::nested::function()`");
             }
     *)
-    Definition function : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "called `my_mod::nested::function()`
+    Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 := M.read (mk_str "called `my_mod::nested::function()`
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.read α0
+      | _, _ => M.impossible
+      end.
     
     (*
             fn private_function() {
                 println!("called `my_mod::nested::private_function()`");
             }
     *)
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition private_function : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "called `my_mod::nested::private_function()`
+    Definition private_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 :=
+              M.read (mk_str "called `my_mod::nested::private_function()`
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.read α0
+      | _, _ => M.impossible
+      end.
     
     (*
             pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -123,76 +158,112 @@ Module my_mod.
                 public_function_in_nested();
             }
     *)
-    Definition public_function_in_my_mod : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read
-              (mk_str
-                "called `my_mod::nested::public_function_in_my_mod()`, that
+    Definition public_function_in_my_mod
+        (𝜏 : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 :=
+              M.read
+                (mk_str
+                  "called `my_mod::nested::public_function_in_my_mod()`, that
 > ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* _ : M.Val unit :=
-        let* α0 : unit :=
-          M.call visibility.my_mod.nested.public_function_in_nested in
-        M.alloc α0 in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* _ :=
+          let* α0 :=
+            M.get_function
+              "visibility::my_mod::nested::public_function_in_nested"
+              [] in
+          let* α1 := M.call_closure α0 [] in
+          M.alloc α1 in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.read α0
+      | _, _ => M.impossible
+      end.
     
     (*
             pub(self) fn public_function_in_nested() {
                 println!("called `my_mod::nested::public_function_in_nested()`");
             }
     *)
-    Definition public_function_in_nested : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read
-              (mk_str
-                "called `my_mod::nested::public_function_in_nested()`
+    Definition public_function_in_nested
+        (𝜏 : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 :=
+              M.read
+                (mk_str
+                  "called `my_mod::nested::public_function_in_nested()`
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.read α0
+      | _, _ => M.impossible
+      end.
     
     (*
             pub(super) fn public_function_in_super_mod() {
                 println!("called `my_mod::nested::public_function_in_super_mod()`");
             }
     *)
-    Definition public_function_in_super_mod : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read
-              (mk_str
-                "called `my_mod::nested::public_function_in_super_mod()`
+    Definition public_function_in_super_mod
+        (𝜏 : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 :=
+              M.read
+                (mk_str
+                  "called `my_mod::nested::public_function_in_super_mod()`
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.read α0
+      | _, _ => M.impossible
+      end.
   End nested.
   
   (*
@@ -203,65 +274,91 @@ Module my_mod.
           nested::public_function_in_super_mod();
       }
   *)
-  Definition call_public_function_in_my_mod : M unit :=
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t :=
-          M.read
-            (mk_str
-              "called `my_mod::call_public_function_in_my_mod()`, that
+  Definition call_public_function_in_my_mod
+      (𝜏 : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              [] in
+          let* α2 :=
+            M.read
+              (mk_str
+                "called `my_mod::call_public_function_in_my_mod()`, that
 > ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* α0 : unit :=
-        M.call visibility.my_mod.nested.public_function_in_my_mod in
-      M.alloc α0 in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "> ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* α0 : unit :=
-        M.call visibility.my_mod.nested.public_function_in_super_mod in
-      M.alloc α0 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* α0 :=
+          M.get_function
+            "visibility::my_mod::nested::public_function_in_my_mod"
+            [] in
+        let* α1 := M.call_closure α0 [] in
+        M.alloc α1 in
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              [] in
+          let* α2 := M.read (mk_str "> ") in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* α0 :=
+          M.get_function
+            "visibility::my_mod::nested::public_function_in_super_mod"
+            [] in
+        let* α1 := M.call_closure α0 [] in
+        M.alloc α1 in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
   (*
       pub(crate) fn public_function_in_crate() {
           println!("called `my_mod::public_function_in_crate()`");
       }
   *)
-  Definition public_function_in_crate : M unit :=
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::public_function_in_crate()`
+  Definition public_function_in_crate (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              [] in
+          let* α2 :=
+            M.read (mk_str "called `my_mod::public_function_in_crate()`
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+          let* α5 := M.call_closure α0 [ α4 ] in
+          M.alloc α5 in
+        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
   Module private_nested.
     (*
@@ -269,48 +366,62 @@ Module my_mod.
                 println!("called `my_mod::private_nested::function()`");
             }
     *)
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition function : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "called `my_mod::private_nested::function()`
+    Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 :=
+              M.read (mk_str "called `my_mod::private_nested::function()`
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.read α0
+      | _, _ => M.impossible
+      end.
     
     (*
             pub(crate) fn restricted_function() {
                 println!("called `my_mod::private_nested::restricted_function()`");
             }
     *)
-    (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition restricted_function : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read
-              (mk_str
-                "called `my_mod::private_nested::restricted_function()`
+    Definition restricted_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ :=
+          let* _ :=
+            let* α0 := M.get_function "std::io::stdio::_print" [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                [] in
+            let* α2 :=
+              M.read
+                (mk_str
+                  "called `my_mod::private_nested::restricted_function()`
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            let* α4 :=
+              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+            let* α5 := M.call_closure α0 [ α4 ] in
+            M.alloc α5 in
+          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.read α0
+      | _, _ => M.impossible
+      end.
   End private_nested.
 End my_mod.
 
@@ -319,21 +430,28 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "called `function()`
+Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            [] in
+        let* α2 := M.read (mk_str "called `function()`
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
+        let* α5 := M.call_closure α0 [ α4 ] in
+        M.alloc α5 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -375,25 +493,38 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call visibility.function in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call visibility.my_mod.function in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call visibility.my_mod.indirect_access in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call visibility.my_mod.nested.function in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call visibility.my_mod.call_public_function_in_my_mod in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call visibility.my_mod.public_function_in_crate in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* α0 := M.get_function "visibility::function" [] in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
+    let* _ :=
+      let* α0 := M.get_function "visibility::my_mod::function" [] in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
+    let* _ :=
+      let* α0 := M.get_function "visibility::my_mod::indirect_access" [] in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
+    let* _ :=
+      let* α0 := M.get_function "visibility::my_mod::nested::function" [] in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
+    let* _ :=
+      let* α0 :=
+        M.get_function
+          "visibility::my_mod::call_public_function_in_my_mod"
+          [] in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
+    let* _ :=
+      let* α0 :=
+        M.get_function "visibility::my_mod::public_function_in_crate" [] in
+      let* α1 := M.call_closure α0 [] in
+      M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

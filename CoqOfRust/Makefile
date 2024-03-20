@@ -4,8 +4,10 @@ VFILES := $(shell find -L . -name "*.v" | grep -v -f blacklist.txt | sort)
 
 default: all
 
-CoqMakefile: $(VFILES)
-	coq_makefile -f _CoqProject -o $@ $(VFILES)
+# We use the '@' to avoid displaying this command as the parameters list is
+# very long.
+CoqMakefile: $(VFILES) blacklist.txt
+	@coq_makefile -f _CoqProject -o $@ $(VFILES)
 
 MAKECOQ := +$(MAKE) -f CoqMakefile
 

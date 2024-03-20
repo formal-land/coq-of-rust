@@ -24,8 +24,11 @@ fn main() {
     }
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.pure tt.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] => M.pure (Value.Tuple [])
+  | _, _ => M.impossible
+  end.
 
 (*
     fn mul(a: u64, b: u64) -> u128 {
@@ -46,18 +49,22 @@ Definition main : M unit := M.pure tt.
         ((hi as u128) << 64) + lo as u128
     }
 *)
-Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
-  let* lo := M.copy (DeclaredButUndefinedVariable (A := u64.t)) in
-  let* hi := M.copy (DeclaredButUndefinedVariable (A := u64.t)) in
-  let* _ : M.Val unit :=
-    let _ : M.Val unit := InlineAssembly in
-    M.alloc tt in
-  let* α0 : u64.t := M.read hi in
-  let* α1 : u128.t :=
-    BinOp.Panic.shl (rust_cast α0) ((Integer.of_Z 64) : i32.t) in
-  let* α2 : u64.t := M.read lo in
-  let* α3 : u128.t := BinOp.Panic.add α1 (rust_cast α2) in
-  let* α0 : M.Val u128.t := M.alloc α3 in
-  M.read α0.
+Definition mul (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [ a; b ] =>
+    let* a := M.alloc a in
+    let* b := M.alloc b in
+    let* lo := M.copy Value.DeclaredButUndefined in
+    let* hi := M.copy Value.DeclaredButUndefined in
+    let* _ :=
+      let _ := InlineAssembly in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.read hi in
+    let* α1 :=
+      BinOp.Panic.shl (M.rust_cast α0) (Value.Integer Integer.I32 64) in
+    let* α2 := M.read lo in
+    let* α3 := BinOp.Panic.add α1 (M.rust_cast α2) in
+    let* α0 := M.alloc α3 in
+    M.read α0
+  | _, _ => M.impossible
+  end.

@@ -1,20 +1,8 @@
-warning: This kind of constant in patterns is not yet supported.
-  --> examples/rust_book/flow_of_control/match.rs:23:9
-   |
-23 |         false => 0,
-   |         ^^^^^
-
-warning: This kind of constant in patterns is not yet supported.
-  --> examples/rust_book/flow_of_control/match.rs:24:9
-   |
-24 |         true => 1,
-   |         ^^^^
-
 warning: Ranges in patterns are not yet supported.
   --> examples/rust_book/flow_of_control/match.rs:13:9
    |
 13 |         13..=19 => println!("A teen"),
    |         ^^^^^^^
 
-warning: 3 warnings emitted
+warning: 1 warning emitted
 

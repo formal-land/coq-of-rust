@@ -19,6 +19,7 @@ pub(crate) fn optional_insert(when_not: bool, insert_doc: RcDoc<()>) -> RcDoc<()
 }
 
 /// Insert a Vec block when the predicate(usually is_empty()) doesn't satisfy.
+#[allow(dead_code)]
 pub(crate) fn optional_insert_vec<T>(when_not: bool, insert_vec: Vec<T>) -> Vec<T> {
     if when_not {
         vec![]
@@ -202,4 +203,27 @@ where
         hardline(),
         nest([text("End "), text(name), text(".")]),
     ])
+}
+
+pub(crate) fn list<'a, Item>(docs: Vec<Item>) -> Doc<'a>
+where
+    Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    if docs.is_empty() {
+        return text("[]");
+    }
+
+    group([
+        nest([text("["), line(), intersperse(docs, [text(";"), line()])]),
+        line(),
+        text("]"),
+    ])
+}
+
+pub(crate) fn capitalize(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        None => String::new(),
+        Some(f) => f.to_uppercase().collect::<String>() + chars.as_str(),
+    }
 }

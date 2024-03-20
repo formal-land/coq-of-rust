@@ -23,45 +23,46 @@ fn main() {
     };
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val bool.t :=
-    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
-    match_operator
-      α0
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 0 => M.alloc false
-          | _ => M.break_match
-          end) :
-          M (M.Val bool.t);
-        fun γ => (M.alloc true) : M (M.Val bool.t)
-      ] in
-  let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc true in
-    let* α1 : bool.t := M.read (use α0) in
-    if α1 then
-      M.alloc ((Integer.of_Z 0) : i32.t)
-    else
-      M.alloc ((Integer.of_Z 1) : i32.t) in
-  let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc false in
-    let* α1 : bool.t := M.read (use α0) in
-    if α1 then
-      M.alloc ((Integer.of_Z 2) : i32.t)
-    else
-      let* α0 : M.Val bool.t := M.alloc false in
-      let* α1 : bool.t := M.read (use α0) in
-      if α1 then
-        M.alloc ((Integer.of_Z 3) : i32.t)
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* α0 := M.alloc (Value.Integer Integer.I32 1) in
+      match_operator
+        α0
+        [
+          fun γ =>
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
+            M.alloc (Value.Bool false);
+          fun γ => M.alloc (Value.Bool true)
+        ] in
+    let* _ :=
+      let* α0 := M.alloc (Value.Bool true) in
+      let* α1 := M.read (M.use α0) in
+      if Value.is_true α1 then
+        M.alloc (Value.Integer Integer.I32 0)
       else
-        let* α0 : M.Val bool.t := M.alloc false in
-        let* α1 : bool.t := M.read (use α0) in
-        if α1 then
-          M.alloc ((Integer.of_Z 4) : i32.t)
+        M.alloc (Value.Integer Integer.I32 1) in
+    let* _ :=
+      let* α0 := M.alloc (Value.Bool false) in
+      let* α1 := M.read (M.use α0) in
+      if Value.is_true α1 then
+        M.alloc (Value.Integer Integer.I32 2)
+      else
+        let* α0 := M.alloc (Value.Bool false) in
+        let* α1 := M.read (M.use α0) in
+        if Value.is_true α1 then
+          M.alloc (Value.Integer Integer.I32 3)
         else
-          M.alloc ((Integer.of_Z 5) : i32.t) in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+          let* α0 := M.alloc (Value.Bool false) in
+          let* α1 := M.read (M.use α0) in
+          if Value.is_true α1 then
+            M.alloc (Value.Integer Integer.I32 4)
+          else
+            M.alloc (Value.Integer Integer.I32 5) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.

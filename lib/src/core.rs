@@ -25,6 +25,25 @@ fn change_to_coq_extension(path: &path::Path) -> PathBuf {
     new_path
 }
 
+/// Write the content to a file only if it changed. This optimization is useful
+/// in order not to force the `make` command to rebuild files that did not
+/// change.
+fn write_if_changed<P: AsRef<path::Path>, C: AsRef<[u8]>>(
+    path: P,
+    new_content: C,
+) -> std::io::Result<()> {
+    let path = path.as_ref();
+    let new_content = new_content.as_ref();
+
+    // If the file does not exist, or if the content is different, write the new
+    // content to the file.
+    if !path.exists() || new_content != fs::read(path)? {
+        fs::write(path, new_content)?;
+    }
+
+    Ok(())
+}
+
 pub fn run(opts: CliOptions) {
     let src_path = &opts.path;
     let src_folder = if src_path.is_file() {
@@ -48,7 +67,7 @@ pub fn run(opts: CliOptions) {
         if !path_to_write.exists() {
             fs::create_dir_all(dst_folder).unwrap();
         }
-        fs::write(path_to_write, translation).unwrap();
+        write_if_changed(path_to_write, translation).unwrap();
     } else {
         for entry in WalkDir::new(src_folder) {
             let entry = entry.unwrap();
@@ -71,7 +90,7 @@ pub fn run(opts: CliOptions) {
                 }
                 // if the entry is a file, create a Coq version of it and write it to the destination directory
                 let translation = create_translation_to_coq(&opts);
-                fs::write(
+                write_if_changed(
                     dst_folder.join(change_to_coq_extension(relative_path)),
                     translation,
                 )

@@ -63,306 +63,520 @@ fn main() {
     println!("{number:>width$}");
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "31 days
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "31 days
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : array core.fmt.rt.Argument.t :=
-        M.call core.fmt.rt.Argument.t::["none"] in
-      let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
-      let* α4 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α1))
-            (pointer_coercion "Unsize" (borrow α3))) in
-      let* α5 : unit := M.call (std.io.stdio._print α4) in
-      M.alloc α5 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "Alice, this is Bob. Bob, this is Alice
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "none"
+            [] in
+        let* α5 := M.call_closure α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α3;
+              M.pointer_coercion (* Unsize *) α6
+            ] in
+        let* α8 := M.call_closure α0 [ α7 ] in
+        M.alloc α8 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Alice, this is Bob. Bob, this is Alice
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : array core.fmt.rt.Argument.t :=
-        M.call core.fmt.rt.Argument.t::["none"] in
-      let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
-      let* α4 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α1))
-            (pointer_coercion "Unsize" (borrow α3))) in
-      let* α5 : unit := M.call (std.io.stdio._print α4) in
-      M.alloc α5 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "the quick brown fox jumps over the lazy dog
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "none"
+            [] in
+        let* α5 := M.call_closure α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α3;
+              M.pointer_coercion (* Unsize *) α6
+            ] in
+        let* α8 := M.call_closure α0 [ α7 ] in
+        M.alloc α8 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 :=
+          M.read (mk_str "the quick brown fox jumps over the lazy dog
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : array core.fmt.rt.Argument.t :=
-        M.call core.fmt.rt.Argument.t::["none"] in
-      let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
-      let* α4 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α1))
-            (pointer_coercion "Unsize" (borrow α3))) in
-      let* α5 : unit := M.call (std.io.stdio._print α4) in
-      M.alloc α5 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Base 10:               69420
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "none"
+            [] in
+        let* α5 := M.call_closure α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α3;
+              M.pointer_coercion (* Unsize *) α6
+            ] in
+        let* α8 := M.call_closure α0 [ α7 ] in
+        M.alloc α8 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 10:               69420
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : array core.fmt.rt.Argument.t :=
-        M.call core.fmt.rt.Argument.t::["none"] in
-      let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
-      let* α4 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α1))
-            (pointer_coercion "Unsize" (borrow α3))) in
-      let* α5 : unit := M.call (std.io.stdio._print α4) in
-      M.alloc α5 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Base 2 (binary):       ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "none"
+            [] in
+        let* α5 := M.call_closure α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α3;
+              M.pointer_coercion (* Unsize *) α6
+            ] in
+        let* α8 := M.call_closure α0 [ α7 ] in
+        M.alloc α8 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 2 (binary):       ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_binary"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Base 8 (octal):        ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_binary"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 8 (octal):        ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_octal"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Base 16 (hexadecimal): ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_octal"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 16 (hexadecimal): ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_lower_hex"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Base 16 (hexadecimal): ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_lower_hex"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "Base 16 (hexadecimal): ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_upper_hex"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_upper_hex"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 69420) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8
+            ] in
+        let* α10 := M.call_closure α0 [ α9 ] in
+        M.alloc α10 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.rt.Placeholder.t :=
-        M.call
-          (core.fmt.rt.Placeholder.t::["new"]
-            ((Integer.of_Z 0) : usize.t)
-            " "%char
-            core.fmt.rt.Alignment.Right
-            ((Integer.of_Z 0) : u32.t)
-            core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is ((Integer.of_Z 5) : usize.t))) in
-      let* α7 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.rt.UnsafeArg.t :=
-        M.call core.fmt.rt.UnsafeArg.t::["new"] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1_formatted"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))
-            (pointer_coercion "Unsize" (borrow α7))
-            α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 1) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new"
+            [] in
+        let* α10 :=
+          M.call_closure
+            α9
+            [
+              Value.Integer Integer.Usize 0;
+              Value.UnicodeChar 32;
+              Value.StructTuple "core::fmt::rt::Alignment::Right" [];
+              Value.Integer Integer.U32 0;
+              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ Value.Integer Integer.Usize 5 ]
+            ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
+        let* α12 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new"
+            [] in
+        let* α13 := M.call_closure α12 [] in
+        let* α14 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8;
+              M.pointer_coercion (* Unsize *) α11;
+              α13
+            ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.rt.Placeholder.t :=
-        M.call
-          (core.fmt.rt.Placeholder.t::["new"]
-            ((Integer.of_Z 0) : usize.t)
-            "0"%char
-            core.fmt.rt.Alignment.Left
-            ((Integer.of_Z 0) : u32.t)
-            core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is ((Integer.of_Z 5) : usize.t))) in
-      let* α7 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.rt.UnsafeArg.t :=
-        M.call core.fmt.rt.UnsafeArg.t::["new"] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1_formatted"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))
-            (pointer_coercion "Unsize" (borrow α7))
-            α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 1) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 := M.alloc (Value.Array [ α7 ]) in
+        let* α9 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new"
+            [] in
+        let* α10 :=
+          M.call_closure
+            α9
+            [
+              Value.Integer Integer.Usize 0;
+              Value.UnicodeChar 48;
+              Value.StructTuple "core::fmt::rt::Alignment::Left" [];
+              Value.Integer Integer.U32 0;
+              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+              Value.StructTuple
+                "core::fmt::rt::Count::Is"
+                [ Value.Integer Integer.Usize 5 ]
+            ] in
+        let* α11 := M.alloc (Value.Array [ α10 ]) in
+        let* α12 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new"
+            [] in
+        let* α13 := M.call_closure α12 [] in
+        let* α14 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α8;
+              M.pointer_coercion (* Unsize *) α11;
+              α13
+            ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
-      let* α5 : M.Val usize.t := M.alloc ((Integer.of_Z 5) : usize.t) in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["from_usize"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α6 ] in
-      let* α8 : core.fmt.rt.Placeholder.t :=
-        M.call
-          (core.fmt.rt.Placeholder.t::["new"]
-            ((Integer.of_Z 0) : usize.t)
-            "0"%char
-            core.fmt.rt.Alignment.Right
-            ((Integer.of_Z 0) : u32.t)
-            core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Param ((Integer.of_Z 1) : usize.t))) in
-      let* α9 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α8 ] in
-      let* α10 : core.fmt.rt.UnsafeArg.t :=
-        M.call core.fmt.rt.UnsafeArg.t::["new"] in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1_formatted"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))
-            (pointer_coercion "Unsize" (borrow α9))
-            α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "My name is Bond, James Bond
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "i32" ] in
+        let* α6 := M.alloc (Value.Integer Integer.I32 1) in
+        let* α7 := M.call_closure α5 [ α6 ] in
+        let* α8 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "from_usize"
+            [] in
+        let* α9 := M.alloc (Value.Integer Integer.Usize 5) in
+        let* α10 := M.call_closure α8 [ α9 ] in
+        let* α11 := M.alloc (Value.Array [ α7; α10 ]) in
+        let* α12 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new"
+            [] in
+        let* α13 :=
+          M.call_closure
+            α12
+            [
+              Value.Integer Integer.Usize 0;
+              Value.UnicodeChar 48;
+              Value.StructTuple "core::fmt::rt::Alignment::Right" [];
+              Value.Integer Integer.U32 0;
+              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+              Value.StructTuple
+                "core::fmt::rt::Count::Param"
+                [ Value.Integer Integer.Usize 1 ]
+            ] in
+        let* α14 := M.alloc (Value.Array [ α13 ]) in
+        let* α15 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new"
+            [] in
+        let* α16 := M.call_closure α15 [] in
+        let* α17 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α11;
+              M.pointer_coercion (* Unsize *) α14;
+              α16
+            ] in
+        let* α18 := M.call_closure α0 [ α17 ] in
+        M.alloc α18 in
+      M.alloc (Value.Tuple []) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "My name is Bond, James Bond
 ") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : array core.fmt.rt.Argument.t :=
-        M.call core.fmt.rt.Argument.t::["none"] in
-      let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
-      let* α4 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α1))
-            (pointer_coercion "Unsize" (borrow α3))) in
-      let* α5 : unit := M.call (std.io.stdio._print α4) in
-      M.alloc α5 in
-    M.alloc tt in
-  let* number : M.Val f64.t := M.copy (UnsupportedLiteral : M.Val f64.t) in
-  let* width : M.Val usize.t := M.alloc ((Integer.of_Z 5) : usize.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α3 := M.alloc (Value.Array [ α2 ]) in
+        let* α4 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "none"
+            [] in
+        let* α5 := M.call_closure α4 [] in
+        let* α6 := M.alloc α5 in
+        let* α7 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α3;
+              M.pointer_coercion (* Unsize *) α6
+            ] in
+        let* α8 := M.call_closure α0 [ α7 ] in
+        M.alloc α8 in
+      M.alloc (Value.Tuple []) in
+    let* number := M.copy UnsupportedLiteral in
+    let* width := M.alloc (Value.Integer Integer.Usize 5) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1_formatted"
+            [] in
+        let* α2 := M.read (mk_str "") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow number)) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["from_usize"] (borrow width)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3; α4 ] in
-      let* α6 : core.fmt.rt.Placeholder.t :=
-        M.call
-          (core.fmt.rt.Placeholder.t::["new"]
-            ((Integer.of_Z 0) : usize.t)
-            " "%char
-            core.fmt.rt.Alignment.Right
-            ((Integer.of_Z 0) : u32.t)
-            core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Param ((Integer.of_Z 1) : usize.t))) in
-      let* α7 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.rt.UnsafeArg.t :=
-        M.call core.fmt.rt.UnsafeArg.t::["new"] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1_formatted"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))
-            (pointer_coercion "Unsize" (borrow α7))
-            α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.path "f64" ] in
+        let* α6 := M.call_closure α5 [ number ] in
+        let* α7 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "from_usize"
+            [] in
+        let* α8 := M.call_closure α7 [ width ] in
+        let* α9 := M.alloc (Value.Array [ α6; α8 ]) in
+        let* α10 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Placeholder")
+            "new"
+            [] in
+        let* α11 :=
+          M.call_closure
+            α10
+            [
+              Value.Integer Integer.Usize 0;
+              Value.UnicodeChar 32;
+              Value.StructTuple "core::fmt::rt::Alignment::Right" [];
+              Value.Integer Integer.U32 0;
+              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+              Value.StructTuple
+                "core::fmt::rt::Count::Param"
+                [ Value.Integer Integer.Usize 1 ]
+            ] in
+        let* α12 := M.alloc (Value.Array [ α11 ]) in
+        let* α13 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::UnsafeArg")
+            "new"
+            [] in
+        let* α14 := M.call_closure α13 [] in
+        let* α15 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α9;
+              M.pointer_coercion (* Unsize *) α12;
+              α14
+            ] in
+        let* α16 := M.call_closure α0 [ α15 ] in
+        M.alloc α16 in
+      M.alloc (Value.Tuple []) in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
-Module  Structure.
-Section Structure.
-  Record t : Set := {
-    x0 : i32.t;
-  }.
-  
-  Definition Get_0 :=
-    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
-End Structure.
-End Structure.
+(* StructTuple
+  {
+    name := "Structure";
+    ty_params := [];
+    fields := [ Ty.path "i32" ];
+  } *)

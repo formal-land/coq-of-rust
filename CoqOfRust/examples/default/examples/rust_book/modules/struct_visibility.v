@@ -2,58 +2,46 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
-  Module  OpenBox.
-  Section OpenBox.
-    Context (T : Set).
-    
-    Record t : Set := {
-      contents : T;
-    }.
-    
-    Definition Get_contents :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>)).
-  End OpenBox.
-  End OpenBox.
+  (* StructRecord
+    {
+      name := "OpenBox";
+      ty_params := [ ("T", None) ];
+      fields := [ ("contents", T) ];
+    } *)
   
-  Module  ClosedBox.
-  Section ClosedBox.
-    Context (T : Set).
-    
-    Record t : Set := {
-      contents : T;
-    }.
-    
-    Definition Get_contents :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>)).
-  End ClosedBox.
-  End ClosedBox.
+  (* StructRecord
+    {
+      name := "ClosedBox";
+      ty_params := [ ("T", None) ];
+      fields := [ ("contents", T) ];
+    } *)
   
-  Module  Impl_struct_visibility_my_ClosedBox_t_T.
-  Section Impl_struct_visibility_my_ClosedBox_t_T.
-    Context {T : Set}.
-    
-    Definition Self : Set := struct_visibility.my.ClosedBox.t T.
+  Module Impl_struct_visibility_my_ClosedBox_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [ T ].
     
     (*
             pub fn new(contents: T) -> ClosedBox<T> {
                 ClosedBox { contents: contents }
             }
     *)
-    Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-      let* contents := M.alloc contents in
-      let* α0 : T := M.read contents in
-      M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
+    Definition new (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T in
+      match 𝜏, α with
+      | [], [ contents ] =>
+        let* contents := M.alloc contents in
+        let* α0 := M.read contents in
+        M.pure
+          (Value.StructRecord
+            "struct_visibility::my::ClosedBox"
+            [ ("contents", α0) ])
+      | _, _ => M.impossible
+      end.
     
-    Global Instance AssociatedFunction_new :
-      Notations.DoubleColon Self "new" := {
-      Notations.double_colon := new;
-    }.
-  End Impl_struct_visibility_my_ClosedBox_t_T.
-  End Impl_struct_visibility_my_ClosedBox_t_T.
+    Axiom AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction (Self T) "new" (new T).
+  End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
 (*
@@ -81,34 +69,64 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* open_box : M.Val (struct_visibility.my.OpenBox.t (ref str.t)) :=
-    let* α0 : ref str.t := M.read (mk_str "public information") in
-    M.alloc {| struct_visibility.my.OpenBox.contents := α0; |} in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The open box contains: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* open_box :=
+      let* α0 := M.read (mk_str "public information") in
+      M.alloc
+        (Value.StructRecord
+          "struct_visibility::my::OpenBox"
+          [ ("contents", α0) ]) in
+    let* _ :=
+      let* _ :=
+        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_v1"
+            [] in
+        let* α2 := M.read (mk_str "The open box contains: ") in
+        let* α3 := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (struct_visibility.my.OpenBox.Get_contents open_box))) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _closed_box : M.Val (struct_visibility.my.ClosedBox.t (ref str.t)) :=
-    let* α0 : ref str.t := M.read (mk_str "classified information") in
-    let* α1 : struct_visibility.my.ClosedBox.t (ref str.t) :=
-      M.call ((struct_visibility.my.ClosedBox.t (ref str.t))::["new"] α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+        let* α5 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::rt::Argument")
+            "new_display"
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+        let* α6 :=
+          M.call_closure
+            α5
+            [
+              M.get_struct_record_field
+                open_box
+                "struct_visibility::my::OpenBox"
+                "contents"
+            ] in
+        let* α7 := M.alloc (Value.Array [ α6 ]) in
+        let* α8 :=
+          M.call_closure
+            α1
+            [
+              M.pointer_coercion (* Unsize *) α4;
+              M.pointer_coercion (* Unsize *) α7
+            ] in
+        let* α9 := M.call_closure α0 [ α8 ] in
+        M.alloc α9 in
+      M.alloc (Value.Tuple []) in
+    let* _closed_box :=
+      let* α0 :=
+        M.get_associated_function
+          (Ty.apply
+            (Ty.path "struct_visibility::my::ClosedBox")
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+          "new"
+          [] in
+      let* α1 := M.read (mk_str "classified information") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
