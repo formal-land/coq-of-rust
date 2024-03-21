@@ -1,11 +1,9 @@
-use crate::configuration::*;
 use crate::coq;
 use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
 use crate::render::*;
-use crate::reorder::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
@@ -15,18 +13,13 @@ use rustc_hir::{
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
-use std::collections::HashMap;
 use std::iter::repeat;
 use std::rc::Rc;
 use std::string::ToString;
 use std::vec;
 
 pub(crate) struct TopLevelOptions {
-    pub(crate) configuration_file: String,
-    pub(crate) filename: String,
     pub(crate) axiomatize: bool,
-    pub(crate) axiomatize_public: bool,
-    pub(crate) generate_reorder: bool,
 }
 
 #[derive(Debug)]
@@ -304,19 +297,6 @@ fn check_lint_attribute_axiom<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
     check_lint_attribute(tcx, item, "coq_axiom")
 }
 
-fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
-    let def_id = item.owner_id.to_def_id();
-    let ignore_impls = env.configuration.impl_ignore_axioms.contains(&env.file);
-    let id_to_check = match &item.kind {
-        ItemKind::Impl(Impl {
-            of_trait: Some(trait_ref),
-            ..
-        }) if !ignore_impls => trait_ref.trait_def_id().unwrap(),
-        _ => def_id,
-    };
-    tcx.visibility(id_to_check).is_public()
-}
-
 fn get_item_ids_for_parent(tcx: &TyCtxt, expected_parent: rustc_hir::def_id::DefId) -> Vec<ItemId> {
     tcx.hir()
         .items()
@@ -386,10 +366,8 @@ fn compile_top_level_item_without_local_items<'a>(
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let context = get_full_name(tcx, item.hir_id());
-            let mut items: Vec<ItemId> = module.item_ids.to_vec();
-            reorder_definitions_inplace(tcx, env, &context, &mut items);
-            let items: Vec<_> = items
+            let items: Vec<_> = module
+                .item_ids
                 .iter()
                 .flat_map(|item_id| {
                     let item = tcx.hir().item(*item_id);
@@ -546,9 +524,6 @@ fn compile_top_level_item_without_local_items<'a>(
         }) => {
             let generic_tys = get_ty_params_names(tcx, env, generics);
             let self_ty = compile_type(tcx, env, &item.owner_id.def_id, self_ty);
-            let mut items: Vec<ImplItemRef> = items.to_vec();
-            let context = get_full_name(tcx, item.hir_id());
-            reorder_definitions_inplace(tcx, env, &context, &mut items);
 
             // Add the current trait to the environment to be recognized latter
             // in the translation of expressions.
@@ -557,7 +532,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 env.current_trait_impl = Some((trait_path, self_ty.clone()));
             }
 
-            let items = compile_impl_item_refs(tcx, env, &items);
+            let items = compile_impl_item_refs(tcx, env, items);
             env.current_trait_impl = None;
 
             match of_trait {
@@ -644,19 +619,6 @@ fn compile_top_level_item<'a>(
     env: &mut Env<'a>,
     item: &Item,
 ) -> Vec<Rc<TopLevelItem>> {
-    if env.axiomatize && !env.axiomatize_public {
-        let is_public = is_top_level_item_public(tcx, env, item);
-        if !is_public {
-            // Do not generate anything if the item is not public and we are
-            // axiomatizing the definitions (for a library). Also, still
-            // generate the modules, since they may contain public items.
-            match &item.kind {
-                ItemKind::Mod(_) => {}
-                _ => return vec![],
-            }
-        }
-    }
-
     // Sometimes there can be local items, for example a struct defined in the
     // body of a function. For modules, we make an exception as modules are
     // expected to have items. We will concatenate the local items directly after
@@ -965,17 +927,9 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
     let mut env = Env {
         tcx: *tcx,
         axiomatize: opts.axiomatize,
-        axiomatize_public: opts.axiomatize_public,
-        file: opts.filename,
-        reorder_map: HashMap::new(),
-        configuration: get_configuration(&opts.configuration_file),
         current_trait_impl: None,
     };
-
-    let mut results = get_item_ids_for_parent(tcx, rustc_hir::def_id::CRATE_DEF_ID.into());
-    reorder_definitions_inplace(tcx, &mut env, "top_level", &mut results);
-
-    let results = results
+    let results = get_item_ids_for_parent(tcx, rustc_hir::def_id::CRATE_DEF_ID.into())
         .iter()
         .flat_map(|item_id| {
             let item = tcx.hir().item(*item_id);
@@ -983,24 +937,12 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
         })
         .collect();
 
-    if opts.generate_reorder {
-        let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});
-        println!("{}", serde_json::to_string_pretty(&json).expect("json"));
-    }
     Rc::new(TopLevel(results))
 }
 
 const LINE_WIDTH: usize = 80;
 
 pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
-    let configuration = get_configuration(&opts.configuration_file);
-    let opts = TopLevelOptions {
-        // @TODO create a function to read configuration file and
-        // merge command line options and return a single Configuration
-        // object instead of using TopLevelOptions + Configuration
-        axiomatize: opts.axiomatize || configuration.axiomatize,
-        ..opts
-    };
     let top_level = compile_top_level(tcx, opts);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)

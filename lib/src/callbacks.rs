@@ -22,26 +22,17 @@ impl Callbacks for ToCoq {
         queries: &'tcx Queries<'tcx>,
     ) -> Compilation {
         let axiomatize = self.opts.axiomatize;
-        let axiomatize_public = self.opts.axiomatize_public;
-        let configuration_file = self.opts.configuration_file.clone();
         queries.global_ctxt().unwrap();
 
         let (crate_name, coq_output) = queries.global_ctxt().unwrap().enter(|ctxt| {
             let current_crate_name = ctxt.crate_name(rustc_hir::def_id::LOCAL_CRATE);
             let current_crate_name_string = current_crate_name.to_string();
+
             eprintln!("Compiling create {current_crate_name_string:}");
+
             (
                 current_crate_name_string.clone(),
-                top_level_to_coq(
-                    &ctxt,
-                    TopLevelOptions {
-                        axiomatize,
-                        axiomatize_public,
-                        configuration_file,
-                        filename: current_crate_name_string,
-                        generate_reorder: self.opts.generate_reorder,
-                    },
-                ),
+                top_level_to_coq(&ctxt, TopLevelOptions { axiomatize }),
             )
         });
         let mut file = File::create(format!("{crate_name}.v")).unwrap();

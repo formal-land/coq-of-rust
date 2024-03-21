@@ -18,14 +18,16 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_functions_order_SomeType.
   Definition Self : Ty.t := Ty.path "functions_order::SomeType".
   
-  Parameter meth2 : (list Ty.t) -> (list Value.t) -> M.
-  
-  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
-  
   Parameter meth1 : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
+  
+  Parameter meth2 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
 End Impl_functions_order_SomeType.
+
+Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.
 
 (* Trait *)
 Module SomeTrait.
@@ -35,9 +37,9 @@ End SomeTrait.
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Definition Self : Ty.t := Ty.path "functions_order::SomeType".
   
-  Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
-  
   Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -46,8 +48,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       (* Trait polymorphic types *) []
       (* Instance *)
         [
-          ("some_trait_bar", InstanceField.Method some_trait_bar);
-          ("some_trait_foo", InstanceField.Method some_trait_foo)
+          ("some_trait_foo", InstanceField.Method some_trait_foo);
+          ("some_trait_bar", InstanceField.Method some_trait_bar)
         ].
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
@@ -70,20 +72,18 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
         ].
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
-Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.
-
 Module inner_mod.
-  Parameter tar : (list Ty.t) -> (list Value.t) -> M.
-  
   Parameter bar : (list Ty.t) -> (list Value.t) -> M.
   
+  Parameter tar : (list Ty.t) -> (list Value.t) -> M.
+  
   Module nested_mod.
-    Parameter tack : (list Ty.t) -> (list Value.t) -> M.
-    
     Parameter tick : (list Ty.t) -> (list Value.t) -> M.
+    
+    Parameter tack : (list Ty.t) -> (list Value.t) -> M.
   End nested_mod.
 End inner_mod.
 
-Parameter foo : (list Ty.t) -> (list Value.t) -> M.
-
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Parameter foo : (list Ty.t) -> (list Value.t) -> M.

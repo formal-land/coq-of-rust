@@ -29,9 +29,6 @@ pub struct Args {
 pub struct Options {
     pub(crate) in_cargo: bool,
     pub(crate) axiomatize: bool,
-    pub(crate) axiomatize_public: bool,
-    pub(crate) configuration_file: String,
-    pub(crate) generate_reorder: bool,
 }
 
 impl Options {
@@ -41,9 +38,6 @@ impl Options {
         Options {
             in_cargo: cargo_coq_of_rust,
             axiomatize: coq_of_rust.axiomatize,
-            axiomatize_public: coq_of_rust.axiomatize_public,
-            configuration_file: coq_of_rust.configuration_file,
-            generate_reorder: coq_of_rust.generate_reorder,
         }
     }
 }
