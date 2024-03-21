@@ -207,7 +207,7 @@ impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
 /// compiles a function with the given signature and body
 fn compile_fn_sig_and_body<'a>(
     tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     fn_sig_and_body: &HirFnSigAndBody,
     default: &str,
     is_axiom: bool,
@@ -311,7 +311,7 @@ fn get_item_ids_for_parent(tcx: &TyCtxt, expected_parent: rustc_hir::def_id::Def
 
 fn compile_top_level_item_without_local_items<'a>(
     tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     item: &Item,
 ) -> Vec<Rc<TopLevelItem>> {
     let name = to_valid_coq_name(item.ident.name.as_str());
@@ -524,16 +524,7 @@ fn compile_top_level_item_without_local_items<'a>(
         }) => {
             let generic_tys = get_ty_params_names(tcx, env, generics);
             let self_ty = compile_type(tcx, env, &item.owner_id.def_id, self_ty);
-
-            // Add the current trait to the environment to be recognized latter
-            // in the translation of expressions.
-            if let Some(trait_ref) = of_trait {
-                let trait_path = compile_path(env, trait_ref.path);
-                env.current_trait_impl = Some((trait_path, self_ty.clone()));
-            }
-
             let items = compile_impl_item_refs(tcx, env, items);
-            env.current_trait_impl = None;
 
             match of_trait {
                 Some(trait_ref) => {
@@ -616,7 +607,7 @@ fn compile_top_level_item_without_local_items<'a>(
 // @TODO: the argument `tcx` is included in `env` and should thus be removed
 fn compile_top_level_item<'a>(
     tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     item: &Item,
 ) -> Vec<Rc<TopLevelItem>> {
     // Sometimes there can be local items, for example a struct defined in the
@@ -655,7 +646,7 @@ fn get_hir_fn_sig_and_body<'a>(
 /// compiles a list of references to items
 fn compile_impl_item_refs<'a>(
     tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     item_refs: &[ImplItemRef],
 ) -> Vec<Rc<ImplItem>> {
     item_refs
@@ -667,7 +658,7 @@ fn compile_impl_item_refs<'a>(
 /// compiles an item
 fn compile_impl_item<'a>(
     tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     item: &rustc_hir::ImplItem,
 ) -> Rc<ImplItem> {
     let name = to_valid_coq_name(item.ident.name.as_str());
@@ -714,7 +705,7 @@ fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::
 
 // compiles the body of a function
 fn compile_function_body(
-    env: &mut Env,
+    env: &Env,
     args: &[(String, Rc<CoqType>)],
     body: &rustc_hir::Body,
     is_axiom: bool,
@@ -885,7 +876,7 @@ pub(crate) fn get_type_params_name_and_default_status(
 /// [compile_trait_item_body] compiles the body of the trait item
 fn compile_trait_item_body<'a>(
     tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     ty_params: Vec<String>,
     item: &rustc_hir::TraitItem,
 ) -> Rc<TraitItem> {
@@ -924,16 +915,15 @@ fn compile_trait_item_body<'a>(
 }
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
-    let mut env = Env {
+    let env = Env {
         tcx: *tcx,
         axiomatize: opts.axiomatize,
-        current_trait_impl: None,
     };
     let results = get_item_ids_for_parent(tcx, rustc_hir::def_id::CRATE_DEF_ID.into())
         .iter()
         .flat_map(|item_id| {
             let item = tcx.hir().item(*item_id);
-            compile_top_level_item(tcx, &mut env, item)
+            compile_top_level_item(tcx, &env, item)
         })
         .collect();
 
@@ -1165,7 +1155,7 @@ impl FunDefinition {
     /// compiles a given function
     fn compile<'a>(
         tcx: &TyCtxt<'a>,
-        env: &mut Env<'a>,
+        env: &Env<'a>,
         generics: &rustc_hir::Generics,
         fn_sig_and_body: &HirFnSigAndBody,
         default: &str,
