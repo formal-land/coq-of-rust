@@ -34,6 +34,9 @@ Module StateError.
   Definition write {State : Set} (state : State) : t State unit :=
     fun _ => (inl tt, state).
 
+  Definition panic {State A : Set} (msg : string) : t State A :=
+    fun state => (inr msg, state).
+
   Definition lift_from_error {State A : Set} (value : Error.t A) : t State A :=
     fun state =>
     (value, state).
@@ -67,6 +70,8 @@ Module Notations.
   Notation "readS?" := StateError.read.
 
   Notation "writeS?" := StateError.write.
+
+  Notation "panicS?" := StateError.panic.
 
   Notation "return?toS?" := StateError.lift_from_error.
 End Notations.
