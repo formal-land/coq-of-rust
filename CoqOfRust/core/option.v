@@ -65,14 +65,20 @@ Module Impl_Option. Section Impl_Option.
   Definition Self : Set := Option.t T.
 
   (* pub fn expect(self, msg: &str) -> T *)
-  Parameter expect : Self -> ref str.t -> M T.
+  Definition expect (self : Self) (msg_ref : ref str.t) : M T :=
+    match self with
+    | Option.None =>
+      let* msg := M.read msg_ref in
+      M.panic msg
+    | Option.Some x => M.pure x
+    end. 
 
   Global Instance AF_expect : Notations.DoubleColon Self "expect" := {
     Notations.double_colon := expect;
   }.
 
   (* pub fn unwrap(self) -> T *)
-  Parameter unwrap : Self -> M T.
+  Definition unwrap (self : Self) : M T := expect self (Ref.Imm "").
 
   Global Instance AF_unwrap : Notations.DoubleColon Self "unwrap" := {
     Notations.double_colon := unwrap;
