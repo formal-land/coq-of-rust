@@ -40,7 +40,7 @@ the translation of.
 
 ### Interface
 
-Usage: `coq-of-rust [OPTIONS] [-- <RUST_FLAGS>...]`
+Usage: `cargo coq-of-rust [OPTIONS] [-- <RUST_FLAGS>...]`
 
 Arguments:
   `[RUST_FLAGS]...`
@@ -48,16 +48,10 @@ Arguments:
 Options:
 - `--axiomatize`
   Axiomatize the definitions
-- `--axiomatize-public`
-  Axiomatize the definitions with everything as public
-- `--configuration-file <CONFIGURATION_FILE>`
-  Path to a configuration file `[default: coq-of-rust-config.json]`
-- `--generate-reorder`
-  Generate the reoder section of configuration file in the stdout
 - `-h`, `--help`
   Print help
 
-## standalone executable
+## Standalone executable
 
 ### Example
 
@@ -92,8 +86,5 @@ Usage: `coq-of-rust translate [OPTIONS] --path <PATH>`
 Options:
 - `-p`, `--path <PATH>`           Sets a path to rust file
 - `--axiomatize`                  Axiomatize the definitions
-- `--axiomatize-public`           Axiomatize the definitions with everything as public
-- `--generate-reorder`            Generate the "reorder" section of the configuration file
 - `--output-path <output_path>`   Output path where to place the translation `[default: coq_translation]`
-- `--configuration-file <config>` Configuration file path `[default: coq-of-rust-config.json]`
 - `-h`, `--help`                  Print help

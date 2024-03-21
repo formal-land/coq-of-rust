@@ -2,7 +2,6 @@ use crate::coq;
 use crate::env::*;
 use crate::path::*;
 use rustc_hir::{FnDecl, FnRetTy, Ty};
-use rustc_middle::ty::TyCtxt;
 use std::rc::Rc;
 
 #[derive(Debug, Eq, PartialEq)]
@@ -72,53 +71,49 @@ impl CoqType {
     }
 }
 
-pub(crate) fn compile_type<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
+pub(crate) fn compile_type(
+    env: &Env,
     local_def_id: &rustc_hir::def_id::LocalDefId,
     ty: &Ty,
 ) -> Rc<CoqType> {
-    let item_ctxt = rustc_hir_analysis::collect::ItemCtxt::new(*tcx, *local_def_id);
+    let item_ctxt = rustc_hir_analysis::collect::ItemCtxt::new(env.tcx, *local_def_id);
     let ty = &item_ctxt.to_ty(ty);
 
     crate::thir_ty::compile_type(env, ty)
 }
 
-pub(crate) fn compile_fn_ret_ty<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
+pub(crate) fn compile_fn_ret_ty(
+    env: &Env,
     local_def_id: &rustc_hir::def_id::LocalDefId,
     fn_ret_ty: &FnRetTy,
 ) -> Rc<CoqType> {
     match fn_ret_ty {
         FnRetTy::DefaultReturn(_) => CoqType::unit(),
-        FnRetTy::Return(ty) => compile_type(tcx, env, local_def_id, ty),
+        FnRetTy::Return(ty) => compile_type(env, local_def_id, ty),
     }
 }
 
 // The type of a function declaration
-pub(crate) fn compile_fn_decl<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
+pub(crate) fn compile_fn_decl(
+    env: &Env,
     local_def_id: &rustc_hir::def_id::LocalDefId,
     fn_decl: &FnDecl,
 ) -> Rc<CoqType> {
-    let ret = compile_fn_ret_ty(tcx, env, local_def_id, &fn_decl.output);
+    let ret = compile_fn_ret_ty(env, local_def_id, &fn_decl.output);
 
     Rc::new(CoqType::Function {
         args: fn_decl
             .inputs
             .iter()
-            .map(|arg| compile_type(tcx, env, local_def_id, arg))
+            .map(|arg| compile_type(env, local_def_id, arg))
             .collect(),
         ret,
     })
 }
 
 /// Return the type parameters on a path
-pub(crate) fn compile_path_ty_params<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
+pub(crate) fn compile_path_ty_params(
+    env: &Env,
     local_def_id: &rustc_hir::def_id::LocalDefId,
     path: &rustc_hir::Path,
 ) -> Vec<Rc<CoqType>> {
@@ -127,7 +122,7 @@ pub(crate) fn compile_path_ty_params<'a>(
             .args
             .iter()
             .filter_map(|arg| match arg {
-                rustc_hir::GenericArg::Type(ty) => Some(compile_type(tcx, env, local_def_id, ty)),
+                rustc_hir::GenericArg::Type(ty) => Some(compile_type(env, local_def_id, ty)),
                 _ => None,
             })
             .collect(),

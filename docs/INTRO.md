@@ -69,14 +69,14 @@ We use a type-classe to represent the overloading of a method name, the name of 
 
 ## Step 2: Coq that runs
 The goal here will be to:
-* Make a monad to reprentation a reasonable set of mutations for Rust (or any other ways to represent mutations, but monad are probably the default choice).
+* Make a monad to representation a reasonable set of mutations for Rust (or any other ways to represent mutations, but monad are probably the default choice).
 * Have a monadic translation of the Coq code that we generate using this monad, and some notations to make it less verbose.
 * Use this state monad in the translation with a code that behaves the same in Coq and in Rust (meaning the evaluation of the two should give the same result).
-* Additionnaly, there are other side-effects like:
+* Additionally, there are other side-effects like:
     * errors (there are non-recoverable in Rust, and can be raise by many primitives including integer overflows)
     * async
     * basic IOs
 that we can/should handle.
 
 ## Step 3: Actual proofs
-The final step is about writting actual proofs on Rust code, for example to verify the Solana smart contract https://github.com/solana-labs/solana-program-library/tree/master/token/program that is one of the most used on the Solana blockchain (smart contract that implements stable coins and NFTs).
+The final step is about writing actual proofs on Rust code, for example to verify the Solana smart contract https://github.com/solana-labs/solana-program-library/tree/master/token/program that is one of the most used on the Solana blockchain (smart contract that implements stable coins and NFTs).

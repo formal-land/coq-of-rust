@@ -1,11 +1,9 @@
-use crate::configuration::*;
 use crate::coq;
 use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
 use crate::render::*;
-use crate::reorder::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
@@ -15,18 +13,13 @@ use rustc_hir::{
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
-use std::collections::HashMap;
 use std::iter::repeat;
 use std::rc::Rc;
 use std::string::ToString;
 use std::vec;
 
 pub(crate) struct TopLevelOptions {
-    pub(crate) configuration_file: String,
-    pub(crate) filename: String,
     pub(crate) axiomatize: bool,
-    pub(crate) axiomatize_public: bool,
-    pub(crate) generate_reorder: bool,
 }
 
 #[derive(Debug)]
@@ -212,17 +205,15 @@ impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
 }
 
 /// compiles a function with the given signature and body
-fn compile_fn_sig_and_body<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+fn compile_fn_sig_and_body(
+    env: &Env,
     fn_sig_and_body: &HirFnSigAndBody,
     default: &str,
     is_axiom: bool,
 ) -> Rc<FnSigAndBody> {
     let decl = fn_sig_and_body.fn_sig.decl;
-    let args = get_args(tcx, env, fn_sig_and_body.body, decl.inputs, default);
+    let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
     let ret_ty = compile_fn_ret_ty(
-        tcx,
         env,
         &fn_sig_and_body.body.value.hir_id.owner.def_id,
         &decl.output,
@@ -234,8 +225,8 @@ fn compile_fn_sig_and_body<'a>(
 
 /// Check if the function body is actually the main test function calling to all
 /// tests in the file. If so, we do not want to compile it.
-fn check_if_is_test_main_function(tcx: &TyCtxt, body_id: &rustc_hir::BodyId) -> bool {
-    let body = tcx.hir().body(*body_id);
+fn check_if_is_test_main_function(env: &Env, body_id: &rustc_hir::BodyId) -> bool {
+    let body = env.tcx.hir().body(*body_id);
     let expr = body.value;
 
     if let rustc_hir::ExprKind::Block(block, _) = expr.kind {
@@ -267,11 +258,14 @@ fn check_if_test_declaration(ty: &Ty) -> bool {
 }
 
 fn check_lint_attribute<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
-    tcx: &TyCtxt,
+    env: &Env,
     item: Item,
     attribute: &str,
 ) -> bool {
-    for attr in tcx.get_attrs(item.into().def_id().to_def_id(), sym::allow) {
+    for attr in env
+        .tcx
+        .get_attrs(item.into().def_id().to_def_id(), sym::allow)
+    {
         if let AttrKind::Normal(value) = &attr.kind {
             if let AttrArgs::Delimited(value2) = &value.item.args {
                 let into_trees = &value2.tokens.trees();
@@ -298,31 +292,19 @@ fn check_lint_attribute<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
 }
 
 fn check_lint_attribute_axiom<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
-    tcx: &TyCtxt,
+    env: &Env,
     item: Item,
 ) -> bool {
-    check_lint_attribute(tcx, item, "coq_axiom")
+    check_lint_attribute(env, item, "coq_axiom")
 }
 
-fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
-    let def_id = item.owner_id.to_def_id();
-    let ignore_impls = env.configuration.impl_ignore_axioms.contains(&env.file);
-    let id_to_check = match &item.kind {
-        ItemKind::Impl(Impl {
-            of_trait: Some(trait_ref),
-            ..
-        }) if !ignore_impls => trait_ref.trait_def_id().unwrap(),
-        _ => def_id,
-    };
-    tcx.visibility(id_to_check).is_public()
-}
-
-fn get_item_ids_for_parent(tcx: &TyCtxt, expected_parent: rustc_hir::def_id::DefId) -> Vec<ItemId> {
-    tcx.hir()
+fn get_item_ids_for_parent(env: &Env, expected_parent: rustc_hir::def_id::DefId) -> Vec<ItemId> {
+    env.tcx
+        .hir()
         .items()
         .filter(|item_id| {
             let def_id = item_id.owner_id.to_def_id();
-            let parent = tcx.opt_parent(def_id).unwrap();
+            let parent = env.tcx.opt_parent(def_id).unwrap();
 
             parent == expected_parent
         })
@@ -330,9 +312,8 @@ fn get_item_ids_for_parent(tcx: &TyCtxt, expected_parent: rustc_hir::def_id::Def
 }
 
 fn compile_top_level_item_without_local_items<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
-    item: &Item,
+    env: &Env<'a>,
+    item: &'a Item,
 ) -> Vec<Rc<TopLevelItem>> {
     let name = to_valid_coq_name(item.ident.name.as_str());
     let path = compile_def_id(env, item.owner_id.to_def_id());
@@ -363,19 +344,18 @@ fn compile_top_level_item_without_local_items<'a>(
             vec![Rc::new(TopLevelItem::Const { name, value })]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
-            if check_if_is_test_main_function(tcx, body_id) {
+            if check_if_is_test_main_function(env, body_id) {
                 return vec![];
             }
 
             let snippet = Snippet::of_span(env, &item.span);
-            let is_axiom = check_lint_attribute_axiom(tcx, item);
-            let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
+            let is_axiom = check_lint_attribute_axiom(env, item);
+            let fn_sig_and_body = get_hir_fn_sig_and_body(env, fn_sig, body_id);
 
             vec![Rc::new(TopLevelItem::Definition {
                 name,
                 snippet,
                 definition: FunDefinition::compile(
-                    tcx,
                     env,
                     generics,
                     &fn_sig_and_body,
@@ -386,14 +366,12 @@ fn compile_top_level_item_without_local_items<'a>(
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let context = get_full_name(tcx, item.hir_id());
-            let mut items: Vec<ItemId> = module.item_ids.to_vec();
-            reorder_definitions_inplace(tcx, env, &context, &mut items);
-            let items: Vec<_> = items
+            let items: Vec<_> = module
+                .item_ids
                 .iter()
                 .flat_map(|item_id| {
-                    let item = tcx.hir().item(*item_id);
-                    compile_top_level_item(tcx, env, item)
+                    let item = env.tcx.hir().item(*item_id);
+                    compile_top_level_item(env, item)
                 })
                 .collect();
 
@@ -416,12 +394,12 @@ fn compile_top_level_item_without_local_items<'a>(
         ItemKind::TyAlias(ty, generics) => vec![Rc::new(TopLevelItem::TypeAlias {
             name,
             path,
-            ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
-            ty_params: get_ty_params_names(tcx, env, generics),
+            ty: compile_type(env, &item.owner_id.def_id, ty),
+            ty_params: get_ty_params_names(env, generics),
         })],
         ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error("OpaqueTy".to_string()))],
         ItemKind::Enum(enum_def, generics) => {
-            let ty_params = get_ty_params(tcx, env, &item.owner_id.def_id, generics);
+            let ty_params = get_ty_params(env, &item.owner_id.def_id, generics);
             vec![Rc::new(TopLevelItem::TypeEnum {
                 name,
                 ty_params,
@@ -437,7 +415,7 @@ fn compile_top_level_item_without_local_items<'a>(
                                     .map(|field| {
                                         (
                                             field.ident.to_string(),
-                                            compile_type(tcx, env, &item.owner_id.def_id, field.ty),
+                                            compile_type(env, &item.owner_id.def_id, field.ty),
                                         )
                                     })
                                     .collect();
@@ -446,9 +424,7 @@ fn compile_top_level_item_without_local_items<'a>(
                             VariantData::Tuple(fields, _, _) => {
                                 let tys = fields
                                     .iter()
-                                    .map(|field| {
-                                        compile_type(tcx, env, &item.owner_id.def_id, field.ty)
-                                    })
+                                    .map(|field| compile_type(env, &item.owner_id.def_id, field.ty))
                                     .collect();
                                 VariantItem::Tuple { tys }
                             }
@@ -480,7 +456,7 @@ fn compile_top_level_item_without_local_items<'a>(
             })]
         }
         ItemKind::Struct(body, generics) => {
-            let ty_params = get_ty_params(tcx, env, &item.owner_id.def_id, generics);
+            let ty_params = get_ty_params(env, &item.owner_id.def_id, generics);
 
             match body {
                 VariantData::Struct(fields, _) => {
@@ -492,7 +468,7 @@ fn compile_top_level_item_without_local_items<'a>(
                         .map(|field| {
                             (
                                 to_valid_coq_name(field.ident.name.as_str()),
-                                compile_type(tcx, env, &item.owner_id.def_id, field.ty),
+                                compile_type(env, &item.owner_id.def_id, field.ty),
                             )
                         })
                         .collect();
@@ -508,7 +484,7 @@ fn compile_top_level_item_without_local_items<'a>(
                         ty_params,
                         fields: fields
                             .iter()
-                            .map(|field| compile_type(tcx, env, &item.owner_id.def_id, field.ty))
+                            .map(|field| compile_type(env, &item.owner_id.def_id, field.ty))
                             .collect(),
                     })]
                 }
@@ -522,13 +498,13 @@ fn compile_top_level_item_without_local_items<'a>(
             vec![Rc::new(TopLevelItem::Trait {
                 name,
                 path,
-                ty_params: get_ty_params(tcx, env, &item.owner_id.def_id, generics),
+                ty_params: get_ty_params(env, &item.owner_id.def_id, generics),
                 body: items
                     .iter()
                     .map(|item| {
-                        let item = tcx.hir().trait_item(item.id);
-                        let ty_params = get_ty_params_names(tcx, env, item.generics);
-                        let body = compile_trait_item_body(tcx, env, ty_params, item);
+                        let item = env.tcx.hir().trait_item(item.id);
+                        let ty_params = get_ty_params_names(env, item.generics);
+                        let body = compile_trait_item_body(env, ty_params, item);
                         (to_valid_coq_name(item.ident.name.as_str()), body)
                     })
                     .collect(),
@@ -544,28 +520,17 @@ fn compile_top_level_item_without_local_items<'a>(
             items,
             ..
         }) => {
-            let generic_tys = get_ty_params_names(tcx, env, generics);
-            let self_ty = compile_type(tcx, env, &item.owner_id.def_id, self_ty);
-            let mut items: Vec<ImplItemRef> = items.to_vec();
-            let context = get_full_name(tcx, item.hir_id());
-            reorder_definitions_inplace(tcx, env, &context, &mut items);
-
-            // Add the current trait to the environment to be recognized latter
-            // in the translation of expressions.
-            if let Some(trait_ref) = of_trait {
-                let trait_path = compile_path(env, trait_ref.path);
-                env.current_trait_impl = Some((trait_path, self_ty.clone()));
-            }
-
-            let items = compile_impl_item_refs(tcx, env, &items);
-            env.current_trait_impl = None;
+            let generic_tys = get_ty_params_names(env, generics);
+            let self_ty = compile_type(env, &item.owner_id.def_id, self_ty);
+            let items = compile_impl_item_refs(env, items);
 
             match of_trait {
                 Some(trait_ref) => {
-                    let rustc_default_item_names: Vec<String> = tcx
+                    let rustc_default_item_names: Vec<String> = env
+                        .tcx
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
-                        .filter(|item| item.defaultness(*tcx).has_value())
+                        .filter(|item| item.defaultness(env.tcx).has_value())
                         .map(|item| to_valid_coq_name(item.name.as_str()))
                         .collect();
                     let items: Vec<Rc<TraitImplItem>> = items
@@ -605,14 +570,13 @@ fn compile_top_level_item_without_local_items<'a>(
                         .collect();
 
                     // Get the generics for the trait
-                    let trait_generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
+                    let trait_generics = env.tcx.generics_of(trait_ref.trait_def_id().unwrap());
 
                     vec![Rc::new(TopLevelItem::TraitImpl {
                         generic_tys,
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
                         trait_ty_params: get_ty_params_with_default_status(
-                            tcx,
                             env,
                             &item.owner_id.def_id,
                             trait_generics,
@@ -639,80 +603,55 @@ fn compile_top_level_item_without_local_items<'a>(
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
 // @TODO: the argument `tcx` is included in `env` and should thus be removed
-fn compile_top_level_item<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
-    item: &Item,
-) -> Vec<Rc<TopLevelItem>> {
-    if env.axiomatize && !env.axiomatize_public {
-        let is_public = is_top_level_item_public(tcx, env, item);
-        if !is_public {
-            // Do not generate anything if the item is not public and we are
-            // axiomatizing the definitions (for a library). Also, still
-            // generate the modules, since they may contain public items.
-            match &item.kind {
-                ItemKind::Mod(_) => {}
-                _ => return vec![],
-            }
-        }
-    }
-
+fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelItem>> {
     // Sometimes there can be local items, for example a struct defined in the
     // body of a function. For modules, we make an exception as modules are
     // expected to have items. We will concatenate the local items directly after
     // the item's translation.
     let local_item_ids = match &item.kind {
         ItemKind::Mod(_) => vec![],
-        _ => get_item_ids_for_parent(tcx, item.item_id().owner_id.to_def_id()),
+        _ => get_item_ids_for_parent(env, item.item_id().owner_id.to_def_id()),
     };
     let local_items = local_item_ids
         .into_iter()
         .flat_map(|item_id| {
-            let item = tcx.hir().item(item_id);
-            compile_top_level_item(tcx, env, item)
+            let item = env.tcx.hir().item(item_id);
+            compile_top_level_item(env, item)
         })
         .collect();
 
-    let items = compile_top_level_item_without_local_items(tcx, env, item);
+    let items = compile_top_level_item_without_local_items(env, item);
 
     [items, local_items].concat()
 }
 
 /// returns a pair of function signature and its body
 fn get_hir_fn_sig_and_body<'a>(
-    tcx: &'a TyCtxt,
+    env: &Env<'a>,
     fn_sig: &'a rustc_hir::FnSig<'a>,
     body_id: &rustc_hir::BodyId,
 ) -> HirFnSigAndBody<'a> {
     HirFnSigAndBody {
         fn_sig,
-        body: get_body(tcx, body_id),
+        body: get_body(env, body_id),
     }
 }
 
 /// compiles a list of references to items
-fn compile_impl_item_refs<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
-    item_refs: &[ImplItemRef],
-) -> Vec<Rc<ImplItem>> {
+fn compile_impl_item_refs(env: &Env, item_refs: &[ImplItemRef]) -> Vec<Rc<ImplItem>> {
     item_refs
         .iter()
-        .map(|item_ref| compile_impl_item(tcx, env, tcx.hir().impl_item(item_ref.id)))
+        .map(|item_ref| compile_impl_item(env, env.tcx.hir().impl_item(item_ref.id)))
         .collect()
 }
 
 /// compiles an item
-fn compile_impl_item<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
-    item: &rustc_hir::ImplItem,
-) -> Rc<ImplItem> {
+fn compile_impl_item<'a>(env: &Env<'a>, item: &'a rustc_hir::ImplItem) -> Rc<ImplItem> {
     let name = to_valid_coq_name(item.ident.name.as_str());
     let snippet = Snippet::of_span(env, &item.span);
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
-            let ty = compile_type(tcx, env, &item.owner_id.def_id, ty);
+            let ty = compile_type(env, &item.owner_id.def_id, ty);
             let body = if env.axiomatize {
                 None
             } else {
@@ -721,21 +660,20 @@ fn compile_impl_item<'a>(
             Rc::new(ImplItemKind::Const { ty, body })
         }
         rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => {
-            let is_axiom = check_lint_attribute_axiom(tcx, item);
+            let is_axiom = check_lint_attribute_axiom(env, item);
 
             Rc::new(ImplItemKind::Definition {
                 definition: FunDefinition::compile(
-                    tcx,
                     env,
                     item.generics,
-                    &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
+                    &get_hir_fn_sig_and_body(env, fn_sig, body_id),
                     "Pattern",
                     is_axiom,
                 ),
             })
         }
         rustc_hir::ImplItemKind::Type(ty) => Rc::new(ImplItemKind::Type {
-            ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
+            ty: compile_type(env, &item.owner_id.def_id, ty),
         }),
     };
     Rc::new(ImplItem {
@@ -746,13 +684,13 @@ fn compile_impl_item<'a>(
 }
 
 /// returns the body corresponding to the given body_id
-fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::Body<'a> {
-    tcx.hir().body(*body_id)
+fn get_body<'a>(env: &Env<'a>, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::Body<'a> {
+    env.tcx.hir().body(*body_id)
 }
 
 // compiles the body of a function
 fn compile_function_body(
-    env: &mut Env,
+    env: &Env,
     args: &[(String, Rc<CoqType>)],
     body: &rustc_hir::Body,
     is_axiom: bool,
@@ -779,9 +717,8 @@ fn compile_function_body(
 }
 
 /// returns a list of pairs of argument names and their types
-fn get_args<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
+fn get_args(
+    env: &Env,
     body: &rustc_hir::Body,
     inputs: &[rustc_hir::Ty],
     default: &str,
@@ -789,11 +726,7 @@ fn get_args<'a>(
     let local_def_id = body.value.hir_id.owner.def_id;
 
     get_arg_names(body, default)
-        .zip(
-            inputs
-                .iter()
-                .map(|ty| compile_type(tcx, env, &local_def_id, ty)),
-        )
+        .zip(inputs.iter().map(|ty| compile_type(env, &local_def_id, ty)))
         .collect()
 }
 
@@ -810,10 +743,9 @@ fn get_arg_names<'a>(
 
 /// filters out type parameters and compiles them with the given function
 fn compile_ty_params<'a, T>(
-    tcx: &TyCtxt<'a>,
     env: &Env<'a>,
     generics: &rustc_hir::Generics,
-    f: impl Fn(&TyCtxt<'a>, &Env<'a>, String, Option<&Ty>) -> T,
+    f: impl Fn(&Env<'a>, String, Option<&Ty>) -> T,
 ) -> Vec<T> {
     generics
         .params
@@ -821,7 +753,7 @@ fn compile_ty_params<'a, T>(
         .filter_map(|param| match param.kind {
             // we ignore lifetimes
             GenericParamKind::Type { default, .. } => {
-                Some(f(tcx, env, param.name.ident().to_string(), default))
+                Some(f(env, param.name.ident().to_string(), default))
             }
             GenericParamKind::Lifetime { .. } | GenericParamKind::Const { .. } => None,
         })
@@ -829,32 +761,26 @@ fn compile_ty_params<'a, T>(
 }
 
 /// extracts type parameters with their optional default value from the generics
-fn get_ty_params<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
+fn get_ty_params(
+    env: &Env,
     local_def_id: &rustc_hir::def_id::LocalDefId,
     generics: &rustc_hir::Generics,
 ) -> Vec<(String, Option<Rc<CoqType>>)> {
-    compile_ty_params(tcx, env, generics, |tcx, env, name, default| {
-        let default = default.map(|default| compile_type(tcx, env, local_def_id, default));
+    compile_ty_params(env, generics, |env, name, default| {
+        let default = default.map(|default| compile_type(env, local_def_id, default));
         let name = to_valid_coq_name(&name);
         (name, default)
     })
 }
 
 /// extracts the names of type parameters from the generics
-fn get_ty_params_names<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
-    generics: &rustc_hir::Generics,
-) -> Vec<String> {
-    compile_ty_params(tcx, env, generics, |_, _, name, _| to_valid_coq_name(&name))
+fn get_ty_params_names(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
+    compile_ty_params(env, generics, |_, name, _| to_valid_coq_name(&name))
 }
 
 /// computes the list of actual type parameters with their default status
-fn get_ty_params_with_default_status<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &Env<'a>,
+fn get_ty_params_with_default_status(
+    env: &Env,
     local_def_id: &rustc_hir::def_id::LocalDefId,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
@@ -864,7 +790,7 @@ fn get_ty_params_with_default_status<'a>(
     // part of the list of type parameters.
     type_params_name_and_default_status.remove(0);
 
-    let ty_params = compile_path_ty_params(tcx, env, local_def_id, path);
+    let ty_params = compile_path_ty_params(env, local_def_id, path);
     add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
 }
 
@@ -922,26 +848,24 @@ pub(crate) fn get_type_params_name_and_default_status(
 
 /// [compile_trait_item_body] compiles the body of the trait item
 fn compile_trait_item_body<'a>(
-    tcx: &TyCtxt<'a>,
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     ty_params: Vec<String>,
-    item: &rustc_hir::TraitItem,
+    item: &'a rustc_hir::TraitItem,
 ) -> Rc<TraitItem> {
     match &item.kind {
         TraitItemKind::Const(ty, _) => Rc::new(TraitItem::Definition {
             ty_params,
-            ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
+            ty: compile_type(env, &item.owner_id.def_id, ty),
         }),
         TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
             TraitFn::Required(_) => Rc::new(TraitItem::Definition {
                 ty_params,
-                ty: compile_fn_decl(tcx, env, &item.owner_id.def_id, fn_sig.decl),
+                ty: compile_fn_decl(env, &item.owner_id.def_id, fn_sig.decl),
             }),
             TraitFn::Provided(body_id) => {
-                let env_tcx = env.tcx;
-                let fn_sig_and_body = get_hir_fn_sig_and_body(&env_tcx, fn_sig, body_id);
+                let fn_sig_and_body = get_hir_fn_sig_and_body(env, fn_sig, body_id);
                 let signature_and_body =
-                    compile_fn_sig_and_body(tcx, env, &fn_sig_and_body, "arg", false);
+                    compile_fn_sig_and_body(env, &fn_sig_and_body, "arg", false);
                 Rc::new(TraitItem::DefinitionWithDefault(Rc::new(FunDefinition {
                     ty_params,
                     signature_and_body,
@@ -962,45 +886,24 @@ fn compile_trait_item_body<'a>(
 }
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
-    let mut env = Env {
+    let env = Env {
         tcx: *tcx,
         axiomatize: opts.axiomatize,
-        axiomatize_public: opts.axiomatize_public,
-        file: opts.filename,
-        reorder_map: HashMap::new(),
-        configuration: get_configuration(&opts.configuration_file),
-        current_trait_impl: None,
     };
-
-    let mut results = get_item_ids_for_parent(tcx, rustc_hir::def_id::CRATE_DEF_ID.into());
-    reorder_definitions_inplace(tcx, &mut env, "top_level", &mut results);
-
-    let results = results
+    let results = get_item_ids_for_parent(&env, rustc_hir::def_id::CRATE_DEF_ID.into())
         .iter()
         .flat_map(|item_id| {
             let item = tcx.hir().item(*item_id);
-            compile_top_level_item(tcx, &mut env, item)
+            compile_top_level_item(&env, item)
         })
         .collect();
 
-    if opts.generate_reorder {
-        let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});
-        println!("{}", serde_json::to_string_pretty(&json).expect("json"));
-    }
     Rc::new(TopLevel(results))
 }
 
 const LINE_WIDTH: usize = 80;
 
 pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
-    let configuration = get_configuration(&opts.configuration_file);
-    let opts = TopLevelOptions {
-        // @TODO create a function to read configuration file and
-        // merge command line options and return a single Configuration
-        // object instead of using TopLevelOptions + Configuration
-        axiomatize: opts.axiomatize || configuration.axiomatize,
-        ..opts
-    };
     let top_level = compile_top_level(tcx, opts);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)
@@ -1221,9 +1124,8 @@ impl DynNameGen {
 
 impl FunDefinition {
     /// compiles a given function
-    fn compile<'a>(
-        tcx: &TyCtxt<'a>,
-        env: &mut Env<'a>,
+    fn compile(
+        env: &Env,
         generics: &rustc_hir::Generics,
         fn_sig_and_body: &HirFnSigAndBody,
         default: &str,
@@ -1231,13 +1133,13 @@ impl FunDefinition {
     ) -> Rc<Self> {
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
-            &*compile_fn_sig_and_body(tcx, env, fn_sig_and_body, default, is_axiom);
+            &*compile_fn_sig_and_body(env, fn_sig_and_body, default, is_axiom);
         let args = args.iter().fold(vec![], |result, (string, ty)| {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
             [result, vec![(string.to_owned(), ty)]].concat()
         });
         let ty_params = [
-            get_ty_params_names(tcx, env, generics),
+            get_ty_params_names(env, generics),
             dyn_name_gen.get_type_parm_list(),
         ]
         .concat();

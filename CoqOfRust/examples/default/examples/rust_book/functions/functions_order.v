@@ -19,19 +19,6 @@ Module Impl_functions_order_SomeType.
   Definition Self : Ty.t := Ty.path "functions_order::SomeType".
   
   (*
-      fn meth2(self) {}
-  *)
-  Definition meth2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      M.pure (Value.Tuple [])
-    | _, _ => M.impossible
-    end.
-  
-  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
-  
-  (*
       pub fn meth1(self) {
           self.meth2();
       }
@@ -55,96 +42,20 @@ Module Impl_functions_order_SomeType.
     end.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
+  
+  (*
+      fn meth2(self) {}
+  *)
+  Definition meth2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
+    | _, _ => M.impossible
+    end.
+  
+  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
 End Impl_functions_order_SomeType.
-
-(* Trait *)
-Module SomeTrait.
-  
-End SomeTrait.
-
-Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Definition Self : Ty.t := Ty.path "functions_order::SomeType".
-  
-  (*
-      fn some_trait_bar(&self) {}
-  *)
-  Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      M.pure (Value.Tuple [])
-    | _, _ => M.impossible
-    end.
-  
-  (*
-      fn some_trait_foo(&self) {
-          self.some_trait_bar()
-      }
-  *)
-  Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 :=
-        M.get_trait_method
-          "functions_order::SomeTrait"
-          (Ty.path "functions_order::SomeType")
-          []
-          "some_trait_bar"
-          [] in
-      let* α1 := M.read self in
-      M.call_closure α0 [ α1 ]
-    | _, _ => M.impossible
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "functions_order::SomeTrait"
-      (* Self *) (Ty.path "functions_order::SomeType")
-      (* Trait polymorphic types *) []
-      (* Instance *)
-        [
-          ("some_trait_bar", InstanceField.Method some_trait_bar);
-          ("some_trait_foo", InstanceField.Method some_trait_foo)
-        ].
-End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-
-Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Definition Self : Ty.t := Ty.path "functions_order::OtherType".
-  
-  (*
-      fn some_trait_foo(&self) {}
-  *)
-  Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      M.pure (Value.Tuple [])
-    | _, _ => M.impossible
-    end.
-  
-  (*
-      fn some_trait_bar(&self) {}
-  *)
-  Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      M.pure (Value.Tuple [])
-    | _, _ => M.impossible
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "functions_order::SomeTrait"
-      (* Self *) (Ty.path "functions_order::OtherType")
-      (* Trait polymorphic types *) []
-      (* Instance *)
-        [
-          ("some_trait_foo", InstanceField.Method some_trait_foo);
-          ("some_trait_bar", InstanceField.Method some_trait_bar)
-        ].
-End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 (*
 fn depends_on_trait_impl(u: u32, b: bool) {
@@ -188,16 +99,96 @@ Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-Module inner_mod.
+(* Trait *)
+Module SomeTrait.
+  
+End SomeTrait.
+
+Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+  Definition Self : Ty.t := Ty.path "functions_order::SomeType".
+  
   (*
-      fn tar() {}
+      fn some_trait_foo(&self) {
+          self.some_trait_bar()
+      }
   *)
-  Definition tar (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
     match 𝜏, α with
-    | [], [] => M.pure (Value.Tuple [])
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 :=
+        M.get_trait_method
+          "functions_order::SomeTrait"
+          (Ty.path "functions_order::SomeType")
+          []
+          "some_trait_bar"
+          [] in
+      let* α1 := M.read self in
+      M.call_closure α0 [ α1 ]
     | _, _ => M.impossible
     end.
   
+  (*
+      fn some_trait_bar(&self) {}
+  *)
+  Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
+    | _, _ => M.impossible
+    end.
+  
+  Axiom Implements :
+    M.IsTraitInstance
+      "functions_order::SomeTrait"
+      (* Self *) (Ty.path "functions_order::SomeType")
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("some_trait_foo", InstanceField.Method some_trait_foo);
+          ("some_trait_bar", InstanceField.Method some_trait_bar)
+        ].
+End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+
+Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+  Definition Self : Ty.t := Ty.path "functions_order::OtherType".
+  
+  (*
+      fn some_trait_foo(&self) {}
+  *)
+  Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
+    | _, _ => M.impossible
+    end.
+  
+  (*
+      fn some_trait_bar(&self) {}
+  *)
+  Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      M.pure (Value.Tuple [])
+    | _, _ => M.impossible
+    end.
+  
+  Axiom Implements :
+    M.IsTraitInstance
+      "functions_order::SomeTrait"
+      (* Self *) (Ty.path "functions_order::OtherType")
+      (* Trait polymorphic types *) []
+      (* Instance *)
+        [
+          ("some_trait_foo", InstanceField.Method some_trait_foo);
+          ("some_trait_bar", InstanceField.Method some_trait_bar)
+        ].
+End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+
+Module inner_mod.
   (*
       pub fn bar() {
           // functions_order::inner_mod::bar
@@ -216,16 +207,16 @@ Module inner_mod.
     | _, _ => M.impossible
     end.
   
+  (*
+      fn tar() {}
+  *)
+  Definition tar (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] => M.pure (Value.Tuple [])
+    | _, _ => M.impossible
+    end.
+  
   Module nested_mod.
-    (*
-            fn tack() {}
-    *)
-    Definition tack (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
-      | [], [] => M.pure (Value.Tuple [])
-      | _, _ => M.impossible
-      end.
-    
     (*
             pub fn tick() {
                 tack();
@@ -243,17 +234,17 @@ Module inner_mod.
         M.read α0
       | _, _ => M.impossible
       end.
+    
+    (*
+            fn tack() {}
+    *)
+    Definition tack (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      match 𝜏, α with
+      | [], [] => M.pure (Value.Tuple [])
+      | _, _ => M.impossible
+      end.
   End nested_mod.
 End inner_mod.
-
-(*
-fn foo() {}
-*)
-Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
-  | [], [] => M.pure (Value.Tuple [])
-  | _, _ => M.impossible
-  end.
 
 (*
 fn main() {
@@ -291,5 +282,14 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
+  | _, _ => M.impossible
+  end.
+
+(*
+fn foo() {}
+*)
+Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.

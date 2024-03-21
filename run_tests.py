@@ -31,7 +31,7 @@ def compile_with_option(file: str, output_path: str, is_axiomatized: bool):
         "cargo run --quiet --bin coq-of-rust -- translate --path "
         + file
         + " "
-        + ("--axiomatize --axiomatize-public " if is_axiomatized else "")
+        + ("--axiomatize " if is_axiomatized else "")
         + "--output-path " + output_path
         + " 2> "
         + os.path.join(output_path, base + ".err")
