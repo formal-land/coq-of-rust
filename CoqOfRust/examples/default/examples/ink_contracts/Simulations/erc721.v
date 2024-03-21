@@ -1,8 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.Simulations.M.
+Require CoqOfRust.Simulations.option.
+Require CoqOfRust.Simulations.bool.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc721.
 
 Import Simulations.M.Notations.
+Import Simulations.bool.Notations.
 
 (** ** Primitives *)
 
@@ -38,6 +41,9 @@ Module AccountId.
     negb (option_eq x y).
 
   Parameter from : array u8.t -> erc721.AccountId.t.
+
+  Definition from_zero : erc721.AccountId.t :=
+    from (repeat (u8.Make 0) 32).
 End AccountId.
 
 (** ** Simulations that only read the state. *)
@@ -63,22 +69,6 @@ Definition owner_of
     (token_id : ltac:(erc721.TokenId)) :
     core.option.Option.t erc721.AccountId.t :=
   Lib.Mapping.get token_id storage.(erc721.Erc721.token_owner).
-
-Definition approved_or_owner
-    (storage : erc721.Erc721.t)
-    (from : core.option.Option.t erc721.AccountId.t)
-    (token_id : ltac:(erc721.TokenId)) :
-    bool.t :=
-  let owner := owner_of storage token_id in
-  (AccountId.option_neq
-    from
-    (option.Option.Some (AccountId.from (repeat (u8.Make 0) 32)))
-  && (AccountId.option_eq from owner
-    || AccountId.option_eq
-        from
-        (Lib.Mapping.get token_id storage.(erc721.Erc721.token_approvals))
-    (* || approved_for_all storage owner from *)
-    ))%bool.
 
 Definition exists_
     (storage : erc721.Erc721.t)
@@ -110,6 +100,20 @@ Definition is_approved_for_all
 Module State.
   Definition t : Set := erc721.Erc721.t * list erc721.Event.t.
 End State.
+
+Definition approved_or_owner
+    (from : core.option.Option.t erc721.AccountId.t)
+    (token_id : ltac:(erc721.TokenId)) :
+    MS? State.t bool.t :=
+  letS? '(storage, events) := readS? in
+  let owner := owner_of storage token_id in
+  (returnS? (AccountId.option_neq from (option.Option.Some AccountId.from_zero))
+    &&S? (returnS? (AccountId.option_eq from owner)
+          ||S? returnS? (AccountId.option_eq from
+                          (Lib.Mapping.get token_id storage.(erc721.Erc721.token_approvals)))
+          ||S? (letS? owner := Simulations.option.Option.expect owner "Error with AccountId" in
+                letS? from := Simulations.option.Option.expect from "Error with AccountId" in
+                returnS? (approved_for_all storage owner from))))%bool.
 
 Definition clear_approval
     (token_id : ltac:(erc721.TokenId)) :
@@ -158,9 +162,54 @@ Definition set_approval_for_all
     MS? State.t (core.result.Result.t unit erc721.Error.t) :=
   approve_for_all env to approved.
 
+Definition approve_for
+  (env : erc721.Env.t)
+  (to : erc721.AccountId.t)
+  (token_id : ltac:(erc721.TokenId)) :
+  MS? State.t (core.result.Result.t unit erc721.Error.t) :=
+  letS? '(storage, events) := readS? in
+  let caller := Env.caller env in
+  let owner := owner_of storage token_id in
+  ifS?
+    notS?
+      (returnS? (AccountId.option_eq owner (option.Option.Some caller))
+        ||S? (letS? owner := Simulations.option.Option.expect owner "Error with AccountId" in
+              returnS? (approved_for_all storage owner caller)))%bool
+  then
+    returnS? (result.Result.Err erc721.Error.NotAllowed)
+  else
+    if AccountId.eq to AccountId.from_zero
+    then
+      returnS? (result.Result.Err erc721.Error.NotAllowed)
+    else
+      if Lib.Mapping.contains token_id storage.(erc721.Erc721.token_approvals)
+      then
+        returnS? (result.Result.Err erc721.Error.CannotInsert)
+      else
+        let event := erc721.Event.Approval {|
+          erc721.Approval.from := caller;
+          erc721.Approval.to := to;
+          erc721.Approval.id := token_id
+        |} in
+        letS? _ := writeS? (
+          storage <|
+            erc721.Erc721.token_approvals :=
+              Lib.Mapping.insert token_id to storage.(erc721.Erc721.token_approvals)
+          |>,
+          event :: events
+        ) in
+        returnS? (result.Result.Ok tt).
+
+Definition approve
+    (env : erc721.Env.t)
+    (to : erc721.AccountId.t)
+    (token_id : ltac:(erc721.TokenId)) :
+    MS? State.t (core.result.Result.t unit erc721.Error.t) :=
+  letS? _ := approve_for env to token_id in
+  returnS? (result.Result.Ok tt).
+
+
 (* TODO: *)
-(* approve_for *)
-(* approve *)
 (* remove_token_from *)
 (* add_token_to *)
 (* transfer_token_from *)
