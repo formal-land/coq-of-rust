@@ -140,7 +140,11 @@ Module Value.
       semantics. *)
   | Closure : {'(t, M) : Set * Set @ list t -> M} -> t
   (** A special value that does not appear in the translation, but that we use
-      to implement primitive functions over values that are not total. *)
+      to implement primitive functions over values that are not total. We
+      statically know, from the fact that the source Rust code is well-typed,
+      that these error values are impossible. In these values appear in a proof,
+      this might indicate invalid pre-conditions or mistakes in the translation
+      to Coq. *)
   | Error (message : string)
   (** To implement the ability to declare a variable but not give it a value
       yet. *)
@@ -628,7 +632,8 @@ Definition never_to_any (x : Value.t) : M :=
 Definition use (x : Value.t) : Value.t :=
   x.
 
-(** An error should not occur, but the code is still there for typing and
+(** An error should not occur as we statically know the number of fields in a
+    tuple, but the code for the error branch is still there for typing and
     debugging reasons. *)
 Definition get_tuple_field (value : Value.t) (index : Z) : Value.t :=
   match value with
@@ -650,8 +655,34 @@ Definition get_tuple_field (value : Value.t) (index : Z) : Value.t :=
   | _ => Value.Error "expected an address"
   end.
 
-(** An error should not occur, but the code is still there for typing and
-    debugging reasons. *)
+(** This function might fail, in case the [index] is out of range. *)
+Definition get_array_field (value : Value.t) (index : Value.t) : M :=
+  let* index := read index in
+  match index with
+  | Value.Integer Integer.Usize index =>
+    match value with
+    | Value.Pointer pointer =>
+      match pointer with
+      | Pointer.Immediate value =>
+        match value with
+        | Value.Array fields =>
+          (* As this is in `usize`, the index is necessarily positive. *)
+          match List.nth_error fields (Z.to_nat index) with
+          | Some field => pure (Value.Pointer (Pointer.Immediate field))
+          | None => panic "invalid array index"
+          end
+        | _ => pure (Value.Error "expected an array")
+        end
+      | Pointer.Mutable address path =>
+        let new_path := path ++ [Pointer.Index.Array index] in
+        pure (Value.Pointer (Pointer.Mutable address new_path))
+      end
+    | _ => pure (Value.Error "expected an address")
+    end
+  | _ => pure (Value.Error "Expected a usize as an array index")
+  end.
+
+(** Same as for [get_tuple_field], an error should not occur. *)
 Definition get_struct_tuple_field
     (value : Value.t) (constructor : string) (index : Z) :
     Value.t :=
@@ -677,8 +708,7 @@ Definition get_struct_tuple_field
   | _ => Value.Error "expected an address"
   end.
 
-(** An error should not occur, but the code is still there for typing and
-    debugging reasons. *)
+(** Same as for [get_tuple_field], an error should not occur. *)
 Definition get_struct_record_field
     (value : Value.t) (constructor field : string) :
     Value.t :=

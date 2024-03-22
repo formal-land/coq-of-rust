@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
-Class ToValue (A : Set) : Type := {
+Class ToValue (A : Set) : Set := {
   Φ : Ty.t;
   φ : A -> Value.t;
 }.
