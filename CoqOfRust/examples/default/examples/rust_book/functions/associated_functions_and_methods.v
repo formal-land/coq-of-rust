@@ -586,7 +586,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.read UnsupportedLiteral in
       let* α3 := M.call_closure α0 [ square; α1; α2 ] in
       M.alloc α3 in
-    let* pair :=
+    let* pair_ :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply
@@ -613,7 +613,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
           (Ty.path "associated_functions_and_methods::Pair")
           "destroy"
           [] in
-      let* α1 := M.read pair in
+      let* α1 := M.read pair_ in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in

@@ -11,11 +11,11 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 *)
 Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [ pair ] =>
-    let* pair := M.alloc pair in
+  | [], [ pair_ ] =>
+    let* pair_ := M.alloc pair_ in
     let* α0 :=
       match_operator
-        pair
+        pair_
         [
           fun γ =>
             let γ0_0 := M.get_tuple_field γ 0 in
@@ -261,7 +261,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
-    let* pair :=
+    let* pair_ :=
       M.alloc (Value.Tuple [ Value.Integer Integer.I32 1; Value.Bool true ]) in
     let* _ :=
       let* _ :=
@@ -280,7 +280,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_debug"
             [ Ty.tuple [ Ty.path "i32"; Ty.path "bool" ] ] in
-        let* α6 := M.call_closure α5 [ pair ] in
+        let* α6 := M.call_closure α5 [ pair_ ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call_closure
@@ -310,7 +310,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             "new_debug"
             [ Ty.tuple [ Ty.path "bool"; Ty.path "i32" ] ] in
         let* α6 := M.get_function "tuples::reverse" [] in
-        let* α7 := M.read pair in
+        let* α7 := M.read pair_ in
         let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call_closure α5 [ α9 ] in
