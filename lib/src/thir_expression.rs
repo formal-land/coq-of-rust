@@ -74,7 +74,7 @@ fn build_inner_match(
                     }
                 },
             }),
-            Pattern::StructStruct(path, fields, _) => {
+            Pattern::StructRecord(path, fields) => {
                 let body = build_inner_match(
                     fields
                         .iter()
@@ -107,7 +107,7 @@ fn build_inner_match(
                         })
                     })
             }
-            Pattern::StructTuple(path, patterns, _) => {
+            Pattern::StructTuple(path, patterns) => {
                 let body = build_inner_match(
                     patterns
                         .iter()

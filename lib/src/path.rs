@@ -3,6 +3,8 @@ use crate::render::*;
 use rustc_hir::{
     def::{DefKind, Res},
     definitions::DefPathData,
+    hir_id::HirId,
+    QPath,
 };
 use std::fmt;
 use std::vec;
@@ -113,15 +115,16 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
     compile_path_without_env(path)
 }
 
-#[allow(dead_code)]
-/// returns generics for the given path
-pub(crate) fn get_path_generics<'a>(
-    env: &Env<'a>,
-    path: &rustc_hir::Path,
-) -> Option<&'a rustc_middle::ty::Generics> {
-    path.res
-        .opt_def_id()
-        .map(|def_id| env.tcx.generics_of(def_id))
+pub(crate) fn compile_qpath(env: &Env, hir_id: HirId, qpath: &QPath) -> Path {
+    let type_check_results = rustc_middle::ty::TypeckResults::new(hir_id.owner);
+
+    compile_def_id(
+        env,
+        type_check_results
+            .qpath_res(qpath, hir_id)
+            .opt_def_id()
+            .unwrap(),
+    )
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]

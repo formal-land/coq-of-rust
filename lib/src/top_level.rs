@@ -3,6 +3,7 @@ use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
+use crate::pattern::*;
 use crate::render::*;
 use crate::ty::*;
 use itertools::Itertools;
@@ -28,9 +29,11 @@ struct HirFnSigAndBody<'a> {
     body: &'a rustc_hir::Body<'a>,
 }
 
+type FnArgs = Vec<(String, Rc<CoqType>, Option<Rc<Pattern>>)>;
+
 #[derive(Debug)]
 struct FnSigAndBody {
-    args: Vec<(String, Rc<CoqType>)>,
+    args: FnArgs,
     ret_ty: Rc<CoqType>,
     body: Option<Rc<Expr>>,
 }
@@ -205,14 +208,13 @@ impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
 }
 
 /// compiles a function with the given signature and body
-fn compile_fn_sig_and_body(
-    env: &Env,
-    fn_sig_and_body: &HirFnSigAndBody,
-    default: &str,
+fn compile_fn_sig_and_body<'a>(
+    env: &Env<'a>,
+    fn_sig_and_body: HirFnSigAndBody<'a>,
     is_axiom: bool,
 ) -> Rc<FnSigAndBody> {
     let decl = fn_sig_and_body.fn_sig.decl;
-    let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
+    let args = get_args(env, fn_sig_and_body.body, decl.inputs);
     let ret_ty = compile_fn_ret_ty(
         env,
         &fn_sig_and_body.body.value.hir_id.owner.def_id,
@@ -355,13 +357,7 @@ fn compile_top_level_item_without_local_items<'a>(
             vec![Rc::new(TopLevelItem::Definition {
                 name,
                 snippet,
-                definition: FunDefinition::compile(
-                    env,
-                    generics,
-                    &fn_sig_and_body,
-                    "arg",
-                    is_axiom,
-                ),
+                definition: FunDefinition::compile(env, generics, fn_sig_and_body, is_axiom),
             })]
         }
         ItemKind::Macro(_, _) => vec![],
@@ -677,8 +673,7 @@ fn compile_impl_item<'a>(env: &Env<'a>, item: &'a rustc_hir::ImplItem) -> Rc<Imp
                 definition: FunDefinition::compile(
                     env,
                     item.generics,
-                    &get_hir_fn_sig_and_body(env, fn_sig, body_id),
-                    "Pattern",
+                    get_hir_fn_sig_and_body(env, fn_sig, body_id),
                     is_axiom,
                 ),
             })
@@ -702,7 +697,7 @@ fn get_body<'a>(env: &Env<'a>, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::Bo
 // compiles the body of a function
 fn compile_function_body(
     env: &Env,
-    args: &[(String, Rc<CoqType>)],
+    args: &FnArgs,
     body: &rustc_hir::Body,
     is_axiom: bool,
 ) -> Option<Rc<Expr>> {
@@ -719,7 +714,7 @@ fn compile_function_body(
     let body = crate::thir_expression::allocate_bindings(
         &args
             .iter()
-            .map(|(name, _)| name.clone())
+            .map(|(name, _, _)| name.clone())
             .collect::<Vec<_>>(),
         body_without_bindings,
     );
@@ -727,29 +722,39 @@ fn compile_function_body(
     Some(body)
 }
 
-/// returns a list of pairs of argument names and their types
-fn get_args(
-    env: &Env,
-    body: &rustc_hir::Body,
-    inputs: &[rustc_hir::Ty],
-    default: &str,
-) -> Vec<(String, Rc<CoqType>)> {
+/// Return a list of argument names with their type, and an optional pattern if
+/// the name needs to go through a `match` later.
+fn get_args<'a>(env: &Env<'a>, body: &'a rustc_hir::Body, inputs: &[rustc_hir::Ty]) -> FnArgs {
     let local_def_id = body.value.hir_id.owner.def_id;
 
-    get_arg_names(body, default)
+    get_arg_names(env, body)
+        .into_iter()
         .zip(inputs.iter().map(|ty| compile_type(env, &local_def_id, ty)))
+        .map(|((name, pattern), ty)| (name, ty, pattern))
         .collect()
 }
 
 /// returns names of the arguments
 fn get_arg_names<'a>(
+    env: &Env<'a>,
     body: &'a rustc_hir::Body,
-    default: &'a str,
-) -> impl Iterator<Item = String> + 'a {
-    body.params.iter().map(|param| match param.pat.kind {
-        PatKind::Binding(_, _, ident, _) => to_valid_coq_name(ident.name.as_str()),
-        _ => default.to_string(),
-    })
+) -> Vec<(String, Option<Rc<Pattern>>)> {
+    body.params
+        .iter()
+        .enumerate()
+        .map(|(index, param)| match param.pat.kind {
+            PatKind::Binding(
+                rustc_hir::BindingAnnotation(rustc_hir::ByRef::No, _),
+                _,
+                ident,
+                None,
+            ) => (to_valid_coq_name(ident.name.as_str()), None),
+            _ => (
+                format!("β{}", index),
+                Some(Pattern::compile(env, param.pat)),
+            ),
+        })
+        .collect()
 }
 
 /// filters out type parameters and compiles them with the given function
@@ -878,8 +883,7 @@ fn compile_trait_item_body<'a>(
             }),
             TraitFn::Provided(body_id) => {
                 let fn_sig_and_body = get_hir_fn_sig_and_body(env, fn_sig, body_id);
-                let signature_and_body =
-                    compile_fn_sig_and_body(env, &fn_sig_and_body, "arg", false);
+                let signature_and_body = compile_fn_sig_and_body(env, fn_sig_and_body, false);
                 Rc::new(TraitItem::DefinitionWithDefault(Rc::new(FunDefinition {
                     ty_params,
                     signature_and_body,
@@ -1131,19 +1135,18 @@ impl DynNameGen {
 
 impl FunDefinition {
     /// compiles a given function
-    fn compile(
-        env: &Env,
+    fn compile<'a>(
+        env: &Env<'a>,
         generics: &rustc_hir::Generics,
-        fn_sig_and_body: &HirFnSigAndBody,
-        default: &str,
+        fn_sig_and_body: HirFnSigAndBody<'a>,
         is_axiom: bool,
     ) -> Rc<Self> {
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
-            &*compile_fn_sig_and_body(env, fn_sig_and_body, default, is_axiom);
-        let args = args.iter().fold(vec![], |result, (string, ty)| {
+            &*compile_fn_sig_and_body(env, fn_sig_and_body, is_axiom);
+        let args = args.iter().fold(vec![], |result, (string, ty, pattern)| {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
-            [result, vec![(string.to_owned(), ty)]].concat()
+            [result, vec![(string.to_owned(), ty, pattern.clone())]].concat()
         });
         let ty_params = get_ty_params_names(env, generics);
 
@@ -1227,7 +1230,7 @@ impl FunDefinition {
                                             .signature_and_body
                                             .args
                                             .iter()
-                                            .map(|(name, _)| coq::Expression::name_pattern(name))
+                                            .map(|(name, _, _)| coq::Expression::name_pattern(name))
                                             .collect(),
                                     },
                                 ],

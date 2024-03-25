@@ -42,9 +42,6 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 compile_def_id(env, adt_def.did()),
                 Path::local(variant.name.as_str()),
             ]);
-            let struct_or_variant = StructOrVariant::Variant {
-                nb_cases: adt_def.variants().len(),
-            };
             let fields: Vec<_> = subpatterns
                 .iter()
                 .map(|field| {
@@ -59,9 +56,9 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Rc::new(Pattern::StructTuple(path, fields, struct_or_variant))
+                Rc::new(Pattern::StructTuple(path, fields))
             } else {
-                Rc::new(Pattern::StructStruct(path, fields, struct_or_variant))
+                Rc::new(Pattern::StructRecord(path, fields))
             }
         }
         PatKind::Leaf { subpatterns } => {
@@ -80,7 +77,6 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             let adt_def = pat.ty.ty_adt_def().unwrap();
             let path = compile_def_id(env, adt_def.did());
             let variant = adt_def.non_enum_variant();
-            let struct_or_variant = StructOrVariant::Struct;
             let fields: Vec<_> = subpatterns
                 .iter()
                 .map(|field| {
@@ -95,9 +91,9 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Rc::new(Pattern::StructTuple(path, fields, struct_or_variant))
+                Rc::new(Pattern::StructTuple(path, fields))
             } else {
-                Rc::new(Pattern::StructStruct(path, fields, struct_or_variant))
+                Rc::new(Pattern::StructRecord(path, fields))
             }
         }
         PatKind::Deref { subpattern } => Rc::new(Pattern::Deref(compile_pattern(env, subpattern))),
