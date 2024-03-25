@@ -139,7 +139,9 @@ Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* Error OpaqueTy *)
+Module combine_vecs.
+  (* Error OpaqueTy *)
+End combine_vecs.
 
 (*
 fn main() {

@@ -131,6 +131,10 @@ pub(crate) enum StructOrVariant {
 }
 
 pub(crate) fn to_valid_coq_name(str: &str) -> String {
+    if str == "_" {
+        return "underscore".to_string();
+    }
+
     let reserved_names = [
         "Set", "Type", "Unset", "by", "exists", "end", "tt", "array", "unit", "pair",
     ];

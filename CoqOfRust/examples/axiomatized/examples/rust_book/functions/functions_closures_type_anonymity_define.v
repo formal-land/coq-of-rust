@@ -3,4 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-Parameter apply : (list Ty.t) -> (list Value.t) -> M.
+Module main.
+  Parameter apply : (list Ty.t) -> (list Value.t) -> M.
+End main.

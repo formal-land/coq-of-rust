@@ -3,9 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-(* StructTuple
-  {
-    name := "Structure";
-    ty_params := [];
-    fields := [ Ty.path "i32" ];
-  } *)
+Module main.
+  (* StructTuple
+    {
+      name := "Structure";
+      ty_params := [];
+      fields := [ Ty.path "i32" ];
+    } *)
+End main.

@@ -3,4 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-Parameter load_fpu_control_word : (list Ty.t) -> (list Value.t) -> M.
+Module main.
+  Parameter load_fpu_control_word : (list Ty.t) -> (list Value.t) -> M.
+End main.

@@ -574,9 +574,11 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* StructTuple
-  {
-    name := "Structure";
-    ty_params := [];
-    fields := [ Ty.path "i32" ];
-  } *)
+Module main.
+  (* StructTuple
+    {
+      name := "Structure";
+      ty_params := [];
+      fields := [ Ty.path "i32" ];
+    } *)
+End main.

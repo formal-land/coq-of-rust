@@ -184,73 +184,75 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-(* StructRecord
-  {
-    name := "Person";
-    ty_params := [];
-    fields :=
-      [
-        ("name", Ty.path "alloc::string::String");
-        ("age",
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
-      ];
-  } *)
-
-Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Definition Self : Ty.t :=
-    Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person".
-  
-  (*
-      Debug
-  *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
-    | [], [ self; f ] =>
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::Formatter")
-          "debug_struct_field2_finish"
-          [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "Person") in
-      let* α3 := M.read (mk_str "name") in
-      let* α4 := M.read self in
-      let* α5 := M.read (mk_str "age") in
-      let* α6 := M.read self in
-      let* α7 :=
-        M.alloc
-          (M.get_struct_record_field
-            α6
-            "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-            "age") in
-      M.call_closure
-        α0
+Module main.
+  (* StructRecord
+    {
+      name := "Person";
+      ty_params := [];
+      fields :=
         [
-          α1;
-          α2;
-          α3;
-          M.pointer_coercion
-            (* Unsize *)
-            (M.get_struct_record_field
-              α4
-              "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-              "name");
-          α5;
-          M.pointer_coercion (* Unsize *) α7
-        ]
-    | _, _ => M.impossible
-    end.
+          ("name", Ty.path "alloc::string::String");
+          ("age",
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+        ];
+    } *)
   
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::fmt::Debug"
-      (* Self *)
-        (Ty.path
-          "scoping_rules_ownership_and_rules_partial_moves::main::Person")
-      (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+  Module Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+    Definition Self : Ty.t :=
+      Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person".
+    
+    (*
+        Debug
+    *)
+    Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      match 𝜏, α with
+      | [], [ self; f ] =>
+        let* self := M.alloc self in
+        let* f := M.alloc f in
+        let* α0 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Formatter")
+            "debug_struct_field2_finish"
+            [] in
+        let* α1 := M.read f in
+        let* α2 := M.read (mk_str "Person") in
+        let* α3 := M.read (mk_str "name") in
+        let* α4 := M.read self in
+        let* α5 := M.read (mk_str "age") in
+        let* α6 := M.read self in
+        let* α7 :=
+          M.alloc
+            (M.get_struct_record_field
+              α6
+              "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+              "age") in
+        M.call_closure
+          α0
+          [
+            α1;
+            α2;
+            α3;
+            M.pointer_coercion
+              (* Unsize *)
+              (M.get_struct_record_field
+                α4
+                "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+                "name");
+            α5;
+            M.pointer_coercion (* Unsize *) α7
+          ]
+      | _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        (* Self *)
+          (Ty.path
+            "scoping_rules_ownership_and_rules_partial_moves::main::Person")
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+End main.

@@ -326,7 +326,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 return vec![];
             }
             // skip const _ : () = ...
-            if name == "_" && matches!(ty.kind, TyKind::Tup([])) {
+            if item.ident.name.as_str() == "_" && matches!(ty.kind, TyKind::Tup([])) {
                 return vec![];
             }
 
@@ -607,7 +607,7 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
     // Sometimes there can be local items, for example a struct defined in the
     // body of a function. For modules, we make an exception as modules are
     // expected to have items. We will concatenate the local items directly after
-    // the item's translation.
+    // the item's translation, in a module of the same name to avoid collisions.
     let local_item_ids = match &item.kind {
         ItemKind::Mod(_) => vec![],
         _ => get_item_ids_for_parent(env, item.item_id().owner_id.to_def_id()),
@@ -618,11 +618,22 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
             let item = env.tcx.hir().item(item_id);
             compile_top_level_item(env, item)
         })
-        .collect();
+        .collect_vec();
 
     let items = compile_top_level_item_without_local_items(env, item);
 
-    [items, local_items].concat()
+    [
+        items,
+        if local_items.is_empty() {
+            vec![]
+        } else {
+            vec![Rc::new(TopLevelItem::Module {
+                name: to_valid_coq_name(item.ident.as_str()),
+                body: Rc::new(TopLevel(local_items)),
+            })]
+        },
+    ]
+    .concat()
 }
 
 /// returns a pair of function signature and its body
