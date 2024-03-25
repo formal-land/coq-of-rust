@@ -72,15 +72,23 @@ pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Pat
         path_items
             .data
             .iter()
-            .filter_map(|item| match item.data.get_opt_name() {
-                Some(name) => Some(name.to_string()),
-                None => match &item.data {
-                    DefPathData::AnonConst
-                    | DefPathData::Ctor
-                    | DefPathData::ForeignMod
-                    | DefPathData::Impl => None,
-                    _ => Some(item.data.to_string()),
-                },
+            .filter_map(|item| {
+                let name = match item.data.get_opt_name() {
+                    Some(name) => name.to_string(),
+                    None => match &item.data {
+                        DefPathData::AnonConst
+                        | DefPathData::Ctor
+                        | DefPathData::ForeignMod
+                        | DefPathData::Impl => return None,
+                        _ => item.data.to_string(),
+                    },
+                };
+
+                Some(if item.disambiguator == 0 {
+                    name
+                } else {
+                    format!("{name}'{}", item.disambiguator)
+                })
             })
             .map(|name| to_valid_coq_name(&name)),
     );
@@ -131,7 +139,10 @@ pub(crate) fn to_valid_coq_name(str: &str) -> String {
         return format!("{}_", str);
     }
 
-    let str = str::replace(str, "$", "_");
-    let str = str::replace(&str, "{{root}}", "CoqOfRust");
-    str::replace(&str, "::", ".")
+    let characters_to_replace = [' ', '$', '(', ')', '&', '?', ',', '<', '>'];
+    let str = characters_to_replace
+        .iter()
+        .fold(str.to_string(), |acc, &char| acc.replace(char, "_"));
+
+    str::replace(&str, "->", "arrow")
 }

@@ -489,13 +489,9 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             (Rc::new(Expr::Loop { body }), fresh_vars)
         }
         Expr::Index { base, index } => monadic_let(fresh_vars, base.clone(), |fresh_vars, base| {
-            (
-                pure(Rc::new(Expr::Index {
-                    base,
-                    index: index.clone(),
-                })),
-                fresh_vars,
-            )
+            monadic_let(fresh_vars, index.clone(), |fresh_vars, index| {
+                (Rc::new(Expr::Index { base, index }), fresh_vars)
+            })
         }),
         // control flow expressions are responsible for side effects, so they are monadic already
         Expr::ControlFlow(lcf_expression) => {
@@ -621,7 +617,9 @@ where
 pub(crate) fn compile_hir_id(env: &Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<Expr> {
     let local_def_id = hir_id.owner.def_id;
     let result = apply_on_thir(env, local_def_id, |thir, expr_id| {
-        crate::thir_expression::compile_expr(env, thir, expr_id)
+        let generics = env.tcx.generics_of(local_def_id);
+
+        crate::thir_expression::compile_expr(env, generics, thir, expr_id)
     });
 
     match result {
@@ -912,9 +910,16 @@ impl Expr {
                 with_paren,
                 nest([text("M.loop"), line(), paren(true, body.to_doc(with_paren))]),
             ),
-            Expr::Index { base, index } => {
-                nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
-            }
+            Expr::Index { base, index } => paren(
+                with_paren,
+                nest([
+                    text("M.get_array_field"),
+                    line(),
+                    base.to_doc(true),
+                    line(),
+                    index.to_doc(true),
+                ]),
+            ),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_doc(),
             Expr::StructStruct {
                 path,

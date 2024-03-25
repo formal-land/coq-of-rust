@@ -2,22 +2,40 @@ use crate::env::*;
 use crate::path::*;
 use crate::ty::*;
 use rustc_middle::ty::GenericArgKind;
+use rustc_span::def_id::DefId;
 use rustc_type_ir::TyKind;
 use std::rc::Rc;
 
-fn compile_poly_fn_sig<'a>(env: &Env<'a>, sig: &rustc_middle::ty::PolyFnSig<'a>) -> Rc<CoqType> {
+pub(crate) fn compile_generic_param(env: &Env, def_id: DefId) -> String {
+    compile_def_id(env, def_id).segments.last().unwrap().clone()
+}
+
+fn compile_poly_fn_sig<'a>(
+    env: &Env<'a>,
+    generics: &'a rustc_middle::ty::Generics,
+    sig: &rustc_middle::ty::PolyFnSig<'a>,
+) -> Rc<CoqType> {
     let sig = sig.skip_binder();
     let args = sig
         .inputs()
         .iter()
-        .map(|ty| compile_type(env, ty))
+        .map(|ty| compile_type(env, generics, ty))
         .collect::<Vec<_>>();
-    let ret = compile_type(env, &sig.output());
+    let ret = compile_type(env, generics, &sig.output());
 
     Rc::new(CoqType::Function { args, ret })
 }
 
-pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> Rc<CoqType> {
+/// The [generics] parameter is the list of generic types available in the
+/// current environment. It is required to disambiguate the names of the
+/// occurrences of these generic types. It is possible to have twice the same
+/// name for a generic type, especially with `impl Trait` types that are
+/// represented as generics of the name "impl Trait".
+pub(crate) fn compile_type<'a>(
+    env: &Env<'a>,
+    generics: &'a rustc_middle::ty::Generics,
+    ty: &rustc_middle::ty::Ty<'a>,
+) -> Rc<CoqType> {
     match ty.kind() {
         TyKind::Bool | TyKind::Char | TyKind::Int(_) | TyKind::Uint(_) | TyKind::Float(_) => {
             CoqType::path(&[&ty.to_string()])
@@ -27,7 +45,7 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
             let args = substs
                 .iter()
                 .filter_map(|subst| match &subst.unpack() {
-                    GenericArgKind::Type(ty) => Some(compile_type(env, ty)),
+                    GenericArgKind::Type(ty) => Some(compile_type(env, generics, ty)),
                     _ => None,
                 })
                 .collect();
@@ -42,11 +60,11 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         TyKind::Str => CoqType::path(&["str"]),
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
-            args: vec![compile_type(env, ty)],
+            args: vec![compile_type(env, generics, ty)],
         }),
         TyKind::Slice(ty) => Rc::new(CoqType::Application {
             func: CoqType::path(&["slice"]),
-            args: vec![compile_type(env, ty)],
+            args: vec![compile_type(env, generics, ty)],
         }),
         TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) => {
             let ptr_name = match mutbl {
@@ -56,11 +74,11 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
 
             Rc::new(CoqType::Application {
                 func: CoqType::path(&[ptr_name]),
-                args: vec![compile_type(env, ty)],
+                args: vec![compile_type(env, generics, ty)],
             })
         }
-        TyKind::Ref(_, ty, mutbl) => CoqType::make_ref(mutbl, compile_type(env, ty)),
-        TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, fn_sig),
+        TyKind::Ref(_, ty, mutbl) => CoqType::make_ref(mutbl, compile_type(env, generics, ty)),
+        TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, generics, fn_sig),
         TyKind::Dynamic(existential_predicates, _, _) => {
             let traits = existential_predicates
                 .iter()
@@ -85,21 +103,31 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         TyKind::FnDef(_, _) => {
             let fn_sig = ty.fn_sig(env.tcx);
 
-            compile_poly_fn_sig(env, &fn_sig)
+            compile_poly_fn_sig(env, generics, &fn_sig)
         }
         TyKind::Closure(_, generic_args) => {
             let fn_sig = generic_args.as_closure().sig();
 
-            compile_poly_fn_sig(env, &fn_sig)
+            compile_poly_fn_sig(env, generics, &fn_sig)
         }
         // Generator(DefId, &'tcx List<GenericArg<'tcx>>, Movability),
         // GeneratorWitness(DefId, &'tcx List<GenericArg<'tcx>>),
         TyKind::Never => CoqType::path(&["never"]),
         TyKind::Tuple(tys) => Rc::new(CoqType::Tuple(
-            tys.iter().map(|ty| compile_type(env, &ty)).collect(),
+            tys.iter()
+                .map(|ty| compile_type(env, generics, &ty))
+                .collect(),
         )),
         TyKind::Alias(_, _) => Rc::new(CoqType::Associated),
-        TyKind::Param(param) => Rc::new(CoqType::Var(param.name.to_string())),
+        TyKind::Param(param) => {
+            if generics.has_self && param.index == 0 {
+                return Rc::new(CoqType::Var("Self".to_string()));
+            }
+
+            let type_param = generics.type_param(param, env.tcx);
+
+            Rc::new(CoqType::Var(compile_generic_param(env, type_param.def_id)))
+        }
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),
         TyKind::Infer(_) => Rc::new(CoqType::Infer),

@@ -34,7 +34,7 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 *)
 Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [ DynT ], [ student ] =>
+  | [], [ student ] =>
     let* student := M.alloc student in
     let* res :=
       let* α0 := M.get_function "alloc::fmt::format" [] in
