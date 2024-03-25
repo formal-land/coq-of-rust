@@ -124,7 +124,7 @@ pub(crate) enum StructOrVariant {
 
 pub(crate) fn to_valid_coq_name(str: &str) -> String {
     let reserved_names = [
-        "Set", "Type", "Unset", "by", "exists", "end", "tt", "array", "unit",
+        "Set", "Type", "Unset", "by", "exists", "end", "tt", "array", "unit", "pair",
     ];
 
     if reserved_names.contains(&str) {
