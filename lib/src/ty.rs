@@ -76,10 +76,11 @@ pub(crate) fn compile_type(
     local_def_id: &rustc_hir::def_id::LocalDefId,
     ty: &Ty,
 ) -> Rc<CoqType> {
+    let generics = env.tcx.generics_of(*local_def_id);
     let item_ctxt = rustc_hir_analysis::collect::ItemCtxt::new(env.tcx, *local_def_id);
     let ty = &item_ctxt.to_ty(ty);
 
-    crate::thir_ty::compile_type(env, ty)
+    crate::thir_ty::compile_type(env, generics, ty)
 }
 
 pub(crate) fn compile_fn_ret_ty(

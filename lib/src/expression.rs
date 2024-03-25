@@ -617,7 +617,9 @@ where
 pub(crate) fn compile_hir_id(env: &Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<Expr> {
     let local_def_id = hir_id.owner.def_id;
     let result = apply_on_thir(env, local_def_id, |thir, expr_id| {
-        crate::thir_expression::compile_expr(env, thir, expr_id)
+        let generics = env.tcx.generics_of(local_def_id);
+
+        crate::thir_expression::compile_expr(env, generics, thir, expr_id)
     });
 
     match result {

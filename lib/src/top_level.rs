@@ -752,9 +752,11 @@ fn compile_ty_params<'a, T>(
         .iter()
         .filter_map(|param| match param.kind {
             // we ignore lifetimes
-            GenericParamKind::Type { default, .. } => {
-                Some(f(env, param.name.ident().to_string(), default))
-            }
+            GenericParamKind::Type { default, .. } => Some(f(
+                env,
+                crate::thir_ty::compile_generic_param(env, param.def_id.to_def_id()),
+                default,
+            )),
             GenericParamKind::Lifetime { .. } | GenericParamKind::Const { .. } => None,
         })
         .collect()
@@ -769,6 +771,7 @@ fn get_ty_params(
     compile_ty_params(env, generics, |env, name, default| {
         let default = default.map(|default| compile_type(env, local_def_id, default));
         let name = to_valid_coq_name(&name);
+
         (name, default)
     })
 }
@@ -1093,13 +1096,6 @@ impl DynNameGen {
         full_name
     }
 
-    fn get_type_parm_list(&self) -> Vec<String> {
-        self.predicates
-            .iter()
-            .map(|(_, dyn_name)| dyn_name.clone())
-            .collect()
-    }
-
     fn make_dyn_parm(&mut self, arg: Rc<CoqType>) -> Rc<CoqType> {
         if let Some((name, arg)) = arg.clone().match_ref() {
             let ct = self.make_dyn_parm(arg);
@@ -1138,11 +1134,7 @@ impl FunDefinition {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
             [result, vec![(string.to_owned(), ty)]].concat()
         });
-        let ty_params = [
-            get_ty_params_names(env, generics),
-            dyn_name_gen.get_type_parm_list(),
-        ]
-        .concat();
+        let ty_params = get_ty_params_names(env, generics);
 
         let signature_and_body = Rc::new(FnSigAndBody {
             args,
