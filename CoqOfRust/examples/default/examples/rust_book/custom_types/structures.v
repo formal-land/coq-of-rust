@@ -319,7 +319,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                     ("bottom_right", α2)
                   ]) in
             let* _unit := M.alloc (Value.StructTuple "structures::Unit" []) in
-            let* pair :=
+            let* pair_ :=
               let* α0 := M.read UnsupportedLiteral in
               M.alloc
                 (Value.StructTuple
@@ -346,7 +346,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α7 :=
                   M.call_closure
                     α6
-                    [ M.get_struct_tuple_field pair "structures::Pair" 0 ] in
+                    [ M.get_struct_tuple_field pair_ "structures::Pair" 0 ] in
                 let* α8 :=
                   M.get_associated_function
                     (Ty.path "core::fmt::rt::Argument")
@@ -355,7 +355,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 let* α9 :=
                   M.call_closure
                     α8
-                    [ M.get_struct_tuple_field pair "structures::Pair" 1 ] in
+                    [ M.get_struct_tuple_field pair_ "structures::Pair" 1 ] in
                 let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
                 let* α11 :=
                   M.call_closure
@@ -368,7 +368,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc α12 in
               M.alloc (Value.Tuple []) in
             match_operator
-              pair
+              pair_
               [
                 fun γ =>
                   let* γ0_0 :=

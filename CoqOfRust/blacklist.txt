@@ -10,7 +10,6 @@ examples/axiomatized/examples/subtle.v
 examples/default/examples/rust_book/error_handling/pulling_results_out_of_options_with_stop_error_processing.v
 examples/default/examples/rust_book/flow_of_control/match_destructuring_arrays_slices.v
 examples/default/examples/rust_book/primitives/arrays_and_slices.v
-examples/default/examples/rust_book/primitives/tuples.v
 ink/
 MonadicNotationExample.v
 num_traits.v

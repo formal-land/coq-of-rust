@@ -273,7 +273,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
-    let* pair :=
+    let* pair_ :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply
@@ -308,7 +308,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::rt::Argument")
             "new_debug"
             [ Ty.path "clone::Pair" ] in
-        let* α6 := M.call_closure α5 [ pair ] in
+        let* α6 := M.call_closure α5 [ pair_ ] in
         let* α7 := M.alloc (Value.Array [ α6 ]) in
         let* α8 :=
           M.call_closure
@@ -320,7 +320,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         let* α9 := M.call_closure α0 [ α8 ] in
         M.alloc α9 in
       M.alloc (Value.Tuple []) in
-    let* moved_pair := M.copy pair in
+    let* moved_pair := M.copy pair_ in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
