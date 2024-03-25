@@ -279,15 +279,22 @@ fn build_inner_match(
 }
 
 fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
-    let arms_with_flatten_patterns = arms.into_iter().flat_map(|MatchArm { pattern, body }| {
-        pattern
-            .flatten_ors()
-            .into_iter()
-            .map(move |pattern| MatchArm {
-                pattern,
-                body: body.clone(),
-            })
-    });
+    let arms_with_flatten_patterns = arms.into_iter().flat_map(
+        |MatchArm {
+             pattern,
+             if_let_guard,
+             body,
+         }| {
+            pattern
+                .flatten_ors()
+                .into_iter()
+                .map(move |pattern| MatchArm {
+                    pattern,
+                    if_let_guard: if_let_guard.clone(),
+                    body: body.clone(),
+                })
+        },
+    );
 
     Rc::new(Expr::Call {
         func: Expr::local_var("match_operator"),
@@ -295,13 +302,33 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
             scrutinee,
             Rc::new(Expr::Array {
                 elements: arms_with_flatten_patterns
-                    .map(|MatchArm { pattern, body }| {
-                        Rc::new(Expr::Lambda {
-                            args: vec![("γ".to_string(), None)],
-                            body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
-                            is_internal: true,
-                        })
-                    })
+                    .map(
+                        |MatchArm {
+                             pattern,
+                             if_let_guard,
+                             body,
+                         }| {
+                            let body = match if_let_guard {
+                                Some((pattern, guard)) => Rc::new(Expr::Let {
+                                    is_monadic: false,
+                                    name: Some("Γ".to_string()),
+                                    init: guard,
+                                    body: build_inner_match(
+                                        vec![("Γ".to_string(), pattern)],
+                                        body,
+                                        0,
+                                    ),
+                                }),
+                                None => body,
+                            };
+
+                            Rc::new(Expr::Lambda {
+                                args: vec![("γ".to_string(), None)],
+                                body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
+                                is_internal: true,
+                            })
+                        },
+                    )
                     .collect(),
                 is_internal: true,
             }),
@@ -405,10 +432,12 @@ pub(crate) fn compile_expr<'a>(
                     vec![
                         MatchArm {
                             pattern,
+                            if_let_guard: None,
                             body: success,
                         },
                         MatchArm {
                             pattern: Rc::new(Pattern::Wild),
+                            if_let_guard: None,
                             body: failure,
                         },
                     ],
@@ -542,8 +571,26 @@ pub(crate) fn compile_expr<'a>(
                 .map(|arm_id| {
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
+                    let if_let_guard = match &arm.guard {
+                        Some(guard) => match guard {
+                            thir::Guard::If(expr_id) => Some((
+                                Rc::new(Pattern::Literal(Rc::new(Literal::Bool(true)))),
+                                compile_expr(env, generics, thir, expr_id),
+                            )),
+                            thir::Guard::IfLet(pattern, expr_id) => Some((
+                                crate::thir_pattern::compile_pattern(env, pattern),
+                                compile_expr(env, generics, thir, expr_id),
+                            )),
+                        },
+                        None => None,
+                    };
                     let body = compile_expr(env, generics, thir, &arm.body);
-                    MatchArm { pattern, body }
+
+                    MatchArm {
+                        pattern,
+                        if_let_guard,
+                        body,
+                    }
                 })
                 .collect();
 
@@ -796,6 +843,7 @@ pub(crate) fn compile_expr<'a>(
                             Expr::local_var(&format!("α{index}")).alloc(),
                             vec![MatchArm {
                                 pattern: pattern.clone(),
+                                if_let_guard: None,
                                 body,
                             }],
                         )
@@ -1054,7 +1102,14 @@ fn compile_stmts<'a>(
                             init: init.copy(),
                             body,
                         }),
-                        _ => build_match(init, vec![MatchArm { pattern, body }]),
+                        _ => build_match(
+                            init,
+                            vec![MatchArm {
+                                pattern,
+                                if_let_guard: None,
+                                body,
+                            }],
+                        ),
                     }
                 }
                 thir::StmtKind::Expr { expr: expr_id, .. } => {

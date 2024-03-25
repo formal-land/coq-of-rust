@@ -1,0 +1,13 @@
+error[E0658]: `if let` guards are experimental
+ --> examples/custom/if_let.rs:9:17
+  |
+9 |         Some(_) if let Some(y) = x => println!("match: {y}"),
+  |                 ^^^^^^^^^^^^^^^^^^
+  |
+  = note: see issue #51114 <https://github.com/rust-lang/rust/issues/51114> for more information
+  = help: add `#![feature(if_let_guard)]` to the crate attributes to enable
+  = help: you can write `if matches!(<expr>, <pattern>)` instead of `if let <pattern> = <expr>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0658`.

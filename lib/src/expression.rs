@@ -27,6 +27,10 @@ impl FreshVars {
 #[derive(Debug)]
 pub(crate) struct MatchArm {
     pub(crate) pattern: Rc<Pattern>,
+    /// We represent a boolean guard as an if-let guard with a pattern
+    /// equals to the boolean [true]. Thus we do not need to distinguish
+    /// between boolean guards and if-let guards in the translation.
+    pub(crate) if_let_guard: Option<(Rc<Pattern>, Rc<Expr>)>,
     pub(crate) body: Rc<Expr>,
 }
 

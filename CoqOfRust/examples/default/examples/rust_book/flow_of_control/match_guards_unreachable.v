@@ -23,6 +23,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let* i := M.copy γ in
+            let* Γ :=
+              let* α0 := M.read i in
+              M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U8 0)) in
+            let* _ :=
+              let* α0 := M.read Γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
@@ -40,6 +46,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* i := M.copy γ in
+            let* Γ :=
+              let* α0 := M.read i in
+              M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.U8 0)) in
+            let* _ :=
+              let* α0 := M.read Γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
