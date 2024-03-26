@@ -605,41 +605,44 @@ impl LoopControlFlow {
 }
 
 impl Literal {
+    pub(crate) fn to_coq(&self, with_paren: bool) -> coq::Expression {
+      match self {
+        Literal::Bool(b) => coq::Expression::paren(
+            with_paren,
+            &coq::Expression::just_name("Value.Bool").apply(&
+              coq::Expression::just_name(format!("{b}").as_str())
+            )
+        ),
+        Literal::Integer(LiteralInteger {
+            name,
+            negative_sign,
+            value,
+        }) => coq::Expression::paren(
+          with_paren,
+          &coq::Expression::just_name("Value.Integer").apply_many(&[
+            coq::Expression::just_name(format!("Integer.{name}").as_str()),
+            if *negative_sign {
+              coq::Expression::just_name(format!("(-{value})").as_str())
+            } else {
+              coq::Expression::just_name(value.to_string().as_str())
+            }
+          ])
+        ),
+        Literal::Char(c) => coq::Expression::paren(
+            with_paren,
+            &coq::Expression::just_name("Value.UnicodeChar")
+            .apply(&coq::Expression::just_name((*c as u32).to_string().as_str())),
+        ),
+        Literal::String(s) => string_to_coq(with_paren, s.as_str()),
+        Literal::Error => coq::Expression::just_name("UnsupportedLiteral")
+      }
+    }
+
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
-        match self {
-            Literal::Bool(b) => paren(
-                with_paren,
-                nest([text("Value.Bool"), line(), text(format!("{b}"))]),
-            ),
-            Literal::Integer(LiteralInteger {
-                name,
-                negative_sign,
-                value,
-            }) => paren(
-                with_paren,
-                nest([
-                    text("Value.Integer"),
-                    line(),
-                    text(format!("Integer.{name}")),
-                    line(),
-                    if *negative_sign {
-                        text(format!("(-{value})"))
-                    } else {
-                        text(value.to_string())
-                    },
-                ]),
-            ),
-            Literal::Char(c) => paren(
-                with_paren,
-                nest([
-                    text("Value.UnicodeChar"),
-                    line(),
-                    text((*c as u32).to_string()),
-                ]),
-            ),
-            Literal::String(s) => string_to_doc(with_paren, s.as_str()),
-            Literal::Error => text("UnsupportedLiteral"),
-        }
+      // gy@NOTE: redundant and duplicated `with_paren` should be eliminated in `coq:Expression`
+      // only process the paren at expression level 
+      // In the future we might need to delete the `with_paren` parameter of `to_doc`?
+      self.to_coq(with_paren).to_doc(false)
     }
 }
 
