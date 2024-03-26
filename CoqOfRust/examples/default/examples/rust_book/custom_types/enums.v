@@ -68,9 +68,12 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
               let* α2 :=
                 M.read
                   (mk_str
-                    ("page loaded, r" ++
-                      String.String "233" ("f" ++ String.String "233" "
-"))) in
+                    (("page loaded, r"
+                      ++
+                      (String.String
+                        "233"
+                        (("f" ++ (String.String "233" "
+"))))))) in
               let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
                 M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in

@@ -241,7 +241,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* immutabook :=
       let* α0 := M.read (mk_str "Douglas Hofstadter") in
       let* α1 :=
-        M.read (mk_str ("G" ++ String.String "246" "del, Escher, Bach")) in
+        M.read (mk_str (("G" ++ (String.String "246" "del, Escher, Bach")))) in
       M.alloc
         (Value.StructRecord
           "scoping_rules_borrowing_mutablity::Book"
