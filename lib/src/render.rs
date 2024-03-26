@@ -60,7 +60,7 @@ pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 enum StringPiece {
     /// A string of ASCII characters
     AsciiString(String),
@@ -131,45 +131,6 @@ pub(crate) fn string_to_coq(with_paren: bool, message: &str) -> coq::Expression 
         &coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(true, &pieces)),
     )
 }
-
-// fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'a, ()> {
-//     match pieces {
-//         [] => text("\"\""),
-//         [StringPiece::AsciiString(s), rest @ ..] => paren(
-//             with_paren && !rest.is_empty(),
-//             nest([
-//                 text("\""),
-//                 // Escape `"`s in the string to `""`
-//                 text(str::replace(s, "\"", "\"\"")),
-//                 text("\""),
-//                 optional_insert(
-//                     rest.is_empty(),
-//                     concat([text(" ++"), line(), string_pieces_to_doc(false, rest)]),
-//                 ),
-//             ]),
-//         ),
-//         [StringPiece::UnicodeChar(c), rest @ ..] => paren(
-//             with_paren,
-//             nest([
-//                 text("String.String"),
-//                 line(),
-//                 text("\""),
-//                 text(format!("{:03}", *c as u8)),
-//                 text("\""),
-//                 line(),
-//                 string_pieces_to_doc(true, rest),
-//             ]),
-//         ),
-//     }
-// }
-
-// pub(crate) fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
-//     let pieces = cut_string_in_pieces_for_coq(message);
-//     paren(
-//         with_paren,
-//         nest([text("mk_str"), line(), string_pieces_to_doc(true, &pieces)]),
-//     )
-// }
 
 pub type Doc<'a> = RcDoc<'a, ()>;
 

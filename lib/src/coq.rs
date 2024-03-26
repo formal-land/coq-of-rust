@@ -169,8 +169,6 @@ pub(crate) enum Expression<'a> {
         no_implicit: bool,
     },
     Paren {
-        // An extra parameter for more recursive managements?
-        // with_paren: bool,
         expr: Rc<Expression<'a>>,
     },
     /// a wildcard: '_'
