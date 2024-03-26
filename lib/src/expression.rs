@@ -606,43 +606,43 @@ impl LoopControlFlow {
 
 impl Literal {
     pub(crate) fn to_coq(&self, with_paren: bool) -> coq::Expression {
-      match self {
-        Literal::Bool(b) => coq::Expression::paren(
-            with_paren,
-            &coq::Expression::just_name("Value.Bool").apply(&
-              coq::Expression::just_name(format!("{b}").as_str())
-            )
-        ),
-        Literal::Integer(LiteralInteger {
-            name,
-            negative_sign,
-            value,
-        }) => coq::Expression::paren(
-          with_paren,
-          &coq::Expression::just_name("Value.Integer").apply_many(&[
-            coq::Expression::just_name(format!("Integer.{name}").as_str()),
-            if *negative_sign {
-              coq::Expression::just_name(format!("(-{value})").as_str())
-            } else {
-              coq::Expression::just_name(value.to_string().as_str())
-            }
-          ])
-        ),
-        Literal::Char(c) => coq::Expression::paren(
-            with_paren,
-            &coq::Expression::just_name("Value.UnicodeChar")
-            .apply(&coq::Expression::just_name((*c as u32).to_string().as_str())),
-        ),
-        Literal::String(s) => string_to_coq(with_paren, s.as_str()),
-        Literal::Error => coq::Expression::just_name("UnsupportedLiteral")
-      }
+        match self {
+            Literal::Bool(b) => coq::Expression::paren(
+                with_paren,
+                &coq::Expression::just_name("Value.Bool")
+                    .apply(&coq::Expression::just_name(format!("{b}").as_str())),
+            ),
+            Literal::Integer(LiteralInteger {
+                name,
+                negative_sign,
+                value,
+            }) => coq::Expression::paren(
+                with_paren,
+                &coq::Expression::just_name("Value.Integer").apply_many(&[
+                    coq::Expression::just_name(format!("Integer.{name}").as_str()),
+                    if *negative_sign {
+                        coq::Expression::just_name(format!("(-{value})").as_str())
+                    } else {
+                        coq::Expression::just_name(value.to_string().as_str())
+                    },
+                ]),
+            ),
+            Literal::Char(c) => coq::Expression::paren(
+                with_paren,
+                &coq::Expression::just_name("Value.UnicodeChar").apply(
+                    &coq::Expression::just_name((*c as u32).to_string().as_str()),
+                ),
+            ),
+            Literal::String(s) => string_to_coq(with_paren, s.as_str()),
+            Literal::Error => coq::Expression::just_name("UnsupportedLiteral"),
+        }
     }
 
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
-      // gy@NOTE: redundant and duplicated `with_paren` should be eliminated in `coq:Expression`
-      // only process the paren at expression level 
-      // In the future we might need to delete the `with_paren` parameter of `to_doc`?
-      self.to_coq(with_paren).to_doc(false)
+        // gy@NOTE: redundant and duplicated `with_paren` should be eliminated in `coq:Expression`
+        // only process the paren at expression level
+        // In the future we might need to delete the `with_paren` parameter of `to_doc`?
+        self.to_coq(with_paren).to_doc(false)
     }
 }
 
