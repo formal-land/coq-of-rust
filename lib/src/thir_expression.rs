@@ -217,26 +217,26 @@ fn build_inner_match(
                     depth + 1,
                 );
 
-                let body = suffix_patterns
-                    .iter()
-                    .enumerate()
-                    .rev()
-                    .rfold(body, |body, (index, _)| {
-                        Rc::new(Expr::Let {
-                            is_monadic: false,
-                            name: Some(format!("γ{depth}_rev{index}")),
-                            init: Rc::new(Expr::Call {
-                                func: Expr::local_var("M.get_slice_rev_index_or_break_match"),
-                                args: vec![
-                                    Expr::local_var(&scrutinee),
-                                    Rc::new(Expr::InternalInteger(index)),
-                                ],
-                                kind: CallKind::Effectful,
-                            }),
-                            body,
-                        })
-                    });
-
+                let body =
+                    suffix_patterns
+                        .iter()
+                        .enumerate()
+                        .rev()
+                        .rfold(body, |body, (index, _)| {
+                            Rc::new(Expr::Let {
+                                is_monadic: false,
+                                name: Some(format!("γ{depth}_rev{index}")),
+                                init: Rc::new(Expr::Call {
+                                    func: Expr::local_var("M.get_slice_rev_index_or_break_match"),
+                                    args: vec![
+                                        Expr::local_var(&scrutinee),
+                                        Rc::new(Expr::InternalInteger(index)),
+                                    ],
+                                    kind: CallKind::Effectful,
+                                }),
+                                body,
+                            })
+                        });
 
                 let body = match slice_pattern {
                     None => body,
