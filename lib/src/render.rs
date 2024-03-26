@@ -1,3 +1,4 @@
+use crate::coq;
 use pretty::RcDoc;
 
 // use crate::coq;
@@ -59,7 +60,7 @@ pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum StringPiece {
     /// A string of ASCII characters
     AsciiString(String),
@@ -89,48 +90,86 @@ fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
     if !ascii_buf.is_empty() {
         result.push(StringPiece::AsciiString(ascii_buf));
     }
-
     result
 }
 
-fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'a, ()> {
+fn string_pieces_to_coq<'a>(with_paren: bool, pieces: &[StringPiece]) -> coq::Expression<'a> {
     match pieces {
-        [] => text("\"\""),
-        [StringPiece::AsciiString(s), rest @ ..] => paren(
-            with_paren && !rest.is_empty(),
-            nest([
-                text("\""),
-                // Escape `"`s in the string to `""`
-                text(str::replace(s, "\"", "\"\"")),
-                text("\""),
-                optional_insert(
-                    rest.is_empty(),
-                    concat([text(" ++"), line(), string_pieces_to_doc(false, rest)]),
-                ),
-            ]),
-        ),
-        [StringPiece::UnicodeChar(c), rest @ ..] => paren(
+        [] => coq::Expression::just_name("\"\""),
+        [StringPiece::AsciiString(s), rest @ ..] => {
+            coq::Expression::paren(with_paren && !rest.is_empty(), &{
+                let head = coq::Expression::just_name(
+                    format!("\"{}\"", str::replace(s, "\"", "\"\"")).as_str(),
+                );
+                if rest.is_empty() {
+                    head
+                } else {
+                  // gy@NOTE: both `apply` and `apply_many` would inherently add unecessary parens
+                  // since they're the only ways to represent at `coq::Expression` level, `apply_many`
+                  // is the way with least redundant parenthesis
+                    head.apply_many(&[
+                        coq::Expression::just_name("++"),
+                        string_pieces_to_coq(false, rest),
+                    ])
+                }
+            })
+        }
+        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::paren(
             with_paren,
-            nest([
-                text("String.String"),
-                line(),
-                text("\""),
-                text(format!("{:03}", *c as u8)),
-                text("\""),
-                line(),
-                string_pieces_to_doc(true, rest),
+            &coq::Expression::just_name("String.String").apply_many(&[
+                coq::Expression::just_name(format!("\"{:03}\"", *c as u8).as_str()),
+                string_pieces_to_coq(true, rest),
             ]),
         ),
     }
 }
 
-pub(crate) fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
+pub(crate) fn string_to_coq(with_paren: bool, message: &str) -> coq::Expression {
     let pieces = cut_string_in_pieces_for_coq(message);
-    paren(
+    coq::Expression::paren(
         with_paren,
-        nest([text("mk_str"), line(), string_pieces_to_doc(true, &pieces)]),
+        &coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(true, &pieces)),
     )
 }
+
+// fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'a, ()> {
+//     match pieces {
+//         [] => text("\"\""),
+//         [StringPiece::AsciiString(s), rest @ ..] => paren(
+//             with_paren && !rest.is_empty(),
+//             nest([
+//                 text("\""),
+//                 // Escape `"`s in the string to `""`
+//                 text(str::replace(s, "\"", "\"\"")),
+//                 text("\""),
+//                 optional_insert(
+//                     rest.is_empty(),
+//                     concat([text(" ++"), line(), string_pieces_to_doc(false, rest)]),
+//                 ),
+//             ]),
+//         ),
+//         [StringPiece::UnicodeChar(c), rest @ ..] => paren(
+//             with_paren,
+//             nest([
+//                 text("String.String"),
+//                 line(),
+//                 text("\""),
+//                 text(format!("{:03}", *c as u8)),
+//                 text("\""),
+//                 line(),
+//                 string_pieces_to_doc(true, rest),
+//             ]),
+//         ),
+//     }
+// }
+
+// pub(crate) fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
+//     let pieces = cut_string_in_pieces_for_coq(message);
+//     paren(
+//         with_paren,
+//         nest([text("mk_str"), line(), string_pieces_to_doc(true, &pieces)]),
+//     )
+// }
 
 pub type Doc<'a> = RcDoc<'a, ()>;
 
