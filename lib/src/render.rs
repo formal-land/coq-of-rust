@@ -104,9 +104,9 @@ fn string_pieces_to_coq<'a>(with_paren: bool, pieces: &[StringPiece]) -> coq::Ex
                 if rest.is_empty() {
                     head
                 } else {
-                  // gy@NOTE: both `apply` and `apply_many` would inherently add unecessary parens
-                  // since they're the only ways to represent at `coq::Expression` level, `apply_many`
-                  // is the way with least redundant parenthesis
+                    // gy@NOTE: both `apply` and `apply_many` would inherently add unecessary parens
+                    // since they're the only ways to represent at `coq::Expression` level, `apply_many`
+                    // is the way with least redundant parenthesis
                     head.apply_many(&[
                         coq::Expression::just_name("++"),
                         string_pieces_to_coq(false, rest),
