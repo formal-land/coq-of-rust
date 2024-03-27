@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Ref";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ Ty.apply (Ty.path "&") [ T ] ];
   } *)
 

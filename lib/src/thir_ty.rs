@@ -56,7 +56,9 @@ pub(crate) fn compile_type<'a>(
                 args,
             })
         }
-        // Foreign(DefId),
+        TyKind::Foreign(def_id) => Rc::new(CoqType::Path {
+            path: Rc::new(compile_def_id(env, *def_id)),
+        }),
         TyKind::Str => CoqType::path(&["str"]),
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),

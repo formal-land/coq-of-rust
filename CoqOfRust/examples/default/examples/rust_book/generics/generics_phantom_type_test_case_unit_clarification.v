@@ -142,7 +142,7 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 (* StructTuple
   {
     name := "Length";
-    ty_params := [ ("Unit", None) ];
+    ty_params := [ "Unit" ];
     fields :=
       [ Ty.path "f64"; Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ]
       ];

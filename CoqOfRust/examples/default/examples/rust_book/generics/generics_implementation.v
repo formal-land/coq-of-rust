@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "GenVal";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ ("gen_val", T) ];
   } *)
 

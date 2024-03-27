@@ -17,7 +17,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "SGen";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ T ];
   } *)
 

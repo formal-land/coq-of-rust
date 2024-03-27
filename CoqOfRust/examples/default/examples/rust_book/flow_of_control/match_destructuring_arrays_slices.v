@@ -43,7 +43,7 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
-    let* array_ :=
+    let* array :=
       M.alloc
         (Value.Array
           [
@@ -53,7 +53,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]) in
     let* α0 :=
       match_operator
-        array_
+        array
         [
           fun γ =>
             let* γ0_0 := M.get_slice_index_or_break_match γ 0 in

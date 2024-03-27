@@ -643,7 +643,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (Value.Tuple []))
           ] in
       M.pure (M.use α9) in
-    let* array_ :=
+    let* array :=
       M.alloc
         (Value.Array
           [
@@ -673,7 +673,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "&")
                 [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
             ] in
-        let* α6 := M.alloc array_ in
+        let* α6 := M.alloc array in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
@@ -698,7 +698,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
         "iter"
         [] in
-    let* α2 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) array_ ] in
+    let* α2 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) array ] in
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 :=

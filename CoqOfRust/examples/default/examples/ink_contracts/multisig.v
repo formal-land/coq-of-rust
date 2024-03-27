@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
-    ty_params := [ ("K", None); ("V", None) ];
+    ty_params := [ "K"; "V" ];
     fields :=
       [
         ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);

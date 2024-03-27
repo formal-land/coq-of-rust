@@ -56,7 +56,7 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 
 (* Enum MultiAddress *)
 (* {
-  ty_params := [ ("AccountId", None); ("AccountIndex", None) ];
+  ty_params := [ "AccountId"; "AccountIndex" ];
   variants := [];
 } *)
 

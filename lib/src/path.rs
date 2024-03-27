@@ -139,7 +139,7 @@ pub(crate) fn to_valid_coq_name(str: &str) -> String {
     }
 
     let reserved_names = [
-        "Set", "Type", "Unset", "at", "by", "exists", "end", "fix", "tt", "array", "unit", "pair",
+        "Set", "Type", "Unset", "at", "by", "exists", "end", "fix", "pair", "tt", "unit", "with",
     ];
 
     if reserved_names.contains(&str) {

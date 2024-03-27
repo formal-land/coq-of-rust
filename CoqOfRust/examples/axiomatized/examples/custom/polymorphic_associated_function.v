@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Foo";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ ("data", T) ];
   } *)
 

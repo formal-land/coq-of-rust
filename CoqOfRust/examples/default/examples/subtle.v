@@ -2688,7 +2688,7 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 (* StructRecord
   {
     name := "CtOption";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ ("value", T); ("is_some", Ty.path "subtle::Choice") ];
   } *)
 

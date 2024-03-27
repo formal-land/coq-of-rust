@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "PhantomTuple";
-    ty_params := [ ("A", None); ("B", None) ];
+    ty_params := [ "A"; "B" ];
     fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ];
   } *)
 
@@ -39,7 +39,7 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 (* StructRecord
   {
     name := "PhantomStruct";
-    ty_params := [ ("A", None); ("B", None) ];
+    ty_params := [ "A"; "B" ];
     fields :=
       [
         ("first", A);
