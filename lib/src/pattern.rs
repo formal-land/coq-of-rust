@@ -19,10 +19,10 @@ pub(crate) enum Pattern {
     Or(Vec<Rc<Pattern>>),
     Tuple(Vec<Rc<Pattern>>),
     Literal(Rc<Literal>),
-    // TODO: modify if necessary to fully implement the case of Slice in compile_pattern below
     Slice {
-        init_patterns: Vec<Rc<Pattern>>,
+        prefix_patterns: Vec<Rc<Pattern>>,
         slice_pattern: Option<Rc<Pattern>>,
+        suffix_patterns: Vec<Rc<Pattern>>,
     },
 }
 
@@ -117,26 +117,34 @@ impl Pattern {
             .collect(),
             Pattern::Literal(_) => vec![self.clone()],
             Pattern::Slice {
-                init_patterns,
+                prefix_patterns,
                 slice_pattern,
+                suffix_patterns,
             } => Pattern::multi_cartesian_product_with_empty_case(
-                init_patterns
+                prefix_patterns
                     .iter()
-                    .map(|init_pattern| init_pattern.flatten_ors()),
+                    .map(|prefix_pattern| prefix_pattern.flatten_ors()),
             )
             .into_iter()
-            .flat_map(|init_patterns| match slice_pattern {
+            .zip(Pattern::multi_cartesian_product_with_empty_case(
+                suffix_patterns
+                    .iter()
+                    .map(|suffix_pattern| suffix_pattern.flatten_ors()),
+            ))
+            .flat_map(|(prefix_patterns, suffix_patterns)| match slice_pattern {
                 None => vec![Rc::new(Pattern::Slice {
-                    init_patterns,
+                    prefix_patterns,
                     slice_pattern: None,
+                    suffix_patterns,
                 })],
                 Some(slice_pattern) => slice_pattern
                     .flatten_ors()
                     .into_iter()
                     .map(|slice_pattern| {
                         Rc::new(Pattern::Slice {
-                            init_patterns: init_patterns.clone(),
+                            prefix_patterns: prefix_patterns.clone(),
                             slice_pattern: Some(slice_pattern),
+                            suffix_patterns: suffix_patterns.clone(),
                         })
                     })
                     .collect(),

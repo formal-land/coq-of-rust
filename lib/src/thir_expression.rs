@@ -187,12 +187,13 @@ fn build_inner_match(
                 body,
             }),
             Pattern::Slice {
-                init_patterns,
+                prefix_patterns,
                 slice_pattern,
+                suffix_patterns,
             } => {
                 let body = build_inner_match(
                     [
-                        init_patterns
+                        prefix_patterns
                             .iter()
                             .enumerate()
                             .map(|(index, pattern)| (format!("γ{depth}_{index}"), pattern.clone()))
@@ -203,11 +204,40 @@ fn build_inner_match(
                                 vec![(format!("γ{depth}_rest"), slice_pattern.clone())]
                             }
                         },
+                        suffix_patterns
+                            .iter()
+                            .enumerate()
+                            .map(|(index, pattern)| {
+                                (format!("γ{depth}_rev{index}"), pattern.clone())
+                            })
+                            .collect(),
                     ]
                     .concat(),
                     body,
                     depth + 1,
                 );
+
+                let body =
+                    suffix_patterns
+                        .iter()
+                        .enumerate()
+                        .rev()
+                        .rfold(body, |body, (index, _)| {
+                            Rc::new(Expr::Let {
+                                is_monadic: false,
+                                name: Some(format!("γ{depth}_rev{index}")),
+                                init: Rc::new(Expr::Call {
+                                    func: Expr::local_var("M.get_slice_rev_index_or_break_match"),
+                                    args: vec![
+                                        Expr::local_var(&scrutinee),
+                                        Rc::new(Expr::InternalInteger(index)),
+                                    ],
+                                    kind: CallKind::Effectful,
+                                }),
+                                body,
+                            })
+                        });
+
                 let body = match slice_pattern {
                     None => body,
                     Some(_) => Rc::new(Expr::Let {
@@ -217,7 +247,8 @@ fn build_inner_match(
                             func: Expr::local_var("M.get_slice_rest_or_break_match"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
-                                Rc::new(Expr::InternalInteger(init_patterns.len())),
+                                Rc::new(Expr::InternalInteger(prefix_patterns.len())),
+                                Rc::new(Expr::InternalInteger(suffix_patterns.len())),
                             ],
                             kind: CallKind::Effectful,
                         }),
@@ -225,7 +256,7 @@ fn build_inner_match(
                     }),
                 };
 
-                init_patterns
+                prefix_patterns
                     .iter()
                     .enumerate()
                     .rfold(body, |body, (index, _)| {
@@ -233,7 +264,7 @@ fn build_inner_match(
                             is_monadic: false,
                             name: Some(format!("γ{depth}_{index}")),
                             init: Rc::new(Expr::Call {
-                                func: Expr::local_var("get_slice_index_or_break_match"),
+                                func: Expr::local_var("M.get_slice_index_or_break_match"),
                                 args: vec![
                                     Expr::local_var(&scrutinee),
                                     Rc::new(Expr::InternalInteger(index)),

@@ -176,34 +176,14 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 prefix.iter().map(|pat| compile_pattern(env, pat)).collect();
             let suffix: Vec<Rc<Pattern>> =
                 suffix.iter().map(|pat| compile_pattern(env, pat)).collect();
-            match slice {
-                Some(pat_middle) => {
-                    if suffix.is_empty() {
-                        let pat_middle = compile_pattern(env, pat_middle);
-                        Rc::new(Pattern::Slice {
-                            init_patterns: prefix,
-                            slice_pattern: Some(pat_middle),
-                        })
-                    } else {
-                        env.tcx
-                            .sess
-                            .struct_span_warn(
-                                pat.span,
-                                "Destructuring after slice patterns is not supported.",
-                            )
-                            .help("Reverse the slice instead.")
-                            .emit();
-                        Rc::new(Pattern::Wild)
-                    }
-                }
-                None => {
-                    let all_patterns = [prefix, suffix].concat().to_vec();
-                    Rc::new(Pattern::Slice {
-                        init_patterns: all_patterns,
-                        slice_pattern: None,
-                    })
-                }
-            }
+            let slice_pattern: Option<Rc<Pattern>> = slice
+                .as_ref()
+                .map(|pat_middle| compile_pattern(env, pat_middle));
+            Rc::new(Pattern::Slice {
+                prefix_patterns: prefix,
+                slice_pattern,
+                suffix_patterns: suffix,
+            })
         }
         PatKind::Or { pats } => Rc::new(Pattern::Or(
             pats.iter().map(|pat| compile_pattern(env, pat)).collect(),

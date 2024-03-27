@@ -56,9 +56,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         array_
         [
           fun γ =>
-            let* γ0_0 := get_slice_index_or_break_match γ 0 in
-            let* γ0_1 := get_slice_index_or_break_match γ 1 in
-            let* γ0_2 := get_slice_index_or_break_match γ 2 in
+            let* γ0_0 := M.get_slice_index_or_break_match γ 0 in
+            let* γ0_1 := M.get_slice_index_or_break_match γ 1 in
+            let* γ0_2 := M.get_slice_index_or_break_match γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 0) in
@@ -100,9 +100,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α12 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := get_slice_index_or_break_match γ 0 in
-            let* γ0_1 := get_slice_index_or_break_match γ 1 in
-            let* γ0_2 := get_slice_index_or_break_match γ 2 in
+            let* γ0_0 := M.get_slice_index_or_break_match γ 0 in
+            let* γ0_1 := M.get_slice_index_or_break_match γ 1 in
+            let* γ0_2 := M.get_slice_index_or_break_match γ 2 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 1) in
@@ -136,9 +136,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α9 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := get_slice_index_or_break_match γ 0 in
-            let* γ0_1 := get_slice_index_or_break_match γ 1 in
-            let* γ0_rest := M.get_slice_rest_or_break_match γ 2 in
+            let* γ0_0 := M.get_slice_index_or_break_match γ 0 in
+            let* γ0_1 := M.get_slice_index_or_break_match γ 1 in
+            let* γ0_rest := M.get_slice_rest_or_break_match γ 2 0 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match
@@ -175,9 +175,9 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α9 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* γ0_0 := get_slice_index_or_break_match γ 0 in
-            let* γ0_1 := get_slice_index_or_break_match γ 1 in
-            let* γ0_rest := M.get_slice_rest_or_break_match γ 2 in
+            let* γ0_0 := M.get_slice_index_or_break_match γ 0 in
+            let* γ0_1 := M.get_slice_index_or_break_match γ 1 in
+            let* γ0_rest := M.get_slice_rest_or_break_match γ 2 0 in
             let* _ :=
               let* α0 := M.read γ0_0 in
               M.is_constant_or_break_match α0 (Value.Integer Integer.I32 3) in
@@ -219,6 +219,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               M.alloc α12 in
             M.alloc (Value.Tuple []);
           fun γ =>
+            let* γ0_0 := M.get_slice_index_or_break_match γ 0 in
+            let* γ0_rest := M.get_slice_rest_or_break_match γ 1 1 in
+            let* γ0_rev0 := M.get_slice_rev_index_or_break_match γ 0 in
+            let* first := M.copy γ0_0 in
+            let* middle := M.copy γ0_rest in
+            let* last := M.copy γ0_rev0 in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=

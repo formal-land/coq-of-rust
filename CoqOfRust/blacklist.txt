@@ -8,7 +8,6 @@ examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 examples/default/examples/rust_book/error_handling/pulling_results_out_of_options_with_stop_error_processing.v
-examples/default/examples/rust_book/flow_of_control/match_destructuring_arrays_slices.v
 examples/default/examples/rust_book/primitives/arrays_and_slices.v
 ink/
 MonadicNotationExample.v

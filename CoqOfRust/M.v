@@ -815,11 +815,18 @@ Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   else
     break_match.
 
+(** Get an element of a slice by index. *)
 Parameter get_slice_index_or_break_match :
   Value.t -> Z -> M.
 
-Parameter get_slice_rest_or_break_match :
+(** Get an element of a slice by index counting from the end. *)
+Parameter get_slice_rev_index_or_break_match :
   Value.t -> Z -> M.
+
+(** For two indices n and k, get all elements of a slice without
+    the first n elements and without the last k elements. *)
+Parameter get_slice_rest_or_break_match :
+  Value.t -> Z -> Z -> M.
 
 (** This function is explicitely called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of
