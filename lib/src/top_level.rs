@@ -935,20 +935,10 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
 
 fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
     match item.as_ref() {
-        ImplItemKind::Const { ty, body } => {
-            let body = match body {
-                None => body.clone(),
-                Some(body) => {
-                    let body = mt_expression(FreshVars::new(), body.clone()).0;
-
-                    Some(body)
-                }
-            };
-            Rc::new(ImplItemKind::Const {
-                ty: ty.clone(),
-                body,
-            })
-        }
+        ImplItemKind::Const { ty, body } => Rc::new(ImplItemKind::Const {
+            ty: ty.clone(),
+            body: body.clone(),
+        }),
         ImplItemKind::Definition { definition } => Rc::new(ImplItemKind::Definition {
             definition: definition.mt(),
         }),
@@ -961,13 +951,7 @@ impl FnSigAndBody {
         Rc::new(FnSigAndBody {
             args: self.args.clone(),
             ret_ty: self.ret_ty.clone(),
-            body: match &self.body {
-                None => self.body.clone(),
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), body.clone());
-                    Some(body)
-                }
-            },
+            body: self.body.clone(),
         })
     }
 }
@@ -993,13 +977,7 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
     match item.as_ref() {
         TopLevelItem::Const { name, value } => Rc::new(TopLevelItem::Const {
             name: name.clone(),
-            value: match value {
-                None => value.clone(),
-                Some(value) => {
-                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), value.clone());
-                    Some(value)
-                }
-            },
+            value: value.clone(),
         }),
         TopLevelItem::Definition {
             name,
