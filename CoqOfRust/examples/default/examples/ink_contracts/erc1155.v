@@ -280,7 +280,7 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
-Definition ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
+Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
   M.run
     (M.alloc
       (Value.Array

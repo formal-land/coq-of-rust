@@ -676,12 +676,16 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Index { base, index })
         }
         thir::ExprKind::VarRef { id } => {
-            let name = to_valid_coq_name(env.tcx.hir().opt_name(id.0).unwrap().as_str());
+            let name =
+                to_valid_coq_name(IsValue::Yes, env.tcx.hir().opt_name(id.0).unwrap().as_str());
 
             Rc::new(Expr::LocalVar(name))
         }
         thir::ExprKind::UpvarRef { var_hir_id, .. } => {
-            let name = to_valid_coq_name(env.tcx.hir().opt_name(var_hir_id.0).unwrap().as_str());
+            let name = to_valid_coq_name(
+                IsValue::Yes,
+                env.tcx.hir().opt_name(var_hir_id.0).unwrap().as_str(),
+            );
 
             Rc::new(Expr::LocalVar(name))
         }
@@ -757,7 +761,10 @@ pub(crate) fn compile_expr<'a>(
                 .iter()
                 .map(|field| {
                     (
-                        to_valid_coq_name(variant.fields.get(field.name).unwrap().name.as_str()),
+                        to_valid_coq_name(
+                            IsValue::No,
+                            variant.fields.get(field.name).unwrap().name.as_str(),
+                        ),
                         compile_expr(env, generics, thir, &field.expr).read(),
                     )
                 })

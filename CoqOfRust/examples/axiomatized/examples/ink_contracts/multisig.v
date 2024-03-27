@@ -212,11 +212,11 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
     fields := [ ("caller", Ty.path "multisig::AccountId") ];
   } *)
 
-Parameter MAX_OWNERS : Value.t.
+Parameter value_MAX_OWNERS : Value.t.
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
-Parameter WRONG_TRANSACTION_ID : Value.t.
+Parameter value_WRONG_TRANSACTION_ID : Value.t.
 
 (* StructTuple
   {

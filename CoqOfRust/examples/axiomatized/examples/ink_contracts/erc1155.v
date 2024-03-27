@@ -161,7 +161,7 @@ Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
 
 Parameter zero_address : (list Ty.t) -> (list Value.t) -> M.
 
-Parameter ON_ERC_1155_RECEIVED_SELECTOR : Value.t.
+Parameter value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t.
 
 Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t.
 

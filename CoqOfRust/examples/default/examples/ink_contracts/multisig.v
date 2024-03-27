@@ -390,12 +390,12 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
     fields := [ ("caller", Ty.path "multisig::AccountId") ];
   } *)
 
-Definition MAX_OWNERS : Value.t :=
+Definition value_MAX_OWNERS : Value.t :=
   M.run (M.alloc (Value.Integer Integer.U32 50)).
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
-Definition WRONG_TRANSACTION_ID : Value.t :=
+Definition value_WRONG_TRANSACTION_ID : Value.t :=
   M.run
     (M.pure (mk_str "The user specified an invalid transaction id. Abort.")).
 

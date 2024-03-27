@@ -317,7 +317,11 @@ fn compile_top_level_item_without_local_items<'a>(
     env: &Env<'a>,
     item: &'a Item,
 ) -> Vec<Rc<TopLevelItem>> {
-    let name = to_valid_coq_name(item.ident.name.as_str());
+    let is_value = match item.kind {
+        ItemKind::Static(..) | ItemKind::Const(..) | ItemKind::Fn(..) => IsValue::Yes,
+        _ => IsValue::No,
+    };
+    let name = to_valid_coq_name(is_value, item.ident.name.as_str());
     let path = compile_def_id(env, item.owner_id.to_def_id());
 
     match &item.kind {
@@ -464,7 +468,7 @@ fn compile_top_level_item_without_local_items<'a>(
                         .iter()
                         .map(|field| {
                             (
-                                to_valid_coq_name(field.ident.name.as_str()),
+                                to_valid_coq_name(IsValue::No, field.ident.name.as_str()),
                                 compile_type(env, &item.owner_id.def_id, field.ty),
                             )
                         })
@@ -502,7 +506,14 @@ fn compile_top_level_item_without_local_items<'a>(
                         let item = env.tcx.hir().trait_item(item.id);
                         let ty_params = get_ty_params(env, item.generics);
                         let body = compile_trait_item_body(env, ty_params, item);
-                        (to_valid_coq_name(item.ident.name.as_str()), body)
+                        let is_value = match body.as_ref() {
+                            TraitItem::Definition { .. } | TraitItem::DefinitionWithDefault(..) => {
+                                IsValue::Yes
+                            }
+                            TraitItem::Type() => IsValue::No,
+                        };
+
+                        (to_valid_coq_name(is_value, item.ident.name.as_str()), body)
                     })
                     .collect(),
             })]
@@ -528,7 +539,7 @@ fn compile_top_level_item_without_local_items<'a>(
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
                         .filter(|item| item.defaultness(env.tcx).has_value())
-                        .map(|item| to_valid_coq_name(item.name.as_str()))
+                        .map(|item| to_valid_coq_name(IsValue::Yes, item.name.as_str()))
                         .collect();
                     let items: Vec<Rc<TraitImplItem>> = items
                         .iter()
@@ -625,7 +636,7 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
             vec![]
         } else {
             vec![Rc::new(TopLevelItem::Module {
-                name: to_valid_coq_name(item.ident.as_str()),
+                name: to_valid_coq_name(IsValue::No, item.ident.as_str()),
                 body: Rc::new(TopLevel(local_items)),
             })]
         },
@@ -655,7 +666,11 @@ fn compile_impl_item_refs(env: &Env, item_refs: &[ImplItemRef]) -> Vec<Rc<ImplIt
 
 /// compiles an item
 fn compile_impl_item<'a>(env: &Env<'a>, item: &'a rustc_hir::ImplItem) -> Rc<ImplItem> {
-    let name = to_valid_coq_name(item.ident.name.as_str());
+    let is_value = match &item.kind {
+        rustc_hir::ImplItemKind::Const(..) | rustc_hir::ImplItemKind::Fn(..) => IsValue::Yes,
+        rustc_hir::ImplItemKind::Type(..) => IsValue::No,
+    };
+    let name = to_valid_coq_name(is_value, item.ident.name.as_str());
     let snippet = Snippet::of_span(env, &item.span);
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
@@ -763,7 +778,7 @@ fn get_arg_names<'a>(
                 _,
                 ident,
                 None,
-            ) => (to_valid_coq_name(ident.name.as_str()), None),
+            ) => (to_valid_coq_name(IsValue::Yes, ident.name.as_str()), None),
             _ => (
                 format!("β{}", index),
                 Some(Pattern::compile(env, param.pat)),
@@ -780,6 +795,7 @@ fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
         .filter_map(|param| match param.kind {
             // we ignore lifetimes
             GenericParamKind::Type { .. } => Some(to_valid_coq_name(
+                IsValue::No,
                 &crate::thir_ty::compile_generic_param(env, param.def_id.to_def_id()),
             )),
             GenericParamKind::Lifetime { .. } | GenericParamKind::Const { .. } => None,
