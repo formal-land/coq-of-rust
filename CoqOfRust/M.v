@@ -452,26 +452,42 @@ Import Notations.
     This allows to represent Rust programs without introducing
     explicit names for all intermediate computation results. *)
 Ltac monadic e :=
-  match e with
+  lazymatch e with
   | context ctxt [let v : _ := ?x in @?f v] =>
-    refine (M.let_ _ _);
+    refine (let_ _ _);
       [ monadic x
-      | intro v;
-        let y := (eval cbn beta in (f v)) in
-        monadic y
-      ]
-  | context ctxt [run ?x] =>
-    refine (M.let_ _ _);
-      [ monadic x
-      | let v := fresh "v" in
-        intro v;
-        let y := context ctxt [v] in
-        match y with
-        | v => exact (M.pure v)
-        | _ => monadic y
+      | let v' := fresh v in
+        intro v';
+        let y := (eval cbn beta in (f v')) in
+        lazymatch context ctxt [let v := x in y] with
+        | let _ := x in y => monadic y
+        | _ =>
+          refine (let_ _ _);
+            [ monadic y
+            | let w := fresh "v" in
+              intro w;
+              let z := context ctxt [w] in
+              monadic z
+            ]
         end
       ]
-  | _ => exact e
+  | context ctxt [run ?x] =>
+    lazymatch context ctxt [run x] with
+    | run x => monadic x
+    | _ =>
+      refine (let_ _ _);
+        [ monadic x
+        | let v := fresh "v" in
+          intro v;
+          let y := context ctxt [v] in
+          monadic y
+        ]
+    end
+  | _ =>
+    lazymatch type of e with
+    | M => exact e
+    | _ => exact (pure e)
+    end
   end.
 
 Definition raise (exception : Exception.t) : M :=
@@ -649,6 +665,44 @@ Definition find_or_pattern
   | Value.Tuple free_vars => call_closure body free_vars
   | _ => impossible
   end.
+(** A tactic that performs monadic transformation for each of
+    the branches of the match expression. *)
+Ltac monadic_match_branches branches :=
+  lazymatch branches with
+  | nil => exact nil
+  | ?branch :: ?branches' => 
+    lazymatch branch with
+    | fun v => @?f v =>
+      refine (cons _ _);
+      [ let v' := fresh v in
+        intro v';
+        let e := (eval cbn beta in (f v')) in
+        monadic e
+      | monadic_match_branches branches'
+      ]
+    end
+  end.
+
+(** A wrapper tactic over [match_operator]. This tactic calls
+    the [M.monadic] tactic on each branch of the match expression,
+    then calls the [match_operator] on the transformed branches. *)
+Ltac monadic_match_operator expr branches :=
+  refine (run (match_operator expr _));
+  monadic_match_branches branches.
+
+(** A wrapper tactic over [M.catch_return]. This tactic calls the
+   [M.monadic] tactic the body of the function, then calls the
+   [M.catch_return] on the result. *)
+Ltac monadic_catch_return expr := 
+  refine (run (catch_return _));
+  monadic expr.
+
+(** A wrapper tactic over [M.loop]. This tactic calls the
+    [M.monadic] tactic the body of the loop, then calls the [M.loop]
+    on the result. *)
+Ltac monadic_loop expr :=
+  refine (run (loop _));
+  monadic expr.
 
 Definition never_to_any (x : Value.t) : M :=
   M.impossible.
