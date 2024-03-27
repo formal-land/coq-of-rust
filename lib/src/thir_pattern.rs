@@ -178,7 +178,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 suffix.iter().map(|pat| compile_pattern(env, pat)).collect();
             let slice_pattern: Option<Rc<Pattern>> = slice
                 .as_ref()
-                .map(|pat_middle| compile_pattern(env, &pat_middle));
+                .map(|pat_middle| compile_pattern(env, pat_middle));
             Rc::new(Pattern::Slice {
                 prefix_patterns: prefix,
                 slice_pattern,
