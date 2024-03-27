@@ -27,10 +27,10 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
   Definition double_drop (T U : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T U in
     match 𝜏, α with
-    | [], [ self; Pattern ] =>
+    | [], [ self; β1 ] =>
       let* self := M.alloc self in
-      let* Pattern := M.alloc Pattern in
-      M.pure (Value.Tuple [])
+      let* β1 := M.alloc β1 in
+      match_operator β1 [ fun γ => M.pure (Value.Tuple []) ]
     | _, _ => M.impossible
     end.
   

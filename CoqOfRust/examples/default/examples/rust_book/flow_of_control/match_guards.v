@@ -53,6 +53,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "match_guards::Temperature::Celsius"
                 0 in
             let* t := M.copy γ0_0 in
+            let* Γ :=
+              let* α0 := M.read t in
+              M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 30)) in
+            let* _ :=
+              let* α0 := M.read Γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=
@@ -123,6 +129,12 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 "match_guards::Temperature::Fahrenheit"
                 0 in
             let* t := M.copy γ0_0 in
+            let* Γ :=
+              let* α0 := M.read t in
+              M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 86)) in
+            let* _ :=
+              let* α0 := M.read Γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
               let* α1 :=

@@ -121,10 +121,10 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
 *)
 Definition pass_x (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [ x; arg ] =>
+  | [], [ x; β1 ] =>
     let* x := M.alloc x in
-    let* arg := M.alloc arg in
-    M.read x
+    let* β1 := M.alloc β1 in
+    match_operator β1 [ fun γ => M.read x ]
   | _, _ => M.impossible
   end.
 

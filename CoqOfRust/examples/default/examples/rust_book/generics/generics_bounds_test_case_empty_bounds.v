@@ -60,9 +60,9 @@ fn red<T: Red>(_: &T) -> &'static str {
 *)
 Definition red (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [ T ], [ arg ] =>
-    let* arg := M.alloc arg in
-    M.read (mk_str "red")
+  | [ T ], [ β0 ] =>
+    let* β0 := M.alloc β0 in
+    match_operator β0 [ fun γ => M.read (mk_str "red") ]
   | _, _ => M.impossible
   end.
 
@@ -73,9 +73,9 @@ fn blue<T: Blue>(_: &T) -> &'static str {
 *)
 Definition blue (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [ T ], [ arg ] =>
-    let* arg := M.alloc arg in
-    M.read (mk_str "blue")
+  | [ T ], [ β0 ] =>
+    let* β0 := M.alloc β0 in
+    match_operator β0 [ fun γ => M.read (mk_str "blue") ]
   | _, _ => M.impossible
   end.
 

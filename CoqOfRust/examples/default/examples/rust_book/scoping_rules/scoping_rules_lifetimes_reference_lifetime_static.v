@@ -13,11 +13,17 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
 *)
 Definition coerce_static (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [ arg ] =>
-    let* arg := M.alloc arg in
-    let* α0 :=
-      M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
-    M.read α0
+  | [], [ β0 ] =>
+    let* β0 := M.alloc β0 in
+    match_operator
+      β0
+      [
+        fun γ =>
+          let* α0 :=
+            M.get_constant
+              "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
+          M.read α0
+      ]
   | _, _ => M.impossible
   end.
 

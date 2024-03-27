@@ -31,10 +31,10 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
 *)
 Definition choose_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
-  | [], [ first; arg ] =>
+  | [], [ first; β1 ] =>
     let* first := M.alloc first in
-    let* arg := M.alloc arg in
-    M.read first
+    let* β1 := M.alloc β1 in
+    match_operator β1 [ fun γ => M.read first ]
   | _, _ => M.impossible
   end.
 

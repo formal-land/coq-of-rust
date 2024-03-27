@@ -3,4 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
-Parameter sum_odd_numbers : (list Ty.t) -> (list Value.t) -> M.
+Module main.
+  Parameter sum_odd_numbers : (list Ty.t) -> (list Value.t) -> M.
+End main.

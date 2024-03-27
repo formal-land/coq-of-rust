@@ -6,6 +6,8 @@ Parameter combine_vecs_explicit_return_type :
 
 Parameter combine_vecs : (list Ty.t) -> (list Value.t) -> M.
 
-(* Error OpaqueTy *)
+Module combine_vecs.
+  (* Error OpaqueTy *)
+End combine_vecs.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.

@@ -1,3 +1,5 @@
+use crate::env::emit_warning_with_note;
+use crate::env::Env;
 use crate::expression::*;
 use crate::path::*;
 use itertools::Itertools;
@@ -13,8 +15,8 @@ pub(crate) enum Pattern {
         is_with_ref: bool,
         pattern: Option<Rc<Pattern>>,
     },
-    StructStruct(Path, Vec<(String, Rc<Pattern>)>, StructOrVariant),
-    StructTuple(Path, Vec<Rc<Pattern>>, StructOrVariant),
+    StructRecord(Path, Vec<(String, Rc<Pattern>)>),
+    StructTuple(Path, Vec<Rc<Pattern>>),
     Deref(Rc<Pattern>),
     Or(Vec<Rc<Pattern>>),
     Tuple(Vec<Rc<Pattern>>),
@@ -67,7 +69,7 @@ impl Pattern {
                     })
                     .collect(),
             },
-            Pattern::StructStruct(path, fields, struct_or_variant) => {
+            Pattern::StructRecord(path, fields) => {
                 Pattern::multi_cartesian_product_with_empty_case(fields.iter().map(
                     |(name, pattern)| {
                         pattern
@@ -77,27 +79,15 @@ impl Pattern {
                     },
                 ))
                 .into_iter()
-                .map(|fields| {
-                    Rc::new(Pattern::StructStruct(
-                        path.clone(),
-                        fields,
-                        *struct_or_variant,
-                    ))
-                })
+                .map(|fields| Rc::new(Pattern::StructRecord(path.clone(), fields)))
                 .collect()
             }
-            Pattern::StructTuple(path, patterns, struct_or_variant) => {
+            Pattern::StructTuple(path, patterns) => {
                 Pattern::multi_cartesian_product_with_empty_case(
                     patterns.iter().map(|pattern| pattern.flatten_ors()),
                 )
                 .into_iter()
-                .map(|patterns| {
-                    Rc::new(Pattern::StructTuple(
-                        path.clone(),
-                        patterns,
-                        *struct_or_variant,
-                    ))
-                })
+                .map(|patterns| Rc::new(Pattern::StructTuple(path.clone(), patterns)))
                 .collect()
             }
             Pattern::Deref(pattern) => pattern
@@ -150,6 +140,74 @@ impl Pattern {
                     .collect(),
             })
             .collect(),
+        }
+    }
+
+    /// This function is a bit redundant with [crate::thir_pattern::compile_pattern]. It is used to
+    /// translate the patterns in HIR form, that appear only in function parameters. In particular,
+    /// these patterns should always be exhaustive, so we do not need to handle all the cases.
+    pub(crate) fn compile(env: &Env, pattern: &rustc_hir::Pat) -> Rc<Pattern> {
+        match pattern.kind {
+            rustc_hir::PatKind::Wild => Rc::new(Pattern::Wild),
+            rustc_hir::PatKind::Binding(binding_annotation, _, ident, sub_pattern) => {
+                Rc::new(Pattern::Binding {
+                    name: ident.to_string(),
+                    is_with_ref: matches!(
+                        binding_annotation,
+                        rustc_hir::BindingAnnotation(rustc_hir::ByRef::Yes, _)
+                    ),
+                    pattern: sub_pattern.map(|sub_pattern| Pattern::compile(env, sub_pattern)),
+                })
+            }
+            rustc_hir::PatKind::Struct(qpath, fields, _) => {
+                let path = compile_qpath(env, pattern.hir_id, &qpath);
+                let fields = fields
+                    .iter()
+                    .map(|field| (field.ident.to_string(), Pattern::compile(env, field.pat)))
+                    .collect();
+
+                Rc::new(Pattern::StructRecord(path, fields))
+            }
+            rustc_hir::PatKind::TupleStruct(qpath, fields, _) => {
+                let path = compile_qpath(env, pattern.hir_id, &qpath);
+                let fields = fields
+                    .iter()
+                    .map(|field| Pattern::compile(env, field))
+                    .collect();
+
+                Rc::new(Pattern::StructTuple(path, fields))
+            }
+            rustc_hir::PatKind::Or(pats) => {
+                let patterns = pats.iter().map(|pat| Pattern::compile(env, pat)).collect();
+
+                Rc::new(Pattern::Or(patterns))
+            }
+            rustc_hir::PatKind::Never => Rc::new(Pattern::Or(vec![])),
+            rustc_hir::PatKind::Path(qpath) => {
+                let path = compile_qpath(env, pattern.hir_id, &qpath);
+
+                Rc::new(Pattern::StructTuple(path, vec![]))
+            }
+            rustc_hir::PatKind::Tuple(pats, _) => {
+                let patterns = pats.iter().map(|pat| Pattern::compile(env, pat)).collect();
+
+                Rc::new(Pattern::Tuple(patterns))
+            }
+            rustc_hir::PatKind::Box(sub_pattern) | rustc_hir::PatKind::Ref(sub_pattern, _) => {
+                Rc::new(Pattern::Deref(Pattern::compile(env, sub_pattern)))
+            }
+            rustc_hir::PatKind::Lit(_)
+            | rustc_hir::PatKind::Range(_, _, _)
+            | rustc_hir::PatKind::Slice(_, _, _) => {
+                emit_warning_with_note(
+                    env,
+                    &pattern.span,
+                    "We do not handle this kind of pattern here.",
+                    "This should not happen as function parameter patterns should be exhaustive.",
+                );
+
+                Rc::new(Pattern::Literal(Rc::new(Literal::Error)))
+            }
         }
     }
 }

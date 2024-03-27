@@ -674,7 +674,7 @@ impl<'a> Expression<'a> {
     /// A pattern for a name, taking into account names that are known
     /// constructors in Coq.
     pub(crate) fn name_pattern(name: &str) -> Self {
-        let known_constructors = ["I", "inl", "inr", "None", "O", "Some", "S"];
+        let known_constructors = ["I", "inl", "inr", "left", "None", "O", "right", "Some", "S"];
 
         if known_constructors.contains(&name) {
             Expression::As(
