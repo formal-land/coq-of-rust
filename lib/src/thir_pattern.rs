@@ -176,21 +176,14 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 prefix.iter().map(|pat| compile_pattern(env, pat)).collect();
             let suffix: Vec<Rc<Pattern>> =
                 suffix.iter().map(|pat| compile_pattern(env, pat)).collect();
-            match slice {
-                Some(pat_middle) => {
-                    let pat_middle = compile_pattern(env, pat_middle);
-                    Rc::new(Pattern::Slice {
-                        prefix_patterns: prefix,
-                        slice_pattern: Some(pat_middle),
-                        suffix_patterns: suffix,
-                    })
-                }
-                None => Rc::new(Pattern::Slice {
-                    prefix_patterns: prefix,
-                    slice_pattern: None,
-                    suffix_patterns: suffix,
-                }),
-            }
+            let slice_pattern: Option<Rc<Pattern>> = slice
+                .as_ref()
+                .map(|pat_middle| compile_pattern(env, &pat_middle));
+            Rc::new(Pattern::Slice {
+                prefix_patterns: prefix,
+                slice_pattern,
+                suffix_patterns: suffix,
+            })
         }
         PatKind::Or { pats } => Rc::new(Pattern::Or(
             pats.iter().map(|pat| compile_pattern(env, pat)).collect(),
