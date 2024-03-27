@@ -24,9 +24,9 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
   (*
       fn double_drop(self, _: T) {}
   *)
-  Definition double_drop (T U : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition double_drop (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T U in
-    match 𝜏, α with
+    match τ, α with
     | [], [ self; β1 ] =>
       let* self := M.alloc self in
       let* β1 := M.alloc β1 in
@@ -38,7 +38,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
     forall (T U : Ty.t),
     M.IsTraitInstance
       "generics_traits::DoubleDrop"
-      (* Self *) U
+      (Self T U)
       (* Trait polymorphic types *) [ (* T *) T ]
       (* Instance *)
         [ ("double_drop", InstanceField.Method (double_drop T U)) ].
@@ -57,8 +57,8 @@ fn main() {
     // ^ TODO: Try uncommenting these lines.
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* empty := M.alloc (Value.StructTuple "generics_traits::Empty" []) in
     let* null := M.alloc (Value.StructTuple "generics_traits::Null" []) in

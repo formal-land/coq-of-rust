@@ -22,8 +22,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           (&self.0 == number_1) && (&self.1 == number_2)
       }
   *)
-  Definition contains (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition contains (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; number_1; number_2 ] =>
       let* self := M.alloc self in
       let* number_1 := M.alloc number_1 in
@@ -68,8 +68,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           self.0
       }
   *)
-  Definition first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition first (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -86,8 +86,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           self.1
       }
   *)
-  Definition last (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition last (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -102,7 +102,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
   Axiom Implements :
     M.IsTraitInstance
       "generics_associated_types_problem::Contains"
-      (* Self *) (Ty.path "generics_associated_types_problem::Container")
+      Self
       (* Trait polymorphic types *)
         [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
       (* Instance *)
@@ -121,8 +121,8 @@ where
     container.last() - container.first()
 }
 *)
-Definition difference (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ A; B; C ], [ container ] =>
     let* container := M.alloc container in
     let* α0 :=
@@ -166,8 +166,8 @@ fn main() {
     println!("The difference is: {}", difference(&container));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* number_1 := M.alloc (Value.Integer Integer.I32 3) in
     let* number_2 := M.alloc (Value.Integer Integer.I32 10) in

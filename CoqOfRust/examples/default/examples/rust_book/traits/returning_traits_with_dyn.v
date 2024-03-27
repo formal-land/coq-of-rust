@@ -26,8 +26,8 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
           "baaaaah!"
       }
   *)
-  Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.read (mk_str "baaaaah!")
@@ -37,7 +37,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
   Axiom Implements :
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
@@ -50,8 +50,8 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
           "moooooo!"
       }
   *)
-  Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.read (mk_str "moooooo!")
@@ -61,7 +61,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Axiom Implements :
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
@@ -75,8 +75,8 @@ fn random_animal(random_number: f64) -> Box<dyn Animal> {
     }
 }
 *)
-Definition random_animal (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ random_number ] =>
     let* random_number := M.alloc random_number in
     let* α0 := M.read random_number in
@@ -133,8 +133,8 @@ fn main() {
     );
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* random_number := M.copy UnsupportedLiteral in
     let* animal :=

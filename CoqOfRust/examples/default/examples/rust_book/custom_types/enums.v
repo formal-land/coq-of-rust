@@ -49,8 +49,8 @@ fn inspect(event: WebEvent) {
     }
 }
 *)
-Definition inspect (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ event ] =>
     let* event := M.alloc event in
     let* α0 :=
@@ -234,8 +234,8 @@ fn main() {
     inspect(unload);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* pressed :=
       M.alloc

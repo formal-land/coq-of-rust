@@ -30,8 +30,8 @@ fn main() {
     println!("closure returning one: {}", one());
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* outer_var := M.alloc (Value.Integer Integer.I32 42) in
     let* closure_annotated :=

@@ -14,8 +14,8 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -50,7 +50,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "box_stack_heap::Point")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
@@ -61,8 +61,8 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -74,7 +74,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "box_stack_heap::Point")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
@@ -85,7 +85,7 @@ Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "box_stack_heap::Point")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
@@ -106,8 +106,8 @@ fn origin() -> Point {
     Point { x: 0.0, y: 0.0 }
 }
 *)
-Definition origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition origin (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 := M.read UnsupportedLiteral in
     let* α1 := M.read UnsupportedLiteral in
@@ -121,8 +121,8 @@ fn boxed_origin() -> Box<Point> {
     Box::new(Point { x: 0.0, y: 0.0 })
 }
 *)
-Definition boxed_origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition boxed_origin (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 :=
       M.get_associated_function
@@ -192,8 +192,8 @@ fn main() {
     );
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* point :=
       let* α0 := M.get_function "box_stack_heap::origin" [] in

@@ -15,9 +15,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   (*
   Debug
   *)
-  Definition fmt (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match 𝜏, α with
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -43,8 +43,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *)
-        (Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
@@ -57,8 +56,8 @@ where
     println!("`print`: t is {:?}", t);
 }
 *)
-Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* _ :=
@@ -103,8 +102,8 @@ where
     println!("`print_ref`: t is {:?}", t);
 }
 *)
-Definition print_ref (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* _ :=
@@ -150,8 +149,8 @@ fn main() {
     print(ref_x);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x := M.alloc (Value.Integer Integer.I32 7) in
     let* ref_x :=

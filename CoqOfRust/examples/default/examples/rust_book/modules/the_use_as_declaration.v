@@ -6,8 +6,8 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=
@@ -36,8 +36,8 @@ Module deeply.
                 println!("called `deeply::nested::function()`");
             }
     *)
-    Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -83,8 +83,8 @@ fn main() {
     function();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 :=

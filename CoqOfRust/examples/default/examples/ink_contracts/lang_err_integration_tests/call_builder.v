@@ -14,8 +14,8 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -32,7 +32,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_builder::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_AccountId.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "call_builder::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -67,7 +67,7 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "call_builder::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -127,8 +127,8 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] => M.pure (Value.StructTuple "call_builder::CallBuilderTest" [])
     | _, _ => M.impossible
     end.
@@ -136,7 +136,7 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_builder::CallBuilderTest")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.
@@ -149,8 +149,8 @@ Module Impl_call_builder_CallBuilderTest.
           Default::default()
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -184,8 +184,8 @@ Module Impl_call_builder_CallBuilderTest.
           }
       }
   *)
-  Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition call (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; address; selector ] =>
       let* self := M.alloc self in
       let* address := M.alloc address in
@@ -268,8 +268,8 @@ Module Impl_call_builder_CallBuilderTest.
           //     .invoke()
       }
   *)
-  Definition invoke (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition invoke (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; address; selector ] =>
       let* self := M.alloc self in
       let* address := M.alloc address in
@@ -310,8 +310,8 @@ Module Impl_call_builder_CallBuilderTest.
           None
       }
   *)
-  Definition call_instantiate (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition call_instantiate (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; code_hash; selector; init_value ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
@@ -351,8 +351,8 @@ Module Impl_call_builder_CallBuilderTest.
           None
       }
   *)
-  Definition call_instantiate_fallible (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition call_instantiate_fallible (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; code_hash; selector; init_value ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in

@@ -6,8 +6,8 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
@@ -22,8 +22,8 @@ fn bad_add(a: i32, b: i32) -> i32 {
     a - b
 }
 *)
-Definition bad_add (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
@@ -39,8 +39,8 @@ Module tests.
           assert_eq!(add(1, 2), 3);
       }
   *)
-  Definition test_add (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition test_add (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* α0 := M.get_function "unit_testing::add" [] in
@@ -104,8 +104,8 @@ Module tests.
           assert_eq!(bad_add(1, 2), 3);
       }
   *)
-  Definition test_bad_add (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition test_bad_add (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* α0 := M.get_function "unit_testing::bad_add" [] in

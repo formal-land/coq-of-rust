@@ -9,8 +9,8 @@ fn create_box() {
     // `_box1` is destroyed here, and memory gets freed
 }
 *)
-Definition create_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _box1 :=
       let* α0 :=
@@ -49,8 +49,8 @@ fn main() {
     // `_box2` is destroyed here, and memory gets freed
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _box2 :=
       let* α0 :=

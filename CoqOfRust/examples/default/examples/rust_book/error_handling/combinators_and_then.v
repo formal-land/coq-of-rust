@@ -30,8 +30,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -66,7 +66,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_and_then::Food")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
@@ -100,8 +100,8 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -136,7 +136,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_and_then::Day")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
@@ -149,8 +149,8 @@ fn have_ingredients(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition have_ingredients (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
@@ -174,8 +174,8 @@ fn have_recipe(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition have_recipe (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
@@ -202,8 +202,8 @@ fn cookable_v1(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition cookable_v1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 := M.get_function "combinators_and_then::have_recipe" [] in
@@ -253,8 +253,8 @@ fn cookable_v2(food: Food) -> Option<Food> {
     have_recipe(food).and_then(have_ingredients)
 }
 *)
-Definition cookable_v2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
@@ -287,8 +287,8 @@ fn eat(food: Food, day: Day) {
     }
 }
 *)
-Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food; day ] =>
     let* food := M.alloc food in
     let* day := M.alloc day in
@@ -385,8 +385,8 @@ fn main() {
     eat(sushi, Day::Wednesday);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 :=
       M.alloc

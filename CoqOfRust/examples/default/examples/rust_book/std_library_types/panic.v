@@ -11,8 +11,8 @@ fn division(dividend: i32, divisor: i32) -> i32 {
     }
 }
 *)
-Definition division (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition division (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
@@ -51,8 +51,8 @@ fn main() {
     // `_x` should get destroyed at this point
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _x :=
       let* α0 :=

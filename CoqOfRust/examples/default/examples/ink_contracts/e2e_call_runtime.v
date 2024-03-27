@@ -14,8 +14,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -32,7 +32,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
@@ -67,7 +67,7 @@ Module Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "e2e_call_runtime::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId.
@@ -107,8 +107,8 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] => M.pure (Value.StructTuple "e2e_call_runtime::Contract" [])
     | _, _ => M.impossible
     end.
@@ -116,7 +116,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "e2e_call_runtime::Contract")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_e2e_call_runtime_Contract.
@@ -139,8 +139,8 @@ Module Impl_e2e_call_runtime_Contract.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -159,8 +159,8 @@ Module Impl_e2e_call_runtime_Contract.
           Self {}
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] => M.pure (Value.StructTuple "e2e_call_runtime::Contract" [])
     | _, _ => M.impossible
     end.
@@ -172,8 +172,8 @@ Module Impl_e2e_call_runtime_Contract.
           self.env().balance()
       }
   *)
-  Definition get_contract_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_contract_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=

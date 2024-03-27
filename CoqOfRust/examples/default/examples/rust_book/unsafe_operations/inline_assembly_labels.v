@@ -22,8 +22,8 @@ fn main() {
     assert_eq!(a, 5);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* a := M.alloc (Value.Integer Integer.I32 0) in
     let* _ :=

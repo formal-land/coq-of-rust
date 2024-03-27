@@ -12,8 +12,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
@@ -26,8 +26,8 @@ Module main.
           }
       }
   *)
-  Definition load_fpu_control_word (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition load_fpu_control_word (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ control ] =>
       let* control := M.alloc control in
       let _ := InlineAssembly in

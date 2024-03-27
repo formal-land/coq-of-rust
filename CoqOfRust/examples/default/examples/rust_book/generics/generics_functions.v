@@ -24,8 +24,8 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 fn reg_fn(_s: S) {}
 *)
-Definition reg_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition reg_fn (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ _s ] =>
     let* _s := M.alloc _s in
     M.pure (Value.Tuple [])
@@ -35,8 +35,8 @@ Definition reg_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn gen_spec_t(_s: SGen<A>) {}
 *)
-Definition gen_spec_t (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition gen_spec_t (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ _s ] =>
     let* _s := M.alloc _s in
     M.pure (Value.Tuple [])
@@ -46,8 +46,8 @@ Definition gen_spec_t (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn gen_spec_i32(_s: SGen<i32>) {}
 *)
-Definition gen_spec_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition gen_spec_i32 (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ _s ] =>
     let* _s := M.alloc _s in
     M.pure (Value.Tuple [])
@@ -57,8 +57,8 @@ Definition gen_spec_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn generic<T>(_s: SGen<T>) {}
 *)
-Definition generic (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition generic (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ _s ] =>
     let* _s := M.alloc _s in
     M.pure (Value.Tuple [])
@@ -79,8 +79,8 @@ fn main() {
     generic(SGen('c'));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "generics_functions::reg_fn" [] in

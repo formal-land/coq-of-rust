@@ -132,9 +132,6 @@ pub(crate) fn compile_type<'a>(
         // Placeholder(Placeholder<BoundTy>),
         TyKind::Infer(_) => Rc::new(CoqType::Infer),
         TyKind::Error(error) => CoqType::var(&format!("error: {error:#?}")),
-        _ => {
-            eprintln!("type {:#?} not yet handled", ty.kind());
-            CoqType::var("type not implemented")
-        }
+        _ => CoqType::var(&format!("type {:#?} not yet handled", ty.kind())),
     }
 }

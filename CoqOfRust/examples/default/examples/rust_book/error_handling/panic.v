@@ -11,8 +11,8 @@ fn drink(beverage: &str) {
     println!("Some refreshing {} is all I need.", beverage);
 }
 *)
-Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ beverage ] =>
     let* beverage := M.alloc beverage in
     let* _ :=
@@ -77,8 +77,8 @@ fn main() {
     drink("lemonade");
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "panic::drink" [] in

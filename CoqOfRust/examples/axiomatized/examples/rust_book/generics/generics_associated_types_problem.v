@@ -26,7 +26,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
   Axiom Implements :
     M.IsTraitInstance
       "generics_associated_types_problem::Contains"
-      (* Self *) (Ty.path "generics_associated_types_problem::Container")
+      Self
       (* Trait polymorphic types *)
         [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
       (* Instance *)

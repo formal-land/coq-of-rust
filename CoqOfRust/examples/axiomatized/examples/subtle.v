@@ -14,7 +14,7 @@ Module Impl_core_marker_Copy_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_subtle_Choice.
@@ -27,7 +27,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_subtle_Choice.
@@ -40,7 +40,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_subtle_Choice.
@@ -62,7 +62,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "bool")
+      Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "subtle::Choice" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_subtle_Choice_for_bool.
@@ -77,7 +77,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::bit::BitAnd"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -94,7 +94,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::bit::BitAndAssign"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -109,7 +109,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::bit::BitOr"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -126,7 +126,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::bit::BitOrAssign"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -141,7 +141,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::bit::BitXor"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -158,7 +158,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::bit::BitXorAssign"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
@@ -173,7 +173,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::bit::Not"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("Output", InstanceField.Ty Output); ("not", InstanceField.Method not)
@@ -190,7 +190,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_u8_for_subtle_Choice.
@@ -212,7 +212,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.apply (Ty.path "slice") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
 End Impl_subtle_ConstantTimeEq_for_slice_T.
@@ -225,7 +225,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -238,7 +238,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "u8")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u8.
@@ -251,7 +251,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "i8")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i8.
@@ -264,7 +264,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "u16")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u16.
@@ -277,7 +277,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "i16")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i16.
@@ -290,7 +290,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "u32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u32.
@@ -303,7 +303,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "i32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i32.
@@ -316,7 +316,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "u64")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_u64.
@@ -329,7 +329,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "i64")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_i64.
@@ -342,7 +342,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "usize")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_usize.
@@ -355,7 +355,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.path "isize")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method ct_eq) ].
 End Impl_subtle_ConstantTimeEq_for_isize.
@@ -390,7 +390,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "u8")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -412,7 +412,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "i8")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -434,7 +434,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "u16")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -456,7 +456,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "i16")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -478,7 +478,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "u32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -500,7 +500,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "i32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -522,7 +522,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "u64")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -544,7 +544,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "i64")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -562,7 +562,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.path "subtle::Choice")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("conditional_select", InstanceField.Method conditional_select) ].
@@ -584,7 +584,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "subtle::ConditionallyNegatable"
-      (* Self *) T
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("conditional_negate", InstanceField.Method (conditional_negate T)) ].
@@ -607,7 +607,7 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
@@ -620,7 +620,7 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -635,7 +635,7 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -650,7 +650,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.apply (Ty.path "core::option::Option") [ T ])
+      (Self T)
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
       (* Instance *) [ ("from", InstanceField.Method (from T)) ].
@@ -735,7 +735,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "subtle::ConditionallySelectable"
-      (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("conditional_select", InstanceField.Method (conditional_select T)) ].
@@ -751,7 +751,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "subtle::ConstantTimeEq"
-      (* Self *) (Ty.apply (Ty.path "subtle::CtOption") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -769,7 +769,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
-      (* Self *) (Ty.path "u8")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u8.
@@ -782,7 +782,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
-      (* Self *) (Ty.path "u16")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u16.
@@ -795,7 +795,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
-      (* Self *) (Ty.path "u32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u32.
@@ -808,7 +808,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeGreater"
-      (* Self *) (Ty.path "u64")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_gt", InstanceField.Method ct_gt) ].
 End Impl_subtle_ConstantTimeGreater_for_u64.
@@ -827,7 +827,7 @@ Module Impl_subtle_ConstantTimeLess_for_u8.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
-      (* Self *) (Ty.path "u8")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u8.
@@ -838,7 +838,7 @@ Module Impl_subtle_ConstantTimeLess_for_u16.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
-      (* Self *) (Ty.path "u16")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u16.
@@ -849,7 +849,7 @@ Module Impl_subtle_ConstantTimeLess_for_u32.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
-      (* Self *) (Ty.path "u32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u32.
@@ -860,7 +860,7 @@ Module Impl_subtle_ConstantTimeLess_for_u64.
   Axiom Implements :
     M.IsTraitInstance
       "subtle::ConstantTimeLess"
-      (* Self *) (Ty.path "u64")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u64.

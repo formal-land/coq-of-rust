@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "multisig::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_multisig_Mapping_K_V.
@@ -83,7 +83,7 @@ Module Impl_core_default_Default_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_AccountId.
@@ -96,7 +96,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_multisig_AccountId.
@@ -109,7 +109,7 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_AccountId.
@@ -120,7 +120,7 @@ Module Impl_core_marker_Copy_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_AccountId.
@@ -131,7 +131,7 @@ Module Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
@@ -144,7 +144,7 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_AccountId.
@@ -155,7 +155,7 @@ Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_multisig_AccountId.
@@ -168,7 +168,7 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -185,7 +185,7 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_multisig_AccountId.
@@ -198,7 +198,7 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Ord"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_multisig_AccountId.
@@ -253,7 +253,7 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "multisig::ConfirmationStatus")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
@@ -264,7 +264,7 @@ Module Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "multisig::ConfirmationStatus")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
@@ -295,7 +295,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::Transaction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Transaction.
@@ -321,7 +321,7 @@ Module Impl_core_clone_Clone_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_Error.
@@ -332,7 +332,7 @@ Module Impl_core_marker_Copy_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_Error.
@@ -343,7 +343,7 @@ Module Impl_core_marker_StructuralPartialEq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_Error.
@@ -356,7 +356,7 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_Error.
@@ -367,7 +367,7 @@ Module Impl_core_marker_StructuralEq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_multisig_Error.
@@ -380,7 +380,7 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -411,7 +411,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::Transactions")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Transactions.
@@ -608,7 +608,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::Multisig")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Multisig.

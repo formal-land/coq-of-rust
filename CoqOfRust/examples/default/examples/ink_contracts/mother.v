@@ -19,9 +19,9 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
   (*
   Default
   *)
-  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -48,7 +48,7 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "mother::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_mother_Mapping_K_V.
@@ -93,8 +93,8 @@ Module Impl_core_default_Default_for_mother_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -111,7 +111,7 @@ Module Impl_core_default_Default_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_AccountId.
@@ -122,8 +122,8 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -135,7 +135,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_AccountId.
@@ -146,7 +146,7 @@ Module Impl_core_marker_Copy_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_mother_AccountId.
@@ -157,7 +157,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
@@ -168,8 +168,8 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -184,7 +184,7 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_AccountId.
@@ -195,7 +195,7 @@ Module Impl_core_marker_StructuralEq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_AccountId.
@@ -207,10 +207,10 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -224,7 +224,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -275,8 +275,8 @@ Module Impl_core_default_Default_for_mother_Bids.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -306,7 +306,7 @@ Module Impl_core_default_Default_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Bids.
@@ -317,7 +317,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Bids.
@@ -328,8 +328,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -382,7 +382,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Bids.
@@ -393,7 +393,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Bids.
@@ -405,10 +405,10 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -422,7 +422,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -437,8 +437,8 @@ Module Impl_core_clone_Clone_for_mother_Bids.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -471,7 +471,7 @@ Module Impl_core_clone_Clone_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Bids.
@@ -505,7 +505,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Outline.
@@ -516,8 +516,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -547,7 +547,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Outline.
@@ -558,7 +558,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Outline.
@@ -570,10 +570,10 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -583,7 +583,7 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -598,8 +598,8 @@ Module Impl_core_clone_Clone_for_mother_Outline.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -623,7 +623,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Outline.
@@ -667,7 +667,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Status.
@@ -678,8 +678,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -794,7 +794,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Status.
@@ -805,7 +805,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Status.
@@ -817,10 +817,10 @@ Module Impl_core_cmp_Eq_for_mother_Status.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -839,7 +839,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -854,8 +854,8 @@ Module Impl_core_clone_Clone_for_mother_Status.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -930,7 +930,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Status.
@@ -960,7 +960,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Auction.
@@ -971,8 +971,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -1105,7 +1105,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Auction.
@@ -1116,7 +1116,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Auction.
@@ -1128,10 +1128,10 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -1178,7 +1178,7 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -1193,8 +1193,8 @@ Module Impl_core_clone_Clone_for_mother_Auction.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -1301,7 +1301,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Auction.
@@ -1322,8 +1322,8 @@ Module Impl_core_default_Default_for_mother_Auction.
           }
       }
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -1385,7 +1385,7 @@ Module Impl_core_default_Default_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Auction.
@@ -1414,7 +1414,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Failure.
@@ -1425,8 +1425,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -1497,7 +1497,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Failure.
@@ -1508,7 +1508,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Failure.
@@ -1520,10 +1520,10 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -1537,7 +1537,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -1574,8 +1574,8 @@ Module Impl_mother_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -1616,8 +1616,8 @@ Module Impl_core_default_Default_for_mother_Mother.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -1647,7 +1647,7 @@ Module Impl_core_default_Default_for_mother_Mother.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::Mother")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Mother.
@@ -1670,8 +1670,8 @@ Module Impl_mother_Mother.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -1690,8 +1690,8 @@ Module Impl_mother_Mother.
           }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ auction ] =>
       let* auction := M.alloc auction in
       let* α0 :=
@@ -1719,8 +1719,8 @@ Module Impl_mother_Mother.
           Default::default()
       }
   *)
-  Definition new_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -1745,8 +1745,8 @@ Module Impl_mother_Mother.
           }
       }
   *)
-  Definition failed_new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition failed_new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ fail ] =>
       let* fail := M.alloc fail in
       let* α0 := M.read (M.use fail) in
@@ -1790,8 +1790,8 @@ Module Impl_mother_Mother.
           auction
       }
   *)
-  Definition echo_auction (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition echo_auction (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; auction ] =>
       let* self := M.alloc self in
       let* auction := M.alloc auction in
@@ -1842,8 +1842,8 @@ Module Impl_mother_Mother.
           }
       }
   *)
-  Definition revert_or_trap (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition revert_or_trap (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; fail ] =>
       let* self := M.alloc self in
       let* fail := M.alloc fail in
@@ -1907,8 +1907,8 @@ Module Impl_mother_Mother.
           println!("debug_log: {}", _message);
       }
   *)
-  Definition debug_log (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition debug_log (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; _message ] =>
       let* self := M.alloc self in
       let* _message := M.alloc _message in

@@ -6,8 +6,8 @@ fn is_odd(n: u32) -> bool {
     n % 2 == 1
 }
 *)
-Definition is_odd (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition is_odd (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 := M.read n in
@@ -48,8 +48,8 @@ fn main() {
     println!("functional style: {}", sum_of_squared_odd_numbers);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=

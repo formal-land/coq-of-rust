@@ -24,8 +24,8 @@ Module Impl_custom_allocator_CustomAllocator.
           }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 :=
@@ -62,8 +62,8 @@ Module Impl_custom_allocator_CustomAllocator.
           Self::new(Default::default())
       }
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_associated_function
@@ -90,8 +90,8 @@ Module Impl_custom_allocator_CustomAllocator.
           self.value[0] = !self.value[0];
       }
   *)
-  Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -149,8 +149,8 @@ Module Impl_custom_allocator_CustomAllocator.
           self.value[0]
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=

@@ -32,8 +32,8 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
     )
 }
 *)
-Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ student ] =>
     let* student := M.alloc student in
     let* res :=
@@ -129,8 +129,8 @@ Definition comp_sci_student_greeting (𝜏 : list Ty.t) (α : list Value.t) : M 
 (*
 fn main() {}
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.

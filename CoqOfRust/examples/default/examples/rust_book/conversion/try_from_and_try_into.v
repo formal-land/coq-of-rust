@@ -14,8 +14,8 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -37,7 +37,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
@@ -48,7 +48,7 @@ Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
@@ -59,8 +59,8 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -79,7 +79,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
@@ -101,8 +101,8 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
           }
       }
   *)
-  Definition try_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
@@ -128,7 +128,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::TryFrom"
-      (* Self *) (Ty.path "try_from_and_try_into::EvenNumber")
+      Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *)
         [
@@ -152,8 +152,8 @@ fn main() {
     assert_eq!(result, Err(()));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 :=

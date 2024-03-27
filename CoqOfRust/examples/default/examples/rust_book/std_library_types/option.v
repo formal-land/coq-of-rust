@@ -12,8 +12,8 @@ fn checked_division(dividend: i32, divisor: i32) -> Option<i32> {
     }
 }
 *)
-Definition checked_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
@@ -43,8 +43,8 @@ fn try_division(dividend: i32, divisor: i32) {
     }
 }
 *)
-Definition try_division (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
@@ -169,8 +169,8 @@ fn main() {
     println!("{:?} unwraps to {:?}", none, none.unwrap());
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "option::try_division" [] in

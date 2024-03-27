@@ -23,8 +23,8 @@ fn main() {
     // Please note that warnings may not be shown in a browser
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* an_integer := M.alloc (Value.Integer Integer.U32 1) in
     let* a_boolean := M.alloc (Value.Bool true) in

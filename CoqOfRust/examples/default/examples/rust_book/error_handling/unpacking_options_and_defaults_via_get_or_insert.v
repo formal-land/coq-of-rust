@@ -41,8 +41,8 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -85,8 +85,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *)
-        (Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
@@ -104,8 +103,8 @@ fn main() {
     // TODO: uncomment the line above to see the compiler error
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* my_fruit :=
       M.alloc (Value.StructTuple "core::option::Option::None" []) in

@@ -16,7 +16,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_builder::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_AccountId.
@@ -29,7 +29,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "call_builder::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_call_builder_AccountId.
@@ -40,7 +40,7 @@ Module Impl_core_marker_Copy_for_call_builder_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "call_builder::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_call_builder_AccountId.
@@ -97,7 +97,7 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_builder::CallBuilderTest")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_CallBuilderTest.

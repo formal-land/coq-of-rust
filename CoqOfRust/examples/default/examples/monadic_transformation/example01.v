@@ -6,8 +6,8 @@ fn id(x: u64) -> u64 {
     x
 }
 *)
-Definition id (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition id (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
     let* x := M.alloc x in
     M.read x
@@ -17,8 +17,8 @@ Definition id (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn tri(a: u64, b: u64, c: u64) {}
 *)
-Definition tri (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition tri (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ a; b; c ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
@@ -36,8 +36,8 @@ fn main() {
     tri(id(1), id(2), 3);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "example01::id" [] in

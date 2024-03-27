@@ -6,8 +6,8 @@ fn sum((x, y): (i32, i32)) -> i32 {
     x + y
 }
 *)
-Definition sum (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ β0 ] =>
     let* β0 := M.alloc β0 in
     match_operator

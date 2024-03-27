@@ -17,8 +17,8 @@ fn main() {
     assert_eq!(a, 8);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* a := M.alloc (Value.Integer Integer.U64 4) in
     let* b := M.alloc (Value.Integer Integer.U64 4) in

@@ -25,8 +25,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -44,7 +44,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "operator_overloading::FooBar")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
@@ -61,8 +61,8 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -80,7 +80,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "operator_overloading::BarFoo")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
@@ -100,8 +100,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
           FooBar
       }
   *)
-  Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; _rhs ] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
@@ -129,7 +129,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::arith::Add"
-      (* Self *) (Ty.path "operator_overloading::Foo")
+      Self
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
       (* Instance *)
@@ -152,8 +152,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
           BarFoo
       }
   *)
-  Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; _rhs ] =>
       let* self := M.alloc self in
       let* _rhs := M.alloc _rhs in
@@ -181,7 +181,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::arith::Add"
-      (* Self *) (Ty.path "operator_overloading::Bar")
+      Self
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
       (* Instance *)
@@ -195,8 +195,8 @@ fn main() {
     println!("Bar + Foo = {:?}", Bar + Foo);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=

@@ -19,9 +19,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
   (*
   Default
   *)
-  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -50,8 +50,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *)
-        (Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
@@ -151,8 +150,8 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -169,7 +168,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mapping_integration_tests::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
@@ -180,8 +179,8 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -193,7 +192,7 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mapping_integration_tests::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
@@ -204,7 +203,7 @@ Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "mapping_integration_tests::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
@@ -227,8 +226,8 @@ Module Impl_mapping_integration_tests_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -259,8 +258,8 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -282,7 +281,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mapping_integration_tests::Mappings")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
@@ -315,8 +314,8 @@ Module Impl_mapping_integration_tests_Mappings.
           Self { balances }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* balances :=
         let* α0 :=
@@ -349,8 +348,8 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.get(&caller)
       }
   *)
-  Definition get_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
@@ -400,8 +399,8 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.insert(caller, value)
       }
   *)
-  Definition insert_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition insert_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
@@ -455,8 +454,8 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.size(caller)
       }
   *)
-  Definition size_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition size_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
@@ -507,8 +506,8 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.contains(&caller)
       }
   *)
-  Definition contains_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition contains_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
@@ -558,8 +557,8 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.remove(caller);
       }
   *)
-  Definition remove_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition remove_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
@@ -613,8 +612,8 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.take(caller)
       }
   *)
-  Definition take_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition take_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=

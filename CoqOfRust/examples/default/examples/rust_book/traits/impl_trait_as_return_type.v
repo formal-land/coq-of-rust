@@ -10,10 +10,10 @@ fn combine_vecs_explicit_return_type(
 }
 *)
 Definition combine_vecs_explicit_return_type
-    (𝜏 : list Ty.t)
+    (τ : list Ty.t)
     (α : list Value.t)
     : M :=
-  match 𝜏, α with
+  match τ, α with
   | [], [ v; u ] =>
     let* v := M.alloc v in
     let* u := M.alloc u in
@@ -78,8 +78,8 @@ fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
     v.into_iter().chain(u.into_iter()).cycle()
 }
 *)
-Definition combine_vecs (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ v; u ] =>
     let* v := M.alloc v in
     let* u := M.alloc u in
@@ -156,8 +156,8 @@ fn main() {
     println!("all done");
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* v1 :=
       let* α0 :=

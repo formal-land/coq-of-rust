@@ -12,8 +12,8 @@ fn main() -> Result<(), ParseIntError> {
     Ok(())
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* number_str := M.copy (mk_str "10") in
     let* number :=

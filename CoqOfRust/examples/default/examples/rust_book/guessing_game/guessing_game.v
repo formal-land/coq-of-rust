@@ -6,8 +6,8 @@ fn gen_range() -> u32 {
     todo!()
 }
 *)
-Definition gen_range (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition gen_range (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 := M.get_function "core::panicking::panic" [] in
     let* α1 := M.read (mk_str "not yet implemented") in
@@ -50,8 +50,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=

@@ -139,7 +139,7 @@ pub(crate) fn to_valid_coq_name(str: &str) -> String {
     }
 
     let reserved_names = [
-        "Set", "Type", "Unset", "by", "exists", "end", "fix", "tt", "array", "unit", "pair",
+        "Set", "Type", "Unset", "at", "by", "exists", "end", "fix", "tt", "array", "unit", "pair",
     ];
 
     if reserved_names.contains(&str) {
@@ -147,7 +147,10 @@ pub(crate) fn to_valid_coq_name(str: &str) -> String {
     }
 
     let str = str.replace("->", "arrow");
-    let characters_to_replace = [' ', '$', '(', ')', '&', '?', ',', '<', '>'];
+    let str = str.replace("::", "_");
+    let characters_to_replace = [
+        ' ', '$', '(', ')', '&', '?', ',', '<', '>', '=', '[', ']', '*',
+    ];
     let str = characters_to_replace
         .iter()
         .fold(str.to_string(), |acc, &char| acc.replace(char, "_"));

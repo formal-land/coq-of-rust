@@ -11,8 +11,8 @@ fn cat(path: &Path) -> io::Result<String> {
     }
 }
 *)
-Definition cat (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ path ] =>
     let* path := M.alloc path in
     let* f :=
@@ -127,8 +127,8 @@ fn echo(s: &str, path: &Path) -> io::Result<()> {
     f.write_all(s.as_bytes())
 }
 *)
-Definition echo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ s; path ] =>
     let* s := M.alloc s in
     let* path := M.alloc path in
@@ -218,8 +218,8 @@ fn touch(path: &Path) -> io::Result<()> {
     }
 }
 *)
-Definition touch (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ path ] =>
     let* path := M.alloc path in
     let* α0 :=
@@ -330,8 +330,8 @@ fn main() {
     });
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=

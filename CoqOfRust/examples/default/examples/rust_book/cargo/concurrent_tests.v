@@ -9,8 +9,8 @@ fn foo<A>(o: Option<A>) {
     }
 }
 *)
-Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ A ], [ o ] =>
     let* o := M.alloc o in
     let* α0 :=
@@ -77,8 +77,8 @@ Module tests.
           }
       }
   *)
-  Definition test_file (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition test_file (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* file :=
         let* α0 :=
@@ -219,8 +219,8 @@ Module tests.
           }
       }
   *)
-  Definition test_file_also (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition test_file_also (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* file :=
         let* α0 :=

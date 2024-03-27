@@ -20,8 +20,8 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -38,7 +38,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -50,7 +50,7 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "unpacking_options_via_question_mark::PhoneNumber")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -74,8 +74,8 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -87,7 +87,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
@@ -98,7 +98,7 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "unpacking_options_via_question_mark::Job")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
@@ -128,8 +128,8 @@ Module Impl_unpacking_options_via_question_mark_Person.
           self.job?.phone_number?.area_code
       }
   *)
-  Definition work_phone_area_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition work_phone_area_code (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -267,8 +267,8 @@ fn main() {
     assert_eq!(p.work_phone_area_code(), Some(61));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* p :=
       M.alloc

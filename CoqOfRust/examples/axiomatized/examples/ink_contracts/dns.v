@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "dns::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
@@ -89,7 +89,7 @@ Module Impl_core_default_Default_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_AccountId.
@@ -102,7 +102,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_dns_AccountId.
@@ -113,7 +113,7 @@ Module Impl_core_marker_Copy_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_dns_AccountId.
@@ -124,7 +124,7 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
@@ -137,7 +137,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
@@ -150,7 +150,7 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -281,7 +281,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "dns::DomainNameService")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
@@ -310,7 +310,7 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
@@ -323,7 +323,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
@@ -334,7 +334,7 @@ Module Impl_core_marker_StructuralEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_dns_Error.
@@ -347,7 +347,7 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [

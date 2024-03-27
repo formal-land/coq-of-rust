@@ -42,7 +42,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Axiom Implements :
     M.IsTraitInstance
       "traits::Animal"
-      (* Self *) (Ty.path "traits::Sheep")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [

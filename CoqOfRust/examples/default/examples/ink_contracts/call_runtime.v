@@ -14,8 +14,8 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -32,7 +32,7 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_runtime::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_runtime_AccountId.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "call_runtime::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
@@ -67,7 +67,7 @@ Module Impl_core_marker_Copy_for_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "call_runtime::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
@@ -103,10 +103,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *)
-        (Ty.apply
-          (Ty.path "call_runtime::MultiAddress")
-          [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ])
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.path "call_runtime::AccountId" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -158,8 +155,8 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] => M.pure (Value.StructTuple "call_runtime::RuntimeCaller" [])
     | _, _ => M.impossible
     end.
@@ -167,7 +164,7 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_runtime::RuntimeCaller")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
@@ -191,8 +188,8 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -210,7 +207,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
@@ -221,7 +218,7 @@ Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
@@ -232,8 +229,8 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -244,7 +241,7 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
@@ -255,7 +252,7 @@ Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
@@ -267,10 +264,10 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -280,7 +277,7 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -318,8 +315,8 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
           }
       }
   *)
-  Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ e ] =>
       let* e := M.alloc e in
       let* α0 :=
@@ -349,7 +346,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "call_runtime::RuntimeError")
+      Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "call_runtime::EnvError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
@@ -386,8 +383,8 @@ Module Impl_call_runtime_RuntimeCaller.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -406,8 +403,8 @@ Module Impl_call_runtime_RuntimeCaller.
           Default::default()
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -436,8 +433,8 @@ Module Impl_call_runtime_RuntimeCaller.
               .map_err(Into::into)
       }
   *)
-  Definition transfer_through_runtime (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer_through_runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; receiver; value ] =>
       let* self := M.alloc self in
       let* receiver := M.alloc receiver in
@@ -514,10 +511,10 @@ Module Impl_call_runtime_RuntimeCaller.
       }
   *)
   Definition call_nonexistent_extrinsic
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=

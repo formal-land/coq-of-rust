@@ -21,7 +21,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Axiom Implements :
     M.IsTraitInstance
       "core::hash::Hash"
-      (* Self *) (Ty.path "hash::Person")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_hash_Person.

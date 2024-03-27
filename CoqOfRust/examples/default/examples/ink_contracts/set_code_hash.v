@@ -27,8 +27,8 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -45,7 +45,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "set_code_hash::Incrementer")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
@@ -58,8 +58,8 @@ Module Impl_set_code_hash_Incrementer.
           Default::default()
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -83,8 +83,8 @@ Module Impl_set_code_hash_Incrementer.
           );
       }
   *)
-  Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -150,8 +150,8 @@ Module Impl_set_code_hash_Incrementer.
           self.count
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -169,8 +169,8 @@ Module Impl_set_code_hash_Incrementer.
           println!("Switched code hash to {:?}.", code_hash);
       }
   *)
-  Definition set_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; code_hash ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in

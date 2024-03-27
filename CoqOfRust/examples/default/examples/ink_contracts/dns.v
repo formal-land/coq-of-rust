@@ -19,9 +19,9 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
   (*
   Default
   *)
-  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -48,7 +48,7 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "dns::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_dns_Mapping_K_V.
@@ -148,8 +148,8 @@ Module Impl_core_default_Default_for_dns_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -166,7 +166,7 @@ Module Impl_core_default_Default_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_AccountId.
@@ -177,8 +177,8 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -190,7 +190,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_dns_AccountId.
@@ -201,7 +201,7 @@ Module Impl_core_marker_Copy_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_dns_AccountId.
@@ -212,7 +212,7 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
@@ -223,8 +223,8 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -239,7 +239,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
@@ -257,7 +257,7 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "dns::AccountId")
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -349,8 +349,8 @@ Module Impl_dns_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -400,8 +400,8 @@ fn zero_address() -> AccountId {
     [0u8; 32].into()
 }
 *)
-Definition zero_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 :=
       M.get_trait_method
@@ -431,8 +431,8 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
           }
       }
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* name_to_address :=
         let* α0 :=
@@ -526,7 +526,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "dns::DomainNameService")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
@@ -555,7 +555,7 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
@@ -566,8 +566,8 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -597,7 +597,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
@@ -608,7 +608,7 @@ Module Impl_core_marker_StructuralEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_dns_Error.
@@ -620,10 +620,10 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -633,7 +633,7 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "dns::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -665,8 +665,8 @@ Module Impl_dns_DomainNameService.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -685,8 +685,8 @@ Module Impl_dns_DomainNameService.
           Default::default()
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -715,8 +715,8 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition register (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition register (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
@@ -837,8 +837,8 @@ Module Impl_dns_DomainNameService.
               .unwrap_or(self.default_address)
       }
   *)
-  Definition get_owner_or_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_owner_or_default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
@@ -904,8 +904,8 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition set_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition set_address (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; name; new_address ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
@@ -1068,8 +1068,8 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; name; to ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
@@ -1218,8 +1218,8 @@ Module Impl_dns_DomainNameService.
               .unwrap_or(self.default_address)
       }
   *)
-  Definition get_address_or_default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_address_or_default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
@@ -1270,8 +1270,8 @@ Module Impl_dns_DomainNameService.
           self.get_address_or_default(name)
       }
   *)
-  Definition get_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_address (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in
@@ -1294,8 +1294,8 @@ Module Impl_dns_DomainNameService.
           self.get_owner_or_default(name)
       }
   *)
-  Definition get_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; name ] =>
       let* self := M.alloc self in
       let* name := M.alloc name in

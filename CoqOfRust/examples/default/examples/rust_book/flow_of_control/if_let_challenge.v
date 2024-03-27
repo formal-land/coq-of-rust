@@ -25,8 +25,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* a := M.alloc (Value.StructTuple "if_let_challenge::Foo::Bar" []) in
     let* α0 :=

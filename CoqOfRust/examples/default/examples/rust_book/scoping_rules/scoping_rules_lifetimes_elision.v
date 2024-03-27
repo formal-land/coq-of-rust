@@ -6,8 +6,8 @@ fn elided_input(x: &i32) {
     println!("`elided_input`: {}", x);
 }
 *)
-Definition elided_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition elided_input (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
     let* x := M.alloc x in
     let* _ :=
@@ -49,8 +49,8 @@ fn annotated_input<'a>(x: &'a i32) {
     println!("`annotated_input`: {}", x);
 }
 *)
-Definition annotated_input (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition annotated_input (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
     let* x := M.alloc x in
     let* _ :=
@@ -92,8 +92,8 @@ fn elided_pass(x: &i32) -> &i32 {
     x
 }
 *)
-Definition elided_pass (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition elided_pass (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
     let* x := M.alloc x in
     M.read x
@@ -105,8 +105,8 @@ fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
     x
 }
 *)
-Definition annotated_pass (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition annotated_pass (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
     let* x := M.alloc x in
     M.read x
@@ -124,8 +124,8 @@ fn main() {
     println!("`annotated_pass`: {}", annotated_pass(&x));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x := M.alloc (Value.Integer Integer.I32 3) in
     let* _ :=

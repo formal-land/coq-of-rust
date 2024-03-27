@@ -6,8 +6,8 @@ fn some_fn() {
     ()
 }
 *)
-Definition some_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
@@ -18,8 +18,8 @@ fn main() {
     println!("This function returns and you can see this line.")
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* a :=
       let* α0 :=

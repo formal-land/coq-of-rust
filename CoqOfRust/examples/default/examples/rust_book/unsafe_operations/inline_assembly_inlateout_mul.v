@@ -24,8 +24,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
@@ -50,8 +50,8 @@ Module main.
           ((hi as u128) << 64) + lo as u128
       }
   *)
-  Definition mul (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ a; b ] =>
       let* a := M.alloc a in
       let* b := M.alloc b in

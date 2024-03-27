@@ -21,7 +21,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
@@ -32,7 +32,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.

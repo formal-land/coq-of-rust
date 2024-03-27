@@ -6,8 +6,8 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in
@@ -26,8 +26,8 @@ pub fn div(a: i32, b: i32) -> i32 {
     a / b
 }
 *)
-Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ a; b ] =>
     let* a := M.alloc a in
     let* b := M.alloc b in

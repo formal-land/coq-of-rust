@@ -9,8 +9,8 @@ where
     f();
 }
 *)
-Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* _ :=
@@ -39,8 +39,8 @@ fn main() {
     apply(print);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x := M.alloc (Value.Integer Integer.I32 7) in
     let* print :=

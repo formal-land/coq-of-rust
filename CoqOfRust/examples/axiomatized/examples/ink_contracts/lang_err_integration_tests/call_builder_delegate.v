@@ -34,7 +34,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_builder_delegate::CallBuilderDelegateTest")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.

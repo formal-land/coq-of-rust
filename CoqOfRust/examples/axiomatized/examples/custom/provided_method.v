@@ -20,7 +20,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
   Axiom Implements :
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
-      (* Self *) (Ty.path "i32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("required", InstanceField.Method required) ].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
@@ -35,7 +35,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
   Axiom Implements :
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
-      (* Self *) (Ty.path "u32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [

@@ -13,8 +13,8 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.StructTuple "defining_an_error_type::DoubleError" [])
@@ -54,7 +54,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -74,8 +74,8 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
           write!(f, "invalid first item to double")
       }
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -100,7 +100,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
@@ -118,8 +118,8 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
         })
 }
 *)
-Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* α0 :=
@@ -293,8 +293,8 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
@@ -387,8 +387,8 @@ fn main() {
     print(double_first(strings));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* numbers :=
       let* α0 :=

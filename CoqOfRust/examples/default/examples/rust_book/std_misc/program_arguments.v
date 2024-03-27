@@ -14,8 +14,8 @@ fn main() {
     println!("I got {:?} arguments: {:?}.", args.len() - 1, &args[1..]);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* args :=
       let* α0 :=

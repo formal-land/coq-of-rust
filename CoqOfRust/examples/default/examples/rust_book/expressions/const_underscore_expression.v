@@ -32,8 +32,8 @@ Module underscore.
                 self.test
             }
     *)
-    Definition show (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition show (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [ self ] =>
         let* self := M.alloc self in
         M.read
@@ -47,7 +47,7 @@ Module underscore.
     Axiom Implements :
       M.IsTraitInstance
         "const_underscore_expression::BarTrait"
-        (* Self *) (Ty.path "const_underscore_expression::Bar")
+        Self
         (* Trait polymorphic types *) []
         (* Instance *) [ ("show", InstanceField.Method show) ].
   End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

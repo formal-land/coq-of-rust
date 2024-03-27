@@ -6,8 +6,8 @@ fn increase(number: i32) {
     println!("{}", number + 1);
 }
 *)
-Definition increase (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ number ] =>
     let* number := M.alloc number in
     let* _ :=
@@ -52,8 +52,8 @@ fn decrease(number: i32) {
     println!("{}", number - 1);
 }
 *)
-Definition decrease (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ number ] =>
     let* number := M.alloc number in
     let* _ :=
@@ -104,8 +104,8 @@ match_args {{increase|decrease}} <integer>
     );
 }
 *)
-Definition help (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition help (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=
@@ -179,8 +179,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* args :=
       let* α0 :=

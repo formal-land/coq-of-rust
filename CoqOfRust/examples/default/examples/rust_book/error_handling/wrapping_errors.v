@@ -25,8 +25,8 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -73,7 +73,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
@@ -98,8 +98,8 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
           }
       }
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -156,7 +156,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
@@ -175,8 +175,8 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
           }
       }
   *)
-  Definition source (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition source (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -206,7 +206,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::error::Error"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("source", InstanceField.Method source) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
@@ -219,8 +219,8 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
           DoubleError::Parse(err)
       }
   *)
-  Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ err ] =>
       let* err := M.alloc err in
       let* α0 := M.read err in
@@ -231,7 +231,7 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.path "core::num::error::ParseIntError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -247,8 +247,8 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
     Ok(2 * parsed)
 }
 *)
-Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* first :=
@@ -428,8 +428,8 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
@@ -578,8 +578,8 @@ fn main() {
     print(double_first(strings));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* numbers :=
       let* α0 :=

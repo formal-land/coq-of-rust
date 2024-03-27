@@ -7,8 +7,8 @@ fn double_first(vec: Vec<&str>) -> i32 {
     2 * first.parse::<i32>().unwrap() // Generate error 2
 }
 *)
-Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* first :=
@@ -80,8 +80,8 @@ fn main() {
     // Error 2: the element doesn't parse to a number
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* numbers :=
       let* α0 :=

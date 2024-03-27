@@ -28,8 +28,8 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
           Some(current)
       }
   *)
-  Definition next (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition next (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* current :=
@@ -63,7 +63,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Axiom Implements :
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
-      (* Self *) (Ty.path "iterators::Fibonacci")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("Item", InstanceField.Ty Item); ("next", InstanceField.Method next)
@@ -75,8 +75,8 @@ fn fibonacci() -> Fibonacci {
     Fibonacci { curr: 0, next: 1 }
 }
 *)
-Definition fibonacci (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition fibonacci (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     M.pure
       (Value.StructRecord
@@ -127,8 +127,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* sequence :=
       M.alloc

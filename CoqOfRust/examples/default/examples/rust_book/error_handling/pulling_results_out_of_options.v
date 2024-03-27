@@ -6,8 +6,8 @@ fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
     vec.first().map(|first| first.parse::<i32>().map(|n| 2 * n))
 }
 *)
-Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* α0 :=
@@ -136,8 +136,8 @@ fn main() {
     // Error 2: the element doesn't parse to a number
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* numbers :=
       let* α0 :=

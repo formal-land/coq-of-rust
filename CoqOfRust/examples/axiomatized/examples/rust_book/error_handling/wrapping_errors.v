@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
@@ -47,7 +47,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
@@ -60,7 +60,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::error::Error"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("source", InstanceField.Method source) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
@@ -73,7 +73,7 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "wrapping_errors::DoubleError")
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.path "core::num::error::ParseIntError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].

@@ -49,8 +49,8 @@ fn main() {
     println!("{:?}", ids);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 := M.get_function "std::sync::mpsc::channel" [ Ty.path "i32" ] in
     let* α1 := M.call_closure α0 [] in

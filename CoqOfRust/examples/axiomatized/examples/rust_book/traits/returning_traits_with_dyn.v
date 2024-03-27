@@ -26,7 +26,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
   Axiom Implements :
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      (* Self *) (Ty.path "returning_traits_with_dyn::Sheep")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
@@ -39,7 +39,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Axiom Implements :
     M.IsTraitInstance
       "returning_traits_with_dyn::Animal"
-      (* Self *) (Ty.path "returning_traits_with_dyn::Cow")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.

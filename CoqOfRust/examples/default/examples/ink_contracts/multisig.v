@@ -19,9 +19,9 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
   (*
   Default
   *)
-  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -50,7 +50,7 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "multisig::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_multisig_Mapping_K_V.
@@ -139,8 +139,8 @@ Module Impl_core_default_Default_for_multisig_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -157,7 +157,7 @@ Module Impl_core_default_Default_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_AccountId.
@@ -168,8 +168,8 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -190,7 +190,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_multisig_AccountId.
@@ -201,8 +201,8 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -214,7 +214,7 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_AccountId.
@@ -225,7 +225,7 @@ Module Impl_core_marker_Copy_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_AccountId.
@@ -236,7 +236,7 @@ Module Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
@@ -247,8 +247,8 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -263,7 +263,7 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_AccountId.
@@ -274,7 +274,7 @@ Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_multisig_AccountId.
@@ -286,10 +286,10 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -303,7 +303,7 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -318,8 +318,8 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
   (*
   PartialOrd
   *)
-  Definition partial_cmp (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -344,7 +344,7 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_multisig_AccountId.
@@ -355,8 +355,8 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
   (*
   Ord
   *)
-  Definition cmp (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -376,7 +376,7 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Ord"
-      (* Self *) (Ty.path "multisig::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_multisig_AccountId.
@@ -432,8 +432,8 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -445,7 +445,7 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "multisig::ConfirmationStatus")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
@@ -456,7 +456,7 @@ Module Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "multisig::ConfirmationStatus")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
@@ -485,8 +485,8 @@ Module Impl_core_default_Default_for_multisig_Transaction.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -555,7 +555,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::Transaction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Transaction.
@@ -579,8 +579,8 @@ Module Impl_core_clone_Clone_for_multisig_Error.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -591,7 +591,7 @@ Module Impl_core_clone_Clone_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_multisig_Error.
@@ -602,7 +602,7 @@ Module Impl_core_marker_Copy_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_multisig_Error.
@@ -613,7 +613,7 @@ Module Impl_core_marker_StructuralPartialEq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_multisig_Error.
@@ -624,8 +624,8 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -636,7 +636,7 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_Error.
@@ -647,7 +647,7 @@ Module Impl_core_marker_StructuralEq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_multisig_Error.
@@ -659,10 +659,10 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -672,7 +672,7 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "multisig::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -701,8 +701,8 @@ Module Impl_core_default_Default_for_multisig_Transactions.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -732,7 +732,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::Transactions")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Transactions.
@@ -872,8 +872,8 @@ Module Impl_multisig_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -954,8 +954,8 @@ Module Impl_core_default_Default_for_multisig_Multisig.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -1044,7 +1044,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "multisig::Multisig")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Multisig.
@@ -1054,8 +1054,8 @@ fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
     assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
 }
 *)
-Definition ensure_requirement_is_valid (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ owners; requirement ] =>
     let* owners := M.alloc owners in
     let* requirement := M.alloc requirement in
@@ -1110,8 +1110,8 @@ Module Impl_multisig_Multisig.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -1142,8 +1142,8 @@ Module Impl_multisig_Multisig.
           contract
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ requirement; owners ] =>
       let* requirement := M.alloc requirement in
       let* owners := M.alloc owners in
@@ -1323,8 +1323,8 @@ Module Impl_multisig_Multisig.
           );
       }
   *)
-  Definition ensure_confirmed (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition ensure_confirmed (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
@@ -1388,8 +1388,8 @@ Module Impl_multisig_Multisig.
               .expect(WRONG_TRANSACTION_ID);
       }
   *)
-  Definition ensure_transaction_exists (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition ensure_transaction_exists (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
@@ -1436,8 +1436,8 @@ Module Impl_multisig_Multisig.
           assert!(self.is_owner.contains(owner));
       }
   *)
-  Definition ensure_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition ensure_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -1480,8 +1480,8 @@ Module Impl_multisig_Multisig.
           self.ensure_owner(&self.env().caller());
       }
   *)
-  Definition ensure_caller_is_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition ensure_caller_is_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -1515,8 +1515,8 @@ Module Impl_multisig_Multisig.
           assert_eq!(self.env().caller(), self.env().account_id());
       }
   *)
-  Definition ensure_from_wallet (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition ensure_from_wallet (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -1602,8 +1602,8 @@ Module Impl_multisig_Multisig.
           assert!(!self.is_owner.contains(owner));
       }
   *)
-  Definition ensure_no_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition ensure_no_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -1653,8 +1653,8 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
       }
   *)
-  Definition add_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition add_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; new_owner ] =>
       let* self := M.alloc self in
       let* new_owner := M.alloc new_owner in
@@ -1769,8 +1769,8 @@ Module Impl_multisig_Multisig.
           ) as u32
       }
   *)
-  Definition owner_index (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition owner_index (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -1871,8 +1871,8 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition clean_owner_confirmations (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clean_owner_confirmations (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -2092,8 +2092,8 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerRemoval(OwnerRemoval { owner }));
       }
   *)
-  Definition remove_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition remove_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -2247,8 +2247,8 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
       }
   *)
-  Definition replace_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition replace_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; old_owner; new_owner ] =>
       let* self := M.alloc self in
       let* old_owner := M.alloc old_owner in
@@ -2413,8 +2413,8 @@ Module Impl_multisig_Multisig.
               }));
       }
   *)
-  Definition change_requirement (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition change_requirement (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; new_requirement ] =>
       let* self := M.alloc self in
       let* new_requirement := M.alloc new_requirement in
@@ -2515,8 +2515,8 @@ Module Impl_multisig_Multisig.
           status
       }
   *)
-  Definition confirm_by_caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition confirm_by_caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; confirmer; transaction ] =>
       let* self := M.alloc self in
       let* confirmer := M.alloc confirmer in
@@ -2724,8 +2724,8 @@ Module Impl_multisig_Multisig.
           )
       }
   *)
-  Definition submit_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition submit_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; transaction ] =>
       let* self := M.alloc self in
       let* transaction := M.alloc transaction in
@@ -2883,8 +2883,8 @@ Module Impl_multisig_Multisig.
           transaction
       }
   *)
-  Definition take_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition take_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
@@ -3188,8 +3188,8 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition cancel_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition cancel_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
@@ -3269,8 +3269,8 @@ Module Impl_multisig_Multisig.
           self.confirm_by_caller(self.env().caller(), trans_id)
       }
   *)
-  Definition confirm_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition confirm_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
@@ -3337,8 +3337,8 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition revoke_confirmation (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition revoke_confirmation (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
@@ -3536,8 +3536,8 @@ Module Impl_multisig_Multisig.
           result
       }
   *)
-  Definition invoke_transaction (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition invoke_transaction (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; trans_id ] =>
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in

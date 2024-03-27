@@ -32,8 +32,8 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -53,7 +53,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "call_builder_delegate::CallBuilderDelegateTest")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
@@ -67,8 +67,8 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
           Self { value }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ value ] =>
       let* value := M.alloc value in
       let* α0 := M.read value in
@@ -100,8 +100,8 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
           None
       }
   *)
-  Definition delegate (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition delegate (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; code_hash; selector ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in
@@ -125,8 +125,8 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
           0
       }
   *)
-  Definition invoke (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition invoke (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; code_hash; selector ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in

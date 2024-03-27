@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 fn used_function() {}
 *)
-Definition used_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition used_function (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
@@ -13,8 +13,8 @@ Definition used_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn unused_function() {}
 *)
-Definition unused_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition unused_function (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
@@ -22,8 +22,8 @@ Definition unused_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn noisy_unused_function() {}
 *)
-Definition noisy_unused_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition noisy_unused_function (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.
@@ -33,8 +33,8 @@ fn main() {
     used_function();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "dead_code::used_function" [] in

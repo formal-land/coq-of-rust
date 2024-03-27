@@ -16,8 +16,8 @@ Module Impl_example05_Foo.
           self.0 + 1
       }
   *)
-  Definition plus1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition plus1 (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read (M.get_struct_tuple_field self "example05::Foo" 0) in
@@ -34,8 +34,8 @@ fn main() {
     foo.plus1();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* foo :=
       M.alloc

@@ -1226,7 +1226,7 @@ impl FunDefinition {
                 Some(body) => {
                     let body = coq::Expression::Match {
                         scrutinees: vec![
-                            coq::Expression::just_name("𝜏"),
+                            coq::Expression::just_name("τ"),
                             coq::Expression::just_name("α"),
                         ],
                         arms: vec![
@@ -1278,7 +1278,7 @@ impl FunDefinition {
                                 ),
                                 coq::ArgDecl::new(
                                     &coq::ArgDeclVar::Simple {
-                                        idents: vec!["𝜏".to_string()],
+                                        idents: vec!["τ".to_string()],
                                         ty: Some(
                                             coq::Expression::just_name("list")
                                                 .apply(&coq::Expression::just_name("Ty.t")),
@@ -1985,9 +1985,15 @@ impl TopLevelItem {
                                             coq::Expression::just_name("M.IsTraitInstance")
                                                 .apply_many(&[
                                                     coq::Expression::String(of_trait.to_string()),
-                                                    coq::Expression::Comment(
-                                                        "Self".to_string(),
-                                                        Rc::new(self_ty.to_coq()),
+                                                    coq::Expression::just_name("Self").apply_many(
+                                                        &generic_tys
+                                                            .iter()
+                                                            .map(|generic_ty| {
+                                                                coq::Expression::just_name(
+                                                                    generic_ty,
+                                                                )
+                                                            })
+                                                            .collect_vec(),
                                                     ),
                                                     coq::Expression::Comment(
                                                         "Trait polymorphic types".to_string(),

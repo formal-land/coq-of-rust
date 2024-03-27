@@ -16,8 +16,8 @@ Module Impl_core_convert_From_i32_for_from_Number.
           Number { value: item }
       }
   *)
-  Definition from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ item ] =>
       let* item := M.alloc item in
       let* α0 := M.read item in
@@ -28,7 +28,7 @@ Module Impl_core_convert_From_i32_for_from_Number.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "from::Number")
+      Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_from_Number.
@@ -38,8 +38,8 @@ fn main() {
     Number::from(30);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 :=

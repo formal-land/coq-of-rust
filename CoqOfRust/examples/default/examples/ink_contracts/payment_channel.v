@@ -14,8 +14,8 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -32,7 +32,7 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_payment_channel_AccountId.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
@@ -67,7 +67,7 @@ Module Impl_core_marker_Copy_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_payment_channel_AccountId.
@@ -78,7 +78,7 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
@@ -89,8 +89,8 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -107,7 +107,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
@@ -118,7 +118,7 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
@@ -130,10 +130,10 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -147,7 +147,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -169,7 +169,7 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "payment_channel::AccountId")
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -245,7 +245,7 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "payment_channel::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
@@ -256,8 +256,8 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -287,7 +287,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "payment_channel::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
@@ -298,7 +298,7 @@ Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "payment_channel::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_payment_channel_Error.
@@ -310,10 +310,10 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -323,7 +323,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "payment_channel::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -368,8 +368,8 @@ Module Impl_payment_channel_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -506,7 +506,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      (* Self *) (Ty.path "payment_channel::Sha2x256")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
@@ -522,7 +522,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      (* Self *) (Ty.path "payment_channel::Keccak256")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
@@ -538,7 +538,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      (* Self *) (Ty.path "payment_channel::Blake2x256")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
@@ -554,7 +554,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      (* Self *) (Ty.path "payment_channel::Blake2x128")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
@@ -572,7 +572,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      (* Self *) (Ty.path "payment_channel::Sha2x256")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
@@ -590,7 +590,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      (* Self *) (Ty.path "payment_channel::Keccak256")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
@@ -608,7 +608,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      (* Self *) (Ty.path "payment_channel::Blake2x256")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
@@ -626,7 +626,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      (* Self *) (Ty.path "payment_channel::Blake2x128")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
@@ -649,8 +649,8 @@ Module Impl_payment_channel_PaymentChannel.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -679,8 +679,8 @@ Module Impl_payment_channel_PaymentChannel.
           self.recipient == signature_account_id.into()
       }
   *)
-  Definition is_signature_valid (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition is_signature_valid (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
@@ -827,8 +827,8 @@ Module Impl_payment_channel_PaymentChannel.
           }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ recipient; close_duration ] =>
       let* recipient := M.alloc recipient in
       let* close_duration := M.alloc close_duration in
@@ -884,8 +884,8 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition close_inner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition close_inner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
@@ -1129,8 +1129,8 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition close (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition close (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
@@ -1249,8 +1249,8 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition start_sender_close (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition start_sender_close (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -1406,8 +1406,8 @@ Module Impl_payment_channel_PaymentChannel.
           }
       }
   *)
-  Definition claim_timeout (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition claim_timeout (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -1528,8 +1528,8 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition withdraw (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition withdraw (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; amount; signature ] =>
       let* self := M.alloc self in
       let* amount := M.alloc amount in
@@ -1785,8 +1785,8 @@ Module Impl_payment_channel_PaymentChannel.
           self.sender
       }
   *)
-  Definition get_sender (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_sender (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -1806,8 +1806,8 @@ Module Impl_payment_channel_PaymentChannel.
           self.recipient
       }
   *)
-  Definition get_recipient (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_recipient (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -1827,8 +1827,8 @@ Module Impl_payment_channel_PaymentChannel.
           self.expiration
       }
   *)
-  Definition get_expiration (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_expiration (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -1848,8 +1848,8 @@ Module Impl_payment_channel_PaymentChannel.
           self.withdrawn
       }
   *)
-  Definition get_withdrawn (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_withdrawn (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -1869,8 +1869,8 @@ Module Impl_payment_channel_PaymentChannel.
           self.close_duration
       }
   *)
-  Definition get_close_duration (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_close_duration (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -1890,8 +1890,8 @@ Module Impl_payment_channel_PaymentChannel.
           self.env().balance()
       }
   *)
-  Definition get_balance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_balance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=

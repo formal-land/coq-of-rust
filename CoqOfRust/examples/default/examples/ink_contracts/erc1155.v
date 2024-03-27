@@ -19,9 +19,9 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
   (*
   Default
   *)
-  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -48,7 +48,7 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "erc1155::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_erc1155_Mapping_K_V.
@@ -137,8 +137,8 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -155,7 +155,7 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc1155::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_AccountId.
@@ -166,8 +166,8 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -179,7 +179,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "erc1155::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc1155_AccountId.
@@ -190,7 +190,7 @@ Module Impl_core_marker_Copy_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "erc1155::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_erc1155_AccountId.
@@ -201,7 +201,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "erc1155::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
@@ -212,8 +212,8 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -228,7 +228,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "erc1155::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
@@ -246,7 +246,7 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "erc1155::AccountId")
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -266,8 +266,8 @@ fn zero_address() -> AccountId {
     [0u8; 32].into()
 }
 *)
-Definition zero_address (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 :=
       M.get_trait_method
@@ -348,7 +348,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "erc1155::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
@@ -359,8 +359,8 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -390,7 +390,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "erc1155::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
@@ -401,7 +401,7 @@ Module Impl_core_marker_StructuralEq_for_erc1155_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "erc1155::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_erc1155_Error.
@@ -413,10 +413,10 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -426,7 +426,7 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "erc1155::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -529,8 +529,8 @@ Module Impl_erc1155_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -582,8 +582,8 @@ Module Impl_core_default_Default_for_erc1155_Contract.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -630,7 +630,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc1155::Contract")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_Contract.
@@ -653,8 +653,8 @@ Module Impl_erc1155_Contract.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -670,8 +670,8 @@ Module Impl_erc1155_Contract.
           Default::default()
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -707,8 +707,8 @@ Module Impl_erc1155_Contract.
           self.token_id_nonce
       }
   *)
-  Definition create (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition create (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; value ] =>
       let* self := M.alloc self in
       let* value := M.alloc value in
@@ -838,8 +838,8 @@ Module Impl_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition mint (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition mint (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; token_id; value ] =>
       let* self := M.alloc self in
       let* token_id := M.alloc token_id in
@@ -981,8 +981,8 @@ Module Impl_erc1155_Contract.
           }));
       }
   *)
-  Definition perform_transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition perform_transfer (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; to; token_id; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
@@ -1236,8 +1236,8 @@ Module Impl_erc1155_Contract.
           }
       }
   *)
-  Definition transfer_acceptance_check (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer_acceptance_check (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; caller; from; to; token_id; value; data ] =>
       let* self := M.alloc self in
       let* caller := M.alloc caller in
@@ -1265,8 +1265,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           self.approvals.contains(&(owner, operator))
       }
   *)
-  Definition is_approved_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition is_approved_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner; operator ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -1297,8 +1297,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
       }
   *)
-  Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition balance_of (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner; token_id ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -1357,8 +1357,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition safe_transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition safe_transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; to; token_id; value; data ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
@@ -1568,8 +1568,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition safe_batch_transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition safe_batch_transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; to; token_ids; values; data ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
@@ -2043,8 +2043,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           output
       }
   *)
-  Definition balance_of_batch (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition balance_of_batch (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owners; token_ids ] =>
       let* self := M.alloc self in
       let* owners := M.alloc owners in
@@ -2231,8 +2231,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition set_approval_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition set_approval_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; operator; approved ] =>
       let* self := M.alloc self in
       let* operator := M.alloc operator in
@@ -2371,7 +2371,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   Axiom Implements :
     M.IsTraitInstance
       "erc1155::Erc1155"
-      (* Self *) (Ty.path "erc1155::Contract")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -2411,8 +2411,8 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
           unimplemented!("This smart contract does not accept token transfer.")
       }
   *)
-  Definition on_received (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition on_received (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; _operator; _from; _token_id; _value; _data ] =>
       let* self := M.alloc self in
       let* _operator := M.alloc _operator in
@@ -2473,8 +2473,8 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
           unimplemented!("This smart contract does not accept batch token transfers.")
       }
   *)
-  Definition on_batch_received (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition on_batch_received (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; _operator; _from; _token_ids; _values; _data ] =>
       let* self := M.alloc self in
       let* _operator := M.alloc _operator in
@@ -2515,7 +2515,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
   Axiom Implements :
     M.IsTraitInstance
       "erc1155::Erc1155TokenReceiver"
-      (* Self *) (Ty.path "erc1155::Contract")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [

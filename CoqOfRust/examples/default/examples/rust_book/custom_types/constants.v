@@ -12,8 +12,8 @@ fn is_big(n: i32) -> bool {
     n > THRESHOLD
 }
 *)
-Definition is_big (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition is_big (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 := M.read n in
@@ -37,8 +37,8 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* n := M.alloc (Value.Integer Integer.I32 16) in
     let* _ :=

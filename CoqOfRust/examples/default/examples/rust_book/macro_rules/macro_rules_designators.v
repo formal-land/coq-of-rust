@@ -7,8 +7,8 @@ Require Import CoqOfRust.CoqOfRust.
             println!("You called {:?}()", stringify!($func_name));
         }
 *)
-Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=
@@ -50,8 +50,8 @@ Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
             println!("You called {:?}()", stringify!($func_name));
         }
 *)
-Definition bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=
@@ -102,8 +102,8 @@ fn main() {
     });
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "macro_rules_designators::foo" [] in

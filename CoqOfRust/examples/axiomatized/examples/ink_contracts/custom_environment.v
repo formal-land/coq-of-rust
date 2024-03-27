@@ -16,7 +16,7 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "custom_environment::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_AccountId.
@@ -29,7 +29,7 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "custom_environment::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
@@ -40,7 +40,7 @@ Module Impl_core_marker_Copy_for_custom_environment_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "custom_environment::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
@@ -68,7 +68,7 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "custom_environment::Topics")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_Topics.
@@ -95,7 +95,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "custom_environment::EventWithTopics")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.

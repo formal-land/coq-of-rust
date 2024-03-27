@@ -16,8 +16,8 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
           write!(f, "Circle of radius {}", self.radius)
       }
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -60,7 +60,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      (* Self *) (Ty.path "converting_to_string::Circle")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
@@ -71,8 +71,8 @@ fn main() {
     circle.to_string();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* circle :=
       M.alloc

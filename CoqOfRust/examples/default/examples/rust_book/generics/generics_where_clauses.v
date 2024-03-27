@@ -16,11 +16,11 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
   *)
   Definition print_in_option
       (T : Ty.t)
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
     let Self : Ty.t := Self T in
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -64,7 +64,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "generics_where_clauses::PrintInOption"
-      (* Self *) T
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
@@ -77,8 +77,8 @@ fn main() {
     vec.print_in_option();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* vec :=
       let* α0 :=

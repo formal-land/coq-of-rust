@@ -15,7 +15,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
@@ -28,7 +28,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -48,7 +48,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      (* Self *) (Ty.path "defining_an_error_type::DoubleError")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.

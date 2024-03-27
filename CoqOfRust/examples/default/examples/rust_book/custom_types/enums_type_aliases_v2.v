@@ -31,8 +31,8 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
           }
       }
   *)
-  Definition run (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition run (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; x; y ] =>
       let* self := M.alloc self in
       let* x := M.alloc x in

@@ -8,8 +8,8 @@ Module foo.
                 println!("foo::gre::bar");
             }
     *)
-    Definition f_foo_gre (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition f_foo_gre (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -39,8 +39,8 @@ Module foo.
           gre::f_foo_gre();
       }
   *)
-  Definition f_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition f_foo (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -72,8 +72,8 @@ fn f() {
     foo::f_foo();
 }
 *)
-Definition f (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition f (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "module_duplicate::foo::f_foo" [] in

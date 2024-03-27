@@ -26,8 +26,8 @@ Module Impl_trait_incrementer_Incrementer.
           Self { value: init_value }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
@@ -43,8 +43,8 @@ Module Impl_trait_incrementer_Incrementer.
           self.value += delta;
       }
   *)
-  Definition inc_by (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition inc_by (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; delta ] =>
       let* self := M.alloc self in
       let* delta := M.alloc delta in
@@ -76,8 +76,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
           self.inc_by(1)
       }
   *)
-  Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -95,8 +95,8 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
           self.value
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -108,7 +108,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "trait_incrementer::Increment"
-      (* Self *) (Ty.path "trait_incrementer::Incrementer")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get)
@@ -123,8 +123,8 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
           self.value = 0;
       }
   *)
-  Definition reset (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition reset (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -143,7 +143,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "trait_incrementer::Reset"
-      (* Self *) (Ty.path "trait_incrementer::Incrementer")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("reset", InstanceField.Method reset) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

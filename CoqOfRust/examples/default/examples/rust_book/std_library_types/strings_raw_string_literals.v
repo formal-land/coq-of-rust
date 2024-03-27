@@ -17,8 +17,8 @@ fn main() {
 }
 "
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* raw_str := M.copy (mk_str "Escapes don't work here: \x3F \u{211D}") in
     let* _ :=

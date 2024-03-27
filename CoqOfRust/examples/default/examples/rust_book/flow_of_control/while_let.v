@@ -23,8 +23,8 @@ fn main() {
     // clauses. `while let` does not have these.
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* optional :=
       M.alloc

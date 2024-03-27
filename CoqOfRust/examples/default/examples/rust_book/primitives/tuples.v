@@ -9,8 +9,8 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
     (bool_param, int_param)
 }
 *)
-Definition reverse (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ pair_ ] =>
     let* pair_ := M.alloc pair_ in
     let* α0 :=
@@ -43,8 +43,8 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -82,7 +82,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "tuples::Matrix")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_tuples_Matrix.
@@ -131,8 +131,8 @@ fn main() {
 
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* long_tuple :=
       let* α0 := M.read UnsupportedLiteral in

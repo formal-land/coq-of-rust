@@ -8,8 +8,8 @@ fn destroy_box(c: Box<i32>) {
     // `c` is destroyed and the memory freed
 }
 *)
-Definition destroy_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ c ] =>
     let* c := M.alloc c in
     let* _ :=
@@ -87,8 +87,8 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x := M.alloc (Value.Integer Integer.U32 5) in
     let* y := M.copy x in

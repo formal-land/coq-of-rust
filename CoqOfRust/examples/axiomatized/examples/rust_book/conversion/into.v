@@ -16,7 +16,7 @@ Module Impl_core_convert_From_i32_for_into_Number.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "into::Number")
+      Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_into_Number.
