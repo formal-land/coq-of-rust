@@ -458,20 +458,14 @@ pub(crate) fn compile_expr<'a>(
                 .map(|arg| compile_expr(env, generics, thir, arg).read())
                 .collect();
             let func = compile_expr(env, generics, thir, fun);
-            let kind = {
-                let default = CallKind::Closure;
-
-                match func.match_simple_call(&["M.alloc"]).as_ref() {
-                    Some(expr) => match expr.as_ref() {
-                        Expr::Constructor(_) => CallKind::Pure,
-                        _ => default,
-                    },
-                    _ => default,
-                }
-            };
             let func = func.read();
 
-            Rc::new(Expr::Call { func, args, kind }).alloc()
+            Rc::new(Expr::Call {
+                func,
+                args,
+                kind: CallKind::Closure,
+            })
+            .alloc()
         }
         thir::ExprKind::Deref { arg } => compile_expr(env, generics, thir, arg).read(),
         thir::ExprKind::Binary { op, lhs, rhs } => {
@@ -972,8 +966,7 @@ pub(crate) fn compile_expr<'a>(
                             generic_tys,
                         }
                     }
-                    DefKind::Variant => Expr::Constructor(compile_def_id(env, *def_id)),
-                    DefKind::Struct => {
+                    DefKind::Struct | DefKind::Variant => {
                         let path = compile_def_id(env, *def_id);
 
                         Expr::Call {

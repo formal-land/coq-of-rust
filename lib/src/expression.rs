@@ -79,7 +79,6 @@ pub(crate) enum Expr {
         func: Path,
         generic_tys: Vec<Rc<CoqType>>,
     },
-    Constructor(Path),
     GetTraitMethod {
         trait_name: Path,
         self_ty: Rc<CoqType>,
@@ -343,7 +342,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::LocalVar(_) => (pure(expr), fresh_vars),
         Expr::GetConst(_) => (expr, fresh_vars),
         Expr::GetFunction { .. } => (expr, fresh_vars),
-        Expr::Constructor(_) => (pure(expr), fresh_vars),
         Expr::GetTraitMethod {
             trait_name,
             self_ty,
@@ -707,7 +705,6 @@ impl Expr {
                     ),
                 ]),
             ),
-            Expr::Constructor(path) => path.to_doc(),
             Expr::GetTraitMethod {
                 trait_name,
                 self_ty,
