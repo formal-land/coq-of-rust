@@ -198,7 +198,12 @@ Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
                                 [ Ty.path "i32" ])
                           ] in
                       let* α1 := M.read r in
-                      M.call_closure α0 [ α1; core.option.Option.Some ]
+                      M.call_closure
+                        α0
+                        [
+                          α1;
+                          M.constructor_as_closure "core::option::Option::Some"
+                        ]
                   ]
               | _ => M.impossible
               end)
