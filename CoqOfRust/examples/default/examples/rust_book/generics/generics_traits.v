@@ -30,7 +30,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
     | [], [ self; β1 ] =>
       let* self := M.alloc self in
       let* β1 := M.alloc β1 in
-      M.pure (Value.Tuple [])
+      match_operator β1 [ fun γ => M.pure (Value.Tuple []) ]
     | _, _ => M.impossible
     end.
   

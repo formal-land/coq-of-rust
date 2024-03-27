@@ -62,7 +62,7 @@ Definition red (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [ T ], [ β0 ] =>
     let* β0 := M.alloc β0 in
-    M.read (mk_str "red")
+    match_operator β0 [ fun γ => M.read (mk_str "red") ]
   | _, _ => M.impossible
   end.
 
@@ -75,7 +75,7 @@ Definition blue (𝜏 : list Ty.t) (α : list Value.t) : M :=
   match 𝜏, α with
   | [ T ], [ β0 ] =>
     let* β0 := M.alloc β0 in
-    M.read (mk_str "blue")
+    match_operator β0 [ fun γ => M.read (mk_str "blue") ]
   | _, _ => M.impossible
   end.
 

@@ -143,6 +143,9 @@ impl Pattern {
         }
     }
 
+    /// This function is a bit redundant with [crate::thir_pattern::compile_pattern]. It is used to
+    /// translate the patterns in HIR form, that appear only in function parameters. In particular,
+    /// these patterns should always be exhaustive, so we do not need to handle all the cases.
     pub(crate) fn compile(env: &Env, pattern: &rustc_hir::Pat) -> Rc<Pattern> {
         match pattern.kind {
             rustc_hir::PatKind::Wild => Rc::new(Pattern::Wild),
@@ -193,22 +196,14 @@ impl Pattern {
             rustc_hir::PatKind::Box(sub_pattern) | rustc_hir::PatKind::Ref(sub_pattern, _) => {
                 Rc::new(Pattern::Deref(Pattern::compile(env, sub_pattern)))
             }
-            rustc_hir::PatKind::Lit(_) => {
+            rustc_hir::PatKind::Lit(_)
+            | rustc_hir::PatKind::Range(_, _, _)
+            | rustc_hir::PatKind::Slice(_, _, _) => {
                 emit_warning_with_note(
                     env,
                     &pattern.span,
-                    "We do not handle literal patterns here.",
-                    "You can try to write your code in a different way.",
-                );
-
-                Rc::new(Pattern::Literal(Rc::new(Literal::Error)))
-            }
-            rustc_hir::PatKind::Range(_, _, _) | rustc_hir::PatKind::Slice(_, _, _) => {
-                emit_warning_with_note(
-                    env,
-                    &pattern.span,
-                    "We do not handle this kind of patterns here yet.",
-                    "We will work on it! 🐥",
+                    "We do not handle this kind of pattern here.",
+                    "This should not happen as function parameter patterns should be exhaustive.",
                 );
 
                 Rc::new(Pattern::Literal(Rc::new(Literal::Error)))

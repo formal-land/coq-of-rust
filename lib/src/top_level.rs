@@ -711,12 +711,26 @@ fn compile_function_body(
         return None;
     }
 
+    let body_with_patterns = args.iter().rfold(
+        body_without_bindings,
+        |body, (name, _, pattern)| match pattern {
+            None => body,
+            Some(pattern) => crate::thir_expression::build_match(
+                Expr::local_var(name),
+                vec![MatchArm {
+                    pattern: pattern.clone(),
+                    if_let_guard: None,
+                    body,
+                }],
+            ),
+        },
+    );
     let body = crate::thir_expression::allocate_bindings(
         &args
             .iter()
             .map(|(name, _, _)| name.clone())
             .collect::<Vec<_>>(),
-        body_without_bindings,
+        body_with_patterns,
     );
 
     Some(body)

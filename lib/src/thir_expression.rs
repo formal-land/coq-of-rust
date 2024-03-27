@@ -278,7 +278,7 @@ fn build_inner_match(
         })
 }
 
-fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
+pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
     let arms_with_flatten_patterns = arms.into_iter().flat_map(
         |MatchArm {
              pattern,

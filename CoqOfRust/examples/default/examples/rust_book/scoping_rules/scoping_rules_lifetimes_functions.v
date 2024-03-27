@@ -124,7 +124,7 @@ Definition pass_x (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ x; β1 ] =>
     let* x := M.alloc x in
     let* β1 := M.alloc β1 in
-    M.read x
+    match_operator β1 [ fun γ => M.read x ]
   | _, _ => M.impossible
   end.
 

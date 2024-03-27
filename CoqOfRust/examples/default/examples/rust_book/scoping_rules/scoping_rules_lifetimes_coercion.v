@@ -34,7 +34,7 @@ Definition choose_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
   | [], [ first; β1 ] =>
     let* first := M.alloc first in
     let* β1 := M.alloc β1 in
-    M.read first
+    match_operator β1 [ fun γ => M.read first ]
   | _, _ => M.impossible
   end.
 
