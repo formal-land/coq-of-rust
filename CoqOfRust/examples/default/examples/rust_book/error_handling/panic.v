@@ -16,27 +16,35 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ beverage ] =>
     let* beverage := M.alloc beverage in
     let* _ :=
-      let* α0 :=
-        M.get_trait_method
-          "core::cmp::PartialEq"
-          (Ty.apply (Ty.path "&") [ Ty.path "str" ])
-          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-          "eq"
-          [] in
-      let* α1 := M.call_closure α0 [ beverage; mk_str "lemonade" ] in
-      let* α2 := M.alloc α1 in
-      let* α3 := M.read (M.use α2) in
-      if Value.is_true α3 then
-        let* α0 :=
-          M.get_function
-            "std::panicking::begin_panic"
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3
-      else
-        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 :=
+                M.get_trait_method
+                  "core::cmp::PartialEq"
+                  (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  "eq"
+                  [] in
+              let* α1 := M.call_closure α0 [ beverage; mk_str "lemonade" ] in
+              let* α2 := M.alloc α1 in
+              M.pure (M.use α2) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* α0 :=
+              M.get_function
+                "std::panicking::begin_panic"
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+            let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in

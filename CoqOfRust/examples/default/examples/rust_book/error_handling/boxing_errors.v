@@ -233,7 +233,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               match γ with
               | [ α0 ] =>
                 let* α0 := M.alloc α0 in
-                match_operator
+                M.match_operator
                   α0
                   [
                     fun γ =>
@@ -267,7 +267,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             match γ with
             | [ α0 ] =>
               let* α0 := M.alloc α0 in
-              match_operator
+              M.match_operator
                 α0
                 [
                   fun γ =>
@@ -338,7 +338,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                               match γ with
                               | [ α0 ] =>
                                 let* α0 := M.alloc α0 in
-                                match_operator
+                                M.match_operator
                                   α0
                                   [
                                     fun γ =>
@@ -377,7 +377,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                             match γ with
                             | [ α0 ] =>
                               let* α0 := M.alloc α0 in
-                              match_operator
+                              M.match_operator
                                 α0
                                 [
                                   fun γ =>
@@ -410,7 +410,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
-      match_operator
+      M.match_operator
         result
         [
           fun γ =>

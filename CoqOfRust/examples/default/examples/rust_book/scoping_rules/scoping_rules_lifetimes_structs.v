@@ -141,7 +141,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>

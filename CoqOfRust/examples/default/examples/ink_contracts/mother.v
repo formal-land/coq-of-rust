@@ -127,7 +127,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -214,7 +214,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           Value.DeclaredButUndefined
           [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
@@ -412,7 +412,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           Value.DeclaredButUndefined
           [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
@@ -603,7 +603,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -708,7 +708,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
           let* α1 := M.read other in
           let* α2 := M.alloc (Value.Tuple [ α0; α1 ]) in
           let* α3 :=
-            match_operator
+            M.match_operator
               α2
               [
                 fun γ =>
@@ -824,11 +824,11 @@ Module Impl_core_cmp_Eq_for_mother_Status.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           Value.DeclaredButUndefined
           [
             fun γ =>
-              match_operator
+              M.match_operator
                 Value.DeclaredButUndefined
                 [ fun γ => M.alloc (Value.Tuple []) ]
           ] in
@@ -859,7 +859,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -1135,31 +1135,31 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           Value.DeclaredButUndefined
           [
             fun γ =>
-              match_operator
+              M.match_operator
                 Value.DeclaredButUndefined
                 [
                   fun γ =>
-                    match_operator
+                    M.match_operator
                       Value.DeclaredButUndefined
                       [
                         fun γ =>
-                          match_operator
+                          M.match_operator
                             Value.DeclaredButUndefined
                             [
                               fun γ =>
-                                match_operator
+                                M.match_operator
                                   Value.DeclaredButUndefined
                                   [
                                     fun γ =>
-                                      match_operator
+                                      M.match_operator
                                         Value.DeclaredButUndefined
                                         [
                                           fun γ =>
-                                            match_operator
+                                            M.match_operator
                                               Value.DeclaredButUndefined
                                               [
                                                 fun γ =>
@@ -1455,7 +1455,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
           let* α1 := M.read other in
           let* α2 := M.alloc (Value.Tuple [ α0; α1 ]) in
           let* α3 :=
-            match_operator
+            M.match_operator
               α2
               [
                 fun γ =>
@@ -1527,7 +1527,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           Value.DeclaredButUndefined
           [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
@@ -1749,32 +1749,40 @@ Module Impl_mother_Mother.
     match τ, α with
     | [], [ fail ] =>
       let* fail := M.alloc fail in
-      let* α0 := M.read (M.use fail) in
+      let* α0 := M.alloc (Value.Tuple []) in
       let* α1 :=
-        if Value.is_true α0 then
-          let* α0 :=
-            M.get_trait_method
-              "alloc::string::ToString"
-              (Ty.path "str")
-              []
-              "to_string"
-              [] in
-          let* α1 := M.read (mk_str "Reverting instantiation") in
-          let* α2 := M.call_closure α0 [ α1 ] in
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ])
-        else
-          let* α0 :=
-            M.get_trait_method
-              "core::default::Default"
-              (Ty.path "mother::Mother")
-              []
-              "default"
-              [] in
-          let* α1 := M.call_closure α0 [] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let γ := M.use fail in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.get_trait_method
+                  "alloc::string::ToString"
+                  (Ty.path "str")
+                  []
+                  "to_string"
+                  [] in
+              let* α1 := M.read (mk_str "Reverting instantiation") in
+              let* α2 := M.call_closure α0 [ α1 ] in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ Value.StructTuple "mother::Failure::Revert" [ α2 ] ]);
+            fun γ =>
+              let* α0 :=
+                M.get_trait_method
+                  "core::default::Default"
+                  (Ty.path "mother::Mother")
+                  []
+                  "default"
+                  [] in
+              let* α1 := M.call_closure α0 [] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
+          ] in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -1848,7 +1856,7 @@ Module Impl_mother_Mother.
       let* self := M.alloc self in
       let* fail := M.alloc fail in
       let* α0 :=
-        match_operator
+        M.match_operator
           fail
           [
             fun γ =>

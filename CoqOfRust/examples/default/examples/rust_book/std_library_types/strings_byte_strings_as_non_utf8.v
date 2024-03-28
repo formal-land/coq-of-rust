@@ -145,17 +145,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "core::str::converts::from_utf8" [] in
-      let* α2 :=
-        (* Unsize *)
-          let* α1 := M.read raw_bytestring in
-          M.pure (M.pointer_coercion α1) in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      let* α4 := M.alloc α3 in
-      match_operator
-        α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
         [
           fun γ =>
+            let* γ :=
+              let* α0 := M.get_function "core::str::converts::from_utf8" [] in
+              let* α2 :=
+                (* Unsize *)
+                  let* α1 := M.read raw_bytestring in
+                  M.pure (M.pointer_coercion α1) in
+              let* α3 := M.call_closure α0 [ α2 ] in
+              M.alloc α3 in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
@@ -204,7 +206,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.pure (M.pointer_coercion α1) in
       let* α3 := M.call_closure α0 [ α2 ] in
       let* α4 := M.alloc α3 in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>

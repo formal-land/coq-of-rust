@@ -132,7 +132,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               match γ with
               | [ α0 ] =>
                 let* α0 := M.alloc α0 in
-                match_operator
+                M.match_operator
                   α0
                   [
                     fun γ =>
@@ -158,7 +158,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* α7 := M.call_closure α0 [ α5; α6 ] in
     let* α8 := M.alloc α7 in
     let* α0 :=
-      match_operator
+      M.match_operator
         α8
         [
           fun γ =>

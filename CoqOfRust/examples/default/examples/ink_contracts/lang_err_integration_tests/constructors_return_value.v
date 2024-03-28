@@ -48,7 +48,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -230,25 +230,33 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match τ, α with
     | [], [ succeed ] =>
       let* succeed := M.alloc succeed in
-      let* α0 := M.read (M.use succeed) in
+      let* α0 := M.alloc (Value.Tuple []) in
       let* α1 :=
-        if Value.is_true α0 then
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "constructors_return_value::ConstructorsReturnValue")
-              "new"
-              [] in
-          let* α1 := M.call_closure α0 [ Value.Bool true ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
-        else
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [
-                Value.StructTuple
-                  "constructors_return_value::ConstructorError"
-                  []
-              ]) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let γ := M.use succeed in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.path "constructors_return_value::ConstructorsReturnValue")
+                  "new"
+                  [] in
+              let* α1 := M.call_closure α0 [ Value.Bool true ] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]);
+            fun γ =>
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [
+                    Value.StructTuple
+                      "constructors_return_value::ConstructorError"
+                      []
+                  ])
+          ] in
       M.read α1
     | _, _ => M.impossible
     end.
@@ -322,31 +330,41 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* value :=
-        let* α0 := M.read (M.use init_value) in
+        let* α0 := M.alloc (Value.Tuple []) in
         let* α1 :=
-          if Value.is_true α0 then
-            let* α0 :=
-              M.get_trait_method
-                "core::convert::From"
-                (Ty.path "constructors_return_value::AccountId")
-                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-                "from"
-                [] in
-            let* α1 :=
-              M.call_closure α0 [ repeat (Value.Integer Integer.U8 0) 32 ] in
-            M.alloc
-              (Value.StructTuple
-                "core::result::Result::Ok"
-                [ Value.StructTuple "core::result::Result::Ok" [ α1 ] ])
-          else
-            M.alloc
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "constructors_return_value::LangError::CouldNotReadInput"
-                    []
-                ]) in
+          M.match_operator
+            α0
+            [
+              fun γ =>
+                let γ := M.use init_value in
+                let* _ :=
+                  let* α0 := M.read γ in
+                  M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α0 :=
+                  M.get_trait_method
+                    "core::convert::From"
+                    (Ty.path "constructors_return_value::AccountId")
+                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                    "from"
+                    [] in
+                let* α1 :=
+                  M.call_closure
+                    α0
+                    [ repeat (Value.Integer Integer.U8 0) 32 ] in
+                M.alloc
+                  (Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ Value.StructTuple "core::result::Result::Ok" [ α1 ] ]);
+              fun γ =>
+                M.alloc
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "constructors_return_value::LangError::CouldNotReadInput"
+                        []
+                    ])
+            ] in
         M.copy α1 in
       let* α0 :=
         M.get_function

@@ -35,7 +35,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
       let* α4 := M.call_closure α0 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
-        match_operator
+        M.match_operator
           α5
           [
             fun γ =>
@@ -95,7 +95,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
     let* α1 := M.call_closure α0 [ f; s ] in
     let* α2 := M.alloc α1 in
     let* α0 :=
-      match_operator
+      M.match_operator
         α2
         [
           fun γ =>
@@ -152,7 +152,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
       let* α4 := M.call_closure α0 [ α3 ] in
       let* α5 := M.alloc α4 in
       let* α6 :=
-        match_operator
+        M.match_operator
           α5
           [
             fun γ =>
@@ -241,7 +241,7 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
     let* α9 := M.call_closure α0 [ α7; α8 ] in
     let* α10 := M.alloc α9 in
     let* α11 :=
-      match_operator
+      M.match_operator
         α10
         [
           fun γ =>
@@ -359,7 +359,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (mk_str "a") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
-      match_operator
+      M.match_operator
         α3
         [
           fun γ =>
@@ -462,7 +462,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 match γ with
                 | [ α0 ] =>
                   let* α0 := M.alloc α0 in
-                  match_operator
+                  M.match_operator
                     α0
                     [
                       fun γ =>
@@ -557,7 +557,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 match γ with
                 | [ α0 ] =>
                   let* α0 := M.alloc α0 in
-                  match_operator
+                  M.match_operator
                     α0
                     [
                       fun γ =>
@@ -655,7 +655,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 match γ with
                 | [ α0 ] =>
                   let* α0 := M.alloc α0 in
-                  match_operator
+                  M.match_operator
                     α0
                     [
                       fun γ =>
@@ -723,95 +723,108 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.alloc (Value.Bool true) in
-      let* α1 := M.read (M.use α0) in
-      if Value.is_true α1 then
-        let* _ :=
-          let* α0 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                [ Ty.tuple []; Ty.path "std::io::error::Error" ])
-              "unwrap_or_else"
-              [
-                Ty.function
-                  [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                  (Ty.tuple [])
-              ] in
-          let* α1 :=
-            M.get_function
-              "std::os::unix::fs::symlink"
-              [
-                Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                Ty.apply (Ty.path "&") [ Ty.path "str" ]
-              ] in
-          let* α2 := M.read (mk_str "../b.txt") in
-          let* α3 := M.read (mk_str "a/c/b.txt") in
-          let* α4 := M.call_closure α1 [ α2; α3 ] in
-          let* α5 :=
-            M.call_closure
-              α0
-              [
-                α4;
-                M.closure
-                  (fun γ =>
-                    match γ with
-                    | [ α0 ] =>
-                      let* α0 := M.alloc α0 in
-                      match_operator
-                        α0
-                        [
-                          fun γ =>
-                            let* why := M.copy γ in
-                            let* _ :=
-                              let* _ :=
-                                let* α0 :=
-                                  M.get_function "std::io::stdio::_print" [] in
-                                let* α1 :=
-                                  M.get_associated_function
-                                    (Ty.path "core::fmt::Arguments")
-                                    "new_v1"
-                                    [] in
-                                let* α5 :=
-                                  (* Unsize *)
-                                    let* α2 := M.read (mk_str "! ") in
-                                    let* α3 := M.read (mk_str "
-") in
-                                    let* α4 :=
-                                      M.alloc (Value.Array [ α2; α3 ]) in
-                                    M.pure (M.pointer_coercion α4) in
-                                let* α12 :=
-                                  (* Unsize *)
-                                    let* α6 :=
-                                      M.get_associated_function
-                                        (Ty.path "core::fmt::rt::Argument")
-                                        "new_debug"
-                                        [ Ty.path "std::io::error::ErrorKind"
-                                        ] in
-                                    let* α7 :=
-                                      M.get_associated_function
-                                        (Ty.path "std::io::error::Error")
-                                        "kind"
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 := M.alloc (Value.Bool true) in
+              M.pure (M.use α0) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* _ :=
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ])
+                  "unwrap_or_else"
+                  [
+                    Ty.function
+                      [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                      (Ty.tuple [])
+                  ] in
+              let* α1 :=
+                M.get_function
+                  "std::os::unix::fs::symlink"
+                  [
+                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                  ] in
+              let* α2 := M.read (mk_str "../b.txt") in
+              let* α3 := M.read (mk_str "a/c/b.txt") in
+              let* α4 := M.call_closure α1 [ α2; α3 ] in
+              let* α5 :=
+                M.call_closure
+                  α0
+                  [
+                    α4;
+                    M.closure
+                      (fun γ =>
+                        match γ with
+                        | [ α0 ] =>
+                          let* α0 := M.alloc α0 in
+                          M.match_operator
+                            α0
+                            [
+                              fun γ =>
+                                let* why := M.copy γ in
+                                let* _ :=
+                                  let* _ :=
+                                    let* α0 :=
+                                      M.get_function
+                                        "std::io::stdio::_print"
                                         [] in
-                                    let* α8 := M.call_closure α7 [ why ] in
-                                    let* α9 := M.alloc α8 in
-                                    let* α10 := M.call_closure α6 [ α9 ] in
-                                    let* α11 := M.alloc (Value.Array [ α10 ]) in
-                                    M.pure (M.pointer_coercion α11) in
-                                let* α13 := M.call_closure α1 [ α5; α12 ] in
-                                let* α14 := M.call_closure α0 [ α13 ] in
-                                M.alloc α14 in
-                              M.alloc (Value.Tuple []) in
-                            let* α0 := M.alloc (Value.Tuple []) in
-                            M.read α0
-                        ]
-                    | _ => M.impossible
-                    end)
-              ] in
-          M.alloc α5 in
-        M.alloc (Value.Tuple [])
-      else
-        M.alloc (Value.Tuple []) in
+                                    let* α1 :=
+                                      M.get_associated_function
+                                        (Ty.path "core::fmt::Arguments")
+                                        "new_v1"
+                                        [] in
+                                    let* α5 :=
+                                      (* Unsize *)
+                                        let* α2 := M.read (mk_str "! ") in
+                                        let* α3 := M.read (mk_str "
+") in
+                                        let* α4 :=
+                                          M.alloc (Value.Array [ α2; α3 ]) in
+                                        M.pure (M.pointer_coercion α4) in
+                                    let* α12 :=
+                                      (* Unsize *)
+                                        let* α6 :=
+                                          M.get_associated_function
+                                            (Ty.path "core::fmt::rt::Argument")
+                                            "new_debug"
+                                            [
+                                              Ty.path
+                                                "std::io::error::ErrorKind"
+                                            ] in
+                                        let* α7 :=
+                                          M.get_associated_function
+                                            (Ty.path "std::io::error::Error")
+                                            "kind"
+                                            [] in
+                                        let* α8 := M.call_closure α7 [ why ] in
+                                        let* α9 := M.alloc α8 in
+                                        let* α10 := M.call_closure α6 [ α9 ] in
+                                        let* α11 :=
+                                          M.alloc (Value.Array [ α10 ]) in
+                                        M.pure (M.pointer_coercion α11) in
+                                    let* α13 := M.call_closure α1 [ α5; α12 ] in
+                                    let* α14 := M.call_closure α0 [ α13 ] in
+                                    M.alloc α14 in
+                                  M.alloc (Value.Tuple []) in
+                                let* α0 := M.alloc (Value.Tuple []) in
+                                M.read α0
+                            ]
+                        | _ => M.impossible
+                        end)
+                  ] in
+              M.alloc α5 in
+            M.alloc (Value.Tuple []);
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -841,7 +854,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
       let* α5 := M.alloc α4 in
-      match_operator
+      M.match_operator
         α5
         [
           fun γ =>
@@ -948,7 +961,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read (mk_str "a") in
       let* α2 := M.call_closure α0 [ α1 ] in
       let* α3 := M.alloc α2 in
-      match_operator
+      M.match_operator
         α3
         [
           fun γ =>
@@ -1011,7 +1024,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
             let* α4 :=
-              match_operator
+              M.match_operator
                 α3
                 [
                   fun γ =>
@@ -1027,7 +1040,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [] in
                         let* α1 := M.call_closure α0 [ iter ] in
                         let* α2 := M.alloc α1 in
-                        match_operator
+                        M.match_operator
                           α2
                           [
                             fun γ =>
@@ -1148,7 +1161,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 match γ with
                 | [ α0 ] =>
                   let* α0 := M.alloc α0 in
-                  match_operator
+                  M.match_operator
                     α0
                     [
                       fun γ =>
@@ -1243,7 +1256,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 match γ with
                 | [ α0 ] =>
                   let* α0 := M.alloc α0 in
-                  match_operator
+                  M.match_operator
                     α0
                     [
                       fun γ =>

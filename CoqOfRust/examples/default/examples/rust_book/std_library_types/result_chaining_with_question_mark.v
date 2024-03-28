@@ -44,7 +44,7 @@ Module checked.
             [] in
         let* α1 := M.read f in
         let* α2 :=
-          match_operator
+          M.match_operator
             self
             [
               fun γ =>
@@ -96,26 +96,35 @@ Module checked.
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 := M.read y in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 :=
-        if Value.is_true α3 then
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [
-                Value.StructTuple
-                  "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
-                  []
-              ])
-        else
-          let* α0 := M.read x in
-          let* α1 := M.read y in
-          let* α2 := BinOp.Panic.div α0 α1 in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
-      M.read α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      let* α1 :=
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read y in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [
+                    Value.StructTuple
+                      "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
+                      []
+                  ]);
+            fun γ =>
+              let* α0 := M.read x in
+              let* α1 := M.read y in
+              let* α2 := BinOp.Panic.div α0 α1 in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
+          ] in
+      M.read α1
     | _, _ => M.impossible
     end.
   
@@ -132,26 +141,35 @@ Module checked.
     match τ, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.read x in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 :=
-        if Value.is_true α3 then
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [
-                Value.StructTuple
-                  "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
-                  []
-              ])
-        else
-          let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
-          let* α1 := M.read x in
-          let* α2 := M.call_closure α0 [ α1 ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
-      M.read α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      let* α1 :=
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read x in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [
+                    Value.StructTuple
+                      "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
+                      []
+                  ]);
+            fun γ =>
+              let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
+              let* α1 := M.read x in
+              let* α2 := M.call_closure α0 [ α1 ] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
+          ] in
+      M.read α1
     | _, _ => M.impossible
     end.
   
@@ -168,26 +186,35 @@ Module checked.
     match τ, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.read x in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 :=
-        if Value.is_true α3 then
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [
-                Value.StructTuple
-                  "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
-                  []
-              ])
-        else
-          let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
-          let* α1 := M.read x in
-          let* α2 := M.call_closure α0 [ α1 ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
-      M.read α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      let* α1 :=
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read x in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [
+                    Value.StructTuple
+                      "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
+                      []
+                  ]);
+            fun γ =>
+              let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
+              let* α1 := M.read x in
+              let* α2 := M.call_closure α0 [ α1 ] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
+          ] in
+      M.read α1
     | _, _ => M.impossible
     end.
   
@@ -230,7 +257,7 @@ Module checked.
         let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
         let* α7 :=
-          match_operator
+          M.match_operator
             α6
             [
               fun γ =>
@@ -297,7 +324,7 @@ Module checked.
         let* α4 := M.call_closure α0 [ α3 ] in
         let* α5 := M.alloc α4 in
         let* α6 :=
-          match_operator
+          M.match_operator
             α5
             [
               fun γ =>
@@ -380,7 +407,7 @@ Module checked.
       let* α3 := M.call_closure α0 [ α1; α2 ] in
       let* α4 := M.alloc α3 in
       let* α5 :=
-        match_operator
+        M.match_operator
           α4
           [
             fun γ =>
@@ -395,7 +422,7 @@ Module checked.
                   "core::panicking::panic_display"
                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
               let* α1 :=
-                match_operator
+                M.match_operator
                   why
                   [
                     fun γ => M.pure (mk_str "logarithm of non-positive number");

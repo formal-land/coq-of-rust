@@ -24,15 +24,15 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           Value.DeclaredButUndefined
           [
             fun γ =>
-              match_operator
+              M.match_operator
                 Value.DeclaredButUndefined
                 [
                   fun γ =>
-                    match_operator
+                    M.match_operator
                       Value.DeclaredButUndefined
                       [ fun γ => M.read self ]
                 ]

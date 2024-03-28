@@ -285,7 +285,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 :=
-      match_operator
+      M.match_operator
         point
         [
           fun γ =>
@@ -366,7 +366,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α14 := M.call_closure α0 [ α13 ] in
                 M.alloc α14 in
               M.alloc (Value.Tuple []) in
-            match_operator
+            M.match_operator
               pair_
               [
                 fun γ =>

@@ -239,7 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -247,47 +247,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.path "i32" ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* _ :=
       let* α0 :=
@@ -305,7 +325,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -313,47 +333,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.path "i32" ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* _ :=
       let* α0 :=
@@ -371,7 +411,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -379,47 +419,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.path "i32" ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* _ :=
       let* α0 :=
@@ -437,7 +497,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -445,47 +505,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.path "i32" ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* _ :=
       let* α0 :=
@@ -503,7 +583,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α2 := M.call_closure α1 [ v3 ] in
       let* α3 := M.alloc α2 in
       let* α4 := M.alloc (Value.Tuple [ α0; α3 ]) in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -511,47 +591,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ])
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            [ Ty.path "i32" ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ];
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "i32" ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* _ :=
       let* _ :=

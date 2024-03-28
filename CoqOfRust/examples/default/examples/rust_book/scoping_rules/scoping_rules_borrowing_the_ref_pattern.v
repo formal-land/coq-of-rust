@@ -20,7 +20,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -107,7 +107,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* c := M.alloc (Value.UnicodeChar 81) in
     let* α0 :=
-      match_operator
+      M.match_operator
         c
         [
           fun γ =>
@@ -157,7 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   ]) in
             let* _copy_of_x :=
               let* α0 :=
-                match_operator
+                M.match_operator
                   point
                   [
                     fun γ =>
@@ -177,7 +177,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.copy α0 in
             let* mutable_point := M.copy point in
             let* _ :=
-              match_operator
+              M.match_operator
                 mutable_point
                 [
                   fun γ =>
@@ -312,7 +312,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 5 ] in
               M.alloc (Value.Tuple [ α1; Value.Integer Integer.U32 3 ]) in
             let* _ :=
-              match_operator
+              M.match_operator
                 mutable_tuple
                 [
                   fun γ =>

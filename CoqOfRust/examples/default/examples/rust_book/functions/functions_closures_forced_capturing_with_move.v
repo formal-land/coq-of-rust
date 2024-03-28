@@ -62,7 +62,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             match γ with
             | [ α0 ] =>
               let* α0 := M.alloc α0 in
-              match_operator
+              M.match_operator
                 α0
                 [
                   fun γ =>

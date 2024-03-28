@@ -118,7 +118,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
 ") in
             let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
             M.pure (M.pointer_coercion α5) in
-        let* α18 :=
+        let* α14 :=
           (* Unsize *)
             let* α7 :=
               M.get_associated_function
@@ -131,23 +131,32 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-            let* α10 := M.get_function "constants::is_big" [] in
-            let* α11 := M.read n in
-            let* α12 := M.call_closure α10 [ α11 ] in
-            let* α13 := M.alloc α12 in
-            let* α14 := M.read (M.use α13) in
-            let* α15 :=
-              if Value.is_true α14 then
-                M.pure (mk_str "big")
-              else
-                let* α0 := M.read (mk_str "small") in
-                M.alloc α0 in
-            let* α16 := M.call_closure α9 [ α15 ] in
-            let* α17 := M.alloc (Value.Array [ α8; α16 ]) in
-            M.pure (M.pointer_coercion α17) in
-        let* α19 := M.call_closure α1 [ α6; α18 ] in
-        let* α20 := M.call_closure α0 [ α19 ] in
-        M.alloc α20 in
+            let* α10 := M.alloc (Value.Tuple []) in
+            let* α11 :=
+              M.match_operator
+                α10
+                [
+                  fun γ =>
+                    let* γ :=
+                      let* α0 := M.get_function "constants::is_big" [] in
+                      let* α1 := M.read n in
+                      let* α2 := M.call_closure α0 [ α1 ] in
+                      let* α3 := M.alloc α2 in
+                      M.pure (M.use α3) in
+                    let* _ :=
+                      let* α0 := M.read γ in
+                      M.is_constant_or_break_match α0 (Value.Bool true) in
+                    M.pure (mk_str "big");
+                  fun γ =>
+                    let* α0 := M.read (mk_str "small") in
+                    M.alloc α0
+                ] in
+            let* α12 := M.call_closure α9 [ α11 ] in
+            let* α13 := M.alloc (Value.Array [ α8; α12 ]) in
+            M.pure (M.pointer_coercion α13) in
+        let* α15 := M.call_closure α1 [ α6; α14 ] in
+        let* α16 := M.call_closure α0 [ α15 ] in
+        M.alloc α16 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

@@ -27,7 +27,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::option::Option::Some"
           [ Value.Integer Integer.I32 7 ]) in
     let* _ :=
-      match_operator
+      M.match_operator
         optional
         [
           fun γ =>

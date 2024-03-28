@@ -129,7 +129,7 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -198,7 +198,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
           [] in
       let* α1 := M.read f in
       let* α2 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -765,22 +765,33 @@ Module Impl_trait_erc20_Erc20.
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 := M.read from_balance in
-        let* α1 := M.read value in
-        let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-        let* α3 := M.read (M.use α2) in
-        if Value.is_true α3 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "trait_erc20::Error::InsufficientBalance" []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read from_balance in
+                let* α1 := M.read value in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "trait_erc20::Error::InsufficientBalance"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -1107,25 +1118,33 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         let* α2 := M.call_closure α0 [ α1; from; caller ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.read allowance in
-        let* α1 := M.read value in
-        let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-        let* α3 := M.read (M.use α2) in
-        if Value.is_true α3 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "trait_erc20::Error::InsufficientAllowance"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read allowance in
+                let* α1 := M.read value in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "trait_erc20::Error::InsufficientAllowance"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
         let* α0 :=
           M.get_trait_method
@@ -1146,7 +1165,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         let* α4 := M.call_closure α1 [ α2; from; to; α3 ] in
         let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
-        match_operator
+        M.match_operator
           α6
           [
             fun γ =>

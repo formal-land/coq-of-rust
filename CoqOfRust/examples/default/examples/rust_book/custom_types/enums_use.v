@@ -63,7 +63,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* status := M.alloc (Value.StructTuple "enums_use::Status::Poor" []) in
     let* work := M.alloc (Value.StructTuple "enums_use::Work::Civilian" []) in
     let* _ :=
-      match_operator
+      M.match_operator
         status
         [
           fun γ =>
@@ -104,7 +104,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple [])
         ] in
     let* α0 :=
-      match_operator
+      M.match_operator
         work
         [
           fun γ =>

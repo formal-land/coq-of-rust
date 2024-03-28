@@ -54,7 +54,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ event ] =>
     let* event := M.alloc event in
     let* α0 :=
-      match_operator
+      M.match_operator
         event
         [
           fun γ =>

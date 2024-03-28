@@ -111,7 +111,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α0 :=
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>

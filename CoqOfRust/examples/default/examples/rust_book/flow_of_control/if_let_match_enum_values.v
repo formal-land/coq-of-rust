@@ -67,10 +67,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "if_let_match_enum_values::Foo::Qux"
           [ Value.Integer Integer.U32 100 ]) in
     let* _ :=
-      match_operator
-        a
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := a in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -93,10 +95,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ => M.alloc (Value.Tuple [])
         ] in
     let* _ :=
-      match_operator
-        b
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := b in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -119,10 +123,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ => M.alloc (Value.Tuple [])
         ] in
     let* _ :=
-      match_operator
-        c
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := c in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
@@ -161,11 +167,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ => M.alloc (Value.Tuple [])
         ] in
+    let* α0 := M.alloc (Value.Tuple []) in
     let* α0 :=
-      match_operator
-        c
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := c in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ

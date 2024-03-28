@@ -48,7 +48,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -197,7 +197,7 @@ Module Impl_call_builder_CallBuilderTest.
         let* α3 := M.never_to_any α2 in
         M.alloc α3 in
       let* α0 :=
-        match_operator
+        M.match_operator
           result
           [
             fun γ =>

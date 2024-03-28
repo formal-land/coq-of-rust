@@ -104,7 +104,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
-        match_operator
+        M.match_operator
           (M.get_struct_record_field
             α0
             "associated_functions_and_methods::Rectangle"
@@ -124,7 +124,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
               let* x1 := M.copy γ0_0 in
               let* y1 := M.copy γ0_1 in
               let* α0 := M.read self in
-              match_operator
+              M.match_operator
                 (M.get_struct_record_field
                   α0
                   "associated_functions_and_methods::Rectangle"
@@ -176,7 +176,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
-        match_operator
+        M.match_operator
           (M.get_struct_record_field
             α0
             "associated_functions_and_methods::Rectangle"
@@ -196,7 +196,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
               let* x1 := M.copy γ0_0 in
               let* y1 := M.copy γ0_1 in
               let* α0 := M.read self in
-              match_operator
+              M.match_operator
                 (M.get_struct_record_field
                   α0
                   "associated_functions_and_methods::Rectangle"
@@ -357,7 +357,7 @@ Module Impl_associated_functions_and_methods_Pair.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>

@@ -43,7 +43,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ("y", Value.Integer Integer.U32 3)
           ]) in
     let* α0 :=
-      match_operator
+      M.match_operator
         foo
         [
           fun γ =>

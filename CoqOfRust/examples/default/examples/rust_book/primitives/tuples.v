@@ -14,7 +14,7 @@ Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ pair_ ] =>
     let* pair_ := M.alloc pair_ in
     let* α0 :=
-      match_operator
+      M.match_operator
         pair_
         [
           fun γ =>
@@ -396,7 +396,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (Value.Tuple
           [ Value.Integer Integer.I32 1; α0; α1; Value.Bool true ]) in
     let* α0 :=
-      match_operator
+      M.match_operator
         tuple
         [
           fun γ =>

@@ -42,7 +42,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
           [] in
       let* α1 := M.read f in
       let* α2 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -214,7 +214,7 @@ Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
-      match_operator
+      M.match_operator
         food
         [
           fun γ =>
@@ -248,7 +248,7 @@ Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ peeled ] =>
     let* peeled := M.alloc peeled in
     let* α0 :=
-      match_operator
+      M.match_operator
         peeled
         [
           fun γ =>
@@ -305,7 +305,7 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
             match γ with
             | [ α0 ] =>
               let* α0 := M.alloc α0 in
-              match_operator
+              M.match_operator
                 α0
                 [
                   fun γ =>
@@ -382,7 +382,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
               match γ with
               | [ α0 ] =>
                 let* α0 := M.alloc α0 in
-                match_operator
+                M.match_operator
                   α0
                   [
                     fun γ =>
@@ -404,7 +404,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
               match γ with
               | [ α0 ] =>
                 let* α0 := M.alloc α0 in
-                match_operator
+                M.match_operator
                   α0
                   [
                     fun γ =>
@@ -430,7 +430,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
             match γ with
             | [ α0 ] =>
               let* α0 := M.alloc α0 in
-              match_operator
+              M.match_operator
                 α0
                 [
                   fun γ =>
@@ -462,7 +462,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
-      match_operator
+      M.match_operator
         food
         [
           fun γ =>

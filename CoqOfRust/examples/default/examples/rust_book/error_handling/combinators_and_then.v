@@ -42,7 +42,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
           [] in
       let* α1 := M.read f in
       let* α2 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -112,7 +112,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
           [] in
       let* α1 := M.read f in
       let* α2 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -154,7 +154,7 @@ Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
-      match_operator
+      M.match_operator
         food
         [
           fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
@@ -179,7 +179,7 @@ Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
-      match_operator
+      M.match_operator
         food
         [
           fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
@@ -211,7 +211,7 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
-      match_operator
+      M.match_operator
         α3
         [
           fun γ => M.alloc (Value.StructTuple "core::option::Option::None" []);
@@ -227,7 +227,7 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
             let* α1 := M.read food in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
-            match_operator
+            M.match_operator
               α3
               [
                 fun γ =>
@@ -297,7 +297,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
-      match_operator
+      M.match_operator
         α3
         [
           fun γ =>
@@ -397,7 +397,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructTuple "combinators_and_then::Food::Sushi" []
           ]) in
     let* α1 :=
-      match_operator
+      M.match_operator
         α0
         [
           fun γ =>

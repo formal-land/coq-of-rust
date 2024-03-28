@@ -18,16 +18,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* number := M.alloc (Value.Integer Integer.U8 4) in
     let* α0 :=
-      match_operator
+      M.match_operator
         number
         [
           fun γ =>
             let* i := M.copy γ in
-            let* Γ :=
+            let* γ :=
               let* α0 := M.read i in
               M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U8 0)) in
             let* _ :=
-              let* α0 := M.read Γ in
+              let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -48,11 +48,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* i := M.copy γ in
-            let* Γ :=
+            let* γ :=
               let* α0 := M.read i in
               M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.U8 0)) in
             let* _ :=
-              let* α0 := M.read Γ in
+              let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in

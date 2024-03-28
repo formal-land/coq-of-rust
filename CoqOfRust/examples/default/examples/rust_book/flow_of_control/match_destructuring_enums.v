@@ -105,7 +105,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* α0 :=
-      match_operator
+      M.match_operator
         color
         [
           fun γ =>

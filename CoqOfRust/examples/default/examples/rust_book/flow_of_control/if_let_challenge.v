@@ -29,11 +29,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* a := M.alloc (Value.StructTuple "if_let_challenge::Foo::Bar" []) in
+    let* α0 := M.alloc (Value.Tuple []) in
     let* α0 :=
-      match_operator
-        a
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := a in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in

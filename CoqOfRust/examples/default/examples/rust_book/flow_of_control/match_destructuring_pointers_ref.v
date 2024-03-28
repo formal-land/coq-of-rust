@@ -60,7 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.alloc (Value.Integer Integer.I32 4) in
       M.alloc α0 in
     let* _ :=
-      match_operator
+      M.match_operator
         reference
         [
           fun γ =>
@@ -98,7 +98,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         ] in
     let* _ :=
       let* α0 := M.read reference in
-      match_operator
+      M.match_operator
         α0
         [
           fun γ =>
@@ -136,7 +136,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _not_a_reference := M.alloc (Value.Integer Integer.I32 3) in
     let* α0 := M.alloc (Value.Integer Integer.I32 3) in
     let* α0 :=
-      match_operator
+      M.match_operator
         α0
         [
           fun γ =>
@@ -144,7 +144,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* value := M.alloc (Value.Integer Integer.I32 5) in
             let* mut_value := M.alloc (Value.Integer Integer.I32 6) in
             let* _ :=
-              match_operator
+              M.match_operator
                 value
                 [
                   fun γ =>
@@ -179,7 +179,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc α11 in
                     M.alloc (Value.Tuple [])
                 ] in
-            match_operator
+            M.match_operator
               mut_value
               [
                 fun γ =>

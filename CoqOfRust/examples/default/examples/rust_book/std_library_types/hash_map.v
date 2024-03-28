@@ -21,7 +21,7 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ number ] =>
     let* number := M.alloc number in
     let* α0 :=
-      match_operator
+      M.match_operator
         number
         [
           fun γ =>
@@ -174,7 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.call_closure α0 [ contacts; mk_str "Daniel" ] in
       let* α2 := M.alloc α1 in
-      match_operator
+      M.match_operator
         α2
         [
           fun γ =>
@@ -266,7 +266,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
       let* α1 := M.call_closure α0 [ contacts; mk_str "Ashley" ] in
       let* α2 := M.alloc α1 in
-      match_operator
+      M.match_operator
         α2
         [
           fun γ =>
@@ -369,7 +369,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 :=
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -390,7 +390,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
-                match_operator
+                M.match_operator
                   α2
                   [
                     fun γ =>

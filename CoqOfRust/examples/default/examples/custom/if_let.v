@@ -2,6 +2,97 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (*
+fn order(b1: bool, b2: bool, b3: bool, b4: bool) -> bool {
+    b1 && b2 && b3 && b4
+}
+*)
+Definition order (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
+  | [], [ b1; b2; b3; b4 ] =>
+    let* b1 := M.alloc b1 in
+    let* b2 := M.alloc b2 in
+    let* b3 := M.alloc b3 in
+    let* b4 := M.alloc b4 in
+    let* α0 := M.read b1 in
+    let* α1 := LogicalOp.and α0 (M.read b2) in
+    let* α2 := LogicalOp.and α1 (M.read b3) in
+    LogicalOp.and α2 (M.read b4)
+  | _, _ => M.impossible
+  end.
+
+(* Enum Container *)
+(* {
+  ty_params := [];
+  variants :=
+    [
+      {
+        name := "Left";
+        item := StructTuple [ Ty.path "i32" ];
+        discriminant := None;
+      };
+      {
+        name := "Right";
+        item := StructTuple [ Ty.path "i32" ];
+        discriminant := None;
+      };
+      {
+        name := "Empty";
+        item := StructTuple [];
+        discriminant := None;
+      }
+    ];
+} *)
+
+(*
+fn extract_value(container: Container) -> i32 {
+    match container {
+        Container::Left(value) | Container::Right(value) => value,
+        Container::Empty => 0,
+    }
+}
+*)
+Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
+  | [], [ container ] =>
+    let* container := M.alloc container in
+    let* α0 :=
+      M.match_operator
+        container
+        [
+          fun γ =>
+            M.find_or_pattern
+              γ
+              [
+                fun γ =>
+                  let* γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match
+                      γ
+                      "if_let::Container::Left"
+                      0 in
+                  let* value := M.copy γ0_0 in
+                  M.pure (Value.Tuple [ value ]);
+                fun γ =>
+                  let* γ0_0 :=
+                    M.get_struct_tuple_field_or_break_match
+                      γ
+                      "if_let::Container::Right"
+                      0 in
+                  let* value := M.copy γ0_0 in
+                  M.pure (Value.Tuple [ value ])
+              ]
+              (M.closure
+                (fun γ =>
+                  match γ with
+                  | [ value ] => M.pure value
+                  | _ => M.impossible
+                  end));
+          fun γ => M.alloc (Value.Integer Integer.I32 0)
+        ] in
+    M.read α0
+  | _, _ => M.impossible
+  end.
+
+(*
 fn main() {
     let x = Some(5);
 
@@ -11,6 +102,24 @@ fn main() {
 
     match x {
         Some(_) if let Some(y) = x => println!("match: {y}"),
+        None => {}
+    }
+
+    if let Some(y) = x
+        && y > 3
+        && let Some(z) = x
+    {
+        println!("if and: {y} {z}");
+    }
+
+    match x {
+        Some(_)
+            if let Some(y) = x
+                && y > 3
+                && let Some(z) = x =>
+        {
+            println!("match and: {y} {z}")
+        }
         None => {}
     }
 }
@@ -24,10 +133,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::option::Option::Some"
           [ Value.Integer Integer.I32 5 ]) in
     let* _ :=
-      match_operator
-        x
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := x in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
@@ -66,8 +177,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ => M.alloc (Value.Tuple [])
         ] in
-    let* α0 :=
-      match_operator
+    let* _ :=
+      M.match_operator
         x
         [
           fun γ =>
@@ -76,10 +187,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 γ
                 "core::option::Option::Some"
                 0 in
-            let Γ := x in
+            let γ := x in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
-                Γ
+                γ
                 "core::option::Option::Some"
                 0 in
             let* y := M.copy γ0_0 in
@@ -110,6 +221,140 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α10 := M.call_closure α1 [ α5; α9 ] in
               let* α11 := M.call_closure α0 [ α10 ] in
               M.alloc α11 in
+            M.alloc (Value.Tuple []);
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
+    let* _ :=
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let γ := x in
+            let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "core::option::Option::Some"
+                0 in
+            let* y := M.copy γ0_0 in
+            let* γ :=
+              let* α0 := M.read y in
+              let* α1 :=
+                M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 3)) in
+              M.pure (M.use α1) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let γ := x in
+            let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "core::option::Option::Some"
+                0 in
+            let* z := M.copy γ0_0 in
+            let* _ :=
+              let* _ :=
+                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_v1"
+                    [] in
+                let* α6 :=
+                  (* Unsize *)
+                    let* α2 := M.read (mk_str "if and: ") in
+                    let* α3 := M.read (mk_str " ") in
+                    let* α4 := M.read (mk_str "
+") in
+                    let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                    M.pure (M.pointer_coercion α5) in
+                let* α12 :=
+                  (* Unsize *)
+                    let* α7 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.path "i32" ] in
+                    let* α8 := M.call_closure α7 [ y ] in
+                    let* α9 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.path "i32" ] in
+                    let* α10 := M.call_closure α9 [ z ] in
+                    let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
+                    M.pure (M.pointer_coercion α11) in
+                let* α13 := M.call_closure α1 [ α6; α12 ] in
+                let* α14 := M.call_closure α0 [ α13 ] in
+                M.alloc α14 in
+              M.alloc (Value.Tuple []) in
+            M.alloc (Value.Tuple []);
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
+    let* α0 :=
+      M.match_operator
+        x
+        [
+          fun γ =>
+            let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "core::option::Option::Some"
+                0 in
+            let γ := x in
+            let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "core::option::Option::Some"
+                0 in
+            let* y := M.copy γ0_0 in
+            let* γ :=
+              let* α0 := M.read y in
+              M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.I32 3)) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let γ := x in
+            let* γ0_0 :=
+              M.get_struct_tuple_field_or_break_match
+                γ
+                "core::option::Option::Some"
+                0 in
+            let* z := M.copy γ0_0 in
+            let* _ :=
+              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α1 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_v1"
+                  [] in
+              let* α6 :=
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "match and: ") in
+                  let* α3 := M.read (mk_str " ") in
+                  let* α4 := M.read (mk_str "
+") in
+                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                  M.pure (M.pointer_coercion α5) in
+              let* α12 :=
+                (* Unsize *)
+                  let* α7 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display"
+                      [ Ty.path "i32" ] in
+                  let* α8 := M.call_closure α7 [ y ] in
+                  let* α9 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display"
+                      [ Ty.path "i32" ] in
+                  let* α10 := M.call_closure α9 [ z ] in
+                  let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
+                  M.pure (M.pointer_coercion α11) in
+              let* α13 := M.call_closure α1 [ α6; α12 ] in
+              let* α14 := M.call_closure α0 [ α13 ] in
+              M.alloc α14 in
             M.alloc (Value.Tuple []);
           fun γ => M.alloc (Value.Tuple [])
         ] in

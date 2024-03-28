@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -103,7 +103,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
       let* f := M.alloc f in
       let* α0 := M.read self in
       let* α1 :=
-        match_operator
+        M.match_operator
           α0
           [
             fun γ =>
@@ -185,7 +185,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
-        match_operator
+        M.match_operator
           α0
           [
             fun γ =>
@@ -310,7 +310,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
       let* α7 := M.call_closure α0 [ α6 ] in
       let* α8 := M.alloc α7 in
       let* α9 :=
-        match_operator
+        M.match_operator
           α8
           [
             fun γ =>
@@ -370,7 +370,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
       let* α5 := M.call_closure α0 [ α4 ] in
       let* α6 := M.alloc α5 in
       let* α7 :=
-        match_operator
+        M.match_operator
           α6
           [
             fun γ =>
@@ -437,7 +437,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
-      match_operator
+      M.match_operator
         result
         [
           fun γ =>
@@ -511,19 +511,21 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α11 := M.call_closure α0 [ α10 ] in
                 M.alloc α11 in
               M.alloc (Value.Tuple []) in
-            let* α0 :=
-              M.get_trait_method
-                "core::error::Error"
-                (Ty.path "wrapping_errors::DoubleError")
-                []
-                "source"
-                [] in
-            let* α1 := M.call_closure α0 [ e ] in
-            let* α2 := M.alloc α1 in
-            match_operator
-              α2
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
               [
                 fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::error::Error"
+                        (Ty.path "wrapping_errors::DoubleError")
+                        []
+                        "source"
+                        [] in
+                    let* α1 := M.call_closure α0 [ e ] in
+                    M.alloc α1 in
                   let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
                       γ

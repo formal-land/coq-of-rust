@@ -54,7 +54,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "scoping_rules_ownership_and_rules_partial_moves::main::Person"
           [ ("name", α2); ("age", α4) ]) in
     let* α0 :=
-      match_operator
+      M.match_operator
         person
         [
           fun γ =>

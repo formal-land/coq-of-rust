@@ -48,7 +48,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -320,7 +320,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
     | [], [ e ] =>
       let* e := M.alloc e in
       let* α0 :=
-        match_operator
+        M.match_operator
           e
           [
             fun γ =>

@@ -114,7 +114,7 @@ Module main.
             ] in
         let* α3 := M.alloc α2 in
         let* α4 :=
-          match_operator
+          M.match_operator
             α3
             [
               fun γ =>
@@ -132,7 +132,7 @@ Module main.
                         [] in
                     let* α1 := M.call_closure α0 [ iter ] in
                     let* α2 := M.alloc α1 in
-                    match_operator
+                    M.match_operator
                       α2
                       [
                         fun γ =>
@@ -159,7 +159,7 @@ Module main.
                                   α1
                                   (Value.Integer Integer.U32 1)) in
                             let* α3 :=
-                              match_operator
+                              M.match_operator
                                 α2
                                 [
                                   fun γ =>

@@ -38,7 +38,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
       let* x := M.alloc x in
       let* y := M.alloc y in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>

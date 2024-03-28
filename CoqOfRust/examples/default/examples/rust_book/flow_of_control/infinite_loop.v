@@ -59,34 +59,43 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
           M.assign β α1 in
         let* _ :=
-          let* α0 := M.read count in
-          let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 3)) in
-          let* α2 := M.read (M.use α1) in
-          if Value.is_true α2 then
-            let* _ :=
-              let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::Arguments")
-                    "new_const"
-                    [] in
-                let* α4 :=
-                  (* Unsize *)
-                    let* α2 := M.read (mk_str "three
+          let* α0 := M.alloc (Value.Tuple []) in
+          M.match_operator
+            α0
+            [
+              fun γ =>
+                let* γ :=
+                  let* α0 := M.read count in
+                  let* α1 :=
+                    M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 3)) in
+                  M.pure (M.use α1) in
+                let* _ :=
+                  let* α0 := M.read γ in
+                  M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* _ :=
+                  let* _ :=
+                    let* α0 := M.get_function "std::io::stdio::_print" [] in
+                    let* α1 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::Arguments")
+                        "new_const"
+                        [] in
+                    let* α4 :=
+                      (* Unsize *)
+                        let* α2 := M.read (mk_str "three
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    M.pure (M.pointer_coercion α3) in
-                let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in
-                M.alloc α6 in
-              M.alloc (Value.Tuple []) in
-            let* α0 := M.continue in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2
-          else
-            M.alloc (Value.Tuple []) in
+                        let* α3 := M.alloc (Value.Array [ α2 ]) in
+                        M.pure (M.pointer_coercion α3) in
+                    let* α5 := M.call_closure α1 [ α4 ] in
+                    let* α6 := M.call_closure α0 [ α5 ] in
+                    M.alloc α6 in
+                  M.alloc (Value.Tuple []) in
+                let* α0 := M.continue in
+                let* α1 := M.read α0 in
+                let* α2 := M.never_to_any α1 in
+                M.alloc α2;
+              fun γ => M.alloc (Value.Tuple [])
+            ] in
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -116,34 +125,43 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α11 := M.call_closure α0 [ α10 ] in
             M.alloc α11 in
           M.alloc (Value.Tuple []) in
-        let* α0 := M.read count in
-        let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 5)) in
-        let* α2 := M.read (M.use α1) in
-        if Value.is_true α2 then
-          let* _ :=
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "OK, that's enough
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read count in
+                let* α1 :=
+                  M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 5)) in
+                M.pure (M.use α1) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* _ :=
+                let* _ :=
+                  let* α0 := M.get_function "std::io::stdio::_print" [] in
+                  let* α1 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::Arguments")
+                      "new_const"
+                      [] in
+                  let* α4 :=
+                    (* Unsize *)
+                      let* α2 := M.read (mk_str "OK, that's enough
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []) in
-          let* α0 := M.break in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple [])) in
+                      let* α3 := M.alloc (Value.Array [ α2 ]) in
+                      M.pure (M.pointer_coercion α3) in
+                  let* α5 := M.call_closure α1 [ α4 ] in
+                  let* α6 := M.call_closure α0 [ α5 ] in
+                  M.alloc α6 in
+                M.alloc (Value.Tuple []) in
+              let* α0 := M.break in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ]) in
     M.read α0
   | _, _ => M.impossible
   end.

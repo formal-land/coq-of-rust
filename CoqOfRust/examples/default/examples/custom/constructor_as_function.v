@@ -14,7 +14,7 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ tuple ] =>
     let* tuple := M.alloc tuple in
     let* α0 :=
-      match_operator
+      M.match_operator
         tuple
         [
           fun γ =>

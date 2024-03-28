@@ -103,7 +103,7 @@ Module Impl_enums_testcase_linked_list_List.
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
-        match_operator
+        M.match_operator
           α0
           [
             fun γ =>
@@ -156,7 +156,7 @@ Module Impl_enums_testcase_linked_list_List.
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
-        match_operator
+        M.match_operator
           α0
           [
             fun γ =>

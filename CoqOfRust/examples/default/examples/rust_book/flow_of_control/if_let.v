@@ -50,10 +50,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* emoticon :=
       M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* _ :=
-      match_operator
-        number
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := number in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
@@ -93,10 +95,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ => M.alloc (Value.Tuple [])
         ] in
     let* _ :=
-      match_operator
-        letter
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := letter in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
@@ -158,11 +162,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple [])
         ] in
     let* i_like_letters := M.alloc (Value.Bool false) in
+    let* α0 := M.alloc (Value.Tuple []) in
     let* α0 :=
-      match_operator
-        emoticon
+      M.match_operator
+        α0
         [
           fun γ =>
+            let γ := emoticon in
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
                 γ
@@ -200,53 +206,61 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* α0 := M.read (M.use i_like_letters) in
-            if Value.is_true α0 then
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const"
-                      [] in
-                  let* α4 :=
-                    (* Unsize *)
-                      let* α2 :=
-                        M.read
-                          (mk_str
-                            "Didn't match a number. Let's go with a letter!
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let γ := M.use i_like_letters in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* _ :=
+                    let* _ :=
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α1 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_const"
+                          [] in
+                      let* α4 :=
+                        (* Unsize *)
+                          let* α2 :=
+                            M.read
+                              (mk_str
+                                "Didn't match a number. Let's go with a letter!
 ") in
-                      let* α3 := M.alloc (Value.Array [ α2 ]) in
-                      M.pure (M.pointer_coercion α3) in
-                  let* α5 := M.call_closure α1 [ α4 ] in
-                  let* α6 := M.call_closure α0 [ α5 ] in
-                  M.alloc α6 in
-                M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple [])
-            else
-              let* _ :=
-                let* _ :=
-                  let* α0 := M.get_function "std::io::stdio::_print" [] in
-                  let* α1 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::Arguments")
-                      "new_const"
-                      [] in
-                  let* α4 :=
-                    (* Unsize *)
-                      let* α2 :=
-                        M.read
-                          (mk_str
-                            "I don't like letters. Let's go with an emoticon :)!
+                          let* α3 := M.alloc (Value.Array [ α2 ]) in
+                          M.pure (M.pointer_coercion α3) in
+                      let* α5 := M.call_closure α1 [ α4 ] in
+                      let* α6 := M.call_closure α0 [ α5 ] in
+                      M.alloc α6 in
+                    M.alloc (Value.Tuple []) in
+                  M.alloc (Value.Tuple []);
+                fun γ =>
+                  let* _ :=
+                    let* _ :=
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α1 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_const"
+                          [] in
+                      let* α4 :=
+                        (* Unsize *)
+                          let* α2 :=
+                            M.read
+                              (mk_str
+                                "I don't like letters. Let's go with an emoticon :)!
 ") in
-                      let* α3 := M.alloc (Value.Array [ α2 ]) in
-                      M.pure (M.pointer_coercion α3) in
-                  let* α5 := M.call_closure α1 [ α4 ] in
-                  let* α6 := M.call_closure α0 [ α5 ] in
-                  M.alloc α6 in
-                M.alloc (Value.Tuple []) in
-              M.alloc (Value.Tuple [])
+                          let* α3 := M.alloc (Value.Array [ α2 ]) in
+                          M.pure (M.pointer_coercion α3) in
+                      let* α5 := M.call_closure α1 [ α4 ] in
+                      let* α6 := M.call_closure α0 [ α5 ] in
+                      M.alloc α6 in
+                    M.alloc (Value.Tuple []) in
+                  M.alloc (Value.Tuple [])
+              ]
         ] in
     M.read α0
   | _, _ => M.impossible

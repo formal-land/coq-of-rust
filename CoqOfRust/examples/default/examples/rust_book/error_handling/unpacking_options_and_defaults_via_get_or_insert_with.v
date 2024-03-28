@@ -53,7 +53,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
           [] in
       let* α1 := M.read f in
       let* α2 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -126,7 +126,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             match γ with
             | [ α0 ] =>
               let* α0 := M.alloc α0 in
-              match_operator
+              M.match_operator
                 α0
                 [
                   fun γ =>

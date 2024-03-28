@@ -84,7 +84,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α5 := M.call_closure α0 [ α4 ] in
       let* α6 := M.alloc α5 in
       let* α7 :=
-        match_operator
+        M.match_operator
           α6
           [
             fun γ =>
@@ -102,7 +102,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
-                  match_operator
+                  M.match_operator
                     α2
                     [
                       fun γ =>
@@ -117,7 +117,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::option::Option::Some"
                             0 in
                         let* name := M.copy γ0_0 in
-                        match_operator
+                        M.match_operator
                           name
                           [
                             fun γ =>

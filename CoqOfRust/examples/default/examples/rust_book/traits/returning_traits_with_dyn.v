@@ -80,16 +80,48 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ random_number ] =>
     let* random_number := M.alloc random_number in
     (* Unsize *)
-      let* α6 :=
+      let* α3 :=
         (* Unsize *)
-          let* α0 := M.read random_number in
-          let* α1 := M.read UnsupportedLiteral in
-          let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-          let* α3 := M.read (M.use α2) in
-          let* α4 :=
-            if Value.is_true α3 then
-              let* α3 :=
-                (* Unsize *)
+          let* α0 := M.alloc (Value.Tuple []) in
+          let* α1 :=
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 := M.read random_number in
+                    let* α1 := M.read UnsupportedLiteral in
+                    let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                    M.pure (M.use α2) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* α3 :=
+                    (* Unsize *)
+                      let* α2 :=
+                        (* Unsize *)
+                          let* α0 :=
+                            M.get_associated_function
+                              (Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                [
+                                  Ty.path "returning_traits_with_dyn::Sheep";
+                                  Ty.path "alloc::alloc::Global"
+                                ])
+                              "new"
+                              [] in
+                          let* α1 :=
+                            M.call_closure
+                              α0
+                              [
+                                Value.StructTuple
+                                  "returning_traits_with_dyn::Sheep"
+                                  []
+                              ] in
+                          M.pure (M.pointer_coercion α1) in
+                      M.pure (M.pointer_coercion α2) in
+                  M.alloc α3;
+                fun γ =>
                   let* α2 :=
                     (* Unsize *)
                       let* α0 :=
@@ -97,7 +129,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                           (Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             [
-                              Ty.path "returning_traits_with_dyn::Sheep";
+                              Ty.path "returning_traits_with_dyn::Cow";
                               Ty.path "alloc::alloc::Global"
                             ])
                           "new"
@@ -107,35 +139,15 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                           α0
                           [
                             Value.StructTuple
-                              "returning_traits_with_dyn::Sheep"
+                              "returning_traits_with_dyn::Cow"
                               []
                           ] in
                       M.pure (M.pointer_coercion α1) in
-                  M.pure (M.pointer_coercion α2) in
-              M.alloc α3
-            else
-              let* α2 :=
-                (* Unsize *)
-                  let* α0 :=
-                    M.get_associated_function
-                      (Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        [
-                          Ty.path "returning_traits_with_dyn::Cow";
-                          Ty.path "alloc::alloc::Global"
-                        ])
-                      "new"
-                      [] in
-                  let* α1 :=
-                    M.call_closure
-                      α0
-                      [ Value.StructTuple "returning_traits_with_dyn::Cow" []
-                      ] in
-                  M.pure (M.pointer_coercion α1) in
-              M.alloc α2 in
-          let* α5 := M.read α4 in
-          M.pure (M.pointer_coercion α5) in
-      M.pure (M.pointer_coercion α6)
+                  M.alloc α2
+              ] in
+          let* α2 := M.read α1 in
+          M.pure (M.pointer_coercion α2) in
+      M.pure (M.pointer_coercion α3)
   | _, _ => M.impossible
   end.
 

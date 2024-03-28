@@ -61,7 +61,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* α0 :=
-      match_operator
+      M.match_operator
         triple
         [
           fun γ =>

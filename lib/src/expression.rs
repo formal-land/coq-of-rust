@@ -29,8 +29,10 @@ pub(crate) struct MatchArm {
     pub(crate) pattern: Rc<Pattern>,
     /// We represent a boolean guard as an if-let guard with a pattern
     /// equals to the boolean [true]. Thus we do not need to distinguish
-    /// between boolean guards and if-let guards in the translation.
-    pub(crate) if_let_guard: Option<(Rc<Pattern>, Rc<Expr>)>,
+    /// between boolean guards and if-let guards in the translation. There can
+    /// be a list of conditions, for guards having several conditions separated
+    /// by the `&&` operator.
+    pub(crate) if_let_guard: Vec<(Rc<Pattern>, Rc<Expr>)>,
     pub(crate) body: Rc<Expr>,
 }
 
@@ -121,11 +123,6 @@ pub(crate) enum Expr {
         name: Option<String>,
         init: Rc<Expr>,
         body: Rc<Expr>,
-    },
-    If {
-        condition: Rc<Expr>,
-        success: Rc<Expr>,
-        failure: Rc<Expr>,
     },
     Loop {
         body: Rc<Expr>,
@@ -470,22 +467,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 fresh_vars,
             )
         }
-        Expr::If {
-            condition,
-            success,
-            failure,
-        } => monadic_let(fresh_vars, condition.clone(), |fresh_vars, condition| {
-            let (success, _fresh_vars) = mt_expression(FreshVars::new(), success.clone());
-            let (failure, _fresh_vars) = mt_expression(FreshVars::new(), failure.clone());
-            (
-                Rc::new(Expr::If {
-                    condition,
-                    success,
-                    failure,
-                }),
-                fresh_vars,
-            )
-        }),
         Expr::Loop { body, .. } => {
             let (body, fresh_vars) = mt_expression(fresh_vars, body.clone());
             (Rc::new(Expr::Loop { body }), fresh_vars)
@@ -888,27 +869,6 @@ impl Expr {
                     ]),
                     hardline(),
                     body.to_doc(false),
-                ]),
-            ),
-            Expr::If {
-                condition,
-                success,
-                failure,
-            } => paren(
-                with_paren,
-                group([
-                    group([
-                        nest([
-                            text("if"),
-                            line(),
-                            nest([text("Value.is_true"), line(), condition.to_doc(true)]),
-                        ]),
-                        line(),
-                        text("then"),
-                    ]),
-                    nest([hardline(), success.to_doc(false)]),
-                    hardline(),
-                    nest([text("else"), hardline(), failure.to_doc(false)]),
                 ]),
             ),
             Expr::Loop { body } => paren(

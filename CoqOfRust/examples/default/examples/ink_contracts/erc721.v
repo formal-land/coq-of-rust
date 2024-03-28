@@ -171,7 +171,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1100,27 +1100,35 @@ Module Impl_erc721_Erc721.
         let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.path "erc721::AccountId")
-            [ Ty.path "erc721::AccountId" ]
-            "eq"
-            [] in
-        let* α1 := M.call_closure α0 [ to; caller ] in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.read (M.use α2) in
-        if Value.is_true α3 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "erc721::Error::NotAllowed" [] ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.path "erc721::AccountId")
+                    [ Ty.path "erc721::AccountId" ]
+                    "eq"
+                    [] in
+                let* α1 := M.call_closure α0 [ to; caller ] in
+                let* α2 := M.alloc α1 in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ Value.StructTuple "erc721::Error::NotAllowed" [] ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "erc721::Env") "emit_event" [] in
@@ -1147,66 +1155,78 @@ Module Impl_erc721_Erc721.
             ] in
         M.alloc α8 in
       let* _ :=
-        let* α0 := M.read (M.use approved) in
-        if Value.is_true α0 then
-          let* _ :=
-            let* α0 :=
-              M.get_associated_function
-                (Ty.apply
-                  (Ty.path "erc721::Mapping")
-                  [
-                    Ty.tuple
-                      [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId"
-                      ];
-                    Ty.tuple []
-                  ])
-                "insert"
-                [] in
-            let* α1 := M.read self in
-            let* α2 := M.read caller in
-            let* α3 := M.read to in
-            let* α4 :=
-              M.call_closure
-                α0
-                [
-                  M.get_struct_record_field
-                    α1
-                    "erc721::Erc721"
-                    "operator_approvals";
-                  Value.Tuple [ α2; α3 ];
-                  Value.Tuple []
-                ] in
-            M.alloc α4 in
-          M.alloc (Value.Tuple [])
-        else
-          let* _ :=
-            let* α0 :=
-              M.get_associated_function
-                (Ty.apply
-                  (Ty.path "erc721::Mapping")
-                  [
-                    Ty.tuple
-                      [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId"
-                      ];
-                    Ty.tuple []
-                  ])
-                "remove"
-                [] in
-            let* α1 := M.read self in
-            let* α2 := M.read caller in
-            let* α3 := M.read to in
-            let* α4 :=
-              M.call_closure
-                α0
-                [
-                  M.get_struct_record_field
-                    α1
-                    "erc721::Erc721"
-                    "operator_approvals";
-                  Value.Tuple [ α2; α3 ]
-                ] in
-            M.alloc α4 in
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let γ := M.use approved in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* _ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "erc721::AccountId";
+                            Ty.path "erc721::AccountId"
+                          ];
+                        Ty.tuple []
+                      ])
+                    "insert"
+                    [] in
+                let* α1 := M.read self in
+                let* α2 := M.read caller in
+                let* α3 := M.read to in
+                let* α4 :=
+                  M.call_closure
+                    α0
+                    [
+                      M.get_struct_record_field
+                        α1
+                        "erc721::Erc721"
+                        "operator_approvals";
+                      Value.Tuple [ α2; α3 ];
+                      Value.Tuple []
+                    ] in
+                M.alloc α4 in
+              M.alloc (Value.Tuple []);
+            fun γ =>
+              let* _ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "erc721::AccountId";
+                            Ty.path "erc721::AccountId"
+                          ];
+                        Ty.tuple []
+                      ])
+                    "remove"
+                    [] in
+                let* α1 := M.read self in
+                let* α2 := M.read caller in
+                let* α3 := M.read to in
+                let* α4 :=
+                  M.call_closure
+                    α0
+                    [
+                      M.get_struct_record_field
+                        α1
+                        "erc721::Erc721"
+                        "operator_approvals";
+                      Value.Tuple [ α2; α3 ]
+                    ] in
+                M.alloc α4 in
+              M.alloc (Value.Tuple [])
+          ] in
       let* α0 :=
         M.alloc
           (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
@@ -1250,7 +1270,7 @@ Module Impl_erc721_Erc721.
         let* α5 := M.call_closure α1 [ α2; α3; α4 ] in
         let* α6 := M.call_closure α0 [ α5 ] in
         let* α7 := M.alloc α6 in
-        match_operator
+        M.match_operator
           α7
           [
             fun γ =>
@@ -1354,143 +1374,174 @@ Module Impl_erc721_Erc721.
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.apply
-              (Ty.path "core::option::Option")
-              [ Ty.path "erc721::AccountId" ])
-            [
-              Ty.apply
-                (Ty.path "core::option::Option")
-                [ Ty.path "erc721::AccountId" ]
-            ]
-            "eq"
-            [] in
-        let* α1 := M.read caller in
-        let* α2 :=
-          M.alloc (Value.StructTuple "core::option::Option::Some" [ α1 ]) in
-        let* α3 := M.call_closure α0 [ owner; α2 ] in
-        let* α4 :=
-          LogicalOp.or
-            α3
-            (let* α0 :=
-              M.get_associated_function
-                (Ty.path "erc721::Erc721")
-                "approved_for_all"
-                [] in
-            let* α1 := M.read self in
-            let* α2 :=
-              M.get_associated_function
-                (Ty.apply
-                  (Ty.path "core::option::Option")
-                  [ Ty.path "erc721::AccountId" ])
-                "expect"
-                [] in
-            let* α3 := M.read owner in
-            let* α4 := M.read (mk_str "Error with AccountId") in
-            let* α5 := M.call_closure α2 [ α3; α4 ] in
-            let* α6 := M.read caller in
-            M.call_closure α0 [ α1; α5; α6 ]) in
-        let* α5 := M.alloc (UnOp.Pure.not α4) in
-        let* α6 := M.read (M.use α5) in
-        if Value.is_true α6 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "erc721::Error::NotAllowed" [] ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "erc721::AccountId" ])
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [ Ty.path "erc721::AccountId" ]
+                    ]
+                    "eq"
+                    [] in
+                let* α1 := M.read caller in
+                let* α2 :=
+                  M.alloc
+                    (Value.StructTuple "core::option::Option::Some" [ α1 ]) in
+                let* α3 := M.call_closure α0 [ owner; α2 ] in
+                let* α4 :=
+                  LogicalOp.or
+                    α3
+                    (let* α0 :=
+                      M.get_associated_function
+                        (Ty.path "erc721::Erc721")
+                        "approved_for_all"
+                        [] in
+                    let* α1 := M.read self in
+                    let* α2 :=
+                      M.get_associated_function
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          [ Ty.path "erc721::AccountId" ])
+                        "expect"
+                        [] in
+                    let* α3 := M.read owner in
+                    let* α4 := M.read (mk_str "Error with AccountId") in
+                    let* α5 := M.call_closure α2 [ α3; α4 ] in
+                    let* α6 := M.read caller in
+                    M.call_closure α0 [ α1; α5; α6 ]) in
+                let* α5 := M.alloc (UnOp.Pure.not α4) in
+                M.pure (M.use α5) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ Value.StructTuple "erc721::Error::NotAllowed" [] ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.path "erc721::AccountId")
-            [ Ty.path "erc721::AccountId" ]
-            "eq"
-            [] in
-        let* α1 := M.read to in
-        let* α2 :=
-          M.get_trait_method
-            "core::convert::From"
-            (Ty.path "erc721::AccountId")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-            "from"
-            [] in
-        let* α3 :=
-          M.call_closure α2 [ repeat (Value.Integer Integer.U8 0) 32 ] in
-        let* α4 := M.alloc α3 in
-        let* α5 := M.call_closure α0 [ α1; α4 ] in
-        let* α6 := M.alloc α5 in
-        let* α7 := M.read (M.use α6) in
-        if Value.is_true α7 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "erc721::Error::NotAllowed" [] ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.path "erc721::AccountId")
+                    [ Ty.path "erc721::AccountId" ]
+                    "eq"
+                    [] in
+                let* α1 := M.read to in
+                let* α2 :=
+                  M.get_trait_method
+                    "core::convert::From"
+                    (Ty.path "erc721::AccountId")
+                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                    "from"
+                    [] in
+                let* α3 :=
+                  M.call_closure
+                    α2
+                    [ repeat (Value.Integer Integer.U8 0) 32 ] in
+                let* α4 := M.alloc α3 in
+                let* α5 := M.call_closure α0 [ α1; α4 ] in
+                let* α6 := M.alloc α5 in
+                M.pure (M.use α6) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ Value.StructTuple "erc721::Error::NotAllowed" [] ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
-        let* α0 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "erc721::Mapping")
-              [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
-            "contains"
-            [] in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.call_closure
-            α0
-            [
-              M.get_struct_record_field α1 "erc721::Erc721" "token_approvals";
-              id
-            ] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.read (M.use α3) in
-        if Value.is_true α4 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "erc721::Error::CannotInsert" [] ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          let* _ :=
-            let* α0 :=
-              M.get_associated_function
-                (Ty.apply
-                  (Ty.path "erc721::Mapping")
-                  [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
-                "insert"
-                [] in
-            let* α1 := M.read self in
-            let* α2 := M.read id in
-            let* α3 := M.read to in
-            let* α4 := M.read α3 in
-            let* α5 :=
-              M.call_closure
-                α0
-                [
-                  M.get_struct_record_field
-                    α1
-                    "erc721::Erc721"
-                    "token_approvals";
-                  α2;
-                  α4
-                ] in
-            M.alloc α5 in
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
+                    "contains"
+                    [] in
+                let* α1 := M.read self in
+                let* α2 :=
+                  M.call_closure
+                    α0
+                    [
+                      M.get_struct_record_field
+                        α1
+                        "erc721::Erc721"
+                        "token_approvals";
+                      id
+                    ] in
+                let* α3 := M.alloc α2 in
+                M.pure (M.use α3) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ Value.StructTuple "erc721::Error::CannotInsert" [] ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ =>
+              let* _ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "erc721::Mapping")
+                      [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
+                    "insert"
+                    [] in
+                let* α1 := M.read self in
+                let* α2 := M.read id in
+                let* α3 := M.read to in
+                let* α4 := M.read α3 in
+                let* α5 :=
+                  M.call_closure
+                    α0
+                    [
+                      M.get_struct_record_field
+                        α1
+                        "erc721::Erc721"
+                        "token_approvals";
+                      α2;
+                      α4
+                    ] in
+                M.alloc α5 in
+              M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
         let* α0 :=
           M.get_associated_function (Ty.path "erc721::Env") "emit_event" [] in
@@ -1559,7 +1610,7 @@ Module Impl_erc721_Erc721.
         let* α4 := M.call_closure α1 [ α2; to; α3 ] in
         let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
-        match_operator
+        M.match_operator
           α6
           [
             fun γ =>
@@ -1639,7 +1690,7 @@ Module Impl_erc721_Erc721.
       let* from := M.alloc from in
       let* id := M.alloc id in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -1657,29 +1708,40 @@ Module Impl_erc721_Erc721.
               let* token_owner := M.alloc γ1_0 in
               let* owned_tokens_count := M.alloc γ1_1 in
               let* _ :=
-                let* α0 :=
-                  M.get_associated_function
-                    (Ty.apply
-                      (Ty.path "erc721::Mapping")
-                      [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
-                    "contains"
-                    [] in
-                let* α1 := M.read token_owner in
-                let* α2 := M.call_closure α0 [ α1; id ] in
-                let* α3 := M.alloc (UnOp.Pure.not α2) in
-                let* α4 := M.read (M.use α3) in
-                if Value.is_true α4 then
-                  let* α0 :=
-                    M.return_
-                      (Value.StructTuple
-                        "core::result::Result::Err"
-                        [ Value.StructTuple "erc721::Error::TokenNotFound" []
-                        ]) in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2
-                else
-                  M.alloc (Value.Tuple []) in
+                let* α0 := M.alloc (Value.Tuple []) in
+                M.match_operator
+                  α0
+                  [
+                    fun γ =>
+                      let* γ :=
+                        let* α0 :=
+                          M.get_associated_function
+                            (Ty.apply
+                              (Ty.path "erc721::Mapping")
+                              [ Ty.path "u32"; Ty.path "erc721::AccountId" ])
+                            "contains"
+                            [] in
+                        let* α1 := M.read token_owner in
+                        let* α2 := M.call_closure α0 [ α1; id ] in
+                        let* α3 := M.alloc (UnOp.Pure.not α2) in
+                        M.pure (M.use α3) in
+                      let* _ :=
+                        let* α0 := M.read γ in
+                        M.is_constant_or_break_match α0 (Value.Bool true) in
+                      let* α0 :=
+                        M.return_
+                          (Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              Value.StructTuple
+                                "erc721::Error::TokenNotFound"
+                                []
+                            ]) in
+                      let* α1 := M.read α0 in
+                      let* α2 := M.never_to_any α1 in
+                      M.alloc α2;
+                    fun γ => M.alloc (Value.Tuple [])
+                  ] in
               let* count :=
                 let* α0 :=
                   M.get_trait_method
@@ -1727,7 +1789,7 @@ Module Impl_erc721_Erc721.
                           match γ with
                           | [ α0 ] =>
                             let* α0 := M.alloc α0 in
-                            match_operator
+                            M.match_operator
                               α0
                               [
                                 fun γ =>
@@ -1749,7 +1811,7 @@ Module Impl_erc721_Erc721.
                 let* α9 := M.call_closure α0 [ α8 ] in
                 let* α10 := M.alloc α9 in
                 let* α11 :=
-                  match_operator
+                  M.match_operator
                     α10
                     [
                       fun γ =>
@@ -1934,7 +1996,7 @@ Module Impl_erc721_Erc721.
         let* α4 := M.call_closure α1 [ α2; caller; destination; α3 ] in
         let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
-        match_operator
+        M.match_operator
           α6
           [
             fun γ =>
@@ -2023,7 +2085,7 @@ Module Impl_erc721_Erc721.
         let* α4 := M.call_closure α1 [ α2; from; to; α3 ] in
         let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
-        match_operator
+        M.match_operator
           α6
           [
             fun γ =>
@@ -2121,7 +2183,7 @@ Module Impl_erc721_Erc721.
         let* α4 := M.call_closure α1 [ α2; caller; α3 ] in
         let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
-        match_operator
+        M.match_operator
           α6
           [
             fun γ =>

@@ -66,7 +66,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      match_operator
+      M.match_operator
         number
         [
           fun γ =>
@@ -91,110 +91,68 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 2) in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "This is a prime
+            M.find_or_pattern
+              γ
+              [
+                fun γ =>
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match
+                      α0
+                      (Value.Integer Integer.I32 2) in
+                  M.pure (Value.Tuple []);
+                fun γ =>
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match
+                      α0
+                      (Value.Integer Integer.I32 3) in
+                  M.pure (Value.Tuple []);
+                fun γ =>
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match
+                      α0
+                      (Value.Integer Integer.I32 5) in
+                  M.pure (Value.Tuple []);
+                fun γ =>
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match
+                      α0
+                      (Value.Integer Integer.I32 7) in
+                  M.pure (Value.Tuple []);
+                fun γ =>
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match
+                      α0
+                      (Value.Integer Integer.I32 11) in
+                  M.pure (Value.Tuple [])
+              ]
+              (M.closure
+                (fun γ =>
+                  match γ with
+                  | [] =>
+                    let* _ :=
+                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α1 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_const"
+                          [] in
+                      let* α4 :=
+                        (* Unsize *)
+                          let* α2 := M.read (mk_str "This is a prime
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 3) in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "This is a prime
-") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 5) in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "This is a prime
-") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 7) in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "This is a prime
-") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []);
-          fun γ =>
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Integer Integer.I32 11) in
-            let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::Arguments")
-                  "new_const"
-                  [] in
-              let* α4 :=
-                (* Unsize *)
-                  let* α2 := M.read (mk_str "This is a prime
-") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
-              let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
-            M.alloc (Value.Tuple []);
+                          let* α3 := M.alloc (Value.Array [ α2 ]) in
+                          M.pure (M.pointer_coercion α3) in
+                      let* α5 := M.call_closure α1 [ α4 ] in
+                      let* α6 := M.call_closure α0 [ α5 ] in
+                      M.alloc α6 in
+                    M.alloc (Value.Tuple [])
+                  | _ => M.impossible
+                  end));
           fun γ =>
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -235,7 +193,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* boolean := M.alloc (Value.Bool true) in
     let* binary :=
       let* α0 :=
-        match_operator
+        M.match_operator
           boolean
           [
             fun γ =>

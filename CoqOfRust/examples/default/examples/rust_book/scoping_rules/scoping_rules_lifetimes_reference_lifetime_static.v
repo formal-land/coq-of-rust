@@ -15,7 +15,7 @@ Definition coerce_static (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ β0 ] =>
     let* β0 := M.alloc β0 in
-    match_operator
+    M.match_operator
       β0
       [
         fun γ =>

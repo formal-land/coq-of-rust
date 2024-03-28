@@ -111,23 +111,34 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
     match τ, α with
     | [], [ value ] =>
       let* value := M.alloc value in
-      let* α0 := M.read value in
-      let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.I32 2) in
-      let* α2 := M.alloc (BinOp.Pure.eq α1 (Value.Integer Integer.I32 0)) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 :=
-        if Value.is_true α3 then
-          let* α0 := M.read value in
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Ok"
-              [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ α0 ] ])
-        else
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [ Value.Tuple [] ]) in
-      M.read α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      let* α1 :=
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read value in
+                let* α1 := BinOp.Panic.rem α0 (Value.Integer Integer.I32 2) in
+                let* α2 :=
+                  M.alloc (BinOp.Pure.eq α1 (Value.Integer Integer.I32 0)) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 := M.read value in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ α0 ]
+                  ]);
+            fun γ =>
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ Value.Tuple [] ])
+          ] in
+      M.read α1
     | _, _ => M.impossible
     end.
   
@@ -181,7 +192,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Value.Integer Integer.I32 8 ]
             ]) in
       let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -189,59 +200,79 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "try_from_and_try_into::EvenNumber";
+                              Ty.tuple []
+                            ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* _ :=
       let* α0 :=
@@ -257,7 +288,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]) in
       let* α4 := M.alloc (Value.Tuple [ α2; α3 ]) in
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -265,59 +296,79 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "try_from_and_try_into::EvenNumber";
+                              Ty.tuple []
+                            ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* result :=
       let* α0 :=
@@ -340,7 +391,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Value.Integer Integer.I32 8 ]
             ]) in
       let* α1 := M.alloc (Value.Tuple [ result; α0 ]) in
-      match_operator
+      M.match_operator
         α1
         [
           fun γ =>
@@ -348,59 +399,79 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "try_from_and_try_into::EvenNumber";
+                              Ty.tuple []
+                            ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* result :=
       let* α0 :=
@@ -417,7 +488,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc
           (Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ]) in
       let* α1 := M.alloc (Value.Tuple [ result; α0 ]) in
-      match_operator
+      M.match_operator
         α1
         [
           fun γ =>
@@ -425,59 +496,79 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :=
-              M.get_trait_method
-                "core::cmp::PartialEq"
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ])
-                [
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                ]
-                "eq"
-                [] in
-            let* α1 := M.read left_val in
-            let* α2 := M.read right_val in
-            let* α3 := M.call_closure α0 [ α1; α2 ] in
-            let* α4 := M.alloc (UnOp.Pure.not α3) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ];
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                      ]
-                  ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 :=
+                      M.get_trait_method
+                        "core::cmp::PartialEq"
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ])
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "try_from_and_try_into::EvenNumber";
+                              Ty.tuple []
+                            ]
+                        ]
+                        "eq"
+                        [] in
+                    let* α1 := M.read left_val in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.call_closure α0 [ α1; α2 ] in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ];
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [
+                            Ty.path "try_from_and_try_into::EvenNumber";
+                            Ty.tuple []
+                          ]
+                      ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

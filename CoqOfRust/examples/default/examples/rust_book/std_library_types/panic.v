@@ -16,25 +16,35 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ dividend; divisor ] =>
     let* dividend := M.alloc dividend in
     let* divisor := M.alloc divisor in
-    let* α0 := M.read divisor in
-    let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
-    let* α2 := M.read (M.use α1) in
-    let* α3 :=
-      if Value.is_true α2 then
-        let* α0 :=
-          M.get_function
-            "std::panicking::begin_panic"
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α1 := M.read (mk_str "division by zero") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3
-      else
-        let* α0 := M.read dividend in
-        let* α1 := M.read divisor in
-        let* α2 := BinOp.Panic.div α0 α1 in
-        M.alloc α2 in
-    M.read α3
+    let* α0 := M.alloc (Value.Tuple []) in
+    let* α1 :=
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 := M.read divisor in
+              let* α1 :=
+                M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
+              M.pure (M.use α1) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* α0 :=
+              M.get_function
+                "std::panicking::begin_panic"
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+            let* α1 := M.read (mk_str "division by zero") in
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
+          fun γ =>
+            let* α0 := M.read dividend in
+            let* α1 := M.read divisor in
+            let* α2 := BinOp.Panic.div α0 α1 in
+            M.alloc α2
+        ] in
+    M.read α1
   | _, _ => M.impossible
   end.
 

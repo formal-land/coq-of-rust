@@ -155,44 +155,60 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α10 := M.call_closure α0 [ α9 ] in
       M.alloc α10 in
     let* _ :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "std::collections::hash::set::HashSet")
-            [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-          "insert"
-          [] in
-      let* α1 := M.call_closure α0 [ a; Value.Integer Integer.I32 4 ] in
-      let* α2 := M.alloc (UnOp.Pure.not α1) in
-      let* α3 := M.read (M.use α2) in
-      if Value.is_true α3 then
-        let* α0 := M.get_function "core::panicking::panic" [] in
-        let* α1 := M.read (mk_str "assertion failed: a.insert(4)") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3
-      else
-        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.apply
+                    (Ty.path "std::collections::hash::set::HashSet")
+                    [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
+                  "insert"
+                  [] in
+              let* α1 := M.call_closure α0 [ a; Value.Integer Integer.I32 4 ] in
+              let* α2 := M.alloc (UnOp.Pure.not α1) in
+              M.pure (M.use α2) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* α0 := M.get_function "core::panicking::panic" [] in
+            let* α1 := M.read (mk_str "assertion failed: a.insert(4)") in
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
     let* _ :=
-      let* α0 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "std::collections::hash::set::HashSet")
-            [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
-          "contains"
-          [ Ty.path "i32" ] in
-      let* α1 := M.alloc (Value.Integer Integer.I32 4) in
-      let* α2 := M.call_closure α0 [ a; α1 ] in
-      let* α3 := M.alloc (UnOp.Pure.not α2) in
-      let* α4 := M.read (M.use α3) in
-      if Value.is_true α4 then
-        let* α0 := M.get_function "core::panicking::panic" [] in
-        let* α1 := M.read (mk_str "assertion failed: a.contains(&4)") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3
-      else
-        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.apply
+                    (Ty.path "std::collections::hash::set::HashSet")
+                    [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ])
+                  "contains"
+                  [ Ty.path "i32" ] in
+              let* α1 := M.alloc (Value.Integer Integer.I32 4) in
+              let* α2 := M.call_closure α0 [ a; α1 ] in
+              let* α3 := M.alloc (UnOp.Pure.not α2) in
+              M.pure (M.use α3) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* α0 := M.get_function "core::panicking::panic" [] in
+            let* α1 := M.read (mk_str "assertion failed: a.contains(&4)") in
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
     let* _ :=
       let* α0 :=
         M.get_associated_function

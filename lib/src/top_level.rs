@@ -735,7 +735,7 @@ fn compile_function_body(
                 Expr::local_var(name),
                 vec![MatchArm {
                     pattern: pattern.clone(),
-                    if_let_guard: None,
+                    if_let_guard: vec![],
                     body,
                 }],
             ),

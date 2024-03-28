@@ -142,7 +142,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α5 := M.call_closure α0 [ α4 ] in
           let* α6 := M.alloc α5 in
           let* α7 :=
-            match_operator
+            M.match_operator
               α6
               [
                 fun γ =>
@@ -198,7 +198,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "cmp" [] in
         let* α1 := M.call_closure α0 [ guess; secret_number ] in
         let* α2 := M.alloc α1 in
-        match_operator
+        M.match_operator
           α2
           [
             fun γ =>

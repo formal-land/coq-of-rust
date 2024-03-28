@@ -48,7 +48,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -137,7 +137,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           Value.DeclaredButUndefined
           [ fun γ => M.alloc (Value.Tuple []) ] in
       M.read α0
@@ -747,7 +747,7 @@ Module Impl_payment_channel_PaymentChannel.
                   match γ with
                   | [ α0 ] =>
                     let* α0 := M.alloc α0 in
-                    match_operator
+                    M.match_operator
                       α0
                       [
                         fun γ =>
@@ -889,109 +889,133 @@ Module Impl_payment_channel_PaymentChannel.
       let* amount := M.alloc amount in
       let* signature := M.alloc signature in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.path "payment_channel::AccountId")
-            [ Ty.path "payment_channel::AccountId" ]
-            "ne"
-            [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::Env")
-            "caller"
-            [] in
-        let* α2 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::PaymentChannel")
-            "env"
-            [] in
-        let* α3 := M.read self in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 := M.call_closure α1 [ α5 ] in
-        let* α7 := M.alloc α6 in
-        let* α8 := M.read self in
-        let* α9 :=
-          M.call_closure
-            α0
-            [
-              α7;
-              M.get_struct_record_field
-                α8
-                "payment_channel::PaymentChannel"
-                "recipient"
-            ] in
-        let* α10 := M.alloc α9 in
-        let* α11 := M.read (M.use α10) in
-        if Value.is_true α11 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "payment_channel::Error::CallerIsNotRecipient"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.path "payment_channel::AccountId")
+                    [ Ty.path "payment_channel::AccountId" ]
+                    "ne"
+                    [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::Env")
+                    "caller"
+                    [] in
+                let* α2 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::PaymentChannel")
+                    "env"
+                    [] in
+                let* α3 := M.read self in
+                let* α4 := M.call_closure α2 [ α3 ] in
+                let* α5 := M.alloc α4 in
+                let* α6 := M.call_closure α1 [ α5 ] in
+                let* α7 := M.alloc α6 in
+                let* α8 := M.read self in
+                let* α9 :=
+                  M.call_closure
+                    α0
+                    [
+                      α7;
+                      M.get_struct_record_field
+                        α8
+                        "payment_channel::PaymentChannel"
+                        "recipient"
+                    ] in
+                let* α10 := M.alloc α9 in
+                M.pure (M.use α10) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "payment_channel::Error::CallerIsNotRecipient"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
-        let* α0 := M.read amount in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.read
-            (M.get_struct_record_field
-              α1
-              "payment_channel::PaymentChannel"
-              "withdrawn") in
-        let* α3 := M.alloc (BinOp.Pure.lt α0 α2) in
-        let* α4 := M.read (M.use α3) in
-        if Value.is_true α4 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "payment_channel::Error::AmountIsLessThanWithdrawn"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read amount in
+                let* α1 := M.read self in
+                let* α2 :=
+                  M.read
+                    (M.get_struct_record_field
+                      α1
+                      "payment_channel::PaymentChannel"
+                      "withdrawn") in
+                let* α3 := M.alloc (BinOp.Pure.lt α0 α2) in
+                M.pure (M.use α3) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "payment_channel::Error::AmountIsLessThanWithdrawn"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
-        let* α0 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::PaymentChannel")
-            "is_signature_valid"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read amount in
-        let* α3 := M.read signature in
-        let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
-        let* α5 := M.alloc (UnOp.Pure.not α4) in
-        let* α6 := M.read (M.use α5) in
-        if Value.is_true α6 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "payment_channel::Error::InvalidSignature"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::PaymentChannel")
+                    "is_signature_valid"
+                    [] in
+                let* α1 := M.read self in
+                let* α2 := M.read amount in
+                let* α3 := M.read signature in
+                let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
+                let* α5 := M.alloc (UnOp.Pure.not α4) in
+                M.pure (M.use α5) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "payment_channel::Error::InvalidSignature"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
         let* α0 :=
           M.get_trait_method
@@ -1054,7 +1078,7 @@ Module Impl_payment_channel_PaymentChannel.
                   match γ with
                   | [ α0 ] =>
                     let* α0 := M.alloc α0 in
-                    match_operator
+                    M.match_operator
                       α0
                       [
                         fun γ =>
@@ -1068,7 +1092,7 @@ Module Impl_payment_channel_PaymentChannel.
             ] in
         let* α15 := M.call_closure α0 [ α14 ] in
         let* α16 := M.alloc α15 in
-        match_operator
+        M.match_operator
           α16
           [
             fun γ =>
@@ -1154,7 +1178,7 @@ Module Impl_payment_channel_PaymentChannel.
         let* α5 := M.call_closure α1 [ α2; α3; α4 ] in
         let* α6 := M.call_closure α0 [ α5 ] in
         let* α7 := M.alloc α6 in
-        match_operator
+        M.match_operator
           α7
           [
             fun γ =>
@@ -1252,56 +1276,64 @@ Module Impl_payment_channel_PaymentChannel.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.path "payment_channel::AccountId")
-            [ Ty.path "payment_channel::AccountId" ]
-            "ne"
-            [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::Env")
-            "caller"
-            [] in
-        let* α2 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::PaymentChannel")
-            "env"
-            [] in
-        let* α3 := M.read self in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 := M.call_closure α1 [ α5 ] in
-        let* α7 := M.alloc α6 in
-        let* α8 := M.read self in
-        let* α9 :=
-          M.call_closure
-            α0
-            [
-              α7;
-              M.get_struct_record_field
-                α8
-                "payment_channel::PaymentChannel"
-                "sender"
-            ] in
-        let* α10 := M.alloc α9 in
-        let* α11 := M.read (M.use α10) in
-        if Value.is_true α11 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "payment_channel::Error::CallerIsNotSender"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.path "payment_channel::AccountId")
+                    [ Ty.path "payment_channel::AccountId" ]
+                    "ne"
+                    [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::Env")
+                    "caller"
+                    [] in
+                let* α2 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::PaymentChannel")
+                    "env"
+                    [] in
+                let* α3 := M.read self in
+                let* α4 := M.call_closure α2 [ α3 ] in
+                let* α5 := M.alloc α4 in
+                let* α6 := M.call_closure α1 [ α5 ] in
+                let* α7 := M.alloc α6 in
+                let* α8 := M.read self in
+                let* α9 :=
+                  M.call_closure
+                    α0
+                    [
+                      α7;
+                      M.get_struct_record_field
+                        α8
+                        "payment_channel::PaymentChannel"
+                        "sender"
+                    ] in
+                let* α10 := M.alloc α9 in
+                M.pure (M.use α10) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "payment_channel::Error::CallerIsNotSender"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* now :=
         let* α0 :=
           M.get_associated_function
@@ -1410,7 +1442,7 @@ Module Impl_payment_channel_PaymentChannel.
       let* self := M.alloc self in
       let* α0 := M.read self in
       let* α1 :=
-        match_operator
+        M.match_operator
           (M.get_struct_record_field
             α0
             "payment_channel::PaymentChannel"
@@ -1440,25 +1472,33 @@ Module Impl_payment_channel_PaymentChannel.
                 let* α5 := M.call_closure α0 [ α4 ] in
                 M.alloc α5 in
               let* _ :=
-                let* α0 := M.read now in
-                let* α1 := M.read expiration in
-                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-                let* α3 := M.read (M.use α2) in
-                if Value.is_true α3 then
-                  let* α0 :=
-                    M.return_
-                      (Value.StructTuple
-                        "core::result::Result::Err"
-                        [
-                          Value.StructTuple
-                            "payment_channel::Error::NotYetExpired"
-                            []
-                        ]) in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2
-                else
-                  M.alloc (Value.Tuple []) in
+                let* α0 := M.alloc (Value.Tuple []) in
+                M.match_operator
+                  α0
+                  [
+                    fun γ =>
+                      let* γ :=
+                        let* α0 := M.read now in
+                        let* α1 := M.read expiration in
+                        let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                        M.pure (M.use α2) in
+                      let* _ :=
+                        let* α0 := M.read γ in
+                        M.is_constant_or_break_match α0 (Value.Bool true) in
+                      let* α0 :=
+                        M.return_
+                          (Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              Value.StructTuple
+                                "payment_channel::Error::NotYetExpired"
+                                []
+                            ]) in
+                      let* α1 := M.read α0 in
+                      let* α2 := M.never_to_any α1 in
+                      M.alloc α2;
+                    fun γ => M.alloc (Value.Tuple [])
+                  ] in
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
@@ -1533,109 +1573,133 @@ Module Impl_payment_channel_PaymentChannel.
       let* amount := M.alloc amount in
       let* signature := M.alloc signature in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.path "payment_channel::AccountId")
-            [ Ty.path "payment_channel::AccountId" ]
-            "ne"
-            [] in
-        let* α1 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::Env")
-            "caller"
-            [] in
-        let* α2 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::PaymentChannel")
-            "env"
-            [] in
-        let* α3 := M.read self in
-        let* α4 := M.call_closure α2 [ α3 ] in
-        let* α5 := M.alloc α4 in
-        let* α6 := M.call_closure α1 [ α5 ] in
-        let* α7 := M.alloc α6 in
-        let* α8 := M.read self in
-        let* α9 :=
-          M.call_closure
-            α0
-            [
-              α7;
-              M.get_struct_record_field
-                α8
-                "payment_channel::PaymentChannel"
-                "recipient"
-            ] in
-        let* α10 := M.alloc α9 in
-        let* α11 := M.read (M.use α10) in
-        if Value.is_true α11 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "payment_channel::Error::CallerIsNotRecipient"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.path "payment_channel::AccountId")
+                    [ Ty.path "payment_channel::AccountId" ]
+                    "ne"
+                    [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::Env")
+                    "caller"
+                    [] in
+                let* α2 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::PaymentChannel")
+                    "env"
+                    [] in
+                let* α3 := M.read self in
+                let* α4 := M.call_closure α2 [ α3 ] in
+                let* α5 := M.alloc α4 in
+                let* α6 := M.call_closure α1 [ α5 ] in
+                let* α7 := M.alloc α6 in
+                let* α8 := M.read self in
+                let* α9 :=
+                  M.call_closure
+                    α0
+                    [
+                      α7;
+                      M.get_struct_record_field
+                        α8
+                        "payment_channel::PaymentChannel"
+                        "recipient"
+                    ] in
+                let* α10 := M.alloc α9 in
+                M.pure (M.use α10) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "payment_channel::Error::CallerIsNotRecipient"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
-        let* α0 :=
-          M.get_associated_function
-            (Ty.path "payment_channel::PaymentChannel")
-            "is_signature_valid"
-            [] in
-        let* α1 := M.read self in
-        let* α2 := M.read amount in
-        let* α3 := M.read signature in
-        let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
-        let* α5 := M.alloc (UnOp.Pure.not α4) in
-        let* α6 := M.read (M.use α5) in
-        if Value.is_true α6 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "payment_channel::Error::InvalidSignature"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.path "payment_channel::PaymentChannel")
+                    "is_signature_valid"
+                    [] in
+                let* α1 := M.read self in
+                let* α2 := M.read amount in
+                let* α3 := M.read signature in
+                let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
+                let* α5 := M.alloc (UnOp.Pure.not α4) in
+                M.pure (M.use α5) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "payment_channel::Error::InvalidSignature"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
-        let* α0 := M.read amount in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.read
-            (M.get_struct_record_field
-              α1
-              "payment_channel::PaymentChannel"
-              "withdrawn") in
-        let* α3 := M.alloc (BinOp.Pure.lt α0 α2) in
-        let* α4 := M.read (M.use α3) in
-        if Value.is_true α4 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [
-                  Value.StructTuple
-                    "payment_channel::Error::AmountIsLessThanWithdrawn"
-                    []
-                ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read amount in
+                let* α1 := M.read self in
+                let* α2 :=
+                  M.read
+                    (M.get_struct_record_field
+                      α1
+                      "payment_channel::PaymentChannel"
+                      "withdrawn") in
+                let* α3 := M.alloc (BinOp.Pure.lt α0 α2) in
+                M.pure (M.use α3) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [
+                      Value.StructTuple
+                        "payment_channel::Error::AmountIsLessThanWithdrawn"
+                        []
+                    ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* amount_to_withdraw :=
         let* α0 := M.read amount in
         let* α1 := M.read self in
@@ -1713,7 +1777,7 @@ Module Impl_payment_channel_PaymentChannel.
                   match γ with
                   | [ α0 ] =>
                     let* α0 := M.alloc α0 in
-                    match_operator
+                    M.match_operator
                       α0
                       [
                         fun γ =>
@@ -1727,7 +1791,7 @@ Module Impl_payment_channel_PaymentChannel.
             ] in
         let* α12 := M.call_closure α0 [ α11 ] in
         let* α13 := M.alloc α12 in
-        match_operator
+        M.match_operator
           α13
           [
             fun γ =>

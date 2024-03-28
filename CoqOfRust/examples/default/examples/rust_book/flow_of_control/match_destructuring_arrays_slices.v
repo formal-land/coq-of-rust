@@ -52,7 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.Integer Integer.I32 6
           ]) in
     let* α0 :=
-      match_operator
+      M.match_operator
         array
         [
           fun γ =>

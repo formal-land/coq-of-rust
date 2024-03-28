@@ -23,7 +23,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
-      match_operator
+      M.match_operator
         α3
         [
           fun γ =>
@@ -41,7 +41,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
             let* α1 := M.read second_number_str in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
-            match_operator
+            M.match_operator
               α3
               [
                 fun γ =>
@@ -92,7 +92,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
-      match_operator
+      M.match_operator
         result
         [
           fun γ =>

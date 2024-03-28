@@ -140,7 +140,7 @@ Module Impl_derive_Inches.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -237,30 +237,39 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.read UnsupportedLiteral in
       M.alloc (Value.StructTuple "derive::Centimeters" [ α0 ]) in
     let* cmp :=
-      let* α0 :=
-        M.get_trait_method
-          "core::cmp::PartialOrd"
-          (Ty.path "derive::Centimeters")
-          [ Ty.path "derive::Centimeters" ]
-          "lt"
-          [] in
+      let* α0 := M.alloc (Value.Tuple []) in
       let* α1 :=
-        M.get_associated_function
-          (Ty.path "derive::Inches")
-          "to_centimeters"
-          [] in
-      let* α2 := M.call_closure α1 [ foot ] in
-      let* α3 := M.alloc α2 in
-      let* α4 := M.call_closure α0 [ α3; meter ] in
-      let* α5 := M.alloc α4 in
-      let* α6 := M.read (M.use α5) in
-      let* α7 :=
-        if Value.is_true α6 then
-          M.pure (mk_str "smaller")
-        else
-          let* α0 := M.read (mk_str "bigger") in
-          M.alloc α0 in
-      M.copy α7 in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialOrd"
+                    (Ty.path "derive::Centimeters")
+                    [ Ty.path "derive::Centimeters" ]
+                    "lt"
+                    [] in
+                let* α1 :=
+                  M.get_associated_function
+                    (Ty.path "derive::Inches")
+                    "to_centimeters"
+                    [] in
+                let* α2 := M.call_closure α1 [ foot ] in
+                let* α3 := M.alloc α2 in
+                let* α4 := M.call_closure α0 [ α3; meter ] in
+                let* α5 := M.alloc α4 in
+                M.pure (M.use α5) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.pure (mk_str "smaller");
+            fun γ =>
+              let* α0 := M.read (mk_str "bigger") in
+              M.alloc α0
+          ] in
+      M.copy α1 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
