@@ -595,6 +595,68 @@ pub(crate) fn compile_hir_id(env: &Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<
     }
 }
 
+#[derive(Debug)]
+enum StringPiece {
+    /// A string of ASCII characters
+    AsciiString(String),
+    /// A single non-ASCII character
+    UnicodeChar(char),
+}
+
+/// As we can only represent purely ASCII strings in Coq, we need to cut the
+/// string in pieces, alternating between ASCII strings and non-ASCII
+/// characters.
+fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
+    let mut result: Vec<StringPiece> = Vec::new();
+    let mut ascii_buf = String::new();
+
+    for c in input.chars() {
+        if c.is_ascii() {
+            ascii_buf.push(c);
+        } else {
+            if !ascii_buf.is_empty() {
+                result.push(StringPiece::AsciiString(ascii_buf.clone()));
+                ascii_buf.clear();
+            }
+            result.push(StringPiece::UnicodeChar(c));
+        }
+    }
+
+    if !ascii_buf.is_empty() {
+        result.push(StringPiece::AsciiString(ascii_buf));
+    }
+    result
+}
+
+fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
+    match pieces {
+        [] => coq::Expression::just_name("\"\""),
+        [StringPiece::AsciiString(s), rest @ ..] => {
+            let head = coq::Expression::just_name(
+                format!("\"{}\"", str::replace(s, "\"", "\"\"")).as_str(),
+            );
+            if rest.is_empty() {
+                head
+            } else {
+                head.apply_many(&[
+                    coq::Expression::just_name("++"),
+                    string_pieces_to_coq(rest),
+                ])
+            }
+        }
+        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
+            .apply_many(&[
+                coq::Expression::just_name(format!("\"{:03}\"", *c as u8).as_str()),
+                string_pieces_to_coq(rest),
+            ]),
+    }
+}
+
+fn string_to_coq(message: &str) -> coq::Expression {
+    let pieces = cut_string_in_pieces_for_coq(message);
+    coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(&pieces))
+}
+
 impl LoopControlFlow {
     pub fn to_doc<'a>(self) -> Doc<'a> {
         match self {
