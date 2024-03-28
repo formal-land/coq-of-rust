@@ -93,6 +93,7 @@ fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
     result
 }
 
+// TODO: Eliminate extra parens in this function
 fn string_pieces_to_coq<'a>(with_paren: bool, pieces: &[StringPiece]) -> coq::Expression<'a> {
     match pieces {
         [] => coq::Expression::just_name("\"\""),
@@ -124,12 +125,9 @@ fn string_pieces_to_coq<'a>(with_paren: bool, pieces: &[StringPiece]) -> coq::Ex
     }
 }
 
-pub(crate) fn string_to_coq(with_paren: bool, message: &str) -> coq::Expression {
+pub(crate) fn string_to_coq(message: &str) -> coq::Expression {
     let pieces = cut_string_in_pieces_for_coq(message);
-    coq::Expression::paren(
-        with_paren,
-        &coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(true, &pieces)),
-    )
+    coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(true, &pieces))
 }
 
 pub type Doc<'a> = RcDoc<'a, ()>;
