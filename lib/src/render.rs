@@ -93,35 +93,27 @@ fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
     result
 }
 
-// TODO: Eliminate extra parens in this function
-fn string_pieces_to_coq<'a>(with_paren: bool, pieces: &[StringPiece]) -> coq::Expression<'a> {
+fn string_pieces_to_coq<'a>(_with_paren: bool, pieces: &[StringPiece]) -> coq::Expression<'a> {
     match pieces {
         [] => coq::Expression::just_name("\"\""),
         [StringPiece::AsciiString(s), rest @ ..] => {
-            coq::Expression::paren(with_paren && !rest.is_empty(), &{
-                let head = coq::Expression::just_name(
-                    format!("\"{}\"", str::replace(s, "\"", "\"\"")).as_str(),
-                );
-                if rest.is_empty() {
-                    head
-                } else {
-                    // gy@NOTE: both `apply` and `apply_many` would inherently add unecessary parens
-                    // since they're the only ways to represent at `coq::Expression` level, `apply_many`
-                    // is the way with least redundant parenthesis
-                    head.apply_many(&[
-                        coq::Expression::just_name("++"),
-                        string_pieces_to_coq(false, rest),
-                    ])
-                }
-            })
+            let head = coq::Expression::just_name(
+                format!("\"{}\"", str::replace(s, "\"", "\"\"")).as_str(),
+            );
+            if rest.is_empty() {
+                head
+            } else {
+                head.apply_many(&[
+                    coq::Expression::just_name("++"),
+                    string_pieces_to_coq(false, rest),
+                ])
+            }
         }
-        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::paren(
-            with_paren,
-            &coq::Expression::just_name("String.String").apply_many(&[
+        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
+            .apply_many(&[
                 coq::Expression::just_name(format!("\"{:03}\"", *c as u8).as_str()),
                 string_pieces_to_coq(true, rest),
             ]),
-        ),
     }
 }
 
