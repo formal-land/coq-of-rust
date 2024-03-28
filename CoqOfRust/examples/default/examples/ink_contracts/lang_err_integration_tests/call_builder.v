@@ -48,7 +48,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -197,7 +197,7 @@ Module Impl_call_builder_CallBuilderTest.
         let* α3 := M.never_to_any α2 in
         M.alloc α3 in
       let* α0 :=
-        match_operator
+        M.match_operator
           result
           [
             fun γ =>
@@ -228,28 +228,28 @@ Module Impl_call_builder_CallBuilderTest.
                   (Ty.path "core::fmt::Arguments")
                   "new_v1"
                   [] in
-              let* α2 :=
-                M.read
-                  (mk_str
-                    "not implemented: No other `LangError` variants exist at the moment.") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "none"
-                  [] in
-              let* α5 := M.call_closure α4 [] in
-              let* α6 := M.alloc α5 in
-              let* α7 :=
-                M.call_closure
-                  α1
-                  [
-                    M.pointer_coercion (* Unsize *) α3;
-                    M.pointer_coercion (* Unsize *) α6
-                  ] in
-              let* α8 := M.call_closure α0 [ α7 ] in
-              let* α9 := M.never_to_any α8 in
-              M.alloc α9
+                (* Unsize *)
+                  let* α2 :=
+                    M.read
+                      (mk_str
+                        "not implemented: No other `LangError` variants exist at the moment.") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α8 :=
+                (* Unsize *)
+                  let* α5 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "none"
+                      [] in
+                  let* α6 := M.call_closure α5 [] in
+                  let* α7 := M.alloc α6 in
+                  M.pure (M.pointer_coercion α7) in
+              let* α9 := M.call_closure α1 [ α4; α8 ] in
+              let* α10 := M.call_closure α0 [ α9 ] in
+              let* α11 := M.never_to_any α10 in
+              M.alloc α11
           ] in
       M.read α0
     | _, _ => M.impossible

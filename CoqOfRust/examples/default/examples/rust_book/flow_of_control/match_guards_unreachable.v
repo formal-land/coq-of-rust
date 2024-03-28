@@ -18,16 +18,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* number := M.alloc (Value.Integer Integer.U8 4) in
     let* α0 :=
-      match_operator
+      M.match_operator
         number
         [
           fun γ =>
             let* i := M.copy γ in
-            let* Γ :=
+            let* γ :=
               let* α0 := M.read i in
               M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U8 0)) in
             let* _ :=
-              let* α0 := M.read Γ in
+              let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -36,21 +36,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α2 := M.read (mk_str "Zero
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call_closure α0 [ α4 ] in
-              M.alloc α5 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "Zero
+") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α5 := M.call_closure α1 [ α4 ] in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* i := M.copy γ in
-            let* Γ :=
+            let* γ :=
               let* α0 := M.read i in
               M.alloc (BinOp.Pure.gt α0 (Value.Integer Integer.U8 0)) in
             let* _ :=
-              let* α0 := M.read Γ in
+              let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -59,13 +61,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α2 := M.read (mk_str "Greater than zero
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call_closure α0 [ α4 ] in
-              M.alloc α5 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "Greater than zero
+") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α5 := M.call_closure α1 [ α4 ] in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* α0 :=

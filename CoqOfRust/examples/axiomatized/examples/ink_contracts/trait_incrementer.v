@@ -2,14 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
-Module Increment.
-  
-End Increment.
+(* Empty module 'Increment' *)
 
 (* Trait *)
-Module Reset.
-  
-End Reset.
+(* Empty module 'Reset' *)
 
 (* StructRecord
   {

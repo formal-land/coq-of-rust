@@ -188,9 +188,7 @@ Axiom Result :
       [ T; Ty.path "trait_erc20::Error" ]).
 
 (* Trait *)
-Module BaseErc20.
-  
-End BaseErc20.
+(* Empty module 'BaseErc20' *)
 
 (* StructRecord
   {

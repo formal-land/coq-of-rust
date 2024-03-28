@@ -56,35 +56,35 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "`print`: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "i32" ] in
-          let* α6 := M.read self in
-          let* α7 :=
-            M.call_closure
-              α5
-              [
-                M.get_struct_tuple_field
+            (* Unsize *)
+              let* α2 := M.read (mk_str "`print`: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α10 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "i32" ] in
+              let* α7 := M.read self in
+              let* α8 :=
+                M.call_closure
                   α6
-                  "scoping_rules_lifetimes_methods::Owner"
-                  0
-              ] in
-          let* α8 := M.alloc (Value.Array [ α7 ]) in
-          let* α9 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α8
-              ] in
-          let* α10 := M.call_closure α0 [ α9 ] in
-          M.alloc α10 in
+                  [
+                    M.get_struct_tuple_field
+                      α7
+                      "scoping_rules_lifetimes_methods::Owner"
+                      0
+                  ] in
+              let* α9 := M.alloc (Value.Array [ α8 ]) in
+              M.pure (M.pointer_coercion α9) in
+          let* α11 := M.call_closure α1 [ α5; α10 ] in
+          let* α12 := M.call_closure α0 [ α11 ] in
+          M.alloc α12 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0

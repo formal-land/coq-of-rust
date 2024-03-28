@@ -14,7 +14,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
   | [ A ], [ o ] =>
     let* o := M.alloc o in
     let* α0 :=
-      match_operator
+      M.match_operator
         o
         [
           fun γ =>
@@ -31,13 +31,15 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α2 := M.read (mk_str "some
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call_closure α0 [ α4 ] in
-              M.alloc α5 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "some
+") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α5 := M.call_closure α1 [ α4 ] in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -47,13 +49,15 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α2 := M.read (mk_str "nothing
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call_closure α0 [ α4 ] in
-              M.alloc α5 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "nothing
+") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α5 := M.call_closure α1 [ α4 ] in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0
@@ -134,7 +138,7 @@ Module tests.
           ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
-        match_operator
+        M.match_operator
           α2
           [
             fun γ =>
@@ -152,7 +156,7 @@ Module tests.
                       [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
-                  match_operator
+                  M.match_operator
                     α2
                     [
                       fun γ =>
@@ -276,7 +280,7 @@ Module tests.
           ] in
       let* α2 := M.alloc α1 in
       let* α3 :=
-        match_operator
+        M.match_operator
           α2
           [
             fun γ =>
@@ -294,7 +298,7 @@ Module tests.
                       [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
-                  match_operator
+                  M.match_operator
                     α2
                     [
                       fun γ =>

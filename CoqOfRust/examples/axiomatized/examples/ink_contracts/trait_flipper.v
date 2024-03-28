@@ -2,9 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
-Module Flip.
-  
-End Flip.
+(* Empty module 'Flip' *)
 
 (* StructRecord
   {

@@ -29,8 +29,10 @@ pub(crate) struct MatchArm {
     pub(crate) pattern: Rc<Pattern>,
     /// We represent a boolean guard as an if-let guard with a pattern
     /// equals to the boolean [true]. Thus we do not need to distinguish
-    /// between boolean guards and if-let guards in the translation.
-    pub(crate) if_let_guard: Option<(Rc<Pattern>, Rc<Expr>)>,
+    /// between boolean guards and if-let guards in the translation. There can
+    /// be a list of conditions, for guards having several conditions separated
+    /// by the `&&` operator.
+    pub(crate) if_let_guard: Vec<(Rc<Pattern>, Rc<Expr>)>,
     pub(crate) body: Rc<Expr>,
 }
 
@@ -122,11 +124,6 @@ pub(crate) enum Expr {
         init: Rc<Expr>,
         body: Rc<Expr>,
     },
-    If {
-        condition: Rc<Expr>,
-        success: Rc<Expr>,
-        failure: Rc<Expr>,
-    },
     Loop {
         body: Rc<Expr>,
     },
@@ -139,24 +136,20 @@ pub(crate) enum Expr {
         path: Path,
         fields: Vec<(String, Rc<Expr>)>,
         base: Option<Rc<Expr>>,
-        struct_or_variant: StructOrVariant,
     },
     StructTuple {
         path: Path,
         fields: Vec<Rc<Expr>>,
-        struct_or_variant: StructOrVariant,
     },
     StructUnit {
         path: Path,
-        #[allow(dead_code)]
-        struct_or_variant: StructOrVariant,
     },
     Use(Rc<Expr>),
     InternalString(String),
     InternalInteger(usize),
     Return(Rc<Expr>),
     /// Useful for error messages or annotations
-    Message(String),
+    Comment(String, Rc<Expr>),
 }
 
 impl Expr {
@@ -470,22 +463,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 fresh_vars,
             )
         }
-        Expr::If {
-            condition,
-            success,
-            failure,
-        } => monadic_let(fresh_vars, condition.clone(), |fresh_vars, condition| {
-            let (success, _fresh_vars) = mt_expression(FreshVars::new(), success.clone());
-            let (failure, _fresh_vars) = mt_expression(FreshVars::new(), failure.clone());
-            (
-                Rc::new(Expr::If {
-                    condition,
-                    success,
-                    failure,
-                }),
-                fresh_vars,
-            )
-        }),
         Expr::Loop { body, .. } => {
             let (body, fresh_vars) = mt_expression(fresh_vars, body.clone());
             (Rc::new(Expr::Loop { body }), fresh_vars)
@@ -499,16 +476,10 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::ControlFlow(lcf_expression) => {
             (Rc::new(Expr::ControlFlow(*lcf_expression)), fresh_vars)
         }
-        Expr::StructStruct {
-            path,
-            fields,
-            base,
-            struct_or_variant,
-        } => {
+        Expr::StructStruct { path, fields, base } => {
             let path = path.clone();
             let fields = fields.clone();
             let base = base.clone();
-            let struct_or_variant = *struct_or_variant;
             let fields_values: Vec<Rc<Expr>> =
                 fields.iter().map(|(_, field)| field.clone()).collect();
 
@@ -528,7 +499,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                                     .map(|(name, value)| (name.clone(), value.clone()))
                                     .collect(),
                                 base,
-                                struct_or_variant,
                             })),
                             fresh_vars,
                         )
@@ -536,24 +506,15 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 }),
             )
         }
-        Expr::StructTuple {
-            path,
-            fields,
-            struct_or_variant,
-        } => {
+        Expr::StructTuple { path, fields } => {
             let path = path.clone();
-            let struct_or_variant = *struct_or_variant;
 
             monadic_lets(
                 fresh_vars,
                 fields.clone(),
                 Box::new(move |fresh_vars, fields| {
                     (
-                        pure(Rc::new(Expr::StructTuple {
-                            path,
-                            fields,
-                            struct_or_variant,
-                        })),
+                        pure(Rc::new(Expr::StructTuple { path, fields })),
                         fresh_vars,
                     )
                 }),
@@ -568,7 +529,11 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::Return(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
             (Rc::new(Expr::Return(expr)), fresh_vars)
         }),
-        Expr::Message(_) => (pure(expr), fresh_vars),
+        Expr::Comment(comment, expr) => {
+            let (expr, fresh_vars) = mt_expression(fresh_vars, expr.clone());
+
+            (Rc::new(Expr::Comment(comment.clone(), expr)), fresh_vars)
+        }
     }
 }
 
@@ -626,7 +591,7 @@ pub(crate) fn compile_hir_id(env: &Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<
 
     match result {
         Ok(expr) => expr,
-        Err(error) => Rc::new(Expr::Message(error)),
+        Err(error) => Rc::new(Expr::Comment(error, Expr::tt())),
     }
 }
 
@@ -886,27 +851,6 @@ impl Expr {
                     body.to_doc(false),
                 ]),
             ),
-            Expr::If {
-                condition,
-                success,
-                failure,
-            } => paren(
-                with_paren,
-                group([
-                    group([
-                        nest([
-                            text("if"),
-                            line(),
-                            nest([text("Value.is_true"), line(), condition.to_doc(true)]),
-                        ]),
-                        line(),
-                        text("then"),
-                    ]),
-                    nest([hardline(), success.to_doc(false)]),
-                    hardline(),
-                    nest([text("else"), hardline(), failure.to_doc(false)]),
-                ]),
-            ),
             Expr::Loop { body } => paren(
                 with_paren,
                 nest([text("M.loop"), line(), paren(true, body.to_doc(with_paren))]),
@@ -922,12 +866,7 @@ impl Expr {
                 ]),
             ),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_doc(),
-            Expr::StructStruct {
-                path,
-                fields,
-                base,
-                struct_or_variant: _,
-            } => match base {
+            Expr::StructStruct { path, fields, base } => match base {
                 None => paren(
                     with_paren,
                     nest([
@@ -969,11 +908,7 @@ impl Expr {
                     ])
                     .to_doc(with_paren),
             },
-            Expr::StructTuple {
-                path,
-                fields,
-                struct_or_variant: _,
-            } => coq::Expression::just_name("Value.StructTuple")
+            Expr::StructTuple { path, fields } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),
                     coq::Expression::List {
@@ -984,10 +919,7 @@ impl Expr {
                     },
                 ])
                 .to_doc(with_paren),
-            Expr::StructUnit {
-                path,
-                struct_or_variant: _,
-            } => coq::Expression::just_name("Value.StructTuple")
+            Expr::StructUnit { path } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),
                     coq::Expression::List { exprs: vec![] },
@@ -1000,7 +932,11 @@ impl Expr {
                 with_paren,
                 nest([text("M.return_"), line(), value.to_doc(true)]),
             ),
-            Expr::Message(message) => text(format!("(* {message} *)")),
+            Expr::Comment(message, expr) => nest([
+                text(format!("(* {message} *)")),
+                line(),
+                expr.to_doc(with_paren),
+            ]),
         }
     }
 }

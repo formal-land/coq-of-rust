@@ -245,10 +245,12 @@ impl<'a> TopLevel<'a> {
                         item.to_doc(previous_module_names.clone()),
                     ]);
                     let previous_module_names = match item {
-                        TopLevelItem::Module(module) => previous_module_names.insert(
-                            module.name.clone(),
-                            *previous_module_names.get(&module.name).unwrap_or(&0) + 1,
-                        ),
+                        TopLevelItem::Module(Module { name, items }) if !items.items.is_empty() => {
+                            previous_module_names.insert(
+                                name.clone(),
+                                *previous_module_names.get(name).unwrap_or(&0) + 1,
+                            )
+                        }
                         _ => previous_module_names,
                     };
 
@@ -290,6 +292,10 @@ impl<'a> Module<'a> {
     }
 
     pub(crate) fn to_doc(&self, previous_module_names: HashTrieMap<String, u64>) -> Doc<'a> {
+        if self.items.items.is_empty() {
+            return text(format!("(* Empty module '{}' *)", self.name));
+        }
+
         let items = self.items.to_doc();
         let inner_module = render::enclose("Module", self.name.to_owned(), true, items);
         let nb_repeat = *previous_module_names.get(&self.name).unwrap_or(&0);

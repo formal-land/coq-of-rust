@@ -14,9 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 (* Trait *)
-Module Animal.
-  
-End Animal.
+(* Empty module 'Animal' *)
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Sheep".
@@ -79,47 +77,75 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ random_number ] =>
     let* random_number := M.alloc random_number in
-    let* α0 := M.read random_number in
-    let* α1 := M.read UnsupportedLiteral in
-    let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-    let* α3 := M.read (M.use α2) in
-    let* α4 :=
-      if Value.is_true α3 then
-        let* α0 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "alloc::boxed::Box")
+    (* Unsize *)
+      let* α3 :=
+        (* Unsize *)
+          let* α0 := M.alloc (Value.Tuple []) in
+          let* α1 :=
+            M.match_operator
+              α0
               [
-                Ty.path "returning_traits_with_dyn::Sheep";
-                Ty.path "alloc::alloc::Global"
-              ])
-            "new"
-            [] in
-        let* α1 :=
-          M.call_closure
-            α0
-            [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ] in
-        M.alloc
-          (M.pointer_coercion (* Unsize *) (M.pointer_coercion (* Unsize *) α1))
-      else
-        let* α0 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "alloc::boxed::Box")
-              [
-                Ty.path "returning_traits_with_dyn::Cow";
-                Ty.path "alloc::alloc::Global"
-              ])
-            "new"
-            [] in
-        let* α1 :=
-          M.call_closure
-            α0
-            [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ] in
-        M.alloc (M.pointer_coercion (* Unsize *) α1) in
-    let* α5 := M.read α4 in
-    M.pure
-      (M.pointer_coercion (* Unsize *) (M.pointer_coercion (* Unsize *) α5))
+                fun γ =>
+                  let* γ :=
+                    let* α0 := M.read random_number in
+                    let* α1 := M.read UnsupportedLiteral in
+                    let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                    M.pure (M.use α2) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* α3 :=
+                    (* Unsize *)
+                      let* α2 :=
+                        (* Unsize *)
+                          let* α0 :=
+                            M.get_associated_function
+                              (Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                [
+                                  Ty.path "returning_traits_with_dyn::Sheep";
+                                  Ty.path "alloc::alloc::Global"
+                                ])
+                              "new"
+                              [] in
+                          let* α1 :=
+                            M.call_closure
+                              α0
+                              [
+                                Value.StructTuple
+                                  "returning_traits_with_dyn::Sheep"
+                                  []
+                              ] in
+                          M.pure (M.pointer_coercion α1) in
+                      M.pure (M.pointer_coercion α2) in
+                  M.alloc α3;
+                fun γ =>
+                  let* α2 :=
+                    (* Unsize *)
+                      let* α0 :=
+                        M.get_associated_function
+                          (Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            [
+                              Ty.path "returning_traits_with_dyn::Cow";
+                              Ty.path "alloc::alloc::Global"
+                            ])
+                          "new"
+                          [] in
+                      let* α1 :=
+                        M.call_closure
+                          α0
+                          [
+                            Value.StructTuple
+                              "returning_traits_with_dyn::Cow"
+                              []
+                          ] in
+                      M.pure (M.pointer_coercion α1) in
+                  M.alloc α2
+              ] in
+          let* α2 := M.read α1 in
+          M.pure (M.pointer_coercion α2) in
+      M.pure (M.pointer_coercion α3)
   | _, _ => M.impossible
   end.
 
@@ -150,37 +176,38 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 :=
-          M.read (mk_str "You've randomly chosen an animal, and it says ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α6 :=
-          M.get_trait_method
-            "returning_traits_with_dyn::Animal"
-            (Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ])
-            []
-            "noise"
-            [] in
-        let* α7 := M.read animal in
-        let* α8 := M.call_closure α6 [ α7 ] in
-        let* α9 := M.alloc α8 in
-        let* α10 := M.call_closure α5 [ α9 ] in
-        let* α11 := M.alloc (Value.Array [ α10 ]) in
-        let* α12 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α11
-            ] in
-        let* α13 := M.call_closure α0 [ α12 ] in
-        M.alloc α13 in
+          (* Unsize *)
+            let* α2 :=
+              M.read
+                (mk_str "You've randomly chosen an animal, and it says ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α13 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+            let* α7 :=
+              M.get_trait_method
+                "returning_traits_with_dyn::Animal"
+                (Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ])
+                []
+                "noise"
+                [] in
+            let* α8 := M.read animal in
+            let* α9 := M.call_closure α7 [ α8 ] in
+            let* α10 := M.alloc α9 in
+            let* α11 := M.call_closure α6 [ α10 ] in
+            let* α12 := M.alloc (Value.Array [ α11 ]) in
+            M.pure (M.pointer_coercion α12) in
+        let* α14 := M.call_closure α1 [ α5; α13 ] in
+        let* α15 := M.call_closure α0 [ α14 ] in
+        M.alloc α15 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

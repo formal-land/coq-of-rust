@@ -30,9 +30,7 @@ End Impl_functions_order_SomeType.
 Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.
 
 (* Trait *)
-Module SomeTrait.
-  
-End SomeTrait.
+(* Empty module 'SomeTrait' *)
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Definition Self : Ty.t := Ty.path "functions_order::SomeType".

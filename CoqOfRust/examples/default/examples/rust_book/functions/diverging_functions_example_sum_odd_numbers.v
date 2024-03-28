@@ -37,32 +37,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "u32" ] in
-        let* α6 :=
-          M.get_function
-            "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers"
-            [] in
-        let* α7 := M.call_closure α6 [ Value.Integer Integer.U32 9 ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 :=
+              M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "u32" ] in
+            let* α7 :=
+              M.get_function
+                "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers"
+                [] in
+            let* α8 := M.call_closure α7 [ Value.Integer Integer.U32 9 ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
@@ -113,7 +114,7 @@ Module main.
             ] in
         let* α3 := M.alloc α2 in
         let* α4 :=
-          match_operator
+          M.match_operator
             α3
             [
               fun γ =>
@@ -131,7 +132,7 @@ Module main.
                         [] in
                     let* α1 := M.call_closure α0 [ iter ] in
                     let* α2 := M.alloc α1 in
-                    match_operator
+                    M.match_operator
                       α2
                       [
                         fun γ =>
@@ -158,7 +159,7 @@ Module main.
                                   α1
                                   (Value.Integer Integer.U32 1)) in
                             let* α3 :=
-                              match_operator
+                              M.match_operator
                                 α2
                                 [
                                   fun γ =>

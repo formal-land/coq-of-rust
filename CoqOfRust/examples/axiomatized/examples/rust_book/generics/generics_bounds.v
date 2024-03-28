@@ -2,9 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
-Module HasArea.
-  
-End HasArea.
+(* Empty module 'HasArea' *)
 
 (* StructRecord
   {

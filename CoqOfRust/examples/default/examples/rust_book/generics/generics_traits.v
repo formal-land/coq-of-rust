@@ -14,9 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 (* Trait *)
-Module DoubleDrop.
-  
-End DoubleDrop.
+(* Empty module 'DoubleDrop' *)
 
 Module Impl_generics_traits_DoubleDrop_T_for_U.
   Definition Self (T U : Ty.t) : Ty.t := U.
@@ -30,7 +28,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
     | [], [ self; β1 ] =>
       let* self := M.alloc self in
       let* β1 := M.alloc β1 in
-      match_operator β1 [ fun γ => M.pure (Value.Tuple []) ]
+      M.match_operator β1 [ fun γ => M.pure (Value.Tuple []) ]
     | _, _ => M.impossible
     end.
   

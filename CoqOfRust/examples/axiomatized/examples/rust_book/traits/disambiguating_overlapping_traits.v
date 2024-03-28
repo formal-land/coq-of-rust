@@ -2,14 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
-Module UsernameWidget.
-  
-End UsernameWidget.
+(* Empty module 'UsernameWidget' *)
 
 (* Trait *)
-Module AgeWidget.
-  
-End AgeWidget.
+(* Empty module 'AgeWidget' *)
 
 (* StructRecord
   {

@@ -2,7 +2,6 @@ use crate::env::emit_warning_with_note;
 use crate::env::Env;
 use crate::expression::*;
 use crate::path::*;
-use itertools::Itertools;
 use std::rc::Rc;
 use std::vec;
 
@@ -29,120 +28,6 @@ pub(crate) enum Pattern {
 }
 
 impl Pattern {
-    /// Because the function from the standard library returns nothing instead
-    /// of an empty iterator when the input is empty.
-    fn multi_cartesian_product_with_empty_case<A: Iterator>(
-        iterator: A,
-    ) -> Vec<Vec<<A::Item as IntoIterator>::Item>>
-    where
-        A: Sized,
-        A::Item: IntoIterator,
-        <A::Item as IntoIterator>::IntoIter: Clone,
-        <A::Item as IntoIterator>::Item: Clone,
-    {
-        let combinations = iterator.multi_cartesian_product().collect::<Vec<_>>();
-        if combinations.is_empty() {
-            vec![vec![]]
-        } else {
-            combinations
-        }
-    }
-
-    pub(crate) fn flatten_ors(self: &Rc<Pattern>) -> Vec<Rc<Pattern>> {
-        match self.as_ref() {
-            Pattern::Wild => vec![self.clone()],
-            Pattern::Binding {
-                name,
-                is_with_ref,
-                pattern,
-            } => match pattern {
-                None => vec![self.clone()],
-                Some(pattern) => pattern
-                    .flatten_ors()
-                    .into_iter()
-                    .map(|pattern| {
-                        Rc::new(Pattern::Binding {
-                            name: name.clone(),
-                            is_with_ref: *is_with_ref,
-                            pattern: Some(pattern),
-                        })
-                    })
-                    .collect(),
-            },
-            Pattern::StructRecord(path, fields) => {
-                Pattern::multi_cartesian_product_with_empty_case(fields.iter().map(
-                    |(name, pattern)| {
-                        pattern
-                            .flatten_ors()
-                            .into_iter()
-                            .map(|pattern| (name.clone(), pattern))
-                    },
-                ))
-                .into_iter()
-                .map(|fields| Rc::new(Pattern::StructRecord(path.clone(), fields)))
-                .collect()
-            }
-            Pattern::StructTuple(path, patterns) => {
-                Pattern::multi_cartesian_product_with_empty_case(
-                    patterns.iter().map(|pattern| pattern.flatten_ors()),
-                )
-                .into_iter()
-                .map(|patterns| Rc::new(Pattern::StructTuple(path.clone(), patterns)))
-                .collect()
-            }
-            Pattern::Deref(pattern) => pattern
-                .flatten_ors()
-                .into_iter()
-                .map(|pattern| Rc::new(Pattern::Deref(pattern)))
-                .collect(),
-            Pattern::Or(patterns) => patterns
-                .iter()
-                .flat_map(|pattern| pattern.flatten_ors())
-                .collect(),
-            Pattern::Tuple(patterns) => Pattern::multi_cartesian_product_with_empty_case(
-                patterns.iter().map(|pattern| pattern.flatten_ors()),
-            )
-            .into_iter()
-            .map(|patterns| Rc::new(Pattern::Tuple(patterns)))
-            .collect(),
-            Pattern::Literal(_) => vec![self.clone()],
-            Pattern::Slice {
-                prefix_patterns,
-                slice_pattern,
-                suffix_patterns,
-            } => Pattern::multi_cartesian_product_with_empty_case(
-                prefix_patterns
-                    .iter()
-                    .map(|prefix_pattern| prefix_pattern.flatten_ors()),
-            )
-            .into_iter()
-            .zip(Pattern::multi_cartesian_product_with_empty_case(
-                suffix_patterns
-                    .iter()
-                    .map(|suffix_pattern| suffix_pattern.flatten_ors()),
-            ))
-            .flat_map(|(prefix_patterns, suffix_patterns)| match slice_pattern {
-                None => vec![Rc::new(Pattern::Slice {
-                    prefix_patterns,
-                    slice_pattern: None,
-                    suffix_patterns,
-                })],
-                Some(slice_pattern) => slice_pattern
-                    .flatten_ors()
-                    .into_iter()
-                    .map(|slice_pattern| {
-                        Rc::new(Pattern::Slice {
-                            prefix_patterns: prefix_patterns.clone(),
-                            slice_pattern: Some(slice_pattern),
-                            suffix_patterns: suffix_patterns.clone(),
-                        })
-                    })
-                    .collect(),
-            })
-            .collect(),
-        }
-    }
-
     /// This function is a bit redundant with [crate::thir_pattern::compile_pattern]. It is used to
     /// translate the patterns in HIR form, that appear only in function parameters. In particular,
     /// these patterns should always be exhaustive, so we do not need to handle all the cases.
@@ -151,7 +36,7 @@ impl Pattern {
             rustc_hir::PatKind::Wild => Rc::new(Pattern::Wild),
             rustc_hir::PatKind::Binding(binding_annotation, _, ident, sub_pattern) => {
                 Rc::new(Pattern::Binding {
-                    name: ident.to_string(),
+                    name: to_valid_coq_name(IsValue::Yes, ident.as_str()),
                     is_with_ref: matches!(
                         binding_annotation,
                         rustc_hir::BindingAnnotation(rustc_hir::ByRef::Yes, _)
@@ -208,6 +93,64 @@ impl Pattern {
 
                 Rc::new(Pattern::Literal(Rc::new(Literal::Error)))
             }
+        }
+    }
+
+    /// We return a vector, and we know that each variable of this vector is unique
+    /// as we can only bound a variable once in a pattern.
+    pub(crate) fn get_free_vars(&self) -> Vec<String> {
+        match self {
+            Pattern::Wild => vec![],
+            Pattern::Binding {
+                name,
+                is_with_ref: _,
+                pattern,
+            } => {
+                let mut free_vars = vec![name.clone()];
+
+                if let Some(pattern) = pattern {
+                    free_vars.extend(pattern.get_free_vars());
+                }
+
+                free_vars
+            }
+            Pattern::StructRecord(_, fields) => fields
+                .iter()
+                .flat_map(|(_, pattern)| pattern.get_free_vars())
+                .collect(),
+            Pattern::StructTuple(_, patterns) => patterns
+                .iter()
+                .flat_map(|pattern| pattern.get_free_vars())
+                .collect(),
+            Pattern::Deref(pattern) => pattern.get_free_vars(),
+            Pattern::Or(patterns) => match &patterns[..] {
+                [] => vec![],
+                // All branches must have the same free variables.
+                [pattern, ..] => pattern.get_free_vars(),
+            },
+            Pattern::Tuple(patterns) => patterns
+                .iter()
+                .flat_map(|pattern| pattern.get_free_vars())
+                .collect(),
+            Pattern::Literal(_) => vec![],
+            Pattern::Slice {
+                prefix_patterns,
+                slice_pattern,
+                suffix_patterns,
+            } => prefix_patterns
+                .iter()
+                .flat_map(|pattern| pattern.get_free_vars())
+                .chain(
+                    slice_pattern
+                        .as_ref()
+                        .map_or(vec![], |pattern| pattern.get_free_vars()),
+                )
+                .chain(
+                    suffix_patterns
+                        .iter()
+                        .flat_map(|pattern| pattern.get_free_vars()),
+                )
+                .collect(),
         }
     }
 }

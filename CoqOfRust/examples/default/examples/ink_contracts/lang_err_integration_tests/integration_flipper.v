@@ -105,21 +105,29 @@ Module Impl_integration_flipper_Flipper.
     match τ, α with
     | [], [ succeed ] =>
       let* succeed := M.alloc succeed in
-      let* α0 := M.read (M.use succeed) in
+      let* α0 := M.alloc (Value.Tuple []) in
       let* α1 :=
-        if Value.is_true α0 then
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "integration_flipper::Flipper")
-              "new"
-              [] in
-          let* α1 := M.call_closure α0 [ Value.Bool true ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
-        else
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [ Value.StructTuple "integration_flipper::FlipperError" [] ]) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let γ := M.use succeed in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.path "integration_flipper::Flipper")
+                  "new"
+                  [] in
+              let* α1 := M.call_closure α0 [ Value.Bool true ] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]);
+            fun γ =>
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ Value.StructTuple "integration_flipper::FlipperError" [] ])
+          ] in
       M.read α1
     | _, _ => M.impossible
     end.

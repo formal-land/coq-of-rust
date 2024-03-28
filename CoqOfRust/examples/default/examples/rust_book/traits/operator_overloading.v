@@ -91,7 +91,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
   (*
       type Output = FooBar;
   *)
-  Definition Output : Ty.t := Ty.path "operator_overloading::FooBar".
+  Definition _Output : Ty.t := Ty.path "operator_overloading::FooBar".
   
   (*
       fn add(self, _rhs: Bar) -> FooBar {
@@ -113,12 +113,15 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
               (Ty.path "core::fmt::Arguments")
               "new_const"
               [] in
-          let* α2 := M.read (mk_str "> Foo.add(Bar) was called
+          let* α4 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "> Foo.add(Bar) was called
 ") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call_closure α0 [ α4 ] in
-          M.alloc α5 in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              M.pure (M.pointer_coercion α3) in
+          let* α5 := M.call_closure α1 [ α4 ] in
+          let* α6 := M.call_closure α0 [ α5 ] in
+          M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* α0 :=
         M.alloc (Value.StructTuple "operator_overloading::FooBar" []) in
@@ -133,7 +136,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
       (* Instance *)
-        [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
+        [
+          ("Output", InstanceField.Ty _Output);
+          ("add", InstanceField.Method add)
         ].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
@@ -143,7 +148,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
   (*
       type Output = BarFoo;
   *)
-  Definition Output : Ty.t := Ty.path "operator_overloading::BarFoo".
+  Definition _Output : Ty.t := Ty.path "operator_overloading::BarFoo".
   
   (*
       fn add(self, _rhs: Foo) -> BarFoo {
@@ -165,12 +170,15 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
               (Ty.path "core::fmt::Arguments")
               "new_const"
               [] in
-          let* α2 := M.read (mk_str "> Bar.add(Foo) was called
+          let* α4 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "> Bar.add(Foo) was called
 ") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call_closure α0 [ α4 ] in
-          M.alloc α5 in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              M.pure (M.pointer_coercion α3) in
+          let* α5 := M.call_closure α1 [ α4 ] in
+          let* α6 := M.call_closure α0 [ α5 ] in
+          M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* α0 :=
         M.alloc (Value.StructTuple "operator_overloading::BarFoo" []) in
@@ -185,7 +193,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
       (* Instance *)
-        [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
+        [
+          ("Output", InstanceField.Ty _Output);
+          ("add", InstanceField.Method add)
         ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
@@ -206,41 +216,41 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Foo + Bar = ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [ Ty.path "operator_overloading::FooBar" ] in
-        let* α6 :=
-          M.get_trait_method
-            "core::ops::arith::Add"
-            (Ty.path "operator_overloading::Foo")
-            [ Ty.path "operator_overloading::Bar" ]
-            "add"
-            [] in
-        let* α7 :=
-          M.call_closure
-            α6
-            [
-              Value.StructTuple "operator_overloading::Foo" [];
-              Value.StructTuple "operator_overloading::Bar" []
-            ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Foo + Bar = ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [ Ty.path "operator_overloading::FooBar" ] in
+            let* α7 :=
+              M.get_trait_method
+                "core::ops::arith::Add"
+                (Ty.path "operator_overloading::Foo")
+                [ Ty.path "operator_overloading::Bar" ]
+                "add"
+                [] in
+            let* α8 :=
+              M.call_closure
+                α7
+                [
+                  Value.StructTuple "operator_overloading::Foo" [];
+                  Value.StructTuple "operator_overloading::Bar" []
+                ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -250,41 +260,41 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Bar + Foo = ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [ Ty.path "operator_overloading::BarFoo" ] in
-        let* α6 :=
-          M.get_trait_method
-            "core::ops::arith::Add"
-            (Ty.path "operator_overloading::Bar")
-            [ Ty.path "operator_overloading::Foo" ]
-            "add"
-            [] in
-        let* α7 :=
-          M.call_closure
-            α6
-            [
-              Value.StructTuple "operator_overloading::Bar" [];
-              Value.StructTuple "operator_overloading::Foo" []
-            ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Bar + Foo = ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [ Ty.path "operator_overloading::BarFoo" ] in
+            let* α7 :=
+              M.get_trait_method
+                "core::ops::arith::Add"
+                (Ty.path "operator_overloading::Bar")
+                [ Ty.path "operator_overloading::Foo" ]
+                "add"
+                [] in
+            let* α8 :=
+              M.call_closure
+                α7
+                [
+                  Value.StructTuple "operator_overloading::Bar" [];
+                  Value.StructTuple "operator_overloading::Foo" []
+                ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

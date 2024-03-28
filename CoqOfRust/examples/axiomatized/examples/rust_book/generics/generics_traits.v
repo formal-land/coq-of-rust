@@ -14,9 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 (* Trait *)
-Module DoubleDrop.
-  
-End DoubleDrop.
+(* Empty module 'DoubleDrop' *)
 
 Module Impl_generics_traits_DoubleDrop_T_for_U.
   Definition Self (T U : Ty.t) : Ty.t := U.

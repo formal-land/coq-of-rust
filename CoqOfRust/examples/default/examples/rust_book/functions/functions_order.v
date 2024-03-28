@@ -100,9 +100,7 @@ Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 (* Trait *)
-Module SomeTrait.
-  
-End SomeTrait.
+(* Empty module 'SomeTrait' *)
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Definition Self : Ty.t := Ty.path "functions_order::SomeType".

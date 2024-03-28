@@ -1,13 +1,61 @@
 error[E0658]: `if let` guards are experimental
- --> examples/custom/if_let.rs:9:17
-  |
-9 |         Some(_) if let Some(y) = x => println!("match: {y}"),
-  |                 ^^^^^^^^^^^^^^^^^^
-  |
-  = note: see issue #51114 <https://github.com/rust-lang/rust/issues/51114> for more information
-  = help: add `#![feature(if_let_guard)]` to the crate attributes to enable
-  = help: you can write `if matches!(<expr>, <pattern>)` instead of `if let <pattern> = <expr>`
+  --> examples/custom/if_let.rs:26:17
+   |
+26 |         Some(_) if let Some(y) = x => println!("match: {y}"),
+   |                 ^^^^^^^^^^^^^^^^^^
+   |
+   = note: see issue #51114 <https://github.com/rust-lang/rust/issues/51114> for more information
+   = help: add `#![feature(if_let_guard)]` to the crate attributes to enable
+   = help: you can write `if matches!(<expr>, <pattern>)` instead of `if let <pattern> = <expr>`
 
-error: aborting due to 1 previous error
+error[E0658]: `if let` guards are experimental
+  --> examples/custom/if_let.rs:39:13
+   |
+39 | /             if let Some(y) = x
+40 | |                 && y > 3
+41 | |                 && let Some(z) = x =>
+   | |__________________________________^
+   |
+   = note: see issue #51114 <https://github.com/rust-lang/rust/issues/51114> for more information
+   = help: add `#![feature(if_let_guard)]` to the crate attributes to enable
+   = help: you can write `if matches!(<expr>, <pattern>)` instead of `if let <pattern> = <expr>`
+
+error[E0658]: `let` expressions in this position are unstable
+  --> examples/custom/if_let.rs:30:8
+   |
+30 |     if let Some(y) = x
+   |        ^^^^^^^^^^^^^^^
+   |
+   = note: see issue #53667 <https://github.com/rust-lang/rust/issues/53667> for more information
+   = help: add `#![feature(let_chains)]` to the crate attributes to enable
+
+error[E0658]: `let` expressions in this position are unstable
+  --> examples/custom/if_let.rs:32:12
+   |
+32 |         && let Some(z) = x
+   |            ^^^^^^^^^^^^^^^
+   |
+   = note: see issue #53667 <https://github.com/rust-lang/rust/issues/53667> for more information
+   = help: add `#![feature(let_chains)]` to the crate attributes to enable
+
+error[E0658]: `let` expressions in this position are unstable
+  --> examples/custom/if_let.rs:39:16
+   |
+39 |             if let Some(y) = x
+   |                ^^^^^^^^^^^^^^^
+   |
+   = note: see issue #53667 <https://github.com/rust-lang/rust/issues/53667> for more information
+   = help: add `#![feature(let_chains)]` to the crate attributes to enable
+
+error[E0658]: `let` expressions in this position are unstable
+  --> examples/custom/if_let.rs:41:20
+   |
+41 |                 && let Some(z) = x =>
+   |                    ^^^^^^^^^^^^^^^
+   |
+   = note: see issue #53667 <https://github.com/rust-lang/rust/issues/53667> for more information
+   = help: add `#![feature(let_chains)]` to the crate attributes to enable
+
+error: aborting due to 6 previous errors
 
 For more information about this error, try `rustc --explain E0658`.

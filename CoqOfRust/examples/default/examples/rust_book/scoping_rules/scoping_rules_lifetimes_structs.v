@@ -26,14 +26,17 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Borrowed") in
-      let* α3 := M.read self in
-      let* α4 :=
-        M.alloc
-          (M.get_struct_tuple_field
-            α3
-            "scoping_rules_lifetimes_structs::Borrowed"
-            0) in
-      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      let* α5 :=
+        (* Unsize *)
+          let* α3 := M.read self in
+          let* α4 :=
+            M.alloc
+              (M.get_struct_tuple_field
+                α3
+                "scoping_rules_lifetimes_structs::Borrowed"
+                0) in
+          M.pure (M.pointer_coercion α4) in
+      M.call_closure α0 [ α1; α2; α5 ]
     | _, _ => M.impossible
     end.
   
@@ -76,30 +79,27 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "NamedBorrowed") in
       let* α3 := M.read (mk_str "x") in
-      let* α4 := M.read self in
-      let* α5 := M.read (mk_str "y") in
-      let* α6 := M.read self in
-      let* α7 :=
-        M.alloc
-          (M.get_struct_record_field
-            α6
-            "scoping_rules_lifetimes_structs::NamedBorrowed"
-            "y") in
-      M.call_closure
-        α0
-        [
-          α1;
-          α2;
-          α3;
-          M.pointer_coercion
-            (* Unsize *)
-            (M.get_struct_record_field
-              α4
-              "scoping_rules_lifetimes_structs::NamedBorrowed"
-              "x");
-          α5;
-          M.pointer_coercion (* Unsize *) α7
-        ]
+      let* α5 :=
+        (* Unsize *)
+          let* α4 := M.read self in
+          M.pure
+            (M.pointer_coercion
+              (M.get_struct_record_field
+                α4
+                "scoping_rules_lifetimes_structs::NamedBorrowed"
+                "x")) in
+      let* α6 := M.read (mk_str "y") in
+      let* α9 :=
+        (* Unsize *)
+          let* α7 := M.read self in
+          let* α8 :=
+            M.alloc
+              (M.get_struct_record_field
+                α7
+                "scoping_rules_lifetimes_structs::NamedBorrowed"
+                "y") in
+          M.pure (M.pointer_coercion α8) in
+      M.call_closure α0 [ α1; α2; α3; α5; α6; α9 ]
     | _, _ => M.impossible
     end.
   
@@ -141,7 +141,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        match_operator
+        M.match_operator
           self
           [
             fun γ =>
@@ -159,11 +159,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                   [] in
               let* α1 := M.read f in
               let* α2 := M.read (mk_str "Num") in
-              let* α3 :=
-                M.call_closure
-                  α0
-                  [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-              M.alloc α3;
+              let* α3 := (* Unsize *) M.pure (M.pointer_coercion __self_0) in
+              let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
+              M.alloc α4;
             fun γ =>
               let* γ := M.read γ in
               let* γ1_0 :=
@@ -179,11 +177,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                   [] in
               let* α1 := M.read f in
               let* α2 := M.read (mk_str "Ref") in
-              let* α3 :=
-                M.call_closure
-                  α0
-                  [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-              M.alloc α3
+              let* α3 := (* Unsize *) M.pure (M.pointer_coercion __self_0) in
+              let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
+              M.alloc α4
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -245,26 +241,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "x is borrowed in ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ] in
-        let* α6 := M.call_closure α5 [ single ] in
-        let* α7 := M.alloc (Value.Array [ α6 ]) in
-        let* α8 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α7
-            ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        M.alloc α9 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "x is borrowed in ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α9 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ] in
+            let* α7 := M.call_closure α6 [ single ] in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
+        let* α10 := M.call_closure α1 [ α5; α9 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -274,26 +270,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "x and y are borrowed in ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ] in
-        let* α6 := M.call_closure α5 [ double ] in
-        let* α7 := M.alloc (Value.Array [ α6 ]) in
-        let* α8 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α7
-            ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        M.alloc α9 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "x and y are borrowed in ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α9 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ] in
+            let* α7 := M.call_closure α6 [ double ] in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
+        let* α10 := M.call_closure α1 [ α5; α9 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -303,26 +299,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "x is borrowed in ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [ Ty.path "scoping_rules_lifetimes_structs::Either" ] in
-        let* α6 := M.call_closure α5 [ reference ] in
-        let* α7 := M.alloc (Value.Array [ α6 ]) in
-        let* α8 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α7
-            ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        M.alloc α9 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "x is borrowed in ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α9 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [ Ty.path "scoping_rules_lifetimes_structs::Either" ] in
+            let* α7 := M.call_closure α6 [ reference ] in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
+        let* α10 := M.call_closure α1 [ α5; α9 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -332,26 +328,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "y is *not* borrowed in ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [ Ty.path "scoping_rules_lifetimes_structs::Either" ] in
-        let* α6 := M.call_closure α5 [ number ] in
-        let* α7 := M.alloc (Value.Array [ α6 ]) in
-        let* α8 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α7
-            ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        M.alloc α9 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "y is *not* borrowed in ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α9 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [ Ty.path "scoping_rules_lifetimes_structs::Either" ] in
+            let* α7 := M.call_closure α6 [ number ] in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
+        let* α10 := M.call_closure α1 [ α5; α9 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

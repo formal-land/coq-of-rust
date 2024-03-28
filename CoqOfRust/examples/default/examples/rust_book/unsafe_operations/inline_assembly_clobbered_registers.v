@@ -55,10 +55,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "unwrap"
           [] in
       let* α1 := M.get_function "core::str::converts::from_utf8" [] in
-      let* α2 :=
-        M.call_closure α1 [ M.pointer_coercion (* Unsize *) name_buf ] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      M.alloc α3 in
+      let* α2 := (* Unsize *) M.pure (M.pointer_coercion name_buf) in
+      let* α3 := M.call_closure α1 [ α2 ] in
+      let* α4 := M.call_closure α0 [ α3 ] in
+      M.alloc α4 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -67,26 +67,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "CPU Manufacturer ID: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α6 := M.call_closure α5 [ name ] in
-        let* α7 := M.alloc (Value.Array [ α6 ]) in
-        let* α8 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α7
-            ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        M.alloc α9 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "CPU Manufacturer ID: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α9 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+            let* α7 := M.call_closure α6 [ name ] in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
+        let* α10 := M.call_closure α1 [ α5; α9 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

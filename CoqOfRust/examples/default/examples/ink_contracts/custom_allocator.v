@@ -33,25 +33,28 @@ Module Impl_custom_allocator_CustomAllocator.
           (Ty.apply (Ty.path "slice") [ Ty.path "bool" ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [
-              Ty.apply (Ty.path "array") [ Ty.path "bool" ];
-              Ty.path "alloc::alloc::Global"
-            ])
-          "new"
-          [] in
-      let* α2 := M.read init_value in
-      let* α3 := M.alloc (Value.Array [ α2 ]) in
-      let* α4 := M.call_closure α1 [ α3 ] in
-      let* α5 := M.read α4 in
-      let* α6 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α5 ] in
+      let* α6 :=
+        (* Unsize *)
+          let* α1 :=
+            M.get_associated_function
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "bool" ];
+                  Ty.path "alloc::alloc::Global"
+                ])
+              "new"
+              [] in
+          let* α2 := M.read init_value in
+          let* α3 := M.alloc (Value.Array [ α2 ]) in
+          let* α4 := M.call_closure α1 [ α3 ] in
+          let* α5 := M.read α4 in
+          M.pure (M.pointer_coercion α5) in
+      let* α7 := M.call_closure α0 [ α6 ] in
       M.pure
         (Value.StructRecord
           "custom_allocator::CustomAllocator"
-          [ ("value", α6) ])
+          [ ("value", α7) ])
     | _, _ => M.impossible
     end.
   

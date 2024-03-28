@@ -42,37 +42,40 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "My path is ") in
-        let* α3 := M.read (mk_str ".
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "alloc::string::String" ] in
-        let* α6 :=
-          M.get_trait_method
-            "core::ops::index::Index"
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-              ])
-            [ Ty.path "usize" ]
-            "index"
-            [] in
-        let* α7 := M.call_closure α6 [ args; Value.Integer Integer.Usize 0 ] in
-        let* α8 := M.call_closure α5 [ α7 ] in
-        let* α9 := M.alloc (Value.Array [ α8 ]) in
-        let* α10 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α9
-            ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "My path is ") in
+            let* α3 := M.read (mk_str ".
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α11 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "alloc::string::String" ] in
+            let* α7 :=
+              M.get_trait_method
+                "core::ops::index::Index"
+                (Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ])
+                [ Ty.path "usize" ]
+                "index"
+                [] in
+            let* α8 :=
+              M.call_closure α7 [ args; Value.Integer Integer.Usize 0 ] in
+            let* α9 := M.call_closure α6 [ α8 ] in
+            let* α10 := M.alloc (Value.Array [ α9 ]) in
+            M.pure (M.pointer_coercion α10) in
+        let* α12 := M.call_closure α1 [ α5; α11 ] in
+        let* α13 := M.call_closure α0 [ α12 ] in
+        M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -82,73 +85,80 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "I got ") in
-        let* α3 := M.read (mk_str " arguments: ") in
-        let* α4 := M.read (mk_str ".
-") in
-        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [ Ty.path "usize" ] in
-        let* α7 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-              ])
-            "len"
-            [] in
-        let* α8 := M.call_closure α7 [ args ] in
-        let* α9 := BinOp.Panic.sub α8 (Value.Integer Integer.Usize 1) in
-        let* α10 := M.alloc α9 in
-        let* α11 := M.call_closure α6 [ α10 ] in
-        let* α12 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_debug"
-            [
-              Ty.apply
-                (Ty.path "&")
-                [ Ty.apply (Ty.path "slice") [ Ty.path "alloc::string::String" ]
+          (* Unsize *)
+            let* α2 := M.read (mk_str "I got ") in
+            let* α3 := M.read (mk_str " arguments: ") in
+            let* α4 := M.read (mk_str ".
+") in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+            M.pure (M.pointer_coercion α5) in
+        let* α19 :=
+          (* Unsize *)
+            let* α7 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [ Ty.path "usize" ] in
+            let* α8 :=
+              M.get_associated_function
+                (Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ])
+                "len"
+                [] in
+            let* α9 := M.call_closure α8 [ args ] in
+            let* α10 := BinOp.Panic.sub α9 (Value.Integer Integer.Usize 1) in
+            let* α11 := M.alloc α10 in
+            let* α12 := M.call_closure α7 [ α11 ] in
+            let* α13 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_debug"
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        [ Ty.path "alloc::string::String" ]
+                    ]
+                ] in
+            let* α14 :=
+              M.get_trait_method
+                "core::ops::index::Index"
+                (Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ])
+                [
+                  Ty.apply
+                    (Ty.path "core::ops::range::RangeFrom")
+                    [ Ty.path "usize" ]
                 ]
-            ] in
-        let* α13 :=
-          M.get_trait_method
-            "core::ops::index::Index"
-            (Ty.apply
-              (Ty.path "alloc::vec::Vec")
-              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-              ])
-            [
-              Ty.apply
-                (Ty.path "core::ops::range::RangeFrom")
-                [ Ty.path "usize" ]
-            ]
-            "index"
-            [] in
-        let* α14 :=
-          M.call_closure
-            α13
-            [
-              args;
-              Value.StructRecord
-                "core::ops::range::RangeFrom"
-                [ ("start", Value.Integer Integer.Usize 1) ]
-            ] in
-        let* α15 := M.alloc α14 in
-        let* α16 := M.call_closure α12 [ α15 ] in
-        let* α17 := M.alloc (Value.Array [ α11; α16 ]) in
-        let* α18 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α5;
-              M.pointer_coercion (* Unsize *) α17
-            ] in
-        let* α19 := M.call_closure α0 [ α18 ] in
-        M.alloc α19 in
+                "index"
+                [] in
+            let* α15 :=
+              M.call_closure
+                α14
+                [
+                  args;
+                  Value.StructRecord
+                    "core::ops::range::RangeFrom"
+                    [ ("start", Value.Integer Integer.Usize 1) ]
+                ] in
+            let* α16 := M.alloc α15 in
+            let* α17 := M.call_closure α13 [ α16 ] in
+            let* α18 := M.alloc (Value.Array [ α12; α17 ]) in
+            M.pure (M.pointer_coercion α18) in
+        let* α20 := M.call_closure α1 [ α6; α19 ] in
+        let* α21 := M.call_closure α0 [ α20 ] in
+        M.alloc α21 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

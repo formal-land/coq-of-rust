@@ -179,25 +179,37 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ("phone", Value.Integer Integer.U64 5556667777)
           ]) in
     let* _ :=
-      let* α0 :=
-        M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
-      let* α1 := M.call_closure α0 [ person1 ] in
-      let* α2 :=
-        M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
-      let* α3 := M.call_closure α2 [ person2 ] in
-      let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.ne α1 α3)) in
-      let* α5 := M.read (M.use α4) in
-      if Value.is_true α5 then
-        let* α0 := M.get_function "core::panicking::panic" [] in
-        let* α1 :=
-          M.read
-            (mk_str
-              "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3
-      else
-        M.alloc (Value.Tuple []) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 :=
+                M.get_function
+                  "hash::calculate_hash"
+                  [ Ty.path "hash::Person" ] in
+              let* α1 := M.call_closure α0 [ person1 ] in
+              let* α2 :=
+                M.get_function
+                  "hash::calculate_hash"
+                  [ Ty.path "hash::Person" ] in
+              let* α3 := M.call_closure α2 [ person2 ] in
+              let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.ne α1 α3)) in
+              M.pure (M.use α4) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* α0 := M.get_function "core::panicking::panic" [] in
+            let* α1 :=
+              M.read
+                (mk_str
+                  "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
+            let* α2 := M.call_closure α0 [ α1 ] in
+            let* α3 := M.never_to_any α2 in
+            M.alloc α3;
+          fun γ => M.alloc (Value.Tuple [])
+        ] in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible

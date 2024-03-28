@@ -2,9 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
-Module PrintInOption.
-  
-End PrintInOption.
+(* Empty module 'PrintInOption' *)
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Definition Self (T : Ty.t) : Ty.t := T.

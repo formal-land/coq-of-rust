@@ -48,7 +48,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -218,21 +218,29 @@ Module Impl_contract_ref_FlipperRef.
     match τ, α with
     | [], [ succeed ] =>
       let* succeed := M.alloc succeed in
-      let* α0 := M.read (M.use succeed) in
+      let* α0 := M.alloc (Value.Tuple []) in
       let* α1 :=
-        if Value.is_true α0 then
-          let* α0 :=
-            M.get_associated_function
-              (Ty.path "contract_ref::FlipperRef")
-              "new"
-              [] in
-          let* α1 := M.call_closure α0 [ Value.Bool true ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
-        else
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [ Value.StructTuple "contract_ref::FlipperError" [] ]) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let γ := M.use succeed in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.get_associated_function
+                  (Ty.path "contract_ref::FlipperRef")
+                  "new"
+                  [] in
+              let* α1 := M.call_closure α0 [ Value.Bool true ] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]);
+            fun γ =>
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [ Value.StructTuple "contract_ref::FlipperError" [] ])
+          ] in
       M.read α1
     | _, _ => M.impossible
     end.
