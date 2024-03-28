@@ -168,9 +168,6 @@ pub(crate) enum Expression<'a> {
         /// a flag, set if implicit arguments are deactivated with '@'
         no_implicit: bool,
     },
-    Paren {
-        expr: Rc<Expression<'a>>,
-    },
     /// a wildcard: '_'
     Wild,
 }
@@ -596,7 +593,6 @@ impl<'a> Expression<'a> {
                 concat([optional_insert(!*no_implicit, text("@")), ident.to_doc()])
             }
             Self::Wild => text("_"),
-            Self::Paren { expr } => paren(true, expr.to_doc(with_paren)),
         }
     }
 
@@ -693,16 +689,6 @@ impl<'a> Expression<'a> {
             )
         } else {
             Expression::just_name(name)
-        }
-    }
-
-    pub(crate) fn paren(with_paren: bool, expr: &Self) -> Self {
-        if with_paren {
-            Self::Paren {
-                expr: Rc::new(expr.to_owned()),
-            }
-        } else {
-            expr.to_owned()
         }
     }
 }

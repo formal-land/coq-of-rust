@@ -56,7 +56,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let* α11 := M.call_closure α0 [ α10 ] in
         M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* unicode_codepoint := M.copy (mk_str ((String.String "029" ""))) in
+    let* unicode_codepoint := M.copy (mk_str (String.String "029" "")) in
     let* character_name := M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
     let* _ :=
       let* _ :=
