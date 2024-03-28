@@ -115,12 +115,6 @@ pub(crate) fn compile_qpath(env: &Env, hir_id: HirId, qpath: &QPath) -> Path {
     )
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub(crate) enum StructOrVariant {
-    Struct,
-    Variant { nb_cases: usize },
-}
-
 #[derive(Eq, PartialEq)]
 pub(crate) enum IsValue {
     Yes,

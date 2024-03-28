@@ -136,17 +136,13 @@ pub(crate) enum Expr {
         path: Path,
         fields: Vec<(String, Rc<Expr>)>,
         base: Option<Rc<Expr>>,
-        struct_or_variant: StructOrVariant,
     },
     StructTuple {
         path: Path,
         fields: Vec<Rc<Expr>>,
-        struct_or_variant: StructOrVariant,
     },
     StructUnit {
         path: Path,
-        #[allow(dead_code)]
-        struct_or_variant: StructOrVariant,
     },
     Use(Rc<Expr>),
     InternalString(String),
@@ -480,16 +476,10 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::ControlFlow(lcf_expression) => {
             (Rc::new(Expr::ControlFlow(*lcf_expression)), fresh_vars)
         }
-        Expr::StructStruct {
-            path,
-            fields,
-            base,
-            struct_or_variant,
-        } => {
+        Expr::StructStruct { path, fields, base } => {
             let path = path.clone();
             let fields = fields.clone();
             let base = base.clone();
-            let struct_or_variant = *struct_or_variant;
             let fields_values: Vec<Rc<Expr>> =
                 fields.iter().map(|(_, field)| field.clone()).collect();
 
@@ -509,7 +499,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                                     .map(|(name, value)| (name.clone(), value.clone()))
                                     .collect(),
                                 base,
-                                struct_or_variant,
                             })),
                             fresh_vars,
                         )
@@ -517,24 +506,15 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 }),
             )
         }
-        Expr::StructTuple {
-            path,
-            fields,
-            struct_or_variant,
-        } => {
+        Expr::StructTuple { path, fields } => {
             let path = path.clone();
-            let struct_or_variant = *struct_or_variant;
 
             monadic_lets(
                 fresh_vars,
                 fields.clone(),
                 Box::new(move |fresh_vars, fields| {
                     (
-                        pure(Rc::new(Expr::StructTuple {
-                            path,
-                            fields,
-                            struct_or_variant,
-                        })),
+                        pure(Rc::new(Expr::StructTuple { path, fields })),
                         fresh_vars,
                     )
                 }),
@@ -886,12 +866,7 @@ impl Expr {
                 ]),
             ),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_doc(),
-            Expr::StructStruct {
-                path,
-                fields,
-                base,
-                struct_or_variant: _,
-            } => match base {
+            Expr::StructStruct { path, fields, base } => match base {
                 None => paren(
                     with_paren,
                     nest([
@@ -933,11 +908,7 @@ impl Expr {
                     ])
                     .to_doc(with_paren),
             },
-            Expr::StructTuple {
-                path,
-                fields,
-                struct_or_variant: _,
-            } => coq::Expression::just_name("Value.StructTuple")
+            Expr::StructTuple { path, fields } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),
                     coq::Expression::List {
@@ -948,10 +919,7 @@ impl Expr {
                     },
                 ])
                 .to_doc(with_paren),
-            Expr::StructUnit {
-                path,
-                struct_or_variant: _,
-            } => coq::Expression::just_name("Value.StructTuple")
+            Expr::StructUnit { path } => coq::Expression::just_name("Value.StructTuple")
                 .apply_many(&[
                     coq::Expression::String(path.to_string()),
                     coq::Expression::List { exprs: vec![] },

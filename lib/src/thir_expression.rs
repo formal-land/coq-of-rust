@@ -819,41 +819,19 @@ pub(crate) fn compile_expr<'a>(
                 && fields
                     .iter()
                     .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
-            let struct_or_variant = if adt_def.is_enum() {
-                StructOrVariant::Variant {
-                    nb_cases: adt_def.variants().len(),
-                }
-            } else {
-                StructOrVariant::Struct
-            };
             let base = base
                 .as_ref()
                 .map(|base| compile_expr(env, generics, thir, &base.base).read());
 
             if fields.is_empty() {
-                return Rc::new(Expr::StructUnit {
-                    path,
-                    struct_or_variant,
-                })
-                .alloc();
+                return Rc::new(Expr::StructUnit { path }).alloc();
             }
 
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Rc::new(Expr::StructTuple {
-                    path,
-                    fields,
-                    struct_or_variant,
-                })
-                .alloc()
+                Rc::new(Expr::StructTuple { path, fields }).alloc()
             } else {
-                Rc::new(Expr::StructStruct {
-                    path,
-                    fields,
-                    base,
-                    struct_or_variant,
-                })
-                .alloc()
+                Rc::new(Expr::StructStruct { path, fields, base }).alloc()
             }
         }
         thir::ExprKind::PlaceTypeAscription { source, .. }
