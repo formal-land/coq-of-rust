@@ -85,9 +85,7 @@ Axiom BlockNumber :
   } *)
 
 (* Trait *)
-Module Flip.
-  
-End Flip.
+(* Empty module 'Flip' *)
 
 (* StructRecord
   {

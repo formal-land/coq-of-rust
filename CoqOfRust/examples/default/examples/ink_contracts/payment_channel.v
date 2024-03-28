@@ -441,14 +441,10 @@ Module Impl_payment_channel_Env.
 End Impl_payment_channel_Env.
 
 (* Trait *)
-Module HashOutput.
-  
-End HashOutput.
+(* Empty module 'HashOutput' *)
 
 (* Trait *)
-Module CryptoHash.
-  
-End CryptoHash.
+(* Empty module 'CryptoHash' *)
 
 (*
 pub fn hash_encoded<H, T>(input: &T, output: &mut <H as HashOutput>::Type)

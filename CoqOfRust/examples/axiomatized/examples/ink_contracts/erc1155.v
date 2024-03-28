@@ -263,14 +263,10 @@ Axiom Result :
     (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ]).
 
 (* Trait *)
-Module Erc1155.
-  
-End Erc1155.
+(* Empty module 'Erc1155' *)
 
 (* Trait *)
-Module Erc1155TokenReceiver.
-  
-End Erc1155TokenReceiver.
+(* Empty module 'Erc1155TokenReceiver' *)
 
 Axiom Owner : (Ty.path "erc1155::Owner") = (Ty.path "erc1155::AccountId").
 

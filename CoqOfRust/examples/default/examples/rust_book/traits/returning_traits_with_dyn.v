@@ -14,9 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 (* Trait *)
-Module Animal.
-  
-End Animal.
+(* Empty module 'Animal' *)
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Sheep".

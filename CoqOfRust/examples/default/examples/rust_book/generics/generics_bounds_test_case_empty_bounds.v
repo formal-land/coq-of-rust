@@ -20,14 +20,10 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 (* Trait *)
-Module Red.
-  
-End Red.
+(* Empty module 'Red' *)
 
 (* Trait *)
-Module Blue.
-  
-End Blue.
+(* Empty module 'Blue' *)
 
 Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
   Definition Self : Ty.t :=

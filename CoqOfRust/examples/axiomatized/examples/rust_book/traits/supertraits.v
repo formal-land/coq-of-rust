@@ -2,24 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
-Module Person.
-  
-End Person.
+(* Empty module 'Person' *)
 
 (* Trait *)
-Module Student.
-  
-End Student.
+(* Empty module 'Student' *)
 
 (* Trait *)
-Module Programmer.
-  
-End Programmer.
+(* Empty module 'Programmer' *)
 
 (* Trait *)
-Module CompSciStudent.
-  
-End CompSciStudent.
+(* Empty module 'CompSciStudent' *)
 
 Parameter comp_sci_student_greeting : (list Ty.t) -> (list Value.t) -> M.
 

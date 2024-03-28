@@ -2,24 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
-Module Foo.
-  
-End Foo.
+(* Empty module 'Foo' *)
 
 (* Trait *)
-Module Bar.
-  
-End Bar.
+(* Empty module 'Bar' *)
 
 (* Trait *)
-Module Tar.
-  
-End Tar.
+(* Empty module 'Tar' *)
 
 (* Trait *)
-Module SomeTrait.
-  
-End SomeTrait.
+(* Empty module 'SomeTrait' *)
 
 (* StructTuple
   {

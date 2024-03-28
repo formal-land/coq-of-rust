@@ -2679,9 +2679,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 (* Trait *)
-Module ConditionallyNegatable.
-  
-End ConditionallyNegatable.
+(* Empty module 'ConditionallyNegatable' *)
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
   Definition Self (T : Ty.t) : Ty.t := T.
@@ -3653,9 +3651,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 (* Trait *)
-Module ConstantTimeGreater.
-  
-End ConstantTimeGreater.
+(* Empty module 'ConstantTimeGreater' *)
 
 Module Impl_subtle_ConstantTimeGreater_for_u8.
   Definition Self : Ty.t := Ty.path "u8".

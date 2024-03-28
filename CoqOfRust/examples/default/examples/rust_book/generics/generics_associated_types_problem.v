@@ -9,9 +9,7 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 (* Trait *)
-Module Contains.
-  
-End Contains.
+(* Empty module 'Contains' *)
 
 Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.
   Definition Self : Ty.t :=
