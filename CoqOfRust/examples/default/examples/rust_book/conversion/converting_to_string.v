@@ -32,28 +32,32 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
           (Ty.path "core::fmt::Arguments")
           "new_v1"
           [] in
-      let* α3 := M.read (mk_str "Circle of radius ") in
-      let* α4 := M.alloc (Value.Array [ α3 ]) in
       let* α5 :=
-        M.get_associated_function
-          (Ty.path "core::fmt::rt::Argument")
-          "new_display"
-          [ Ty.path "i32" ] in
-      let* α6 := M.read self in
-      let* α7 :=
-        M.call_closure
-          α5
-          [ M.get_struct_record_field α6 "converting_to_string::Circle" "radius"
-          ] in
-      let* α8 := M.alloc (Value.Array [ α7 ]) in
-      let* α9 :=
-        M.call_closure
-          α2
-          [
-            M.pointer_coercion (* Unsize *) α4;
-            M.pointer_coercion (* Unsize *) α8
-          ] in
-      M.call_closure α0 [ α1; α9 ]
+        (* Unsize *)
+          let* α3 := M.read (mk_str "Circle of radius ") in
+          let* α4 := M.alloc (Value.Array [ α3 ]) in
+          M.pure (M.pointer_coercion α4) in
+      let* α10 :=
+        (* Unsize *)
+          let* α6 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::rt::Argument")
+              "new_display"
+              [ Ty.path "i32" ] in
+          let* α7 := M.read self in
+          let* α8 :=
+            M.call_closure
+              α6
+              [
+                M.get_struct_record_field
+                  α7
+                  "converting_to_string::Circle"
+                  "radius"
+              ] in
+          let* α9 := M.alloc (Value.Array [ α8 ]) in
+          M.pure (M.pointer_coercion α9) in
+      let* α11 := M.call_closure α2 [ α5; α10 ] in
+      M.call_closure α0 [ α1; α11 ]
     | _, _ => M.impossible
     end.
   

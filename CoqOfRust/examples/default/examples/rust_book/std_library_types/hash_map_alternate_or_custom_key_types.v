@@ -261,26 +261,26 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Username: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α6 := M.call_closure α5 [ username ] in
-        let* α7 := M.alloc (Value.Array [ α6 ]) in
-        let* α8 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α7
-            ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        M.alloc α9 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Username: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α9 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+            let* α7 := M.call_closure α6 [ username ] in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
+        let* α10 := M.call_closure α1 [ α5; α9 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -290,26 +290,26 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Password: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-        let* α6 := M.call_closure α5 [ password ] in
-        let* α7 := M.alloc (Value.Array [ α6 ]) in
-        let* α8 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α7
-            ] in
-        let* α9 := M.call_closure α0 [ α8 ] in
-        M.alloc α9 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Password: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α9 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+            let* α7 := M.call_closure α6 [ password ] in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in
+            M.pure (M.pointer_coercion α8) in
+        let* α10 := M.call_closure α1 [ α5; α9 ] in
+        let* α11 := M.call_closure α0 [ α10 ] in
+        M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -319,12 +319,15 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_const"
             [] in
-        let* α2 := M.read (mk_str "Attempting logon...
+        let* α4 :=
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Attempting logon...
 ") in
-        let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call_closure α0 [ α4 ] in
-        M.alloc α5 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in
+        let* α6 := M.call_closure α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* logon :=
       let* α0 := M.read username in
@@ -366,13 +369,15 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "core::fmt::Arguments")
                     "new_const"
                     [] in
-                let* α2 := M.read (mk_str "Successful logon!
-") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in
                 let* α4 :=
-                  M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                let* α5 := M.call_closure α0 [ α4 ] in
-                M.alloc α5 in
+                  (* Unsize *)
+                    let* α2 := M.read (mk_str "Successful logon!
+") in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    M.pure (M.pointer_coercion α3) in
+                let* α5 := M.call_closure α1 [ α4 ] in
+                let* α6 := M.call_closure α0 [ α5 ] in
+                M.alloc α6 in
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
@@ -382,35 +387,35 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "core::fmt::Arguments")
                     "new_v1"
                     [] in
-                let* α2 := M.read (mk_str "Name: ") in
-                let* α3 := M.read (mk_str "
-") in
-                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                 let* α5 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_display"
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                let* α6 := M.read account_info in
-                let* α7 :=
-                  M.call_closure
-                    α5
-                    [
-                      M.get_struct_record_field
+                  (* Unsize *)
+                    let* α2 := M.read (mk_str "Name: ") in
+                    let* α3 := M.read (mk_str "
+") in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
+                let* α10 :=
+                  (* Unsize *)
+                    let* α6 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                    let* α7 := M.read account_info in
+                    let* α8 :=
+                      M.call_closure
                         α6
-                        "hash_map_alternate_or_custom_key_types::AccountInfo"
-                        "name"
-                    ] in
-                let* α8 := M.alloc (Value.Array [ α7 ]) in
-                let* α9 :=
-                  M.call_closure
-                    α1
-                    [
-                      M.pointer_coercion (* Unsize *) α4;
-                      M.pointer_coercion (* Unsize *) α8
-                    ] in
-                let* α10 := M.call_closure α0 [ α9 ] in
-                M.alloc α10 in
+                        [
+                          M.get_struct_record_field
+                            α7
+                            "hash_map_alternate_or_custom_key_types::AccountInfo"
+                            "name"
+                        ] in
+                    let* α9 := M.alloc (Value.Array [ α8 ]) in
+                    M.pure (M.pointer_coercion α9) in
+                let* α11 := M.call_closure α1 [ α5; α10 ] in
+                let* α12 := M.call_closure α0 [ α11 ] in
+                M.alloc α12 in
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
@@ -420,35 +425,35 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "core::fmt::Arguments")
                     "new_v1"
                     [] in
-                let* α2 := M.read (mk_str "Email: ") in
-                let* α3 := M.read (mk_str "
-") in
-                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                 let* α5 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_display"
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                let* α6 := M.read account_info in
-                let* α7 :=
-                  M.call_closure
-                    α5
-                    [
-                      M.get_struct_record_field
+                  (* Unsize *)
+                    let* α2 := M.read (mk_str "Email: ") in
+                    let* α3 := M.read (mk_str "
+") in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
+                let* α10 :=
+                  (* Unsize *)
+                    let* α6 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                    let* α7 := M.read account_info in
+                    let* α8 :=
+                      M.call_closure
                         α6
-                        "hash_map_alternate_or_custom_key_types::AccountInfo"
-                        "email"
-                    ] in
-                let* α8 := M.alloc (Value.Array [ α7 ]) in
-                let* α9 :=
-                  M.call_closure
-                    α1
-                    [
-                      M.pointer_coercion (* Unsize *) α4;
-                      M.pointer_coercion (* Unsize *) α8
-                    ] in
-                let* α10 := M.call_closure α0 [ α9 ] in
-                M.alloc α10 in
+                        [
+                          M.get_struct_record_field
+                            α7
+                            "hash_map_alternate_or_custom_key_types::AccountInfo"
+                            "email"
+                        ] in
+                    let* α9 := M.alloc (Value.Array [ α8 ]) in
+                    M.pure (M.pointer_coercion α9) in
+                let* α11 := M.call_closure α1 [ α5; α10 ] in
+                let* α12 := M.call_closure α0 [ α11 ] in
+                M.alloc α12 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -459,13 +464,15 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α2 := M.read (mk_str "Login failed!
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call_closure α0 [ α4 ] in
-              M.alloc α5 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "Login failed!
+") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α5 := M.call_closure α1 [ α4 ] in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0

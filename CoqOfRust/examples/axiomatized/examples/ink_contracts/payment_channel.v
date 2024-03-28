@@ -334,53 +334,53 @@ Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
   
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
   
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
   
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
   
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.

@@ -54,7 +54,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
   Definition Self : Ty.t := Ty.path "operator_overloading::Foo".
   
-  Definition Output : Ty.t := Ty.path "operator_overloading::FooBar".
+  Definition _Output : Ty.t := Ty.path "operator_overloading::FooBar".
   
   Parameter add : (list Ty.t) -> (list Value.t) -> M.
   
@@ -65,14 +65,16 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
       (* Instance *)
-        [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
+        [
+          ("Output", InstanceField.Ty _Output);
+          ("add", InstanceField.Method add)
         ].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
   Definition Self : Ty.t := Ty.path "operator_overloading::Bar".
   
-  Definition Output : Ty.t := Ty.path "operator_overloading::BarFoo".
+  Definition _Output : Ty.t := Ty.path "operator_overloading::BarFoo".
   
   Parameter add : (list Ty.t) -> (list Value.t) -> M.
   
@@ -83,7 +85,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
       (* Instance *)
-        [ ("Output", InstanceField.Ty Output); ("add", InstanceField.Method add)
+        [
+          ("Output", InstanceField.Ty _Output);
+          ("add", InstanceField.Method add)
         ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 

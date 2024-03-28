@@ -180,10 +180,13 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "AccountId") in
-      let* α3 := M.read self in
-      let* α4 :=
-        M.alloc (M.get_struct_tuple_field α3 "multisig::AccountId" 0) in
-      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      let* α5 :=
+        (* Unsize *)
+          let* α3 := M.read self in
+          let* α4 :=
+            M.alloc (M.get_struct_tuple_field α3 "multisig::AccountId" 0) in
+          M.pure (M.pointer_coercion α4) in
+      M.call_closure α0 [ α1; α2; α5 ]
     | _, _ => M.impossible
     end.
   

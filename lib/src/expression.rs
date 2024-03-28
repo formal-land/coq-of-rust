@@ -156,7 +156,7 @@ pub(crate) enum Expr {
     InternalInteger(usize),
     Return(Rc<Expr>),
     /// Useful for error messages or annotations
-    Message(String),
+    Comment(String, Rc<Expr>),
 }
 
 impl Expr {
@@ -568,7 +568,11 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
         Expr::Return(expr) => monadic_let(fresh_vars, expr.clone(), |fresh_vars, expr| {
             (Rc::new(Expr::Return(expr)), fresh_vars)
         }),
-        Expr::Message(_) => (pure(expr), fresh_vars),
+        Expr::Comment(comment, expr) => {
+            let (expr, fresh_vars) = mt_expression(fresh_vars, expr.clone());
+
+            (Rc::new(Expr::Comment(comment.clone(), expr)), fresh_vars)
+        }
     }
 }
 
@@ -626,7 +630,7 @@ pub(crate) fn compile_hir_id(env: &Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<
 
     match result {
         Ok(expr) => expr,
-        Err(error) => Rc::new(Expr::Message(error)),
+        Err(error) => Rc::new(Expr::Comment(error, Expr::tt())),
     }
 }
 
@@ -1000,7 +1004,11 @@ impl Expr {
                 with_paren,
                 nest([text("M.return_"), line(), value.to_doc(true)]),
             ),
-            Expr::Message(message) => text(format!("(* {message} *)")),
+            Expr::Comment(message, expr) => nest([
+                text(format!("(* {message} *)")),
+                line(),
+                expr.to_doc(with_paren),
+            ]),
         }
     }
 }

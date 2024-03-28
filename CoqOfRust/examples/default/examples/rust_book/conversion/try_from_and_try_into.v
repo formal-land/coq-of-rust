@@ -26,11 +26,17 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
           [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "EvenNumber") in
-      let* α3 := M.read self in
-      let* α4 :=
-        M.alloc
-          (M.get_struct_tuple_field α3 "try_from_and_try_into::EvenNumber" 0) in
-      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      let* α5 :=
+        (* Unsize *)
+          let* α3 := M.read self in
+          let* α4 :=
+            M.alloc
+              (M.get_struct_tuple_field
+                α3
+                "try_from_and_try_into::EvenNumber"
+                0) in
+          M.pure (M.pointer_coercion α4) in
+      M.call_closure α0 [ α1; α2; α5 ]
     | _, _ => M.impossible
     end.
   
@@ -90,7 +96,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   (*
       type Error = ();
   *)
-  Definition Error : Ty.t := Ty.tuple [].
+  Definition _Error : Ty.t := Ty.tuple [].
   
   (*
       fn try_from(value: i32) -> Result<Self, Self::Error> {
@@ -132,7 +138,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *)
         [
-          ("Error", InstanceField.Ty Error);
+          ("Error", InstanceField.Ty _Error);
           ("try_from", InstanceField.Method try_from)
         ].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.

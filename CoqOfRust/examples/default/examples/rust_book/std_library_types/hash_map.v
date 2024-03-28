@@ -192,30 +192,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_v1"
                   [] in
-              let* α2 := M.read (mk_str "Calling Daniel: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α6 := M.get_function "hash_map::call" [] in
-              let* α7 := M.read number in
-              let* α8 := M.call_closure α6 [ α7 ] in
-              let* α9 := M.alloc α8 in
-              let* α10 := M.call_closure α5 [ α9 ] in
-              let* α11 := M.alloc (Value.Array [ α10 ]) in
-              let* α12 :=
-                M.call_closure
-                  α1
-                  [
-                    M.pointer_coercion (* Unsize *) α4;
-                    M.pointer_coercion (* Unsize *) α11
-                  ] in
-              let* α13 := M.call_closure α0 [ α12 ] in
-              M.alloc α13 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "Calling Daniel: ") in
+                  let* α3 := M.read (mk_str "
+") in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
+              let* α13 :=
+                (* Unsize *)
+                  let* α6 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display"
+                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  let* α7 := M.get_function "hash_map::call" [] in
+                  let* α8 := M.read number in
+                  let* α9 := M.call_closure α7 [ α8 ] in
+                  let* α10 := M.alloc α9 in
+                  let* α11 := M.call_closure α6 [ α10 ] in
+                  let* α12 := M.alloc (Value.Array [ α11 ]) in
+                  M.pure (M.pointer_coercion α12) in
+              let* α14 := M.call_closure α1 [ α5; α13 ] in
+              let* α15 := M.call_closure α0 [ α14 ] in
+              M.alloc α15 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -225,13 +225,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α2 := M.read (mk_str "Don't have Daniel's number.
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call_closure α0 [ α4 ] in
-              M.alloc α5 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "Don't have Daniel's number.
+") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α5 := M.call_closure α1 [ α4 ] in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     let* _ :=
@@ -282,30 +284,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_v1"
                   [] in
-              let* α2 := M.read (mk_str "Calling Ashley: ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-              let* α6 := M.get_function "hash_map::call" [] in
-              let* α7 := M.read number in
-              let* α8 := M.call_closure α6 [ α7 ] in
-              let* α9 := M.alloc α8 in
-              let* α10 := M.call_closure α5 [ α9 ] in
-              let* α11 := M.alloc (Value.Array [ α10 ]) in
-              let* α12 :=
-                M.call_closure
-                  α1
-                  [
-                    M.pointer_coercion (* Unsize *) α4;
-                    M.pointer_coercion (* Unsize *) α11
-                  ] in
-              let* α13 := M.call_closure α0 [ α12 ] in
-              M.alloc α13 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "Calling Ashley: ") in
+                  let* α3 := M.read (mk_str "
+") in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
+              let* α13 :=
+                (* Unsize *)
+                  let* α6 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display"
+                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  let* α7 := M.get_function "hash_map::call" [] in
+                  let* α8 := M.read number in
+                  let* α9 := M.call_closure α7 [ α8 ] in
+                  let* α10 := M.alloc α9 in
+                  let* α11 := M.call_closure α6 [ α10 ] in
+                  let* α12 := M.alloc (Value.Array [ α11 ]) in
+                  M.pure (M.pointer_coercion α12) in
+              let* α14 := M.call_closure α1 [ α5; α13 ] in
+              let* α15 := M.call_closure α0 [ α14 ] in
+              M.alloc α15 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -315,13 +317,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α2 := M.read (mk_str "Don't have Ashley's number.
-") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
               let* α4 :=
-                M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-              let* α5 := M.call_closure α0 [ α4 ] in
-              M.alloc α5 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "Don't have Ashley's number.
+") in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in
+                  M.pure (M.pointer_coercion α3) in
+              let* α5 := M.call_closure α1 [ α4 ] in
+              let* α6 := M.call_closure α0 [ α5 ] in
+              M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     let* _ :=
@@ -414,41 +418,43 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "core::fmt::Arguments")
                               "new_v1"
                               [] in
-                          let* α2 := M.read (mk_str "Calling ") in
-                          let* α3 := M.read (mk_str ": ") in
-                          let* α4 := M.read (mk_str "
-") in
-                          let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
                           let* α6 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_display"
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                              ] in
-                          let* α7 := M.call_closure α6 [ contact ] in
-                          let* α8 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_display"
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                          let* α9 := M.get_function "hash_map::call" [] in
-                          let* α10 := M.read number in
-                          let* α11 := M.call_closure α9 [ α10 ] in
-                          let* α12 := M.alloc α11 in
-                          let* α13 := M.call_closure α8 [ α12 ] in
-                          let* α14 := M.alloc (Value.Array [ α7; α13 ]) in
-                          let* α15 :=
-                            M.call_closure
-                              α1
-                              [
-                                M.pointer_coercion (* Unsize *) α5;
-                                M.pointer_coercion (* Unsize *) α14
-                              ] in
-                          let* α16 := M.call_closure α0 [ α15 ] in
-                          M.alloc α16 in
+                            (* Unsize *)
+                              let* α2 := M.read (mk_str "Calling ") in
+                              let* α3 := M.read (mk_str ": ") in
+                              let* α4 := M.read (mk_str "
+") in
+                              let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                              M.pure (M.pointer_coercion α5) in
+                          let* α16 :=
+                            (* Unsize *)
+                              let* α7 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::rt::Argument")
+                                  "new_display"
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                                      ]
+                                  ] in
+                              let* α8 := M.call_closure α7 [ contact ] in
+                              let* α9 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::rt::Argument")
+                                  "new_display"
+                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                                  ] in
+                              let* α10 := M.get_function "hash_map::call" [] in
+                              let* α11 := M.read number in
+                              let* α12 := M.call_closure α10 [ α11 ] in
+                              let* α13 := M.alloc α12 in
+                              let* α14 := M.call_closure α9 [ α13 ] in
+                              let* α15 := M.alloc (Value.Array [ α8; α14 ]) in
+                              M.pure (M.pointer_coercion α15) in
+                          let* α17 := M.call_closure α1 [ α6; α16 ] in
+                          let* α18 := M.call_closure α0 [ α17 ] in
+                          M.alloc α18 in
                         M.alloc (Value.Tuple []) in
                       M.alloc (Value.Tuple [])
                   ] in

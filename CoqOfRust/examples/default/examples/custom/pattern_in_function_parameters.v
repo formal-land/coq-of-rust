@@ -24,3 +24,119 @@ Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
       ]
   | _, _ => M.impossible
   end.
+
+(*
+fn steps_between(&start: &char, &end: &char) -> Option<usize> {
+    let start = start as u32;
+    let end = end as u32;
+    if start <= end {
+        let count = end - start;
+        if start < 0xD800 && 0xE000 <= end {
+            usize::try_from(count - 0x800).ok()
+        } else {
+            usize::try_from(count).ok()
+        }
+    } else {
+        None
+    }
+}
+*)
+Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
+  | [], [ β0; β1 ] =>
+    let* β0 := M.alloc β0 in
+    let* β1 := M.alloc β1 in
+    match_operator
+      β0
+      [
+        fun γ =>
+          let* γ := M.read γ in
+          let* start := M.copy γ in
+          match_operator
+            β1
+            [
+              fun γ =>
+                let* γ := M.read γ in
+                let* end_ := M.copy γ in
+                let* start :=
+                  let* α0 := M.read start in
+                  M.alloc (M.rust_cast α0) in
+                let* end_ :=
+                  let* α0 := M.read end_ in
+                  M.alloc (M.rust_cast α0) in
+                let* α0 := M.read start in
+                let* α1 := M.read end_ in
+                let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
+                let* α3 := M.read (M.use α2) in
+                let* α0 :=
+                  if Value.is_true α3 then
+                    let* count :=
+                      let* α0 := M.read end_ in
+                      let* α1 := M.read start in
+                      let* α2 := BinOp.Panic.sub α0 α1 in
+                      M.alloc α2 in
+                    let* α0 := M.read start in
+                    let* α1 :=
+                      LogicalOp.and
+                        (BinOp.Pure.lt α0 (Value.Integer Integer.U32 55296))
+                        (let* α0 := M.read end_ in
+                        M.pure
+                          (BinOp.Pure.le
+                            (Value.Integer Integer.U32 57344)
+                            α0)) in
+                    let* α2 := M.alloc α1 in
+                    let* α3 := M.read (M.use α2) in
+                    if Value.is_true α3 then
+                      let* α0 :=
+                        M.get_associated_function
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "usize";
+                              Ty.path "core::num::error::TryFromIntError"
+                            ])
+                          "ok"
+                          [] in
+                      let* α1 :=
+                        M.get_trait_method
+                          "core::convert::TryFrom"
+                          (Ty.path "usize")
+                          [ Ty.path "u32" ]
+                          "try_from"
+                          [] in
+                      let* α2 := M.read count in
+                      let* α3 :=
+                        BinOp.Panic.sub α2 (Value.Integer Integer.U32 2048) in
+                      let* α4 := M.call_closure α1 [ α3 ] in
+                      let* α5 := M.call_closure α0 [ α4 ] in
+                      M.alloc α5
+                    else
+                      let* α0 :=
+                        M.get_associated_function
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            [
+                              Ty.path "usize";
+                              Ty.path "core::num::error::TryFromIntError"
+                            ])
+                          "ok"
+                          [] in
+                      let* α1 :=
+                        M.get_trait_method
+                          "core::convert::TryFrom"
+                          (Ty.path "usize")
+                          [ Ty.path "u32" ]
+                          "try_from"
+                          [] in
+                      let* α2 := M.read count in
+                      let* α3 := M.call_closure α1 [ α2 ] in
+                      let* α4 := M.call_closure α0 [ α3 ] in
+                      M.alloc α4
+                  else
+                    M.alloc
+                      (Value.StructTuple "core::option::Option::None" []) in
+                M.read α0
+            ]
+      ]
+  | _, _ => M.impossible
+  end.

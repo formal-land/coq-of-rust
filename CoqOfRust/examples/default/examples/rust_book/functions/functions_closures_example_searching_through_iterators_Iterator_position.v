@@ -25,31 +25,34 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [
-              Ty.apply (Ty.path "array") [ Ty.path "i32" ];
-              Ty.path "alloc::alloc::Global"
-            ])
-          "new"
-          [] in
-      let* α2 :=
-        M.alloc
-          (Value.Array
-            [
-              Value.Integer Integer.I32 1;
-              Value.Integer Integer.I32 9;
-              Value.Integer Integer.I32 3;
-              Value.Integer Integer.I32 3;
-              Value.Integer Integer.I32 13;
-              Value.Integer Integer.I32 2
-            ]) in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.read α3 in
-      let* α5 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α4 ] in
-      M.alloc α5 in
+      let* α5 :=
+        (* Unsize *)
+          let* α1 :=
+            M.get_associated_function
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                  Ty.path "alloc::alloc::Global"
+                ])
+              "new"
+              [] in
+          let* α2 :=
+            M.alloc
+              (Value.Array
+                [
+                  Value.Integer Integer.I32 1;
+                  Value.Integer Integer.I32 9;
+                  Value.Integer Integer.I32 3;
+                  Value.Integer Integer.I32 3;
+                  Value.Integer Integer.I32 13;
+                  Value.Integer Integer.I32 2
+                ]) in
+          let* α3 := M.call_closure α1 [ α2 ] in
+          let* α4 := M.read α3 in
+          M.pure (M.pointer_coercion α4) in
+      let* α6 := M.call_closure α0 [ α5 ] in
+      M.alloc α6 in
     let* index_of_first_even_number :=
       let* α0 :=
         M.get_trait_method

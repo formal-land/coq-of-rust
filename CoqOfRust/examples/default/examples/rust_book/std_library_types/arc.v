@@ -140,49 +140,55 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       "core::fmt::Arguments")
                                                     "new_v1"
                                                     [] in
-                                                let* α2 := M.read (mk_str "") in
-                                                let* α3 :=
-                                                  M.read (mk_str "
-") in
-                                                let* α4 :=
-                                                  M.alloc
-                                                    (Value.Array [ α2; α3 ]) in
                                                 let* α5 :=
-                                                  M.get_associated_function
-                                                    (Ty.path
-                                                      "core::fmt::rt::Argument")
-                                                    "new_debug"
-                                                    [
-                                                      Ty.apply
+                                                  (* Unsize *)
+                                                    let* α2 :=
+                                                      M.read (mk_str "") in
+                                                    let* α3 :=
+                                                      M.read (mk_str "
+") in
+                                                    let* α4 :=
+                                                      M.alloc
+                                                        (Value.Array
+                                                          [ α2; α3 ]) in
+                                                    M.pure
+                                                      (M.pointer_coercion α4) in
+                                                let* α9 :=
+                                                  (* Unsize *)
+                                                    let* α6 :=
+                                                      M.get_associated_function
                                                         (Ty.path
-                                                          "alloc::sync::Arc")
+                                                          "core::fmt::rt::Argument")
+                                                        "new_debug"
                                                         [
                                                           Ty.apply
-                                                            (Ty.path "&")
-                                                            [ Ty.path "str" ];
-                                                          Ty.path
-                                                            "alloc::alloc::Global"
-                                                        ]
-                                                    ] in
-                                                let* α6 :=
-                                                  M.call_closure α5 [ apple ] in
-                                                let* α7 :=
-                                                  M.alloc
-                                                    (Value.Array [ α6 ]) in
-                                                let* α8 :=
+                                                            (Ty.path
+                                                              "alloc::sync::Arc")
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                [ Ty.path "str"
+                                                                ];
+                                                              Ty.path
+                                                                "alloc::alloc::Global"
+                                                            ]
+                                                        ] in
+                                                    let* α7 :=
+                                                      M.call_closure
+                                                        α6
+                                                        [ apple ] in
+                                                    let* α8 :=
+                                                      M.alloc
+                                                        (Value.Array [ α7 ]) in
+                                                    M.pure
+                                                      (M.pointer_coercion α8) in
+                                                let* α10 :=
                                                   M.call_closure
                                                     α1
-                                                    [
-                                                      M.pointer_coercion
-                                                        (* Unsize *)
-                                                        α4;
-                                                      M.pointer_coercion
-                                                        (* Unsize *)
-                                                        α7
-                                                    ] in
-                                                let* α9 :=
-                                                  M.call_closure α0 [ α8 ] in
-                                                M.alloc α9 in
+                                                    [ α5; α9 ] in
+                                                let* α11 :=
+                                                  M.call_closure α0 [ α10 ] in
+                                                M.alloc α11 in
                                               M.alloc (Value.Tuple []) in
                                             let* α0 :=
                                               M.alloc (Value.Tuple []) in

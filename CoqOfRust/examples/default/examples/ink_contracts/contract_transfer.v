@@ -212,26 +212,26 @@ Module Impl_contract_transfer_GiveMe.
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "requested value: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "u128" ] in
-          let* α6 := M.call_closure α5 [ value ] in
-          let* α7 := M.alloc (Value.Array [ α6 ]) in
-          let* α8 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α7
-              ] in
-          let* α9 := M.call_closure α0 [ α8 ] in
-          M.alloc α9 in
+            (* Unsize *)
+              let* α2 := M.read (mk_str "requested value: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α9 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "u128" ] in
+              let* α7 := M.call_closure α6 [ value ] in
+              let* α8 := M.alloc (Value.Array [ α7 ]) in
+              M.pure (M.pointer_coercion α8) in
+          let* α10 := M.call_closure α1 [ α5; α9 ] in
+          let* α11 := M.call_closure α0 [ α10 ] in
+          M.alloc α11 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
@@ -241,41 +241,41 @@ Module Impl_contract_transfer_GiveMe.
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "contract balance: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "u128" ] in
-          let* α6 :=
-            M.get_associated_function
-              (Ty.path "contract_transfer::Env")
-              "balance"
-              [] in
-          let* α7 :=
-            M.get_associated_function
-              (Ty.path "contract_transfer::GiveMe")
-              "env"
-              [] in
-          let* α8 := M.read self in
-          let* α9 := M.call_closure α7 [ α8 ] in
-          let* α10 := M.alloc α9 in
-          let* α11 := M.call_closure α6 [ α10 ] in
-          let* α12 := M.alloc α11 in
-          let* α13 := M.call_closure α5 [ α12 ] in
-          let* α14 := M.alloc (Value.Array [ α13 ]) in
-          let* α15 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α14
-              ] in
-          let* α16 := M.call_closure α0 [ α15 ] in
-          M.alloc α16 in
+            (* Unsize *)
+              let* α2 := M.read (mk_str "contract balance: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α16 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "u128" ] in
+              let* α7 :=
+                M.get_associated_function
+                  (Ty.path "contract_transfer::Env")
+                  "balance"
+                  [] in
+              let* α8 :=
+                M.get_associated_function
+                  (Ty.path "contract_transfer::GiveMe")
+                  "env"
+                  [] in
+              let* α9 := M.read self in
+              let* α10 := M.call_closure α8 [ α9 ] in
+              let* α11 := M.alloc α10 in
+              let* α12 := M.call_closure α7 [ α11 ] in
+              let* α13 := M.alloc α12 in
+              let* α14 := M.call_closure α6 [ α13 ] in
+              let* α15 := M.alloc (Value.Array [ α14 ]) in
+              M.pure (M.pointer_coercion α15) in
+          let* α17 := M.call_closure α1 [ α5; α16 ] in
+          let* α18 := M.call_closure α0 [ α17 ] in
+          M.alloc α18 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 := M.read value in
@@ -386,41 +386,41 @@ Module Impl_contract_transfer_GiveMe.
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "received payment: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "u128" ] in
-          let* α6 :=
-            M.get_associated_function
-              (Ty.path "contract_transfer::Env")
-              "transferred_value"
-              [] in
-          let* α7 :=
-            M.get_associated_function
-              (Ty.path "contract_transfer::GiveMe")
-              "env"
-              [] in
-          let* α8 := M.read self in
-          let* α9 := M.call_closure α7 [ α8 ] in
-          let* α10 := M.alloc α9 in
-          let* α11 := M.call_closure α6 [ α10 ] in
-          let* α12 := M.alloc α11 in
-          let* α13 := M.call_closure α5 [ α12 ] in
-          let* α14 := M.alloc (Value.Array [ α13 ]) in
-          let* α15 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α14
-              ] in
-          let* α16 := M.call_closure α0 [ α15 ] in
-          M.alloc α16 in
+            (* Unsize *)
+              let* α2 := M.read (mk_str "received payment: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α16 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "u128" ] in
+              let* α7 :=
+                M.get_associated_function
+                  (Ty.path "contract_transfer::Env")
+                  "transferred_value"
+                  [] in
+              let* α8 :=
+                M.get_associated_function
+                  (Ty.path "contract_transfer::GiveMe")
+                  "env"
+                  [] in
+              let* α9 := M.read self in
+              let* α10 := M.call_closure α8 [ α9 ] in
+              let* α11 := M.alloc α10 in
+              let* α12 := M.call_closure α7 [ α11 ] in
+              let* α13 := M.alloc α12 in
+              let* α14 := M.call_closure α6 [ α13 ] in
+              let* α15 := M.alloc (Value.Array [ α14 ]) in
+              M.pure (M.pointer_coercion α15) in
+          let* α17 := M.call_closure α1 [ α5; α16 ] in
+          let* α18 := M.call_closure α0 [ α17 ] in
+          M.alloc α18 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 :=

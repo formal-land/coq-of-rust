@@ -501,14 +501,14 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   (*
       type Type = [u8; 32];
   *)
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
@@ -517,14 +517,14 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   (*
       type Type = [u8; 32];
   *)
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
@@ -533,14 +533,14 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   (*
       type Type = [u8; 32];
   *)
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
@@ -549,14 +549,14 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   (*
       type Type = [u8; 16];
   *)
-  Definition Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
       Self
       (* Trait polymorphic types *) []
-      (* Instance *) [ ("Type_", InstanceField.Ty Type_) ].
+      (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
 Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
@@ -775,11 +775,9 @@ Module Impl_payment_channel_PaymentChannel.
             []
             "hash"
             [] in
-        let* α1 :=
-          M.call_closure
-            α0
-            [ M.pointer_coercion (* Unsize *) pub_key; signature_account_id ] in
-        M.alloc α1 in
+        let* α1 := (* Unsize *) M.pure (M.pointer_coercion pub_key) in
+        let* α2 := M.call_closure α0 [ α1; signature_account_id ] in
+        M.alloc α2 in
       let* α0 :=
         M.get_trait_method
           "core::cmp::PartialEq"

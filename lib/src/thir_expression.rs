@@ -539,13 +539,15 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::PointerCoercion { source, cast } => {
             let func = Expr::local_var("M.pointer_coercion");
             let source = compile_expr(env, generics, thir, source).read();
-            let cast = Rc::new(Expr::Message(format!("{cast:?}")));
 
-            Rc::new(Expr::Call {
-                func,
-                args: vec![cast, source],
-                kind: CallKind::Pure,
-            })
+            Rc::new(Expr::Comment(
+                format!("{cast:?}"),
+                Rc::new(Expr::Call {
+                    func,
+                    args: vec![source],
+                    kind: CallKind::Pure,
+                }),
+            ))
             .alloc()
         }
         thir::ExprKind::Loop { body, .. } => {
@@ -554,7 +556,11 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Loop { body })
         }
         thir::ExprKind::Let { .. } => {
-            Rc::new(Expr::Message("`if let` expected into an `if`".to_string()))
+            let error_message = "Unexpected `if let` outside of an `if`";
+
+            emit_warning_with_note(env, &expr.span, error_message, "Please report!");
+
+            Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
         }
         thir::ExprKind::Match {
             scrutinee, arms, ..
@@ -865,7 +871,7 @@ pub(crate) fn compile_expr<'a>(
 
             match result {
                 Ok(expr) => expr,
-                Err(error) => Rc::new(Expr::Message(error)),
+                Err(error) => Rc::new(Expr::Comment(error, Expr::tt())).alloc(),
             }
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
@@ -894,14 +900,15 @@ pub(crate) fn compile_expr<'a>(
             )),
         )))
         .alloc(),
-        thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
-            TyKind::FnDef(def_id, generic_args) => {
-                let key = env.tcx.def_key(def_id);
-                let symbol = key.get_opt_name();
-                let parent = env.tcx.opt_parent(*def_id).unwrap();
-                let parent_kind = env.tcx.def_kind(parent);
+        thir::ExprKind::ZstLiteral { .. } => {
+            match &expr.ty.kind() {
+                TyKind::FnDef(def_id, generic_args) => {
+                    let key = env.tcx.def_key(def_id);
+                    let symbol = key.get_opt_name();
+                    let parent = env.tcx.opt_parent(*def_id).unwrap();
+                    let parent_kind = env.tcx.def_kind(parent);
 
-                Rc::new(match parent_kind {
+                    Rc::new(match parent_kind {
                     DefKind::Impl { .. } => {
                         let parent_generics = env.tcx.generics_of(parent);
                         let nb_parent_generics = parent_generics.params.len();
@@ -1012,21 +1019,20 @@ pub(crate) fn compile_expr<'a>(
                             &format!("Please report 🙏\n\nparent_kind: {parent_kind:#?}\nexpression: {expr:#?}"),
                         );
 
-                        Expr::Message("unimplemented parent_kind".to_string())
+                        Expr::Comment("Unimplemented parent_kind".to_string(), Expr::tt())
                     }
                 })
                 .alloc()
-            }
-            _ => {
-                let error_message = "Expected a function name";
-                env.tcx
-                    .sess
-                    .struct_span_warn(expr.span, error_message)
-                    .emit();
+                }
+                _ => {
+                    let error_message = "Expected a function name";
 
-                Rc::new(Expr::Message(error_message.to_string()))
+                    emit_warning_with_note(env, &expr.span, error_message, "Please report 🙏");
+
+                    Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
+                }
             }
-        },
+        }
         thir::ExprKind::NamedConst { def_id, .. } => {
             let path = compile_def_id(env, *def_id);
             let expr = Rc::new(Expr::GetConst(path));
@@ -1046,7 +1052,13 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
         }
         thir::ExprKind::InlineAsm(_) => Rc::new(Expr::LocalVar("InlineAssembly".to_string())),
-        thir::ExprKind::OffsetOf { .. } => Rc::new(Expr::LocalVar("OffsetOf".to_string())),
+        thir::ExprKind::OffsetOf { .. } => {
+            let error_message = "`OffsetOf` expression are not handled yet";
+
+            emit_warning_with_note(env, &expr.span, error_message, "Please report!");
+
+            Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
+        }
         thir::ExprKind::ThreadLocalRef(def_id) => {
             Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
         }

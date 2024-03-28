@@ -48,7 +48,7 @@ End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
   
-  Definition Error : Ty.t := Ty.tuple [].
+  Definition _Error : Ty.t := Ty.tuple [].
   
   Parameter try_from : (list Ty.t) -> (list Value.t) -> M.
   
@@ -59,7 +59,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
       (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *)
         [
-          ("Error", InstanceField.Ty Error);
+          ("Error", InstanceField.Ty _Error);
           ("try_from", InstanceField.Method try_from)
         ].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.

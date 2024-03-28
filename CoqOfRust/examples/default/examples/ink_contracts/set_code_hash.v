@@ -106,37 +106,38 @@ Module Impl_set_code_hash_Incrementer.
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "The new count is ") in
-          let* α3 :=
-            M.read
-              (mk_str ", it was modified using the original contract code.
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "u32" ] in
-          let* α6 := M.read self in
-          let* α7 :=
-            M.call_closure
-              α5
-              [
-                M.get_struct_record_field
+            (* Unsize *)
+              let* α2 := M.read (mk_str "The new count is ") in
+              let* α3 :=
+                M.read
+                  (mk_str
+                    ", it was modified using the original contract code.
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α10 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "u32" ] in
+              let* α7 := M.read self in
+              let* α8 :=
+                M.call_closure
                   α6
-                  "set_code_hash::Incrementer"
-                  "count"
-              ] in
-          let* α8 := M.alloc (Value.Array [ α7 ]) in
-          let* α9 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α8
-              ] in
-          let* α10 := M.call_closure α0 [ α9 ] in
-          M.alloc α10 in
+                  [
+                    M.get_struct_record_field
+                      α7
+                      "set_code_hash::Incrementer"
+                      "count"
+                  ] in
+              let* α9 := M.alloc (Value.Array [ α8 ]) in
+              M.pure (M.pointer_coercion α9) in
+          let* α11 := M.call_closure α1 [ α5; α10 ] in
+          let* α12 := M.call_closure α0 [ α11 ] in
+          M.alloc α12 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -229,26 +230,26 @@ Module Impl_set_code_hash_Incrementer.
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "Switched code hash to ") in
-          let* α3 := M.read (mk_str ".
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_debug"
-              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
-          let* α6 := M.call_closure α5 [ code_hash ] in
-          let* α7 := M.alloc (Value.Array [ α6 ]) in
-          let* α8 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α7
-              ] in
-          let* α9 := M.call_closure α0 [ α8 ] in
-          M.alloc α9 in
+            (* Unsize *)
+              let* α2 := M.read (mk_str "Switched code hash to ") in
+              let* α3 := M.read (mk_str ".
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α9 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_debug"
+                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+              let* α7 := M.call_closure α6 [ code_hash ] in
+              let* α8 := M.alloc (Value.Array [ α7 ]) in
+              M.pure (M.pointer_coercion α8) in
+          let* α10 := M.call_closure α1 [ α5; α9 ] in
+          let* α11 := M.call_closure α0 [ α10 ] in
+          M.alloc α11 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0

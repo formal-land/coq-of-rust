@@ -64,7 +64,7 @@ End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Definition Self : Ty.t := Ty.path "traits_parms::SomeOtherType".
   
-  Definition SomeType : Ty.t := Ty.path "traits_parms::SomeOtherType".
+  Definition _SomeType : Ty.t := Ty.path "traits_parms::SomeOtherType".
   
   Parameter some_fn : (list Ty.t) -> (list Value.t) -> M.
   
@@ -75,7 +75,7 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
       (* Trait polymorphic types *) []
       (* Instance *)
         [
-          ("SomeType", InstanceField.Ty SomeType);
+          ("SomeType", InstanceField.Ty _SomeType);
           ("some_fn", InstanceField.Method some_fn)
         ].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

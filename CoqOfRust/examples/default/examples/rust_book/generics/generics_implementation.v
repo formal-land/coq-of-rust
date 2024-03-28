@@ -91,49 +91,49 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "") in
-        let* α3 := M.read (mk_str ", ") in
-        let* α4 := M.read (mk_str "
-") in
-        let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
         let* α6 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ] in
-        let* α7 :=
-          M.get_associated_function
-            (Ty.path "generics_implementation::Val")
-            "value"
-            [] in
-        let* α8 := M.call_closure α7 [ x ] in
-        let* α9 := M.alloc α8 in
-        let* α10 := M.call_closure α6 [ α9 ] in
-        let* α11 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
-        let* α12 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "generics_implementation::GenVal")
-              [ Ty.path "i32" ])
-            "value"
-            [] in
-        let* α13 := M.call_closure α12 [ y ] in
-        let* α14 := M.alloc α13 in
-        let* α15 := M.call_closure α11 [ α14 ] in
-        let* α16 := M.alloc (Value.Array [ α10; α15 ]) in
-        let* α17 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α5;
-              M.pointer_coercion (* Unsize *) α16
-            ] in
-        let* α18 := M.call_closure α0 [ α17 ] in
-        M.alloc α18 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "") in
+            let* α3 := M.read (mk_str ", ") in
+            let* α4 := M.read (mk_str "
+") in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+            M.pure (M.pointer_coercion α5) in
+        let* α18 :=
+          (* Unsize *)
+            let* α7 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ] in
+            let* α8 :=
+              M.get_associated_function
+                (Ty.path "generics_implementation::Val")
+                "value"
+                [] in
+            let* α9 := M.call_closure α8 [ x ] in
+            let* α10 := M.alloc α9 in
+            let* α11 := M.call_closure α7 [ α10 ] in
+            let* α12 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
+            let* α13 :=
+              M.get_associated_function
+                (Ty.apply
+                  (Ty.path "generics_implementation::GenVal")
+                  [ Ty.path "i32" ])
+                "value"
+                [] in
+            let* α14 := M.call_closure α13 [ y ] in
+            let* α15 := M.alloc α14 in
+            let* α16 := M.call_closure α12 [ α15 ] in
+            let* α17 := M.alloc (Value.Array [ α11; α16 ]) in
+            M.pure (M.pointer_coercion α17) in
+        let* α19 := M.call_closure α1 [ α6; α18 ] in
+        let* α20 := M.call_closure α0 [ α19 ] in
+        M.alloc α20 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

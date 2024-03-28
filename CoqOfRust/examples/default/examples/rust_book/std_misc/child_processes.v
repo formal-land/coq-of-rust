@@ -77,25 +77,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::fmt::Arguments")
                             "new_v1"
                             [] in
-                        let* α2 :=
-                          M.read (mk_str "failed to execute process: ") in
-                        let* α3 := M.alloc (Value.Array [ α2 ]) in
                         let* α4 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::rt::Argument")
-                            "new_display"
-                            [ Ty.path "std::io::error::Error" ] in
-                        let* α5 := M.call_closure α4 [ e ] in
-                        let* α6 := M.alloc (Value.Array [ α5 ]) in
-                        let* α7 :=
-                          M.call_closure
-                            α1
-                            [
-                              M.pointer_coercion (* Unsize *) α3;
-                              M.pointer_coercion (* Unsize *) α6
-                            ] in
-                        let* α8 := M.call_closure α0 [ α7 ] in
-                        M.never_to_any α8
+                          (* Unsize *)
+                            let* α2 :=
+                              M.read (mk_str "failed to execute process: ") in
+                            let* α3 := M.alloc (Value.Array [ α2 ]) in
+                            M.pure (M.pointer_coercion α3) in
+                        let* α8 :=
+                          (* Unsize *)
+                            let* α5 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::rt::Argument")
+                                "new_display"
+                                [ Ty.path "std::io::error::Error" ] in
+                            let* α6 := M.call_closure α5 [ e ] in
+                            let* α7 := M.alloc (Value.Array [ α6 ]) in
+                            M.pure (M.pointer_coercion α7) in
+                        let* α9 := M.call_closure α1 [ α4; α8 ] in
+                        let* α10 := M.call_closure α0 [ α9 ] in
+                        M.never_to_any α10
                     ]
                 | _ => M.impossible
                 end)
@@ -144,25 +144,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::Arguments")
                 "new_v1"
                 [] in
-            let* α2 := M.read (mk_str "rustc succeeded and stdout was:
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
             let* α4 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ] in
-            let* α5 := M.call_closure α4 [ s ] in
-            let* α6 := M.alloc (Value.Array [ α5 ]) in
-            let* α7 :=
-              M.call_closure
-                α1
-                [
-                  M.pointer_coercion (* Unsize *) α3;
-                  M.pointer_coercion (* Unsize *) α6
-                ] in
-            let* α8 := M.call_closure α0 [ α7 ] in
-            M.alloc α8 in
+              (* Unsize *)
+                let* α2 := M.read (mk_str "rustc succeeded and stdout was:
+") in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                M.pure (M.pointer_coercion α3) in
+            let* α8 :=
+              (* Unsize *)
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display"
+                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ]
+                    ] in
+                let* α6 := M.call_closure α5 [ s ] in
+                let* α7 := M.alloc (Value.Array [ α6 ]) in
+                M.pure (M.pointer_coercion α7) in
+            let* α9 := M.call_closure α1 [ α4; α8 ] in
+            let* α10 := M.call_closure α0 [ α9 ] in
+            M.alloc α10 in
           M.alloc (Value.Tuple []) in
         M.alloc (Value.Tuple [])
       else
@@ -196,25 +197,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::Arguments")
                 "new_v1"
                 [] in
-            let* α2 := M.read (mk_str "rustc failed and stderr was:
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
             let* α4 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_display"
-                [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ] in
-            let* α5 := M.call_closure α4 [ s ] in
-            let* α6 := M.alloc (Value.Array [ α5 ]) in
-            let* α7 :=
-              M.call_closure
-                α1
-                [
-                  M.pointer_coercion (* Unsize *) α3;
-                  M.pointer_coercion (* Unsize *) α6
-                ] in
-            let* α8 := M.call_closure α0 [ α7 ] in
-            M.alloc α8 in
+              (* Unsize *)
+                let* α2 := M.read (mk_str "rustc failed and stderr was:
+") in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                M.pure (M.pointer_coercion α3) in
+            let* α8 :=
+              (* Unsize *)
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_display"
+                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ]
+                    ] in
+                let* α6 := M.call_closure α5 [ s ] in
+                let* α7 := M.alloc (Value.Array [ α6 ]) in
+                M.pure (M.pointer_coercion α7) in
+            let* α9 := M.call_closure α1 [ α4; α8 ] in
+            let* α10 := M.call_closure α0 [ α9 ] in
+            M.alloc α10 in
           M.alloc (Value.Tuple []) in
         M.alloc (Value.Tuple []) in
     M.read α0

@@ -60,11 +60,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                   [] in
               let* α1 := M.read f in
               let* α2 := M.read (mk_str "Parse") in
-              let* α3 :=
-                M.call_closure
-                  α0
-                  [ α1; α2; M.pointer_coercion (* Unsize *) __self_0 ] in
-              M.alloc α3
+              let* α3 := (* Unsize *) M.pure (M.pointer_coercion __self_0) in
+              let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
+              M.alloc α4
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -120,14 +118,17 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α3 :=
-                M.read
-                  (mk_str "please use a vector with at least one element") in
-              let* α4 := M.alloc (Value.Array [ α3 ]) in
               let* α5 :=
-                M.call_closure α2 [ M.pointer_coercion (* Unsize *) α4 ] in
-              let* α6 := M.call_closure α0 [ α1; α5 ] in
-              M.alloc α6;
+                (* Unsize *)
+                  let* α3 :=
+                    M.read
+                      (mk_str
+                        "please use a vector with at least one element") in
+                  let* α4 := M.alloc (Value.Array [ α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
+              let* α6 := M.call_closure α2 [ α5 ] in
+              let* α7 := M.call_closure α0 [ α1; α6 ] in
+              M.alloc α7;
             fun γ =>
               let* α0 :=
                 M.get_associated_function
@@ -140,14 +141,17 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                   (Ty.path "core::fmt::Arguments")
                   "new_const"
                   [] in
-              let* α3 :=
-                M.read
-                  (mk_str "the provided string could not be parsed as int") in
-              let* α4 := M.alloc (Value.Array [ α3 ]) in
               let* α5 :=
-                M.call_closure α2 [ M.pointer_coercion (* Unsize *) α4 ] in
-              let* α6 := M.call_closure α0 [ α1; α5 ] in
-              M.alloc α6
+                (* Unsize *)
+                  let* α3 :=
+                    M.read
+                      (mk_str
+                        "the provided string could not be parsed as int") in
+                  let* α4 := M.alloc (Value.Array [ α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
+              let* α6 := M.call_closure α2 [ α5 ] in
+              let* α7 := M.call_closure α0 [ α1; α6 ] in
+              M.alloc α7
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -193,11 +197,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                   "wrapping_errors::DoubleError::Parse"
                   0 in
               let* e := M.alloc γ0_0 in
-              let* α0 := M.read e in
-              M.alloc
-                (Value.StructTuple
-                  "core::option::Option::Some"
-                  [ M.pointer_coercion (* Unsize *) α0 ])
+              let* α1 :=
+                (* Unsize *)
+                  let* α0 := M.read e in
+                  M.pure (M.pointer_coercion α0) in
+              M.alloc (Value.StructTuple "core::option::Option::Some" [ α1 ])
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -450,26 +454,26 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "core::fmt::Arguments")
                   "new_v1"
                   [] in
-              let* α2 := M.read (mk_str "The first doubled is ") in
-              let* α3 := M.read (mk_str "
-") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
               let* α5 :=
-                M.get_associated_function
-                  (Ty.path "core::fmt::rt::Argument")
-                  "new_display"
-                  [ Ty.path "i32" ] in
-              let* α6 := M.call_closure α5 [ n ] in
-              let* α7 := M.alloc (Value.Array [ α6 ]) in
-              let* α8 :=
-                M.call_closure
-                  α1
-                  [
-                    M.pointer_coercion (* Unsize *) α4;
-                    M.pointer_coercion (* Unsize *) α7
-                  ] in
-              let* α9 := M.call_closure α0 [ α8 ] in
-              M.alloc α9 in
+                (* Unsize *)
+                  let* α2 := M.read (mk_str "The first doubled is ") in
+                  let* α3 := M.read (mk_str "
+") in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                  M.pure (M.pointer_coercion α4) in
+              let* α9 :=
+                (* Unsize *)
+                  let* α6 :=
+                    M.get_associated_function
+                      (Ty.path "core::fmt::rt::Argument")
+                      "new_display"
+                      [ Ty.path "i32" ] in
+                  let* α7 := M.call_closure α6 [ n ] in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in
+                  M.pure (M.pointer_coercion α8) in
+              let* α10 := M.call_closure α1 [ α5; α9 ] in
+              let* α11 := M.call_closure α0 [ α10 ] in
+              M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
@@ -486,26 +490,26 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                     (Ty.path "core::fmt::Arguments")
                     "new_v1"
                     [] in
-                let* α2 := M.read (mk_str "Error: ") in
-                let* α3 := M.read (mk_str "
-") in
-                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                 let* α5 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_display"
-                    [ Ty.path "wrapping_errors::DoubleError" ] in
-                let* α6 := M.call_closure α5 [ e ] in
-                let* α7 := M.alloc (Value.Array [ α6 ]) in
-                let* α8 :=
-                  M.call_closure
-                    α1
-                    [
-                      M.pointer_coercion (* Unsize *) α4;
-                      M.pointer_coercion (* Unsize *) α7
-                    ] in
-                let* α9 := M.call_closure α0 [ α8 ] in
-                M.alloc α9 in
+                  (* Unsize *)
+                    let* α2 := M.read (mk_str "Error: ") in
+                    let* α3 := M.read (mk_str "
+") in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
+                let* α9 :=
+                  (* Unsize *)
+                    let* α6 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.path "wrapping_errors::DoubleError" ] in
+                    let* α7 := M.call_closure α6 [ e ] in
+                    let* α8 := M.alloc (Value.Array [ α7 ]) in
+                    M.pure (M.pointer_coercion α8) in
+                let* α10 := M.call_closure α1 [ α5; α9 ] in
+                let* α11 := M.call_closure α0 [ α10 ] in
+                M.alloc α11 in
               M.alloc (Value.Tuple []) in
             let* α0 :=
               M.get_trait_method
@@ -534,30 +538,31 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "core::fmt::Arguments")
                           "new_v1"
                           [] in
-                      let* α2 := M.read (mk_str "  Caused by: ") in
-                      let* α3 := M.read (mk_str "
-") in
-                      let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                       let* α5 :=
-                        M.get_associated_function
-                          (Ty.path "core::fmt::rt::Argument")
-                          "new_display"
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                          ] in
-                      let* α6 := M.call_closure α5 [ source ] in
-                      let* α7 := M.alloc (Value.Array [ α6 ]) in
-                      let* α8 :=
-                        M.call_closure
-                          α1
-                          [
-                            M.pointer_coercion (* Unsize *) α4;
-                            M.pointer_coercion (* Unsize *) α7
-                          ] in
-                      let* α9 := M.call_closure α0 [ α8 ] in
-                      M.alloc α9 in
+                        (* Unsize *)
+                          let* α2 := M.read (mk_str "  Caused by: ") in
+                          let* α3 := M.read (mk_str "
+") in
+                          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                          M.pure (M.pointer_coercion α4) in
+                      let* α9 :=
+                        (* Unsize *)
+                          let* α6 :=
+                            M.get_associated_function
+                              (Ty.path "core::fmt::rt::Argument")
+                              "new_display"
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  [ Ty.dyn [ ("core::error::Error::Trait", []) ]
+                                  ]
+                              ] in
+                          let* α7 := M.call_closure α6 [ source ] in
+                          let* α8 := M.alloc (Value.Array [ α7 ]) in
+                          M.pure (M.pointer_coercion α8) in
+                      let* α10 := M.call_closure α1 [ α5; α9 ] in
+                      let* α11 := M.call_closure α0 [ α10 ] in
+                      M.alloc α11 in
                     M.alloc (Value.Tuple []) in
                   M.alloc (Value.Tuple []);
                 fun γ => M.alloc (Value.Tuple [])
@@ -589,26 +594,29 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [
-              Ty.apply
-                (Ty.path "array")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
-              Ty.path "alloc::alloc::Global"
-            ])
-          "new"
-          [] in
-      let* α2 := M.read (mk_str "42") in
-      let* α3 := M.read (mk_str "93") in
-      let* α4 := M.read (mk_str "18") in
-      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-      let* α6 := M.call_closure α1 [ α5 ] in
-      let* α7 := M.read α6 in
-      let* α8 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α7 ] in
-      M.alloc α8 in
+      let* α8 :=
+        (* Unsize *)
+          let* α1 :=
+            M.get_associated_function
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.path "alloc::alloc::Global"
+                ])
+              "new"
+              [] in
+          let* α2 := M.read (mk_str "42") in
+          let* α3 := M.read (mk_str "93") in
+          let* α4 := M.read (mk_str "18") in
+          let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+          let* α6 := M.call_closure α1 [ α5 ] in
+          let* α7 := M.read α6 in
+          M.pure (M.pointer_coercion α7) in
+      let* α9 := M.call_closure α0 [ α8 ] in
+      M.alloc α9 in
     let* empty :=
       let* α0 :=
         M.get_associated_function
@@ -630,26 +638,29 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "into_vec"
           [ Ty.path "alloc::alloc::Global" ] in
-      let* α1 :=
-        M.get_associated_function
-          (Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            [
-              Ty.apply
-                (Ty.path "array")
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
-              Ty.path "alloc::alloc::Global"
-            ])
-          "new"
-          [] in
-      let* α2 := M.read (mk_str "tofu") in
-      let* α3 := M.read (mk_str "93") in
-      let* α4 := M.read (mk_str "18") in
-      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-      let* α6 := M.call_closure α1 [ α5 ] in
-      let* α7 := M.read α6 in
-      let* α8 := M.call_closure α0 [ M.pointer_coercion (* Unsize *) α7 ] in
-      M.alloc α8 in
+      let* α8 :=
+        (* Unsize *)
+          let* α1 :=
+            M.get_associated_function
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.path "alloc::alloc::Global"
+                ])
+              "new"
+              [] in
+          let* α2 := M.read (mk_str "tofu") in
+          let* α3 := M.read (mk_str "93") in
+          let* α4 := M.read (mk_str "18") in
+          let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+          let* α6 := M.call_closure α1 [ α5 ] in
+          let* α7 := M.read α6 in
+          M.pure (M.pointer_coercion α7) in
+      let* α9 := M.call_closure α0 [ α8 ] in
+      M.alloc α9 in
     let* _ :=
       let* α0 := M.get_function "wrapping_errors::print" [] in
       let* α1 := M.get_function "wrapping_errors::double_first" [] in

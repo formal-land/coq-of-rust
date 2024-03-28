@@ -17,9 +17,9 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   Definition Self : Ty.t :=
     Ty.path "generics_associated_types_solution::Container".
   
-  Definition A : Ty.t := Ty.path "i32".
+  Definition _A : Ty.t := Ty.path "i32".
   
-  Definition B : Ty.t := Ty.path "i32".
+  Definition _B : Ty.t := Ty.path "i32".
   
   Parameter contains : (list Ty.t) -> (list Value.t) -> M.
   
@@ -36,8 +36,8 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       (* Trait polymorphic types *) []
       (* Instance *)
         [
-          ("A", InstanceField.Ty A);
-          ("B", InstanceField.Ty B);
+          ("A", InstanceField.Ty _A);
+          ("B", InstanceField.Ty _B);
           ("contains", InstanceField.Method contains);
           ("first", InstanceField.Method first);
           ("last", InstanceField.Method last);

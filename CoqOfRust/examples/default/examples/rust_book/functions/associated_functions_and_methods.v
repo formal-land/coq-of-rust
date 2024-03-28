@@ -381,41 +381,41 @@ Module Impl_associated_functions_and_methods_Pair.
                       (Ty.path "core::fmt::Arguments")
                       "new_v1"
                       [] in
-                  let* α2 := M.read (mk_str "Destroying Pair(") in
-                  let* α3 := M.read (mk_str ", ") in
-                  let* α4 := M.read (mk_str ")
-") in
-                  let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
                   let* α6 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                      ] in
-                  let* α7 := M.call_closure α6 [ first ] in
-                  let* α8 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_display"
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                      ] in
-                  let* α9 := M.call_closure α8 [ second ] in
-                  let* α10 := M.alloc (Value.Array [ α7; α9 ]) in
-                  let* α11 :=
-                    M.call_closure
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α5;
-                        M.pointer_coercion (* Unsize *) α10
-                      ] in
-                  let* α12 := M.call_closure α0 [ α11 ] in
-                  M.alloc α12 in
+                    (* Unsize *)
+                      let* α2 := M.read (mk_str "Destroying Pair(") in
+                      let* α3 := M.read (mk_str ", ") in
+                      let* α4 := M.read (mk_str ")
+") in
+                      let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
+                      M.pure (M.pointer_coercion α5) in
+                  let* α12 :=
+                    (* Unsize *)
+                      let* α7 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::rt::Argument")
+                          "new_display"
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                          ] in
+                      let* α8 := M.call_closure α7 [ first ] in
+                      let* α9 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::rt::Argument")
+                          "new_display"
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+                          ] in
+                      let* α10 := M.call_closure α9 [ second ] in
+                      let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
+                      M.pure (M.pointer_coercion α11) in
+                  let* α13 := M.call_closure α1 [ α6; α12 ] in
+                  let* α14 := M.call_closure α0 [ α13 ] in
+                  M.alloc α14 in
                 M.alloc (Value.Tuple []) in
               M.alloc (Value.Tuple [])
           ] in
@@ -493,33 +493,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Rectangle perimeter: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "f64" ] in
-        let* α6 :=
-          M.get_associated_function
-            (Ty.path "associated_functions_and_methods::Rectangle")
-            "perimeter"
-            [] in
-        let* α7 := M.call_closure α6 [ rectangle ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Rectangle perimeter: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "f64" ] in
+            let* α7 :=
+              M.get_associated_function
+                (Ty.path "associated_functions_and_methods::Rectangle")
+                "perimeter"
+                [] in
+            let* α8 := M.call_closure α7 [ rectangle ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -529,33 +529,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Rectangle area: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "f64" ] in
-        let* α6 :=
-          M.get_associated_function
-            (Ty.path "associated_functions_and_methods::Rectangle")
-            "area"
-            [] in
-        let* α7 := M.call_closure α6 [ rectangle ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Rectangle area: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "f64" ] in
+            let* α7 :=
+              M.get_associated_function
+                (Ty.path "associated_functions_and_methods::Rectangle")
+                "area"
+                [] in
+            let* α8 := M.call_closure α7 [ rectangle ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* square :=
       let* α0 :=

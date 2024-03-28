@@ -179,40 +179,40 @@ Module Impl_enums_testcase_linked_list_List.
                     (Ty.path "core::fmt::Arguments")
                     "new_v1"
                     [] in
-                let* α2 := M.read (mk_str "") in
-                let* α3 := M.read (mk_str ", ") in
-                let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                 let* α5 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_display"
-                    [ Ty.path "u32" ] in
-                let* α6 := M.call_closure α5 [ head ] in
-                let* α7 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_display"
-                    [ Ty.path "alloc::string::String" ] in
-                let* α8 :=
-                  M.get_associated_function
-                    (Ty.path "enums_testcase_linked_list::List")
-                    "stringify"
-                    [] in
-                let* α9 := M.read tail in
-                let* α10 := M.read α9 in
-                let* α11 := M.call_closure α8 [ α10 ] in
-                let* α12 := M.alloc α11 in
-                let* α13 := M.call_closure α7 [ α12 ] in
-                let* α14 := M.alloc (Value.Array [ α6; α13 ]) in
-                let* α15 :=
-                  M.call_closure
-                    α1
-                    [
-                      M.pointer_coercion (* Unsize *) α4;
-                      M.pointer_coercion (* Unsize *) α14
-                    ] in
-                let* α16 := M.call_closure α0 [ α15 ] in
-                M.alloc α16 in
+                  (* Unsize *)
+                    let* α2 := M.read (mk_str "") in
+                    let* α3 := M.read (mk_str ", ") in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                    M.pure (M.pointer_coercion α4) in
+                let* α16 :=
+                  (* Unsize *)
+                    let* α6 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.path "u32" ] in
+                    let* α7 := M.call_closure α6 [ head ] in
+                    let* α8 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.path "alloc::string::String" ] in
+                    let* α9 :=
+                      M.get_associated_function
+                        (Ty.path "enums_testcase_linked_list::List")
+                        "stringify"
+                        [] in
+                    let* α10 := M.read tail in
+                    let* α11 := M.read α10 in
+                    let* α12 := M.call_closure α9 [ α11 ] in
+                    let* α13 := M.alloc α12 in
+                    let* α14 := M.call_closure α8 [ α13 ] in
+                    let* α15 := M.alloc (Value.Array [ α7; α14 ]) in
+                    M.pure (M.pointer_coercion α15) in
+                let* α17 := M.call_closure α1 [ α5; α16 ] in
+                let* α18 := M.call_closure α0 [ α17 ] in
+                M.alloc α18 in
               M.pure res;
             fun γ =>
               let* res :=
@@ -222,12 +222,14 @@ Module Impl_enums_testcase_linked_list_List.
                     (Ty.path "core::fmt::Arguments")
                     "new_const"
                     [] in
-                let* α2 := M.read (mk_str "Nil") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in
                 let* α4 :=
-                  M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-                let* α5 := M.call_closure α0 [ α4 ] in
-                M.alloc α5 in
+                  (* Unsize *)
+                    let* α2 := M.read (mk_str "Nil") in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in
+                    M.pure (M.pointer_coercion α3) in
+                let* α5 := M.call_closure α1 [ α4 ] in
+                let* α6 := M.call_closure α0 [ α5 ] in
+                M.alloc α6 in
               M.pure res
           ] in
       M.read α1
@@ -299,33 +301,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "linked list has length: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "u32" ] in
-        let* α6 :=
-          M.get_associated_function
-            (Ty.path "enums_testcase_linked_list::List")
-            "len"
-            [] in
-        let* α7 := M.call_closure α6 [ list ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "linked list has length: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "u32" ] in
+            let* α7 :=
+              M.get_associated_function
+                (Ty.path "enums_testcase_linked_list::List")
+                "len"
+                [] in
+            let* α8 := M.call_closure α7 [ list ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -335,33 +337,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "alloc::string::String" ] in
-        let* α6 :=
-          M.get_associated_function
-            (Ty.path "enums_testcase_linked_list::List")
-            "stringify"
-            [] in
-        let* α7 := M.call_closure α6 [ list ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "alloc::string::String" ] in
+            let* α7 :=
+              M.get_associated_function
+                (Ty.path "enums_testcase_linked_list::List")
+                "stringify"
+                [] in
+            let* α8 := M.call_closure α7 [ list ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

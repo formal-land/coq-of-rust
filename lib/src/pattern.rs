@@ -151,7 +151,7 @@ impl Pattern {
             rustc_hir::PatKind::Wild => Rc::new(Pattern::Wild),
             rustc_hir::PatKind::Binding(binding_annotation, _, ident, sub_pattern) => {
                 Rc::new(Pattern::Binding {
-                    name: ident.to_string(),
+                    name: to_valid_coq_name(IsValue::Yes, ident.as_str()),
                     is_with_ref: matches!(
                         binding_annotation,
                         rustc_hir::BindingAnnotation(rustc_hir::ByRef::Yes, _)

@@ -61,9 +61,12 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
           [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Choice") in
-      let* α3 := M.read self in
-      let* α4 := M.alloc (M.get_struct_tuple_field α3 "subtle::Choice" 0) in
-      M.call_closure α0 [ α1; α2; M.pointer_coercion (* Unsize *) α4 ]
+      let* α5 :=
+        (* Unsize *)
+          let* α3 := M.read self in
+          let* α4 := M.alloc (M.get_struct_tuple_field α3 "subtle::Choice" 0) in
+          M.pure (M.pointer_coercion α4) in
+      M.call_closure α0 [ α1; α2; α5 ]
     | _, _ => M.impossible
     end.
   
@@ -159,7 +162,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Ty.t := Ty.path "subtle::Choice".
+  Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn bitand(self, rhs: Choice) -> Choice {
@@ -191,7 +194,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       (* Trait polymorphic types *) []
       (* Instance *)
         [
-          ("Output", InstanceField.Ty Output);
+          ("Output", InstanceField.Ty _Output);
           ("bitand", InstanceField.Method bitand)
         ].
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -242,7 +245,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Ty.t := Ty.path "subtle::Choice".
+  Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn bitor(self, rhs: Choice) -> Choice {
@@ -274,7 +277,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
       (* Trait polymorphic types *) []
       (* Instance *)
         [
-          ("Output", InstanceField.Ty Output);
+          ("Output", InstanceField.Ty _Output);
           ("bitor", InstanceField.Method bitor)
         ].
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -325,7 +328,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Ty.t := Ty.path "subtle::Choice".
+  Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn bitxor(self, rhs: Choice) -> Choice {
@@ -357,7 +360,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
       (* Trait polymorphic types *) []
       (* Instance *)
         [
-          ("Output", InstanceField.Ty Output);
+          ("Output", InstanceField.Ty _Output);
           ("bitxor", InstanceField.Method bitxor)
         ].
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -408,7 +411,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   (*
       type Output = Choice;
   *)
-  Definition Output : Ty.t := Ty.path "subtle::Choice".
+  Definition _Output : Ty.t := Ty.path "subtle::Choice".
   
   (*
       fn not(self) -> Choice {
@@ -439,7 +442,9 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
       Self
       (* Trait polymorphic types *) []
       (* Instance *)
-        [ ("Output", InstanceField.Ty Output); ("not", InstanceField.Method not)
+        [
+          ("Output", InstanceField.Ty _Output);
+          ("not", InstanceField.Method not)
         ].
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
@@ -2772,23 +2777,21 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "CtOption") in
       let* α3 := M.read (mk_str "value") in
-      let* α4 := M.read self in
-      let* α5 := M.read (mk_str "is_some") in
-      let* α6 := M.read self in
-      let* α7 :=
-        M.alloc (M.get_struct_record_field α6 "subtle::CtOption" "is_some") in
-      M.call_closure
-        α0
-        [
-          α1;
-          α2;
-          α3;
-          M.pointer_coercion
-            (* Unsize *)
-            (M.get_struct_record_field α4 "subtle::CtOption" "value");
-          α5;
-          M.pointer_coercion (* Unsize *) α7
-        ]
+      let* α5 :=
+        (* Unsize *)
+          let* α4 := M.read self in
+          M.pure
+            (M.pointer_coercion
+              (M.get_struct_record_field α4 "subtle::CtOption" "value")) in
+      let* α6 := M.read (mk_str "is_some") in
+      let* α9 :=
+        (* Unsize *)
+          let* α7 := M.read self in
+          let* α8 :=
+            M.alloc
+              (M.get_struct_record_field α7 "subtle::CtOption" "is_some") in
+          M.pure (M.pointer_coercion α8) in
+      M.call_closure α0 [ α1; α2; α3; α5; α6; α9 ]
     | _, _ => M.impossible
     end.
   
@@ -2937,32 +2940,32 @@ Module Impl_subtle_CtOption_T.
                     (Ty.path "core::fmt::Arguments")
                     "new_v1"
                     [] in
-                let* α5 := M.read (mk_str "") in
-                let* α6 := M.alloc (Value.Array [ α5 ]) in
                 let* α7 :=
-                  M.get_associated_function
-                    (Ty.path "core::fmt::rt::Argument")
-                    "new_display"
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-                let* α8 := M.call_closure α7 [ msg ] in
-                let* α9 := M.alloc (Value.Array [ α8 ]) in
-                let* α10 :=
-                  M.call_closure
-                    α4
-                    [
-                      M.pointer_coercion (* Unsize *) α6;
-                      M.pointer_coercion (* Unsize *) α9
-                    ] in
+                  (* Unsize *)
+                    let* α5 := M.read (mk_str "") in
+                    let* α6 := M.alloc (Value.Array [ α5 ]) in
+                    M.pure (M.pointer_coercion α6) in
                 let* α11 :=
+                  (* Unsize *)
+                    let* α8 :=
+                      M.get_associated_function
+                        (Ty.path "core::fmt::rt::Argument")
+                        "new_display"
+                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                    let* α9 := M.call_closure α8 [ msg ] in
+                    let* α10 := M.alloc (Value.Array [ α9 ]) in
+                    M.pure (M.pointer_coercion α10) in
+                let* α12 := M.call_closure α4 [ α7; α11 ] in
+                let* α13 :=
                   M.call_closure
                     α0
                     [
                       α1;
                       α2;
                       α3;
-                      Value.StructTuple "core::option::Option::Some" [ α10 ]
+                      Value.StructTuple "core::option::Option::Some" [ α12 ]
                     ] in
-                let* α0 := M.alloc α11 in
+                let* α0 := M.alloc α13 in
                 let* α1 := M.read α0 in
                 let* α2 := M.never_to_any α1 in
                 M.alloc α2
