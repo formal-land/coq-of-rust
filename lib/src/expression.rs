@@ -638,10 +638,7 @@ fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
             if rest.is_empty() {
                 head
             } else {
-                head.apply_many(&[
-                    coq::Expression::just_name("++"),
-                    string_pieces_to_coq(rest),
-                ])
+                head.apply_many(&[coq::Expression::just_name("++"), string_pieces_to_coq(rest)])
             }
         }
         [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
