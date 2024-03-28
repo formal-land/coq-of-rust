@@ -272,13 +272,6 @@ Module Value.
       end
     end.
 
-  (** Used to implement the `if` instruction. *)
-  Definition is_true (value : Value.t) : bool :=
-    match value with
-    | Bool true => true
-    | _ => false
-    end.
-
   (** Equality between values. Defined only for basic types. *)
   Definition eqb (v1 v2 : Value.t) : bool :=
     match v1, v2 with
