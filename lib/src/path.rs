@@ -22,12 +22,6 @@ impl fmt::Display for Path {
 }
 
 impl Path {
-    pub fn local(name: &str) -> Path {
-        Path {
-            segments: vec![to_valid_coq_name(name)],
-        }
-    }
-
     pub(crate) fn new<S: ToString>(segments: &[S]) -> Self {
         Path {
             segments: segments.iter().map(|s| s.to_string()).collect(),
@@ -60,7 +54,7 @@ fn compile_path_without_env(path: &rustc_hir::Path) -> Path {
         segments: path
             .segments
             .iter()
-            .map(|segment| to_valid_coq_name(segment.ident.name.as_str()))
+            .map(|segment| segment.ident.name.to_string())
             .collect(),
     }
 }
@@ -70,30 +64,24 @@ pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Pat
     let path_items = env.tcx.def_path(def_id);
     let mut segments = vec![crate_name];
 
-    segments.extend(
-        path_items
-            .data
-            .iter()
-            .filter_map(|item| {
-                let name = match item.data.get_opt_name() {
-                    Some(name) => name.to_string(),
-                    None => match &item.data {
-                        DefPathData::AnonConst
-                        | DefPathData::Ctor
-                        | DefPathData::ForeignMod
-                        | DefPathData::Impl => return None,
-                        _ => item.data.to_string(),
-                    },
-                };
+    segments.extend(path_items.data.iter().filter_map(|item| {
+        let name = match item.data.get_opt_name() {
+            Some(name) => name.to_string(),
+            None => match &item.data {
+                DefPathData::AnonConst
+                | DefPathData::Ctor
+                | DefPathData::ForeignMod
+                | DefPathData::Impl => return None,
+                _ => item.data.to_string(),
+            },
+        };
 
-                Some(if item.disambiguator == 0 {
-                    name
-                } else {
-                    format!("{name}'{}", item.disambiguator)
-                })
-            })
-            .map(|name| to_valid_coq_name(&name)),
-    );
+        Some(if item.disambiguator == 0 {
+            name
+        } else {
+            format!("{name}'{}", item.disambiguator)
+        })
+    }));
 
     if path_items.data.last().unwrap().data == DefPathData::AnonConst {
         let last_segment = segments.pop().unwrap();
@@ -133,13 +121,19 @@ pub(crate) enum StructOrVariant {
     Variant { nb_cases: usize },
 }
 
-pub(crate) fn to_valid_coq_name(str: &str) -> String {
+#[derive(Eq, PartialEq)]
+pub(crate) enum IsValue {
+    Yes,
+    No,
+}
+
+pub(crate) fn to_valid_coq_name(is_value: IsValue, str: &str) -> String {
     if str == "_" {
         return "underscore".to_string();
     }
 
     let reserved_names = [
-        "Set", "Type", "Unset", "by", "exists", "end", "fix", "tt", "array", "unit", "pair",
+        "Set", "Type", "Unset", "at", "by", "exists", "end", "fix", "pair", "tt", "unit", "with",
     ];
 
     if reserved_names.contains(&str) {
@@ -147,10 +141,17 @@ pub(crate) fn to_valid_coq_name(str: &str) -> String {
     }
 
     let str = str.replace("->", "arrow");
-    let characters_to_replace = [' ', '$', '(', ')', '&', '?', ',', '<', '>'];
+    let str = str.replace("::", "_");
+    let characters_to_replace = [
+        ' ', '$', '(', ')', '&', '?', ',', '<', '>', '=', '[', ']', '*',
+    ];
     let str = characters_to_replace
         .iter()
         .fold(str.to_string(), |acc, &char| acc.replace(char, "_"));
 
-    str
+    if is_value == IsValue::Yes && str.chars().next().unwrap().is_uppercase() {
+        format!("value_{}", str)
+    } else {
+        str
+    }
 }

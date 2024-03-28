@@ -6,8 +6,8 @@ fn eat_box_i32(boxed_i32: Box<i32>) {
     println!("Destroying box that contains {}", boxed_i32);
 }
 *)
-Definition eat_box_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ boxed_i32 ] =>
     let* boxed_i32 := M.alloc boxed_i32 in
     let* _ :=
@@ -53,8 +53,8 @@ fn borrow_i32(borrowed_i32: &i32) {
     println!("This int is: {}", borrowed_i32);
 }
 *)
-Definition borrow_i32 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ borrowed_i32 ] =>
     let* borrowed_i32 := M.alloc borrowed_i32 in
     let* _ :=
@@ -120,8 +120,8 @@ fn main() {
     eat_box_i32(boxed_i32);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* boxed_i32 :=
       let* α0 :=

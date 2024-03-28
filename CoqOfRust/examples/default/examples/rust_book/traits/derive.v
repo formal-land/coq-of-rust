@@ -14,7 +14,7 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "derive::Centimeters")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
@@ -25,8 +25,8 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -41,7 +41,7 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "derive::Centimeters")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -52,8 +52,8 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   (*
   PartialOrd
   *)
-  Definition partial_cmp (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -78,7 +78,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      (* Self *) (Ty.path "derive::Centimeters")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -96,8 +96,8 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -117,7 +117,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "derive::Inches")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_derive_Inches.
@@ -132,8 +132,8 @@ Module Impl_derive_Inches.
           Centimeters(inches as f64 * 2.54)
       }
   *)
-  Definition to_centimeters (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition to_centimeters (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -192,8 +192,8 @@ fn main() {
     println!("One foot is {} than one meter.", cmp);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _one_second :=
       M.alloc

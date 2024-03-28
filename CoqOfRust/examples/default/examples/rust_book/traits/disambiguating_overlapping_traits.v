@@ -27,8 +27,8 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
           self.username.clone()
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -53,7 +53,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
   Axiom Implements :
     M.IsTraitInstance
       "disambiguating_overlapping_traits::UsernameWidget"
-      (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
@@ -66,8 +66,8 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
           self.age
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -82,7 +82,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
   Axiom Implements :
     M.IsTraitInstance
       "disambiguating_overlapping_traits::AgeWidget"
-      (* Self *) (Ty.path "disambiguating_overlapping_traits::Form")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
@@ -105,8 +105,8 @@ fn main() {
     assert_eq!(28, age);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* form :=
       let* α0 :=

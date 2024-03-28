@@ -26,8 +26,8 @@ fn main() {
     println!("One million is written as {}", 1_000_000u32);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=

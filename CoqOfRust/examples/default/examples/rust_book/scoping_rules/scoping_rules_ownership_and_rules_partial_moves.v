@@ -28,8 +28,8 @@ fn main() {
     println!("The person's age from person struct is {}", person.age);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* person :=
       let* α0 :=
@@ -206,8 +206,8 @@ Module main.
     (*
         Debug
     *)
-    Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
@@ -249,9 +249,7 @@ Module main.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        (* Self *)
-          (Ty.path
-            "scoping_rules_ownership_and_rules_partial_moves::main::Person")
+        Self
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

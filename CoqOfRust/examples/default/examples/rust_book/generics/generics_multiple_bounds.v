@@ -7,8 +7,8 @@ fn compare_prints<T: Debug + Display>(t: &T) {
     println!("Display: `{}`", t);
 }
 *)
-Definition compare_prints (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* _ :=
@@ -80,8 +80,8 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
     println!("u: `{:?}`", u);
 }
 *)
-Definition compare_types (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T; U ], [ t; u ] =>
     let* t := M.alloc t in
     let* u := M.alloc u in
@@ -161,11 +161,11 @@ fn main() {
     compare_types(&array, &vec);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* string := M.copy (mk_str "words") in
-    let* array_ :=
+    let* array :=
       M.alloc
         (Value.Array
           [
@@ -218,7 +218,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "alloc::vec::Vec")
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
           ] in
-      let* α1 := M.call_closure α0 [ array_; vec ] in
+      let* α1 := M.call_closure α0 [ array; vec ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

@@ -7,8 +7,8 @@ fn analyze_slice(slice: &[i32]) {
     println!("the slice has {} elements", slice.len());
 }
 *)
-Definition analyze_slice (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ slice ] =>
     let* slice := M.alloc slice in
     let* _ :=
@@ -134,8 +134,8 @@ fn main() {
     //println!("{}", xs[5]);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* xs :=
       M.alloc

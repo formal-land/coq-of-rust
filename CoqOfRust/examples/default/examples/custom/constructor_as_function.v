@@ -9,8 +9,8 @@ fn matching(tuple: (i32, i32)) -> i32 {
     }
 }
 *)
-Definition matching (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ tuple ] =>
     let* tuple := M.alloc tuple in
     let* α0 :=
@@ -49,8 +49,8 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -75,7 +75,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "constructor_as_function::Constructor")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
@@ -87,8 +87,8 @@ fn main() {
     println!("{v:?}");
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* v :=
       let* α0 :=

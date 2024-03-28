@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
-    ty_params := [ ("K", None); ("V", None) ];
+    ty_params := [ "K"; "V" ];
     fields :=
       [
         ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "erc20::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
@@ -59,7 +59,7 @@ Module Impl_core_default_Default_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc20::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc20_AccountId.
@@ -72,7 +72,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "erc20::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc20_AccountId.
@@ -83,7 +83,7 @@ Module Impl_core_marker_Copy_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "erc20::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_erc20_AccountId.
@@ -127,7 +127,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc20::Erc20")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc20_Erc20.

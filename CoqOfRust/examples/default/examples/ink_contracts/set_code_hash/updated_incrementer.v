@@ -14,8 +14,8 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -32,7 +32,7 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "updated_incrementer::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_updated_incrementer_AccountId.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "updated_incrementer::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_updated_incrementer_AccountId.
@@ -67,7 +67,7 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "updated_incrementer::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
@@ -128,8 +128,8 @@ Module Impl_updated_incrementer_Incrementer.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -148,8 +148,8 @@ Module Impl_updated_incrementer_Incrementer.
           unreachable!("Constructors are not called when upgrading using `set_code_hash`.")
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_function
@@ -177,8 +177,8 @@ Module Impl_updated_incrementer_Incrementer.
           );
       }
   *)
-  Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -245,8 +245,8 @@ Module Impl_updated_incrementer_Incrementer.
           self.count
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -268,8 +268,8 @@ Module Impl_updated_incrementer_Incrementer.
           println!("Switched code hash to {:?}.", code_hash);
       }
   *)
-  Definition set_code (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; code_hash ] =>
       let* self := M.alloc self in
       let* code_hash := M.alloc code_hash in

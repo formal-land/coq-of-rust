@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "PhantomTuple";
-    ty_params := [ ("A", None); ("B", None) ];
+    ty_params := [ "A"; "B" ];
     fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ];
   } *)
 
@@ -16,8 +16,7 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTup
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *)
-        (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
+      (Self A B)
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -29,9 +28,9 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   (*
   PartialEq
   *)
-  Definition eq (A B : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A B in
-    match 𝜏, α with
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -69,8 +68,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *)
-        (Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ])
+      (Self A B)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -78,7 +76,7 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 (* StructRecord
   {
     name := "PhantomStruct";
-    ty_params := [ ("A", None); ("B", None) ];
+    ty_params := [ "A"; "B" ];
     fields :=
       [
         ("first", A);
@@ -94,8 +92,7 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStr
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *)
-        (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
+      (Self A B)
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -107,9 +104,9 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   (*
   PartialEq
   *)
-  Definition eq (A B : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A B in
-    match 𝜏, α with
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -159,8 +156,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *)
-        (Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ])
+      (Self A B)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -193,8 +189,8 @@ fn main() {
     //           _struct1 == _struct2);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _tuple1 :=
       M.alloc

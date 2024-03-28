@@ -14,8 +14,8 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -32,7 +32,7 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "custom_environment::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_AccountId.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "custom_environment::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_custom_environment_AccountId.
@@ -67,7 +67,7 @@ Module Impl_core_marker_Copy_for_custom_environment_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "custom_environment::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_custom_environment_AccountId.
@@ -93,8 +93,8 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] => M.pure (Value.StructTuple "custom_environment::Topics" [])
     | _, _ => M.impossible
     end.
@@ -102,7 +102,7 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "custom_environment::Topics")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_Topics.
@@ -127,8 +127,8 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -186,7 +186,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "custom_environment::EventWithTopics")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_custom_environment_EventWithTopics.
@@ -212,8 +212,8 @@ Module Impl_custom_environment_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -252,8 +252,8 @@ Module Impl_custom_environment_Topics.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -272,8 +272,8 @@ Module Impl_custom_environment_Topics.
           Default::default()
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -294,8 +294,8 @@ Module Impl_custom_environment_Topics.
               .emit_event(Event::EventWithTopics(EventWithTopics::default()));
       }
   *)
-  Definition trigger (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition trigger (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=

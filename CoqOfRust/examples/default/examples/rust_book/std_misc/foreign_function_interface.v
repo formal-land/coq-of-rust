@@ -8,8 +8,8 @@ fn cos(z: Complex) -> Complex {
     unsafe { ccosf(z) }
 }
 *)
-Definition cos (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition cos (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ z ] =>
     let* z := M.alloc z in
     let* α0 := M.get_function "foreign_function_interface::ccosf" [] in
@@ -32,8 +32,8 @@ fn main() {
     println!("cos({:?}) = {:?}", z, cos(z));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* z :=
       let* α0 := M.read UnsupportedLiteral in
@@ -141,8 +141,8 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -154,7 +154,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "foreign_function_interface::Complex")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
@@ -165,7 +165,7 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "foreign_function_interface::Complex")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
@@ -182,8 +182,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
           }
       }
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -317,7 +317,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "foreign_function_interface::Complex")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

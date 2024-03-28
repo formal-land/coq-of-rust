@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_and_then::Food")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
@@ -68,7 +68,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_and_then::Day")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.

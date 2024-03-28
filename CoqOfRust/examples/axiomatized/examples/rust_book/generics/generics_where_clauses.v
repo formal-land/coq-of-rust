@@ -17,7 +17,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "generics_where_clauses::PrintInOption"
-      (* Self *) T
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("print_in_option", InstanceField.Method (print_in_option T)) ].

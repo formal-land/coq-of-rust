@@ -6,8 +6,8 @@ fn some_number() -> Option<u32> {
     Some(42)
 }
 *)
-Definition some_number (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition some_number (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     M.pure
       (Value.StructTuple
@@ -29,8 +29,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* α0 :=
       M.get_function

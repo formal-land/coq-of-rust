@@ -16,8 +16,8 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
           println!("> Dropping {}", self.name);
       }
   *)
-  Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -61,7 +61,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::drop::Drop"
-      (* Self *) (Ty.path "drop::Droppable")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
@@ -97,8 +97,8 @@ fn main() {
     // (manually) `drop`ed
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _a :=
       let* α0 := M.read (mk_str "a") in

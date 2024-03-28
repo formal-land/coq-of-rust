@@ -8,8 +8,8 @@ fn double_first(vec: Vec<&str>) -> Result<Option<i32>, ParseIntError> {
     opt.map_or(Ok(None), |r| r.map(Some))
 }
 *)
-Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* opt :=
@@ -224,8 +224,8 @@ fn main() {
     println!("The first doubled is {:?}", double_first(strings));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* numbers :=
       let* α0 :=

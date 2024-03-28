@@ -23,8 +23,8 @@ Module Impl_functions_order_SomeType.
           self.meth2();
       }
   *)
-  Definition meth1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition meth1 (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -46,8 +46,8 @@ Module Impl_functions_order_SomeType.
   (*
       fn meth2(self) {}
   *)
-  Definition meth2 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition meth2 (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -63,8 +63,8 @@ fn depends_on_trait_impl(u: u32, b: bool) {
     SomeType(u).some_trait_foo();
 }
 *)
-Definition depends_on_trait_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ u; b ] =>
     let* u := M.alloc u in
     let* b := M.alloc b in
@@ -112,8 +112,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
           self.some_trait_bar()
       }
   *)
-  Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition some_trait_foo (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -131,8 +131,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition some_trait_bar (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -142,7 +142,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Axiom Implements :
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      (* Self *) (Ty.path "functions_order::SomeType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -157,8 +157,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   (*
       fn some_trait_foo(&self) {}
   *)
-  Definition some_trait_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition some_trait_foo (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -168,8 +168,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   (*
       fn some_trait_bar(&self) {}
   *)
-  Definition some_trait_bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition some_trait_bar (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -179,7 +179,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Axiom Implements :
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      (* Self *) (Ty.path "functions_order::OtherType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -195,8 +195,8 @@ Module inner_mod.
           tar();
       }
   *)
-  Definition bar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* α0 := M.get_function "functions_order::inner_mod::tar" [] in
@@ -210,8 +210,8 @@ Module inner_mod.
   (*
       fn tar() {}
   *)
-  Definition tar (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition tar (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] => M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
@@ -222,8 +222,8 @@ Module inner_mod.
                 tack();
             }
     *)
-    Definition tick (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition tick (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* α0 :=
@@ -238,8 +238,8 @@ Module inner_mod.
     (*
             fn tack() {}
     *)
-    Definition tack (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition tack (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] => M.pure (Value.Tuple [])
       | _, _ => M.impossible
       end.
@@ -254,8 +254,8 @@ fn main() {
     SomeType(0).meth1();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "functions_order::foo" [] in
@@ -288,8 +288,8 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
 (*
 fn foo() {}
 *)
-Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Tuple [])
   | _, _ => M.impossible
   end.

@@ -38,8 +38,8 @@ Module Impl_enums_testcase_linked_list_List.
           Nil
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       M.pure (Value.StructTuple "enums_testcase_linked_list::List::Nil" [])
     | _, _ => M.impossible
@@ -53,8 +53,8 @@ Module Impl_enums_testcase_linked_list_List.
           Cons(elem, Box::new(self))
       }
   *)
-  Definition prepend (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition prepend (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; elem ] =>
       let* self := M.alloc self in
       let* elem := M.alloc elem in
@@ -97,8 +97,8 @@ Module Impl_enums_testcase_linked_list_List.
           }
       }
   *)
-  Definition len (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition len (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -150,8 +150,8 @@ Module Impl_enums_testcase_linked_list_List.
           }
       }
   *)
-  Definition stringify (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition stringify (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -253,8 +253,8 @@ fn main() {
     println!("{}", list.stringify());
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* list :=
       let* α0 :=

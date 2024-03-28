@@ -15,7 +15,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::drop::Drop"
-      (* Self *) (Ty.path "scoping_rules_raii_desctructor::ToDrop")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.

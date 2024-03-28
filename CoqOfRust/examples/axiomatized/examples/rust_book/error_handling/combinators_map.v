@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Food")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
@@ -52,7 +52,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Peeled")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
@@ -72,7 +72,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Chopped")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
@@ -92,7 +92,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Cooked")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.

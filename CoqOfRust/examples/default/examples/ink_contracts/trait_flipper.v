@@ -23,8 +23,8 @@ Module Impl_trait_flipper_Flipper.
           }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -49,8 +49,8 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
           self.value = !self.value;
       }
   *)
-  Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -72,8 +72,8 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
           self.value
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -84,7 +84,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   Axiom Implements :
     M.IsTraitInstance
       "trait_flipper::Flip"
-      (* Self *) (Ty.path "trait_flipper::Flipper")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get)

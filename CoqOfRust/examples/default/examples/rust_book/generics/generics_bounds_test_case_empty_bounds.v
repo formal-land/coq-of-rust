@@ -36,7 +36,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Red"
-      (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::Cardinal")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
@@ -48,7 +48,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Blue"
-      (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::BlueJay")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
@@ -58,8 +58,8 @@ fn red<T: Red>(_: &T) -> &'static str {
     "red"
 }
 *)
-Definition red (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition red (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ β0 ] =>
     let* β0 := M.alloc β0 in
     match_operator β0 [ fun γ => M.read (mk_str "red") ]
@@ -71,8 +71,8 @@ fn blue<T: Blue>(_: &T) -> &'static str {
     "blue"
 }
 *)
-Definition blue (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition blue (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ β0 ] =>
     let* β0 := M.alloc β0 in
     match_operator β0 [ fun γ => M.read (mk_str "blue") ]
@@ -93,8 +93,8 @@ fn main() {
     // ^ TODO: Try uncommenting this line.
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* cardinal :=
       M.alloc

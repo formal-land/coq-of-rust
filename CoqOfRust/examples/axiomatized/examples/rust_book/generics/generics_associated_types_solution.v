@@ -32,7 +32,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   Axiom Implements :
     M.IsTraitInstance
       "generics_associated_types_solution::Contains"
-      (* Self *) (Ty.path "generics_associated_types_solution::Container")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [

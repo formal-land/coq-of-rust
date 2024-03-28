@@ -23,8 +23,8 @@ Module Impl_generics_new_type_idiom_Years.
           Days(self.0 * 365)
       }
   *)
-  Definition to_days (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition to_days (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -48,8 +48,8 @@ Module Impl_generics_new_type_idiom_Days.
           Years(self.0 / 365)
       }
   *)
-  Definition to_years (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition to_years (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -70,8 +70,8 @@ fn old_enough(age: &Years) -> bool {
     age.0 >= 18
 }
 *)
-Definition old_enough (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ age ] =>
     let* age := M.alloc age in
     let* α0 := M.read age in
@@ -90,8 +90,8 @@ fn main() {
     // println!("Old enough {}", old_enough(&age_days));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* age :=
       M.alloc

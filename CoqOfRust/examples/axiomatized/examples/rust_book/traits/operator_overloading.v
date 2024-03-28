@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "operator_overloading::FooBar")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
@@ -46,7 +46,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "operator_overloading::BarFoo")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
@@ -61,7 +61,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::arith::Add"
-      (* Self *) (Ty.path "operator_overloading::Foo")
+      Self
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
       (* Instance *)
@@ -79,7 +79,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::arith::Add"
-      (* Self *) (Ty.path "operator_overloading::Bar")
+      Self
       (* Trait polymorphic types *)
         [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
       (* Instance *)

@@ -30,8 +30,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -66,7 +66,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Food")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
@@ -84,8 +84,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -106,7 +106,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Peeled")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
@@ -124,8 +124,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -146,7 +146,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Chopped")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
@@ -164,8 +164,8 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -186,7 +186,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "combinators_map::Cooked")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
@@ -199,8 +199,8 @@ fn peel(food: Option<Food>) -> Option<Peeled> {
     }
 }
 *)
-Definition peel (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
@@ -233,8 +233,8 @@ fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
     }
 }
 *)
-Definition chop (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ peeled ] =>
     let* peeled := M.alloc peeled in
     let* α0 :=
@@ -269,8 +269,8 @@ fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
     chopped.map(|Chopped(food)| Cooked(food))
 }
 *)
-Definition cook (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ chopped ] =>
     let* chopped := M.alloc chopped in
     let* α0 :=
@@ -321,8 +321,8 @@ fn process(food: Option<Food>) -> Option<Cooked> {
         .map(|Chopped(f)| Cooked(f))
 }
 *)
-Definition process (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition process (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
@@ -447,8 +447,8 @@ fn eat(food: Option<Cooked>) {
     }
 }
 *)
-Definition eat (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ food ] =>
     let* food := M.alloc food in
     let* α0 :=
@@ -527,8 +527,8 @@ fn main() {
     eat(cooked_potato);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* apple :=
       M.alloc

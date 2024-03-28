@@ -22,8 +22,8 @@ Module Impl_wildcard_selector_WildcardSelector.
           Self {}
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       M.pure (Value.StructTuple "wildcard_selector::WildcardSelector" [])
     | _, _ => M.impossible
@@ -37,8 +37,8 @@ Module Impl_wildcard_selector_WildcardSelector.
           println!("Wildcard selector: {:?}, message: {}", _selector, _message);
       }
   *)
-  Definition wildcard (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition wildcard (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -127,8 +127,8 @@ Module Impl_wildcard_selector_WildcardSelector.
           println!("Wildcard complement message: {}", _message);
       }
   *)
-  Definition wildcard_complement (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition wildcard_complement (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; _message ] =>
       let* self := M.alloc self in
       let* _message := M.alloc _message in

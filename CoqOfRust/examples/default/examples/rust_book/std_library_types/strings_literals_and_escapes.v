@@ -23,8 +23,8 @@ fn main() {
     println!("{}", long_string);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* byte_escape := M.copy (mk_str "I'm writing Rust!") in
     let* _ :=

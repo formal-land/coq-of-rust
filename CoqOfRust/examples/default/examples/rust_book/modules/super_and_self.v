@@ -6,8 +6,8 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=
@@ -35,8 +35,8 @@ Module cool.
           println!("called `cool::function()`");
       }
   *)
-  Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -65,8 +65,8 @@ Module my.
           println!("called `my::function()`");
       }
   *)
-  Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -94,8 +94,8 @@ Module my.
                 println!("called `my::cool::function()`");
             }
     *)
-    Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -144,8 +144,8 @@ Module my.
           }
       }
   *)
-  Definition indirect_call (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition indirect_call (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -193,8 +193,8 @@ fn main() {
     my::indirect_call();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "super_and_self::my::indirect_call" [] in

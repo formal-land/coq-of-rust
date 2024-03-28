@@ -27,9 +27,7 @@ Module main.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        (* Self *)
-          (Ty.path
-            "scoping_rules_ownership_and_rules_partial_moves::main::Person")
+        Self
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

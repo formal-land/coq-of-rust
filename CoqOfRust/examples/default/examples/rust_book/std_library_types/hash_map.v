@@ -16,8 +16,8 @@ fn call(number: &str) -> &str {
     }
 }
 *)
-Definition call (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition call (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ number ] =>
     let* number := M.alloc number in
     let* α0 :=
@@ -79,8 +79,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* contacts :=
       let* α0 :=

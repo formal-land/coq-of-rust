@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
-    ty_params := [ ("K", None); ("V", None) ];
+    ty_params := [ "K"; "V" ];
     fields :=
       [
         ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
@@ -22,7 +22,7 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "mother::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_mother_Mapping_K_V.
@@ -59,7 +59,7 @@ Module Impl_core_default_Default_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_AccountId.
@@ -72,7 +72,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_AccountId.
@@ -83,7 +83,7 @@ Module Impl_core_marker_Copy_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_mother_AccountId.
@@ -94,7 +94,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
@@ -107,7 +107,7 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_AccountId.
@@ -118,7 +118,7 @@ Module Impl_core_marker_StructuralEq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_AccountId.
@@ -131,7 +131,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -184,7 +184,7 @@ Module Impl_core_default_Default_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Bids.
@@ -195,7 +195,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Bids.
@@ -208,7 +208,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Bids.
@@ -219,7 +219,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Bids.
@@ -232,7 +232,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -249,7 +249,7 @@ Module Impl_core_clone_Clone_for_mother_Bids.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Bids")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Bids.
@@ -283,7 +283,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Outline.
@@ -296,7 +296,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Outline.
@@ -307,7 +307,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Outline.
@@ -320,7 +320,7 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -337,7 +337,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Outline")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Outline.
@@ -381,7 +381,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Status.
@@ -394,7 +394,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Status.
@@ -405,7 +405,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Status.
@@ -418,7 +418,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -435,7 +435,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Status")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Status.
@@ -465,7 +465,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Auction.
@@ -478,7 +478,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Auction.
@@ -489,7 +489,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Auction.
@@ -502,7 +502,7 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -519,7 +519,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mother_Auction.
@@ -532,7 +532,7 @@ Module Impl_core_default_Default_for_mother_Auction.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::Auction")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Auction.
@@ -561,7 +561,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Failure.
@@ -574,7 +574,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Failure.
@@ -585,7 +585,7 @@ Module Impl_core_marker_StructuralEq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_mother_Failure.
@@ -598,7 +598,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "mother::Failure")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -662,7 +662,7 @@ Module Impl_core_default_Default_for_mother_Mother.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "mother::Mother")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mother_Mother.

@@ -8,8 +8,8 @@ fn create_fn() -> impl Fn() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* text :=
       let* α0 :=
@@ -80,8 +80,8 @@ fn create_fnmut() -> impl FnMut() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* text :=
       let* α0 :=
@@ -152,8 +152,8 @@ fn create_fnonce() -> impl FnOnce() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* text :=
       let* α0 :=
@@ -228,8 +228,8 @@ fn main() {
     fn_once();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* fn_plain :=
       let* α0 :=

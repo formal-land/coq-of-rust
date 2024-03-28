@@ -183,7 +183,9 @@ impl CoqType {
     pub(crate) fn to_name(&self) -> String {
         match self {
             CoqType::Var(name) => name.clone(),
-            CoqType::Path { path, .. } => path.to_name().replace('&', "ref_"),
+            CoqType::Path { path, .. } => {
+                path.to_name().replace('&', "ref_").replace('*', "pointer_")
+            }
             CoqType::Application { func, args } => {
                 let mut name = func.to_name();
                 for arg in args {

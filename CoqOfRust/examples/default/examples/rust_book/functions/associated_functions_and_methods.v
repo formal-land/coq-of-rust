@@ -16,8 +16,8 @@ Module Impl_associated_functions_and_methods_Point.
           Point { y: 0.0, x: 1.0 }
       }
   *)
-  Definition origin (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition origin (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 := M.read UnsupportedLiteral in
       let* α1 := M.read UnsupportedLiteral in
@@ -35,8 +35,8 @@ Module Impl_associated_functions_and_methods_Point.
           Point { x: x, y: y }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
@@ -72,8 +72,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
           self.p1
       }
   *)
-  Definition get_p1 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_p1 (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -98,8 +98,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
           ((x1 - x2) * (y1 - y2)).abs()
       }
   *)
-  Definition area (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition area (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -170,8 +170,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
           2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
       }
   *)
-  Definition perimeter (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition perimeter (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -249,8 +249,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
           self.p2.y += y;
       }
   *)
-  Definition translate (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition translate (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; x; y ] =>
       let* self := M.alloc self in
       let* x := M.alloc x in
@@ -352,8 +352,8 @@ Module Impl_associated_functions_and_methods_Pair.
           // `first` and `second` go out of scope and get freed
       }
   *)
-  Definition destroy (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition destroy (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -463,8 +463,8 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* rectangle :=
       let* α0 :=

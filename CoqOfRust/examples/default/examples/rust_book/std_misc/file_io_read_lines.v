@@ -9,8 +9,8 @@ fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
     return io::BufReader::new(file).lines();
 }
 *)
-Definition read_lines (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ filename ] =>
     let* filename := M.alloc filename in
     let* file :=
@@ -65,8 +65,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* lines :=
       let* α0 := M.get_function "file_io_read_lines::read_lines" [] in

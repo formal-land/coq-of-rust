@@ -5,14 +5,14 @@ Module my.
   (* StructRecord
     {
       name := "OpenBox";
-      ty_params := [ ("T", None) ];
+      ty_params := [ "T" ];
       fields := [ ("contents", T) ];
     } *)
   
   (* StructRecord
     {
       name := "ClosedBox";
-      ty_params := [ ("T", None) ];
+      ty_params := [ "T" ];
       fields := [ ("contents", T) ];
     } *)
   

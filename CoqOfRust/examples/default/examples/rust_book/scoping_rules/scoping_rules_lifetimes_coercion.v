@@ -6,8 +6,8 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
     first * second
 }
 *)
-Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ first; second ] =>
     let* first := M.alloc first in
     let* second := M.alloc second in
@@ -29,8 +29,8 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
     first
 }
 *)
-Definition choose_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition choose_first (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ first; β1 ] =>
     let* first := M.alloc first in
     let* β1 := M.alloc β1 in
@@ -50,8 +50,8 @@ fn main() {
     };
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* first := M.alloc (Value.Integer Integer.I32 2) in
     let* _ :=

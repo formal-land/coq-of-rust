@@ -5,14 +5,14 @@ Module my.
   (* StructRecord
     {
       name := "OpenBox";
-      ty_params := [ ("T", None) ];
+      ty_params := [ "T" ];
       fields := [ ("contents", T) ];
     } *)
   
   (* StructRecord
     {
       name := "ClosedBox";
-      ty_params := [ ("T", None) ];
+      ty_params := [ "T" ];
       fields := [ ("contents", T) ];
     } *)
   
@@ -25,9 +25,9 @@ Module my.
                 ClosedBox { contents: contents }
             }
     *)
-    Definition new (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match 𝜏, α with
+      match τ, α with
       | [], [ contents ] =>
         let* contents := M.alloc contents in
         let* α0 := M.read contents in
@@ -69,8 +69,8 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* open_box :=
       let* α0 := M.read (mk_str "public information") in

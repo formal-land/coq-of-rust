@@ -7,7 +7,10 @@ use rustc_type_ir::TyKind;
 use std::rc::Rc;
 
 pub(crate) fn compile_generic_param(env: &Env, def_id: DefId) -> String {
-    compile_def_id(env, def_id).segments.last().unwrap().clone()
+    to_valid_coq_name(
+        IsValue::No,
+        compile_def_id(env, def_id).segments.last().unwrap(),
+    )
 }
 
 fn compile_poly_fn_sig<'a>(
@@ -56,7 +59,9 @@ pub(crate) fn compile_type<'a>(
                 args,
             })
         }
-        // Foreign(DefId),
+        TyKind::Foreign(def_id) => Rc::new(CoqType::Path {
+            path: Rc::new(compile_def_id(env, *def_id)),
+        }),
         TyKind::Str => CoqType::path(&["str"]),
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
@@ -84,13 +89,13 @@ pub(crate) fn compile_type<'a>(
                 .iter()
                 .filter_map(
                     |existential_predicate| match existential_predicate.no_bound_vars() {
-                        None => Some(Path::local("existential predicate with variables")),
+                        None => Some(Path::new(&["existential predicate with variables"])),
                         Some(existential_predicate) => match existential_predicate {
                             rustc_middle::ty::ExistentialPredicate::Trait(
                                 existential_trait_ref,
                             ) => Some(Path::concat(&[
                                 compile_def_id(env, existential_trait_ref.def_id),
-                                Path::local("Trait"),
+                                Path::new(&["Trait"]),
                             ])),
                             _ => None,
                         },
@@ -132,9 +137,6 @@ pub(crate) fn compile_type<'a>(
         // Placeholder(Placeholder<BoundTy>),
         TyKind::Infer(_) => Rc::new(CoqType::Infer),
         TyKind::Error(error) => CoqType::var(&format!("error: {error:#?}")),
-        _ => {
-            eprintln!("type {:#?} not yet handled", ty.kind());
-            CoqType::var("type not implemented")
-        }
+        _ => CoqType::var(&format!("type {:#?} not yet handled", ty.kind())),
     }
 }

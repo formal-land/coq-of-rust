@@ -31,8 +31,8 @@ Module checked.
     (*
         Debug
     *)
-    Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [ self; f ] =>
         let* self := M.alloc self in
         let* f := M.alloc f in
@@ -67,7 +67,7 @@ Module checked.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        (* Self *) (Ty.path "result::checked::MathError")
+        Self
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
@@ -90,8 +90,8 @@ Module checked.
           }
       }
   *)
-  Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
@@ -127,8 +127,8 @@ Module checked.
           }
       }
   *)
-  Definition sqrt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition sqrt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ x ] =>
       let* x := M.alloc x in
       let* α0 := M.read x in
@@ -163,8 +163,8 @@ Module checked.
           }
       }
   *)
-  Definition ln (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition ln (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ x ] =>
       let* x := M.alloc x in
       let* α0 := M.read x in
@@ -206,8 +206,8 @@ fn op(x: f64, y: f64) -> f64 {
     }
 }
 *)
-Definition op (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition op (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x; y ] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
@@ -366,8 +366,8 @@ fn main() {
     println!("{}", op(1.0, 10.0));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=

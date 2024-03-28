@@ -14,7 +14,7 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "derive::Centimeters")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
@@ -27,7 +27,7 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "derive::Centimeters")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -40,7 +40,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      (* Self *) (Ty.path "derive::Centimeters")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -60,7 +60,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "derive::Inches")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_derive_Inches.

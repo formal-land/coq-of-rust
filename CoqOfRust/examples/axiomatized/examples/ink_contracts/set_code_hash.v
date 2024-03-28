@@ -24,7 +24,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "set_code_hash::Incrementer")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.

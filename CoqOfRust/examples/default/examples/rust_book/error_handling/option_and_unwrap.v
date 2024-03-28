@@ -11,8 +11,8 @@ fn give_adult(drink: Option<&str>) {
     }
 }
 *)
-Definition give_adult (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ drink ] =>
     let* drink := M.alloc drink in
     let* α0 :=
@@ -107,8 +107,8 @@ fn drink(drink: Option<&str>) {
     println!("I love {}s!!!!!", inside);
 }
 *)
-Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ drink ] =>
     let* drink := M.alloc drink in
     let* inside :=
@@ -195,8 +195,8 @@ fn main() {
     drink(nothing);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* water :=
       let* α0 := M.read (mk_str "water") in

@@ -19,8 +19,8 @@ Module Impl_core_hash_Hash_for_hash_Person.
   (*
   Hash
   *)
-  Definition hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [ __H ], [ self; state ] =>
       let* self := M.alloc self in
       let* state := M.alloc state in
@@ -75,7 +75,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Axiom Implements :
     M.IsTraitInstance
       "core::hash::Hash"
-      (* Self *) (Ty.path "hash::Person")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_hash_Person.
@@ -87,8 +87,8 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
     s.finish()
 }
 *)
-Definition calculate_hash (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* s :=
@@ -139,8 +139,8 @@ fn main() {
     assert!(calculate_hash(&person1) != calculate_hash(&person2));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* person1 :=
       let* α0 :=

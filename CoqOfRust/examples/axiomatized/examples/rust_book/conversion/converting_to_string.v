@@ -16,7 +16,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      (* Self *) (Ty.path "converting_to_string::Circle")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.

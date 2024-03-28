@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module ProvidedAndRequired.
-  Definition provided (Self : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition provided (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -35,8 +35,8 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
           *self
       }
   *)
-  Definition required (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition required (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -47,7 +47,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
   Axiom Implements :
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
-      (* Self *) (Ty.path "i32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("required", InstanceField.Method required) ].
 End Impl_provided_method_ProvidedAndRequired_for_i32.
@@ -60,8 +60,8 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
           *self as i32
       }
   *)
-  Definition required (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition required (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -75,8 +75,8 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
           0
       }
   *)
-  Definition provided (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition provided (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Integer Integer.I32 0)
@@ -86,7 +86,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
   Axiom Implements :
     M.IsTraitInstance
       "provided_method::ProvidedAndRequired"
-      (* Self *) (Ty.path "u32")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -103,8 +103,8 @@ fn main() {
     assert_eq!(y.provided(), 0);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x := M.alloc (Value.Integer Integer.I32 5) in
     let* _ :=

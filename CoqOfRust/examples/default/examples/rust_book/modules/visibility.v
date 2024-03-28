@@ -7,8 +7,8 @@ Module my_mod.
           println!("called `my_mod::private_function()`");
       }
   *)
-  Definition private_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition private_function (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -35,8 +35,8 @@ Module my_mod.
           println!("called `my_mod::function()`");
       }
   *)
-  Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -64,8 +64,8 @@ Module my_mod.
           private_function();
       }
   *)
-  Definition indirect_access (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition indirect_access (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -98,8 +98,8 @@ Module my_mod.
                 println!("called `my_mod::nested::function()`");
             }
     *)
-    Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -127,8 +127,8 @@ Module my_mod.
                 println!("called `my_mod::nested::private_function()`");
             }
     *)
-    Definition private_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition private_function (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -159,10 +159,10 @@ Module my_mod.
             }
     *)
     Definition public_function_in_my_mod
-        (𝜏 : list Ty.t)
+        (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      match 𝜏, α with
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -201,10 +201,10 @@ Module my_mod.
             }
     *)
     Definition public_function_in_nested
-        (𝜏 : list Ty.t)
+        (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      match 𝜏, α with
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -236,10 +236,10 @@ Module my_mod.
             }
     *)
     Definition public_function_in_super_mod
-        (𝜏 : list Ty.t)
+        (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      match 𝜏, α with
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -275,10 +275,10 @@ Module my_mod.
       }
   *)
   Definition call_public_function_in_my_mod
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -336,8 +336,8 @@ Module my_mod.
           println!("called `my_mod::public_function_in_crate()`");
       }
   *)
-  Definition public_function_in_crate (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition public_function_in_crate (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* _ :=
         let* _ :=
@@ -366,8 +366,8 @@ Module my_mod.
                 println!("called `my_mod::private_nested::function()`");
             }
     *)
-    Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -396,8 +396,8 @@ Module my_mod.
                 println!("called `my_mod::private_nested::restricted_function()`");
             }
     *)
-    Definition restricted_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-      match 𝜏, α with
+    Definition restricted_function (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
       | [], [] =>
         let* _ :=
           let* _ :=
@@ -430,8 +430,8 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=
@@ -493,8 +493,8 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "visibility::function" [] in

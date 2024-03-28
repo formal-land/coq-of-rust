@@ -40,7 +40,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "trait_incrementer::Increment"
-      (* Self *) (Ty.path "trait_incrementer::Incrementer")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("inc", InstanceField.Method inc); ("get", InstanceField.Method get)
@@ -55,7 +55,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "trait_incrementer::Reset"
-      (* Self *) (Ty.path "trait_incrementer::Incrementer")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("reset", InstanceField.Method reset) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

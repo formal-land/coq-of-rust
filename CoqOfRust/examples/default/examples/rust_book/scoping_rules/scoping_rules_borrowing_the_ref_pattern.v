@@ -15,8 +15,8 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -28,7 +28,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "scoping_rules_borrowing_the_ref_pattern::Point")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
@@ -40,7 +40,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "scoping_rules_borrowing_the_ref_pattern::Point")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
@@ -102,8 +102,8 @@ fn main() {
     println!("tuple is {:?}", mutable_tuple);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* c := M.alloc (Value.UnicodeChar 81) in
     let* α0 :=

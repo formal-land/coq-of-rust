@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Ref";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ Ty.apply (Ty.path "&") [ T ] ];
   } *)
 
@@ -18,8 +18,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *)
-        (Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ])
+      (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.

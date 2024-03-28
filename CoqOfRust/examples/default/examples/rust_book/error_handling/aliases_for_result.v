@@ -17,8 +17,8 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i3
     })
 }
 *)
-Definition multiply (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ first_number_str; second_number_str ] =>
     let* first_number_str := M.alloc first_number_str in
     let* second_number_str := M.alloc second_number_str in
@@ -112,8 +112,8 @@ fn print(result: AliasedResult<i32>) {
     }
 }
 *)
-Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
@@ -201,8 +201,8 @@ fn main() {
     print(multiply("t", "2"));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "aliases_for_result::print" [] in

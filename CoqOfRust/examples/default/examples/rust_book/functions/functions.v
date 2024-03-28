@@ -12,8 +12,8 @@ fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
     lhs % rhs == 0
 }
 *)
-Definition is_divisible_by (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ lhs; rhs ] =>
     let* lhs := M.alloc lhs in
     let* rhs := M.alloc rhs in
@@ -49,8 +49,8 @@ fn fizzbuzz(n: u32) -> () {
     }
 }
 *)
-Definition fizzbuzz (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 := M.get_function "functions::is_divisible_by" [] in
@@ -167,8 +167,8 @@ fn fizzbuzz_to(n: u32) {
     }
 }
 *)
-Definition fizzbuzz_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ n ] =>
     let* n := M.alloc n in
     let* α0 :=
@@ -244,8 +244,8 @@ fn main() {
     fizzbuzz_to(100);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "functions::fizzbuzz_to" [] in

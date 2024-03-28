@@ -36,7 +36,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Red"
-      (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::Cardinal")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
@@ -48,7 +48,7 @@ Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds_test_case_empty_bounds::Blue"
-      (* Self *) (Ty.path "generics_bounds_test_case_empty_bounds::BlueJay")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.

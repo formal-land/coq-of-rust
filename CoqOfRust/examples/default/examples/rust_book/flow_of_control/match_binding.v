@@ -6,8 +6,8 @@ fn age() -> u32 {
     15
 }
 *)
-Definition age (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition age (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] => M.pure (Value.Integer Integer.U32 15)
   | _, _ => M.impossible
   end.
@@ -28,8 +28,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=

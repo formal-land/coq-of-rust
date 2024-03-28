@@ -34,7 +34,7 @@ Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
   Axiom Implements :
     M.IsTraitInstance
       "traits_parms::Foo"
-      (* Self *) (Ty.path "traits_parms::SomeOtherType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
@@ -45,7 +45,7 @@ Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
   Axiom Implements :
     M.IsTraitInstance
       "traits_parms::Bar"
-      (* Self *) (Ty.path "traits_parms::SomeOtherType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
@@ -56,7 +56,7 @@ Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
   Axiom Implements :
     M.IsTraitInstance
       "traits_parms::Tar"
-      (* Self *) (Ty.path "traits_parms::SomeOtherType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
@@ -72,8 +72,8 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   (*
       fn some_fn() {}
   *)
-  Definition some_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] => M.pure (Value.Tuple [])
     | _, _ => M.impossible
     end.
@@ -81,7 +81,7 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Axiom Implements :
     M.IsTraitInstance
       "traits_parms::SomeTrait"
-      (* Self *) (Ty.path "traits_parms::SomeOtherType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [

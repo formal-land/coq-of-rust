@@ -19,8 +19,8 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -62,7 +62,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "generics_bounds::Rectangle")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
@@ -82,8 +82,8 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
           self.length * self.height
       }
   *)
-  Definition area (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition area (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -107,7 +107,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds::HasArea"
-      (* Self *) (Ty.path "generics_bounds::Rectangle")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("area", InstanceField.Method area) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
@@ -117,8 +117,8 @@ fn print_debug<T: Debug>(t: &T) {
     println!("{:?}", t);
 }
 *)
-Definition print_debug (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* _ :=
@@ -160,8 +160,8 @@ fn area<T: HasArea>(t: &T) -> f64 {
     t.area()
 }
 *)
-Definition area (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition area (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ T ], [ t ] =>
     let* t := M.alloc t in
     let* α0 := M.get_trait_method "generics_bounds::HasArea" T [] "area" [] in
@@ -190,8 +190,8 @@ fn main() {
     // | Error: Does not implement either `Debug` or `HasArea`.
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* rectangle :=
       let* α0 := M.read UnsupportedLiteral in

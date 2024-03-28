@@ -6,8 +6,8 @@ fn print_one<'a>(x: &'a i32) {
     println!("`print_one`: x is {}", x);
 }
 *)
-Definition print_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
     let* x := M.alloc x in
     let* _ :=
@@ -49,8 +49,8 @@ fn add_one<'a>(x: &'a mut i32) {
     *x += 1;
 }
 *)
-Definition add_one (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x ] =>
     let* x := M.alloc x in
     let* _ :=
@@ -68,8 +68,8 @@ fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
     println!("`print_multi`: x is {}, y is {}", x, y);
 }
 *)
-Definition print_multi (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x; y ] =>
     let* x := M.alloc x in
     let* y := M.alloc y in
@@ -119,8 +119,8 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
     x
 }
 *)
-Definition pass_x (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition pass_x (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ x; β1 ] =>
     let* x := M.alloc x in
     let* β1 := M.alloc β1 in
@@ -144,8 +144,8 @@ fn main() {
     print_one(&t);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x := M.alloc (Value.Integer Integer.I32 7) in
     let* y := M.alloc (Value.Integer Integer.I32 9) in

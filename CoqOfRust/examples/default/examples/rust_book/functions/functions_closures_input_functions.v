@@ -6,8 +6,8 @@ fn call_me<F: Fn()>(f: F) {
     f();
 }
 *)
-Definition call_me (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition call_me (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* _ :=
@@ -30,8 +30,8 @@ fn function() {
     println!("I'm a function!");
 }
 *)
-Definition function (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* _ :=
       let* _ :=
@@ -62,8 +62,8 @@ fn main() {
     call_me(function);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* closure :=
       M.alloc

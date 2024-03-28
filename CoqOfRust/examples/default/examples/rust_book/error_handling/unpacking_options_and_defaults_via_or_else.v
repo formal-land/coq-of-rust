@@ -41,8 +41,8 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -85,7 +85,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "unpacking_options_and_defaults_via_or_else::Fruit")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
@@ -111,8 +111,8 @@ fn main() {
     // first_available_fruit: Some(Kiwi)
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* apple :=
       M.alloc

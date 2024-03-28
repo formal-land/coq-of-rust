@@ -15,8 +15,8 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
           println!("ToDrop is being dropped");
       }
   *)
-  Definition drop (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -42,7 +42,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::drop::Drop"
-      (* Self *) (Ty.path "scoping_rules_raii_desctructor::ToDrop")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
@@ -53,8 +53,8 @@ fn main() {
     println!("Made a ToDrop!");
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x :=
       M.alloc (Value.StructTuple "scoping_rules_raii_desctructor::ToDrop" []) in

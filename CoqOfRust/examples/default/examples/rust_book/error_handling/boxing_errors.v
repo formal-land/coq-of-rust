@@ -28,8 +28,8 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   (*
   Debug
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -47,7 +47,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "boxing_errors::EmptyVec")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
@@ -58,8 +58,8 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.StructTuple "boxing_errors::EmptyVec" [])
@@ -69,7 +69,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "boxing_errors::EmptyVec")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
@@ -82,8 +82,8 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
           write!(f, "invalid first item to double")
       }
   *)
-  Definition fmt (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
@@ -108,7 +108,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      (* Self *) (Ty.path "boxing_errors::EmptyVec")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
@@ -119,7 +119,7 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::error::Error"
-      (* Self *) (Ty.path "boxing_errors::EmptyVec")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
@@ -135,8 +135,8 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
         })
 }
 *)
-Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ vec ] =>
     let* vec := M.alloc vec in
     let* α0 :=
@@ -402,8 +402,8 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Definition print (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ result ] =>
     let* result := M.alloc result in
     let* α0 :=
@@ -503,8 +503,8 @@ fn main() {
     print(double_first(strings));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* numbers :=
       let* α0 :=

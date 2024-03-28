@@ -17,7 +17,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             subpattern,
             ..
         } => {
-            let name = to_valid_coq_name(name.as_str());
+            let name = to_valid_coq_name(IsValue::Yes, name.as_str());
             let is_with_ref = match mode {
                 rustc_middle::thir::BindingMode::ByValue => false,
                 rustc_middle::thir::BindingMode::ByRef(_) => true,
@@ -40,7 +40,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             let variant = adt_def.variant(*variant_index);
             let path = Path::concat(&[
                 compile_def_id(env, adt_def.did()),
-                Path::local(variant.name.as_str()),
+                Path::new(&[variant.name.as_str()]),
             ]);
             let fields: Vec<_> = subpatterns
                 .iter()

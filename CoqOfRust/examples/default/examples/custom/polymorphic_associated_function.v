@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Foo";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ ("data", T) ];
   } *)
 
@@ -19,9 +19,9 @@ Module Impl_polymorphic_associated_function_Foo_A.
           }
       }
   *)
-  Definition convert (A : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition convert (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A in
-    match 𝜏, α with
+    match τ, α with
     | [ B ], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.get_trait_method "core::convert::Into" A [ B ] "into" [] in
@@ -52,8 +52,8 @@ fn main() {
     assert_eq!(bar.data, 42.0);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* foo :=
       M.alloc

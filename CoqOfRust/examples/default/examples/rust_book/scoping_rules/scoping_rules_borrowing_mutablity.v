@@ -19,8 +19,8 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -44,7 +44,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
@@ -55,7 +55,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "scoping_rules_borrowing_mutablity::Book")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
@@ -68,8 +68,8 @@ fn borrow_book(book: &Book) {
     );
 }
 *)
-Definition borrow_book (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ book ] =>
     let* book := M.alloc book in
     let* _ :=
@@ -137,8 +137,8 @@ fn new_edition(book: &mut Book) {
     println!("I mutably borrowed {} - {} edition", book.title, book.year);
 }
 *)
-Definition new_edition (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [ book ] =>
     let* book := M.alloc book in
     let* _ :=
@@ -235,8 +235,8 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* immutabook :=
       let* α0 := M.read (mk_str "Douglas Hofstadter") in

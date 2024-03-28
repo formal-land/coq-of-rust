@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "GenVal";
-    ty_params := [ ("T", None) ];
+    ty_params := [ "T" ];
     fields := [ ("gen_val", T) ];
   } *)
 
@@ -23,8 +23,8 @@ Module Impl_generics_implementation_Val.
           &self.val
       }
   *)
-  Definition value (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition value (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -44,9 +44,9 @@ Module Impl_generics_implementation_GenVal_T.
           &self.gen_val
       }
   *)
-  Definition value (T : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition value (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -71,8 +71,8 @@ fn main() {
     println!("{}, {}", x.value(), y.value());
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* x :=
       let* α0 := M.read UnsupportedLiteral in

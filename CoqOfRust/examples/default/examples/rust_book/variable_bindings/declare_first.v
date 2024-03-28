@@ -26,8 +26,8 @@ fn main() {
     println!("another binding: {}", another_binding);
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* a_binding := M.copy Value.DeclaredButUndefined in
     let* _ :=

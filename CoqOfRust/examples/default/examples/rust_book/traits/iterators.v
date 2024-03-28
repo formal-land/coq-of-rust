@@ -28,8 +28,8 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
           Some(current)
       }
   *)
-  Definition next (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition next (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* current :=
@@ -63,7 +63,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Axiom Implements :
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
-      (* Self *) (Ty.path "iterators::Fibonacci")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [ ("Item", InstanceField.Ty Item); ("next", InstanceField.Method next)
@@ -75,8 +75,8 @@ fn fibonacci() -> Fibonacci {
     Fibonacci { curr: 0, next: 1 }
 }
 *)
-Definition fibonacci (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition fibonacci (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     M.pure
       (Value.StructRecord
@@ -127,8 +127,8 @@ fn main() {
     }
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* sequence :=
       M.alloc
@@ -643,7 +643,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (Value.Tuple []))
           ] in
       M.pure (M.use α9) in
-    let* array_ :=
+    let* array :=
       M.alloc
         (Value.Array
           [
@@ -673,7 +673,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "&")
                 [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
             ] in
-        let* α6 := M.alloc array_ in
+        let* α6 := M.alloc array in
         let* α7 := M.call_closure α5 [ α6 ] in
         let* α8 := M.alloc (Value.Array [ α7 ]) in
         let* α9 :=
@@ -698,7 +698,7 @@ Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
         (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
         "iter"
         [] in
-    let* α2 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) array_ ] in
+    let* α2 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) array ] in
     let* α3 := M.call_closure α0 [ α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 :=

@@ -33,7 +33,7 @@ Module checked.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        (* Self *) (Ty.path "result::checked::MathError")
+        Self
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.

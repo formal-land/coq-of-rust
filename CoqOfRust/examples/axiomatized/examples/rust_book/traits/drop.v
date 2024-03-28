@@ -16,7 +16,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::drop::Drop"
-      (* Self *) (Ty.path "drop::Droppable")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.

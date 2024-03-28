@@ -44,7 +44,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Axiom Implements :
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      (* Self *) (Ty.path "functions_order::SomeType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -63,7 +63,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Axiom Implements :
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      (* Self *) (Ty.path "functions_order::OtherType")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [

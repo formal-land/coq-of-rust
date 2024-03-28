@@ -12,8 +12,8 @@ where
     f();
 }
 *)
-Definition apply (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* _ :=
@@ -41,8 +41,8 @@ where
     f(3)
 }
 *)
-Definition apply_to_3 (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition apply_to_3 (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* α0 :=
@@ -91,8 +91,8 @@ fn main() {
     println!("3 doubled: {}", apply_to_3(double));
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* greeting := M.copy (mk_str "hello") in
     let* farewell :=

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
-    ty_params := [ ("K", None); ("V", None) ];
+    ty_params := [ "K"; "V" ];
     fields :=
       [
         ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
@@ -19,9 +19,9 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
   (*
   Default
   *)
-  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -48,7 +48,7 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "erc20::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_erc20_Mapping_K_V.
@@ -93,8 +93,8 @@ Module Impl_core_default_Default_for_erc20_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -111,7 +111,7 @@ Module Impl_core_default_Default_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc20::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc20_AccountId.
@@ -122,8 +122,8 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -135,7 +135,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "erc20::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc20_AccountId.
@@ -146,7 +146,7 @@ Module Impl_core_marker_Copy_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "erc20::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_erc20_AccountId.
@@ -188,8 +188,8 @@ Module Impl_core_default_Default_for_erc20_Erc20.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -233,7 +233,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc20::Erc20")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc20_Erc20.
@@ -317,8 +317,8 @@ Module Impl_erc20_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -357,8 +357,8 @@ Module Impl_erc20_Erc20.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -391,8 +391,8 @@ Module Impl_erc20_Erc20.
           }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ total_supply ] =>
       let* total_supply := M.alloc total_supply in
       let* balances :=
@@ -489,8 +489,8 @@ Module Impl_erc20_Erc20.
           self.total_supply
       }
   *)
-  Definition total_supply (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition total_supply (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -506,8 +506,8 @@ Module Impl_erc20_Erc20.
           self.balances.get(owner).unwrap_or_default()
       }
   *)
-  Definition balance_of_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition balance_of_impl (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -541,8 +541,8 @@ Module Impl_erc20_Erc20.
           self.balance_of_impl(&owner)
       }
   *)
-  Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition balance_of (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -564,8 +564,8 @@ Module Impl_erc20_Erc20.
           self.allowances.get(&( *owner, *spender)).unwrap_or_default()
       }
   *)
-  Definition allowance_impl (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition allowance_impl (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner; spender ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -608,8 +608,8 @@ Module Impl_erc20_Erc20.
           self.allowance_impl(&owner, &spender)
       }
   *)
-  Definition allowance (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition allowance (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner; spender ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -645,8 +645,8 @@ Module Impl_erc20_Erc20.
           Ok(())
       }
   *)
-  Definition transfer_from_to (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer_from_to (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; to; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
@@ -777,8 +777,8 @@ Module Impl_erc20_Erc20.
           self.transfer_from_to(&from, &to, value)
       }
   *)
-  Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; to; value ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
@@ -821,8 +821,8 @@ Module Impl_erc20_Erc20.
           Ok(())
       }
   *)
-  Definition approve (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition approve (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; spender; value ] =>
       let* self := M.alloc self in
       let* spender := M.alloc spender in
@@ -909,8 +909,8 @@ Module Impl_erc20_Erc20.
           Ok(())
       }
   *)
-  Definition transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; to; value ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in

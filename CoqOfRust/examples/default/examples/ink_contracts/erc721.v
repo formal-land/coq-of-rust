@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
-    ty_params := [ ("K", None); ("V", None) ];
+    ty_params := [ "K"; "V" ];
     fields :=
       [
         ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
@@ -19,9 +19,9 @@ Module Impl_core_default_Default_for_erc721_Mapping_K_V.
   (*
   Default
   *)
-  Definition default (K V : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match 𝜏, α with
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -48,7 +48,7 @@ Module Impl_core_default_Default_for_erc721_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.apply (Ty.path "erc721::Mapping") [ K; V ])
+      (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_for_erc721_Mapping_K_V.
@@ -137,8 +137,8 @@ Module Impl_core_default_Default_for_erc721_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -155,7 +155,7 @@ Module Impl_core_default_Default_for_erc721_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc721::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc721_AccountId.
@@ -166,8 +166,8 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -179,7 +179,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "erc721::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc721_AccountId.
@@ -190,7 +190,7 @@ Module Impl_core_marker_Copy_for_erc721_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "erc721::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_erc721_AccountId.
@@ -201,7 +201,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "erc721::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
@@ -212,8 +212,8 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -228,7 +228,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "erc721::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_AccountId.
@@ -246,7 +246,7 @@ Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      (* Self *) (Ty.path "erc721::AccountId")
+      Self
       (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -298,8 +298,8 @@ Module Impl_core_default_Default_for_erc721_Erc721.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -360,7 +360,7 @@ Module Impl_core_default_Default_for_erc721_Erc721.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "erc721::Erc721")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc721_Erc721.
@@ -414,7 +414,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc721_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (* Self *) (Ty.path "erc721::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_Error.
@@ -425,8 +425,8 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
   (*
   PartialEq
   *)
-  Definition eq (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
@@ -456,7 +456,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (* Self *) (Ty.path "erc721::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_Error.
@@ -467,7 +467,7 @@ Module Impl_core_marker_StructuralEq_for_erc721_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralEq"
-      (* Self *) (Ty.path "erc721::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_StructuralEq_for_erc721_Error.
@@ -479,10 +479,10 @@ Module Impl_core_cmp_Eq_for_erc721_Error.
   Eq
   *)
   Definition assert_receiver_is_total_eq
-      (𝜏 : list Ty.t)
+      (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    match 𝜏, α with
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       M.pure (Value.Tuple [])
@@ -492,7 +492,7 @@ Module Impl_core_cmp_Eq_for_erc721_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      (* Self *) (Ty.path "erc721::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -507,8 +507,8 @@ Module Impl_core_clone_Clone_for_erc721_Error.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -519,7 +519,7 @@ Module Impl_core_clone_Clone_for_erc721_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "erc721::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc721_Error.
@@ -530,7 +530,7 @@ Module Impl_core_marker_Copy_for_erc721_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "erc721::Error")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_erc721_Error.
@@ -608,8 +608,8 @@ Module Impl_erc721_Env.
           self.caller
       }
   *)
-  Definition caller (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -648,8 +648,8 @@ Module Impl_erc721_Erc721.
           Self::init_env()
       }
   *)
-  Definition env (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -665,8 +665,8 @@ Module Impl_erc721_Erc721.
           Default::default()
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -686,8 +686,8 @@ Module Impl_erc721_Erc721.
           self.owned_tokens_count.get(of).unwrap_or(0 as u32)
       }
   *)
-  Definition balance_of_or_zero (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition balance_of_or_zero (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; of ] =>
       let* self := M.alloc self in
       let* of := M.alloc of in
@@ -726,8 +726,8 @@ Module Impl_erc721_Erc721.
           self.token_approvals.remove(id);
       }
   *)
-  Definition clear_approval (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clear_approval (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
@@ -762,8 +762,8 @@ Module Impl_erc721_Erc721.
           self.operator_approvals.contains(&(owner, operator))
       }
   *)
-  Definition approved_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition approved_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner; operator ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -798,8 +798,8 @@ Module Impl_erc721_Erc721.
           self.token_owner.get(&id)
       }
   *)
-  Definition owner_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition owner_of (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
@@ -832,8 +832,8 @@ Module Impl_erc721_Erc721.
                   ))
       }
   *)
-  Definition approved_or_owner (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition approved_or_owner (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; id ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
@@ -964,8 +964,8 @@ Module Impl_erc721_Erc721.
           self.token_owner.contains(&id)
       }
   *)
-  Definition exists_ (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition exists_ (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
@@ -991,8 +991,8 @@ Module Impl_erc721_Erc721.
           self.balance_of_or_zero(&owner)
       }
   *)
-  Definition balance_of (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition balance_of (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -1014,8 +1014,8 @@ Module Impl_erc721_Erc721.
           self.token_approvals.get(&id)
       }
   *)
-  Definition get_approved (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get_approved (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in
@@ -1041,8 +1041,8 @@ Module Impl_erc721_Erc721.
           self.approved_for_all(owner, operator)
       }
   *)
-  Definition is_approved_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition is_approved_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; owner; operator ] =>
       let* self := M.alloc self in
       let* owner := M.alloc owner in
@@ -1083,8 +1083,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition approve_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition approve_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; to; approved ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
@@ -1223,8 +1223,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition set_approval_for_all (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition set_approval_for_all (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; to; approved ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
@@ -1330,8 +1330,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition approve_for (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition approve_for (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; to; id ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
@@ -1533,8 +1533,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition approve (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition approve (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; to; id ] =>
       let* self := M.alloc self in
       let* to := M.alloc to in
@@ -1632,8 +1632,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition remove_token_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition remove_token_from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; id ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
@@ -1898,8 +1898,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition transfer (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; destination; id ] =>
       let* self := M.alloc self in
       let* destination := M.alloc destination in
@@ -1996,8 +1996,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition transfer_from (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; from; to; id ] =>
       let* self := M.alloc self in
       let* from := M.alloc from in
@@ -2086,8 +2086,8 @@ Module Impl_erc721_Erc721.
           Ok(())
       }
   *)
-  Definition mint (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition mint (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self; id ] =>
       let* self := M.alloc self in
       let* id := M.alloc id in

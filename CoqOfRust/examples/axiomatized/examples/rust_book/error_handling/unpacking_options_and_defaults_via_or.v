@@ -43,7 +43,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      (* Self *) (Ty.path "unpacking_options_and_defaults_via_or::Fruit")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.

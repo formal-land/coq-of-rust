@@ -14,8 +14,8 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
   (*
   Default
   *)
-  Definition default (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [] =>
       let* α0 :=
         M.get_trait_method
@@ -32,7 +32,7 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      (* Self *) (Ty.path "basic_contract_caller::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_basic_contract_caller_AccountId.
@@ -43,8 +43,8 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
   (*
   Clone
   *)
-  Definition clone (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -56,7 +56,7 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      (* Self *) (Ty.path "basic_contract_caller::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
@@ -67,7 +67,7 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::Copy"
-      (* Self *) (Ty.path "basic_contract_caller::AccountId")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *) [].
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
@@ -97,8 +97,8 @@ Module Impl_basic_contract_caller_OtherContract.
           Self { value: init_value }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ init_value ] =>
       let* init_value := M.alloc init_value in
       let* α0 := M.read init_value in
@@ -116,8 +116,8 @@ Module Impl_basic_contract_caller_OtherContract.
           self.value = !self.value;
       }
   *)
-  Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -147,8 +147,8 @@ Module Impl_basic_contract_caller_OtherContract.
           self.value
       }
   *)
-  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -187,8 +187,8 @@ Module Impl_basic_contract_caller_BasicContractCaller.
           Self { other_contract }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ other_contract_code_hash ] =>
       let* other_contract_code_hash := M.alloc other_contract_code_hash in
       let* other_contract :=
@@ -215,8 +215,8 @@ Module Impl_basic_contract_caller_BasicContractCaller.
           self.other_contract.get()
       }
   *)
-  Definition flip_and_get (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition flip_and_get (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=

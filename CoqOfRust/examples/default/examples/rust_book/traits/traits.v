@@ -14,8 +14,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module Animal.
-  Definition talk (Self : Ty.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition talk (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -78,8 +78,8 @@ Module Impl_traits_Sheep.
           self.naked
       }
   *)
-  Definition is_naked (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition is_naked (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -102,8 +102,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
           }
       }
   *)
-  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ name ] =>
       let* name := M.alloc name in
       let* α0 := M.read name in
@@ -119,8 +119,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
           self.name
       }
   *)
-  Definition name (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition name (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 := M.read self in
@@ -137,8 +137,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
           }
       }
   *)
-  Definition noise (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -162,8 +162,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
           println!("{} pauses briefly... {}", self.name, self.noise());
       }
   *)
-  Definition talk (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition talk (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
@@ -224,7 +224,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Axiom Implements :
     M.IsTraitInstance
       "traits::Animal"
-      (* Self *) (Ty.path "traits::Sheep")
+      Self
       (* Trait polymorphic types *) []
       (* Instance *)
         [
@@ -251,8 +251,8 @@ Module Impl_traits_Sheep.
           }
       }
   *)
-  Definition shear (𝜏 : list Ty.t) (α : list Value.t) : M :=
-    match 𝜏, α with
+  Definition shear (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
@@ -363,8 +363,8 @@ fn main() {
     dolly.talk();
 }
 *)
-Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
-  match 𝜏, α with
+Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
   | [], [] =>
     let* dolly :=
       let* α0 :=
