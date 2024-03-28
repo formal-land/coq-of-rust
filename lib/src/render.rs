@@ -93,7 +93,7 @@ fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
     result
 }
 
-fn string_pieces_to_coq<'a>(_with_paren: bool, pieces: &[StringPiece]) -> coq::Expression<'a> {
+fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
     match pieces {
         [] => coq::Expression::just_name("\"\""),
         [StringPiece::AsciiString(s), rest @ ..] => {
@@ -105,21 +105,21 @@ fn string_pieces_to_coq<'a>(_with_paren: bool, pieces: &[StringPiece]) -> coq::E
             } else {
                 head.apply_many(&[
                     coq::Expression::just_name("++"),
-                    string_pieces_to_coq(false, rest),
+                    string_pieces_to_coq(rest),
                 ])
             }
         }
         [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
             .apply_many(&[
                 coq::Expression::just_name(format!("\"{:03}\"", *c as u8).as_str()),
-                string_pieces_to_coq(true, rest),
+                string_pieces_to_coq(rest),
             ]),
     }
 }
 
 pub(crate) fn string_to_coq(message: &str) -> coq::Expression {
     let pieces = cut_string_in_pieces_for_coq(message);
-    coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(true, &pieces))
+    coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(&pieces))
 }
 
 pub type Doc<'a> = RcDoc<'a, ()>;
