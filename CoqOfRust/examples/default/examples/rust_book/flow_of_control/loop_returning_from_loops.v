@@ -28,22 +28,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α0 := M.read β in
             let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
             M.assign β α1 in
-          let* α0 := M.read counter in
-          let* α1 :=
-            M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 10)) in
-          let* α2 := M.read (M.use α1) in
-          if Value.is_true α2 then
-            let* α0 := M.break in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2
-          else
-            M.alloc (Value.Tuple [])) in
+          let* α0 := M.alloc (Value.Tuple []) in
+          M.match_operator
+            α0
+            [
+              fun γ =>
+                let* γ :=
+                  let* α0 := M.read counter in
+                  let* α1 :=
+                    M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 10)) in
+                  M.pure (M.use α1) in
+                let* _ :=
+                  let* α0 := M.read γ in
+                  M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α0 := M.break in
+                let* α1 := M.read α0 in
+                let* α2 := M.never_to_any α1 in
+                M.alloc α2;
+              fun γ => M.alloc (Value.Tuple [])
+            ]) in
       M.copy α0 in
     let* _ :=
       let* α0 := M.alloc (Value.Integer Integer.I32 20) in
       let* α1 := M.alloc (Value.Tuple [ result; α0 ]) in
-      match_operator
+      M.match_operator
         α1
         [
           fun γ =>
@@ -51,38 +59,48 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let γ0_1 := M.get_tuple_field γ 1 in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 := M.read left_val in
-            let* α1 := M.read α0 in
-            let* α2 := M.read right_val in
-            let* α3 := M.read α2 in
-            let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
-            let* α5 := M.read (M.use α4) in
-            if Value.is_true α5 then
-              let* kind :=
-                M.alloc
-                  (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
-              let* α0 :=
-                M.get_function
-                  "core::panicking::assert_failed"
-                  [ Ty.path "i32"; Ty.path "i32" ] in
-              let* α1 := M.read kind in
-              let* α2 := M.read left_val in
-              let* α3 := M.read right_val in
-              let* α4 :=
-                M.call_closure
-                  α0
-                  [
-                    α1;
-                    α2;
-                    α3;
-                    Value.StructTuple "core::option::Option::None" []
-                  ] in
-              let* α0 := M.alloc α4 in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc (Value.Tuple [])
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 := M.read left_val in
+                    let* α1 := M.read α0 in
+                    let* α2 := M.read right_val in
+                    let* α3 := M.read α2 in
+                    let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
+                    M.pure (M.use α4) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* kind :=
+                    M.alloc
+                      (Value.StructTuple
+                        "core::panicking::AssertKind::Eq"
+                        []) in
+                  let* α0 :=
+                    M.get_function
+                      "core::panicking::assert_failed"
+                      [ Ty.path "i32"; Ty.path "i32" ] in
+                  let* α1 := M.read kind in
+                  let* α2 := M.read left_val in
+                  let* α3 := M.read right_val in
+                  let* α4 :=
+                    M.call_closure
+                      α0
+                      [
+                        α1;
+                        α2;
+                        α3;
+                        Value.StructTuple "core::option::Option::None" []
+                      ] in
+                  let* α0 := M.alloc α4 in
+                  let* α1 := M.read α0 in
+                  let* α2 := M.never_to_any α1 in
+                  M.alloc α2;
+                fun γ => M.alloc (Value.Tuple [])
+              ]
         ] in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

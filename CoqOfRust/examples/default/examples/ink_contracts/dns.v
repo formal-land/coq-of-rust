@@ -182,7 +182,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
+        M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -733,40 +733,48 @@ Module Impl_dns_DomainNameService.
         let* α5 := M.call_closure α0 [ α4 ] in
         M.alloc α5 in
       let* _ :=
-        let* α0 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "dns::Mapping")
-              [
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                Ty.path "dns::AccountId"
-              ])
-            "contains"
-            [] in
-        let* α1 := M.read self in
-        let* α2 :=
-          M.call_closure
-            α0
-            [
-              M.get_struct_record_field
-                α1
-                "dns::DomainNameService"
-                "name_to_owner";
-              name
-            ] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.read (M.use α3) in
-        if Value.is_true α4 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "dns::Error::NameAlreadyExists" [] ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_associated_function
+                    (Ty.apply
+                      (Ty.path "dns::Mapping")
+                      [
+                        Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                        Ty.path "dns::AccountId"
+                      ])
+                    "contains"
+                    [] in
+                let* α1 := M.read self in
+                let* α2 :=
+                  M.call_closure
+                    α0
+                    [
+                      M.get_struct_record_field
+                        α1
+                        "dns::DomainNameService"
+                        "name_to_owner";
+                      name
+                    ] in
+                let* α3 := M.alloc α2 in
+                M.pure (M.use α3) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ Value.StructTuple "dns::Error::NameAlreadyExists" [] ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -933,27 +941,35 @@ Module Impl_dns_DomainNameService.
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.path "dns::AccountId")
-            [ Ty.path "dns::AccountId" ]
-            "ne"
-            [] in
-        let* α1 := M.call_closure α0 [ caller; owner ] in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.read (M.use α2) in
-        if Value.is_true α3 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.path "dns::AccountId")
+                    [ Ty.path "dns::AccountId" ]
+                    "ne"
+                    [] in
+                let* α1 := M.call_closure α0 [ caller; owner ] in
+                let* α2 := M.alloc α1 in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* old_address :=
         let* α0 :=
           M.get_associated_function
@@ -1097,27 +1113,35 @@ Module Impl_dns_DomainNameService.
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 :=
-          M.get_trait_method
-            "core::cmp::PartialEq"
-            (Ty.path "dns::AccountId")
-            [ Ty.path "dns::AccountId" ]
-            "ne"
-            [] in
-        let* α1 := M.call_closure α0 [ caller; owner ] in
-        let* α2 := M.alloc α1 in
-        let* α3 := M.read (M.use α2) in
-        if Value.is_true α3 then
-          let* α0 :=
-            M.return_
-              (Value.StructTuple
-                "core::result::Result::Err"
-                [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc (Value.Tuple []) in
+        let* α0 := M.alloc (Value.Tuple []) in
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 :=
+                  M.get_trait_method
+                    "core::cmp::PartialEq"
+                    (Ty.path "dns::AccountId")
+                    [ Ty.path "dns::AccountId" ]
+                    "ne"
+                    [] in
+                let* α1 := M.call_closure α0 [ caller; owner ] in
+                let* α2 := M.alloc α1 in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α0 :=
+                M.return_
+                  (Value.StructTuple
+                    "core::result::Result::Err"
+                    [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]) in
+              let* α1 := M.read α0 in
+              let* α2 := M.never_to_any α1 in
+              M.alloc α2;
+            fun γ => M.alloc (Value.Tuple [])
+          ] in
       let* old_owner :=
         let* α0 :=
           M.get_associated_function

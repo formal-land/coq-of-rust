@@ -30,7 +30,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "generics_new_type_idiom_as_base_type::Years"
           0) in
     let* α0 :=
-      match_operator
+      M.match_operator
         years
         [
           fun γ =>

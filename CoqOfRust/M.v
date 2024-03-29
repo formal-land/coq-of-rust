@@ -272,13 +272,6 @@ Module Value.
       end
     end.
 
-  (** Used to implement the `if` instruction. *)
-  Definition is_true (value : Value.t) : bool :=
-    match value with
-    | Bool true => true
-    | _ => false
-    end.
-
   (** Equality between values. Defined only for basic types. *)
   Definition eqb (v1 v2 : Value.t) : bool :=
     match v1, v2 with
@@ -624,6 +617,37 @@ Fixpoint match_operator
         | _ => raise exception
         end
       )
+  end.
+
+(** Each arm must return a tuple of the free variables found in the pattern. If
+    no arms are valid, we raise an [Exception.BreakMatch]. *)
+Fixpoint find_or_pattern_aux
+    (scrutinee : Value.t)
+    (arms : list (Value.t -> M)) :
+    M :=
+  match arms with
+  | nil => break_match
+  | arm :: arms =>
+    catch
+      (arm scrutinee)
+      (fun exception =>
+        match exception with
+        | Exception.BreakMatch => find_or_pattern_aux scrutinee arms
+        | _ => raise exception
+        end
+      )
+  end.
+
+(** The [body] must be a closure. *)
+Definition find_or_pattern
+    (scrutinee : Value.t)
+    (arms : list (Value.t -> M))
+    (body : Value.t) :
+    M :=
+  let* free_vars := find_or_pattern_aux scrutinee arms in
+  match free_vars with
+  | Value.Tuple free_vars => call_closure body free_vars
+  | _ => impossible
   end.
 
 Definition never_to_any (x : Value.t) : M :=

@@ -18,9 +18,7 @@ End underscore.
   } *)
 
 (* Trait *)
-Module BarTrait.
-  
-End BarTrait.
+(* Empty module 'BarTrait' *)
 
 Module Wrap_underscore_2.
 Module underscore.

@@ -43,7 +43,7 @@ Module checked.
             [] in
         let* α1 := M.read f in
         let* α2 :=
-          match_operator
+          M.match_operator
             self
             [
               fun γ =>
@@ -95,26 +95,35 @@ Module checked.
     | [], [ x; y ] =>
       let* x := M.alloc x in
       let* y := M.alloc y in
-      let* α0 := M.read y in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 :=
-        if Value.is_true α3 then
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [
-                Value.StructTuple
-                  "result::checked::MathError::DivisionByZero"
-                  []
-              ])
-        else
-          let* α0 := M.read x in
-          let* α1 := M.read y in
-          let* α2 := BinOp.Panic.div α0 α1 in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
-      M.read α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      let* α1 :=
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read y in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := M.alloc (BinOp.Pure.eq α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [
+                    Value.StructTuple
+                      "result::checked::MathError::DivisionByZero"
+                      []
+                  ]);
+            fun γ =>
+              let* α0 := M.read x in
+              let* α1 := M.read y in
+              let* α2 := BinOp.Panic.div α0 α1 in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
+          ] in
+      M.read α1
     | _, _ => M.impossible
     end.
   
@@ -131,26 +140,35 @@ Module checked.
     match τ, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.read x in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 :=
-        if Value.is_true α3 then
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [
-                Value.StructTuple
-                  "result::checked::MathError::NegativeSquareRoot"
-                  []
-              ])
-        else
-          let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
-          let* α1 := M.read x in
-          let* α2 := M.call_closure α0 [ α1 ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
-      M.read α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      let* α1 :=
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read x in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [
+                    Value.StructTuple
+                      "result::checked::MathError::NegativeSquareRoot"
+                      []
+                  ]);
+            fun γ =>
+              let* α0 := M.get_associated_function (Ty.path "f64") "sqrt" [] in
+              let* α1 := M.read x in
+              let* α2 := M.call_closure α0 [ α1 ] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
+          ] in
+      M.read α1
     | _, _ => M.impossible
     end.
   
@@ -167,26 +185,35 @@ Module checked.
     match τ, α with
     | [], [ x ] =>
       let* x := M.alloc x in
-      let* α0 := M.read x in
-      let* α1 := M.read UnsupportedLiteral in
-      let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
-      let* α3 := M.read (M.use α2) in
-      let* α4 :=
-        if Value.is_true α3 then
-          M.alloc
-            (Value.StructTuple
-              "core::result::Result::Err"
-              [
-                Value.StructTuple
-                  "result::checked::MathError::NonPositiveLogarithm"
-                  []
-              ])
-        else
-          let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
-          let* α1 := M.read x in
-          let* α2 := M.call_closure α0 [ α1 ] in
-          M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ]) in
-      M.read α4
+      let* α0 := M.alloc (Value.Tuple []) in
+      let* α1 :=
+        M.match_operator
+          α0
+          [
+            fun γ =>
+              let* γ :=
+                let* α0 := M.read x in
+                let* α1 := M.read UnsupportedLiteral in
+                let* α2 := M.alloc (BinOp.Pure.le α0 α1) in
+                M.pure (M.use α2) in
+              let* _ :=
+                let* α0 := M.read γ in
+                M.is_constant_or_break_match α0 (Value.Bool true) in
+              M.alloc
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  [
+                    Value.StructTuple
+                      "result::checked::MathError::NonPositiveLogarithm"
+                      []
+                  ]);
+            fun γ =>
+              let* α0 := M.get_associated_function (Ty.path "f64") "ln" [] in
+              let* α1 := M.read x in
+              let* α2 := M.call_closure α0 [ α1 ] in
+              M.alloc (Value.StructTuple "core::result::Result::Ok" [ α2 ])
+          ] in
+      M.read α1
     | _, _ => M.impossible
     end.
 End checked.
@@ -217,7 +244,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
     let* α3 := M.call_closure α0 [ α1; α2 ] in
     let* α4 := M.alloc α3 in
     let* α5 :=
-      match_operator
+      M.match_operator
         α4
         [
           fun γ =>
@@ -233,25 +260,25 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                 (Ty.path "core::fmt::Arguments")
                 "new_v1"
                 [] in
-            let* α2 := M.read (mk_str "") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
             let* α4 :=
-              M.get_associated_function
-                (Ty.path "core::fmt::rt::Argument")
-                "new_debug"
-                [ Ty.path "result::checked::MathError" ] in
-            let* α5 := M.call_closure α4 [ why ] in
-            let* α6 := M.alloc (Value.Array [ α5 ]) in
-            let* α7 :=
-              M.call_closure
-                α1
-                [
-                  M.pointer_coercion (* Unsize *) α3;
-                  M.pointer_coercion (* Unsize *) α6
-                ] in
-            let* α8 := M.call_closure α0 [ α7 ] in
-            let* α9 := M.never_to_any α8 in
-            M.alloc α9;
+              (* Unsize *)
+                let* α2 := M.read (mk_str "") in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                M.pure (M.pointer_coercion α3) in
+            let* α8 :=
+              (* Unsize *)
+                let* α5 :=
+                  M.get_associated_function
+                    (Ty.path "core::fmt::rt::Argument")
+                    "new_debug"
+                    [ Ty.path "result::checked::MathError" ] in
+                let* α6 := M.call_closure α5 [ why ] in
+                let* α7 := M.alloc (Value.Array [ α6 ]) in
+                M.pure (M.pointer_coercion α7) in
+            let* α9 := M.call_closure α1 [ α4; α8 ] in
+            let* α10 := M.call_closure α0 [ α9 ] in
+            let* α11 := M.never_to_any α10 in
+            M.alloc α11;
           fun γ =>
             let* γ0_0 :=
               M.get_struct_tuple_field_or_break_match
@@ -263,7 +290,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
             let* α1 := M.read ratio in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.alloc α2 in
-            match_operator
+            M.match_operator
               α3
               [
                 fun γ =>
@@ -279,25 +306,25 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                       (Ty.path "core::fmt::Arguments")
                       "new_v1"
                       [] in
-                  let* α2 := M.read (mk_str "") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
                   let* α4 :=
-                    M.get_associated_function
-                      (Ty.path "core::fmt::rt::Argument")
-                      "new_debug"
-                      [ Ty.path "result::checked::MathError" ] in
-                  let* α5 := M.call_closure α4 [ why ] in
-                  let* α6 := M.alloc (Value.Array [ α5 ]) in
-                  let* α7 :=
-                    M.call_closure
-                      α1
-                      [
-                        M.pointer_coercion (* Unsize *) α3;
-                        M.pointer_coercion (* Unsize *) α6
-                      ] in
-                  let* α8 := M.call_closure α0 [ α7 ] in
-                  let* α9 := M.never_to_any α8 in
-                  M.alloc α9;
+                    (* Unsize *)
+                      let* α2 := M.read (mk_str "") in
+                      let* α3 := M.alloc (Value.Array [ α2 ]) in
+                      M.pure (M.pointer_coercion α3) in
+                  let* α8 :=
+                    (* Unsize *)
+                      let* α5 :=
+                        M.get_associated_function
+                          (Ty.path "core::fmt::rt::Argument")
+                          "new_debug"
+                          [ Ty.path "result::checked::MathError" ] in
+                      let* α6 := M.call_closure α5 [ why ] in
+                      let* α7 := M.alloc (Value.Array [ α6 ]) in
+                      M.pure (M.pointer_coercion α7) in
+                  let* α9 := M.call_closure α1 [ α4; α8 ] in
+                  let* α10 := M.call_closure α0 [ α9 ] in
+                  let* α11 := M.never_to_any α10 in
+                  M.alloc α11;
                 fun γ =>
                   let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match
@@ -309,7 +336,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α1 := M.read ln in
                   let* α2 := M.call_closure α0 [ α1 ] in
                   let* α3 := M.alloc α2 in
-                  match_operator
+                  M.match_operator
                     α3
                     [
                       fun γ =>
@@ -326,25 +353,25 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
                             (Ty.path "core::fmt::Arguments")
                             "new_v1"
                             [] in
-                        let* α2 := M.read (mk_str "") in
-                        let* α3 := M.alloc (Value.Array [ α2 ]) in
                         let* α4 :=
-                          M.get_associated_function
-                            (Ty.path "core::fmt::rt::Argument")
-                            "new_debug"
-                            [ Ty.path "result::checked::MathError" ] in
-                        let* α5 := M.call_closure α4 [ why ] in
-                        let* α6 := M.alloc (Value.Array [ α5 ]) in
-                        let* α7 :=
-                          M.call_closure
-                            α1
-                            [
-                              M.pointer_coercion (* Unsize *) α3;
-                              M.pointer_coercion (* Unsize *) α6
-                            ] in
-                        let* α8 := M.call_closure α0 [ α7 ] in
-                        let* α9 := M.never_to_any α8 in
-                        M.alloc α9;
+                          (* Unsize *)
+                            let* α2 := M.read (mk_str "") in
+                            let* α3 := M.alloc (Value.Array [ α2 ]) in
+                            M.pure (M.pointer_coercion α3) in
+                        let* α8 :=
+                          (* Unsize *)
+                            let* α5 :=
+                              M.get_associated_function
+                                (Ty.path "core::fmt::rt::Argument")
+                                "new_debug"
+                                [ Ty.path "result::checked::MathError" ] in
+                            let* α6 := M.call_closure α5 [ why ] in
+                            let* α7 := M.alloc (Value.Array [ α6 ]) in
+                            M.pure (M.pointer_coercion α7) in
+                        let* α9 := M.call_closure α1 [ α4; α8 ] in
+                        let* α10 := M.call_closure α0 [ α9 ] in
+                        let* α11 := M.never_to_any α10 in
+                        M.alloc α11;
                       fun γ =>
                         let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
@@ -377,31 +404,31 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "f64" ] in
-        let* α6 := M.get_function "result::op" [] in
-        let* α7 := M.read UnsupportedLiteral in
-        let* α8 := M.read UnsupportedLiteral in
-        let* α9 := M.call_closure α6 [ α7; α8 ] in
-        let* α10 := M.alloc α9 in
-        let* α11 := M.call_closure α5 [ α10 ] in
-        let* α12 := M.alloc (Value.Array [ α11 ]) in
-        let* α13 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α12
-            ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α14 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "f64" ] in
+            let* α7 := M.get_function "result::op" [] in
+            let* α8 := M.read UnsupportedLiteral in
+            let* α9 := M.read UnsupportedLiteral in
+            let* α10 := M.call_closure α7 [ α8; α9 ] in
+            let* α11 := M.alloc α10 in
+            let* α12 := M.call_closure α6 [ α11 ] in
+            let* α13 := M.alloc (Value.Array [ α12 ]) in
+            M.pure (M.pointer_coercion α13) in
+        let* α15 := M.call_closure α1 [ α5; α14 ] in
+        let* α16 := M.call_closure α0 [ α15 ] in
+        M.alloc α16 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

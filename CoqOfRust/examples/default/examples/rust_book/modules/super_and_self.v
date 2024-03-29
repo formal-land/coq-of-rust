@@ -17,12 +17,15 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_const"
             [] in
-        let* α2 := M.read (mk_str "called `function()`
+        let* α4 :=
+          (* Unsize *)
+            let* α2 := M.read (mk_str "called `function()`
 ") in
-        let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call_closure α0 [ α4 ] in
-        M.alloc α5 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in
+        let* α6 := M.call_closure α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
@@ -46,12 +49,15 @@ Module cool.
               (Ty.path "core::fmt::Arguments")
               "new_const"
               [] in
-          let* α2 := M.read (mk_str "called `cool::function()`
+          let* α4 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "called `cool::function()`
 ") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call_closure α0 [ α4 ] in
-          M.alloc α5 in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              M.pure (M.pointer_coercion α3) in
+          let* α5 := M.call_closure α1 [ α4 ] in
+          let* α6 := M.call_closure α0 [ α5 ] in
+          M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -76,12 +82,15 @@ Module my.
               (Ty.path "core::fmt::Arguments")
               "new_const"
               [] in
-          let* α2 := M.read (mk_str "called `my::function()`
+          let* α4 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "called `my::function()`
 ") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call_closure α0 [ α4 ] in
-          M.alloc α5 in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              M.pure (M.pointer_coercion α3) in
+          let* α5 := M.call_closure α1 [ α4 ] in
+          let* α6 := M.call_closure α0 [ α5 ] in
+          M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* α0 := M.alloc (Value.Tuple []) in
       M.read α0
@@ -105,13 +114,15 @@ Module my.
                 (Ty.path "core::fmt::Arguments")
                 "new_const"
                 [] in
-            let* α2 := M.read (mk_str "called `my::cool::function()`
-") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
             let* α4 :=
-              M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-            let* α5 := M.call_closure α0 [ α4 ] in
-            M.alloc α5 in
+              (* Unsize *)
+                let* α2 := M.read (mk_str "called `my::cool::function()`
+") in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in
+                M.pure (M.pointer_coercion α3) in
+            let* α5 := M.call_closure α1 [ α4 ] in
+            let* α6 := M.call_closure α0 [ α5 ] in
+            M.alloc α6 in
           M.alloc (Value.Tuple []) in
         let* α0 := M.alloc (Value.Tuple []) in
         M.read α0
@@ -155,12 +166,16 @@ Module my.
               (Ty.path "core::fmt::Arguments")
               "new_const"
               [] in
-          let* α2 := M.read (mk_str "called `my::indirect_call()`, that
+          let* α4 :=
+            (* Unsize *)
+              let* α2 :=
+                M.read (mk_str "called `my::indirect_call()`, that
 > ") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call_closure α0 [ α4 ] in
-          M.alloc α5 in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              M.pure (M.pointer_coercion α3) in
+          let* α5 := M.call_closure α1 [ α4 ] in
+          let* α6 := M.call_closure α0 [ α5 ] in
+          M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* α0 := M.get_function "super_and_self::my::function" [] in

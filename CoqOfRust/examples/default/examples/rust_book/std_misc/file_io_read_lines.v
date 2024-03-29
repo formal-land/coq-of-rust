@@ -98,7 +98,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* α2 := M.call_closure α0 [ α1 ] in
     let* α3 := M.alloc α2 in
     let* α4 :=
-      match_operator
+      M.match_operator
         α3
         [
           fun γ =>
@@ -120,7 +120,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
-                match_operator
+                M.match_operator
                   α2
                   [
                     fun γ =>
@@ -144,39 +144,39 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "core::fmt::Arguments")
                               "new_v1"
                               [] in
-                          let* α2 := M.read (mk_str "") in
-                          let* α3 := M.read (mk_str "
-") in
-                          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
                           let* α5 :=
-                            M.get_associated_function
-                              (Ty.path "core::fmt::rt::Argument")
-                              "new_display"
-                              [ Ty.path "alloc::string::String" ] in
-                          let* α6 :=
-                            M.get_associated_function
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                [
-                                  Ty.path "alloc::string::String";
-                                  Ty.path "std::io::error::Error"
-                                ])
-                              "unwrap"
-                              [] in
-                          let* α7 := M.read line in
-                          let* α8 := M.call_closure α6 [ α7 ] in
-                          let* α9 := M.alloc α8 in
-                          let* α10 := M.call_closure α5 [ α9 ] in
-                          let* α11 := M.alloc (Value.Array [ α10 ]) in
-                          let* α12 :=
-                            M.call_closure
-                              α1
-                              [
-                                M.pointer_coercion (* Unsize *) α4;
-                                M.pointer_coercion (* Unsize *) α11
-                              ] in
-                          let* α13 := M.call_closure α0 [ α12 ] in
-                          M.alloc α13 in
+                            (* Unsize *)
+                              let* α2 := M.read (mk_str "") in
+                              let* α3 := M.read (mk_str "
+") in
+                              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+                              M.pure (M.pointer_coercion α4) in
+                          let* α13 :=
+                            (* Unsize *)
+                              let* α6 :=
+                                M.get_associated_function
+                                  (Ty.path "core::fmt::rt::Argument")
+                                  "new_display"
+                                  [ Ty.path "alloc::string::String" ] in
+                              let* α7 :=
+                                M.get_associated_function
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    [
+                                      Ty.path "alloc::string::String";
+                                      Ty.path "std::io::error::Error"
+                                    ])
+                                  "unwrap"
+                                  [] in
+                              let* α8 := M.read line in
+                              let* α9 := M.call_closure α7 [ α8 ] in
+                              let* α10 := M.alloc α9 in
+                              let* α11 := M.call_closure α6 [ α10 ] in
+                              let* α12 := M.alloc (Value.Array [ α11 ]) in
+                              M.pure (M.pointer_coercion α12) in
+                          let* α14 := M.call_closure α1 [ α5; α13 ] in
+                          let* α15 := M.call_closure α0 [ α14 ] in
+                          M.alloc α15 in
                         M.alloc (Value.Tuple []) in
                       M.alloc (Value.Tuple [])
                   ] in

@@ -60,12 +60,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_const"
             [] in
-        let* α2 := M.read (mk_str "--- rc_a is created ---
+        let* α4 :=
+          (* Unsize *)
+            let* α2 := M.read (mk_str "--- rc_a is created ---
 ") in
-        let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call_closure α0 [ α4 ] in
-        M.alloc α5 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in
+        let* α6 := M.call_closure α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* rc_a :=
       let* α0 :=
@@ -86,36 +89,38 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "usize" ] in
-        let* α6 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "alloc::rc::Rc")
-              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-              ])
-            "strong_count"
-            [] in
-        let* α7 := M.call_closure α6 [ rc_a ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "usize" ] in
+            let* α7 :=
+              M.get_associated_function
+                (Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ])
+                "strong_count"
+                [] in
+            let* α8 := M.call_closure α7 [ rc_a ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -126,12 +131,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::fmt::Arguments")
               "new_const"
               [] in
-          let* α2 := M.read (mk_str "--- rc_a is cloned to rc_b ---
+          let* α4 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "--- rc_a is cloned to rc_b ---
 ") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call_closure α0 [ α4 ] in
-          M.alloc α5 in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              M.pure (M.pointer_coercion α3) in
+          let* α5 := M.call_closure α1 [ α4 ] in
+          let* α6 := M.call_closure α0 [ α5 ] in
+          M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* rc_b :=
         let* α0 :=
@@ -154,176 +162,36 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "Reference Count of rc_b: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "usize" ] in
-          let* α6 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "alloc::rc::Rc")
-                [
-                  Ty.path "alloc::string::String";
-                  Ty.path "alloc::alloc::Global"
-                ])
-              "strong_count"
-              [] in
-          let* α7 := M.call_closure α6 [ rc_b ] in
-          let* α8 := M.alloc α7 in
-          let* α9 := M.call_closure α5 [ α8 ] in
-          let* α10 := M.alloc (Value.Array [ α9 ]) in
-          let* α11 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α10
-              ] in
-          let* α12 := M.call_closure α0 [ α11 ] in
-          M.alloc α12 in
-        M.alloc (Value.Tuple []) in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
-          let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
-          let* α3 := M.read (mk_str "
+            (* Unsize *)
+              let* α2 := M.read (mk_str "Reference Count of rc_b: ") in
+              let* α3 := M.read (mk_str "
 ") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-          let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "usize" ] in
-          let* α6 :=
-            M.get_associated_function
-              (Ty.apply
-                (Ty.path "alloc::rc::Rc")
-                [
-                  Ty.path "alloc::string::String";
-                  Ty.path "alloc::alloc::Global"
-                ])
-              "strong_count"
-              [] in
-          let* α7 := M.call_closure α6 [ rc_a ] in
-          let* α8 := M.alloc α7 in
-          let* α9 := M.call_closure α5 [ α8 ] in
-          let* α10 := M.alloc (Value.Array [ α9 ]) in
-          let* α11 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α10
-              ] in
-          let* α12 := M.call_closure α0 [ α11 ] in
-          M.alloc α12 in
-        M.alloc (Value.Tuple []) in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
-          let* α2 := M.read (mk_str "rc_a and rc_b are equal: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-          let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "bool" ] in
-          let* α6 :=
-            M.get_trait_method
-              "core::cmp::PartialEq"
-              (Ty.apply
-                (Ty.path "alloc::rc::Rc")
-                [
-                  Ty.path "alloc::string::String";
-                  Ty.path "alloc::alloc::Global"
-                ])
-              [
-                Ty.apply
-                  (Ty.path "alloc::rc::Rc")
-                  [
-                    Ty.path "alloc::string::String";
-                    Ty.path "alloc::alloc::Global"
-                  ]
-              ]
-              "eq"
-              [] in
-          let* α7 := M.call_closure α6 [ rc_a; rc_b ] in
-          let* α8 := M.alloc α7 in
-          let* α9 := M.call_closure α5 [ α8 ] in
-          let* α10 := M.alloc (Value.Array [ α9 ]) in
-          let* α11 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α10
-              ] in
-          let* α12 := M.call_closure α0 [ α11 ] in
-          M.alloc α12 in
-        M.alloc (Value.Tuple []) in
-      let* _ :=
-        let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::Arguments")
-              "new_v1"
-              [] in
-          let* α2 := M.read (mk_str "Length of the value inside rc_a: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-          let* α5 :=
-            M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [ Ty.path "usize" ] in
-          let* α6 :=
-            M.get_associated_function
-              (Ty.path "alloc::string::String")
-              "len"
-              [] in
-          let* α7 :=
-            M.get_trait_method
-              "core::ops::deref::Deref"
-              (Ty.apply
-                (Ty.path "alloc::rc::Rc")
-                [
-                  Ty.path "alloc::string::String";
-                  Ty.path "alloc::alloc::Global"
-                ])
-              []
-              "deref"
-              [] in
-          let* α8 := M.call_closure α7 [ rc_a ] in
-          let* α9 := M.call_closure α6 [ α8 ] in
-          let* α10 := M.alloc α9 in
-          let* α11 := M.call_closure α5 [ α10 ] in
-          let* α12 := M.alloc (Value.Array [ α11 ]) in
-          let* α13 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α12
-              ] in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α12 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "usize" ] in
+              let* α7 :=
+                M.get_associated_function
+                  (Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    [
+                      Ty.path "alloc::string::String";
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  "strong_count"
+                  [] in
+              let* α8 := M.call_closure α7 [ rc_b ] in
+              let* α9 := M.alloc α8 in
+              let* α10 := M.call_closure α6 [ α9 ] in
+              let* α11 := M.alloc (Value.Array [ α10 ]) in
+              M.pure (M.pointer_coercion α11) in
+          let* α13 := M.call_closure α1 [ α5; α12 ] in
           let* α14 := M.call_closure α0 [ α13 ] in
           M.alloc α14 in
         M.alloc (Value.Tuple []) in
@@ -335,33 +203,173 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::fmt::Arguments")
               "new_v1"
               [] in
-          let* α2 := M.read (mk_str "Value of rc_b: ") in
-          let* α3 := M.read (mk_str "
-") in
-          let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
           let* α5 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α12 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "usize" ] in
+              let* α7 :=
+                M.get_associated_function
+                  (Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    [
+                      Ty.path "alloc::string::String";
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  "strong_count"
+                  [] in
+              let* α8 := M.call_closure α7 [ rc_a ] in
+              let* α9 := M.alloc α8 in
+              let* α10 := M.call_closure α6 [ α9 ] in
+              let* α11 := M.alloc (Value.Array [ α10 ]) in
+              M.pure (M.pointer_coercion α11) in
+          let* α13 := M.call_closure α1 [ α5; α12 ] in
+          let* α14 := M.call_closure α0 [ α13 ] in
+          M.alloc α14 in
+        M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
             M.get_associated_function
-              (Ty.path "core::fmt::rt::Argument")
-              "new_display"
-              [
-                Ty.apply
-                  (Ty.path "alloc::rc::Rc")
+              (Ty.path "core::fmt::Arguments")
+              "new_v1"
+              [] in
+          let* α5 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "rc_a and rc_b are equal: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α12 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "bool" ] in
+              let* α7 :=
+                M.get_trait_method
+                  "core::cmp::PartialEq"
+                  (Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    [
+                      Ty.path "alloc::string::String";
+                      Ty.path "alloc::alloc::Global"
+                    ])
                   [
-                    Ty.path "alloc::string::String";
-                    Ty.path "alloc::alloc::Global"
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      [
+                        Ty.path "alloc::string::String";
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ]
-              ] in
-          let* α6 := M.call_closure α5 [ rc_b ] in
-          let* α7 := M.alloc (Value.Array [ α6 ]) in
-          let* α8 :=
-            M.call_closure
-              α1
-              [
-                M.pointer_coercion (* Unsize *) α4;
-                M.pointer_coercion (* Unsize *) α7
-              ] in
-          let* α9 := M.call_closure α0 [ α8 ] in
-          M.alloc α9 in
+                  "eq"
+                  [] in
+              let* α8 := M.call_closure α7 [ rc_a; rc_b ] in
+              let* α9 := M.alloc α8 in
+              let* α10 := M.call_closure α6 [ α9 ] in
+              let* α11 := M.alloc (Value.Array [ α10 ]) in
+              M.pure (M.pointer_coercion α11) in
+          let* α13 := M.call_closure α1 [ α5; α12 ] in
+          let* α14 := M.call_closure α0 [ α13 ] in
+          M.alloc α14 in
+        M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1"
+              [] in
+          let* α5 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "Length of the value inside rc_a: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α14 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [ Ty.path "usize" ] in
+              let* α7 :=
+                M.get_associated_function
+                  (Ty.path "alloc::string::String")
+                  "len"
+                  [] in
+              let* α8 :=
+                M.get_trait_method
+                  "core::ops::deref::Deref"
+                  (Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    [
+                      Ty.path "alloc::string::String";
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  []
+                  "deref"
+                  [] in
+              let* α9 := M.call_closure α8 [ rc_a ] in
+              let* α10 := M.call_closure α7 [ α9 ] in
+              let* α11 := M.alloc α10 in
+              let* α12 := M.call_closure α6 [ α11 ] in
+              let* α13 := M.alloc (Value.Array [ α12 ]) in
+              M.pure (M.pointer_coercion α13) in
+          let* α15 := M.call_closure α1 [ α5; α14 ] in
+          let* α16 := M.call_closure α0 [ α15 ] in
+          M.alloc α16 in
+        M.alloc (Value.Tuple []) in
+      let* _ :=
+        let* _ :=
+          let* α0 := M.get_function "std::io::stdio::_print" [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_v1"
+              [] in
+          let* α5 :=
+            (* Unsize *)
+              let* α2 := M.read (mk_str "Value of rc_b: ") in
+              let* α3 := M.read (mk_str "
+") in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+              M.pure (M.pointer_coercion α4) in
+          let* α9 :=
+            (* Unsize *)
+              let* α6 :=
+                M.get_associated_function
+                  (Ty.path "core::fmt::rt::Argument")
+                  "new_display"
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      [
+                        Ty.path "alloc::string::String";
+                        Ty.path "alloc::alloc::Global"
+                      ]
+                  ] in
+              let* α7 := M.call_closure α6 [ rc_b ] in
+              let* α8 := M.alloc (Value.Array [ α7 ]) in
+              M.pure (M.pointer_coercion α8) in
+          let* α10 := M.call_closure α1 [ α5; α9 ] in
+          let* α11 := M.call_closure α0 [ α10 ] in
+          M.alloc α11 in
         M.alloc (Value.Tuple []) in
       let* _ :=
         let* _ :=
@@ -371,12 +379,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::fmt::Arguments")
               "new_const"
               [] in
-          let* α2 := M.read (mk_str "--- rc_b is dropped out of scope ---
+          let* α4 :=
+            (* Unsize *)
+              let* α2 :=
+                M.read (mk_str "--- rc_b is dropped out of scope ---
 ") in
-          let* α3 := M.alloc (Value.Array [ α2 ]) in
-          let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-          let* α5 := M.call_closure α0 [ α4 ] in
-          M.alloc α5 in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in
+              M.pure (M.pointer_coercion α3) in
+          let* α5 := M.call_closure α1 [ α4 ] in
+          let* α6 := M.call_closure α0 [ α5 ] in
+          M.alloc α6 in
         M.alloc (Value.Tuple []) in
       M.alloc (Value.Tuple []) in
     let* _ :=
@@ -387,36 +399,38 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_v1"
             [] in
-        let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
-        let* α3 := M.read (mk_str "
-") in
-        let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
         let* α5 :=
-          M.get_associated_function
-            (Ty.path "core::fmt::rt::Argument")
-            "new_display"
-            [ Ty.path "usize" ] in
-        let* α6 :=
-          M.get_associated_function
-            (Ty.apply
-              (Ty.path "alloc::rc::Rc")
-              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-              ])
-            "strong_count"
-            [] in
-        let* α7 := M.call_closure α6 [ rc_a ] in
-        let* α8 := M.alloc α7 in
-        let* α9 := M.call_closure α5 [ α8 ] in
-        let* α10 := M.alloc (Value.Array [ α9 ]) in
-        let* α11 :=
-          M.call_closure
-            α1
-            [
-              M.pointer_coercion (* Unsize *) α4;
-              M.pointer_coercion (* Unsize *) α10
-            ] in
-        let* α12 := M.call_closure α0 [ α11 ] in
-        M.alloc α12 in
+          (* Unsize *)
+            let* α2 := M.read (mk_str "Reference Count of rc_a: ") in
+            let* α3 := M.read (mk_str "
+") in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
+            M.pure (M.pointer_coercion α4) in
+        let* α12 :=
+          (* Unsize *)
+            let* α6 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Argument")
+                "new_display"
+                [ Ty.path "usize" ] in
+            let* α7 :=
+              M.get_associated_function
+                (Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  [
+                    Ty.path "alloc::string::String";
+                    Ty.path "alloc::alloc::Global"
+                  ])
+                "strong_count"
+                [] in
+            let* α8 := M.call_closure α7 [ rc_a ] in
+            let* α9 := M.alloc α8 in
+            let* α10 := M.call_closure α6 [ α9 ] in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in
+            M.pure (M.pointer_coercion α11) in
+        let* α13 := M.call_closure α1 [ α5; α12 ] in
+        let* α14 := M.call_closure α0 [ α13 ] in
+        M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -426,12 +440,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             (Ty.path "core::fmt::Arguments")
             "new_const"
             [] in
-        let* α2 := M.read (mk_str "--- rc_a is dropped out of scope ---
+        let* α4 :=
+          (* Unsize *)
+            let* α2 :=
+              M.read (mk_str "--- rc_a is dropped out of scope ---
 ") in
-        let* α3 := M.alloc (Value.Array [ α2 ]) in
-        let* α4 := M.call_closure α1 [ M.pointer_coercion (* Unsize *) α3 ] in
-        let* α5 := M.call_closure α0 [ α4 ] in
-        M.alloc α5 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in
+            M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in
+        let* α6 := M.call_closure α0 [ α5 ] in
+        M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0

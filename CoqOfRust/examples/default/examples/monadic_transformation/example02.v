@@ -28,7 +28,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.alloc (Value.Integer Integer.I32 1) in
-      match_operator
+      M.match_operator
         α0
         [
           fun γ =>
@@ -39,29 +39,63 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           fun γ => M.alloc (Value.Bool true)
         ] in
     let* _ :=
-      let* α0 := M.alloc (Value.Bool true) in
-      let* α1 := M.read (M.use α0) in
-      if Value.is_true α1 then
-        M.alloc (Value.Integer Integer.I32 0)
-      else
-        M.alloc (Value.Integer Integer.I32 1) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 := M.alloc (Value.Bool true) in
+              M.pure (M.use α0) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            M.alloc (Value.Integer Integer.I32 0);
+          fun γ => M.alloc (Value.Integer Integer.I32 1)
+        ] in
     let* _ :=
-      let* α0 := M.alloc (Value.Bool false) in
-      let* α1 := M.read (M.use α0) in
-      if Value.is_true α1 then
-        M.alloc (Value.Integer Integer.I32 2)
-      else
-        let* α0 := M.alloc (Value.Bool false) in
-        let* α1 := M.read (M.use α0) in
-        if Value.is_true α1 then
-          M.alloc (Value.Integer Integer.I32 3)
-        else
-          let* α0 := M.alloc (Value.Bool false) in
-          let* α1 := M.read (M.use α0) in
-          if Value.is_true α1 then
-            M.alloc (Value.Integer Integer.I32 4)
-          else
-            M.alloc (Value.Integer Integer.I32 5) in
+      let* α0 := M.alloc (Value.Tuple []) in
+      M.match_operator
+        α0
+        [
+          fun γ =>
+            let* γ :=
+              let* α0 := M.alloc (Value.Bool false) in
+              M.pure (M.use α0) in
+            let* _ :=
+              let* α0 := M.read γ in
+              M.is_constant_or_break_match α0 (Value.Bool true) in
+            M.alloc (Value.Integer Integer.I32 2);
+          fun γ =>
+            let* α0 := M.alloc (Value.Tuple []) in
+            M.match_operator
+              α0
+              [
+                fun γ =>
+                  let* γ :=
+                    let* α0 := M.alloc (Value.Bool false) in
+                    M.pure (M.use α0) in
+                  let* _ :=
+                    let* α0 := M.read γ in
+                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                  M.alloc (Value.Integer Integer.I32 3);
+                fun γ =>
+                  let* α0 := M.alloc (Value.Tuple []) in
+                  M.match_operator
+                    α0
+                    [
+                      fun γ =>
+                        let* γ :=
+                          let* α0 := M.alloc (Value.Bool false) in
+                          M.pure (M.use α0) in
+                        let* _ :=
+                          let* α0 := M.read γ in
+                          M.is_constant_or_break_match α0 (Value.Bool true) in
+                        M.alloc (Value.Integer Integer.I32 4);
+                      fun γ => M.alloc (Value.Integer Integer.I32 5)
+                    ]
+              ]
+        ] in
     let* α0 := M.alloc (Value.Tuple []) in
     M.read α0
   | _, _ => M.impossible

@@ -2,3 +2,5 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter sum : (list Ty.t) -> (list Value.t) -> M.
+
+Parameter steps_between : (list Ty.t) -> (list Value.t) -> M.

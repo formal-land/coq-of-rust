@@ -115,12 +115,6 @@ pub(crate) fn compile_qpath(env: &Env, hir_id: HirId, qpath: &QPath) -> Path {
     )
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub(crate) enum StructOrVariant {
-    Struct,
-    Variant { nb_cases: usize },
-}
-
 #[derive(Eq, PartialEq)]
 pub(crate) enum IsValue {
     Yes,
@@ -133,7 +127,8 @@ pub(crate) fn to_valid_coq_name(is_value: IsValue, str: &str) -> String {
     }
 
     let reserved_names = [
-        "Set", "Type", "Unset", "at", "by", "exists", "end", "fix", "pair", "tt", "unit", "with",
+        "M", "Set", "Type", "Unset", "at", "by", "else", "end", "exists", "fix", "if", "pair",
+        "then", "tt", "unit", "with",
     ];
 
     if reserved_names.contains(&str) {
@@ -142,6 +137,7 @@ pub(crate) fn to_valid_coq_name(is_value: IsValue, str: &str) -> String {
 
     let str = str.replace("->", "arrow");
     let str = str.replace("::", "_");
+    let str = str.replace('+', "_plus_");
     let characters_to_replace = [
         ' ', '$', '(', ')', '&', '?', ',', '<', '>', '=', '[', ']', '*',
     ];

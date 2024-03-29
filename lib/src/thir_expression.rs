@@ -145,7 +145,51 @@ fn build_inner_match(
                     depth + 1,
                 ),
             }),
-            Pattern::Or(_) => panic!("Or pattern should have been flattened"),
+            Pattern::Or(patterns) => match &patterns[..] {
+                [] => Rc::new(Expr::Call {
+                    func: Expr::local_var("M.break_match"),
+                    args: vec![],
+                    kind: CallKind::Effectful,
+                }),
+                [first_pattern, ..] => {
+                    let free_vars = first_pattern.get_free_vars();
+
+                    Rc::new(Expr::Call {
+                        kind: CallKind::Effectful,
+                        func: Expr::local_var("M.find_or_pattern"),
+                        args: vec![
+                            Expr::local_var(&scrutinee),
+                            Rc::new(Expr::Array {
+                                is_internal: true,
+                                elements: patterns
+                                    .iter()
+                                    .map(|pattern| {
+                                        Rc::new(Expr::Lambda {
+                                            is_internal: true,
+                                            args: vec![("γ".to_string(), None)],
+                                            body: build_inner_match(
+                                                vec![("γ".to_string(), pattern.clone())],
+                                                Rc::new(Expr::Tuple {
+                                                    elements: free_vars
+                                                        .iter()
+                                                        .map(|name| Expr::local_var(name))
+                                                        .collect(),
+                                                }),
+                                                0,
+                                            ),
+                                        })
+                                    })
+                                    .collect(),
+                            }),
+                            Rc::new(Expr::Lambda {
+                                is_internal: false,
+                                args: free_vars.iter().map(|name| (name.clone(), None)).collect(),
+                                body,
+                            }),
+                        ],
+                    })
+                }
+            },
             Pattern::Tuple(patterns) => {
                 let body = build_inner_match(
                     patterns
@@ -279,79 +323,85 @@ fn build_inner_match(
 }
 
 pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
-    let arms_with_flatten_patterns = arms.into_iter().flat_map(
-        |MatchArm {
-             pattern,
-             if_let_guard,
-             body,
-         }| {
-            pattern
-                .flatten_ors()
-                .into_iter()
-                .map(move |pattern| MatchArm {
-                    pattern,
-                    if_let_guard: if_let_guard.clone(),
-                    body: body.clone(),
-                })
-        },
-    );
-
     Rc::new(Expr::Call {
-        func: Expr::local_var("match_operator"),
+        func: Expr::local_var("M.match_operator"),
         args: vec![
             scrutinee,
             Rc::new(Expr::Array {
-                elements: arms_with_flatten_patterns
+                is_internal: true,
+                elements: arms
+                    .into_iter()
                     .map(
                         |MatchArm {
                              pattern,
                              if_let_guard,
                              body,
                          }| {
-                            let body = match if_let_guard {
-                                Some((pattern, guard)) => Rc::new(Expr::Let {
-                                    is_monadic: false,
-                                    name: Some("Γ".to_string()),
-                                    init: guard,
-                                    body: build_inner_match(
-                                        vec![("Γ".to_string(), pattern)],
-                                        body,
-                                        0,
-                                    ),
-                                }),
-                                None => body,
-                            };
+                            let body =
+                                if_let_guard
+                                    .into_iter()
+                                    .rfold(body, |body, (pattern, guard)| {
+                                        Rc::new(Expr::Let {
+                                            is_monadic: false,
+                                            name: Some("γ".to_string()),
+                                            init: guard,
+                                            body: build_inner_match(
+                                                vec![("γ".to_string(), pattern)],
+                                                body,
+                                                0,
+                                            ),
+                                        })
+                                    });
 
                             Rc::new(Expr::Lambda {
+                                is_internal: true,
                                 args: vec![("γ".to_string(), None)],
                                 body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
-                                is_internal: true,
                             })
                         },
                     )
                     .collect(),
-                is_internal: true,
             }),
         ],
         kind: CallKind::Effectful,
     })
 }
 
-fn get_let_if<'a>(
+/// In a `if` statement or the `if` guard of a pattern, we can have a list of conditions
+/// separated by the `&&` operator. Each of these conditions can be an `if let` statement,
+/// in that can we return the associated pattern. They can also be boolean expressions,
+/// in that case we return the pattern `true`. This should be the most common case.
+fn get_if_conditions<'a>(
     env: &Env<'a>,
     generics: &'a rustc_middle::ty::Generics,
     thir: &rustc_middle::thir::Thir<'a>,
     expr_id: &rustc_middle::thir::ExprId,
-) -> Option<(Rc<Pattern>, Rc<Expr>)> {
+) -> Vec<(Rc<Pattern>, Rc<Expr>)> {
     let expr = thir.exprs.get(*expr_id).unwrap();
 
     match &expr.kind {
-        thir::ExprKind::Scope { value, .. } => get_let_if(env, generics, thir, value),
-        thir::ExprKind::Let { expr, pat, .. } => Some((
-            crate::thir_pattern::compile_pattern(env, pat),
-            compile_expr(env, generics, thir, expr),
-        )),
-        _ => None,
+        thir::ExprKind::Scope { value, .. } => get_if_conditions(env, generics, thir, value),
+        thir::ExprKind::Let { expr, pat, .. } => {
+            let pattern = crate::thir_pattern::compile_pattern(env, pat);
+            let expr = compile_expr(env, generics, thir, expr);
+
+            vec![(pattern, expr)]
+        }
+        thir::ExprKind::LogicalOp {
+            op: LogicalOp::And,
+            lhs,
+            rhs,
+        } => [
+            get_if_conditions(env, generics, thir, lhs),
+            get_if_conditions(env, generics, thir, rhs),
+        ]
+        .concat(),
+        _ => {
+            let true_pattern = Rc::new(Pattern::Literal(Rc::new(Literal::Bool(true))));
+            let expr = compile_expr(env, generics, thir, expr_id);
+
+            vec![(true_pattern, expr)]
+        }
     }
 }
 
@@ -420,37 +470,28 @@ pub(crate) fn compile_expr<'a>(
             else_opt,
             ..
         } => {
+            let conditions = get_if_conditions(env, generics, thir, cond);
             let success = compile_expr(env, generics, thir, then);
             let failure = match else_opt {
                 Some(else_expr) => compile_expr(env, generics, thir, else_expr),
                 None => Expr::tt(),
             };
 
-            if let Some((pattern, expr)) = get_let_if(env, generics, thir, cond) {
-                return build_match(
-                    expr,
-                    vec![
-                        MatchArm {
-                            pattern,
-                            if_let_guard: None,
-                            body: success,
-                        },
-                        MatchArm {
-                            pattern: Rc::new(Pattern::Wild),
-                            if_let_guard: None,
-                            body: failure,
-                        },
-                    ],
-                );
-            }
-
-            let condition = compile_expr(env, generics, thir, cond).read();
-
-            Rc::new(Expr::If {
-                condition,
-                success,
-                failure,
-            })
+            build_match(
+                Expr::tt(),
+                vec![
+                    MatchArm {
+                        pattern: Rc::new(Pattern::Wild),
+                        if_let_guard: conditions,
+                        body: success,
+                    },
+                    MatchArm {
+                        pattern: Rc::new(Pattern::Wild),
+                        if_let_guard: vec![],
+                        body: failure,
+                    },
+                ],
+            )
         }
         thir::ExprKind::Call { fun, args, .. } => {
             let args = args
@@ -539,13 +580,15 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::PointerCoercion { source, cast } => {
             let func = Expr::local_var("M.pointer_coercion");
             let source = compile_expr(env, generics, thir, source).read();
-            let cast = Rc::new(Expr::Message(format!("{cast:?}")));
 
-            Rc::new(Expr::Call {
-                func,
-                args: vec![cast, source],
-                kind: CallKind::Pure,
-            })
+            Rc::new(Expr::Comment(
+                format!("{cast:?}"),
+                Rc::new(Expr::Call {
+                    func,
+                    args: vec![source],
+                    kind: CallKind::Pure,
+                }),
+            ))
             .alloc()
         }
         thir::ExprKind::Loop { body, .. } => {
@@ -554,7 +597,11 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Loop { body })
         }
         thir::ExprKind::Let { .. } => {
-            Rc::new(Expr::Message("`if let` expected into an `if`".to_string()))
+            let error_message = "Unexpected `if let` outside of an `if`";
+
+            emit_warning_with_note(env, &expr.span, error_message, "Please report!");
+
+            Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
         }
         thir::ExprKind::Match {
             scrutinee, arms, ..
@@ -567,16 +614,15 @@ pub(crate) fn compile_expr<'a>(
                     let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
                     let if_let_guard = match &arm.guard {
                         Some(guard) => match guard {
-                            thir::Guard::If(expr_id) => Some((
-                                Rc::new(Pattern::Literal(Rc::new(Literal::Bool(true)))),
-                                compile_expr(env, generics, thir, expr_id),
-                            )),
-                            thir::Guard::IfLet(pattern, expr_id) => Some((
+                            thir::Guard::If(expr_id) => {
+                                get_if_conditions(env, generics, thir, expr_id)
+                            }
+                            thir::Guard::IfLet(pattern, expr_id) => vec![(
                                 crate::thir_pattern::compile_pattern(env, pattern),
                                 compile_expr(env, generics, thir, expr_id),
-                            )),
+                            )],
                         },
-                        None => None,
+                        None => vec![],
                     };
                     let body = compile_expr(env, generics, thir, &arm.body);
 
@@ -773,41 +819,19 @@ pub(crate) fn compile_expr<'a>(
                 && fields
                     .iter()
                     .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
-            let struct_or_variant = if adt_def.is_enum() {
-                StructOrVariant::Variant {
-                    nb_cases: adt_def.variants().len(),
-                }
-            } else {
-                StructOrVariant::Struct
-            };
             let base = base
                 .as_ref()
                 .map(|base| compile_expr(env, generics, thir, &base.base).read());
 
             if fields.is_empty() {
-                return Rc::new(Expr::StructUnit {
-                    path,
-                    struct_or_variant,
-                })
-                .alloc();
+                return Rc::new(Expr::StructUnit { path }).alloc();
             }
 
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Rc::new(Expr::StructTuple {
-                    path,
-                    fields,
-                    struct_or_variant,
-                })
-                .alloc()
+                Rc::new(Expr::StructTuple { path, fields }).alloc()
             } else {
-                Rc::new(Expr::StructStruct {
-                    path,
-                    fields,
-                    base,
-                    struct_or_variant,
-                })
-                .alloc()
+                Rc::new(Expr::StructStruct { path, fields, base }).alloc()
             }
         }
         thir::ExprKind::PlaceTypeAscription { source, .. }
@@ -844,7 +868,7 @@ pub(crate) fn compile_expr<'a>(
                             Expr::local_var(&format!("α{index}")).alloc(),
                             vec![MatchArm {
                                 pattern: pattern.clone(),
-                                if_let_guard: None,
+                                if_let_guard: vec![],
                                 body,
                             }],
                         )
@@ -865,7 +889,7 @@ pub(crate) fn compile_expr<'a>(
 
             match result {
                 Ok(expr) => expr,
-                Err(error) => Rc::new(Expr::Message(error)),
+                Err(error) => Rc::new(Expr::Comment(error, Expr::tt())).alloc(),
             }
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
@@ -894,139 +918,154 @@ pub(crate) fn compile_expr<'a>(
             )),
         )))
         .alloc(),
-        thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
-            TyKind::FnDef(def_id, generic_args) => {
-                let key = env.tcx.def_key(def_id);
-                let symbol = key.get_opt_name();
-                let parent = env.tcx.opt_parent(*def_id).unwrap();
-                let parent_kind = env.tcx.def_kind(parent);
+        thir::ExprKind::ZstLiteral { .. } => {
+            match &expr.ty.kind() {
+                TyKind::FnDef(def_id, generic_args) => {
+                    let key = env.tcx.def_key(def_id);
+                    let symbol = key.get_opt_name();
+                    let parent = env.tcx.opt_parent(*def_id).unwrap();
+                    let parent_kind = env.tcx.def_kind(parent);
 
-                Rc::new(match parent_kind {
-                    DefKind::Impl { .. } => {
-                        let parent_generics = env.tcx.generics_of(parent);
-                        let nb_parent_generics = parent_generics.params.len();
-                        let parent_type =
-                            env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
-                        let ty = compile_type(env, generics, &parent_type);
-                        let func = symbol.unwrap().to_string();
-                        // We remove [nb_parent_generics] elements from the start of [generic_args]
-                        // as these are already inferred from the `Self` type.
-                        let generic_tys = generic_args
-                            .iter()
-                            .skip(nb_parent_generics)
-                            .filter_map(|generic_arg| generic_arg
-                                .as_type()
-                                .as_ref()
-                                .map(|ty| compile_type(env, generics, ty)))
-                            .collect();
+                    match parent_kind {
+                        DefKind::Impl { .. } => {
+                            let parent_generics = env.tcx.generics_of(parent);
+                            let nb_parent_generics = parent_generics.params.len();
+                            let parent_type =
+                                env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
+                            let ty = compile_type(env, generics, &parent_type);
+                            let func = symbol.unwrap().to_string();
+                            // We remove [nb_parent_generics] elements from the start of [generic_args]
+                            // as these are already inferred from the `Self` type.
+                            let generic_tys = generic_args
+                                .iter()
+                                .skip(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_type()
+                                        .as_ref()
+                                        .map(|ty| compile_type(env, generics, ty))
+                                })
+                                .collect();
 
-                        Expr::GetAssociatedFunction { ty, func, generic_tys }
-                    }
-                    DefKind::Trait => {
-                        let parent_generics = env.tcx.generics_of(parent);
-                        let nb_parent_generics = parent_generics.params.len();
-                        let parent_path = compile_def_id(env, parent);
-                        let self_ty_and_trait_tys = generic_args
-                            .iter()
-                            .take(nb_parent_generics)
-                            .filter_map(|generic_arg| generic_arg
-                                .as_type()
-                                .as_ref()
-                                .map(|ty| compile_type(env, generics, ty)))
-                            .collect::<Vec<_>>();
-                        let (self_ty, trait_tys) = match self_ty_and_trait_tys.as_slice() {
-                            [self_ty, trait_tys @ ..] => (self_ty.clone(), trait_tys.to_vec()),
-                            _ => panic!("Expected at least one element"),
-                        };
-                        let method_name = symbol.unwrap().to_string();
-                        let generic_tys = generic_args
-                            .iter()
-                            .skip(nb_parent_generics)
-                            .filter_map(|generic_arg| generic_arg
-                                .as_type()
-                                .as_ref()
-                                .map(|ty| compile_type(env, generics, ty)))
-                            .collect::<Vec<_>>();
-
-                        Expr::GetTraitMethod {
-                            trait_name: parent_path,
-                            self_ty,
-                            trait_tys,
-                            method_name,
-                            generic_tys,
-                        }
-                    }
-                    DefKind::Mod | DefKind::ForeignMod => {
-                        let generic_tys =
-                            generic_args
-                            .iter()
-                            .filter_map(|generic_arg| {
-                                generic_arg
-                                    .as_type()
-                                    .as_ref()
-                                    .map(|ty| compile_type(env, generics, ty))
+                            Rc::new(Expr::GetAssociatedFunction {
+                                ty,
+                                func,
+                                generic_tys,
                             })
-                            .collect::<Vec<_>>();
-
-                        Expr::GetFunction {
-                            func: compile_def_id(env, *def_id),
-                            generic_tys,
+                            .alloc()
                         }
-                    }
-                    DefKind::Struct | DefKind::Variant => {
-                        let path = compile_def_id(env, *def_id);
+                        DefKind::Trait => {
+                            let parent_generics = env.tcx.generics_of(parent);
+                            let nb_parent_generics = parent_generics.params.len();
+                            let parent_path = compile_def_id(env, parent);
+                            let self_ty_and_trait_tys = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_type()
+                                        .as_ref()
+                                        .map(|ty| compile_type(env, generics, ty))
+                                })
+                                .collect::<Vec<_>>();
+                            let (self_ty, trait_tys) = match self_ty_and_trait_tys.as_slice() {
+                                [self_ty, trait_tys @ ..] => (self_ty.clone(), trait_tys.to_vec()),
+                                _ => panic!("Expected at least one element"),
+                            };
+                            let method_name = symbol.unwrap().to_string();
+                            let generic_tys = generic_args
+                                .iter()
+                                .skip(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_type()
+                                        .as_ref()
+                                        .map(|ty| compile_type(env, generics, ty))
+                                })
+                                .collect::<Vec<_>>();
 
-                        Expr::Call {
-                            func: Expr::local_var("M.constructor_as_closure"),
-                            args: vec![
-                                Rc::new(Expr::InternalString(path.to_string())),
-                            ],
-                            kind: CallKind::Pure,
+                            Rc::new(Expr::GetTraitMethod {
+                                trait_name: parent_path,
+                                self_ty,
+                                trait_tys,
+                                method_name,
+                                generic_tys,
+                            })
+                            .alloc()
                         }
-                    }
-                    DefKind::AssocFn => {
-                        let parent_symbol = env.tcx.def_key(parent).get_opt_name().unwrap();
+                        DefKind::Mod | DefKind::ForeignMod => {
+                            let generic_tys = generic_args
+                                .iter()
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_type()
+                                        .as_ref()
+                                        .map(|ty| compile_type(env, generics, ty))
+                                })
+                                .collect::<Vec<_>>();
 
-                        Expr::GetAssociatedFunction {
-                            ty: Rc::new(CoqType::Var("Self".to_string())),
-                            func: format!("{}.{}", symbol.unwrap(), parent_symbol),
-                            generic_tys: vec![],
+                            Rc::new(Expr::GetFunction {
+                                func: compile_def_id(env, *def_id),
+                                generic_tys,
+                            })
+                            .alloc()
                         }
-                    }
-                    DefKind::Fn => {
-                        let parent_path = compile_def_id(env, parent);
-                        let mut segments = parent_path.segments.clone();
-                        let last_segment = segments.pop().unwrap();
-                        segments.push(format!("{}.{}", last_segment, symbol.unwrap()));
+                        DefKind::Struct | DefKind::Variant => {
+                            let path = compile_def_id(env, *def_id);
 
-                        Expr::GetFunction {
-                            func: Path { segments },
-                            generic_tys: vec![],
+                            Rc::new(Expr::Call {
+                                func: Expr::local_var("M.constructor_as_closure"),
+                                args: vec![Rc::new(Expr::InternalString(path.to_string()))],
+                                kind: CallKind::Pure,
+                            })
+                            .alloc()
                         }
-                    }
-                    _ => {
-                        emit_warning_with_note(
+                        DefKind::AssocFn => {
+                            let parent_symbol = env.tcx.def_key(parent).get_opt_name().unwrap();
+
+                            Rc::new(Expr::GetAssociatedFunction {
+                                ty: Rc::new(CoqType::Var("Self".to_string())),
+                                func: format!("{}.{}", symbol.unwrap(), parent_symbol),
+                                generic_tys: vec![],
+                            })
+                            .alloc()
+                        }
+                        DefKind::Fn => {
+                            let parent_path = compile_def_id(env, parent);
+                            let mut segments = parent_path.segments.clone();
+                            let last_segment = segments.pop().unwrap();
+                            segments.push(format!("{}.{}", last_segment, symbol.unwrap()));
+
+                            Rc::new(Expr::GetFunction {
+                                func: Path { segments },
+                                generic_tys: vec![],
+                            })
+                            .alloc()
+                        }
+                        _ => {
+                            emit_warning_with_note(
                             env,
                             &expr.span,
                             "We do not support this kind of expression",
                             &format!("Please report 🙏\n\nparent_kind: {parent_kind:#?}\nexpression: {expr:#?}"),
                         );
 
-                        Expr::Message("unimplemented parent_kind".to_string())
+                            Rc::new(Expr::Comment(
+                                "Unimplemented parent_kind".to_string(),
+                                Expr::tt(),
+                            ))
+                        }
                     }
-                })
-                .alloc()
-            }
-            _ => {
-                let error_message = "Expected a function name";
-                env.tcx
-                    .sess
-                    .struct_span_warn(expr.span, error_message)
-                    .emit();
+                }
+                _ => {
+                    let error_message = "Expected a function name";
 
-                Rc::new(Expr::Message(error_message.to_string()))
+                    emit_warning_with_note(env, &expr.span, error_message, "Please report 🙏");
+
+                    Rc::new(Expr::Comment(error_message.to_string(), Expr::tt()))
+                }
             }
-        },
+        }
         thir::ExprKind::NamedConst { def_id, .. } => {
             let path = compile_def_id(env, *def_id);
             let expr = Rc::new(Expr::GetConst(path));
@@ -1046,7 +1085,13 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
         }
         thir::ExprKind::InlineAsm(_) => Rc::new(Expr::LocalVar("InlineAssembly".to_string())),
-        thir::ExprKind::OffsetOf { .. } => Rc::new(Expr::LocalVar("OffsetOf".to_string())),
+        thir::ExprKind::OffsetOf { .. } => {
+            let error_message = "`OffsetOf` expression are not handled yet";
+
+            emit_warning_with_note(env, &expr.span, error_message, "Please report!");
+
+            Rc::new(Expr::Comment(error_message.to_string(), Expr::tt()))
+        }
         thir::ExprKind::ThreadLocalRef(def_id) => {
             Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
         }
@@ -1106,7 +1151,7 @@ fn compile_stmts<'a>(
                             init,
                             vec![MatchArm {
                                 pattern,
-                                if_let_guard: None,
+                                if_let_guard: vec![],
                                 body,
                             }],
                         ),
