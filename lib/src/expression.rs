@@ -632,9 +632,7 @@ fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
     match pieces {
         [] => coq::Expression::just_name("\"\""),
         [StringPiece::AsciiString(s), rest @ ..] => {
-            let head = coq::Expression::just_name(
-                format!("\"{}\"", str::replace(s, "\"", "\"\"")).as_str(),
-            );
+            let head = coq::Expression::String(str::replace(s, "\"", "\"\""));
             if rest.is_empty() {
                 head
             } else {
@@ -643,7 +641,7 @@ fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
         }
         [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
             .apply_many(&[
-                coq::Expression::just_name(format!("\"{:03}\"", *c as u8).as_str()),
+                coq::Expression::String(format!("{:03}", *c as u8)),
                 string_pieces_to_coq(rest),
             ]),
     }

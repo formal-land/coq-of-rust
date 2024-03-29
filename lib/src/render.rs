@@ -1,7 +1,5 @@
 use pretty::RcDoc;
 
-// use crate::coq;
-
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
