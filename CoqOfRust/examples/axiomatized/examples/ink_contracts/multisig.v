@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ] [].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -27,7 +27,7 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
 End Impl_core_default_Default_for_multisig_Mapping_K_V.
 
 Module Impl_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ] [].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -213,7 +213,7 @@ Parameter value_WRONG_TRANSACTION_ID : Value.t.
   {
     name := "CallInput";
     ty_params := [];
-    fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ];
+    fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] [] ] [] ];
   } *)
 
 (* Enum ConfirmationStatus *)
@@ -261,9 +261,9 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
     fields :=
       [
         ("callee", Ty.path "multisig::AccountId");
-        ("selector", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("selector", Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 4 ]);
         ("input",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] []);
         ("transferred_value", Ty.path "u128");
         ("gas_limit", Ty.path "u64");
         ("allow_reentry", Ty.path "bool")
@@ -372,7 +372,10 @@ End Impl_core_cmp_Eq_for_multisig_Error.
     fields :=
       [
         ("transactions",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+            []);
         ("next_id", Ty.path "u32")
       ];
   } *)
@@ -440,9 +443,12 @@ End Impl_core_default_Default_for_multisig_Transactions.
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                ];
+                    []
+                ]
+                [];
               Ty.path "multisig::Error"
-            ])
+            ]
+            [])
       ];
   } *)
 
@@ -545,20 +551,23 @@ End Impl_multisig_Env.
         ("confirmations",
           Ty.apply
             (Ty.path "multisig::Mapping")
-            [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]);
+            [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]
+            []);
         ("confirmation_count",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ]);
+          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] []);
         ("transactions",
           Ty.apply
             (Ty.path "multisig::Mapping")
-            [ Ty.path "u32"; Ty.path "multisig::Transaction" ]);
+            [ Ty.path "u32"; Ty.path "multisig::Transaction" ]
+            []);
         ("transaction_list", Ty.path "multisig::Transactions");
         ("owners",
           Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]);
+            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+            []);
         ("is_owner",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ]);
+          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ] []);
         ("requirement", Ty.path "u32")
       ];
   } *)

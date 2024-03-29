@@ -5,12 +5,12 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Ref";
     ty_params := [ "T" ];
-    fields := [ Ty.apply (Ty.path "&") [ T ] ];
+    fields := [ Ty.apply (Ty.path "&") [ T ] [] ];
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
+    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ] [].
   
   (*
   Debug
@@ -22,7 +22,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field1_finish" [] in
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_tuple_field1_finish"
+          []
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Ref") in
       let* α5 :=
@@ -58,8 +62,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`print`: t is ") in
@@ -70,7 +74,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
         let* α9 :=
           (* Unsize *)
             let* α6 :=
-              M.get_associated_function (Ty.path "core::fmt::rt::Argument") "new_debug" [ T ] in
+              M.get_associated_function (Ty.path "core::fmt::rt::Argument") "new_debug" [ T ] [] in
             let* α7 := M.call_closure α6 [ t ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in
@@ -97,8 +101,8 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "`print_ref`: t is ") in
@@ -112,7 +116,8 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.apply (Ty.path "&") [ T ] ] in
+                [ Ty.apply (Ty.path "&") [ T ] [] ]
+                [] in
             let* α7 := M.call_closure α6 [ t ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in
@@ -143,14 +148,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_function
           "scoping_rules_lifetimes_bounds::print_ref"
-          [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ] ] in
+          [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ] [] ]
+          [] in
       let* α1 := M.call_closure α0 [ ref_x ] in
       M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_function
           "scoping_rules_lifetimes_bounds::print"
-          [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ] ] in
+          [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ] [] ]
+          [] in
       let* α1 := M.read ref_x in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in

@@ -35,8 +35,9 @@ Module Impl_incrementer_Incrementer.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_associated_function (Ty.path "incrementer::Incrementer") "new" [] in
-      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "i32") [] "default" [] in
+      let* α0 := M.get_associated_function (Ty.path "incrementer::Incrementer") "new" [] [] in
+      let* α1 :=
+        M.get_trait_method "core::default::Default" (Ty.path "i32") [] [] "default" [] [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible

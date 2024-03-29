@@ -108,8 +108,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* ref_c2 := M.alloc c in
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+                let* α1 :=
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "ref_c1 equals ref_c2: ") in
@@ -123,7 +124,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "bool" ] in
+                        [ Ty.path "bool" ]
+                        [] in
                     let* α7 := M.read ref_c1 in
                     let* α8 := M.read α7 in
                     let* α9 := M.read ref_c2 in
@@ -185,8 +187,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+                let* α1 :=
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "point is (") in
@@ -201,7 +204,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "i32" ] in
+                        [ Ty.path "i32" ]
+                        [] in
                     let* α8 :=
                       M.call_closure
                         α7
@@ -215,7 +219,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "i32" ] in
+                        [ Ty.path "i32" ]
+                        [] in
                     let* α10 :=
                       M.call_closure
                         α9
@@ -233,8 +238,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+                let* α1 :=
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "mutable_point is (") in
@@ -249,7 +255,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "i32" ] in
+                        [ Ty.path "i32" ]
+                        [] in
                     let* α8 :=
                       M.call_closure
                         α7
@@ -263,7 +270,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "i32" ] in
+                        [ Ty.path "i32" ]
+                        [] in
                     let* α10 :=
                       M.call_closure
                         α9
@@ -284,8 +292,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+                    [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+                    [])
                   "new"
+                  []
                   [] in
               let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 5 ] in
               M.alloc (Value.Tuple [ α1; Value.Integer Integer.U32 3 ]) in
@@ -304,8 +314,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+                let* α1 :=
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                 let* α5 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "tuple is ") in
@@ -324,10 +335,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
-                                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
+                                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+                                [];
                               Ty.path "u32"
                             ]
-                        ] in
+                        ]
+                        [] in
                     let* α7 := M.call_closure α6 [ mutable_tuple ] in
                     let* α8 := M.alloc (Value.Array [ α7 ]) in
                     M.pure (M.pointer_coercion α8) in

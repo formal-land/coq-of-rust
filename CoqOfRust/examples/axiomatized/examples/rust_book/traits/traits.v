@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Sheep";
     ty_params := [];
-    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]) ];
+    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ] []) ];
   } *)
 
 (* Trait *)

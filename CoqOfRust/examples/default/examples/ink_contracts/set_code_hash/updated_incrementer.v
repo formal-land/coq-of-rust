@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "updated_incrementer::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -61,7 +62,9 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
-Axiom Hash : (Ty.path "updated_incrementer::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "updated_incrementer::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]).
 
 (* Enum Error *)
 (* {
@@ -84,7 +87,17 @@ Module Impl_updated_incrementer_Env.
           unimplemented!()
       }
   *)
-  Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
+  Definition set_code_hash (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [ E ], [ self; code_hash ] =>
+      let* self := M.alloc self in
+      let* code_hash := M.alloc code_hash in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_set_code_hash :
     M.IsAssociatedFunction Self "set_code_hash" set_code_hash.
@@ -105,7 +118,15 @@ Module Impl_updated_incrementer_Incrementer.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -119,7 +140,7 @@ Module Impl_updated_incrementer_Incrementer.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_associated_function (Ty.path "updated_incrementer::Incrementer") "init_env" [] in
+        M.get_associated_function (Ty.path "updated_incrementer::Incrementer") "init_env" [] [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -137,7 +158,8 @@ Module Impl_updated_incrementer_Incrementer.
       let* α0 :=
         M.get_function
           "core::panicking::unreachable_display"
-          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+          [] in
       let* α1 :=
         M.call_closure
           α0
@@ -170,8 +192,8 @@ Module Impl_updated_incrementer_Incrementer.
         M.assign β α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "The new count is ") in
@@ -186,7 +208,8 @@ Module Impl_updated_incrementer_Incrementer.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "u32" ] in
+                  [ Ty.path "u32" ]
+                  [] in
               let* α7 := M.read self in
               let* α8 :=
                 M.call_closure
@@ -239,16 +262,19 @@ Module Impl_updated_incrementer_Incrementer.
           M.get_associated_function
             (Ty.apply
               (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "updated_incrementer::Error" ])
+              [ Ty.tuple []; Ty.path "updated_incrementer::Error" ]
+              [])
             "unwrap_or_else"
-            [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple []) ] in
+            [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple []) ]
+            [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "updated_incrementer::Env")
             "set_code_hash"
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
+            [] in
         let* α2 :=
-          M.get_associated_function (Ty.path "updated_incrementer::Incrementer") "env" [] in
+          M.get_associated_function (Ty.path "updated_incrementer::Incrementer") "env" [] [] in
         let* α3 := M.read self in
         let* α4 := M.call_closure α2 [ α3 ] in
         let* α5 := M.alloc α4 in
@@ -271,7 +297,8 @@ Module Impl_updated_incrementer_Incrementer.
                           let* α0 :=
                             M.get_function
                               "std::panicking::begin_panic"
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                              [] in
                           let* α1 :=
                             M.read
                               (mk_str
@@ -285,8 +312,8 @@ Module Impl_updated_incrementer_Incrementer.
         M.alloc α7 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "Switched code hash to ") in
@@ -300,7 +327,8 @@ Module Impl_updated_incrementer_Incrementer.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_debug"
-                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
+                  [] in
               let* α7 := M.call_closure α6 [ code_hash ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in

@@ -8,7 +8,10 @@ Require Import CoqOfRust.CoqOfRust.
     fields :=
       [
         ("value",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]
+            [])
       ];
   } *)
 

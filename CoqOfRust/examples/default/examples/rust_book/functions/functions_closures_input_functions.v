@@ -11,7 +11,7 @@ Definition call_me (τ : list Ty.t) (α : list Value.t) : M :=
   | [ F ], [ f ] =>
     let* f := M.alloc f in
     let* _ :=
-      let* α0 := M.get_trait_method "core::ops::function::Fn" F [ Ty.tuple [] ] "call" [] in
+      let* α0 := M.get_trait_method "core::ops::function::Fn" F [ Ty.tuple [] ] [] "call" [] [] in
       let* α1 := M.call_closure α0 [ f; Value.Tuple [] ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
@@ -29,8 +29,13 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "I'm a function!
@@ -70,9 +75,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                       let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_const"
+                          []
+                          [ Value.Bool true ] in
                       let* α4 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "I'm a closure!
@@ -91,7 +100,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_function
           "functions_closures_input_functions::call_me"
-          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ] in
+          [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
+          [] in
       let* α1 := M.read closure in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -99,8 +109,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_function
           "functions_closures_input_functions::call_me"
-          [ Ty.function [] (Ty.tuple []) ] in
-      let* α1 := M.get_function "functions_closures_input_functions::function" [] in
+          [ Ty.function [] (Ty.tuple []) ]
+          [] in
+      let* α1 := M.get_function "functions_closures_input_functions::function" [] [] in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* α0 := M.alloc (Value.Tuple []) in

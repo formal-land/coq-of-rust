@@ -29,8 +29,8 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ student ] =>
     let* student := M.alloc student in
     let* res :=
-      let* α0 := M.get_function "alloc::fmt::format" [] in
-      let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+      let* α0 := M.get_function "alloc::fmt::format" [] [] in
+      let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
       let* α7 :=
         (* Unsize *)
           let* α2 := M.read (mk_str "My name is ") in
@@ -45,13 +45,16 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display"
-              [ Ty.path "alloc::string::String" ] in
+              [ Ty.path "alloc::string::String" ]
+              [] in
           let* α9 :=
             M.get_trait_method
               "supertraits::Person"
               (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
               []
+              []
               "name"
+              []
               [] in
           let* α10 := M.read student in
           let* α11 := M.call_closure α9 [ α10 ] in
@@ -61,13 +64,16 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display"
-              [ Ty.path "alloc::string::String" ] in
+              [ Ty.path "alloc::string::String" ]
+              [] in
           let* α15 :=
             M.get_trait_method
               "supertraits::Student"
               (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
               []
+              []
               "university"
+              []
               [] in
           let* α16 := M.read student in
           let* α17 := M.call_closure α15 [ α16 ] in
@@ -77,13 +83,16 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display"
-              [ Ty.path "alloc::string::String" ] in
+              [ Ty.path "alloc::string::String" ]
+              [] in
           let* α21 :=
             M.get_trait_method
               "supertraits::Programmer"
               (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
               []
+              []
               "fav_language"
+              []
               [] in
           let* α22 := M.read student in
           let* α23 := M.call_closure α21 [ α22 ] in
@@ -93,13 +102,16 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display"
-              [ Ty.path "alloc::string::String" ] in
+              [ Ty.path "alloc::string::String" ]
+              [] in
           let* α27 :=
             M.get_trait_method
               "supertraits::CompSciStudent"
               (Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ])
               []
+              []
               "git_username"
+              []
               [] in
           let* α28 := M.read student in
           let* α29 := M.call_closure α27 [ α28 ] in

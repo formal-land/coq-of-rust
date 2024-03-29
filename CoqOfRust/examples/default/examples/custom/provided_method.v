@@ -7,7 +7,8 @@ Module ProvidedAndRequired.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_trait_method "provided_method::ProvidedAndRequired" Self [] "required" [] in
+      let* α0 :=
+        M.get_trait_method "provided_method::ProvidedAndRequired" Self [] [] "required" [] [] in
       let* α1 := M.read self in
       let* α2 := M.call_closure α0 [ α1 ] in
       BinOp.Panic.add (Value.Integer Integer.I32 42) α2
@@ -102,7 +103,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "provided_method::ProvidedAndRequired"
           (Ty.path "i32")
           []
+          []
           "provided"
+          []
           [] in
       let* α1 := M.call_closure α0 [ x ] in
       let* α2 := M.alloc α1 in
@@ -135,7 +138,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
-                      [ Ty.path "i32"; Ty.path "i32" ] in
+                      [ Ty.path "i32"; Ty.path "i32" ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -157,7 +161,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "provided_method::ProvidedAndRequired"
           (Ty.path "u32")
           []
+          []
           "provided"
+          []
           [] in
       let* α1 := M.call_closure α0 [ y ] in
       let* α2 := M.alloc α1 in
@@ -190,7 +196,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
-                      [ Ty.path "i32"; Ty.path "i32" ] in
+                      [ Ty.path "i32"; Ty.path "i32" ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

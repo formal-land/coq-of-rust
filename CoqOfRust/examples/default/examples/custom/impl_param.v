@@ -22,12 +22,12 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
     let* foo := M.alloc foo in
     let* x := M.copy func in
     let* _ :=
-      let* α0 := M.get_trait_method "core::default::Default" impl_Default [] "default" [] in
+      let* α0 := M.get_trait_method "core::default::Default" impl_Default [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.assign x α1 in
     let* y := M.copy func2 in
     let* _ :=
-      let* α0 := M.get_trait_method "core::default::Default" impl_Default'1 [] "default" [] in
+      let* α0 := M.get_trait_method "core::default::Default" impl_Default'1 [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.assign y α1 in
     let* z := M.copy foo in
@@ -36,8 +36,10 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::boxed::Box")
-            [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ])
+            [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.read x in
       let* α2 := M.read y in

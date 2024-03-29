@@ -42,7 +42,8 @@ Module checked.
     (Ty.path "result::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [ Ty.path "f64"; Ty.path "result::checked::MathError" ]).
+        [ Ty.path "f64"; Ty.path "result::checked::MathError" ]
+        []).
   
   Parameter div : (list Ty.t) -> (list Value.t) -> M.
   

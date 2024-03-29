@@ -68,7 +68,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let* γ :=
-              let* α0 := M.get_function "functions::is_divisible_by" [] in
+              let* α0 := M.get_function "functions::is_divisible_by" [] [] in
               let* α1 := M.read n in
               let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 15 ] in
               let* α3 := M.alloc α2 in
@@ -78,9 +78,13 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
               M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
+                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                 let* α1 :=
-                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                  M.get_associated_function
+                    (Ty.path "core::fmt::Arguments")
+                    "new_const"
+                    []
+                    [ Value.Bool true ] in
                 let* α4 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "fizzbuzz
@@ -99,7 +103,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   let* γ :=
-                    let* α0 := M.get_function "functions::is_divisible_by" [] in
+                    let* α0 := M.get_function "functions::is_divisible_by" [] [] in
                     let* α1 := M.read n in
                     let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 3 ] in
                     let* α3 := M.alloc α2 in
@@ -109,9 +113,13 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                     M.is_constant_or_break_match α0 (Value.Bool true) in
                   let* _ :=
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                       let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                        M.get_associated_function
+                          (Ty.path "core::fmt::Arguments")
+                          "new_const"
+                          []
+                          [ Value.Bool true ] in
                       let* α4 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "fizz
@@ -130,7 +138,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       fun γ =>
                         let* γ :=
-                          let* α0 := M.get_function "functions::is_divisible_by" [] in
+                          let* α0 := M.get_function "functions::is_divisible_by" [] [] in
                           let* α1 := M.read n in
                           let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 5 ] in
                           let* α3 := M.alloc α2 in
@@ -140,12 +148,13 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                           M.is_constant_or_break_match α0 (Value.Bool true) in
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
                                 "new_const"
-                                [] in
+                                []
+                                [ Value.Bool true ] in
                             let* α4 :=
                               (* Unsize *)
                                 let* α2 := M.read (mk_str "buzz
@@ -160,11 +169,12 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         let* _ :=
                           let* _ :=
-                            let* α0 := M.get_function "std::io::stdio::_print" [] in
+                            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                             let* α1 :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::Arguments")
                                 "new_v1"
+                                []
                                 [] in
                             let* α5 :=
                               (* Unsize *)
@@ -179,7 +189,8 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function
                                     (Ty.path "core::fmt::rt::Argument")
                                     "new_display"
-                                    [ Ty.path "u32" ] in
+                                    [ Ty.path "u32" ]
+                                    [] in
                                 let* α7 := M.call_closure α6 [ n ] in
                                 let* α8 := M.alloc (Value.Array [ α7 ]) in
                                 M.pure (M.pointer_coercion α8) in
@@ -209,15 +220,18 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ])
+        (Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
     let* α1 :=
       M.get_associated_function
-        (Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ])
+        (Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ] [])
         "new"
-        [] in
+        []
+        [ Value.Bool true ] in
     let* α2 := M.read n in
     let* α3 := M.call_closure α1 [ Value.Integer Integer.U32 1; α2 ] in
     let* α4 := M.call_closure α0 [ α3 ] in
@@ -233,9 +247,11 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
-                    (Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ] [])
+                    []
                     []
                     "next"
+                    []
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
@@ -252,7 +268,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let* n := M.copy γ0_0 in
                       let* _ :=
-                        let* α0 := M.get_function "functions::fizzbuzz" [] in
+                        let* α0 := M.get_function "functions::fizzbuzz" [] [] in
                         let* α1 := M.read n in
                         let* α2 := M.call_closure α0 [ α1 ] in
                         M.alloc α2 in
@@ -274,7 +290,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "functions::fizzbuzz_to" [] in
+      let* α0 := M.get_function "functions::fizzbuzz_to" [] [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 100 ] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

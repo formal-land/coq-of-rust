@@ -47,7 +47,8 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
             let* α0 :=
               M.get_function
                 "std::panicking::begin_panic"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α1 := M.read (mk_str "Divide-by-zero error") in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.never_to_any α2 in

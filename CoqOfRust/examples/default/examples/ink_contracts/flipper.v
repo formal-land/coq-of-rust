@@ -35,8 +35,9 @@ Module Impl_flipper_Flipper.
   Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_associated_function (Ty.path "flipper::Flipper") "new" [] in
-      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
+      let* α0 := M.get_associated_function (Ty.path "flipper::Flipper") "new" [] [] in
+      let* α1 :=
+        M.get_trait_method "core::default::Default" (Ty.path "bool") [] [] "default" [] [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible

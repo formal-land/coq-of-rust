@@ -31,8 +31,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "1 + 2 = ") in
@@ -46,7 +46,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "u32" ] in
+                [ Ty.path "u32" ]
+                [] in
             let* α7 :=
               BinOp.Panic.add (Value.Integer Integer.U32 1) (Value.Integer Integer.U32 2) in
             let* α8 := M.alloc α7 in
@@ -59,8 +60,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "1 - 2 = ") in
@@ -74,7 +75,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α7 :=
               BinOp.Panic.sub (Value.Integer Integer.I32 1) (Value.Integer Integer.I32 2) in
             let* α8 := M.alloc α7 in
@@ -87,8 +89,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "true AND false is ") in
@@ -102,7 +104,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "bool" ] in
+                [ Ty.path "bool" ]
+                [] in
             let* α7 := LogicalOp.and (Value.Bool true) (M.pure (Value.Bool false)) in
             let* α8 := M.alloc α7 in
             let* α9 := M.call_closure α6 [ α8 ] in
@@ -114,8 +117,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "true OR false is ") in
@@ -129,7 +132,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "bool" ] in
+                [ Ty.path "bool" ]
+                [] in
             let* α7 := LogicalOp.or (Value.Bool true) (M.pure (Value.Bool false)) in
             let* α8 := M.alloc α7 in
             let* α9 := M.call_closure α6 [ α8 ] in
@@ -141,8 +145,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "NOT true is ") in
@@ -156,7 +160,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "bool" ] in
+                [ Ty.path "bool" ]
+                [] in
             let* α7 := M.alloc (UnOp.Pure.not (Value.Bool true)) in
             let* α8 := M.call_closure α6 [ α7 ] in
             let* α9 := M.alloc (Value.Array [ α8 ]) in
@@ -167,9 +172,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] in
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "0011 AND 0101 is ") in
@@ -183,7 +188,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_binary"
-                [ Ty.path "u32" ] in
+                [ Ty.path "u32" ]
+                [] in
             let* α7 :=
               M.alloc
                 (BinOp.Pure.bit_and (Value.Integer Integer.U32 3) (Value.Integer Integer.U32 5)) in
@@ -192,7 +198,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.pure (M.pointer_coercion α9) in
         let* α14 :=
           (* Unsize *)
-            let* α11 := M.get_associated_function (Ty.path "core::fmt::rt::Placeholder") "new" [] in
+            let* α11 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Placeholder")
+                "new"
+                []
+                [ Value.Bool true ] in
             let* α12 :=
               M.call_closure
                 α11
@@ -206,7 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α13 := M.alloc (Value.Array [ α12 ]) in
             M.pure (M.pointer_coercion α13) in
-        let* α15 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] in
+        let* α15 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] [] in
         let* α16 := M.call_closure α15 [] in
         let* α17 := M.call_closure α1 [ α5; α10; α14; α16 ] in
         let* α18 := M.call_closure α0 [ α17 ] in
@@ -214,9 +225,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] in
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "0011 OR 0101 is ") in
@@ -230,7 +241,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_binary"
-                [ Ty.path "u32" ] in
+                [ Ty.path "u32" ]
+                [] in
             let* α7 :=
               M.alloc
                 (BinOp.Pure.bit_or (Value.Integer Integer.U32 3) (Value.Integer Integer.U32 5)) in
@@ -239,7 +251,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.pure (M.pointer_coercion α9) in
         let* α14 :=
           (* Unsize *)
-            let* α11 := M.get_associated_function (Ty.path "core::fmt::rt::Placeholder") "new" [] in
+            let* α11 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Placeholder")
+                "new"
+                []
+                [ Value.Bool true ] in
             let* α12 :=
               M.call_closure
                 α11
@@ -253,7 +270,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α13 := M.alloc (Value.Array [ α12 ]) in
             M.pure (M.pointer_coercion α13) in
-        let* α15 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] in
+        let* α15 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] [] in
         let* α16 := M.call_closure α15 [] in
         let* α17 := M.call_closure α1 [ α5; α10; α14; α16 ] in
         let* α18 := M.call_closure α0 [ α17 ] in
@@ -261,9 +278,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
         let* α1 :=
-          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] in
+          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1_formatted" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "0011 XOR 0101 is ") in
@@ -277,7 +294,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_binary"
-                [ Ty.path "u32" ] in
+                [ Ty.path "u32" ]
+                [] in
             let* α7 :=
               M.alloc
                 (BinOp.Pure.bit_xor (Value.Integer Integer.U32 3) (Value.Integer Integer.U32 5)) in
@@ -286,7 +304,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.pure (M.pointer_coercion α9) in
         let* α14 :=
           (* Unsize *)
-            let* α11 := M.get_associated_function (Ty.path "core::fmt::rt::Placeholder") "new" [] in
+            let* α11 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::rt::Placeholder")
+                "new"
+                []
+                [ Value.Bool true ] in
             let* α12 :=
               M.call_closure
                 α11
@@ -300,7 +323,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α13 := M.alloc (Value.Array [ α12 ]) in
             M.pure (M.pointer_coercion α13) in
-        let* α15 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] in
+        let* α15 := M.get_associated_function (Ty.path "core::fmt::rt::UnsafeArg") "new" [] [] in
         let* α16 := M.call_closure α15 [] in
         let* α17 := M.call_closure α1 [ α5; α10; α14; α16 ] in
         let* α18 := M.call_closure α0 [ α17 ] in
@@ -308,8 +331,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "1 << 5 is ") in
@@ -323,7 +346,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "u32" ] in
+                [ Ty.path "u32" ]
+                [] in
             let* α7 :=
               BinOp.Panic.shl (Value.Integer Integer.U32 1) (Value.Integer Integer.I32 5) in
             let* α8 := M.alloc α7 in
@@ -336,8 +360,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "0x80 >> 2 is 0x") in
@@ -351,7 +375,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_lower_hex"
-                [ Ty.path "u32" ] in
+                [ Ty.path "u32" ]
+                [] in
             let* α7 :=
               BinOp.Panic.shr (Value.Integer Integer.U32 128) (Value.Integer Integer.I32 2) in
             let* α8 := M.alloc α7 in
@@ -364,8 +389,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "One million is written as 1000000
@@ -374,7 +399,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.pure (M.pointer_coercion α3) in
         let* α8 :=
           (* Unsize *)
-            let* α5 := M.get_associated_function (Ty.path "core::fmt::rt::Argument") "none" [] in
+            let* α5 := M.get_associated_function (Ty.path "core::fmt::rt::Argument") "none" [] [] in
             let* α6 := M.call_closure α5 [] in
             let* α7 := M.alloc α6 in
             M.pure (M.pointer_coercion α7) in

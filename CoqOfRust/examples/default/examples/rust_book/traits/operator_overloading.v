@@ -30,7 +30,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "FooBar") in
       M.call_closure α0 [ α1; α2 ]
@@ -62,7 +62,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "BarFoo") in
       M.call_closure α0 [ α1; α2 ]
@@ -99,8 +99,13 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              []
+              [ Value.Bool true ] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "> Foo.add(Bar) was called
@@ -146,8 +151,13 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       let* _rhs := M.alloc _rhs in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              []
+              [ Value.Bool true ] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "> Bar.add(Foo) was called
@@ -182,8 +192,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Foo + Bar = ") in
@@ -197,13 +207,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "operator_overloading::FooBar" ] in
+                [ Ty.path "operator_overloading::FooBar" ]
+                [] in
             let* α7 :=
               M.get_trait_method
                 "core::ops::arith::Add"
                 (Ty.path "operator_overloading::Foo")
                 [ Ty.path "operator_overloading::Bar" ]
+                []
                 "add"
+                []
                 [] in
             let* α8 :=
               M.call_closure
@@ -222,8 +235,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Bar + Foo = ") in
@@ -237,13 +250,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "operator_overloading::BarFoo" ] in
+                [ Ty.path "operator_overloading::BarFoo" ]
+                [] in
             let* α7 :=
               M.get_trait_method
                 "core::ops::arith::Add"
                 (Ty.path "operator_overloading::Bar")
                 [ Ty.path "operator_overloading::Foo" ]
+                []
                 "add"
+                []
                 [] in
             let* α8 :=
               M.call_closure

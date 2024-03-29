@@ -34,8 +34,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.copy (M.use α0) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α7 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "") in
@@ -51,19 +51,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "u64" ] in
+                [ Ty.path "u64" ]
+                [] in
             let* α9 := M.call_closure α8 [ nanoseconds ] in
             let* α10 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "u64" ] in
+                [ Ty.path "u64" ]
+                [] in
             let* α11 := M.call_closure α10 [ inches ] in
             let* α12 :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "u64" ] in
+                [ Ty.path "u64" ]
+                [] in
             let* α13 := M.read nanoseconds in
             let* α14 := M.read inches in
             let* α15 := BinOp.Panic.add α13 α14 in

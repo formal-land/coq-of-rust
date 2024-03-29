@@ -13,8 +13,8 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
     let* slice := M.alloc slice in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "first element of the slice: ") in
@@ -28,7 +28,8 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α7 := M.read slice in
             let* α8 := M.alloc (Value.Integer Integer.Usize 0) in
             let* α9 := M.get_array_field α7 α8 in
@@ -41,8 +42,8 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "the slice has ") in
@@ -56,9 +57,14 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
+                [ Ty.path "usize" ]
+                [] in
             let* α7 :=
-              M.get_associated_function (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]) "len" [] in
+              M.get_associated_function
+                (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
+                "len"
+                []
+                [ Value.Bool true ] in
             let* α8 := M.read slice in
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
@@ -139,8 +145,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* ys := M.alloc (repeat (Value.Integer Integer.I32 0) 500) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "first element of the array: ") in
@@ -154,7 +160,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α7 := M.alloc (Value.Integer Integer.Usize 0) in
             let* α8 := M.get_array_field xs α7 in
             let* α9 := M.call_closure α6 [ α8 ] in
@@ -166,8 +173,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "second element of the array: ") in
@@ -181,7 +188,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α7 := M.alloc (Value.Integer Integer.Usize 1) in
             let* α8 := M.get_array_field xs α7 in
             let* α9 := M.call_closure α6 [ α8 ] in
@@ -193,8 +201,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "number of elements in array: ") in
@@ -208,9 +216,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
+                [ Ty.path "usize" ]
+                [] in
             let* α7 :=
-              M.get_associated_function (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]) "len" [] in
+              M.get_associated_function
+                (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
+                "len"
+                []
+                [ Value.Bool true ] in
             let* α8 := (* Unsize *) M.pure (M.pointer_coercion xs) in
             let* α9 := M.call_closure α7 [ α8 ] in
             let* α10 := M.alloc α9 in
@@ -223,8 +236,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "array occupies ") in
@@ -238,11 +251,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
+                [ Ty.path "usize" ]
+                [] in
             let* α7 :=
               M.get_function
                 "core::mem::size_of_val"
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ] in
+                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] [ Value.Integer Integer.Usize 5 ] ]
+                [ Value.Bool true ] in
             let* α8 := M.call_closure α7 [ xs ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
@@ -254,8 +269,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "borrow the whole array as a slice
@@ -267,14 +287,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "arrays_and_slices::analyze_slice" [] in
+      let* α0 := M.get_function "arrays_and_slices::analyze_slice" [] [] in
       let* α1 := (* Unsize *) M.pure (M.pointer_coercion xs) in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "borrow a section of the array as a slice
@@ -286,13 +311,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "arrays_and_slices::analyze_slice" [] in
+      let* α0 := M.get_function "arrays_and_slices::analyze_slice" [] [] in
       let* α1 :=
         M.get_trait_method
           "core::ops::index::Index"
-          (Ty.apply (Ty.path "array") [ Ty.path "i32" ])
-          [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+          (Ty.apply (Ty.path "array") [ Ty.path "i32" ] [ Value.Integer Integer.Usize 500 ])
+          [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] [] ]
+          []
           "index"
+          []
           [] in
       let* α2 :=
         M.call_closure
@@ -328,9 +355,29 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ])
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ] ]
+                        (Ty.apply
+                          (Ty.path "&")
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Ty.path "u32" ]
+                              [ Value.Integer Integer.Usize 0 ]
+                          ]
+                          [])
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Ty.path "u32" ]
+                                [ Value.Integer Integer.Usize 0 ]
+                            ]
+                            []
+                        ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -345,9 +392,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ];
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
-                      ] in
+                        Ty.apply
+                          (Ty.path "&")
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Ty.path "u32" ]
+                              [ Value.Integer Integer.Usize 0 ]
+                          ]
+                          [];
+                        Ty.apply
+                          (Ty.path "&")
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Ty.path "u32" ]
+                              [ Value.Integer Integer.Usize 0 ]
+                          ]
+                          []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -367,9 +431,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 :=
         M.get_trait_method
           "core::ops::index::Index"
-          (Ty.apply (Ty.path "array") [ Ty.path "u32" ])
+          (Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 0 ])
           [ Ty.path "core::ops::range::RangeFull" ]
+          []
           "index"
+          []
           [] in
       let* α2 := M.alloc (Value.Array []) in
       let* α3 := M.call_closure α1 [ α2; Value.StructTuple "core::ops::range::RangeFull" [] ] in
@@ -392,9 +458,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ])
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ] ]
+                        (Ty.apply
+                          (Ty.path "&")
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Ty.path "u32" ]
+                              [ Value.Integer Integer.Usize 0 ]
+                          ]
+                          [])
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [] ]
+                            []
+                        ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -409,9 +490,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ];
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
-                      ] in
+                        Ty.apply
+                          (Ty.path "&")
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Ty.path "u32" ]
+                              [ Value.Integer Integer.Usize 0 ]
+                          ]
+                          [];
+                        Ty.apply
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [] ]
+                          []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in
@@ -429,11 +522,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
-        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ])
+        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] [])
+        []
         []
         "into_iter"
+        []
         [] in
-    let* α1 := M.get_associated_function (Ty.apply (Ty.path "slice") [ Ty.path "i32" ]) "len" [] in
+    let* α1 :=
+      M.get_associated_function
+        (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
+        "len"
+        []
+        [ Value.Bool true ] in
     let* α2 := (* Unsize *) M.pure (M.pointer_coercion xs) in
     let* α3 := M.call_closure α1 [ α2 ] in
     let* α4 := BinOp.Panic.add α3 (Value.Integer Integer.Usize 1) in
@@ -457,9 +557,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
-                    (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ])
+                    (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] [])
+                    []
                     []
                     "next"
+                    []
                     [] in
                 let* α1 := M.call_closure α0 [ iter ] in
                 let* α2 := M.alloc α1 in
@@ -477,9 +579,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       let* i := M.copy γ0_0 in
                       let* α0 :=
                         M.get_associated_function
-                          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+                          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
                           "get"
-                          [ Ty.path "usize" ] in
+                          [ Ty.path "usize" ]
+                          [] in
                       let* α1 := (* Unsize *) M.pure (M.pointer_coercion xs) in
                       let* α2 := M.read i in
                       let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -495,11 +598,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 0 in
                             let* xval := M.copy γ0_0 in
                             let* _ :=
-                              let* α0 := M.get_function "std::io::stdio::_print" [] in
+                              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                               let* α1 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::Arguments")
                                   "new_v1"
+                                  []
                                   [] in
                               let* α6 :=
                                 (* Unsize *)
@@ -515,13 +619,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::rt::Argument")
                                       "new_display"
-                                      [ Ty.path "usize" ] in
+                                      [ Ty.path "usize" ]
+                                      [] in
                                   let* α8 := M.call_closure α7 [ i ] in
                                   let* α9 :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::rt::Argument")
                                       "new_display"
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] [] ]
+                                      [] in
                                   let* α10 := M.call_closure α9 [ xval ] in
                                   let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                                   M.pure (M.pointer_coercion α11) in
@@ -531,11 +637,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (Value.Tuple []);
                           fun γ =>
                             let* _ :=
-                              let* α0 := M.get_function "std::io::stdio::_print" [] in
+                              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                               let* α1 :=
                                 M.get_associated_function
                                   (Ty.path "core::fmt::Arguments")
                                   "new_v1"
+                                  []
                                   [] in
                               let* α5 :=
                                 (* Unsize *)
@@ -550,7 +657,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function
                                       (Ty.path "core::fmt::rt::Argument")
                                       "new_display"
-                                      [ Ty.path "usize" ] in
+                                      [ Ty.path "usize" ]
+                                      [] in
                                   let* α7 := M.call_closure α6 [ i ] in
                                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                                   M.pure (M.pointer_coercion α8) in

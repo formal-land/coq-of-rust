@@ -10,7 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_polymorphic_associated_function_Foo_A.
   Definition Self (A : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ A ].
+    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ A ] [].
   
   Parameter convert : forall (A : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   

@@ -22,17 +22,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ])
+          (Ty.apply (Ty.path "slice") [ Ty.path "i32" ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α5 :=
         (* Unsize *)
           let* α1 :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global" ])
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "i32" ] [ Value.Integer Integer.Usize 4 ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 :=
             M.alloc

@@ -30,8 +30,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* f := M.copy UnsupportedLiteral in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "size of `x` in bytes: ") in
@@ -45,8 +45,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
-            let* α7 := M.get_function "core::mem::size_of_val" [ Ty.path "u8" ] in
+                [ Ty.path "usize" ]
+                [] in
+            let* α7 :=
+              M.get_function "core::mem::size_of_val" [ Ty.path "u8" ] [ Value.Bool true ] in
             let* α8 := M.call_closure α7 [ x ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
@@ -58,8 +60,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "size of `y` in bytes: ") in
@@ -73,8 +75,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
-            let* α7 := M.get_function "core::mem::size_of_val" [ Ty.path "u32" ] in
+                [ Ty.path "usize" ]
+                [] in
+            let* α7 :=
+              M.get_function "core::mem::size_of_val" [ Ty.path "u32" ] [ Value.Bool true ] in
             let* α8 := M.call_closure α7 [ y ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
@@ -86,8 +90,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "size of `z` in bytes: ") in
@@ -101,8 +105,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
-            let* α7 := M.get_function "core::mem::size_of_val" [ Ty.path "f32" ] in
+                [ Ty.path "usize" ]
+                [] in
+            let* α7 :=
+              M.get_function "core::mem::size_of_val" [ Ty.path "f32" ] [ Value.Bool true ] in
             let* α8 := M.call_closure α7 [ z ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
@@ -114,8 +120,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "size of `i` in bytes: ") in
@@ -129,8 +135,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
-            let* α7 := M.get_function "core::mem::size_of_val" [ Ty.path "i32" ] in
+                [ Ty.path "usize" ]
+                [] in
+            let* α7 :=
+              M.get_function "core::mem::size_of_val" [ Ty.path "i32" ] [ Value.Bool true ] in
             let* α8 := M.call_closure α7 [ i ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
@@ -142,8 +150,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "size of `f` in bytes: ") in
@@ -157,8 +165,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "usize" ] in
-            let* α7 := M.get_function "core::mem::size_of_val" [ Ty.path "f64" ] in
+                [ Ty.path "usize" ]
+                [] in
+            let* α7 :=
+              M.get_function "core::mem::size_of_val" [ Ty.path "f64" ] [ Value.Bool true ] in
             let* α8 := M.call_closure α7 [ f ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in

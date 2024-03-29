@@ -7,8 +7,8 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [];
     fields :=
       [
-        ("author", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-        ("title", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
+        ("author", Ty.apply (Ty.path "&") [ Ty.path "str" ] []);
+        ("title", Ty.apply (Ty.path "&") [ Ty.path "str" ] []);
         ("year", Ty.path "u32")
       ];
   } *)

@@ -56,8 +56,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* static_string := M.copy (mk_str "I'm in read-only memory") in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "static_string: ") in
@@ -71,7 +71,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α7 := M.call_closure α6 [ static_string ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in
@@ -84,13 +85,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* lifetime_num := M.alloc (Value.Integer Integer.I32 9) in
       let* coerced_static :=
         let* α0 :=
-          M.get_function "scoping_rules_lifetimes_reference_lifetime_static::coerce_static" [] in
+          M.get_function "scoping_rules_lifetimes_reference_lifetime_static::coerce_static" [] [] in
         let* α1 := M.call_closure α0 [ lifetime_num ] in
         M.alloc α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "coerced_static: ") in
@@ -104,7 +105,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] [] ]
+                  [] in
               let* α7 := M.call_closure α6 [ coerced_static ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in
@@ -115,8 +117,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "NUM: ") in
@@ -130,7 +132,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "i32" ] in
+                [ Ty.path "i32" ]
+                [] in
             let* α7 := M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM" in
             let* α8 := M.read α7 in
             let* α9 := M.call_closure α6 [ α8 ] in

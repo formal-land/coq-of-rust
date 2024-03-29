@@ -1,8 +1,6 @@
 use crate::env::*;
-use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
-use crate::render::*;
 use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::TyKind;
 use std::rc::Rc;
@@ -99,53 +97,16 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         PatKind::Deref { subpattern } => Rc::new(Pattern::Deref(compile_pattern(env, subpattern))),
         PatKind::Constant { value } => {
             if let rustc_middle::mir::Const::Ty(constant) = value {
-                let ty = constant.ty();
-
-                match &ty.kind() {
-                    rustc_middle::ty::TyKind::Int(int_ty) => {
-                        let uint_value = constant.try_to_scalar().unwrap().assert_int();
-                        let int_value = uint_value.try_to_int(uint_value.size()).unwrap();
-
-                        return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
-                            LiteralInteger {
-                                name: capitalize(&format!("{int_ty:?}")),
-                                negative_sign: int_value < 0,
-                                // The `unsigned_abs` method is necessary to get the minimal int128's
-                                // absolute value.
-                                value: int_value.unsigned_abs(),
-                            },
-                        ))));
-                    }
-                    rustc_middle::ty::TyKind::Uint(uint_ty) => {
-                        let uint_value = constant.try_to_scalar().unwrap().assert_int();
-
-                        return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
-                            LiteralInteger {
-                                name: capitalize(&format!("{uint_ty:?}")),
-                                negative_sign: false,
-                                value: uint_value.assert_bits(uint_value.size()),
-                            },
-                        ))));
-                    }
-                    rustc_middle::ty::TyKind::Bool => {
-                        let bool_value = constant.try_to_scalar().unwrap().to_bool().unwrap();
-
-                        return Rc::new(Pattern::Literal(Rc::new(Literal::Bool(bool_value))));
-                    }
-                    rustc_middle::ty::TyKind::Char => {
-                        let char_value = constant.try_to_scalar().unwrap().to_char().unwrap();
-
-                        return Rc::new(Pattern::Literal(Rc::new(Literal::Char(char_value))));
-                    }
-                    // TODO: handle other kinds of constants
-                    _ => {}
-                }
+                return Rc::new(Pattern::Literal(crate::thir_expression::compile_const(
+                    env, &pat.span, constant,
+                )));
             }
+
             emit_warning_with_note(
                 env,
                 &pat.span,
-                "This kind of constant in patterns is not yet supported.",
-                None,
+                "This kind of pattern is not yet supported.",
+                Some("We will work on it! 🐇"),
             );
 
             Rc::new(Pattern::Wild)

@@ -65,7 +65,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "generics_traits::DoubleDrop"
           (Ty.path "generics_traits::Empty")
           [ Ty.path "generics_traits::Null" ]
+          []
           "double_drop"
+          []
           [] in
       let* α1 := M.read empty in
       let* α2 := M.read null in

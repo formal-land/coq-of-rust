@@ -80,18 +80,22 @@ pub(crate) enum Expr {
     GetFunction {
         func: Path,
         generic_tys: Vec<Rc<CoqType>>,
+        generic_consts: Vec<Rc<Literal>>,
     },
     GetTraitMethod {
         trait_name: Path,
         self_ty: Rc<CoqType>,
         trait_tys: Vec<Rc<CoqType>>,
+        trait_consts: Vec<Rc<Literal>>,
         method_name: String,
         generic_tys: Vec<Rc<CoqType>>,
+        generic_consts: Vec<Rc<Literal>>,
     },
     GetAssociatedFunction {
         ty: Rc<CoqType>,
         func: String,
         generic_tys: Vec<Rc<CoqType>>,
+        generic_consts: Vec<Rc<Literal>>,
     },
     Literal(Rc<Literal>),
     Call {
@@ -226,6 +230,7 @@ impl Expr {
                     func: Rc::new(Expr::GetFunction {
                         func: Path::new(&["core", "panicking", "panic"]),
                         generic_tys: vec![],
+                        generic_consts: vec![],
                     }),
                     kind: CallKind::Closure,
                     args: vec![Rc::new(Expr::Call {
@@ -339,15 +344,19 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             trait_name,
             self_ty,
             trait_tys,
+            trait_consts,
             method_name,
             generic_tys,
+            generic_consts,
         } => (
             Rc::new(Expr::GetTraitMethod {
                 trait_name: trait_name.clone(),
                 self_ty: self_ty.clone(),
                 trait_tys: trait_tys.clone(),
+                trait_consts: trait_consts.clone(),
                 method_name: method_name.clone(),
                 generic_tys: generic_tys.clone(),
+                generic_consts: generic_consts.clone(),
             }),
             fresh_vars,
         ),
@@ -647,7 +656,7 @@ fn string_pieces_to_coq<'a>(pieces: &[StringPiece]) -> coq::Expression<'a> {
     }
 }
 
-fn string_to_coq(message: &str) -> coq::Expression {
+fn string_to_coq<'a>(message: &str) -> coq::Expression<'a> {
     let pieces = cut_string_in_pieces_for_coq(message);
     coq::Expression::just_name("mk_str").apply(&string_pieces_to_coq(&pieces))
 }
@@ -662,7 +671,7 @@ impl LoopControlFlow {
 }
 
 impl Literal {
-    pub(crate) fn to_coq(&self) -> coq::Expression {
+    pub(crate) fn to_coq<'a>(&self) -> coq::Expression<'a> {
         match self {
             Literal::Bool(b) => coq::Expression::just_name("Value.Bool")
                 .apply(&coq::Expression::just_name(b.to_string().as_str())),
@@ -685,6 +694,34 @@ impl Literal {
             Literal::Error => coq::Expression::just_name("UnsupportedLiteral"),
         }
     }
+
+    fn char_to_name(c: char) -> String {
+        if c.is_ascii_alphanumeric() {
+            format!("{}", c)
+        } else {
+            format!("char{}", c as u32)
+        }
+    }
+
+    pub(crate) fn to_name(&self) -> String {
+        match self {
+            Literal::Bool(b) => format!("{}", b),
+            Literal::Integer(LiteralInteger {
+                name: _,
+                negative_sign,
+                value,
+            }) => {
+                if *negative_sign {
+                    format!("minus_{}", value)
+                } else {
+                    format!("{}", value)
+                }
+            }
+            Literal::Char(c) => Self::char_to_name(*c),
+            Literal::String(s) => s.chars().map(Self::char_to_name).collect(),
+            Literal::Error => "UnsupportedLiteral".to_string(),
+        }
+    }
 }
 
 impl Expr {
@@ -694,22 +731,33 @@ impl Expr {
             Expr::LocalVar(ref name) => coq::Expression::just_name(name),
             Expr::GetConst(path) => coq::Expression::just_name("M.get_constant")
                 .apply(&coq::Expression::String(path.to_string())),
-            Expr::GetFunction { func, generic_tys } => coq::Expression::just_name("M.get_function")
-                .apply_many(&[
-                    coq::Expression::String(func.to_string()),
-                    coq::Expression::List {
-                        exprs: generic_tys
-                            .iter()
-                            .map(|generic_ty| generic_ty.to_coq())
-                            .collect_vec(),
-                    },
-                ]),
+            Expr::GetFunction {
+                func,
+                generic_tys,
+                generic_consts,
+            } => coq::Expression::just_name("M.get_function").apply_many(&[
+                coq::Expression::String(func.to_string()),
+                coq::Expression::List {
+                    exprs: generic_tys
+                        .iter()
+                        .map(|generic_ty| generic_ty.to_coq())
+                        .collect_vec(),
+                },
+                coq::Expression::List {
+                    exprs: generic_consts
+                        .iter()
+                        .map(|generic_const| generic_const.to_coq())
+                        .collect_vec(),
+                },
+            ]),
             Expr::GetTraitMethod {
                 trait_name,
                 self_ty,
                 trait_tys,
+                trait_consts,
                 method_name,
                 generic_tys,
+                generic_consts,
             } => coq::Expression::just_name("M.get_trait_method").apply_many(&[
                 coq::Expression::String(trait_name.to_string()),
                 self_ty.to_coq(),
@@ -719,15 +767,31 @@ impl Expr {
                         .map(|trait_ty| trait_ty.to_coq())
                         .collect_vec(),
                 },
+                coq::Expression::List {
+                    exprs: trait_consts
+                        .iter()
+                        .map(|trait_const| trait_const.to_coq())
+                        .collect_vec(),
+                },
                 coq::Expression::String(method_name.to_string()),
                 coq::Expression::List {
-                    exprs: generic_tys.iter().map(|ty| ty.to_coq()).collect_vec(),
+                    exprs: generic_tys
+                        .iter()
+                        .map(|generic_ty| generic_ty.to_coq())
+                        .collect_vec(),
+                },
+                coq::Expression::List {
+                    exprs: generic_consts
+                        .iter()
+                        .map(|generic_const| generic_const.to_coq())
+                        .collect_vec(),
                 },
             ]),
             Expr::GetAssociatedFunction {
                 ty,
                 func,
                 generic_tys,
+                generic_consts,
             } => coq::Expression::just_name("M.get_associated_function").apply_many(&[
                 ty.to_coq(),
                 coq::Expression::String(func.to_string()),
@@ -735,6 +799,12 @@ impl Expr {
                     exprs: generic_tys
                         .iter()
                         .map(|generic_ty| generic_ty.to_coq())
+                        .collect(),
+                },
+                coq::Expression::List {
+                    exprs: generic_consts
+                        .iter()
+                        .map(|generic_const| generic_const.to_coq())
                         .collect(),
                 },
             ]),

@@ -11,8 +11,13 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "called `function()`
@@ -39,8 +44,13 @@ Module cool.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              []
+              [ Value.Bool true ] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "called `cool::function()`
@@ -68,8 +78,13 @@ Module my.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              []
+              [ Value.Bool true ] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "called `my::function()`
@@ -96,8 +111,13 @@ Module my.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                []
+                [ Value.Bool true ] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "called `my::cool::function()`
@@ -144,8 +164,13 @@ Module my.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              []
+              [ Value.Bool true ] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "called `my::indirect_call()`, that
@@ -157,23 +182,23 @@ Module my.
           M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* _ :=
-        let* α0 := M.get_function "super_and_self::my::function" [] in
+        let* α0 := M.get_function "super_and_self::my::function" [] [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
-        let* α0 := M.get_function "super_and_self::my::function" [] in
+        let* α0 := M.get_function "super_and_self::my::function" [] [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
-        let* α0 := M.get_function "super_and_self::my::cool::function" [] in
+        let* α0 := M.get_function "super_and_self::my::cool::function" [] [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
-        let* α0 := M.get_function "super_and_self::function" [] in
+        let* α0 := M.get_function "super_and_self::function" [] [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
-        let* α0 := M.get_function "super_and_self::cool::function" [] in
+        let* α0 := M.get_function "super_and_self::cool::function" [] [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -191,7 +216,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "super_and_self::my::indirect_call" [] in
+      let* α0 := M.get_function "super_and_self::my::indirect_call" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in

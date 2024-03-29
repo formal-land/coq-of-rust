@@ -7,7 +7,7 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [];
     fields :=
       [
-        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
+        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] []);
         ("number", Ty.path "u32")
       ];
   } *)
@@ -41,7 +41,8 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
         ("phone_number",
           Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ])
+            [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
+            [])
       ];
   } *)
 
@@ -74,7 +75,8 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
         ("job",
           Ty.apply
             (Ty.path "core::option::Option")
-            [ Ty.path "unpacking_options_via_question_mark::Job" ])
+            [ Ty.path "unpacking_options_via_question_mark::Job" ]
+            [])
       ];
   } *)
 

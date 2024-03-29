@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ] [].
   
   (*
   Default
@@ -25,17 +25,21 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       M.pure (Value.StructRecord "multisig::Mapping" [ ("_key", α1); ("_value", α3) ])
@@ -52,14 +56,25 @@ Module Impl_core_default_Default_for_multisig_Mapping_K_V.
 End Impl_core_default_Default_for_multisig_Mapping_K_V.
 
 Module Impl_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ] [].
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -70,7 +85,18 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -81,7 +107,19 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* _value := M.alloc _value in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -92,7 +130,18 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -103,7 +152,18 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -114,7 +174,18 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -137,7 +208,8 @@ Module Impl_core_default_Default_for_multisig_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "multisig::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -163,7 +235,11 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 :=
-        M.get_associated_function (Ty.path "core::fmt::Formatter") "debug_tuple_field1_finish" [] in
+        M.get_associated_function
+          (Ty.path "core::fmt::Formatter")
+          "debug_tuple_field1_finish"
+          []
+          [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "AccountId") in
       let* α5 :=
@@ -303,7 +379,9 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
           "core::cmp::PartialOrd"
           (Ty.path "u128")
           [ Ty.path "u128" ]
+          []
           "partial_cmp"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
@@ -335,7 +413,7 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.get_trait_method "core::cmp::Ord" (Ty.path "u128") [] "cmp" [] in
+      let* α0 := M.get_trait_method "core::cmp::Ord" (Ty.path "u128") [] [] "cmp" [] [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
       M.call_closure
@@ -375,7 +453,7 @@ Definition value_WRONG_TRANSACTION_ID : Value.t :=
   {
     name := "CallInput";
     ty_params := [];
-    fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ];
+    fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] [] ] [] ];
   } *)
 
 (* Enum ConfirmationStatus *)
@@ -433,9 +511,9 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
     fields :=
       [
         ("callee", Ty.path "multisig::AccountId");
-        ("selector", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("selector", Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 4 ]);
         ("input",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] []);
         ("transferred_value", Ty.path "u128");
         ("gas_limit", Ty.path "u64");
         ("allow_reentry", Ty.path "bool")
@@ -456,30 +534,39 @@ Module Impl_core_default_Default_for_multisig_Transaction.
           "core::default::Default"
           (Ty.path "multisig::AccountId")
           []
+          []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+          (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 4 ])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       let* α4 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α5 := M.call_closure α4 [] in
-      let* α6 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α6 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α7 := M.call_closure α6 [] in
-      let* α8 := M.get_trait_method "core::default::Default" (Ty.path "u64") [] "default" [] in
+      let* α8 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u64") [] [] "default" [] [] in
       let* α9 := M.call_closure α8 [] in
-      let* α10 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
+      let* α10 :=
+        M.get_trait_method "core::default::Default" (Ty.path "bool") [] [] "default" [] [] in
       let* α11 := M.call_closure α10 [] in
       M.pure
         (Value.StructRecord
@@ -621,7 +708,10 @@ End Impl_core_cmp_Eq_for_multisig_Error.
     fields :=
       [
         ("transactions",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+            []);
         ("next_id", Ty.path "u32")
       ];
   } *)
@@ -638,12 +728,18 @@ Module Impl_core_default_Default_for_multisig_Transactions.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
-      let* α2 := M.get_trait_method "core::default::Default" (Ty.path "u32") [] "default" [] in
+      let* α2 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u32") [] [] "default" [] [] in
       let* α3 := M.call_closure α2 [] in
       M.pure (Value.StructRecord "multisig::Transactions" [ ("transactions", α1); ("next_id", α3) ])
     | _, _ => M.impossible
@@ -707,9 +803,12 @@ End Impl_core_default_Default_for_multisig_Transactions.
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                ];
+                    []
+                ]
+                [];
               Ty.path "multisig::Error"
-            ])
+            ]
+            [])
       ];
   } *)
 
@@ -806,7 +905,17 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      let* self := M.alloc self in
+      let* _event := M.alloc _event in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -815,7 +924,16 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
+  Definition transferred_value (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
@@ -825,7 +943,16 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
+  Definition account_id (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_multisig_Env.
@@ -839,20 +966,23 @@ End Impl_multisig_Env.
         ("confirmations",
           Ty.apply
             (Ty.path "multisig::Mapping")
-            [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]);
+            [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]
+            []);
         ("confirmation_count",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ]);
+          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] []);
         ("transactions",
           Ty.apply
             (Ty.path "multisig::Mapping")
-            [ Ty.path "u32"; Ty.path "multisig::Transaction" ]);
+            [ Ty.path "u32"; Ty.path "multisig::Transaction" ]
+            []);
         ("transaction_list", Ty.path "multisig::Transactions");
         ("owners",
           Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]);
+            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+            []);
         ("is_owner",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ]);
+          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ] []);
         ("requirement", Ty.path "u32")
       ];
   } *)
@@ -871,17 +1001,22 @@ Module Impl_core_default_Default_for_multisig_Multisig.
           "core::default::Default"
           (Ty.apply
             (Ty.path "multisig::Mapping")
-            [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ])
+            [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ])
+          (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       let* α4 :=
@@ -889,9 +1024,12 @@ Module Impl_core_default_Default_for_multisig_Multisig.
           "core::default::Default"
           (Ty.apply
             (Ty.path "multisig::Mapping")
-            [ Ty.path "u32"; Ty.path "multisig::Transaction" ])
+            [ Ty.path "u32"; Ty.path "multisig::Transaction" ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α5 := M.call_closure α4 [] in
       let* α6 :=
@@ -899,7 +1037,9 @@ Module Impl_core_default_Default_for_multisig_Multisig.
           "core::default::Default"
           (Ty.path "multisig::Transactions")
           []
+          []
           "default"
+          []
           [] in
       let* α7 := M.call_closure α6 [] in
       let* α8 :=
@@ -907,20 +1047,26 @@ Module Impl_core_default_Default_for_multisig_Multisig.
           "core::default::Default"
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α9 := M.call_closure α8 [] in
       let* α10 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+          (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α11 := M.call_closure α10 [] in
-      let* α12 := M.get_trait_method "core::default::Default" (Ty.path "u32") [] "default" [] in
+      let* α12 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u32") [] [] "default" [] [] in
       let* α13 := M.call_closure α12 [] in
       M.pure
         (Value.StructRecord
@@ -981,7 +1127,7 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
             let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* α0 := M.get_function "core::panicking::panic" [] in
+            let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
             let* α1 :=
               M.read
                 (mk_str
@@ -1004,7 +1150,15 @@ Module Impl_multisig_Multisig.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -1017,7 +1171,7 @@ Module Impl_multisig_Multisig.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "init_env" [] in
+      let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "init_env" [] [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -1052,24 +1206,30 @@ Module Impl_multisig_Multisig.
             "core::default::Default"
             (Ty.path "multisig::Multisig")
             []
+            []
             "default"
+            []
             [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ])
+            (Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ] [])
             "sort_unstable"
+            []
             [] in
         let* α1 :=
           M.get_trait_method
             "core::ops::deref::DerefMut"
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
+            []
             []
             "deref_mut"
+            []
             [] in
         let* α2 := M.call_closure α1 [ owners ] in
         let* α3 := M.call_closure α0 [ α2 ] in
@@ -1079,19 +1239,23 @@ Module Impl_multisig_Multisig.
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             "dedup"
+            []
             [] in
         let* α1 := M.call_closure α0 [ owners ] in
         M.alloc α1 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             "len"
+            []
             [] in
         let* α2 := M.call_closure α1 [ owners ] in
         let* α3 := M.read requirement in
@@ -1107,9 +1271,13 @@ Module Impl_multisig_Multisig.
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
                   [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
-              ])
+                  []
+              ]
+              [])
+            []
             []
             "into_iter"
+            []
             [] in
         let* α1 := M.call_closure α0 [ owners ] in
         let* α2 := M.alloc α1 in
@@ -1126,9 +1294,12 @@ Module Impl_multisig_Multisig.
                         "core::iter::traits::iterator::Iterator"
                         (Ty.apply
                           (Ty.path "core::slice::iter::Iter")
-                          [ Ty.path "multisig::AccountId" ])
+                          [ Ty.path "multisig::AccountId" ]
+                          [])
+                        []
                         []
                         "next"
+                        []
                         [] in
                     let* α1 := M.call_closure α0 [ iter ] in
                     let* α2 := M.alloc α1 in
@@ -1152,8 +1323,10 @@ Module Impl_multisig_Multisig.
                               M.get_associated_function
                                 (Ty.apply
                                   (Ty.path "multisig::Mapping")
-                                  [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+                                  [ Ty.path "multisig::AccountId"; Ty.tuple [] ]
+                                  [])
                                 "insert"
+                                []
                                 [] in
                             let* α1 := M.read owner in
                             let* α2 := M.read α1 in
@@ -1183,7 +1356,9 @@ Module Impl_multisig_Multisig.
             "core::default::Default"
             (Ty.path "multisig::Transactions")
             []
+            []
             "default"
+            []
             [] in
         let* α1 := M.call_closure α0 [] in
         M.assign (M.get_struct_record_field contract "multisig::Multisig" "transaction_list") α1 in
@@ -1220,13 +1395,15 @@ Module Impl_multisig_Multisig.
               let* γ :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ] [])
                     "expect"
-                    [] in
+                    []
+                    [ Value.Bool true ] in
                 let* α1 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ])
+                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] [])
                     "get"
+                    []
                     [] in
                 let* α2 := M.read self in
                 let* α3 :=
@@ -1247,7 +1424,7 @@ Module Impl_multisig_Multisig.
               let* _ :=
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 := M.get_function "core::panicking::panic" [] in
+              let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
               let* α1 :=
                 M.read
                   (mk_str
@@ -1281,15 +1458,18 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ])
+            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ] [])
             "expect"
-            [] in
+            []
+            [ Value.Bool true ] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "multisig::Mapping")
-              [ Ty.path "u32"; Ty.path "multisig::Transaction" ])
+              [ Ty.path "u32"; Ty.path "multisig::Transaction" ]
+              [])
             "get"
+            []
             [] in
         let* α2 := M.read self in
         let* α3 :=
@@ -1329,8 +1509,10 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function
                     (Ty.apply
                       (Ty.path "multisig::Mapping")
-                      [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+                      [ Ty.path "multisig::AccountId"; Ty.tuple [] ]
+                      [])
                     "contains"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read owner in
@@ -1343,7 +1525,7 @@ Module Impl_multisig_Multisig.
               let* _ :=
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 := M.get_function "core::panicking::panic" [] in
+              let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
               let* α1 := M.read (mk_str "assertion failed: self.is_owner.contains(owner)") in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
@@ -1367,10 +1549,10 @@ Module Impl_multisig_Multisig.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] [] in
         let* α1 := M.read self in
-        let* α2 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] in
-        let* α3 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α2 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] [] in
+        let* α3 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α4 := M.read self in
         let* α5 := M.call_closure α3 [ α4 ] in
         let* α6 := M.alloc α5 in
@@ -1396,15 +1578,15 @@ Module Impl_multisig_Multisig.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 := M.call_closure α0 [ α4 ] in
         let* α6 := M.alloc α5 in
-        let* α7 := M.get_associated_function (Ty.path "multisig::Env") "account_id" [] in
-        let* α8 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α7 := M.get_associated_function (Ty.path "multisig::Env") "account_id" [] [] in
+        let* α8 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α9 := M.read self in
         let* α10 := M.call_closure α8 [ α9 ] in
         let* α11 := M.alloc α10 in
@@ -1430,7 +1612,9 @@ Module Impl_multisig_Multisig.
                           "core::cmp::PartialEq"
                           (Ty.path "multisig::AccountId")
                           [ Ty.path "multisig::AccountId" ]
+                          [ Value.Bool true ]
                           "eq"
+                          []
                           [] in
                       let* α1 := M.read left_val in
                       let* α2 := M.read right_val in
@@ -1444,7 +1628,8 @@ Module Impl_multisig_Multisig.
                     let* α0 :=
                       M.get_function
                         "core::panicking::assert_failed"
-                        [ Ty.path "multisig::AccountId"; Ty.path "multisig::AccountId" ] in
+                        [ Ty.path "multisig::AccountId"; Ty.path "multisig::AccountId" ]
+                        [] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in
@@ -1488,8 +1673,10 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function
                     (Ty.apply
                       (Ty.path "multisig::Mapping")
-                      [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+                      [ Ty.path "multisig::AccountId"; Ty.tuple [] ]
+                      [])
                     "contains"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read owner in
@@ -1502,7 +1689,7 @@ Module Impl_multisig_Multisig.
               let* _ :=
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 := M.get_function "core::panicking::panic" [] in
+              let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
               let* α1 := M.read (mk_str "assertion failed: !self.is_owner.contains(owner)") in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
@@ -1535,23 +1722,26 @@ Module Impl_multisig_Multisig.
       let* new_owner := M.alloc new_owner in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_no_owner" [] in
+        let* α0 :=
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_no_owner" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; new_owner ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             "len"
+            []
             [] in
         let* α2 := M.read self in
         let* α3 :=
@@ -1564,8 +1754,12 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+            (Ty.apply
+              (Ty.path "multisig::Mapping")
+              [ Ty.path "multisig::AccountId"; Ty.tuple [] ]
+              [])
             "insert"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read new_owner in
@@ -1579,8 +1773,10 @@ Module Impl_multisig_Multisig.
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             "push"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read new_owner in
@@ -1588,8 +1784,8 @@ Module Impl_multisig_Multisig.
           M.call_closure α0 [ M.get_struct_record_field α1 "multisig::Multisig" "owners"; α2 ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -1626,33 +1822,40 @@ Module Impl_multisig_Multisig.
       let* owner := M.alloc owner in
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
+          (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ] [])
           "expect"
-          [] in
+          []
+          [ Value.Bool true ] in
       let* α1 :=
         M.get_trait_method
           "core::iter::traits::iterator::Iterator"
-          (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "multisig::AccountId" ])
+          (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "multisig::AccountId" ] [])
+          []
           []
           "position"
           [
             Ty.function
-              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "multisig::AccountId" ] ] ]
+              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "multisig::AccountId" ] [] ] ]
               (Ty.path "bool")
-          ] in
+          ]
+          [] in
       let* α2 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ])
+          (Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ] [])
           "iter"
+          []
           [] in
       let* α3 :=
         M.get_trait_method
           "core::ops::deref::Deref"
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
-            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+            [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+            [])
+          []
           []
           "deref"
+          []
           [] in
       let* α4 := M.read self in
       let* α5 := M.call_closure α3 [ M.get_struct_record_field α4 "multisig::Multisig" "owners" ] in
@@ -1678,7 +1881,9 @@ Module Impl_multisig_Multisig.
                             "core::cmp::PartialEq"
                             (Ty.path "multisig::AccountId")
                             [ Ty.path "multisig::AccountId" ]
+                            [ Value.Bool true ]
                             "eq"
+                            []
                             [] in
                         let* α1 := M.read x in
                         let* α2 := M.read owner in
@@ -1722,10 +1927,17 @@ Module Impl_multisig_Multisig.
           "core::iter::traits::collect::IntoIterator"
           (Ty.apply
             (Ty.path "&")
-            [ Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
-            ])
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+                []
+            ]
+            [])
+          []
           []
           "into_iter"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 :=
@@ -1749,9 +1961,11 @@ Module Impl_multisig_Multisig.
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ])
+                      (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ] [])
+                      []
                       []
                       "next"
+                      []
                       [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
@@ -1789,8 +2003,10 @@ Module Impl_multisig_Multisig.
                                       [
                                         Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ];
                                         Ty.tuple []
-                                      ])
+                                      ]
+                                      [])
                                     "contains"
+                                    []
                                     [] in
                                 let* α1 := M.read self in
                                 let* α2 :=
@@ -1816,8 +2032,10 @@ Module Impl_multisig_Multisig.
                                       [
                                         Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ];
                                         Ty.tuple []
-                                      ])
+                                      ]
+                                      [])
                                     "remove"
+                                    []
                                     [] in
                                 let* α1 := M.read self in
                                 let* α2 := M.read key in
@@ -1835,15 +2053,18 @@ Module Impl_multisig_Multisig.
                               let* count :=
                                 let* α0 :=
                                   M.get_associated_function
-                                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ])
+                                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ] [])
                                     "unwrap_or"
+                                    []
                                     [] in
                                 let* α1 :=
                                   M.get_associated_function
                                     (Ty.apply
                                       (Ty.path "multisig::Mapping")
-                                      [ Ty.path "u32"; Ty.path "u32" ])
+                                      [ Ty.path "u32"; Ty.path "u32" ]
+                                      [])
                                     "get"
+                                    []
                                     [] in
                                 let* α2 := M.read self in
                                 let* α3 := M.read trans_id in
@@ -1871,8 +2092,10 @@ Module Impl_multisig_Multisig.
                                   M.get_associated_function
                                     (Ty.apply
                                       (Ty.path "multisig::Mapping")
-                                      [ Ty.path "u32"; Ty.path "u32" ])
+                                      [ Ty.path "u32"; Ty.path "u32" ]
+                                      [])
                                     "insert"
+                                    []
                                     [] in
                                 let* α1 := M.read self in
                                 let* α2 := M.read trans_id in
@@ -1926,12 +2149,12 @@ Module Impl_multisig_Multisig.
       let* owner := M.alloc owner in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; owner ] in
         M.alloc α2 in
@@ -1940,8 +2163,10 @@ Module Impl_multisig_Multisig.
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             "len"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 :=
@@ -1949,20 +2174,20 @@ Module Impl_multisig_Multisig.
         let* α3 := BinOp.Panic.sub (M.rust_cast α2) (Value.Integer Integer.U32 1) in
         M.alloc α3 in
       let* requirement :=
-        let* α0 := M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] "min" [] in
+        let* α0 := M.get_trait_method "core::cmp::Ord" (Ty.path "u32") [] [] "min" [] [] in
         let* α1 := M.read len in
         let* α2 := M.read self in
         let* α3 := M.read (M.get_struct_record_field α2 "multisig::Multisig" "requirement") in
         let* α4 := M.call_closure α0 [ α1; α3 ] in
         M.alloc α4 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] [] in
         let* α1 := M.read len in
         let* α2 := M.read requirement in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
       let* owner_index :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "owner_index" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "owner_index" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; owner ] in
         M.alloc (M.rust_cast α2) in
@@ -1971,8 +2196,10 @@ Module Impl_multisig_Multisig.
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             "swap_remove"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read owner_index in
@@ -1982,8 +2209,12 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+            (Ty.apply
+              (Ty.path "multisig::Mapping")
+              [ Ty.path "multisig::AccountId"; Ty.tuple [] ]
+              [])
             "remove"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read owner in
@@ -1996,13 +2227,17 @@ Module Impl_multisig_Multisig.
         M.assign (M.get_struct_record_field α0 "multisig::Multisig" "requirement") α1 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "clean_owner_confirmations" [] in
+          M.get_associated_function
+            (Ty.path "multisig::Multisig")
+            "clean_owner_confirmations"
+            []
+            [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; owner ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -2048,22 +2283,23 @@ Module Impl_multisig_Multisig.
       let* new_owner := M.alloc new_owner in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_owner" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; old_owner ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_no_owner" [] in
+        let* α0 :=
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_no_owner" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; new_owner ] in
         M.alloc α2 in
       let* owner_index :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "owner_index" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "owner_index" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; old_owner ] in
         M.alloc α2 in
@@ -2073,9 +2309,12 @@ Module Impl_multisig_Multisig.
             "core::ops::index::IndexMut"
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             [ Ty.path "usize" ]
+            []
             "index_mut"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read owner_index in
@@ -2088,8 +2327,12 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+            (Ty.apply
+              (Ty.path "multisig::Mapping")
+              [ Ty.path "multisig::AccountId"; Ty.tuple [] ]
+              [])
             "remove"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read old_owner in
@@ -2099,8 +2342,12 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ])
+            (Ty.apply
+              (Ty.path "multisig::Mapping")
+              [ Ty.path "multisig::AccountId"; Ty.tuple [] ]
+              [])
             "insert"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read new_owner in
@@ -2111,13 +2358,17 @@ Module Impl_multisig_Multisig.
         M.alloc α3 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "clean_owner_confirmations" [] in
+          M.get_associated_function
+            (Ty.path "multisig::Multisig")
+            "clean_owner_confirmations"
+            []
+            [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1; old_owner ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -2133,8 +2384,8 @@ Module Impl_multisig_Multisig.
             ] in
         M.alloc α6 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -2175,18 +2426,20 @@ Module Impl_multisig_Multisig.
       let* new_requirement := M.alloc new_requirement in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* _ :=
-        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] in
+        let* α0 := M.get_function "multisig::ensure_requirement_is_valid" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+              [])
             "len"
+            []
             [] in
         let* α2 := M.read self in
         let* α3 :=
@@ -2199,8 +2452,8 @@ Module Impl_multisig_Multisig.
         let* α1 := M.read new_requirement in
         M.assign (M.get_struct_record_field α0 "multisig::Multisig" "requirement") α1 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -2266,13 +2519,15 @@ Module Impl_multisig_Multisig.
       let* count :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ])
+            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ] [])
             "unwrap_or"
+            []
             [] in
         let* α1 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ])
+            (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] [])
             "get"
+            []
             [] in
         let* α2 := M.read self in
         let* α3 :=
@@ -2293,8 +2548,10 @@ Module Impl_multisig_Multisig.
           M.get_associated_function
             (Ty.apply
               (Ty.path "multisig::Mapping")
-              [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ])
+              [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]
+              [])
             "contains"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 :=
@@ -2322,8 +2579,10 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function
                     (Ty.apply
                       (Ty.path "multisig::Mapping")
-                      [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ])
+                      [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]
+                      [])
                     "insert"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read key in
@@ -2339,8 +2598,9 @@ Module Impl_multisig_Multisig.
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ])
+                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] [])
                     "insert"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read transaction in
@@ -2393,8 +2653,8 @@ Module Impl_multisig_Multisig.
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
-                let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+                let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
                 let* α2 := M.read self in
                 let* α3 := M.call_closure α1 [ α2 ] in
                 let* α4 := M.alloc α3 in
@@ -2453,7 +2713,7 @@ Module Impl_multisig_Multisig.
       let* transaction := M.alloc transaction in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -2468,10 +2728,11 @@ Module Impl_multisig_Multisig.
         let* α0 := M.read self in
         let* α1 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ])
+            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ] [])
             "expect"
-            [] in
-        let* α2 := M.get_associated_function (Ty.path "u32") "checked_add" [] in
+            []
+            [ Value.Bool true ] in
+        let* α2 := M.get_associated_function (Ty.path "u32") "checked_add" [] [ Value.Bool true ] in
         let* α3 := M.read trans_id in
         let* α4 := M.alloc (Value.Integer Integer.U32 1) in
         let* α5 := M.read (M.use α4) in
@@ -2489,8 +2750,10 @@ Module Impl_multisig_Multisig.
           M.get_associated_function
             (Ty.apply
               (Ty.path "multisig::Mapping")
-              [ Ty.path "u32"; Ty.path "multisig::Transaction" ])
+              [ Ty.path "u32"; Ty.path "multisig::Transaction" ]
+              [])
             "insert"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read trans_id in
@@ -2503,8 +2766,12 @@ Module Impl_multisig_Multisig.
       let* _ :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+              [])
             "push"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read trans_id in
@@ -2520,8 +2787,8 @@ Module Impl_multisig_Multisig.
             ] in
         M.alloc α3 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -2537,10 +2804,11 @@ Module Impl_multisig_Multisig.
             ] in
         M.alloc α6 in
       let* α0 := M.read trans_id in
-      let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "confirm_by_caller" [] in
+      let* α1 :=
+        M.get_associated_function (Ty.path "multisig::Multisig") "confirm_by_caller" [] [] in
       let* α2 := M.read self in
-      let* α3 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] in
-      let* α4 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+      let* α3 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] [] in
+      let* α4 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
       let* α5 := M.read self in
       let* α6 := M.call_closure α4 [ α5 ] in
       let* α7 := M.alloc α6 in
@@ -2585,8 +2853,10 @@ Module Impl_multisig_Multisig.
           M.get_associated_function
             (Ty.apply
               (Ty.path "multisig::Mapping")
-              [ Ty.path "u32"; Ty.path "multisig::Transaction" ])
+              [ Ty.path "u32"; Ty.path "multisig::Transaction" ]
+              [])
             "get"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 :=
@@ -2603,9 +2873,13 @@ Module Impl_multisig_Multisig.
               let* γ :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ])
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "multisig::Transaction" ]
+                      [])
                     "is_some"
-                    [] in
+                    []
+                    [ Value.Bool true ] in
                 let* α1 := M.call_closure α0 [ transaction ] in
                 let* α2 := M.alloc α1 in
                 M.pure (M.use α2) in
@@ -2617,8 +2891,10 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function
                     (Ty.apply
                       (Ty.path "multisig::Mapping")
-                      [ Ty.path "u32"; Ty.path "multisig::Transaction" ])
+                      [ Ty.path "u32"; Ty.path "multisig::Transaction" ]
+                      [])
                     "remove"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read trans_id in
@@ -2630,33 +2906,40 @@ Module Impl_multisig_Multisig.
               let* pos :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
+                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ] [])
                     "expect"
-                    [] in
+                    []
+                    [ Value.Bool true ] in
                 let* α1 :=
                   M.get_trait_method
                     "core::iter::traits::iterator::Iterator"
-                    (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ] [])
+                    []
                     []
                     "position"
                     [
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] [] ] ]
                         (Ty.path "bool")
-                    ] in
+                    ]
+                    [] in
                 let* α2 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [])
                     "iter"
+                    []
                     [] in
                 let* α3 :=
                   M.get_trait_method
                     "core::ops::deref::Deref"
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
-                      [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+                      [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+                      [])
+                    []
                     []
                     "deref"
+                    []
                     [] in
                 let* α4 := M.read self in
                 let* α5 :=
@@ -2688,9 +2971,11 @@ Module Impl_multisig_Multisig.
                                   let* α0 :=
                                     M.get_trait_method
                                       "core::cmp::PartialEq"
-                                      (Ty.apply (Ty.path "&") [ Ty.path "u32" ])
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
+                                      (Ty.apply (Ty.path "&") [ Ty.path "u32" ] [])
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] [] ]
+                                      [ Value.Bool true ]
                                       "eq"
+                                      []
                                       [] in
                                   let* α1 := M.alloc trans_id in
                                   M.call_closure α0 [ t; α1 ]
@@ -2707,8 +2992,10 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
-                      [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+                      [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+                      [])
                     "swap_remove"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read pos in
@@ -2727,23 +3014,32 @@ Module Impl_multisig_Multisig.
                 let* α0 :=
                   M.get_trait_method
                     "core::iter::traits::collect::IntoIterator"
-                    (Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "multisig::AccountId" ])
+                    (Ty.apply
+                      (Ty.path "core::slice::iter::Iter")
+                      [ Ty.path "multisig::AccountId" ]
+                      [])
+                    []
                     []
                     "into_iter"
+                    []
                     [] in
                 let* α1 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ])
+                    (Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ] [])
                     "iter"
+                    []
                     [] in
                 let* α2 :=
                   M.get_trait_method
                     "core::ops::deref::Deref"
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
-                      [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ])
+                      [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
+                      [])
+                    []
                     []
                     "deref"
+                    []
                     [] in
                 let* α3 := M.read self in
                 let* α4 :=
@@ -2766,9 +3062,12 @@ Module Impl_multisig_Multisig.
                                 "core::iter::traits::iterator::Iterator"
                                 (Ty.apply
                                   (Ty.path "core::slice::iter::Iter")
-                                  [ Ty.path "multisig::AccountId" ])
+                                  [ Ty.path "multisig::AccountId" ]
+                                  [])
+                                []
                                 []
                                 "next"
+                                []
                                 [] in
                             let* α1 := M.call_closure α0 [ iter ] in
                             let* α2 := M.alloc α1 in
@@ -2796,8 +3095,10 @@ Module Impl_multisig_Multisig.
                                             Ty.tuple
                                               [ Ty.path "u32"; Ty.path "multisig::AccountId" ];
                                             Ty.tuple []
-                                          ])
+                                          ]
+                                          [])
                                         "remove"
+                                        []
                                         [] in
                                     let* α1 := M.read self in
                                     let* α2 := M.read trans_id in
@@ -2822,8 +3123,9 @@ Module Impl_multisig_Multisig.
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ])
+                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] [])
                     "remove"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read trans_id in
@@ -2860,7 +3162,7 @@ Module Impl_multisig_Multisig.
       let* trans_id := M.alloc trans_id in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_from_wallet" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -2873,11 +3175,19 @@ Module Impl_multisig_Multisig.
               let* γ :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ])
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      [ Ty.path "multisig::Transaction" ]
+                      [])
                     "is_some"
-                    [] in
+                    []
+                    [ Value.Bool true ] in
                 let* α1 :=
-                  M.get_associated_function (Ty.path "multisig::Multisig") "take_transaction" [] in
+                  M.get_associated_function
+                    (Ty.path "multisig::Multisig")
+                    "take_transaction"
+                    []
+                    [] in
                 let* α2 := M.read self in
                 let* α3 := M.read trans_id in
                 let* α4 := M.call_closure α1 [ α2; α3 ] in
@@ -2889,8 +3199,8 @@ Module Impl_multisig_Multisig.
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
-                let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+                let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
                 let* α2 := M.read self in
                 let* α3 := M.call_closure α1 [ α2 ] in
                 let* α4 := M.alloc α3 in
@@ -2929,21 +3239,26 @@ Module Impl_multisig_Multisig.
       let* trans_id := M.alloc trans_id in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_transaction_exists" [] in
+          M.get_associated_function
+            (Ty.path "multisig::Multisig")
+            "ensure_transaction_exists"
+            []
+            [] in
         let* α1 := M.read self in
         let* α2 := M.read trans_id in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
         M.alloc α3 in
-      let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "confirm_by_caller" [] in
+      let* α0 :=
+        M.get_associated_function (Ty.path "multisig::Multisig") "confirm_by_caller" [] [] in
       let* α1 := M.read self in
-      let* α2 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] in
-      let* α3 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+      let* α2 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] [] in
+      let* α3 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
       let* α4 := M.read self in
       let* α5 := M.call_closure α3 [ α4 ] in
       let* α6 := M.alloc α5 in
@@ -2985,13 +3300,13 @@ Module Impl_multisig_Multisig.
       let* trans_id := M.alloc trans_id in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] in
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_caller_is_owner" [] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "caller" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
@@ -3008,8 +3323,10 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function
                     (Ty.apply
                       (Ty.path "multisig::Mapping")
-                      [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ])
+                      [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]
+                      [])
                     "contains"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read trans_id in
@@ -3029,8 +3346,10 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function
                     (Ty.apply
                       (Ty.path "multisig::Mapping")
-                      [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ])
+                      [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]
+                      [])
                     "remove"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read trans_id in
@@ -3046,13 +3365,15 @@ Module Impl_multisig_Multisig.
               let* confirmation_count :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ] [])
                     "expect"
-                    [] in
+                    []
+                    [ Value.Bool true ] in
                 let* α1 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ])
+                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] [])
                     "get"
+                    []
                     [] in
                 let* α2 := M.read self in
                 let* α3 :=
@@ -3075,8 +3396,9 @@ Module Impl_multisig_Multisig.
               let* _ :=
                 let* α0 :=
                   M.get_associated_function
-                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ])
+                    (Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ] [])
                     "insert"
+                    []
                     [] in
                 let* α1 := M.read self in
                 let* α2 := M.read trans_id in
@@ -3088,8 +3410,8 @@ Module Impl_multisig_Multisig.
                     ] in
                 M.alloc α4 in
               let* _ :=
-                let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+                let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
                 let* α2 := M.read self in
                 let* α3 := M.call_closure α1 [ α2 ] in
                 let* α4 := M.alloc α3 in
@@ -3152,7 +3474,8 @@ Module Impl_multisig_Multisig.
       let* self := M.alloc self in
       let* trans_id := M.alloc trans_id in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Multisig") "ensure_confirmed" [] in
+        let* α0 :=
+          M.get_associated_function (Ty.path "multisig::Multisig") "ensure_confirmed" [] [] in
         let* α1 := M.read self in
         let* α2 := M.read trans_id in
         let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -3160,10 +3483,12 @@ Module Impl_multisig_Multisig.
       let* t :=
         let* α0 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ])
+            (Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ] [])
             "expect"
-            [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "take_transaction" [] in
+            []
+            [ Value.Bool true ] in
+        let* α1 :=
+          M.get_associated_function (Ty.path "multisig::Multisig") "take_transaction" [] [] in
         let* α2 := M.read self in
         let* α3 := M.read trans_id in
         let* α4 := M.call_closure α1 [ α2; α3 ] in
@@ -3179,8 +3504,8 @@ Module Impl_multisig_Multisig.
             fun γ =>
               let* γ :=
                 let* α0 :=
-                  M.get_associated_function (Ty.path "multisig::Env") "transferred_value" [] in
-                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+                  M.get_associated_function (Ty.path "multisig::Env") "transferred_value" [] [] in
+                let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
                 let* α2 := M.read self in
                 let* α3 := M.call_closure α1 [ α2 ] in
                 let* α4 := M.alloc α3 in
@@ -3193,7 +3518,7 @@ Module Impl_multisig_Multisig.
               let* _ :=
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
-              let* α0 := M.get_function "core::panicking::panic" [] in
+              let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
               let* α1 :=
                 M.read
                   (mk_str
@@ -3204,7 +3529,7 @@ Module Impl_multisig_Multisig.
             fun γ => M.alloc (Value.Tuple [])
           ] in
       let* result :=
-        let* α0 := M.get_function "core::panicking::panic" [] in
+        let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -3228,15 +3553,18 @@ Module Impl_multisig_Multisig.
             ] in
         M.copy α0 in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "multisig::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "multisig::Multisig") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 := M.read trans_id in
         let* α6 :=
           M.get_associated_function
-            (Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.path "multisig::Error" ])
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              [ Ty.tuple []; Ty.path "multisig::Error" ]
+              [])
             "map"
             [
               Ty.apply
@@ -3245,7 +3573,9 @@ Module Impl_multisig_Multisig.
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                ];
+                    []
+                ]
+                [];
               Ty.function
                 [ Ty.tuple [ Ty.tuple [] ] ]
                 (Ty.apply
@@ -3254,8 +3584,11 @@ Module Impl_multisig_Multisig.
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                  ])
-            ] in
+                      []
+                  ]
+                  [])
+            ]
+            [] in
         let* α7 := M.read result in
         let* α8 :=
           M.call_closure

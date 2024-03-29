@@ -5,12 +5,12 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "PhantomTuple";
     ty_params := [ "A"; "B" ];
-    fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ];
+    fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [ B ] [] ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ] [].
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -23,7 +23,7 @@ End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ] [].
   
   (*
   PartialEq
@@ -34,7 +34,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.get_trait_method "core::cmp::PartialEq" A [ A ] "eq" [] in
+      let* α0 := M.get_trait_method "core::cmp::PartialEq" A [ A ] [ Value.Bool true ] "eq" [] [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
       let* α3 :=
@@ -49,9 +49,11 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
         (let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
-            (Ty.apply (Ty.path "core::marker::PhantomData") [ B ])
-            [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ]
+            (Ty.apply (Ty.path "core::marker::PhantomData") [ B ] [])
+            [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] [] ]
+            [ Value.Bool true ]
             "eq"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
@@ -77,12 +79,13 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   {
     name := "PhantomStruct";
     ty_params := [ "A"; "B" ];
-    fields := [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ]) ];
+    fields :=
+      [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ] []) ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ] [].
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -95,7 +98,7 @@ End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct
 
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ] [].
   
   (*
   PartialEq
@@ -106,7 +109,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     | [], [ self; other ] =>
       let* self := M.alloc self in
       let* other := M.alloc other in
-      let* α0 := M.get_trait_method "core::cmp::PartialEq" A [ A ] "eq" [] in
+      let* α0 := M.get_trait_method "core::cmp::PartialEq" A [ A ] [ Value.Bool true ] "eq" [] [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
       let* α3 :=
@@ -121,9 +124,11 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
         (let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
-            (Ty.apply (Ty.path "core::marker::PhantomData") [ B ])
-            [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ]
+            (Ty.apply (Ty.path "core::marker::PhantomData") [ B ] [])
+            [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] [] ]
+            [ Value.Bool true ]
             "eq"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read other in

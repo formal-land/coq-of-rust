@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ] [].
   
   (*
   Default
@@ -25,17 +25,21 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ K ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+          (Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       M.pure (Value.StructRecord "mother::Mapping" [ ("_key", α1); ("_value", α3) ])
@@ -52,14 +56,25 @@ Module Impl_core_default_Default_for_mother_Mapping_K_V.
 End Impl_core_default_Default_for_mother_Mapping_K_V.
 
 Module Impl_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ] [].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -70,7 +85,19 @@ Module Impl_mother_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      let* self := M.alloc self in
+      let* _key := M.alloc _key in
+      let* _value := M.alloc _value in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -93,7 +120,8 @@ Module Impl_core_default_Default_for_mother_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "mother::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -215,7 +243,9 @@ Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
 
 Axiom BlockNumber : (Ty.path "mother::BlockNumber") = (Ty.path "u32").
 
-Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "mother::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]).
 
 (* StructRecord
   {
@@ -238,11 +268,14 @@ Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u
               [
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                  [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ]
+                  [];
                 Ty.path "alloc::alloc::Global"
-              ];
+              ]
+              [];
             Ty.path "alloc::alloc::Global"
           ]
+          []
       ];
   } *)
 
@@ -266,13 +299,18 @@ Module Impl_core_default_Default_for_mother_Bids.
                 [
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ]
+                    [];
                   Ty.path "alloc::alloc::Global"
-                ];
+                ]
+                [];
               Ty.path "alloc::alloc::Global"
-            ])
+            ]
+            [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "mother::Bids" [ α1 ])
@@ -320,11 +358,14 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
                 [
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ]
+                    [];
                   Ty.path "alloc::alloc::Global"
-                ];
+                ]
+                [];
               Ty.path "alloc::alloc::Global"
-            ])
+            ]
+            [])
           [
             Ty.apply
               (Ty.path "alloc::vec::Vec")
@@ -334,13 +375,18 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                      [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ]
+                      [];
                     Ty.path "alloc::alloc::Global"
-                  ];
+                  ]
+                  [];
                 Ty.path "alloc::alloc::Global"
               ]
+              []
           ]
+          [ Value.Bool true ]
           "eq"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
@@ -416,13 +462,18 @@ Module Impl_core_clone_Clone_for_mother_Bids.
                 [
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                    [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ]
+                    [];
                   Ty.path "alloc::alloc::Global"
-                ];
+                ]
+                [];
               Ty.path "alloc::alloc::Global"
-            ])
+            ]
+            [])
+          []
           []
           "clone"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 := M.call_closure α0 [ M.get_struct_tuple_field α1 "mother::Bids" 0 ] in
@@ -485,13 +536,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
       let* other := M.alloc other in
       let* __self_tag :=
         let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] in
+          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
         let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] in
+          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Outline" ] [] in
         let* α1 := M.read other in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -637,13 +688,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
       let* other := M.alloc other in
       let* __self_tag :=
         let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] in
+          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
         let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] in
+          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Status" ] [] in
         let* α1 := M.read other in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -691,7 +742,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                       "core::cmp::PartialEq"
                       (Ty.path "mother::Outline")
                       [ Ty.path "mother::Outline" ]
+                      [ Value.Bool true ]
                       "eq"
+                      []
                       [] in
                   let* α1 := M.read __self_0 in
                   let* α2 := M.read __arg1_0 in
@@ -795,7 +848,8 @@ Module Impl_core_clone_Clone_for_mother_Status.
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match γ "mother::Status::EndingPeriod" 0 in
               let* __self_0 := M.alloc γ1_0 in
-              let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "u32") [] "clone" [] in
+              let* α0 :=
+                M.get_trait_method "core::clone::Clone" (Ty.path "u32") [] [] "clone" [] [] in
               let* α1 := M.read __self_0 in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc (Value.StructTuple "mother::Status::EndingPeriod" [ α2 ]);
@@ -804,7 +858,14 @@ Module Impl_core_clone_Clone_for_mother_Status.
               let* γ1_0 := M.get_struct_tuple_field_or_break_match γ "mother::Status::Ended" 0 in
               let* __self_0 := M.alloc γ1_0 in
               let* α0 :=
-                M.get_trait_method "core::clone::Clone" (Ty.path "mother::Outline") [] "clone" [] in
+                M.get_trait_method
+                  "core::clone::Clone"
+                  (Ty.path "mother::Outline")
+                  []
+                  []
+                  "clone"
+                  []
+                  [] in
               let* α1 := M.read __self_0 in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc (Value.StructTuple "mother::Status::Ended" [ α2 ]);
@@ -812,7 +873,8 @@ Module Impl_core_clone_Clone_for_mother_Status.
               let* γ := M.read γ in
               let* γ1_0 := M.get_struct_tuple_field_or_break_match γ "mother::Status::RfDelay" 0 in
               let* __self_0 := M.alloc γ1_0 in
-              let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "u32") [] "clone" [] in
+              let* α0 :=
+                M.get_trait_method "core::clone::Clone" (Ty.path "u32") [] [] "clone" [] [] in
               let* α1 := M.read __self_0 in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc (Value.StructTuple "mother::Status::RfDelay" [ α2 ])
@@ -836,13 +898,13 @@ End Impl_core_clone_Clone_for_mother_Status.
     fields :=
       [
         ("name", Ty.path "alloc::string::String");
-        ("subject", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("subject", Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]);
         ("bids", Ty.path "mother::Bids");
-        ("terms", Ty.apply (Ty.path "array") [ Ty.path "u32" ]);
+        ("terms", Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 3 ]);
         ("status", Ty.path "mother::Status");
         ("finalized", Ty.path "bool");
         ("vector",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] [])
       ];
   } *)
 
@@ -873,7 +935,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
           "core::cmp::PartialEq"
           (Ty.path "alloc::string::String")
           [ Ty.path "alloc::string::String" ]
+          [ Value.Bool true ]
           "eq"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 := M.read other in
@@ -890,9 +954,11 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
           (let* α0 :=
             M.get_trait_method
               "core::cmp::PartialEq"
-              (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
-              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+              (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ])
+              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
+              [ Value.Bool true ]
               "eq"
+              []
               [] in
           let* α1 := M.read self in
           let* α2 := M.read other in
@@ -910,7 +976,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
               "core::cmp::PartialEq"
               (Ty.path "mother::Bids")
               [ Ty.path "mother::Bids" ]
+              [ Value.Bool true ]
               "eq"
+              []
               [] in
           let* α1 := M.read self in
           let* α2 := M.read other in
@@ -926,9 +994,11 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
           (let* α0 :=
             M.get_trait_method
               "core::cmp::PartialEq"
-              (Ty.apply (Ty.path "array") [ Ty.path "u32" ])
-              [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
+              (Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 3 ])
+              [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 3 ] ]
+              [ Value.Bool true ]
               "eq"
+              []
               [] in
           let* α1 := M.read self in
           let* α2 := M.read other in
@@ -946,7 +1016,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
               "core::cmp::PartialEq"
               (Ty.path "mother::Status")
               [ Ty.path "mother::Status" ]
+              [ Value.Bool true ]
               "eq"
+              []
               [] in
           let* α1 := M.read self in
           let* α2 := M.read other in
@@ -969,10 +1041,19 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
         (let* α0 :=
           M.get_trait_method
             "core::cmp::PartialEq"
-            (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
-            [ Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+              [])
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                []
             ]
+            [ Value.Bool true ]
             "eq"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 := M.read other in
@@ -1072,44 +1153,58 @@ Module Impl_core_clone_Clone_for_mother_Auction.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* α0 :=
-        M.get_trait_method "core::clone::Clone" (Ty.path "alloc::string::String") [] "clone" [] in
+        M.get_trait_method
+          "core::clone::Clone"
+          (Ty.path "alloc::string::String")
+          []
+          []
+          "clone"
+          []
+          [] in
       let* α1 := M.read self in
       let* α2 := M.call_closure α0 [ M.get_struct_record_field α1 "mother::Auction" "name" ] in
       let* α3 :=
         M.get_trait_method
           "core::clone::Clone"
-          (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+          (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ])
+          []
           []
           "clone"
+          []
           [] in
       let* α4 := M.read self in
       let* α5 := M.call_closure α3 [ M.get_struct_record_field α4 "mother::Auction" "subject" ] in
-      let* α6 := M.get_trait_method "core::clone::Clone" (Ty.path "mother::Bids") [] "clone" [] in
+      let* α6 :=
+        M.get_trait_method "core::clone::Clone" (Ty.path "mother::Bids") [] [] "clone" [] [] in
       let* α7 := M.read self in
       let* α8 := M.call_closure α6 [ M.get_struct_record_field α7 "mother::Auction" "bids" ] in
       let* α9 :=
         M.get_trait_method
           "core::clone::Clone"
-          (Ty.apply (Ty.path "array") [ Ty.path "u32" ])
+          (Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 3 ])
+          []
           []
           "clone"
+          []
           [] in
       let* α10 := M.read self in
       let* α11 := M.call_closure α9 [ M.get_struct_record_field α10 "mother::Auction" "terms" ] in
       let* α12 :=
-        M.get_trait_method "core::clone::Clone" (Ty.path "mother::Status") [] "clone" [] in
+        M.get_trait_method "core::clone::Clone" (Ty.path "mother::Status") [] [] "clone" [] [] in
       let* α13 := M.read self in
       let* α14 := M.call_closure α12 [ M.get_struct_record_field α13 "mother::Auction" "status" ] in
-      let* α15 := M.get_trait_method "core::clone::Clone" (Ty.path "bool") [] "clone" [] in
+      let* α15 := M.get_trait_method "core::clone::Clone" (Ty.path "bool") [] [] "clone" [] [] in
       let* α16 := M.read self in
       let* α17 :=
         M.call_closure α15 [ M.get_struct_record_field α16 "mother::Auction" "finalized" ] in
       let* α18 :=
         M.get_trait_method
           "core::clone::Clone"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] [])
+          []
           []
           "clone"
+          []
           [] in
       let* α19 := M.read self in
       let* α20 := M.call_closure α18 [ M.get_struct_record_field α19 "mother::Auction" "vector" ] in
@@ -1160,34 +1255,49 @@ Module Impl_core_default_Default_for_mother_Auction.
           "core::default::Default"
           (Ty.path "alloc::string::String")
           []
+          []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+          (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       let* α4 :=
-        M.get_trait_method "core::default::Default" (Ty.path "mother::Bids") [] "default" [] in
+        M.get_trait_method
+          "core::default::Default"
+          (Ty.path "mother::Bids")
+          []
+          []
+          "default"
+          []
+          [] in
       let* α5 := M.call_closure α4 [] in
       let* α6 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "array") [ Ty.path "u32" ])
+          (Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 3 ])
+          []
           []
           "default"
+          []
           [] in
       let* α7 := M.call_closure α6 [] in
       let* α8 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α9 := M.call_closure α8 [] in
       M.pure
@@ -1255,13 +1365,13 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
       let* other := M.alloc other in
       let* __self_tag :=
         let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] in
+          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] [] in
         let* α1 := M.read self in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       let* __arg1_tag :=
         let* α0 :=
-          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] in
+          M.get_function "core::intrinsics::discriminant_value" [ Ty.path "mother::Failure" ] [] in
         let* α1 := M.read other in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
@@ -1293,7 +1403,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                       "core::cmp::PartialEq"
                       (Ty.path "alloc::string::String")
                       [ Ty.path "alloc::string::String" ]
+                      [ Value.Bool true ]
                       "eq"
+                      []
                       [] in
                   let* α1 := M.read __self_0 in
                   let* α2 := M.read __arg1_0 in
@@ -1395,7 +1507,17 @@ Module Impl_mother_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      let* self := M.alloc self in
+      let* _event := M.alloc _event in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_mother_Env.
@@ -1408,7 +1530,7 @@ End Impl_mother_Env.
       [
         ("auction", Ty.path "mother::Auction");
         ("balances",
-          Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
+          Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ] [])
       ];
   } *)
 
@@ -1422,14 +1544,23 @@ Module Impl_core_default_Default_for_mother_Mother.
     match τ, α with
     | [], [] =>
       let* α0 :=
-        M.get_trait_method "core::default::Default" (Ty.path "mother::Auction") [] "default" [] in
+        M.get_trait_method
+          "core::default::Default"
+          (Ty.path "mother::Auction")
+          []
+          []
+          "default"
+          []
+          [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
+          (Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α3 := M.call_closure α2 [] in
       M.pure (Value.StructRecord "mother::Mother" [ ("auction", α1); ("balances", α3) ])
@@ -1452,7 +1583,15 @@ Module Impl_mother_Mother.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -1465,7 +1604,7 @@ Module Impl_mother_Mother.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "mother::Mother") "init_env" [] in
+      let* α0 := M.get_associated_function (Ty.path "mother::Mother") "init_env" [] [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -1487,9 +1626,11 @@ Module Impl_mother_Mother.
       let* α0 :=
         M.get_trait_method
           "core::default::Default"
-          (Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
+          (Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ] [])
+          []
           []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       let* α2 := M.read auction in
@@ -1508,7 +1649,14 @@ Module Impl_mother_Mother.
     match τ, α with
     | [], [] =>
       let* α0 :=
-        M.get_trait_method "core::default::Default" (Ty.path "mother::Mother") [] "default" [] in
+        M.get_trait_method
+          "core::default::Default"
+          (Ty.path "mother::Mother")
+          []
+          []
+          "default"
+          []
+          [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -1539,7 +1687,14 @@ Module Impl_mother_Mother.
                 let* α0 := M.read γ in
                 M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
-                M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
+                M.get_trait_method
+                  "alloc::string::ToString"
+                  (Ty.path "str")
+                  []
+                  []
+                  "to_string"
+                  []
+                  [] in
               let* α1 := M.read (mk_str "Reverting instantiation") in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc
@@ -1552,7 +1707,9 @@ Module Impl_mother_Mother.
                   "core::default::Default"
                   (Ty.path "mother::Mother")
                   []
+                  []
                   "default"
+                  []
                   [] in
               let* α1 := M.call_closure α0 [] in
               M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ])
@@ -1577,13 +1734,13 @@ Module Impl_mother_Mother.
       let* self := M.alloc self in
       let* auction := M.alloc auction in
       let* _ :=
-        let* α0 := M.get_associated_function (Ty.path "mother::Env") "emit_event" [] in
-        let* α1 := M.get_associated_function (Ty.path "mother::Mother") "env" [] in
+        let* α0 := M.get_associated_function (Ty.path "mother::Env") "emit_event" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "mother::Mother") "env" [] [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
         let* α4 := M.alloc α3 in
         let* α5 :=
-          M.get_trait_method "core::clone::Clone" (Ty.path "mother::Auction") [] "clone" [] in
+          M.get_trait_method "core::clone::Clone" (Ty.path "mother::Auction") [] [] "clone" [] [] in
         let* α6 := M.call_closure α5 [ auction ] in
         let* α7 :=
           M.call_closure
@@ -1629,7 +1786,14 @@ Module Impl_mother_Mother.
               let* γ1_0 :=
                 M.get_struct_tuple_field_or_break_match γ0_0 "mother::Failure::Revert" 0 in
               let* α0 :=
-                M.get_trait_method "alloc::string::ToString" (Ty.path "str") [] "to_string" [] in
+                M.get_trait_method
+                  "alloc::string::ToString"
+                  (Ty.path "str")
+                  []
+                  []
+                  "to_string"
+                  []
+                  [] in
               let* α1 := M.read (mk_str "Reverting on user demand!") in
               let* α2 := M.call_closure α0 [ α1 ] in
               M.alloc
@@ -1642,7 +1806,8 @@ Module Impl_mother_Mother.
               let* α0 :=
                 M.get_function
                   "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α1 := M.read (mk_str "Trapping on user demand!") in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
@@ -1668,8 +1833,8 @@ Module Impl_mother_Mother.
       let* _message := M.alloc _message in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "debug_log: ") in
@@ -1683,7 +1848,8 @@ Module Impl_mother_Mother.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "alloc::string::String" ] in
+                  [ Ty.path "alloc::string::String" ]
+                  [] in
               let* α7 := M.call_closure α6 [ _message ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in

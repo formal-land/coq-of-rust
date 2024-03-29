@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "conditional_compilation::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -137,7 +138,17 @@ Module Impl_conditional_compilation_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      let* self := M.alloc self in
+      let* _event := M.alloc _event in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -146,7 +157,16 @@ Module Impl_conditional_compilation_Env.
           unimplemented!()
       }
   *)
-  Parameter block_number : (list Ty.t) -> (list Value.t) -> M.
+  Definition block_number (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      let* self := M.alloc self in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_block_number : M.IsAssociatedFunction Self "block_number" block_number.
 End Impl_conditional_compilation_Env.
@@ -166,7 +186,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -183,6 +211,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         M.get_associated_function
           (Ty.path "conditional_compilation::ConditionalCompilation")
           "init_env"
+          []
           [] in
       M.call_closure α0 []
     | _, _ => M.impossible
@@ -200,7 +229,8 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "bool") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure
         (Value.StructRecord "conditional_compilation::ConditionalCompilation" [ ("value", α1) ])
@@ -287,11 +317,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           (M.get_struct_record_field α0 "conditional_compilation::ConditionalCompilation" "value")
           (UnOp.Pure.not α2) in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "conditional_compilation::Env") "caller" [] in
+        let* α0 :=
+          M.get_associated_function (Ty.path "conditional_compilation::Env") "caller" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env"
+            []
             [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
@@ -299,11 +331,12 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         M.alloc α4 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] in
+          M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env"
+            []
             [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
@@ -354,11 +387,13 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [], [ self ] =>
       let* self := M.alloc self in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "conditional_compilation::Env") "caller" [] in
+        let* α0 :=
+          M.get_associated_function (Ty.path "conditional_compilation::Env") "caller" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env"
+            []
             [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
@@ -366,11 +401,12 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         M.alloc α4 in
       let* block_number :=
         let* α0 :=
-          M.get_associated_function (Ty.path "conditional_compilation::Env") "block_number" [] in
+          M.get_associated_function (Ty.path "conditional_compilation::Env") "block_number" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env"
+            []
             [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
@@ -390,11 +426,12 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           (UnOp.Pure.not α2) in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] in
+          M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env"
+            []
             [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
@@ -490,11 +527,13 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       let* self := M.alloc self in
       let* value := M.alloc value in
       let* caller :=
-        let* α0 := M.get_associated_function (Ty.path "conditional_compilation::Env") "caller" [] in
+        let* α0 :=
+          M.get_associated_function (Ty.path "conditional_compilation::Env") "caller" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env"
+            []
             [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in
@@ -502,11 +541,12 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         M.alloc α4 in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] in
+          M.get_associated_function (Ty.path "conditional_compilation::Env") "emit_event" [] [] in
         let* α1 :=
           M.get_associated_function
             (Ty.path "conditional_compilation::ConditionalCompilation")
             "init_env"
+            []
             [] in
         let* α2 := M.call_closure α1 [] in
         let* α3 := M.alloc α2 in

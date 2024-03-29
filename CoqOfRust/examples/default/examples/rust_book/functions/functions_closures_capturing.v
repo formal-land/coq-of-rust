@@ -77,8 +77,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_trait_method
           "core::convert::From"
           (Ty.path "alloc::string::String")
-          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+          []
           "from"
+          []
           [] in
       let* α1 := M.read (mk_str "green") in
       let* α2 := M.call_closure α0 [ α1 ] in
@@ -95,9 +97,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     let* _ :=
-                      let* α0 := M.get_function "std::io::stdio::_print" [] in
+                      let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                       let* α1 :=
-                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                        M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                       let* α5 :=
                         (* Unsize *)
                           let* α2 := M.read (mk_str "`color`: ") in
@@ -111,7 +113,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function
                               (Ty.path "core::fmt::rt::Argument")
                               "new_display"
-                              [ Ty.path "alloc::string::String" ] in
+                              [ Ty.path "alloc::string::String" ]
+                              [] in
                           let* α7 := M.call_closure α6 [ color ] in
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
@@ -129,7 +132,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::Fn"
           (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
           [ Ty.tuple [] ]
+          []
           "call"
+          []
           [] in
       let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
       M.alloc α1 in
@@ -140,7 +145,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::Fn"
           (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
           [ Ty.tuple [] ]
+          []
           "call"
+          []
           [] in
       let* α1 := M.call_closure α0 [ print; Value.Tuple [] ] in
       M.alloc α1 in
@@ -164,9 +171,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.assign β α1 in
                     let* _ :=
                       let* _ :=
-                        let* α0 := M.get_function "std::io::stdio::_print" [] in
+                        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                         let* α1 :=
-                          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                          M.get_associated_function
+                            (Ty.path "core::fmt::Arguments")
+                            "new_v1"
+                            []
+                            [] in
                         let* α5 :=
                           (* Unsize *)
                             let* α2 := M.read (mk_str "`count`: ") in
@@ -180,7 +191,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function
                                 (Ty.path "core::fmt::rt::Argument")
                                 "new_display"
-                                [ Ty.path "i32" ] in
+                                [ Ty.path "i32" ]
+                                [] in
                             let* α7 := M.call_closure α6 [ count ] in
                             let* α8 := M.alloc (Value.Array [ α7 ]) in
                             M.pure (M.pointer_coercion α8) in
@@ -199,7 +211,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::FnMut"
           (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
           [ Ty.tuple [] ]
+          []
           "call_mut"
+          []
           [] in
       let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
       M.alloc α1 in
@@ -209,7 +223,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::FnMut"
           (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
           [ Ty.tuple [] ]
+          []
           "call_mut"
+          []
           [] in
       let* α1 := M.call_closure α0 [ inc; Value.Tuple [] ] in
       M.alloc α1 in
@@ -217,8 +233,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* movable :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3 ] in
       M.alloc α1 in
@@ -235,9 +255,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   fun γ =>
                     let* _ :=
                       let* _ :=
-                        let* α0 := M.get_function "std::io::stdio::_print" [] in
+                        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
                         let* α1 :=
-                          M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                          M.get_associated_function
+                            (Ty.path "core::fmt::Arguments")
+                            "new_v1"
+                            []
+                            [] in
                         let* α5 :=
                           (* Unsize *)
                             let* α2 := M.read (mk_str "`movable`: ") in
@@ -255,7 +279,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
                                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                                ] in
+                                    []
+                                ]
+                                [] in
                             let* α7 := M.call_closure α6 [ movable ] in
                             let* α8 := M.alloc (Value.Array [ α7 ]) in
                             M.pure (M.pointer_coercion α8) in
@@ -271,7 +297,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
                               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                          ] in
+                              []
+                          ]
+                          [] in
                       let* α1 := M.read movable in
                       let* α2 := M.call_closure α0 [ α1 ] in
                       M.alloc α2 in
@@ -286,7 +314,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::ops::function::FnOnce"
           (Ty.function [ Ty.tuple [] ] (Ty.tuple []))
           [ Ty.tuple [] ]
+          []
           "call_once"
+          []
           [] in
       let* α1 := M.read consume in
       let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in

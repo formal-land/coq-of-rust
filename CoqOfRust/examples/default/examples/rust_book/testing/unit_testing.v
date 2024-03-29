@@ -43,7 +43,7 @@ Module tests.
     match τ, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.get_function "unit_testing::add" [] in
+        let* α0 := M.get_function "unit_testing::add" [] [] in
         let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.I32 3) in
@@ -75,7 +75,8 @@ Module tests.
                     let* α0 :=
                       M.get_function
                         "core::panicking::assert_failed"
-                        [ Ty.path "i32"; Ty.path "i32" ] in
+                        [ Ty.path "i32"; Ty.path "i32" ]
+                        [] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in
@@ -106,7 +107,7 @@ Module tests.
     match τ, α with
     | [], [] =>
       let* _ :=
-        let* α0 := M.get_function "unit_testing::bad_add" [] in
+        let* α0 := M.get_function "unit_testing::bad_add" [] [] in
         let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 2 ] in
         let* α2 := M.alloc α1 in
         let* α3 := M.alloc (Value.Integer Integer.I32 3) in
@@ -138,7 +139,8 @@ Module tests.
                     let* α0 :=
                       M.get_function
                         "core::panicking::assert_failed"
-                        [ Ty.path "i32"; Ty.path "i32" ] in
+                        [ Ty.path "i32"; Ty.path "i32" ]
+                        [] in
                     let* α1 := M.read kind in
                     let* α2 := M.read left_val in
                     let* α3 := M.read right_val in

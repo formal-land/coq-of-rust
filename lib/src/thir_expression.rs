@@ -430,6 +430,59 @@ fn compile_literal_integer(
     }
 }
 
+pub(crate) fn compile_const(
+    env: &Env,
+    span: &rustc_span::Span,
+    constant: &rustc_middle::ty::Const,
+) -> Rc<Literal> {
+    let ty = constant.ty();
+
+    match &ty.kind() {
+        rustc_middle::ty::TyKind::Int(int_ty) => {
+            let uint_value = constant.try_to_scalar().unwrap().assert_int();
+            let int_value = uint_value.try_to_int(uint_value.size()).unwrap();
+
+            return Rc::new(Literal::Integer(LiteralInteger {
+                name: capitalize(&format!("{int_ty:?}")),
+                negative_sign: int_value < 0,
+                // The `unsigned_abs` method is necessary to get the minimal int128's
+                // absolute value.
+                value: int_value.unsigned_abs(),
+            }));
+        }
+        rustc_middle::ty::TyKind::Uint(uint_ty) => {
+            let uint_value = constant.try_to_scalar().unwrap().assert_int();
+
+            return Rc::new(Literal::Integer(LiteralInteger {
+                name: capitalize(&format!("{uint_ty:?}")),
+                negative_sign: false,
+                value: uint_value.assert_bits(uint_value.size()),
+            }));
+        }
+        rustc_middle::ty::TyKind::Bool => {
+            let bool_value = constant.try_to_scalar().unwrap().to_bool().unwrap();
+
+            return Rc::new(Literal::Bool(bool_value));
+        }
+        rustc_middle::ty::TyKind::Char => {
+            let char_value = constant.try_to_scalar().unwrap().to_char().unwrap();
+
+            return Rc::new(Literal::Char(char_value));
+        }
+        // TODO: handle the other kinds of constants
+        _ => {}
+    }
+
+    emit_warning_with_note(
+        env,
+        span,
+        "This kind of literal is not yet supported.",
+        Some("We will work on it! 🪄"),
+    );
+
+    Rc::new(Literal::Error)
+}
+
 pub(crate) fn compile_expr<'a>(
     env: &Env<'a>,
     generics: &'a rustc_middle::ty::Generics,
@@ -450,15 +503,17 @@ pub(crate) fn compile_expr<'a>(
                         func: Rc::new(CoqType::Path {
                             path: Rc::new(Path::new(&["alloc", "boxed", "Box"])),
                         }),
-                        args: vec![
+                        tys: vec![
                             value_ty,
                             Rc::new(CoqType::Path {
                                 path: Rc::new(Path::new(&["alloc", "alloc", "Global"])),
                             }),
                         ],
+                        consts: vec![],
                     }),
                     func: "new".to_string(),
                     generic_tys: vec![],
+                    generic_consts: vec![],
                 }),
                 args: vec![value],
                 kind: CallKind::Closure,
@@ -934,8 +989,8 @@ pub(crate) fn compile_expr<'a>(
                                 env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
                             let ty = compile_type(env, generics, &parent_type);
                             let func = symbol.unwrap().to_string();
-                            // We remove [nb_parent_generics] elements from the start of [generic_args]
-                            // as these are already inferred from the `Self` type.
+                            // We remove [nb_parent_generics] elements from the start of
+                            // [generic_args] as these are already inferred from the `Self` type.
                             let generic_tys = generic_args
                                 .iter()
                                 .skip(nb_parent_generics)
@@ -946,11 +1001,22 @@ pub(crate) fn compile_expr<'a>(
                                         .map(|ty| compile_type(env, generics, ty))
                                 })
                                 .collect();
+                            let generic_consts = generic_args
+                                .iter()
+                                .skip(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|constant| compile_const(env, &expr.span, constant))
+                                })
+                                .collect();
 
                             Rc::new(Expr::GetAssociatedFunction {
                                 ty,
                                 func,
                                 generic_tys,
+                                generic_consts,
                             })
                             .alloc()
                         }
@@ -972,6 +1038,16 @@ pub(crate) fn compile_expr<'a>(
                                 [self_ty, trait_tys @ ..] => (self_ty.clone(), trait_tys.to_vec()),
                                 _ => panic!("Expected at least one element"),
                             };
+                            let trait_consts = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|constant| compile_const(env, &expr.span, constant))
+                                })
+                                .collect::<Vec<_>>();
                             let method_name = symbol.unwrap().to_string();
                             let generic_tys = generic_args
                                 .iter()
@@ -983,13 +1059,25 @@ pub(crate) fn compile_expr<'a>(
                                         .map(|ty| compile_type(env, generics, ty))
                                 })
                                 .collect::<Vec<_>>();
+                            let generic_consts = generic_args
+                                .iter()
+                                .skip(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|constant| compile_const(env, &expr.span, constant))
+                                })
+                                .collect::<Vec<_>>();
 
                             Rc::new(Expr::GetTraitMethod {
                                 trait_name: parent_path,
                                 self_ty,
                                 trait_tys,
+                                trait_consts,
                                 method_name,
                                 generic_tys,
+                                generic_consts,
                             })
                             .alloc()
                         }
@@ -1003,10 +1091,20 @@ pub(crate) fn compile_expr<'a>(
                                         .map(|ty| compile_type(env, generics, ty))
                                 })
                                 .collect::<Vec<_>>();
+                            let generic_consts = generic_args
+                                .iter()
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|constant| compile_const(env, &expr.span, constant))
+                                })
+                                .collect::<Vec<_>>();
 
                             Rc::new(Expr::GetFunction {
                                 func: compile_def_id(env, *def_id),
                                 generic_tys,
+                                generic_consts,
                             })
                             .alloc()
                         }
@@ -1027,6 +1125,7 @@ pub(crate) fn compile_expr<'a>(
                                 ty: Rc::new(CoqType::Var("Self".to_string())),
                                 func: format!("{}.{}", symbol.unwrap(), parent_symbol),
                                 generic_tys: vec![],
+                                generic_consts: vec![],
                             })
                             .alloc()
                         }
@@ -1039,6 +1138,7 @@ pub(crate) fn compile_expr<'a>(
                             Rc::new(Expr::GetFunction {
                                 func: Path { segments },
                                 generic_tys: vec![],
+                                generic_consts: vec![],
                             })
                             .alloc()
                         }

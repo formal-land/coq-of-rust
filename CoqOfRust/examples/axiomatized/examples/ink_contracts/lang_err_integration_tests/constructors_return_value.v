@@ -41,7 +41,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
+Module Impl_core_convert_From_array_u8_32_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
@@ -50,9 +50,10 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
+End Impl_core_convert_From_array_u8_32_for_constructors_return_value_AccountId.
 
 Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
@@ -78,10 +79,11 @@ Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128"
 
 Axiom ConstructorResult :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "constructors_return_value::ConstructorResult") [ T ]) =
+  (Ty.apply (Ty.path "constructors_return_value::ConstructorResult") [ T ] []) =
     (Ty.apply
       (Ty.path "core::result::Result")
-      [ T; Ty.path "constructors_return_value::LangError" ]).
+      [ T; Ty.path "constructors_return_value::LangError" ]
+      []).
 
 (* StructTuple
   {

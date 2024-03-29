@@ -12,7 +12,16 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
     unimplemented!()
 }
 *)
-Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
+Definition set_code_hash (τ : list Ty.t) (α : list Value.t) : M :=
+  match τ, α with
+  | [ E ], [ code_hash ] =>
+    let* code_hash := M.alloc code_hash in
+    let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+    let* α1 := M.read (mk_str "not implemented") in
+    let* α2 := M.call_closure α0 [ α1 ] in
+    M.never_to_any α2
+  | _, _ => M.impossible
+  end.
 
 (* StructRecord
   {
@@ -30,7 +39,8 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u32") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u32") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructRecord "set_code_hash::Incrementer" [ ("count", α1) ])
     | _, _ => M.impossible
@@ -60,7 +70,9 @@ Module Impl_set_code_hash_Incrementer.
           "core::default::Default"
           (Ty.path "set_code_hash::Incrementer")
           []
+          []
           "default"
+          []
           [] in
       M.call_closure α0 []
     | _, _ => M.impossible
@@ -90,8 +102,8 @@ Module Impl_set_code_hash_Incrementer.
         M.assign β α1 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "The new count is ") in
@@ -105,7 +117,8 @@ Module Impl_set_code_hash_Incrementer.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_display"
-                  [ Ty.path "u32" ] in
+                  [ Ty.path "u32" ]
+                  [] in
               let* α7 := M.read self in
               let* α8 :=
                 M.call_closure
@@ -158,13 +171,16 @@ Module Impl_set_code_hash_Incrementer.
           M.get_associated_function
             (Ty.apply
               (Ty.path "core::result::Result")
-              [ Ty.tuple []; Ty.path "set_code_hash::Error" ])
+              [ Ty.tuple []; Ty.path "set_code_hash::Error" ]
+              [])
             "unwrap_or_else"
-            [ Ty.function [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ] (Ty.tuple []) ] in
+            [ Ty.function [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ] (Ty.tuple []) ]
+            [] in
         let* α1 :=
           M.get_function
             "set_code_hash::set_code_hash"
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
+            [] in
         let* α2 := M.call_closure α1 [ code_hash ] in
         let* α3 :=
           M.call_closure
@@ -184,7 +200,8 @@ Module Impl_set_code_hash_Incrementer.
                           let* α0 :=
                             M.get_function
                               "std::panicking::begin_panic"
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                              [] in
                           let* α1 :=
                             M.read
                               (mk_str
@@ -198,8 +215,8 @@ Module Impl_set_code_hash_Incrementer.
         M.alloc α3 in
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
           let* α5 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "Switched code hash to ") in
@@ -213,7 +230,8 @@ Module Impl_set_code_hash_Incrementer.
                 M.get_associated_function
                   (Ty.path "core::fmt::rt::Argument")
                   "new_debug"
-                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
+                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
+                  [] in
               let* α7 := M.call_closure α6 [ code_hash ] in
               let* α8 := M.alloc (Value.Array [ α7 ]) in
               M.pure (M.pointer_coercion α8) in

@@ -8,7 +8,10 @@ Require Import CoqOfRust.CoqOfRust.
     fields :=
       [
         ("value",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]
+            [])
       ];
   } *)
 
@@ -28,17 +31,23 @@ Module Impl_custom_allocator_CustomAllocator.
       let* init_value := M.alloc init_value in
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "bool" ])
+          (Ty.apply (Ty.path "slice") [ Ty.path "bool" ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α6 :=
         (* Unsize *)
           let* α1 :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "bool" ]; Ty.path "alloc::alloc::Global" ])
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "bool" ] [ Value.Integer Integer.Usize 1 ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 := M.read init_value in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
@@ -60,8 +69,10 @@ Module Impl_custom_allocator_CustomAllocator.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_associated_function (Ty.path "custom_allocator::CustomAllocator") "new" [] in
-      let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
+      let* α0 :=
+        M.get_associated_function (Ty.path "custom_allocator::CustomAllocator") "new" [] [] in
+      let* α1 :=
+        M.get_trait_method "core::default::Default" (Ty.path "bool") [] [] "default" [] [] in
       let* α2 := M.call_closure α1 [] in
       M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
@@ -84,9 +95,12 @@ Module Impl_custom_allocator_CustomAllocator.
             "core::ops::index::IndexMut"
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]
+              [])
             [ Ty.path "usize" ]
+            []
             "index_mut"
+            []
             [] in
         let* α1 := M.read self in
         let* α2 :=
@@ -101,9 +115,12 @@ Module Impl_custom_allocator_CustomAllocator.
             "core::ops::index::Index"
             (Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+              [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]
+              [])
             [ Ty.path "usize" ]
+            []
             "index"
+            []
             [] in
         let* α4 := M.read self in
         let* α5 :=
@@ -134,9 +151,14 @@ Module Impl_custom_allocator_CustomAllocator.
       let* α0 :=
         M.get_trait_method
           "core::ops::index::Index"
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ]
+            [])
           [ Ty.path "usize" ]
+          []
           "index"
+          []
           [] in
       let* α1 := M.read self in
       let* α2 :=

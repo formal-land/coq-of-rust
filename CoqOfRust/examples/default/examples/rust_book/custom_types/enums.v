@@ -59,9 +59,13 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
         [
           fun γ =>
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 :=
@@ -79,9 +83,13 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
               let* α1 :=
-                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+                M.get_associated_function
+                  (Ty.path "core::fmt::Arguments")
+                  "new_const"
+                  []
+                  [ Value.Bool true ] in
               let* α4 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "page unloaded
@@ -96,8 +104,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::KeyPress" 0 in
             let* c := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "pressed '") in
@@ -111,7 +120,8 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "char" ] in
+                      [ Ty.path "char" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ c ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -123,8 +133,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::Paste" 0 in
             let* s := M.copy γ0_0 in
             let* _ :=
-              let* α0 := M.get_function "std::io::stdio::_print" [] in
-              let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+              let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+              let* α1 :=
+                M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
               let* α5 :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "pasted """) in
@@ -138,7 +149,8 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function
                       (Ty.path "core::fmt::rt::Argument")
                       "new_display"
-                      [ Ty.path "alloc::string::String" ] in
+                      [ Ty.path "alloc::string::String" ]
+                      [] in
                   let* α7 := M.call_closure α6 [ s ] in
                   let* α8 := M.alloc (Value.Array [ α7 ]) in
                   M.pure (M.pointer_coercion α8) in
@@ -153,8 +165,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
             let* y := M.copy γ0_1 in
             let* _ :=
               let* _ :=
-                let* α0 := M.get_function "std::io::stdio::_print" [] in
-                let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+                let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+                let* α1 :=
+                  M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
                 let* α6 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "clicked at x=") in
@@ -169,13 +182,15 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "i64" ] in
+                        [ Ty.path "i64" ]
+                        [] in
                     let* α8 := M.call_closure α7 [ x ] in
                     let* α9 :=
                       M.get_associated_function
                         (Ty.path "core::fmt::rt::Argument")
                         "new_display"
-                        [ Ty.path "i64" ] in
+                        [ Ty.path "i64" ]
+                        [] in
                     let* α10 := M.call_closure α9 [ y ] in
                     let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                     M.pure (M.pointer_coercion α11) in
@@ -211,7 +226,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* pressed :=
       M.alloc (Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ]) in
     let* pasted :=
-      let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
+      let* α0 :=
+        M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] [] "to_owned" [] [] in
       let* α1 := M.read (mk_str "my text") in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc (Value.StructTuple "enums::WebEvent::Paste" [ α2 ]) in
@@ -223,27 +239,27 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* load := M.alloc (Value.StructTuple "enums::WebEvent::PageLoad" []) in
     let* unload := M.alloc (Value.StructTuple "enums::WebEvent::PageUnload" []) in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
+      let* α0 := M.get_function "enums::inspect" [] [] in
       let* α1 := M.read pressed in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
+      let* α0 := M.get_function "enums::inspect" [] [] in
       let* α1 := M.read pasted in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
+      let* α0 := M.get_function "enums::inspect" [] [] in
       let* α1 := M.read click in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
+      let* α0 := M.get_function "enums::inspect" [] [] in
       let* α1 := M.read load in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "enums::inspect" [] in
+      let* α0 := M.get_function "enums::inspect" [] [] in
       let* α1 := M.read unload in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in

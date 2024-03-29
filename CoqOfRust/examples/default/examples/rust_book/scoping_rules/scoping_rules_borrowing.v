@@ -12,8 +12,8 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
     let* boxed_i32 := M.alloc boxed_i32 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Destroying box that contains ") in
@@ -31,7 +31,9 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                ] in
+                    []
+                ]
+                [] in
             let* α7 := M.call_closure α6 [ boxed_i32 ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in
@@ -55,8 +57,8 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
     let* borrowed_i32 := M.alloc borrowed_i32 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "This int is: ") in
@@ -70,7 +72,8 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] [] ]
+                [] in
             let* α7 := M.call_closure α6 [ borrowed_i32 ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in
@@ -118,19 +121,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* boxed_i32 :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
       M.alloc α1 in
     let* stacked_i32 := M.alloc (Value.Integer Integer.I32 6) in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
+      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] [] in
       let* α1 := M.read boxed_i32 in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
+      let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] [] in
       let* α1 := M.call_closure α0 [ stacked_i32 ] in
       M.alloc α1 in
     let* _ :=
@@ -138,13 +145,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let* α0 := M.read boxed_i32 in
         M.alloc α0 in
       let* _ :=
-        let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] in
+        let* α0 := M.get_function "scoping_rules_borrowing::borrow_i32" [] [] in
         let* α1 := M.read _ref_to_i32 in
         let* α2 := M.call_closure α0 [ α1 ] in
         M.alloc α2 in
       M.alloc (Value.Tuple []) in
     let* _ :=
-      let* α0 := M.get_function "scoping_rules_borrowing::eat_box_i32" [] in
+      let* α0 := M.get_function "scoping_rules_borrowing::eat_box_i32" [] [] in
       let* α1 := M.read boxed_i32 in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in

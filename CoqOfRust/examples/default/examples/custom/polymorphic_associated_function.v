@@ -10,7 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Impl_polymorphic_associated_function_Foo_A.
   Definition Self (A : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ A ].
+    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ A ] [].
   
   (*
       fn convert<B: From<A>>(self) -> Foo<B> {
@@ -24,7 +24,7 @@ Module Impl_polymorphic_associated_function_Foo_A.
     match τ, α with
     | [ B ], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_trait_method "core::convert::Into" A [ B ] "into" [] in
+      let* α0 := M.get_trait_method "core::convert::Into" A [ B ] [] "into" [] [] in
       let* α1 :=
         M.read (M.get_struct_record_field self "polymorphic_associated_function::Foo" "data") in
       let* α2 := M.call_closure α0 [ α1 ] in
@@ -56,9 +56,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* bar :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ Ty.path "i32" ])
+          (Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ Ty.path "i32" ] [])
           "convert"
-          [ Ty.path "f64" ] in
+          [ Ty.path "f64" ]
+          [] in
       let* α1 := M.read foo in
       let* α2 := M.call_closure α0 [ α1 ] in
       M.alloc α2 in
@@ -97,7 +98,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_function
                       "core::panicking::assert_failed"
-                      [ Ty.path "f64"; Ty.path "f64" ] in
+                      [ Ty.path "f64"; Ty.path "f64" ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

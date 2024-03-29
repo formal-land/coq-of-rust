@@ -30,8 +30,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] []; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.read (mk_str "the same apple") in
       let* α2 := M.call_closure α0 [ α1 ] in
@@ -40,9 +42,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 :=
         M.get_trait_method
           "core::iter::traits::collect::IntoIterator"
-          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+          (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ] [])
+          []
           []
           "into_iter"
+          []
           [] in
       let* α1 :=
         M.call_closure
@@ -64,9 +68,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α0 :=
                     M.get_trait_method
                       "core::iter::traits::iterator::Iterator"
-                      (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ] [])
+                      []
                       []
                       "next"
+                      []
                       [] in
                   let* α1 := M.call_closure α0 [ iter ] in
                   let* α2 := M.alloc α1 in
@@ -91,11 +97,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (Ty.apply
                                 (Ty.path "alloc::sync::Arc")
                                 [
-                                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                  Ty.apply (Ty.path "&") [ Ty.path "str" ] [];
                                   Ty.path "alloc::alloc::Global"
-                                ])
+                                ]
+                                [])
+                              []
                               []
                               "clone"
+                              []
                               [] in
                           let* α1 := M.call_closure α0 [ apple ] in
                           M.alloc α1 in
@@ -103,7 +112,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α0 :=
                             M.get_function
                               "std::thread::spawn"
-                              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); Ty.tuple [] ] in
+                              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); Ty.tuple [] ]
+                              [] in
                           let* α1 :=
                             M.call_closure
                               α0
@@ -120,11 +130,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             let* _ :=
                                               let* _ :=
                                                 let* α0 :=
-                                                  M.get_function "std::io::stdio::_print" [] in
+                                                  M.get_function "std::io::stdio::_print" [] [] in
                                                 let* α1 :=
                                                   M.get_associated_function
                                                     (Ty.path "core::fmt::Arguments")
                                                     "new_v1"
+                                                    []
                                                     [] in
                                                 let* α5 :=
                                                   (* Unsize *)
@@ -145,10 +156,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
-                                                                [ Ty.path "str" ];
+                                                                [ Ty.path "str" ]
+                                                                [];
                                                               Ty.path "alloc::alloc::Global"
                                                             ]
-                                                        ] in
+                                                            []
+                                                        ]
+                                                        [] in
                                                     let* α7 := M.call_closure α6 [ apple ] in
                                                     let* α8 := M.alloc (Value.Array [ α7 ]) in
                                                     M.pure (M.pointer_coercion α8) in
@@ -169,8 +183,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ] in
       M.pure (M.use α3) in
     let* _ :=
-      let* α0 := M.get_function "std::thread::sleep" [] in
-      let* α1 := M.get_associated_function (Ty.path "core::time::Duration") "from_secs" [] in
+      let* α0 := M.get_function "std::thread::sleep" [] [] in
+      let* α1 :=
+        M.get_associated_function
+          (Ty.path "core::time::Duration")
+          "from_secs"
+          []
+          [ Value.Bool true ] in
       let* α2 := M.call_closure α1 [ Value.Integer Integer.U64 1 ] in
       let* α3 := M.call_closure α0 [ α2 ] in
       M.alloc α3 in

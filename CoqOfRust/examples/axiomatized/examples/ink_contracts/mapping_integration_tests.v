@@ -7,14 +7,14 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ] [].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -29,7 +29,7 @@ End Impl_core_default_Default_for_mapping_integration_tests_Mapping_K_V.
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ] [].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -140,7 +140,8 @@ End Impl_mapping_integration_tests_Env.
         ("balances",
           Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
-            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
+            [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ]
+            [])
       ];
   } *)
 

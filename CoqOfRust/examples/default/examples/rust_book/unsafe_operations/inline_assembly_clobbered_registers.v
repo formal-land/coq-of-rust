@@ -48,18 +48,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error" ])
+            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] []; Ty.path "core::str::error::Utf8Error" ]
+            [])
           "unwrap"
+          []
           [] in
-      let* α1 := M.get_function "core::str::converts::from_utf8" [] in
+      let* α1 := M.get_function "core::str::converts::from_utf8" [] [ Value.Bool true ] in
       let* α2 := (* Unsize *) M.pure (M.pointer_coercion name_buf) in
       let* α3 := M.call_closure α1 [ α2 ] in
       let* α4 := M.call_closure α0 [ α3 ] in
       M.alloc α4 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "CPU Manufacturer ID: ") in
@@ -73,7 +75,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α7 := M.call_closure α6 [ name ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in

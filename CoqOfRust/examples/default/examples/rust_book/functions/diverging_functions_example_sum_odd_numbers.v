@@ -31,8 +31,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
@@ -46,10 +46,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_display"
-                [ Ty.path "u32" ] in
+                [ Ty.path "u32" ]
+                [] in
             let* α7 :=
               M.get_function
                 "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers"
+                []
                 [] in
             let* α8 := M.call_closure α7 [ Value.Integer Integer.U32 9 ] in
             let* α9 := M.alloc α8 in
@@ -94,9 +96,11 @@ Module main.
         let* α0 :=
           M.get_trait_method
             "core::iter::traits::collect::IntoIterator"
-            (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+            (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] [])
+            []
             []
             "into_iter"
+            []
             [] in
         let* α1 := M.read up_to in
         let* α2 :=
@@ -119,9 +123,11 @@ Module main.
                     let* α0 :=
                       M.get_trait_method
                         "core::iter::traits::iterator::Iterator"
-                        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ])
+                        (Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] [])
+                        []
                         []
                         "next"
+                        []
                         [] in
                     let* α1 := M.call_closure α0 [ iter ] in
                     let* α2 := M.alloc α1 in

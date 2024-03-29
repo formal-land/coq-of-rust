@@ -31,7 +31,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* _ :=
               let* α0 := M.read γ in
               M.is_constant_or_break_match α0 (Value.Bool true) in
-            let* α0 := M.get_function "core::panicking::panic" [] in
+            let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
             let* α1 := M.read (mk_str "assertion failed: *raw_p == 10") in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.never_to_any α2 in

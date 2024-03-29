@@ -34,8 +34,8 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "wrapping_errors::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "wrapping_errors::DoubleError" ]).
+  (Ty.apply (Ty.path "wrapping_errors::Result") [ T ] []) =
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "wrapping_errors::DoubleError" ] []).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".

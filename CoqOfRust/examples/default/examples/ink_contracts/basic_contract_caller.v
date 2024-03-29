@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "basic_contract_caller::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -62,7 +63,8 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :
-  (Ty.path "basic_contract_caller::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+  (Ty.path "basic_contract_caller::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]).
 
 (* Enum Error *)
 (* {
@@ -164,7 +166,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | [], [ other_contract_code_hash ] =>
       let* other_contract_code_hash := M.alloc other_contract_code_hash in
       let* other_contract :=
-        let* α0 := M.get_function "core::panicking::panic" [] in
+        let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
         let* α1 := M.read (mk_str "not yet implemented") in
         let* α2 := M.call_closure α0 [ α1 ] in
         let* α3 := M.never_to_any α2 in
@@ -193,7 +195,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       let* self := M.alloc self in
       let* _ :=
         let* α0 :=
-          M.get_associated_function (Ty.path "basic_contract_caller::OtherContract") "flip" [] in
+          M.get_associated_function (Ty.path "basic_contract_caller::OtherContract") "flip" [] [] in
         let* α1 := M.read self in
         let* α2 :=
           M.call_closure
@@ -206,7 +208,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
             ] in
         M.alloc α2 in
       let* α0 :=
-        M.get_associated_function (Ty.path "basic_contract_caller::OtherContract") "get" [] in
+        M.get_associated_function (Ty.path "basic_contract_caller::OtherContract") "get" [] [] in
       let* α1 := M.read self in
       let* α2 :=
         M.call_closure

@@ -21,9 +21,9 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] [] in
       let* α1 := M.read f in
-      let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+      let* α2 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
       let* α5 :=
         (* Unsize *)
           let* α3 := M.read (mk_str "Circle of radius ") in
@@ -35,7 +35,8 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
             M.get_associated_function
               (Ty.path "core::fmt::rt::Argument")
               "new_display"
-              [ Ty.path "i32" ] in
+              [ Ty.path "i32" ]
+              [] in
           let* α7 := M.read self in
           let* α8 :=
             M.call_closure
@@ -76,7 +77,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "alloc::string::ToString"
           (Ty.path "converting_to_string::Circle")
           []
+          []
           "to_string"
+          []
           [] in
       let* α1 := M.call_closure α0 [ circle ] in
       M.alloc α1 in

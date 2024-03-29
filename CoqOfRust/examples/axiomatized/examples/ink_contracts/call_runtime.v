@@ -60,7 +60,8 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Definition Self : Ty.t :=
     Ty.apply
       (Ty.path "call_runtime::MultiAddress")
-      [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ].
+      [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+      [].
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
   
@@ -85,7 +86,8 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
               ("dest",
                 Ty.apply
                   (Ty.path "call_runtime::MultiAddress")
-                  [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
+                  [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+                  []);
               ("value", Ty.path "u128")
             ];
         discriminant := None;

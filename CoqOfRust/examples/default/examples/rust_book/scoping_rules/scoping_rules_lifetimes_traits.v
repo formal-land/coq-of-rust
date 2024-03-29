@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
   {
     name := "Borrowed";
     ty_params := [];
-    fields := [ ("x", Ty.apply (Ty.path "&") [ Ty.path "i32" ]) ];
+    fields := [ ("x", Ty.apply (Ty.path "&") [ Ty.path "i32" ] []) ];
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
@@ -23,6 +23,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
         M.get_associated_function
           (Ty.path "core::fmt::Formatter")
           "debug_struct_field1_finish"
+          []
           [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "Borrowed") in
@@ -84,14 +85,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "core::default::Default"
           (Ty.path "scoping_rules_lifetimes_traits::Borrowed")
           []
+          []
           "default"
+          []
           [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_v1" [] [] in
         let* α5 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "b is ") in
@@ -105,7 +108,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function
                 (Ty.path "core::fmt::rt::Argument")
                 "new_debug"
-                [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ] in
+                [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
+                [] in
             let* α7 := M.call_closure α6 [ b ] in
             let* α8 := M.alloc (Value.Array [ α7 ]) in
             M.pure (M.pointer_coercion α8) in

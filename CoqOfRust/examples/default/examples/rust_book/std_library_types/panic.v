@@ -32,7 +32,8 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
             let* α0 :=
               M.get_function
                 "std::panicking::begin_panic"
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                [] in
             let* α1 := M.read (mk_str "division by zero") in
             let* α2 := M.call_closure α0 [ α1 ] in
             let* α3 := M.never_to_any α2 in
@@ -66,19 +67,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _x :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "new"
+          []
           [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 0 ] in
       M.alloc α1 in
     let* _ :=
-      let* α0 := M.get_function "panic::division" [] in
+      let* α0 := M.get_function "panic::division" [] [] in
       let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 3; Value.Integer Integer.I32 0 ] in
       M.alloc α1 in
     let* _ :=
       let* _ :=
-        let* α0 := M.get_function "std::io::stdio::_print" [] in
-        let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+        let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+        let* α1 :=
+          M.get_associated_function
+            (Ty.path "core::fmt::Arguments")
+            "new_const"
+            []
+            [ Value.Bool true ] in
         let* α4 :=
           (* Unsize *)
             let* α2 := M.read (mk_str "This point won't be reached!

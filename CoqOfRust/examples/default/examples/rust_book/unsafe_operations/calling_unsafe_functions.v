@@ -21,17 +21,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* some_vector :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "slice") [ Ty.path "u32" ])
+          (Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [])
           "into_vec"
-          [ Ty.path "alloc::alloc::Global" ] in
+          [ Ty.path "alloc::alloc::Global" ]
+          [] in
       let* α5 :=
         (* Unsize *)
           let* α1 :=
             M.get_associated_function
               (Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "array") [ Ty.path "u32" ]; Ty.path "alloc::alloc::Global" ])
+                [
+                  Ty.apply (Ty.path "array") [ Ty.path "u32" ] [ Value.Integer Integer.Usize 4 ];
+                  Ty.path "alloc::alloc::Global"
+                ]
+                [])
               "new"
+              []
               [] in
           let* α2 :=
             M.alloc
@@ -50,21 +56,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* pointer :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "as_ptr"
+          []
           [] in
       let* α1 := M.call_closure α0 [ some_vector ] in
       M.alloc α1 in
     let* length :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "len"
+          []
           [] in
       let* α1 := M.call_closure α0 [ some_vector ] in
       M.alloc α1 in
     let* my_slice :=
-      let* α0 := M.get_function "core::slice::raw::from_raw_parts" [ Ty.path "u32" ] in
+      let* α0 :=
+        M.get_function "core::slice::raw::from_raw_parts" [ Ty.path "u32" ] [ Value.Bool true ] in
       let* α1 := M.read pointer in
       let* α2 := M.read length in
       let* α3 := M.call_closure α0 [ α1; α2 ] in
@@ -72,8 +87,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_associated_function
-          (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
+          (Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
+            [])
           "as_slice"
+          []
           [] in
       let* α1 := M.call_closure α0 [ some_vector ] in
       let* α2 := M.alloc α1 in
@@ -95,9 +114,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 :=
                       M.get_trait_method
                         "core::cmp::PartialEq"
-                        (Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ])
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ] ]
+                        (Ty.apply
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [] ]
+                          [])
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [] ]
+                            []
+                        ]
+                        [ Value.Bool true ]
                         "eq"
+                        []
                         [] in
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
@@ -112,9 +141,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_function
                       "core::panicking::assert_failed"
                       [
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
-                      ] in
+                        Ty.apply
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [] ]
+                          [];
+                        Ty.apply
+                          (Ty.path "&")
+                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] [] ]
+                          []
+                      ]
+                      [] in
                   let* α1 := M.read kind in
                   let* α2 := M.read left_val in
                   let* α3 := M.read right_val in

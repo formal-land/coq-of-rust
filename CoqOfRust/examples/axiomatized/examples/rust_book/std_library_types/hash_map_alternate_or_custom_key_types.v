@@ -7,8 +7,8 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [];
     fields :=
       [
-        ("username", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-        ("password", Ty.apply (Ty.path "&") [ Ty.path "str" ])
+        ("username", Ty.apply (Ty.path "&") [ Ty.path "str" ] []);
+        ("password", Ty.apply (Ty.path "&") [ Ty.path "str" ] [])
       ];
   } *)
 
@@ -80,8 +80,8 @@ End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-        ("email", Ty.apply (Ty.path "&") [ Ty.path "str" ])
+        ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ] []);
+        ("email", Ty.apply (Ty.path "&") [ Ty.path "str" ] [])
       ];
   } *)
 
@@ -93,7 +93,8 @@ Axiom Accounts :
         Ty.path "hash_map_alternate_or_custom_key_types::Account";
         Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
         Ty.path "std::hash::random::RandomState"
-      ]).
+      ]
+      []).
 
 Parameter try_logon : (list Ty.t) -> (list Value.t) -> M.
 

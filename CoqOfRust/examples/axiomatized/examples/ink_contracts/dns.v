@@ -7,13 +7,13 @@ Require Import CoqOfRust.CoqOfRust.
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ] []);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ] [])
       ];
   } *)
 
 Module Impl_core_default_Default_for_dns_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ] [].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -27,7 +27,7 @@ Module Impl_core_default_Default_for_dns_Mapping_K_V.
 End Impl_core_default_Default_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ] [].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -136,7 +136,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_dns_AccountId.
+Module Impl_core_convert_From_array_u8_32_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
@@ -145,13 +145,16 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_dns_AccountId.
+End Impl_core_convert_From_array_u8_32_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
 
-Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "dns::Hash") =
+    (Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]).
 
 (* StructRecord
   {
@@ -165,7 +168,10 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
     name := "Register";
     ty_params := [];
     fields :=
-      [ ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]); ("from", Ty.path "dns::AccountId") ];
+      [
+        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]);
+        ("from", Ty.path "dns::AccountId")
+      ];
   } *)
 
 (* StructRecord
@@ -174,9 +180,9 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]);
         ("from", Ty.path "dns::AccountId");
-        ("old_address", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ]);
+        ("old_address", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ] []);
         ("new_address", Ty.path "dns::AccountId")
       ];
   } *)
@@ -187,9 +193,9 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ]);
         ("from", Ty.path "dns::AccountId");
-        ("old_owner", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ]);
+        ("old_owner", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ] []);
         ("new_owner", Ty.path "dns::AccountId")
       ];
   } *)
@@ -238,11 +244,19 @@ End Impl_dns_Env.
         ("name_to_address",
           Ty.apply
             (Ty.path "dns::Mapping")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ]);
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ];
+              Ty.path "dns::AccountId"
+            ]
+            []);
         ("name_to_owner",
           Ty.apply
             (Ty.path "dns::Mapping")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ]);
+            [
+              Ty.apply (Ty.path "array") [ Ty.path "u8" ] [ Value.Integer Integer.Usize 32 ];
+              Ty.path "dns::AccountId"
+            ]
+            []);
         ("default_address", Ty.path "dns::AccountId")
       ];
   } *)
@@ -331,8 +345,8 @@ End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "dns::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "dns::Error" ]).
+  (Ty.apply (Ty.path "dns::Result") [ T ] []) =
+    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "dns::Error" ] []).
 
 Module Impl_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".

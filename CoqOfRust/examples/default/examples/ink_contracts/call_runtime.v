@@ -17,7 +17,8 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   Definition default (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] =>
-      let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
+      let* α0 :=
+        M.get_trait_method "core::default::Default" (Ty.path "u128") [] [] "default" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.pure (Value.StructTuple "call_runtime::AccountId" [ α1 ])
     | _, _ => M.impossible
@@ -80,14 +81,24 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Definition Self : Ty.t :=
     Ty.apply
       (Ty.path "call_runtime::MultiAddress")
-      [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ].
+      [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+      [].
   
   (*
       fn from(_value: AccountId) -> Self {
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [ _value ] =>
+      let* _value := M.alloc _value in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -110,7 +121,8 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
               ("dest",
                 Ty.apply
                   (Ty.path "call_runtime::MultiAddress")
-                  [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
+                  [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+                  []);
               ("value", Ty.path "u128")
             ];
         discriminant := None;
@@ -181,7 +193,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
     | [], [ self; f ] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
+      let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] [] in
       let* α1 := M.read f in
       let* α2 := M.read (mk_str "CallRuntimeFailed") in
       M.call_closure α0 [ α1; α2 ]
@@ -306,7 +318,8 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
               let* α0 :=
                 M.get_function
                   "std::panicking::begin_panic"
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
+                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] [] ]
+                  [] in
               let* α1 := M.read (mk_str "Unexpected error from `pallet-contracts`.") in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.never_to_any α2 in
@@ -332,7 +345,17 @@ Module Impl_call_runtime_Env.
           unimplemented!()
       }
   *)
-  Parameter call_runtime : (list Ty.t) -> (list Value.t) -> M.
+  Definition call_runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [ Call ], [ self; _call ] =>
+      let* self := M.alloc self in
+      let* _call := M.alloc _call in
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
 End Impl_call_runtime_Env.
@@ -345,7 +368,15 @@ Module Impl_call_runtime_RuntimeCaller.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list Value.t) : M :=
+    match τ, α with
+    | [], [] =>
+      let* α0 := M.get_function "core::panicking::panic" [] [ Value.Bool true ] in
+      let* α1 := M.read (mk_str "not implemented") in
+      let* α2 := M.call_closure α0 [ α1 ] in
+      M.never_to_any α2
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -358,7 +389,8 @@ Module Impl_call_runtime_RuntimeCaller.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "init_env" [] in
+      let* α0 :=
+        M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "init_env" [] [] in
       M.call_closure α0 []
     | _, _ => M.impossible
     end.
@@ -378,7 +410,9 @@ Module Impl_call_runtime_RuntimeCaller.
           "core::default::Default"
           (Ty.path "call_runtime::RuntimeCaller")
           []
+          []
           "default"
+          []
           [] in
       M.call_closure α0 []
     | _, _ => M.impossible
@@ -410,18 +444,21 @@ Module Impl_call_runtime_RuntimeCaller.
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])
+            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ]
+            [])
           "map_err"
           [
             Ty.path "call_runtime::RuntimeError";
             Ty.function [ Ty.path "call_runtime::EnvError" ] (Ty.path "call_runtime::RuntimeError")
-          ] in
+          ]
+          [] in
       let* α1 :=
         M.get_associated_function
           (Ty.path "call_runtime::Env")
           "call_runtime"
-          [ Ty.path "call_runtime::RuntimeCall" ] in
-      let* α2 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "env" [] in
+          [ Ty.path "call_runtime::RuntimeCall" ]
+          [] in
+      let* α2 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "env" [] [] in
       let* α3 := M.read self in
       let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 := M.alloc α4 in
@@ -433,8 +470,11 @@ Module Impl_call_runtime_RuntimeCaller.
             Ty.apply
               (Ty.path "call_runtime::MultiAddress")
               [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+              []
           ]
+          []
           "into"
+          []
           [] in
       let* α7 := M.read receiver in
       let* α8 := M.call_closure α6 [ α7 ] in
@@ -454,7 +494,9 @@ Module Impl_call_runtime_RuntimeCaller.
           "core::convert::Into"
           (Ty.path "call_runtime::EnvError")
           [ Ty.path "call_runtime::RuntimeError" ]
+          []
           "into"
+          []
           [] in
       M.call_closure α0 [ α11; α12 ]
     | _, _ => M.impossible
@@ -476,15 +518,17 @@ Module Impl_call_runtime_RuntimeCaller.
         M.get_associated_function
           (Ty.apply
             (Ty.path "core::result::Result")
-            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ])
+            [ Ty.tuple []; Ty.path "call_runtime::EnvError" ]
+            [])
           "map_err"
           [
             Ty.path "call_runtime::RuntimeError";
             Ty.function [ Ty.path "call_runtime::EnvError" ] (Ty.path "call_runtime::RuntimeError")
-          ] in
+          ]
+          [] in
       let* α1 :=
-        M.get_associated_function (Ty.path "call_runtime::Env") "call_runtime" [ Ty.tuple [] ] in
-      let* α2 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "env" [] in
+        M.get_associated_function (Ty.path "call_runtime::Env") "call_runtime" [ Ty.tuple [] ] [] in
+      let* α2 := M.get_associated_function (Ty.path "call_runtime::RuntimeCaller") "env" [] [] in
       let* α3 := M.read self in
       let* α4 := M.call_closure α2 [ α3 ] in
       let* α5 := M.alloc α4 in
@@ -495,7 +539,9 @@ Module Impl_call_runtime_RuntimeCaller.
           "core::convert::Into"
           (Ty.path "call_runtime::EnvError")
           [ Ty.path "call_runtime::RuntimeError" ]
+          []
           "into"
+          []
           [] in
       M.call_closure α0 [ α7; α8 ]
     | _, _ => M.impossible

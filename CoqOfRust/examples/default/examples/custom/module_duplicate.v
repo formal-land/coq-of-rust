@@ -13,8 +13,13 @@ Module foo.
       | [], [] =>
         let* _ :=
           let* _ :=
-            let* α0 := M.get_function "std::io::stdio::_print" [] in
-            let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+            let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+            let* α1 :=
+              M.get_associated_function
+                (Ty.path "core::fmt::Arguments")
+                "new_const"
+                []
+                [ Value.Bool true ] in
             let* α4 :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "foo::gre::bar
@@ -42,8 +47,13 @@ Module foo.
     | [], [] =>
       let* _ :=
         let* _ :=
-          let* α0 := M.get_function "std::io::stdio::_print" [] in
-          let* α1 := M.get_associated_function (Ty.path "core::fmt::Arguments") "new_const" [] in
+          let* α0 := M.get_function "std::io::stdio::_print" [] [] in
+          let* α1 :=
+            M.get_associated_function
+              (Ty.path "core::fmt::Arguments")
+              "new_const"
+              []
+              [ Value.Bool true ] in
           let* α4 :=
             (* Unsize *)
               let* α2 := M.read (mk_str "foo::bar
@@ -55,7 +65,7 @@ Module foo.
           M.alloc α6 in
         M.alloc (Value.Tuple []) in
       let* _ :=
-        let* α0 := M.get_function "module_duplicate::foo::gre::f_foo_gre" [] in
+        let* α0 := M.get_function "module_duplicate::foo::gre::f_foo_gre" [] [] in
         let* α1 := M.call_closure α0 [] in
         M.alloc α1 in
       let* α0 := M.alloc (Value.Tuple []) in
@@ -73,7 +83,7 @@ Definition f (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _ :=
-      let* α0 := M.get_function "module_duplicate::foo::f_foo" [] in
+      let* α0 := M.get_function "module_duplicate::foo::f_foo" [] [] in
       let* α1 := M.call_closure α0 [] in
       M.alloc α1 in
     let* α0 := M.alloc (Value.Tuple []) in
