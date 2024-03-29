@@ -70,11 +70,12 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 :=
                     M.read
                       (mk_str
-                        ("page loaded, r" ++
-                          String.String
+                        ("page loaded, r"
+                          ++
+                          (String.String
                             "233"
-                            ("f" ++ String.String "233" "
-"))) in
+                            ("f" ++ (String.String "233" "
+"))))) in
                   let* α3 := M.alloc (Value.Array [ α2 ]) in
                   M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in

@@ -1,7 +1,5 @@
 use pretty::RcDoc;
 
-// use crate::coq;
-
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
@@ -57,79 +55,6 @@ pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     } else {
         doc
     }
-}
-
-#[derive(Debug)]
-enum StringPiece {
-    /// A string of ASCII characters
-    AsciiString(String),
-    /// A single non-ASCII character
-    UnicodeChar(char),
-}
-
-/// As we can only represent purely ASCII strings in Coq, we need to cut the
-/// string in pieces, alternating between ASCII strings and non-ASCII
-/// characters.
-fn cut_string_in_pieces_for_coq(input: &str) -> Vec<StringPiece> {
-    let mut result: Vec<StringPiece> = Vec::new();
-    let mut ascii_buf = String::new();
-
-    for c in input.chars() {
-        if c.is_ascii() {
-            ascii_buf.push(c);
-        } else {
-            if !ascii_buf.is_empty() {
-                result.push(StringPiece::AsciiString(ascii_buf.clone()));
-                ascii_buf.clear();
-            }
-            result.push(StringPiece::UnicodeChar(c));
-        }
-    }
-
-    if !ascii_buf.is_empty() {
-        result.push(StringPiece::AsciiString(ascii_buf));
-    }
-
-    result
-}
-
-fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'a, ()> {
-    match pieces {
-        [] => text("\"\""),
-        [StringPiece::AsciiString(s), rest @ ..] => paren(
-            with_paren && !rest.is_empty(),
-            nest([
-                text("\""),
-                // Escape `"`s in the string to `""`
-                text(str::replace(s, "\"", "\"\"")),
-                text("\""),
-                optional_insert(
-                    rest.is_empty(),
-                    concat([text(" ++"), line(), string_pieces_to_doc(false, rest)]),
-                ),
-            ]),
-        ),
-        [StringPiece::UnicodeChar(c), rest @ ..] => paren(
-            with_paren,
-            nest([
-                text("String.String"),
-                line(),
-                text("\""),
-                text(format!("{:03}", *c as u8)),
-                text("\""),
-                line(),
-                string_pieces_to_doc(true, rest),
-            ]),
-        ),
-    }
-}
-
-pub(crate) fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
-    let pieces = cut_string_in_pieces_for_coq(message);
-    paren(
-        with_paren,
-        nest([text("mk_str"), line(), string_pieces_to_doc(true, &pieces)]),
-    )
 }
 
 pub type Doc<'a> = RcDoc<'a, ()>;
