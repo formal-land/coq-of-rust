@@ -940,19 +940,9 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
             body: body.clone(),
         }),
         ImplItemKind::Definition { definition } => Rc::new(ImplItemKind::Definition {
-            definition: definition.mt(),
+            definition: definition.clone(),
         }),
         ImplItemKind::Type { .. } => item,
-    }
-}
-
-impl FnSigAndBody {
-    fn mt(&self) -> Rc<Self> {
-        Rc::new(FnSigAndBody {
-            args: self.args.clone(),
-            ret_ty: self.ret_ty.clone(),
-            body: self.body.clone(),
-        })
     }
 }
 
@@ -961,7 +951,7 @@ fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
         TraitItem::Definition { .. } => body,
         TraitItem::Type() => body,
         TraitItem::DefinitionWithDefault(fun_definition) => {
-            Rc::new(TraitItem::DefinitionWithDefault(fun_definition.mt()))
+            Rc::new(TraitItem::DefinitionWithDefault(fun_definition.clone()))
         }
     }
 }
@@ -986,7 +976,7 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
         } => Rc::new(TopLevelItem::Definition {
             name: name.clone(),
             snippet: snippet.clone(),
-            definition: definition.mt(),
+            definition: definition.clone(),
         }),
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
@@ -1145,13 +1135,6 @@ impl FunDefinition {
         })
     }
 
-    fn mt(&self) -> Rc<Self> {
-        Rc::new(FunDefinition {
-            ty_params: self.ty_params.clone(),
-            signature_and_body: self.signature_and_body.mt(),
-        })
-    }
-
     /// The generics [generic_tys] are not part of the definition itself, but
     /// come from above, for example from the generics of the enclosing `impl`.
     /// The [with_extra_self_ty] is to add an extra `Self` parameter, for
@@ -1217,7 +1200,13 @@ impl FunDefinition {
                                             .collect(),
                                     },
                                 ],
-                                body.to_coq(),
+                                coq::Expression::ModeWrapper {
+                                    mode: "ltac".to_string(),
+                                    expr: Rc::new(coq::Expression::Application {
+                                        func: Rc::new(coq::Expression::just_name("M.monadic")),
+                                        args: vec![(None, body.to_coq())],
+                                    }),
+                                },
                             ),
                             (
                                 vec![coq::Expression::Wild, coq::Expression::Wild],

@@ -146,7 +146,6 @@ pub(crate) enum Expression<'a> {
         exprs: Vec<Expression<'a>>,
     },
     /// For example ltac:(...) or constr:(...)
-    /// #[allow(dead_code)]
     #[allow(dead_code)]
     ModeWrapper {
         mode: String,
