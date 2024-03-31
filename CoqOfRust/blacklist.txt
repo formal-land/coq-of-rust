@@ -8,5 +8,4 @@ examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 ink/
-MonadicNotationExample.v
 num_traits.v
