@@ -430,6 +430,7 @@ impl<'a> Expression<'a> {
             }
             Self::Let {
                 name,
+                is_monadic,
                 ty,
                 value,
                 body,
@@ -438,7 +439,15 @@ impl<'a> Expression<'a> {
                 group([
                     nest([
                         nest([
-                            nest([text("let"), line(), text(name.to_owned())]),
+                            nest([
+                                text("let"),
+                                optional_insert(!*is_monadic, text("*")),
+                                line(),
+                                text(match name {
+                                    Some(name) => name.as_str(),
+                                    None => "_",
+                                }),
+                            ]),
                             match ty {
                                 None => nil(),
                                 Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
@@ -446,13 +455,38 @@ impl<'a> Expression<'a> {
                             text(" :="),
                         ]),
                         line(),
-                        value.to_doc(false),
+                        value.to_doc(false), // init
                         text(" in"),
                     ]),
                     line(),
                     body.to_doc(false),
                 ]),
             ),
+            // Self::Let {
+            //     name,
+            //     ty,
+            //     value,
+            //     body,
+            // } => paren(
+            //     with_paren,
+            //     group([
+            //         nest([
+            //             nest([
+            //                 nest([text("let"), line(), text(name.to_owned())]),
+            //                 match ty {
+            //                     None => nil(),
+            //                     Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
+            //                 },
+            //                 text(" :="),
+            //             ]),
+            //             line(),
+            //             value.to_doc(false),
+            //             text(" in"),
+            //         ]),
+            //         line(),
+            //         body.to_doc(false),
+            //     ]),
+            // ),
             Self::Match { scrutinees, arms } => group([
                 group([
                     nest([
