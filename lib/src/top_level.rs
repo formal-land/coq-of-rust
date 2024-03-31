@@ -1130,7 +1130,6 @@ impl DynNameGen {
                 let dy_name = self.next(path.clone());
                 Rc::new(CoqType::Var(dy_name))
             } else {
-                // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
                 Rc::new(CoqType::Dyn(path.clone()))
             }
         } else {
@@ -1240,7 +1239,7 @@ impl FunDefinition {
                                             .collect(),
                                     },
                                 ],
-                                coq::Expression::Code(body.to_doc(false)),
+                                body.to_coq(),
                             ),
                             (
                                 vec![coq::Expression::Wild, coq::Expression::Wild],
@@ -1352,8 +1351,7 @@ impl ImplItemKind {
                         },
                     )),
                     Some(body) => {
-                        let body = coq::Expression::just_name("M.run")
-                            .apply(&coq::Expression::Code(body.to_doc(false)));
+                        let body = coq::Expression::just_name("M.run").apply(&body.to_coq());
 
                         coq::TopLevelItem::Definition(coq::Definition::new(
                             &definition_name,
@@ -1580,11 +1578,7 @@ impl TopLevelItem {
                         &coq::DefinitionKind::Alias {
                             args: vec![],
                             ty: Some(coq::Expression::just_name("Value.t")),
-                            body: coq::Expression::Code(nest([
-                                text("M.run"),
-                                line(),
-                                value.to_doc(true),
-                            ])),
+                            body: coq::Expression::just_name("M.run").apply(&value.to_coq()),
                         },
                     ))]
                 }

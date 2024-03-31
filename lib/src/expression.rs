@@ -2,7 +2,6 @@ use crate::coq;
 use crate::env::*;
 use crate::path::*;
 use crate::pattern::*;
-use crate::render::*;
 use crate::ty::*;
 use core::panic;
 use itertools::Itertools;
@@ -666,7 +665,7 @@ impl Literal {
     pub(crate) fn to_coq(&self) -> coq::Expression {
         match self {
             Literal::Bool(b) => coq::Expression::just_name("Value.Bool")
-                .apply(&coq::Expression::just_name(format!("{b}").as_str())),
+                .apply(&coq::Expression::just_name(b.to_string().as_str())),
             Literal::Integer(LiteralInteger {
                 name,
                 negative_sign,
@@ -694,10 +693,10 @@ impl Expr {
             Expr::Pure(expr) => coq::Expression::just_name("M.pure").apply(&expr.to_coq()),
             Expr::LocalVar(ref name) => coq::Expression::just_name(name),
             Expr::GetConst(path) => coq::Expression::just_name("M.get_constant")
-                .apply(&coq::Expression::String(format!("{path}"))),
+                .apply(&coq::Expression::String(path.to_string())),
             Expr::GetFunction { func, generic_tys } => coq::Expression::just_name("M.get_function")
                 .apply_many(&[
-                    coq::Expression::String(format!("{func}")),
+                    coq::Expression::String(func.to_string()),
                     coq::Expression::List {
                         exprs: generic_tys
                             .iter()
@@ -712,7 +711,7 @@ impl Expr {
                 method_name,
                 generic_tys,
             } => coq::Expression::just_name("M.get_trait_method").apply_many(&[
-                coq::Expression::String(format!("{trait_name}")),
+                coq::Expression::String(trait_name.to_string()),
                 self_ty.to_coq(),
                 coq::Expression::List {
                     exprs: trait_tys
@@ -720,7 +719,7 @@ impl Expr {
                         .map(|trait_ty| trait_ty.to_coq())
                         .collect_vec(),
                 },
-                coq::Expression::String(format!("{method_name}")),
+                coq::Expression::String(method_name.to_string()),
                 coq::Expression::List {
                     exprs: generic_tys.iter().map(|ty| ty.to_coq()).collect_vec(),
                 },
@@ -834,7 +833,7 @@ impl Expr {
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),
             Expr::StructStruct { path, fields, base } => match base {
                 None => coq::Expression::just_name("Value.StructRecord").apply_many(&[
-                    coq::Expression::String(format!("{path}")),
+                    coq::Expression::String(path.to_string()),
                     coq::Expression::List {
                         exprs: fields
                             .iter()
@@ -874,17 +873,13 @@ impl Expr {
                     coq::Expression::String(path.to_string()),
                     coq::Expression::List { exprs: vec![] },
                 ]),
-            Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()), // gy@TODO: eliminate the `with_paren`
-            Expr::InternalString(s) => coq::Expression::String(format!("{s}")),
+            Expr::Use(expr) => coq::Expression::just_name("M.use").apply(&expr.to_coq()),
+            Expr::InternalString(s) => coq::Expression::String(s.to_string()),
             Expr::InternalInteger(i) => coq::Expression::just_name(i.to_string().as_str()),
             Expr::Return(value) => coq::Expression::just_name("M.return_").apply(&value.to_coq()),
             Expr::Comment(message, expr) => {
                 coq::Expression::Comment(message.to_owned(), expr.to_coq().into())
             }
         }
-    }
-
-    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
-        self.to_coq().to_doc(with_paren)
     }
 }
