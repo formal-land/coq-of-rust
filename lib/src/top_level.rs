@@ -1545,7 +1545,17 @@ impl TopLevelItem {
                         &coq::DefinitionKind::Alias {
                             args: vec![],
                             ty: Some(coq::Expression::just_name("Value.t")),
-                            body: coq::Expression::just_name("M.run").apply(&value.to_coq()),
+                            body: coq::Expression::Code(
+                                coq::Expression::just_name("M.run")
+                                    .apply(&coq::Expression::ModeWrapper {
+                                        mode: "ltac".to_string(),
+                                        expr: Rc::new(coq::Expression::Application {
+                                            func: Rc::new(coq::Expression::just_name("M.monadic")),
+                                            args: vec![(None, value.to_coq())],
+                                        }),
+                                    })
+                                    .to_doc(true),
+                            ),
                         },
                     ))]
                 }
