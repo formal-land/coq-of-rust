@@ -438,8 +438,7 @@ impl<'a> Expression<'a> {
             } => {
                 // NOTE: The following variable is intended to bypass self-referencing issue for borrow checkers.
                 // See: https://users.rust-lang.org/t/argument-requires-that-1-must-outlive-a/105444
-                // let mut name_string = String::new();
-                let name_string = match name {
+                let name = match name {
                     Some(name) => name.as_str(),
                     None => "_",
                 }
@@ -453,7 +452,7 @@ impl<'a> Expression<'a> {
                                     text("let"),
                                     optional_insert(!*is_monadic, text("*")),
                                     line(),
-                                    text(name_string),
+                                    text(name),
                                 ]),
                                 match ty {
                                     None => nil(),
