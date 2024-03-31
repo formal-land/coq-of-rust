@@ -1295,7 +1295,7 @@ impl FunDefinition {
                                     name: Some("Self".to_string()),
                                     is_monadic: false,
                                     ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
-                                    value: Rc::new(
+                                    init: Rc::new(
                                         coq::Expression::just_name("Self").apply_many(
                                             &generic_tys
                                                 .iter()
@@ -1371,7 +1371,7 @@ impl ImplItemKind {
                                         name: Some("Self".to_string()),
                                         is_monadic: false,
                                         ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
-                                        value: Rc::new(
+                                        init: Rc::new(
                                             coq::Expression::just_name("Self").apply_many(
                                                 &generic_tys
                                                     .iter()

@@ -686,11 +686,6 @@ impl Literal {
             Literal::Error => coq::Expression::just_name("UnsupportedLiteral"),
         }
     }
-
-    // NOTE: Commented out since it's unused
-    // pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
-    //     self.to_coq().to_doc(with_paren)
-    // }
 }
 
 impl Expr {
@@ -830,10 +825,10 @@ impl Expr {
                 name: name.to_owned(),
                 is_monadic: *is_monadic,
                 ty: None,
-                value: Rc::new(init.to_coq()),
+                init: Rc::new(init.to_coq()),
                 body: Rc::new(body.to_coq()),
             },
-            Expr::Loop { body } => coq::Expression::just_name("M.loop").apply(&body.to_coq()), // gy@TODO: eliminate the `Code` here
+            Expr::Loop { body } => coq::Expression::just_name("M.loop").apply(&body.to_coq()),
             Expr::Index { base, index } => coq::Expression::just_name("M.get_array_field")
                 .apply_many(&[base.to_coq(), index.to_coq()]),
             Expr::ControlFlow(lcf_expression) => lcf_expression.to_coq(),

@@ -89,7 +89,7 @@ pub(crate) enum Expression<'a> {
         name: Option<String>,
         is_monadic: bool,
         ty: Option<Rc<Expression<'a>>>,
-        value: Rc<Expression<'a>>,
+        init: Rc<Expression<'a>>,
         body: Rc<Expression<'a>>,
     },
     Match {
@@ -433,7 +433,7 @@ impl<'a> Expression<'a> {
                 name,
                 is_monadic,
                 ty,
-                value,
+                init,
                 body,
             } => {
                 // NOTE: The following variable is intended to bypass self-referencing issue for borrow checkers.
@@ -461,7 +461,7 @@ impl<'a> Expression<'a> {
                                 text(" :="),
                             ]),
                             line(),
-                            value.to_doc(false), // init
+                            init.to_doc(false),
                             text(" in"),
                         ]),
                         line(),
