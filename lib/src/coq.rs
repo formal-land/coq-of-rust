@@ -86,7 +86,8 @@ pub(crate) enum Expression<'a> {
         body: Rc<Expression<'a>>,
     },
     Let {
-        name: String,
+        name: Option<String>,
+        is_monadic: bool,
         ty: Option<Rc<Expression<'a>>>,
         value: Rc<Expression<'a>>,
         body: Rc<Expression<'a>>,
@@ -434,59 +435,41 @@ impl<'a> Expression<'a> {
                 ty,
                 value,
                 body,
-            } => paren(
-                with_paren,
-                group([
-                    nest([
+            } => {
+                // NOTE: The following variable is intended to bypass self-referencing issue for borrow checkers.
+                // See: https://users.rust-lang.org/t/argument-requires-that-1-must-outlive-a/105444
+                // let mut name_string = String::new();
+                let name_string = match name {
+                    Some(name) => name.as_str(),
+                    None => "_",
+                }
+                .to_string();
+                paren(
+                    with_paren,
+                    group([
                         nest([
                             nest([
-                                text("let"),
-                                optional_insert(!*is_monadic, text("*")),
-                                line(),
-                                text(match name {
-                                    Some(name) => name.as_str(),
-                                    None => "_",
-                                }),
+                                nest([
+                                    text("let"),
+                                    optional_insert(!*is_monadic, text("*")),
+                                    line(),
+                                    text(name_string),
+                                ]),
+                                match ty {
+                                    None => nil(),
+                                    Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
+                                },
+                                text(" :="),
                             ]),
-                            match ty {
-                                None => nil(),
-                                Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
-                            },
-                            text(" :="),
+                            line(),
+                            value.to_doc(false), // init
+                            text(" in"),
                         ]),
                         line(),
-                        value.to_doc(false), // init
-                        text(" in"),
+                        body.to_doc(false),
                     ]),
-                    line(),
-                    body.to_doc(false),
-                ]),
-            ),
-            // Self::Let {
-            //     name,
-            //     ty,
-            //     value,
-            //     body,
-            // } => paren(
-            //     with_paren,
-            //     group([
-            //         nest([
-            //             nest([
-            //                 nest([text("let"), line(), text(name.to_owned())]),
-            //                 match ty {
-            //                     None => nil(),
-            //                     Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
-            //                 },
-            //                 text(" :="),
-            //             ]),
-            //             line(),
-            //             value.to_doc(false),
-            //             text(" in"),
-            //         ]),
-            //         line(),
-            //         body.to_doc(false),
-            //     ]),
-            // ),
+                )
+            }
             Self::Match { scrutinees, arms } => group([
                 group([
                     nest([
