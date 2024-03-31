@@ -40,8 +40,6 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ := M.assign inferred_type (Value.Integer Integer.I64 4294967296) in
     let* mutable := M.alloc (Value.Integer Integer.I32 12) in
     let* _ := M.assign mutable (Value.Integer Integer.I32 21) in
-    let* mutable := M.alloc (Value.Bool true) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* mutable := M.alloc (Value.Bool true) in let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

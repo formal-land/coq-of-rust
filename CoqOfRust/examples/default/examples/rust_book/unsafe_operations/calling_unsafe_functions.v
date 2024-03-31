@@ -43,32 +43,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Value.Integer Integer.U32 4
                 ]) in
           let* α3 := M.call_closure α1 [ α2 ] in
-          let* α4 := M.read α3 in
-          M.pure (M.pointer_coercion α4) in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      M.alloc α6 in
+          let* α4 := M.read α3 in M.pure (M.pointer_coercion α4) in
+      let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
     let* pointer :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
           "as_ptr"
           [] in
-      let* α1 := M.call_closure α0 [ some_vector ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ some_vector ] in M.alloc α1 in
     let* length :=
       let* α0 :=
         M.get_associated_function
           (Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ])
           "len"
           [] in
-      let* α1 := M.call_closure α0 [ some_vector ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ some_vector ] in M.alloc α1 in
     let* my_slice :=
       let* α0 := M.get_function "core::slice::raw::from_raw_parts" [ Ty.path "u32" ] in
       let* α1 := M.read pointer in
-      let* α2 := M.read length in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
+      let* α2 := M.read length in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -102,11 +96,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α1 := M.read left_val in
                     let* α2 := M.read right_val in
                     let* α3 := M.call_closure α0 [ α1; α2 ] in
-                    let* α4 := M.alloc (UnOp.Pure.not α3) in
-                    M.pure (M.use α4) in
+                    let* α4 := M.alloc (UnOp.Pure.not α3) in M.pure (M.use α4) in
                   let* _ :=
-                    let* α0 := M.read γ in
-                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                    let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
                   let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                   let* α0 :=
                     M.get_function
@@ -123,13 +115,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       α0
                       [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                   let* α0 := M.alloc α4 in
-                  let* α1 := M.read α0 in
-                  let* α2 := M.never_to_any α1 in
-                  M.alloc α2;
+                  let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
                 fun γ => M.alloc (Value.Tuple [])
               ]
         ] in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

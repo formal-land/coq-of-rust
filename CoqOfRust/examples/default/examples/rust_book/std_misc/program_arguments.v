@@ -30,9 +30,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
           ] in
       let* α1 := M.get_function "std::env::args" [] in
-      let* α2 := M.call_closure α1 [] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      M.alloc α3 in
+      let* α2 := M.call_closure α1 [] in let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -42,8 +40,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "My path is ") in
             let* α3 := M.read (mk_str ".
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α11 :=
           (* Unsize *)
             let* α6 :=
@@ -62,11 +59,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [] in
             let* α8 := M.call_closure α7 [ args; Value.Integer Integer.Usize 0 ] in
             let* α9 := M.call_closure α6 [ α8 ] in
-            let* α10 := M.alloc (Value.Array [ α9 ]) in
-            M.pure (M.pointer_coercion α10) in
+            let* α10 := M.alloc (Value.Array [ α9 ]) in M.pure (M.pointer_coercion α10) in
         let* α12 := M.call_closure α1 [ α5; α11 ] in
-        let* α13 := M.call_closure α0 [ α12 ] in
-        M.alloc α13 in
+        let* α13 := M.call_closure α0 [ α12 ] in M.alloc α13 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -78,8 +73,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str " arguments: ") in
             let* α4 := M.read (mk_str ".
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
         let* α19 :=
           (* Unsize *)
             let* α7 :=
@@ -127,13 +121,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α16 := M.alloc α15 in
             let* α17 := M.call_closure α13 [ α16 ] in
-            let* α18 := M.alloc (Value.Array [ α12; α17 ]) in
-            M.pure (M.pointer_coercion α18) in
+            let* α18 := M.alloc (Value.Array [ α12; α17 ]) in M.pure (M.pointer_coercion α18) in
         let* α20 := M.call_closure α1 [ α6; α19 ] in
-        let* α21 := M.call_closure α0 [ α20 ] in
-        M.alloc α21 in
+        let* α21 := M.call_closure α0 [ α20 ] in M.alloc α21 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -29,11 +29,9 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Yuck! Too sugary.
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
@@ -46,8 +44,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "") in
                   let* α3 := M.read (mk_str "? How nice.
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -56,11 +53,9 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_display"
                       [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
                   let* α7 := M.call_closure α6 [ inner ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -71,11 +66,9 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "No drink? Oh well.
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0
@@ -103,9 +96,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
           (Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
           "unwrap"
           [] in
-      let* α1 := M.read drink in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read drink in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.alloc (Value.Tuple []) in
       M.match_operator
@@ -121,19 +112,14 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                   "eq"
                   [] in
               let* α1 := M.call_closure α0 [ inside; mk_str "lemonade" ] in
-              let* α2 := M.alloc α1 in
-              M.pure (M.use α2) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α2 := M.alloc α1 in M.pure (M.use α2) in
+            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
             let* α0 :=
               M.get_function
                 "std::panicking::begin_panic"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
             let* α1 := M.read (mk_str "AAAaaaaa!!!!") in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.never_to_any α2 in
-            M.alloc α3;
+            let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
           fun γ => M.alloc (Value.Tuple [])
         ] in
     let* _ :=
@@ -145,8 +131,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "I love ") in
             let* α3 := M.read (mk_str "s!!!!!
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -155,14 +140,11 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
             let* α7 := M.call_closure α6 [ inside ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.
 
@@ -195,34 +177,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* void := M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::give_adult" [] in
-      let* α1 := M.read water in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read water in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::give_adult" [] in
-      let* α1 := M.read lemonade in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read lemonade in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::give_adult" [] in
-      let* α1 := M.read void in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read void in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* coffee :=
       let* α0 := M.read (mk_str "coffee") in
       M.alloc (Value.StructTuple "core::option::Option::Some" [ α0 ]) in
     let* nothing := M.alloc (Value.StructTuple "core::option::Option::None" []) in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::drink" [] in
-      let* α1 := M.read coffee in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read coffee in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "option_and_unwrap::drink" [] in
-      let* α1 := M.read nothing in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.read nothing in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -41,8 +41,7 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -170,10 +169,8 @@ Module Impl_contract_terminate_JustTerminate.
         let* α8 := M.call_closure α6 [ α7 ] in
         let* α9 := M.alloc α8 in
         let* α10 := M.call_closure α5 [ α9 ] in
-        let* α11 := M.call_closure α0 [ α4; α10 ] in
-        M.alloc α11 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+        let* α11 := M.call_closure α0 [ α4; α10 ] in M.alloc α11 in
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   

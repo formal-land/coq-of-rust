@@ -59,8 +59,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -184,8 +183,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* point :=
       let* α0 := M.get_function "box_stack_heap::origin" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* rectangle :=
       let* α0 := M.get_function "box_stack_heap::origin" [] in
       let* α1 := M.call_closure α0 [] in
@@ -232,9 +230,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "new"
           [] in
       let* α1 := M.get_function "box_stack_heap::origin" [] in
-      let* α2 := M.call_closure α1 [] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      M.alloc α3 in
+      let* α2 := M.call_closure α1 [] in let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
     let* box_in_a_box :=
       let* α0 :=
         M.get_associated_function
@@ -249,9 +245,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "new"
           [] in
       let* α1 := M.get_function "box_stack_heap::boxed_origin" [] in
-      let* α2 := M.call_closure α1 [] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      M.alloc α3 in
+      let* α2 := M.call_closure α1 [] in let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -261,8 +255,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Point occupies ") in
             let* α3 := M.read (mk_str " bytes on the stack
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -275,11 +268,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ point ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -290,8 +281,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Rectangle occupies ") in
             let* α3 := M.read (mk_str " bytes on the stack
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -304,11 +294,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ rectangle ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -319,8 +307,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Boxed point occupies ") in
             let* α3 := M.read (mk_str " bytes on the stack
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -339,11 +326,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ boxed_point ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -354,8 +339,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Boxed rectangle occupies ") in
             let* α3 := M.read (mk_str " bytes on the stack
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -374,11 +358,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ boxed_rectangle ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -389,8 +371,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Boxed box occupies ") in
             let* α3 := M.read (mk_str " bytes on the stack
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -414,15 +395,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ box_in_a_box ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
-    let* unboxed_point :=
-      let* α0 := M.read boxed_point in
-      M.copy α0 in
+    let* unboxed_point := let* α0 := M.read boxed_point in M.copy α0 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -432,8 +409,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Unboxed point occupies ") in
             let* α3 := M.read (mk_str " bytes on the stack
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -446,13 +422,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ unboxed_point ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

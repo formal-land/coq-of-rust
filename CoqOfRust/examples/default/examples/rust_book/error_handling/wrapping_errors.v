@@ -40,8 +40,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                 M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
               let* α1 := M.read f in
               let* α2 := M.read (mk_str "EmptyVec") in
-              let* α3 := M.call_closure α0 [ α1; α2 ] in
-              M.alloc α3;
+              let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3;
             fun γ =>
               let* γ := M.read γ in
               let* γ1_0 :=
@@ -55,8 +54,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
               let* α1 := M.read f in
               let* α2 := M.read (mk_str "Parse") in
               let* α3 := (* Unsize *) M.pure (M.pointer_coercion __self_0) in
-              let* α4 := M.call_closure α0 [ α1; α2; α3 ] in
-              M.alloc α4
+              let* α4 := M.call_closure α0 [ α1; α2; α3 ] in M.alloc α4
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -107,11 +105,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
               let* α5 :=
                 (* Unsize *)
                   let* α3 := M.read (mk_str "please use a vector with at least one element") in
-                  let* α4 := M.alloc (Value.Array [ α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α6 := M.call_closure α2 [ α5 ] in
-              let* α7 := M.call_closure α0 [ α1; α6 ] in
-              M.alloc α7;
+              let* α7 := M.call_closure α0 [ α1; α6 ] in M.alloc α7;
             fun γ =>
               let* α0 :=
                 M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
@@ -121,11 +117,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
               let* α5 :=
                 (* Unsize *)
                   let* α3 := M.read (mk_str "the provided string could not be parsed as int") in
-                  let* α4 := M.alloc (Value.Array [ α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α6 := M.call_closure α2 [ α5 ] in
-              let* α7 := M.call_closure α0 [ α1; α6 ] in
-              M.alloc α7
+              let* α7 := M.call_closure α0 [ α1; α6 ] in M.alloc α7
           ] in
       M.read α1
     | _, _ => M.impossible
@@ -167,10 +161,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match γ "wrapping_errors::DoubleError::Parse" 0 in
               let* e := M.alloc γ0_0 in
-              let* α1 :=
-                (* Unsize *)
-                  let* α0 := M.read e in
-                  M.pure (M.pointer_coercion α0) in
+              let* α1 := (* Unsize *) let* α0 := M.read e in M.pure (M.pointer_coercion α0) in
               M.alloc (Value.StructTuple "core::option::Option::Some" [ α1 ])
           ] in
       M.read α1
@@ -292,17 +283,14 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
-              let* α4 := M.read α3 in
-              let* α5 := M.never_to_any α4 in
-              M.alloc α5;
+              let* α4 := M.read α3 in let* α5 := M.never_to_any α4 in M.alloc α5;
             fun γ =>
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
-              let* val := M.copy γ0_0 in
-              M.pure val
+              let* val := M.copy γ0_0 in M.pure val
           ] in
       M.copy α9 in
     let* parsed :=
@@ -351,23 +339,19 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
-              let* α4 := M.read α3 in
-              let* α5 := M.never_to_any α4 in
-              M.alloc α5;
+              let* α4 := M.read α3 in let* α5 := M.never_to_any α4 in M.alloc α5;
             fun γ =>
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
-              let* val := M.copy γ0_0 in
-              M.pure val
+              let* val := M.copy γ0_0 in M.pure val
           ] in
       M.copy α7 in
     let* α0 := M.read parsed in
     let* α1 := BinOp.Panic.mul (Value.Integer Integer.I32 2) α0 in
-    let* α0 := M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in
-    M.read α0
+    let* α0 := M.alloc (Value.StructTuple "core::result::Result::Ok" [ α1 ]) in M.read α0
   | _, _ => M.impossible
   end.
 
@@ -403,8 +387,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "The first doubled is ") in
                   let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -413,11 +396,9 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_display"
                       [ Ty.path "i32" ] in
                   let* α7 := M.call_closure α6 [ n ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
@@ -431,8 +412,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "Error: ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
                 let* α9 :=
                   (* Unsize *)
                     let* α6 :=
@@ -441,11 +421,9 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                         "new_display"
                         [ Ty.path "wrapping_errors::DoubleError" ] in
                     let* α7 := M.call_closure α6 [ e ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in
-                    M.pure (M.pointer_coercion α8) in
+                    let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
                 let* α10 := M.call_closure α1 [ α5; α9 ] in
-                let* α11 := M.call_closure α0 [ α10 ] in
-                M.alloc α11 in
+                let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
               M.alloc (Value.Tuple []) in
             let* α0 := M.alloc (Value.Tuple []) in
             M.match_operator
@@ -460,8 +438,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                         "source"
                         [] in
-                    let* α1 := M.call_closure α0 [ e ] in
-                    M.alloc α1 in
+                    let* α1 := M.call_closure α0 [ e ] in M.alloc α1 in
                   let* γ0_0 :=
                     M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                   let* source := M.copy γ0_0 in
@@ -492,8 +469,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
                       let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in
-                      M.alloc α11 in
+                      let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
                     M.alloc (Value.Tuple []) in
                   M.alloc (Value.Tuple []);
                 fun γ => M.alloc (Value.Tuple [])
@@ -540,10 +516,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α4 := M.read (mk_str "18") in
           let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
           let* α6 := M.call_closure α1 [ α5 ] in
-          let* α7 := M.read α6 in
-          M.pure (M.pointer_coercion α7) in
-      let* α9 := M.call_closure α0 [ α8 ] in
-      M.alloc α9 in
+          let* α7 := M.read α6 in M.pure (M.pointer_coercion α7) in
+      let* α9 := M.call_closure α0 [ α8 ] in M.alloc α9 in
     let* empty :=
       let* α0 :=
         M.get_associated_function
@@ -552,8 +526,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* strings :=
       let* α0 :=
         M.get_associated_function
@@ -577,32 +550,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           let* α4 := M.read (mk_str "18") in
           let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
           let* α6 := M.call_closure α1 [ α5 ] in
-          let* α7 := M.read α6 in
-          M.pure (M.pointer_coercion α7) in
-      let* α9 := M.call_closure α0 [ α8 ] in
-      M.alloc α9 in
+          let* α7 := M.read α6 in M.pure (M.pointer_coercion α7) in
+      let* α9 := M.call_closure α0 [ α8 ] in M.alloc α9 in
     let* _ :=
       let* α0 := M.get_function "wrapping_errors::print" [] in
       let* α1 := M.get_function "wrapping_errors::double_first" [] in
       let* α2 := M.read numbers in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.call_closure α0 [ α3 ] in
-      M.alloc α4 in
+      let* α3 := M.call_closure α1 [ α2 ] in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
     let* _ :=
       let* α0 := M.get_function "wrapping_errors::print" [] in
       let* α1 := M.get_function "wrapping_errors::double_first" [] in
       let* α2 := M.read empty in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.call_closure α0 [ α3 ] in
-      M.alloc α4 in
+      let* α3 := M.call_closure α1 [ α2 ] in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
     let* _ :=
       let* α0 := M.get_function "wrapping_errors::print" [] in
       let* α1 := M.get_function "wrapping_errors::double_first" [] in
       let* α2 := M.read strings in
-      let* α3 := M.call_closure α1 [ α2 ] in
-      let* α4 := M.call_closure α0 [ α3 ] in
-      M.alloc α4 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α3 := M.call_closure α1 [ α2 ] in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

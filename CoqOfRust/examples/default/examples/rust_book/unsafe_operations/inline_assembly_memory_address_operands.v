@@ -27,9 +27,7 @@ Module main.
     match τ, α with
     | [], [ control ] =>
       let* control := M.alloc control in
-      let _ := InlineAssembly in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let _ := InlineAssembly in let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
 End main.

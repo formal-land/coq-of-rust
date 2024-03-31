@@ -114,8 +114,7 @@ Module Impl_enums_testcase_linked_list_List.
               let* α1 := M.read tail in
               let* α2 := M.read α1 in
               let* α3 := M.call_closure α0 [ α2 ] in
-              let* α4 := BinOp.Panic.add (Value.Integer Integer.U32 1) α3 in
-              M.alloc α4;
+              let* α4 := BinOp.Panic.add (Value.Integer Integer.U32 1) α3 in M.alloc α4;
             fun γ => M.alloc (Value.Integer Integer.U32 0)
           ] in
       M.read α1
@@ -167,8 +166,7 @@ Module Impl_enums_testcase_linked_list_List.
                   (* Unsize *)
                     let* α2 := M.read (mk_str "") in
                     let* α3 := M.read (mk_str ", ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
                 let* α16 :=
                   (* Unsize *)
                     let* α6 :=
@@ -195,8 +193,7 @@ Module Impl_enums_testcase_linked_list_List.
                     let* α15 := M.alloc (Value.Array [ α7; α14 ]) in
                     M.pure (M.pointer_coercion α15) in
                 let* α17 := M.call_closure α1 [ α5; α16 ] in
-                let* α18 := M.call_closure α0 [ α17 ] in
-                M.alloc α18 in
+                let* α18 := M.call_closure α0 [ α17 ] in M.alloc α18 in
               M.pure res;
             fun γ =>
               let* res :=
@@ -206,11 +203,9 @@ Module Impl_enums_testcase_linked_list_List.
                 let* α4 :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Nil") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    M.pure (M.pointer_coercion α3) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
                 let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in
-                M.alloc α6 in
+                let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
               M.pure res
           ] in
       M.read α1
@@ -240,26 +235,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* list :=
       let* α0 := M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "new" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "prepend" [] in
       let* α1 := M.read list in
-      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 1 ] in
-      M.assign list α2 in
+      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 1 ] in M.assign list α2 in
     let* _ :=
       let* α0 :=
         M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "prepend" [] in
       let* α1 := M.read list in
-      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 2 ] in
-      M.assign list α2 in
+      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 2 ] in M.assign list α2 in
     let* _ :=
       let* α0 :=
         M.get_associated_function (Ty.path "enums_testcase_linked_list::List") "prepend" [] in
       let* α1 := M.read list in
-      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 3 ] in
-      M.assign list α2 in
+      let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 3 ] in M.assign list α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -269,8 +260,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "linked list has length: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -283,11 +273,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ list ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -298,8 +286,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -315,13 +302,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ list ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -20,8 +20,7 @@ Module Impl_core_convert_From_i32_for_into_Number.
     match τ, α with
     | [], [ item ] =>
       let* item := M.alloc item in
-      let* α0 := M.read item in
-      M.pure (Value.StructRecord "into::Number" [ ("value", α0) ])
+      let* α0 := M.read item in M.pure (Value.StructRecord "into::Number" [ ("value", α0) ])
     | _, _ => M.impossible
     end.
   
@@ -49,9 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.path "into::Number" ]
           "into"
           [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.I32 5 ] in M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

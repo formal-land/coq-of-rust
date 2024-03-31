@@ -36,9 +36,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α6 := M.alloc α5 in
       let* α7 := M.read (mk_str "5") in
       let* α8 := M.call_closure α2 [ α6; α7 ] in
-      let* α9 := M.call_closure α1 [ α8 ] in
-      let* α10 := M.call_closure α0 [ α9 ] in
-      M.alloc α10 in
+      let* α9 := M.call_closure α1 [ α8 ] in let* α10 := M.call_closure α0 [ α9 ] in M.alloc α10 in
     let* _result :=
       let* α0 :=
         M.get_associated_function
@@ -48,9 +46,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "unwrap"
           [] in
       let* α1 := M.get_associated_function (Ty.path "std::process::Child") "wait" [] in
-      let* α2 := M.call_closure α1 [ child ] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      M.alloc α3 in
+      let* α2 := M.call_closure α1 [ child ] in let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -59,13 +55,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (* Unsize *)
             let* α2 := M.read (mk_str "reached end of main
 ") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

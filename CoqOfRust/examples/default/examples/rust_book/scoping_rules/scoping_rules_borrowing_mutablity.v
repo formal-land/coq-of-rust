@@ -73,8 +73,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str " - ") in
             let* α4 := M.read (mk_str " edition
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
         let* α14 :=
           (* Unsize *)
             let* α7 :=
@@ -99,14 +98,11 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                 α10
                 [ M.get_struct_record_field α11 "scoping_rules_borrowing_mutablity::Book" "year"
                 ] in
-            let* α13 := M.alloc (Value.Array [ α9; α12 ]) in
-            M.pure (M.pointer_coercion α13) in
+            let* α13 := M.alloc (Value.Array [ α9; α12 ]) in M.pure (M.pointer_coercion α13) in
         let* α15 := M.call_closure α1 [ α6; α14 ] in
-        let* α16 := M.call_closure α0 [ α15 ] in
-        M.alloc α16 in
+        let* α16 := M.call_closure α0 [ α15 ] in M.alloc α16 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.
 
@@ -135,8 +131,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str " - ") in
             let* α4 := M.read (mk_str " edition
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
         let* α14 :=
           (* Unsize *)
             let* α7 :=
@@ -161,14 +156,11 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                 α10
                 [ M.get_struct_record_field α11 "scoping_rules_borrowing_mutablity::Book" "year"
                 ] in
-            let* α13 := M.alloc (Value.Array [ α9; α12 ]) in
-            M.pure (M.pointer_coercion α13) in
+            let* α13 := M.alloc (Value.Array [ α9; α12 ]) in M.pure (M.pointer_coercion α13) in
         let* α15 := M.call_closure α1 [ α6; α14 ] in
-        let* α16 := M.call_closure α0 [ α15 ] in
-        M.alloc α16 in
+        let* α16 := M.call_closure α0 [ α15 ] in M.alloc α16 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.
 
@@ -212,17 +204,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* mutabook := M.copy immutabook in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
-      let* α1 := M.call_closure α0 [ immutabook ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ immutabook ] in M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_borrowing_mutablity::borrow_book" [] in
-      let* α1 := M.call_closure α0 [ mutabook ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ mutabook ] in M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "scoping_rules_borrowing_mutablity::new_edition" [] in
-      let* α1 := M.call_closure α0 [ mutabook ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.call_closure α0 [ mutabook ] in M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

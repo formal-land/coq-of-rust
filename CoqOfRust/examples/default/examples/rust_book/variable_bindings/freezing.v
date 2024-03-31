@@ -24,11 +24,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [] =>
     let* _mutable_integer := M.alloc (Value.Integer Integer.I32 7) in
-    let* _ :=
-      let* _mutable_integer := M.copy _mutable_integer in
-      M.alloc (Value.Tuple []) in
+    let* _ := let* _mutable_integer := M.copy _mutable_integer in M.alloc (Value.Tuple []) in
     let* _ := M.assign _mutable_integer (Value.Integer Integer.I32 3) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

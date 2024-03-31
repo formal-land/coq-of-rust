@@ -44,11 +44,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Value.Integer Integer.I32 8
                 ]) in
           let* α3 := M.call_closure α1 [ α2 ] in
-          let* α4 := M.read α3 in
-          M.pure (M.pointer_coercion α4) in
-      let* α6 := M.call_closure α0 [ α5 ] in
-      M.alloc α6 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+          let* α4 := M.read α3 in M.pure (M.pointer_coercion α4) in
+      let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

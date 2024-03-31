@@ -19,9 +19,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "Unit") in
-      M.call_closure α0 [ α1; α2 ]
+      let* α1 := M.read f in let* α2 := M.read (mk_str "Unit") in M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -41,10 +39,7 @@ Module Impl_core_clone_Clone_for_clone_Unit.
   *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read α0
+    | [], [ self ] => let* self := M.alloc self in let* α0 := M.read self in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -200,8 +195,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "original: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -210,11 +204,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "clone::Unit" ] in
             let* α7 := M.call_closure α6 [ unit_ ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -225,8 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "copy: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -235,11 +226,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "clone::Unit" ] in
             let* α7 := M.call_closure α6 [ copied_unit ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* pair_ :=
       let* α0 :=
@@ -264,8 +253,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "original: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -274,11 +262,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "clone::Pair" ] in
             let* α7 := M.call_closure α6 [ pair_ ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* moved_pair := M.copy pair_ in
     let* _ :=
@@ -290,8 +276,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "moved: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -300,21 +285,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "clone::Pair" ] in
             let* α7 := M.call_closure α6 [ moved_pair ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* cloned_pair :=
       let* α0 := M.get_trait_method "core::clone::Clone" (Ty.path "clone::Pair") [] "clone" [] in
-      let* α1 := M.call_closure α0 [ moved_pair ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ moved_pair ] in M.alloc α1 in
     let* _ :=
       let* α0 := M.get_function "core::mem::drop" [ Ty.path "clone::Pair" ] in
-      let* α1 := M.read moved_pair in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read moved_pair in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -324,8 +304,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "clone: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -334,13 +313,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "clone::Pair" ] in
             let* α7 := M.call_closure α6 [ cloned_pair ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

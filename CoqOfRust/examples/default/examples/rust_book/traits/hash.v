@@ -43,8 +43,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
       let* α1 := M.read self in
       let* α2 := M.read state in
       let* α3 := M.call_closure α0 [ M.get_struct_record_field α1 "hash::Person" "phone"; α2 ] in
-      let* α0 := M.alloc α3 in
-      M.read α0
+      let* α0 := M.alloc α3 in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -69,8 +68,7 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
     let* t := M.alloc t in
     let* s :=
       let* α0 := M.get_associated_function (Ty.path "std::hash::random::DefaultHasher") "new" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -79,9 +77,7 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
           []
           "hash"
           [ Ty.path "std::hash::random::DefaultHasher" ] in
-      let* α1 := M.read t in
-      let* α2 := M.call_closure α0 [ α1; s ] in
-      M.alloc α2 in
+      let* α1 := M.read t in let* α2 := M.call_closure α0 [ α1; s ] in M.alloc α2 in
     let* α0 :=
       M.get_trait_method
         "core::hash::Hasher"
@@ -89,9 +85,7 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
         []
         "finish"
         [] in
-    let* α1 := M.call_closure α0 [ s ] in
-    let* α0 := M.alloc α1 in
-    M.read α0
+    let* α1 := M.call_closure α0 [ s ] in let* α0 := M.alloc α1 in M.read α0
   | _, _ => M.impossible
   end.
 
@@ -149,21 +143,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               let* α1 := M.call_closure α0 [ person1 ] in
               let* α2 := M.get_function "hash::calculate_hash" [ Ty.path "hash::Person" ] in
               let* α3 := M.call_closure α2 [ person2 ] in
-              let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.ne α1 α3)) in
-              M.pure (M.use α4) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.ne α1 α3)) in M.pure (M.use α4) in
+            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
             let* α0 := M.get_function "core::panicking::panic" [] in
             let* α1 :=
               M.read
                 (mk_str "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
-            let* α2 := M.call_closure α0 [ α1 ] in
-            let* α3 := M.never_to_any α2 in
-            M.alloc α3;
+            let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3;
           fun γ => M.alloc (Value.Tuple [])
         ] in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

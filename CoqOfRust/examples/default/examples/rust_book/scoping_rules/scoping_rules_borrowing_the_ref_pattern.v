@@ -18,8 +18,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -115,8 +114,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "ref_c1 equals ref_c2: ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
                 let* α14 :=
                   (* Unsize *)
                     let* α6 :=
@@ -130,11 +128,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α10 := M.read α9 in
                     let* α11 := M.alloc (BinOp.Pure.eq α8 α10) in
                     let* α12 := M.call_closure α6 [ α11 ] in
-                    let* α13 := M.alloc (Value.Array [ α12 ]) in
-                    M.pure (M.pointer_coercion α13) in
+                    let* α13 := M.alloc (Value.Array [ α12 ]) in M.pure (M.pointer_coercion α13) in
                 let* α15 := M.call_closure α1 [ α5; α14 ] in
-                let* α16 := M.call_closure α0 [ α15 ] in
-                M.alloc α16 in
+                let* α16 := M.call_closure α0 [ α15 ] in M.alloc α16 in
               M.alloc (Value.Tuple []) in
             let* point :=
               M.alloc
@@ -157,8 +153,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           γ
                           "scoping_rules_borrowing_the_ref_pattern::Point"
                           "y" in
-                      let* ref_to_x := M.alloc γ0_0 in
-                      M.read ref_to_x
+                      let* ref_to_x := M.alloc γ0_0 in M.read ref_to_x
                   ] in
               M.copy α0 in
             let* mutable_point := M.copy point in
@@ -179,8 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "y" in
                     let* mut_ref_to_y := M.alloc γ0_1 in
                     let* _ :=
-                      let* α0 := M.read mut_ref_to_y in
-                      M.assign α0 (Value.Integer Integer.I32 1) in
+                      let* α0 := M.read mut_ref_to_y in M.assign α0 (Value.Integer Integer.I32 1) in
                     M.alloc (Value.Tuple [])
                 ] in
             let* _ :=
@@ -228,8 +222,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                     M.pure (M.pointer_coercion α11) in
                 let* α13 := M.call_closure α1 [ α6; α12 ] in
-                let* α14 := M.call_closure α0 [ α13 ] in
-                M.alloc α14 in
+                let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
@@ -276,8 +269,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                     M.pure (M.pointer_coercion α11) in
                 let* α13 := M.call_closure α1 [ α6; α12 ] in
-                let* α14 := M.call_closure α0 [ α13 ] in
-                M.alloc α14 in
+                let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
               M.alloc (Value.Tuple []) in
             let* mutable_tuple :=
               let* α0 :=
@@ -297,9 +289,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let γ0_0 := M.get_tuple_field γ 0 in
                     let γ0_1 := M.get_tuple_field γ 1 in
                     let* last := M.alloc γ0_1 in
-                    let* _ :=
-                      let* α0 := M.read last in
-                      M.assign α0 (Value.Integer Integer.U32 2) in
+                    let* _ := let* α0 := M.read last in M.assign α0 (Value.Integer Integer.U32 2) in
                     M.alloc (Value.Tuple [])
                 ] in
             let* _ :=
@@ -311,8 +301,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "tuple is ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
                 let* α9 :=
                   (* Unsize *)
                     let* α6 :=
@@ -329,11 +318,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                         ] in
                     let* α7 := M.call_closure α6 [ mutable_tuple ] in
-                    let* α8 := M.alloc (Value.Array [ α7 ]) in
-                    M.pure (M.pointer_coercion α8) in
+                    let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
                 let* α10 := M.call_closure α1 [ α5; α9 ] in
-                let* α11 := M.call_closure α0 [ α10 ] in
-                M.alloc α11 in
+                let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple [])
         ] in

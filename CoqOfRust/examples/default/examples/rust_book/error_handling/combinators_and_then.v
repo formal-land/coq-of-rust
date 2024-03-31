@@ -41,21 +41,11 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
         M.match_operator
           self
           [
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "CordonBleu") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Steak") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Sushi") in
-              M.alloc α0
+            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "CordonBleu") in M.alloc α0;
+            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Steak") in M.alloc α0;
+            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Sushi") in M.alloc α0
           ] in
-      let* α3 := M.read α2 in
-      M.call_closure α0 [ α1; α3 ]
+      let* α3 := M.read α2 in M.call_closure α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -107,21 +97,11 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
         M.match_operator
           self
           [
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Monday") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Tuesday") in
-              M.alloc α0;
-            fun γ =>
-              let* γ := M.read γ in
-              let* α0 := M.read (mk_str "Wednesday") in
-              M.alloc α0
+            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Monday") in M.alloc α0;
+            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Tuesday") in M.alloc α0;
+            fun γ => let* γ := M.read γ in let* α0 := M.read (mk_str "Wednesday") in M.alloc α0
           ] in
-      let* α3 := M.read α2 in
-      M.call_closure α0 [ α1; α3 ]
+      let* α3 := M.read α2 in M.call_closure α0 [ α1; α3 ]
     | _, _ => M.impossible
     end.
   
@@ -309,8 +289,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                   M.pure (M.pointer_coercion α11) in
               let* α13 := M.call_closure α1 [ α6; α12 ] in
-              let* α14 := M.call_closure α0 [ α13 ] in
-              M.alloc α14 in
+              let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -321,8 +300,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "Oh no. We don't get to eat on ") in
                   let* α3 := M.read (mk_str "?
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -331,11 +309,9 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_debug"
                       [ Ty.path "combinators_and_then::Day" ] in
                   let* α7 := M.call_closure α6 [ day ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α4

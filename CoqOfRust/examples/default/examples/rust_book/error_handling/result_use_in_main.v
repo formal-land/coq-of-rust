@@ -27,17 +27,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::result::Result::Ok" 0 in
-              let* number := M.copy γ0_0 in
-              M.pure number;
+              let* number := M.copy γ0_0 in M.pure number;
             fun γ =>
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match γ "core::result::Result::Err" 0 in
               let* e := M.copy γ0_0 in
               let* α0 := M.read e in
               let* α1 := M.return_ (Value.StructTuple "core::result::Result::Err" [ α0 ]) in
-              let* α2 := M.read α1 in
-              let* α3 := M.never_to_any α2 in
-              M.alloc α3
+              let* α2 := M.read α1 in let* α3 := M.never_to_any α2 in M.alloc α3
           ] in
       M.copy α4 in
     let* _ :=
@@ -49,8 +46,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -59,11 +55,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.path "i32" ] in
             let* α7 := M.call_closure α6 [ number ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* α0 := M.alloc (Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]) in
     M.read α0

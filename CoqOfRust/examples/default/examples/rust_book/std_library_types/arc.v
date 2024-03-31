@@ -34,8 +34,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "new"
           [] in
       let* α1 := M.read (mk_str "the same apple") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -75,9 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       fun γ =>
                         let* α0 := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 := M.never_to_any α1 in
-                        M.alloc α2;
+                        let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
                       fun γ =>
                         let* γ0_0 :=
                           M.get_struct_tuple_field_or_break_match
@@ -97,8 +94,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                               "clone"
                               [] in
-                          let* α1 := M.call_closure α0 [ apple ] in
-                          M.alloc α1 in
+                          let* α1 := M.call_closure α0 [ apple ] in M.alloc α1 in
                         let* _ :=
                           let* α0 :=
                             M.get_function
@@ -156,8 +152,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 let* α11 := M.call_closure α0 [ α10 ] in
                                                 M.alloc α11 in
                                               M.alloc (Value.Tuple []) in
-                                            let* α0 := M.alloc (Value.Tuple []) in
-                                            M.read α0
+                                            let* α0 := M.alloc (Value.Tuple []) in M.read α0
                                         ]
                                     | _ => M.impossible
                                     end)
@@ -172,9 +167,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       let* α0 := M.get_function "std::thread::sleep" [] in
       let* α1 := M.get_associated_function (Ty.path "core::time::Duration") "from_secs" [] in
       let* α2 := M.call_closure α1 [ Value.Integer Integer.U64 1 ] in
-      let* α3 := M.call_closure α0 [ α2 ] in
-      M.alloc α3 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α3 := M.call_closure α0 [ α2 ] in M.alloc α3 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

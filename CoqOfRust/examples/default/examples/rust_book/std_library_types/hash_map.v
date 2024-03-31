@@ -38,9 +38,7 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
                   "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?") in
             M.alloc α0;
-          fun γ =>
-            let* α0 := M.read (mk_str "Hi! Who is this again?") in
-            M.alloc α0
+          fun γ => let* α0 := M.read (mk_str "Hi! Who is this again?") in M.alloc α0
         ] in
     M.read α0
   | _, _ => M.impossible
@@ -94,8 +92,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -110,8 +107,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 := M.read (mk_str "Daniel") in
       let* α2 := M.read (mk_str "798-1364") in
-      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -126,8 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 := M.read (mk_str "Ashley") in
       let* α2 := M.read (mk_str "645-7689") in
-      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -142,8 +137,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 := M.read (mk_str "Katie") in
       let* α2 := M.read (mk_str "435-8291") in
-      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -158,8 +152,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 := M.read (mk_str "Robert") in
       let* α2 := M.read (mk_str "956-1745") in
-      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -189,8 +182,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "Calling Daniel: ") in
                   let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α13 :=
                 (* Unsize *)
                   let* α6 :=
@@ -203,11 +195,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call_closure α7 [ α8 ] in
                   let* α10 := M.alloc α9 in
                   let* α11 := M.call_closure α6 [ α10 ] in
-                  let* α12 := M.alloc (Value.Array [ α11 ]) in
-                  M.pure (M.pointer_coercion α12) in
+                  let* α12 := M.alloc (Value.Array [ α11 ]) in M.pure (M.pointer_coercion α12) in
               let* α14 := M.call_closure α1 [ α5; α13 ] in
-              let* α15 := M.call_closure α0 [ α14 ] in
-              M.alloc α15 in
+              let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -218,11 +208,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Don't have Daniel's number.
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     let* _ :=
@@ -239,8 +227,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 := M.read (mk_str "Daniel") in
       let* α2 := M.read (mk_str "164-6743") in
-      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ contacts; α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 :=
         M.get_associated_function
@@ -270,8 +257,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "Calling Ashley: ") in
                   let* α3 := M.read (mk_str "
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α13 :=
                 (* Unsize *)
                   let* α6 :=
@@ -284,11 +270,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α9 := M.call_closure α7 [ α8 ] in
                   let* α10 := M.alloc α9 in
                   let* α11 := M.call_closure α6 [ α10 ] in
-                  let* α12 := M.alloc (Value.Array [ α11 ]) in
-                  M.pure (M.pointer_coercion α12) in
+                  let* α12 := M.alloc (Value.Array [ α11 ]) in M.pure (M.pointer_coercion α12) in
               let* α14 := M.call_closure α1 [ α5; α13 ] in
-              let* α15 := M.call_closure α0 [ α14 ] in
-              M.alloc α15 in
+              let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -299,11 +283,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Don't have Ashley's number.
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     let* _ :=
@@ -318,8 +300,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ])
           "remove"
           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
-      let* α1 := M.call_closure α0 [ contacts; mk_str "Ashley" ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ contacts; mk_str "Ashley" ] in M.alloc α1 in
     let* α0 :=
       M.get_trait_method
         "core::iter::traits::collect::IntoIterator"
@@ -370,9 +351,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       let* α0 := M.break in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.never_to_any α1 in
-                      M.alloc α2;
+                      let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
@@ -422,8 +401,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               let* α15 := M.alloc (Value.Array [ α8; α14 ]) in
                               M.pure (M.pointer_coercion α15) in
                           let* α17 := M.call_closure α1 [ α6; α16 ] in
-                          let* α18 := M.call_closure α0 [ α17 ] in
-                          M.alloc α18 in
+                          let* α18 := M.call_closure α0 [ α17 ] in M.alloc α18 in
                         M.alloc (Value.Tuple []) in
                       M.alloc (Value.Tuple [])
                   ] in

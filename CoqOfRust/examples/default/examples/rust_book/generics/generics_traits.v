@@ -27,8 +27,7 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
     match τ, α with
     | [], [ self; β1 ] =>
       let* self := M.alloc self in
-      let* β1 := M.alloc β1 in
-      M.match_operator β1 [ fun γ => M.pure (Value.Tuple []) ]
+      let* β1 := M.alloc β1 in M.match_operator β1 [ fun γ => M.pure (Value.Tuple []) ]
     | _, _ => M.impossible
     end.
   
@@ -68,10 +67,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "double_drop"
           [] in
       let* α1 := M.read empty in
-      let* α2 := M.read null in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α2 := M.read null in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

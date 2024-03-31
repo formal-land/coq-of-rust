@@ -182,8 +182,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
               "password";
             α2
           ] in
-      let* α0 := M.alloc α3 in
-      M.read α0
+      let* α0 := M.alloc α3 in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -249,8 +248,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Username: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -259,11 +257,9 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
             let* α7 := M.call_closure α6 [ username ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -274,8 +270,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Password: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -284,11 +279,9 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_display"
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] in
             let* α7 := M.call_closure α6 [ password ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -298,11 +291,8 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Attempting logon...
 ") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* logon :=
       let* α0 := M.read username in
@@ -341,11 +331,9 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "Successful logon!
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    M.pure (M.pointer_coercion α3) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
                 let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in
-                M.alloc α6 in
+                let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
@@ -356,8 +344,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "Name: ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
                 let* α10 :=
                   (* Unsize *)
                     let* α6 :=
@@ -375,11 +362,9 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                             "hash_map_alternate_or_custom_key_types::AccountInfo"
                             "name"
                         ] in
-                    let* α9 := M.alloc (Value.Array [ α8 ]) in
-                    M.pure (M.pointer_coercion α9) in
+                    let* α9 := M.alloc (Value.Array [ α8 ]) in M.pure (M.pointer_coercion α9) in
                 let* α11 := M.call_closure α1 [ α5; α10 ] in
-                let* α12 := M.call_closure α0 [ α11 ] in
-                M.alloc α12 in
+                let* α12 := M.call_closure α0 [ α11 ] in M.alloc α12 in
               M.alloc (Value.Tuple []) in
             let* _ :=
               let* _ :=
@@ -390,8 +375,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α2 := M.read (mk_str "Email: ") in
                     let* α3 := M.read (mk_str "
 ") in
-                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                    M.pure (M.pointer_coercion α4) in
+                    let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
                 let* α10 :=
                   (* Unsize *)
                     let* α6 :=
@@ -409,11 +393,9 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                             "hash_map_alternate_or_custom_key_types::AccountInfo"
                             "email"
                         ] in
-                    let* α9 := M.alloc (Value.Array [ α8 ]) in
-                    M.pure (M.pointer_coercion α9) in
+                    let* α9 := M.alloc (Value.Array [ α8 ]) in M.pure (M.pointer_coercion α9) in
                 let* α11 := M.call_closure α1 [ α5; α10 ] in
-                let* α12 := M.call_closure α0 [ α11 ] in
-                M.alloc α12 in
+                let* α12 := M.call_closure α0 [ α11 ] in M.alloc α12 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -425,11 +407,9 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "Login failed!
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0
@@ -472,8 +452,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ])
           "new"
           [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* account :=
       let* α0 := M.read (mk_str "j.everyman") in
       let* α1 := M.read (mk_str "password123") in
@@ -502,21 +481,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 := M.read account in
       let* α2 := M.read account_info in
-      let* α3 := M.call_closure α0 [ accounts; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ accounts; α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 := M.get_function "hash_map_alternate_or_custom_key_types::try_logon" [] in
       let* α1 := M.read (mk_str "j.everyman") in
       let* α2 := M.read (mk_str "psasword123") in
-      let* α3 := M.call_closure α0 [ accounts; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ accounts; α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* α0 := M.get_function "hash_map_alternate_or_custom_key_types::try_logon" [] in
       let* α1 := M.read (mk_str "j.everyman") in
       let* α2 := M.read (mk_str "password123") in
-      let* α3 := M.call_closure α0 [ accounts; α1; α2 ] in
-      M.alloc α3 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α3 := M.call_closure α0 [ accounts; α1; α2 ] in M.alloc α3 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

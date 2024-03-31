@@ -37,8 +37,7 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
           let* α3 := M.read (mk_str " and I attend ") in
           let* α4 := M.read (mk_str ". My favorite language is ") in
           let* α5 := M.read (mk_str ". My Git username is ") in
-          let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in
-          M.pure (M.pointer_coercion α6) in
+          let* α6 := M.alloc (Value.Array [ α2; α3; α4; α5 ]) in M.pure (M.pointer_coercion α6) in
       let* α33 :=
         (* Unsize *)
           let* α8 :=
@@ -108,8 +107,7 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
           let* α32 := M.alloc (Value.Array [ α13; α19; α25; α31 ]) in
           M.pure (M.pointer_coercion α32) in
       let* α34 := M.call_closure α1 [ α7; α33 ] in
-      let* α35 := M.call_closure α0 [ α34 ] in
-      M.alloc α35 in
+      let* α35 := M.call_closure α0 [ α34 ] in M.alloc α35 in
     M.read res
   | _, _ => M.impossible
   end.

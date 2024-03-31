@@ -37,8 +37,7 @@ Module Impl_flipper_Flipper.
     | [], [] =>
       let* α0 := M.get_associated_function (Ty.path "flipper::Flipper") "new" [] in
       let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
-      let* α2 := M.call_closure α1 [] in
-      M.call_closure α0 [ α2 ]
+      let* α2 := M.call_closure α1 [] in M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -58,8 +57,7 @@ Module Impl_flipper_Flipper.
         let* α1 := M.read self in
         let* α2 := M.read (M.get_struct_record_field α1 "flipper::Flipper" "value") in
         M.assign (M.get_struct_record_field α0 "flipper::Flipper" "value") (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -74,8 +72,7 @@ Module Impl_flipper_Flipper.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "flipper::Flipper" "value")
+      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "flipper::Flipper" "value")
     | _, _ => M.impossible
     end.
   

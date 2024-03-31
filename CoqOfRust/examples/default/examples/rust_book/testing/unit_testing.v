@@ -10,10 +10,7 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ a; b ] =>
     let* a := M.alloc a in
-    let* b := M.alloc b in
-    let* α0 := M.read a in
-    let* α1 := M.read b in
-    BinOp.Panic.add α0 α1
+    let* b := M.alloc b in let* α0 := M.read a in let* α1 := M.read b in BinOp.Panic.add α0 α1
   | _, _ => M.impossible
   end.
 
@@ -26,10 +23,7 @@ Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
   | [], [ a; b ] =>
     let* a := M.alloc a in
-    let* b := M.alloc b in
-    let* α0 := M.read a in
-    let* α1 := M.read b in
-    BinOp.Panic.sub α0 α1
+    let* b := M.alloc b in let* α0 := M.read a in let* α1 := M.read b in BinOp.Panic.sub α0 α1
   | _, _ => M.impossible
   end.
 
@@ -69,8 +63,7 @@ Module tests.
                       let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
                       M.pure (M.use α4) in
                     let* _ :=
-                      let* α0 := M.read γ in
-                      M.is_constant_or_break_match α0 (Value.Bool true) in
+                      let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
                     let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                     let* α0 :=
                       M.get_function
@@ -84,14 +77,11 @@ Module tests.
                         α0
                         [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                     let* α0 := M.alloc α4 in
-                    let* α1 := M.read α0 in
-                    let* α2 := M.never_to_any α1 in
-                    M.alloc α2;
+                    let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
                   fun γ => M.alloc (Value.Tuple [])
                 ]
           ] in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -132,8 +122,7 @@ Module tests.
                       let* α4 := M.alloc (UnOp.Pure.not (BinOp.Pure.eq α1 α3)) in
                       M.pure (M.use α4) in
                     let* _ :=
-                      let* α0 := M.read γ in
-                      M.is_constant_or_break_match α0 (Value.Bool true) in
+                      let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
                     let* kind := M.alloc (Value.StructTuple "core::panicking::AssertKind::Eq" []) in
                     let* α0 :=
                       M.get_function
@@ -147,14 +136,11 @@ Module tests.
                         α0
                         [ α1; α2; α3; Value.StructTuple "core::option::Option::None" [] ] in
                     let* α0 := M.alloc α4 in
-                    let* α1 := M.read α0 in
-                    let* α2 := M.never_to_any α1 in
-                    M.alloc α2;
+                    let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
                   fun γ => M.alloc (Value.Tuple [])
                 ]
           ] in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
 End tests.

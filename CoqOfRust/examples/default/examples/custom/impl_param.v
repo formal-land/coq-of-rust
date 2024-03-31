@@ -23,13 +23,11 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
     let* x := M.copy func in
     let* _ :=
       let* α0 := M.get_trait_method "core::default::Default" impl_Default [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.assign x α1 in
+      let* α1 := M.call_closure α0 [] in M.assign x α1 in
     let* y := M.copy func2 in
     let* _ :=
       let* α0 := M.get_trait_method "core::default::Default" impl_Default'1 [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.assign y α1 in
+      let* α1 := M.call_closure α0 [] in M.assign y α1 in
     let* z := M.copy foo in
     let* b :=
       let* α0 :=
@@ -42,9 +40,7 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
       let* α1 := M.read x in
       let* α2 := M.read y in
       let* α3 := M.read z in
-      let* α4 := M.call_closure α0 [ Value.Tuple [ α1; α2; α3 ] ] in
-      M.alloc α4 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α4 := M.call_closure α0 [ Value.Tuple [ α1; α2; α3 ] ] in M.alloc α4 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

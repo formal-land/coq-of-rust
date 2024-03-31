@@ -94,8 +94,7 @@ Module Impl_core_default_Default_for_erc20_AccountId.
     match τ, α with
     | [], [] =>
       let* α0 := M.get_trait_method "core::default::Default" (Ty.path "u128") [] "default" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.pure (Value.StructTuple "erc20::AccountId" [ α1 ])
+      let* α1 := M.call_closure α0 [] in M.pure (Value.StructTuple "erc20::AccountId" [ α1 ])
     | _, _ => M.impossible
     end.
   
@@ -117,8 +116,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -283,8 +281,7 @@ Module Impl_erc20_Env.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "erc20::Env" "caller")
+      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "erc20::Env" "caller")
     | _, _ => M.impossible
     end.
   
@@ -362,15 +359,12 @@ Module Impl_erc20_Erc20.
             []
             "default"
             [] in
-        let* α1 := M.call_closure α0 [] in
-        M.alloc α1 in
+        let* α1 := M.call_closure α0 [] in M.alloc α1 in
       let* caller :=
         let* α0 := M.get_associated_function (Ty.path "erc20::Env") "caller" [] in
         let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] in
         let* α2 := M.call_closure α1 [] in
-        let* α3 := M.alloc α2 in
-        let* α4 := M.call_closure α0 [ α3 ] in
-        M.alloc α4 in
+        let* α3 := M.alloc α2 in let* α4 := M.call_closure α0 [ α3 ] in M.alloc α4 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -379,8 +373,7 @@ Module Impl_erc20_Erc20.
             [] in
         let* α1 := M.read caller in
         let* α2 := M.read total_supply in
-        let* α3 := M.call_closure α0 [ balances; α1; α2 ] in
-        M.alloc α3 in
+        let* α3 := M.call_closure α0 [ balances; α1; α2 ] in M.alloc α3 in
       let* _ :=
         let* α0 := M.get_associated_function (Ty.path "erc20::Env") "emit_event" [] in
         let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "init_env" [] in
@@ -438,8 +431,7 @@ Module Impl_erc20_Erc20.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "erc20::Erc20" "total_supply")
+      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "erc20::Erc20" "total_supply")
     | _, _ => M.impossible
     end.
   
@@ -486,8 +478,7 @@ Module Impl_erc20_Erc20.
       let* self := M.alloc self in
       let* owner := M.alloc owner in
       let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] in
-      let* α1 := M.read self in
-      M.call_closure α0 [ α1; owner ]
+      let* α1 := M.read self in M.call_closure α0 [ α1; owner ]
     | _, _ => M.impossible
     end.
   
@@ -543,8 +534,7 @@ Module Impl_erc20_Erc20.
       let* owner := M.alloc owner in
       let* spender := M.alloc spender in
       let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "allowance_impl" [] in
-      let* α1 := M.read self in
-      M.call_closure α0 [ α1; owner; spender ]
+      let* α1 := M.read self in M.call_closure α0 [ α1; owner; spender ]
     | _, _ => M.impossible
     end.
   
@@ -578,9 +568,7 @@ Module Impl_erc20_Erc20.
       let* from_balance :=
         let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] in
         let* α1 := M.read self in
-        let* α2 := M.read from in
-        let* α3 := M.call_closure α0 [ α1; α2 ] in
-        M.alloc α3 in
+        let* α2 := M.read from in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
       let* _ :=
         let* α0 := M.alloc (Value.Tuple []) in
         M.match_operator
@@ -590,19 +578,14 @@ Module Impl_erc20_Erc20.
               let* γ :=
                 let* α0 := M.read from_balance in
                 let* α1 := M.read value in
-                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-                M.pure (M.use α2) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in M.pure (M.use α2) in
+              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.return_
                   (Value.StructTuple
                     "core::result::Result::Err"
                     [ Value.StructTuple "erc20::Error::InsufficientBalance" [] ]) in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2;
+              let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
             fun γ => M.alloc (Value.Tuple [])
           ] in
       let* _ :=
@@ -623,9 +606,7 @@ Module Impl_erc20_Erc20.
       let* to_balance :=
         let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "balance_of_impl" [] in
         let* α1 := M.read self in
-        let* α2 := M.read to in
-        let* α3 := M.call_closure α0 [ α1; α2 ] in
-        M.alloc α3 in
+        let* α2 := M.read to in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -695,15 +676,11 @@ Module Impl_erc20_Erc20.
         let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in
-        let* α5 := M.call_closure α0 [ α4 ] in
-        M.alloc α5 in
+        let* α4 := M.alloc α3 in let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
       let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "transfer_from_to" [] in
       let* α1 := M.read self in
       let* α2 := M.read value in
-      let* α3 := M.call_closure α0 [ α1; from; to; α2 ] in
-      let* α0 := M.alloc α3 in
-      M.read α0
+      let* α3 := M.call_closure α0 [ α1; from; to; α2 ] in let* α0 := M.alloc α3 in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -732,9 +709,7 @@ Module Impl_erc20_Erc20.
         let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in
-        let* α5 := M.call_closure α0 [ α4 ] in
-        M.alloc α5 in
+        let* α4 := M.alloc α3 in let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
       let* _ :=
         let* α0 :=
           M.get_associated_function
@@ -808,14 +783,10 @@ Module Impl_erc20_Erc20.
         let* α1 := M.get_associated_function (Ty.path "erc20::Erc20") "env" [] in
         let* α2 := M.read self in
         let* α3 := M.call_closure α1 [ α2 ] in
-        let* α4 := M.alloc α3 in
-        let* α5 := M.call_closure α0 [ α4 ] in
-        M.alloc α5 in
+        let* α4 := M.alloc α3 in let* α5 := M.call_closure α0 [ α4 ] in M.alloc α5 in
       let* allowance :=
         let* α0 := M.get_associated_function (Ty.path "erc20::Erc20") "allowance_impl" [] in
-        let* α1 := M.read self in
-        let* α2 := M.call_closure α0 [ α1; from; caller ] in
-        M.alloc α2 in
+        let* α1 := M.read self in let* α2 := M.call_closure α0 [ α1; from; caller ] in M.alloc α2 in
       let* _ :=
         let* α0 := M.alloc (Value.Tuple []) in
         M.match_operator
@@ -825,19 +796,14 @@ Module Impl_erc20_Erc20.
               let* γ :=
                 let* α0 := M.read allowance in
                 let* α1 := M.read value in
-                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in
-                M.pure (M.use α2) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.alloc (BinOp.Pure.lt α0 α1) in M.pure (M.use α2) in
+              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.return_
                   (Value.StructTuple
                     "core::result::Result::Err"
                     [ Value.StructTuple "erc20::Error::InsufficientAllowance" [] ]) in
-              let* α1 := M.read α0 in
-              let* α2 := M.never_to_any α1 in
-              M.alloc α2;
+              let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
             fun γ => M.alloc (Value.Tuple [])
           ] in
       let* _ :=
@@ -880,17 +846,14 @@ Module Impl_erc20_Erc20.
               let* α1 := M.read residual in
               let* α2 := M.call_closure α0 [ α1 ] in
               let* α3 := M.return_ α2 in
-              let* α4 := M.read α3 in
-              let* α5 := M.never_to_any α4 in
-              M.alloc α5;
+              let* α4 := M.read α3 in let* α5 := M.never_to_any α4 in M.alloc α5;
             fun γ =>
               let* γ0_0 :=
                 M.get_struct_tuple_field_or_break_match
                   γ
                   "core::ops::control_flow::ControlFlow::Continue"
                   0 in
-              let* val := M.copy γ0_0 in
-              M.pure val
+              let* val := M.copy γ0_0 in M.pure val
           ] in
       let* _ :=
         let* α0 :=

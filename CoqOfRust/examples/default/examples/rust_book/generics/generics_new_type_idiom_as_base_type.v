@@ -35,8 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 γ
                 "generics_new_type_idiom_as_base_type::Years"
                 0 in
-            let* years_as_primitive_2 := M.copy γ0_0 in
-            M.alloc (Value.Tuple [])
+            let* years_as_primitive_2 := M.copy γ0_0 in M.alloc (Value.Tuple [])
         ] in
     M.read α0
   | _, _ => M.impossible

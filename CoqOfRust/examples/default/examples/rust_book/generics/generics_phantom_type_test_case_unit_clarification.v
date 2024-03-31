@@ -19,9 +19,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := M.match_operator α0 [] in
-      let* α2 := M.read α1 in
-      M.never_to_any α2
+      let* α1 := M.match_operator α0 [] in let* α2 := M.read α1 in M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -41,10 +39,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read α0
+    | [], [ self ] => let* self := M.alloc self in let* α0 := M.read self in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -81,9 +76,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.read self in
-      let* α1 := M.match_operator α0 [] in
-      let* α2 := M.read α1 in
-      M.never_to_any α2
+      let* α1 := M.match_operator α0 [] in let* α2 := M.read α1 in M.never_to_any α2
     | _, _ => M.impossible
     end.
   
@@ -103,10 +96,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   *)
   Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
-    | [], [ self ] =>
-      let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read α0
+    | [], [ self ] => let* self := M.alloc self in let* α0 := M.read self in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -353,9 +343,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "add"
           [] in
       let* α1 := M.read one_foot in
-      let* α2 := M.read one_foot in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
+      let* α2 := M.read one_foot in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
     let* two_meters :=
       let* α0 :=
         M.get_trait_method
@@ -371,9 +359,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "add"
           [] in
       let* α1 := M.read one_meter in
-      let* α2 := M.read one_meter in
-      let* α3 := M.call_closure α0 [ α1; α2 ] in
-      M.alloc α3 in
+      let* α2 := M.read one_meter in let* α3 := M.call_closure α0 [ α1; α2 ] in M.alloc α3 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -383,8 +369,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "one foot + one_foot = ") in
             let* α3 := M.read (mk_str " in
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -401,11 +386,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "generics_phantom_type_test_case_unit_clarification::Length"
                     0
                 ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -416,8 +399,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "one meter + one_meter = ") in
             let* α3 := M.read (mk_str " mm
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α9 :=
           (* Unsize *)
             let* α6 :=
@@ -434,13 +416,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "generics_phantom_type_test_case_unit_clarification::Length"
                     0
                 ] in
-            let* α8 := M.alloc (Value.Array [ α7 ]) in
-            M.pure (M.pointer_coercion α8) in
+            let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
         let* α10 := M.call_closure α1 [ α5; α9 ] in
-        let* α11 := M.call_closure α0 [ α10 ] in
-        M.alloc α11 in
+        let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

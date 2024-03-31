@@ -41,8 +41,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -127,8 +126,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
       let* f := M.alloc f in
       let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
       let* α1 := M.read f in
-      let* α2 := M.read (mk_str "ConstructorError") in
-      M.call_closure α0 [ α1; α2 ]
+      let* α2 := M.read (mk_str "ConstructorError") in M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -171,8 +169,7 @@ Definition return_value (τ : list Ty.t) (α : list Value.t) : M :=
     let* return_flags := M.alloc return_flags in
     let* return_value := M.alloc return_value in
     let* α0 := M.get_function "core::panicking::panic" [] in
-    let* α1 := M.read (mk_str "not implemented") in
-    M.call_closure α0 [ α1 ]
+    let* α1 := M.read (mk_str "not implemented") in M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
   end.
 
@@ -216,9 +213,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           [
             fun γ =>
               let γ := M.use succeed in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.get_associated_function
                   (Ty.path "constructors_return_value::ConstructorsReturnValue")
@@ -276,8 +271,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           [] in
       let* α4 := M.call_closure α3 [ repeat (Value.Integer Integer.U8 0) 32 ] in
       let* α5 := M.alloc (Value.StructTuple "core::result::Result::Ok" [ α4 ]) in
-      let* α6 := M.call_closure α0 [ α2; α5 ] in
-      M.never_to_any α6
+      let* α6 := M.call_closure α0 [ α2; α5 ] in M.never_to_any α6
     | _, _ => M.impossible
     end.
   
@@ -310,8 +304,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               fun γ =>
                 let γ := M.use init_value in
                 let* _ :=
-                  let* α0 := M.read γ in
-                  M.is_constant_or_break_match α0 (Value.Bool true) in
+                  let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
                 let* α0 :=
                   M.get_trait_method
                     "core::convert::From"
@@ -355,9 +348,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           [] in
       let* α2 := M.call_closure α1 [ Value.Bool true ] in
       let* α3 := M.call_closure α0 [ α2; value ] in
-      let* α4 := M.never_to_any α3 in
-      let* α0 := M.alloc α4 in
-      M.read α0
+      let* α4 := M.never_to_any α3 in let* α0 := M.alloc α4 in M.read α0
     | _, _ => M.impossible
     end.
   

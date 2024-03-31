@@ -12,9 +12,6 @@ fn main() {
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
-  | [], [] =>
-    let _ := InlineAssembly in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+  | [], [] => let _ := InlineAssembly in let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -52,8 +52,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
         M.assign
           (M.get_struct_record_field α0 "trait_flipper::Flipper" "value")
           (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   

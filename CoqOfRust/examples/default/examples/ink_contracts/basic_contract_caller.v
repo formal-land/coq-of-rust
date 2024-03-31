@@ -41,8 +41,7 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -113,8 +112,7 @@ Module Impl_basic_contract_caller_OtherContract.
         M.assign
           (M.get_struct_record_field α0 "basic_contract_caller::OtherContract" "value")
           (UnOp.Pure.not α2) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -166,9 +164,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       let* other_contract :=
         let* α0 := M.get_function "core::panicking::panic" [] in
         let* α1 := M.read (mk_str "not yet implemented") in
-        let* α2 := M.call_closure α0 [ α1 ] in
-        let* α3 := M.never_to_any α2 in
-        M.alloc α3 in
+        let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.never_to_any α2 in M.alloc α3 in
       let* α0 := M.read other_contract in
       let* α0 :=
         M.alloc
@@ -217,8 +213,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               "basic_contract_caller::BasicContractCaller"
               "other_contract"
           ] in
-      let* α0 := M.alloc α2 in
-      M.read α0
+      let* α0 := M.alloc α2 in M.read α0
     | _, _ => M.impossible
     end.
   

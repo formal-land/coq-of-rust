@@ -13,8 +13,7 @@ Definition cos (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ z ] =>
     let* z := M.alloc z in
     let* α0 := M.get_function "foreign_function_interface::ccosf" [] in
-    let* α1 := M.read z in
-    M.call_closure α0 [ α1 ]
+    let* α1 := M.read z in M.call_closure α0 [ α1 ]
   | _, _ => M.impossible
   end.
 
@@ -42,9 +41,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         (Value.StructRecord "foreign_function_interface::Complex" [ ("re", α0); ("im", α1) ]) in
     let* z_sqrt :=
       let* α0 := M.get_function "foreign_function_interface::csqrtf" [] in
-      let* α1 := M.read z in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read z in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* _ :=
         let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -55,8 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str " is ") in
             let* α4 := M.read (mk_str "
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
         let* α12 :=
           (* Unsize *)
             let* α7 :=
@@ -71,11 +67,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new_debug"
                 [ Ty.path "foreign_function_interface::Complex" ] in
             let* α10 := M.call_closure α9 [ z_sqrt ] in
-            let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α8; α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α6; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -87,8 +81,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str ") = ") in
             let* α4 := M.read (mk_str "
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
         let* α16 :=
           (* Unsize *)
             let* α7 :=
@@ -107,14 +100,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α12 := M.call_closure α10 [ α11 ] in
             let* α13 := M.alloc α12 in
             let* α14 := M.call_closure α9 [ α13 ] in
-            let* α15 := M.alloc (Value.Array [ α8; α14 ]) in
-            M.pure (M.pointer_coercion α15) in
+            let* α15 := M.alloc (Value.Array [ α8; α14 ]) in M.pure (M.pointer_coercion α15) in
         let* α17 := M.call_closure α1 [ α6; α16 ] in
-        let* α18 := M.call_closure α0 [ α17 ] in
-        M.alloc α18 in
+        let* α18 := M.call_closure α0 [ α17 ] in M.alloc α18 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.
 
@@ -135,8 +125,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in
-      M.read α0
+      let* α0 := M.match_operator Value.DeclaredButUndefined [ fun γ => M.read self ] in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -184,11 +173,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   M.read
                     (M.get_struct_record_field α0 "foreign_function_interface::Complex" "im") in
                 let* α2 := M.read UnsupportedLiteral in
-                let* α3 := M.alloc (BinOp.Pure.lt α1 α2) in
-                M.pure (M.use α3) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α3 := M.alloc (BinOp.Pure.lt α1 α2) in M.pure (M.use α3) in
+              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
               let* α0 :=
                 M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
               let* α1 := M.read f in
@@ -227,8 +213,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   let* α17 := M.alloc (Value.Array [ α10; α16 ]) in
                   M.pure (M.pointer_coercion α17) in
               let* α19 := M.call_closure α2 [ α7; α18 ] in
-              let* α20 := M.call_closure α0 [ α1; α19 ] in
-              M.alloc α20;
+              let* α20 := M.call_closure α0 [ α1; α19 ] in M.alloc α20;
             fun γ =>
               let* α0 :=
                 M.get_associated_function (Ty.path "core::fmt::Formatter") "write_fmt" [] in
@@ -267,8 +252,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   let* α14 := M.alloc (Value.Array [ α10; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
               let* α16 := M.call_closure α2 [ α7; α15 ] in
-              let* α17 := M.call_closure α0 [ α1; α16 ] in
-              M.alloc α17
+              let* α17 := M.call_closure α0 [ α1; α16 ] in M.alloc α17
           ] in
       M.read α1
     | _, _ => M.impossible

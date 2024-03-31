@@ -44,12 +44,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         α0
         [
           fun γ =>
-            let* γ :=
-              let* α0 := M.alloc (Value.Bool true) in
-              M.pure (M.use α0) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* γ := let* α0 := M.alloc (Value.Bool true) in M.pure (M.use α0) in
+            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
             M.alloc (Value.Integer Integer.I32 0);
           fun γ => M.alloc (Value.Integer Integer.I32 1)
         ] in
@@ -59,12 +55,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         α0
         [
           fun γ =>
-            let* γ :=
-              let* α0 := M.alloc (Value.Bool false) in
-              M.pure (M.use α0) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* γ := let* α0 := M.alloc (Value.Bool false) in M.pure (M.use α0) in
+            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
             M.alloc (Value.Integer Integer.I32 2);
           fun γ =>
             let* α0 := M.alloc (Value.Tuple []) in
@@ -72,12 +64,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               α0
               [
                 fun γ =>
-                  let* γ :=
-                    let* α0 := M.alloc (Value.Bool false) in
-                    M.pure (M.use α0) in
+                  let* γ := let* α0 := M.alloc (Value.Bool false) in M.pure (M.use α0) in
                   let* _ :=
-                    let* α0 := M.read γ in
-                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                    let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
                   M.alloc (Value.Integer Integer.I32 3);
                 fun γ =>
                   let* α0 := M.alloc (Value.Tuple []) in
@@ -85,9 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     α0
                     [
                       fun γ =>
-                        let* γ :=
-                          let* α0 := M.alloc (Value.Bool false) in
-                          M.pure (M.use α0) in
+                        let* γ := let* α0 := M.alloc (Value.Bool false) in M.pure (M.use α0) in
                         let* _ :=
                           let* α0 := M.read γ in
                           M.is_constant_or_break_match α0 (Value.Bool true) in
@@ -96,7 +83,6 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
               ]
         ] in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -24,8 +24,7 @@ Module Animal.
               let* α3 := M.read (mk_str " says ") in
               let* α4 := M.read (mk_str "
 ") in
-              let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-              M.pure (M.pointer_coercion α5) in
+              let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
           let* α20 :=
             (* Unsize *)
               let* α7 :=
@@ -48,14 +47,11 @@ Module Animal.
               let* α16 := M.call_closure α14 [ α15 ] in
               let* α17 := M.alloc α16 in
               let* α18 := M.call_closure α13 [ α17 ] in
-              let* α19 := M.alloc (Value.Array [ α12; α18 ]) in
-              M.pure (M.pointer_coercion α19) in
+              let* α19 := M.alloc (Value.Array [ α12; α18 ]) in M.pure (M.pointer_coercion α19) in
           let* α21 := M.call_closure α1 [ α6; α20 ] in
-          let* α22 := M.call_closure α0 [ α21 ] in
-          M.alloc α22 in
+          let* α22 := M.call_closure α0 [ α21 ] in M.alloc α22 in
         M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -74,8 +70,7 @@ Module Impl_traits_Sheep.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "traits::Sheep" "naked")
+      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "traits::Sheep" "naked")
     | _, _ => M.impossible
     end.
   
@@ -111,8 +106,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     match τ, α with
     | [], [ self ] =>
       let* self := M.alloc self in
-      let* α0 := M.read self in
-      M.read (M.get_struct_record_field α0 "traits::Sheep" "name")
+      let* α0 := M.read self in M.read (M.get_struct_record_field α0 "traits::Sheep" "name")
     | _, _ => M.impossible
     end.
   
@@ -138,12 +132,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
               let* γ :=
                 let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "is_naked" [] in
                 let* α1 := M.read self in
-                let* α2 := M.call_closure α0 [ α1 ] in
-                let* α3 := M.alloc α2 in
-                M.pure (M.use α3) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.alloc α2 in M.pure (M.use α3) in
+              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
               M.pure (mk_str "baaaaah?");
             fun γ => M.pure (mk_str "baaaaah!")
           ] in
@@ -171,8 +161,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
               let* α3 := M.read (mk_str " pauses briefly... ") in
               let* α4 := M.read (mk_str "
 ") in
-              let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-              M.pure (M.pointer_coercion α5) in
+              let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
           let* α17 :=
             (* Unsize *)
               let* α7 :=
@@ -194,14 +183,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
               let* α13 := M.call_closure α11 [ α12 ] in
               let* α14 := M.alloc α13 in
               let* α15 := M.call_closure α10 [ α14 ] in
-              let* α16 := M.alloc (Value.Array [ α9; α15 ]) in
-              M.pure (M.pointer_coercion α16) in
+              let* α16 := M.alloc (Value.Array [ α9; α15 ]) in M.pure (M.pointer_coercion α16) in
           let* α18 := M.call_closure α1 [ α6; α17 ] in
-          let* α19 := M.call_closure α0 [ α18 ] in
-          M.alloc α19 in
+          let* α19 := M.call_closure α0 [ α18 ] in M.alloc α19 in
         M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -248,12 +234,8 @@ Module Impl_traits_Sheep.
               let* γ :=
                 let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "is_naked" [] in
                 let* α1 := M.read self in
-                let* α2 := M.call_closure α0 [ α1 ] in
-                let* α3 := M.alloc α2 in
-                M.pure (M.use α3) in
-              let* _ :=
-                let* α0 := M.read γ in
-                M.is_constant_or_break_match α0 (Value.Bool true) in
+                let* α2 := M.call_closure α0 [ α1 ] in let* α3 := M.alloc α2 in M.pure (M.use α3) in
+              let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
               let* _ :=
                 let* _ :=
                   let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -287,8 +269,7 @@ Module Impl_traits_Sheep.
                       let* α12 := M.alloc (Value.Array [ α11 ]) in
                       M.pure (M.pointer_coercion α12) in
                   let* α14 := M.call_closure α1 [ α5; α13 ] in
-                  let* α15 := M.call_closure α0 [ α14 ] in
-                  M.alloc α15 in
+                  let* α15 := M.call_closure α0 [ α14 ] in M.alloc α15 in
                 M.alloc (Value.Tuple []) in
               M.alloc (Value.Tuple []);
             fun γ =>
@@ -314,11 +295,9 @@ Module Impl_traits_Sheep.
                       let* α7 := M.read self in
                       let* α8 :=
                         M.call_closure α6 [ M.get_struct_record_field α7 "traits::Sheep" "name" ] in
-                      let* α9 := M.alloc (Value.Array [ α8 ]) in
-                      M.pure (M.pointer_coercion α9) in
+                      let* α9 := M.alloc (Value.Array [ α8 ]) in M.pure (M.pointer_coercion α9) in
                   let* α11 := M.call_closure α1 [ α5; α10 ] in
-                  let* α12 := M.call_closure α0 [ α11 ] in
-                  M.alloc α12 in
+                  let* α12 := M.call_closure α0 [ α11 ] in M.alloc α12 in
                 M.alloc (Value.Tuple []) in
               let* _ :=
                 let* α0 := M.read self in
@@ -350,22 +329,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* dolly :=
       let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] "new" [] in
-      let* α1 := M.read (mk_str "Dolly") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read (mk_str "Dolly") in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] "talk" [] in
-      let* α1 := M.call_closure α0 [ dolly ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ dolly ] in M.alloc α1 in
     let* _ :=
       let* α0 := M.get_associated_function (Ty.path "traits::Sheep") "shear" [] in
-      let* α1 := M.call_closure α0 [ dolly ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ dolly ] in M.alloc α1 in
     let* _ :=
       let* α0 := M.get_trait_method "traits::Animal" (Ty.path "traits::Sheep") [] "talk" [] in
-      let* α1 := M.call_closure α0 [ dolly ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.call_closure α0 [ dolly ] in M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -27,20 +27,15 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read rhs in
               let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.U32 0)) in
               M.pure (M.use α1) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
             let* α0 := M.return_ (Value.Bool false) in
-            let* α1 := M.read α0 in
-            let* α2 := M.never_to_any α1 in
-            M.alloc α2;
+            let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
           fun γ => M.alloc (Value.Tuple [])
         ] in
     let* α0 := M.read lhs in
     let* α1 := M.read rhs in
     let* α2 := BinOp.Panic.rem α0 α1 in
-    let* α0 := M.alloc (BinOp.Pure.eq α2 (Value.Integer Integer.U32 0)) in
-    M.read α0
+    let* α0 := M.alloc (BinOp.Pure.eq α2 (Value.Integer Integer.U32 0)) in M.read α0
   | _, _ => M.impossible
   end.
 
@@ -71,11 +66,8 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.get_function "functions::is_divisible_by" [] in
               let* α1 := M.read n in
               let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 15 ] in
-              let* α3 := M.alloc α2 in
-              M.pure (M.use α3) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
+              let* α3 := M.alloc α2 in M.pure (M.use α3) in
+            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
             let* _ :=
               let* _ :=
                 let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -85,11 +77,9 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                   (* Unsize *)
                     let* α2 := M.read (mk_str "fizzbuzz
 ") in
-                    let* α3 := M.alloc (Value.Array [ α2 ]) in
-                    M.pure (M.pointer_coercion α3) in
+                    let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
                 let* α5 := M.call_closure α1 [ α4 ] in
-                let* α6 := M.call_closure α0 [ α5 ] in
-                M.alloc α6 in
+                let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple []);
           fun γ =>
@@ -102,11 +92,9 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α0 := M.get_function "functions::is_divisible_by" [] in
                     let* α1 := M.read n in
                     let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 3 ] in
-                    let* α3 := M.alloc α2 in
-                    M.pure (M.use α3) in
+                    let* α3 := M.alloc α2 in M.pure (M.use α3) in
                   let* _ :=
-                    let* α0 := M.read γ in
-                    M.is_constant_or_break_match α0 (Value.Bool true) in
+                    let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
                   let* _ :=
                     let* _ :=
                       let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -119,8 +107,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α3 := M.alloc (Value.Array [ α2 ]) in
                           M.pure (M.pointer_coercion α3) in
                       let* α5 := M.call_closure α1 [ α4 ] in
-                      let* α6 := M.call_closure α0 [ α5 ] in
-                      M.alloc α6 in
+                      let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
                     M.alloc (Value.Tuple []) in
                   M.alloc (Value.Tuple []);
                 fun γ =>
@@ -133,8 +120,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α0 := M.get_function "functions::is_divisible_by" [] in
                           let* α1 := M.read n in
                           let* α2 := M.call_closure α0 [ α1; Value.Integer Integer.U32 5 ] in
-                          let* α3 := M.alloc α2 in
-                          M.pure (M.use α3) in
+                          let* α3 := M.alloc α2 in M.pure (M.use α3) in
                         let* _ :=
                           let* α0 := M.read γ in
                           M.is_constant_or_break_match α0 (Value.Bool true) in
@@ -153,8 +139,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                 let* α3 := M.alloc (Value.Array [ α2 ]) in
                                 M.pure (M.pointer_coercion α3) in
                             let* α5 := M.call_closure α1 [ α4 ] in
-                            let* α6 := M.call_closure α0 [ α5 ] in
-                            M.alloc α6 in
+                            let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
                           M.alloc (Value.Tuple []) in
                         M.alloc (Value.Tuple []);
                       fun γ =>
@@ -184,8 +169,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                 let* α8 := M.alloc (Value.Array [ α7 ]) in
                                 M.pure (M.pointer_coercion α8) in
                             let* α10 := M.call_closure α1 [ α5; α9 ] in
-                            let* α11 := M.call_closure α0 [ α10 ] in
-                            M.alloc α11 in
+                            let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
                           M.alloc (Value.Tuple []) in
                         M.alloc (Value.Tuple [])
                     ]
@@ -244,18 +228,14 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       let* α0 := M.break in
-                      let* α1 := M.read α0 in
-                      let* α2 := M.never_to_any α1 in
-                      M.alloc α2;
+                      let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2;
                     fun γ =>
                       let* γ0_0 :=
                         M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
                       let* n := M.copy γ0_0 in
                       let* _ :=
                         let* α0 := M.get_function "functions::fizzbuzz" [] in
-                        let* α1 := M.read n in
-                        let* α2 := M.call_closure α0 [ α1 ] in
-                        M.alloc α2 in
+                        let* α1 := M.read n in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
                       M.alloc (Value.Tuple [])
                   ] in
               M.alloc (Value.Tuple []))
@@ -275,9 +255,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* _ :=
       let* α0 := M.get_function "functions::fizzbuzz_to" [] in
-      let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 100 ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.call_closure α0 [ Value.Integer Integer.U32 100 ] in M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

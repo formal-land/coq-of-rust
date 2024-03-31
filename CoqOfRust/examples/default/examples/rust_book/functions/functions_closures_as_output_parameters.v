@@ -13,9 +13,7 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* text :=
       let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
-      let* α1 := M.read (mk_str "Fn") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read (mk_str "Fn") in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* α0 :=
       M.alloc
         (M.closure
@@ -49,10 +47,8 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
                       let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in
-                      M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in
-                    M.read α0
+                      let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                    let* α0 := M.alloc (Value.Tuple []) in M.read α0
                 ]
             | _ => M.impossible
             end)) in
@@ -76,9 +72,7 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* text :=
       let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
-      let* α1 := M.read (mk_str "FnMut") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read (mk_str "FnMut") in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* α0 :=
       M.alloc
         (M.closure
@@ -112,10 +106,8 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
                       let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in
-                      M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in
-                    M.read α0
+                      let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                    let* α0 := M.alloc (Value.Tuple []) in M.read α0
                 ]
             | _ => M.impossible
             end)) in
@@ -139,9 +131,7 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* text :=
       let* α0 := M.get_trait_method "alloc::borrow::ToOwned" (Ty.path "str") [] "to_owned" [] in
-      let* α1 := M.read (mk_str "FnOnce") in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read (mk_str "FnOnce") in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* α0 :=
       M.alloc
         (M.closure
@@ -175,10 +165,8 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
                           let* α8 := M.alloc (Value.Array [ α7 ]) in
                           M.pure (M.pointer_coercion α8) in
                       let* α10 := M.call_closure α1 [ α5; α9 ] in
-                      let* α11 := M.call_closure α0 [ α10 ] in
-                      M.alloc α11 in
-                    let* α0 := M.alloc (Value.Tuple []) in
-                    M.read α0
+                      let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
+                    let* α0 := M.alloc (Value.Tuple []) in M.read α0
                 ]
             | _ => M.impossible
             end)) in
@@ -206,21 +194,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     let* fn_plain :=
       let* α0 := M.get_function "functions_closures_as_output_parameters::create_fn" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* fn_mut :=
       let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnmut" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* fn_once :=
       let* α0 := M.get_function "functions_closures_as_output_parameters::create_fnonce" [] in
-      let* α1 := M.call_closure α0 [] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [] in M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method "core::ops::function::Fn" Ty.associated [ Ty.tuple [] ] "call" [] in
-      let* α1 := M.call_closure α0 [ fn_plain; Value.Tuple [] ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ fn_plain; Value.Tuple [] ] in M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -229,8 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [ Ty.tuple [] ]
           "call_mut"
           [] in
-      let* α1 := M.call_closure α0 [ fn_mut; Value.Tuple [] ] in
-      M.alloc α1 in
+      let* α1 := M.call_closure α0 [ fn_mut; Value.Tuple [] ] in M.alloc α1 in
     let* _ :=
       let* α0 :=
         M.get_trait_method
@@ -240,9 +223,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           "call_once"
           [] in
       let* α1 := M.read fn_once in
-      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α2 := M.call_closure α0 [ α1; Value.Tuple [] ] in M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -27,8 +27,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       let* α5 :=
         (* Unsize *)
           let* α3 := M.read (mk_str "Circle of radius ") in
-          let* α4 := M.alloc (Value.Array [ α3 ]) in
-          M.pure (M.pointer_coercion α4) in
+          let* α4 := M.alloc (Value.Array [ α3 ]) in M.pure (M.pointer_coercion α4) in
       let* α10 :=
         (* Unsize *)
           let* α6 :=
@@ -41,10 +40,8 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
             M.call_closure
               α6
               [ M.get_struct_record_field α7 "converting_to_string::Circle" "radius" ] in
-          let* α9 := M.alloc (Value.Array [ α8 ]) in
-          M.pure (M.pointer_coercion α9) in
-      let* α11 := M.call_closure α2 [ α5; α10 ] in
-      M.call_closure α0 [ α1; α11 ]
+          let* α9 := M.alloc (Value.Array [ α8 ]) in M.pure (M.pointer_coercion α9) in
+      let* α11 := M.call_closure α2 [ α5; α10 ] in M.call_closure α0 [ α1; α11 ]
     | _, _ => M.impossible
     end.
   
@@ -78,9 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           []
           "to_string"
           [] in
-      let* α1 := M.call_closure α0 [ circle ] in
-      M.alloc α1 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.call_closure α0 [ circle ] in M.alloc α1 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

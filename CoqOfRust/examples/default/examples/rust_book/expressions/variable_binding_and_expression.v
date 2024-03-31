@@ -19,10 +19,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let _ := x in
     let* _ :=
       let* α0 := M.read x in
-      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in
-      M.alloc α1 in
+      let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.I32 1) in M.alloc α1 in
     let* _ := M.alloc (Value.Integer Integer.I32 15) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -71,11 +71,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                           ++
                           (String.String "233" ("f" ++ (String.String "233" "
 "))))) in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -86,11 +84,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "page unloaded
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::KeyPress" 0 in
@@ -103,8 +99,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "pressed '") in
                   let* α3 := M.read (mk_str "'.
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -113,11 +108,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_display"
                       [ Ty.path "char" ] in
                   let* α7 := M.call_closure α6 [ c ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "enums::WebEvent::Paste" 0 in
@@ -130,8 +123,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α2 := M.read (mk_str "pasted """) in
                   let* α3 := M.read (mk_str """.
 ") in
-                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-                  M.pure (M.pointer_coercion α4) in
+                  let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
               let* α9 :=
                 (* Unsize *)
                   let* α6 :=
@@ -140,11 +132,9 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                       "new_display"
                       [ Ty.path "alloc::string::String" ] in
                   let* α7 := M.call_closure α6 [ s ] in
-                  let* α8 := M.alloc (Value.Array [ α7 ]) in
-                  M.pure (M.pointer_coercion α8) in
+                  let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
               let* α10 := M.call_closure α1 [ α5; α9 ] in
-              let* α11 := M.call_closure α0 [ α10 ] in
-              M.alloc α11 in
+              let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 := M.get_struct_record_field_or_break_match γ "enums::WebEvent::Click" "x" in
@@ -180,8 +170,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                     let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                     M.pure (M.pointer_coercion α11) in
                 let* α13 := M.call_closure α1 [ α6; α12 ] in
-                let* α14 := M.call_closure α0 [ α13 ] in
-                M.alloc α14 in
+                let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
               M.alloc (Value.Tuple []) in
             M.alloc (Value.Tuple [])
         ] in
@@ -224,30 +213,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* unload := M.alloc (Value.StructTuple "enums::WebEvent::PageUnload" []) in
     let* _ :=
       let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read pressed in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read pressed in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read pasted in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read pasted in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read click in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read click in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read load in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
+      let* α1 := M.read load in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
     let* _ :=
       let* α0 := M.get_function "enums::inspect" [] in
-      let* α1 := M.read unload in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.read unload in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

@@ -86,8 +86,7 @@ Module Impl_set_code_hash_Incrementer.
           let* α0 := M.read self in
           M.pure (M.get_struct_record_field α0 "set_code_hash::Incrementer" "count") in
         let* α0 := M.read β in
-        let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in
-        M.assign β α1 in
+        let* α1 := BinOp.Panic.add α0 (Value.Integer Integer.U32 1) in M.assign β α1 in
       let* _ :=
         let* _ :=
           let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -97,8 +96,7 @@ Module Impl_set_code_hash_Incrementer.
               let* α2 := M.read (mk_str "The new count is ") in
               let* α3 := M.read (mk_str ", it was modified using the original contract code.
 ") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
           let* α10 :=
             (* Unsize *)
               let* α6 :=
@@ -111,14 +109,11 @@ Module Impl_set_code_hash_Incrementer.
                 M.call_closure
                   α6
                   [ M.get_struct_record_field α7 "set_code_hash::Incrementer" "count" ] in
-              let* α9 := M.alloc (Value.Array [ α8 ]) in
-              M.pure (M.pointer_coercion α9) in
+              let* α9 := M.alloc (Value.Array [ α8 ]) in M.pure (M.pointer_coercion α9) in
           let* α11 := M.call_closure α1 [ α5; α10 ] in
-          let* α12 := M.call_closure α0 [ α11 ] in
-          M.alloc α12 in
+          let* α12 := M.call_closure α0 [ α11 ] in M.alloc α12 in
         M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -189,8 +184,7 @@ Module Impl_set_code_hash_Incrementer.
                             M.read
                               (mk_str
                                 "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                          let* α2 := M.call_closure α0 [ α1 ] in
-                          M.never_to_any α2
+                          let* α2 := M.call_closure α0 [ α1 ] in M.never_to_any α2
                       ]
                   | _ => M.impossible
                   end)
@@ -205,8 +199,7 @@ Module Impl_set_code_hash_Incrementer.
               let* α2 := M.read (mk_str "Switched code hash to ") in
               let* α3 := M.read (mk_str ".
 ") in
-              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-              M.pure (M.pointer_coercion α4) in
+              let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
           let* α9 :=
             (* Unsize *)
               let* α6 :=
@@ -215,14 +208,11 @@ Module Impl_set_code_hash_Incrementer.
                   "new_debug"
                   [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] in
               let* α7 := M.call_closure α6 [ code_hash ] in
-              let* α8 := M.alloc (Value.Array [ α7 ]) in
-              M.pure (M.pointer_coercion α8) in
+              let* α8 := M.alloc (Value.Array [ α7 ]) in M.pure (M.pointer_coercion α8) in
           let* α10 := M.call_closure α1 [ α5; α9 ] in
-          let* α11 := M.call_closure α0 [ α10 ] in
-          M.alloc α11 in
+          let* α11 := M.call_closure α0 [ α10 ] in M.alloc α11 in
         M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   

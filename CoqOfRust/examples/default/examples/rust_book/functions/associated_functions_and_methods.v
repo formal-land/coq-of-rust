@@ -134,8 +134,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                     let* α5 := M.read y2 in
                     let* α6 := BinOp.Panic.sub α4 α5 in
                     let* α7 := BinOp.Panic.mul α3 α6 in
-                    let* α8 := M.call_closure α0 [ α7 ] in
-                    M.alloc α8
+                    let* α8 := M.call_closure α0 [ α7 ] in M.alloc α8
                 ]
           ] in
       M.read α1
@@ -203,8 +202,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                     let* α9 := BinOp.Panic.sub α7 α8 in
                     let* α10 := M.call_closure α6 [ α9 ] in
                     let* α11 := BinOp.Panic.add α5 α10 in
-                    let* α12 := BinOp.Panic.mul α0 α11 in
-                    M.alloc α12
+                    let* α12 := BinOp.Panic.mul α0 α11 in M.alloc α12
                 ]
           ] in
       M.read α1
@@ -237,9 +235,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
               "associated_functions_and_methods::Point"
               "x") in
         let* α0 := M.read β in
-        let* α1 := M.read x in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        M.assign β α2 in
+        let* α1 := M.read x in let* α2 := BinOp.Panic.add α0 α1 in M.assign β α2 in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
@@ -249,9 +245,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
               "associated_functions_and_methods::Point"
               "x") in
         let* α0 := M.read β in
-        let* α1 := M.read x in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        M.assign β α2 in
+        let* α1 := M.read x in let* α2 := BinOp.Panic.add α0 α1 in M.assign β α2 in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
@@ -261,9 +255,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
               "associated_functions_and_methods::Point"
               "y") in
         let* α0 := M.read β in
-        let* α1 := M.read y in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        M.assign β α2 in
+        let* α1 := M.read y in let* α2 := BinOp.Panic.add α0 α1 in M.assign β α2 in
       let* _ :=
         let* β :=
           let* α0 := M.read self in
@@ -273,11 +265,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
               "associated_functions_and_methods::Point"
               "y") in
         let* α0 := M.read β in
-        let* α1 := M.read y in
-        let* α2 := BinOp.Panic.add α0 α1 in
-        M.assign β α2 in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+        let* α1 := M.read y in let* α2 := BinOp.Panic.add α0 α1 in M.assign β α2 in
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -367,8 +356,7 @@ Module Impl_associated_functions_and_methods_Pair.
                       let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                       M.pure (M.pointer_coercion α11) in
                   let* α13 := M.call_closure α1 [ α6; α12 ] in
-                  let* α14 := M.call_closure α0 [ α13 ] in
-                  M.alloc α14 in
+                  let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
                 M.alloc (Value.Tuple []) in
               M.alloc (Value.Tuple [])
           ] in
@@ -440,8 +428,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Rectangle perimeter: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -457,11 +444,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ rectangle ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -472,8 +457,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Rectangle area: ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -489,11 +473,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α8 := M.call_closure α7 [ rectangle ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* square :=
       let* α0 :=
@@ -516,8 +498,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [] in
       let* α1 := M.read UnsupportedLiteral in
       let* α2 := M.read UnsupportedLiteral in
-      let* α3 := M.call_closure α0 [ square; α1; α2 ] in
-      M.alloc α3 in
+      let* α3 := M.call_closure α0 [ square; α1; α2 ] in M.alloc α3 in
     let* pair_ :=
       let* α0 :=
         M.get_associated_function
@@ -535,10 +516,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     let* _ :=
       let* α0 :=
         M.get_associated_function (Ty.path "associated_functions_and_methods::Pair") "destroy" [] in
-      let* α1 := M.read pair_ in
-      let* α2 := M.call_closure α0 [ α1 ] in
-      M.alloc α2 in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+      let* α1 := M.read pair_ in let* α2 := M.call_closure α0 [ α1 ] in M.alloc α2 in
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

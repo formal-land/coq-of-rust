@@ -35,11 +35,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "Entered the outer loop
 ") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in
-                M.pure (M.pointer_coercion α3) in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
             let* α5 := M.call_closure α1 [ α4 ] in
-            let* α6 := M.call_closure α0 [ α5 ] in
-            M.alloc α6 in
+            let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
           M.alloc (Value.Tuple []) in
         let* _ :=
           let* α0 :=
@@ -53,16 +51,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (* Unsize *)
                       let* α2 := M.read (mk_str "Entered the inner loop
 ") in
-                      let* α3 := M.alloc (Value.Array [ α2 ]) in
-                      M.pure (M.pointer_coercion α3) in
+                      let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
                   let* α5 := M.call_closure α1 [ α4 ] in
-                  let* α6 := M.call_closure α0 [ α5 ] in
-                  M.alloc α6 in
+                  let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
                 M.alloc (Value.Tuple []) in
               M.break) in
-          let* α1 := M.read α0 in
-          let* α2 := M.never_to_any α1 in
-          M.alloc α2 in
+          let* α1 := M.read α0 in let* α2 := M.never_to_any α1 in M.alloc α2 in
         let* _ :=
           let* _ :=
             let* α0 := M.get_function "std::io::stdio::_print" [] in
@@ -71,11 +65,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               (* Unsize *)
                 let* α2 := M.read (mk_str "This point will never be reached
 ") in
-                let* α3 := M.alloc (Value.Array [ α2 ]) in
-                M.pure (M.pointer_coercion α3) in
+                let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
             let* α5 := M.call_closure α1 [ α4 ] in
-            let* α6 := M.call_closure α0 [ α5 ] in
-            M.alloc α6 in
+            let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
           M.alloc (Value.Tuple []) in
         M.alloc (Value.Tuple [])) in
     let* _ :=
@@ -86,13 +78,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (* Unsize *)
             let* α2 := M.read (mk_str "Exited the outer loop
 ") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

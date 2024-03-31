@@ -43,8 +43,7 @@ Module Impl_custom_allocator_CustomAllocator.
           let* α2 := M.read init_value in
           let* α3 := M.alloc (Value.Array [ α2 ]) in
           let* α4 := M.call_closure α1 [ α3 ] in
-          let* α5 := M.read α4 in
-          M.pure (M.pointer_coercion α5) in
+          let* α5 := M.read α4 in M.pure (M.pointer_coercion α5) in
       let* α7 := M.call_closure α0 [ α6 ] in
       M.pure (Value.StructRecord "custom_allocator::CustomAllocator" [ ("value", α7) ])
     | _, _ => M.impossible
@@ -62,8 +61,7 @@ Module Impl_custom_allocator_CustomAllocator.
     | [], [] =>
       let* α0 := M.get_associated_function (Ty.path "custom_allocator::CustomAllocator") "new" [] in
       let* α1 := M.get_trait_method "core::default::Default" (Ty.path "bool") [] "default" [] in
-      let* α2 := M.call_closure α1 [] in
-      M.call_closure α0 [ α2 ]
+      let* α2 := M.call_closure α1 [] in M.call_closure α0 [ α2 ]
     | _, _ => M.impossible
     end.
   
@@ -113,10 +111,8 @@ Module Impl_custom_allocator_CustomAllocator.
               M.get_struct_record_field α4 "custom_allocator::CustomAllocator" "value";
               Value.Integer Integer.Usize 0
             ] in
-        let* α6 := M.read α5 in
-        M.assign α2 (UnOp.Pure.not α6) in
-      let* α0 := M.alloc (Value.Tuple []) in
-      M.read α0
+        let* α6 := M.read α5 in M.assign α2 (UnOp.Pure.not α6) in
+      let* α0 := M.alloc (Value.Tuple []) in M.read α0
     | _, _ => M.impossible
     end.
   

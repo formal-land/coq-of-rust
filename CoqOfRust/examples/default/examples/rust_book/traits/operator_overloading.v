@@ -31,9 +31,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "FooBar") in
-      M.call_closure α0 [ α1; α2 ]
+      let* α1 := M.read f in let* α2 := M.read (mk_str "FooBar") in M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -63,9 +61,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       let* self := M.alloc self in
       let* f := M.alloc f in
       let* α0 := M.get_associated_function (Ty.path "core::fmt::Formatter") "write_str" [] in
-      let* α1 := M.read f in
-      let* α2 := M.read (mk_str "BarFoo") in
-      M.call_closure α0 [ α1; α2 ]
+      let* α1 := M.read f in let* α2 := M.read (mk_str "BarFoo") in M.call_closure α0 [ α1; α2 ]
     | _, _ => M.impossible
     end.
   
@@ -105,14 +101,11 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
             (* Unsize *)
               let* α2 := M.read (mk_str "> Foo.add(Bar) was called
 ") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
-              M.pure (M.pointer_coercion α3) in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
           let* α5 := M.call_closure α1 [ α4 ] in
-          let* α6 := M.call_closure α0 [ α5 ] in
-          M.alloc α6 in
+          let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
         M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.StructTuple "operator_overloading::FooBar" []) in
-      M.read α0
+      let* α0 := M.alloc (Value.StructTuple "operator_overloading::FooBar" []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -152,14 +145,11 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
             (* Unsize *)
               let* α2 := M.read (mk_str "> Bar.add(Foo) was called
 ") in
-              let* α3 := M.alloc (Value.Array [ α2 ]) in
-              M.pure (M.pointer_coercion α3) in
+              let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
           let* α5 := M.call_closure α1 [ α4 ] in
-          let* α6 := M.call_closure α0 [ α5 ] in
-          M.alloc α6 in
+          let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
         M.alloc (Value.Tuple []) in
-      let* α0 := M.alloc (Value.StructTuple "operator_overloading::BarFoo" []) in
-      M.read α0
+      let* α0 := M.alloc (Value.StructTuple "operator_overloading::BarFoo" []) in M.read α0
     | _, _ => M.impossible
     end.
   
@@ -189,8 +179,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Foo + Bar = ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -214,11 +203,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -229,8 +216,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α2 := M.read (mk_str "Bar + Foo = ") in
             let* α3 := M.read (mk_str "
 ") in
-            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in
-            M.pure (M.pointer_coercion α4) in
+            let* α4 := M.alloc (Value.Array [ α2; α3 ]) in M.pure (M.pointer_coercion α4) in
         let* α12 :=
           (* Unsize *)
             let* α6 :=
@@ -254,13 +240,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ] in
             let* α9 := M.alloc α8 in
             let* α10 := M.call_closure α6 [ α9 ] in
-            let* α11 := M.alloc (Value.Array [ α10 ]) in
-            M.pure (M.pointer_coercion α11) in
+            let* α11 := M.alloc (Value.Array [ α10 ]) in M.pure (M.pointer_coercion α11) in
         let* α13 := M.call_closure α1 [ α5; α12 ] in
-        let* α14 := M.call_closure α0 [ α13 ] in
-        M.alloc α14 in
+        let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.

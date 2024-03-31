@@ -92,11 +92,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           (* Unsize *)
             let* α2 := M.read (mk_str "What color is it?
 ") in
-            let* α3 := M.alloc (Value.Array [ α2 ]) in
-            M.pure (M.pointer_coercion α3) in
-        let* α5 := M.call_closure α1 [ α4 ] in
-        let* α6 := M.call_closure α0 [ α5 ] in
-        M.alloc α6 in
+            let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
+        let* α5 := M.call_closure α1 [ α4 ] in let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
       M.alloc (Value.Tuple []) in
     let* α0 :=
       M.match_operator
@@ -111,11 +108,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Red!
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -126,11 +121,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Blue!
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* _ :=
@@ -141,11 +134,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (* Unsize *)
                   let* α2 := M.read (mk_str "The color is Green!
 ") in
-                  let* α3 := M.alloc (Value.Array [ α2 ]) in
-                  M.pure (M.pointer_coercion α3) in
+                  let* α3 := M.alloc (Value.Array [ α2 ]) in M.pure (M.pointer_coercion α3) in
               let* α5 := M.call_closure α1 [ α4 ] in
-              let* α6 := M.call_closure α0 [ α5 ] in
-              M.alloc α6 in
+              let* α6 := M.call_closure α0 [ α5 ] in M.alloc α6 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
@@ -192,8 +183,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
               let* α16 := M.call_closure α1 [ α7; α15 ] in
-              let* α17 := M.call_closure α0 [ α16 ] in
-              M.alloc α17 in
+              let* α17 := M.call_closure α0 [ α16 ] in M.alloc α17 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
@@ -240,8 +230,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
               let* α16 := M.call_closure α1 [ α7; α15 ] in
-              let* α17 := M.call_closure α0 [ α16 ] in
-              M.alloc α17 in
+              let* α17 := M.call_closure α0 [ α16 ] in M.alloc α17 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
@@ -288,8 +277,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
               let* α16 := M.call_closure α1 [ α7; α15 ] in
-              let* α17 := M.call_closure α0 [ α16 ] in
-              M.alloc α17 in
+              let* α17 := M.call_closure α0 [ α16 ] in M.alloc α17 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
@@ -336,8 +324,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
               let* α16 := M.call_closure α1 [ α7; α15 ] in
-              let* α17 := M.call_closure α0 [ α16 ] in
-              M.alloc α17 in
+              let* α17 := M.call_closure α0 [ α16 ] in M.alloc α17 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 :=
@@ -406,8 +393,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α17 := M.alloc (Value.Array [ α10; α12; α14; α16 ]) in
                   M.pure (M.pointer_coercion α17) in
               let* α19 := M.call_closure α1 [ α8; α18 ] in
-              let* α20 := M.call_closure α0 [ α19 ] in
-              M.alloc α20 in
+              let* α20 := M.call_closure α0 [ α19 ] in M.alloc α20 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α0

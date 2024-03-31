@@ -27,9 +27,7 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
               let* α0 := M.read divisor in
               let* α1 := M.alloc (BinOp.Pure.eq α0 (Value.Integer Integer.I32 0)) in
               M.pure (M.use α1) in
-            let* _ :=
-              let* α0 := M.read γ in
-              M.is_constant_or_break_match α0 (Value.Bool true) in
+            let* _ := let* α0 := M.read γ in M.is_constant_or_break_match α0 (Value.Bool true) in
             M.alloc (Value.StructTuple "core::option::Option::None" []);
           fun γ =>
             let* α0 := M.read dividend in
@@ -95,8 +93,7 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α11 := M.alloc (Value.Array [ α8; α10 ]) in
                   M.pure (M.pointer_coercion α11) in
               let* α13 := M.call_closure α1 [ α6; α12 ] in
-              let* α14 := M.call_closure α0 [ α13 ] in
-              M.alloc α14 in
+              let* α14 := M.call_closure α0 [ α13 ] in M.alloc α14 in
             M.alloc (Value.Tuple []);
           fun γ =>
             let* γ0_0 := M.get_struct_tuple_field_or_break_match γ "core::option::Option::Some" 0 in
@@ -136,8 +133,7 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
                   let* α14 := M.alloc (Value.Array [ α9; α11; α13 ]) in
                   M.pure (M.pointer_coercion α14) in
               let* α16 := M.call_closure α1 [ α7; α15 ] in
-              let* α17 := M.call_closure α0 [ α16 ] in
-              M.alloc α17 in
+              let* α17 := M.call_closure α0 [ α16 ] in M.alloc α17 in
             M.alloc (Value.Tuple [])
         ] in
     M.read α5
@@ -192,8 +188,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str " unwraps to ") in
             let* α4 := M.read (mk_str "
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
         let* α16 :=
           (* Unsize *)
             let* α7 :=
@@ -216,11 +211,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α12 := M.call_closure α10 [ α11 ] in
             let* α13 := M.alloc α12 in
             let* α14 := M.call_closure α9 [ α13 ] in
-            let* α15 := M.alloc (Value.Array [ α8; α14 ]) in
-            M.pure (M.pointer_coercion α15) in
+            let* α15 := M.alloc (Value.Array [ α8; α14 ]) in M.pure (M.pointer_coercion α15) in
         let* α17 := M.call_closure α1 [ α6; α16 ] in
-        let* α18 := M.call_closure α0 [ α17 ] in
-        M.alloc α18 in
+        let* α18 := M.call_closure α0 [ α17 ] in M.alloc α18 in
       M.alloc (Value.Tuple []) in
     let* _ :=
       let* _ :=
@@ -232,8 +225,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α3 := M.read (mk_str " unwraps to ") in
             let* α4 := M.read (mk_str "
 ") in
-            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in
-            M.pure (M.pointer_coercion α5) in
+            let* α5 := M.alloc (Value.Array [ α2; α3; α4 ]) in M.pure (M.pointer_coercion α5) in
         let* α16 :=
           (* Unsize *)
             let* α7 :=
@@ -256,13 +248,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             let* α12 := M.call_closure α10 [ α11 ] in
             let* α13 := M.alloc α12 in
             let* α14 := M.call_closure α9 [ α13 ] in
-            let* α15 := M.alloc (Value.Array [ α8; α14 ]) in
-            M.pure (M.pointer_coercion α15) in
+            let* α15 := M.alloc (Value.Array [ α8; α14 ]) in M.pure (M.pointer_coercion α15) in
         let* α17 := M.call_closure α1 [ α6; α16 ] in
-        let* α18 := M.call_closure α0 [ α17 ] in
-        M.alloc α18 in
+        let* α18 := M.call_closure α0 [ α17 ] in M.alloc α18 in
       M.alloc (Value.Tuple []) in
-    let* α0 := M.alloc (Value.Tuple []) in
-    M.read α0
+    let* α0 := M.alloc (Value.Tuple []) in M.read α0
   | _, _ => M.impossible
   end.
